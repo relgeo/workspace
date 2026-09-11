@@ -1,0 +1,31 @@
+version: "0.4"
+
+scene:
+  unit: mm
+
+meta:
+  title: Rear Panel
+  version: "1.2"
+  date: "2026-06-23"
+
+objects:
+  panel:
+    type: rect
+    size: [100, 50]
+    place:
+      topLeft: [0, 0]
+
+views:
+  front:
+    target: panel
+    scale: "1:2"
+
+sheets:
+  drawing1:
+    size: A4
+    meta:
+      title: Assembly Sheet
+    views:
+      - use: front
+        place:
+          topLeft: [20, 30]

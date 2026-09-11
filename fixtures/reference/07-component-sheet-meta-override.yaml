@@ -1,0 +1,35 @@
+version: "0.4"
+
+scene:
+  unit: mm
+
+components:
+  frame:
+    objects:
+      shape:
+        type: rect
+        size: [80, 30]
+        place:
+          topLeft: [40, 15]
+        transform:
+          - translate: [10, 5]
+
+objects:
+  inst:
+    type: component
+    use: frame
+    meta:
+      stroke: "#2244ff"
+
+views:
+  componentView:
+    target: inst
+    scale: "1:1"
+
+sheets:
+  drawing1:
+    size: A4
+    views:
+      - use: componentView
+        place:
+          topLeft: [20, 30]

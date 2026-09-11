@@ -1,0 +1,48 @@
+version: "0.4"
+
+scene:
+  unit: mm
+
+objects:
+  body:
+    type: rect
+    size: [90, 40]
+    place:
+      topLeft: [30, 20]
+    transform:
+      - translate: [15, 10]
+
+  note:
+    type: annotation
+    text: "FACE B"
+    leader:
+      from: [90, 50]
+      to: [145, 70]
+
+  cluster:
+    type: group
+    meta:
+      stroke: "#aa5500"
+    children:
+      - body
+      - note
+
+  assembly:
+    type: group
+    meta:
+      stroke: "#1122cc"
+    children:
+      - cluster
+
+views:
+  nestedView:
+    target: assembly
+    scale: "1:1"
+
+sheets:
+  drawing1:
+    size: A4
+    views:
+      - use: nestedView
+        place:
+          topLeft: [20, 30]

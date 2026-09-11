@@ -1,0 +1,44 @@
+[submodule "relgeo.github.io"]
+	path = relgeo.github.io
+	url = https://github.com/relgeo/relgeo.github.io.git
+	branch = main
+[submodule "playground"]
+	path = playground
+	url = https://github.com/relgeo/playground.git
+	branch = main
+[submodule "spec"]
+	path = spec
+	url = https://github.com/relgeo/spec.git
+	branch = main
+[submodule "core"]
+	path = core
+	url = https://github.com/relgeo/core.git
+	branch = main
+[submodule "geometry"]
+	path = geometry
+	url = https://github.com/relgeo/geometry.git
+	branch = main
+[submodule "language-service"]
+	path = language-service
+	url = https://github.com/relgeo/language-service.git
+	branch = main
+[submodule "renderer-svg"]
+	path = renderer-svg
+	url = https://github.com/relgeo/renderer-svg.git
+	branch = main
+[submodule "cli"]
+	path = cli
+	url = https://github.com/relgeo/cli.git
+	branch = main
+[submodule "remark-relgeo"]
+	path = remark-relgeo
+	url = https://github.com/relgeo/remark-relgeo.git
+	branch = main
+[submodule "remark-relgeo-hl"]
+	path = remark-relgeo-hl
+	url = https://github.com/relgeo/remark-relgeo-hl.git
+	branch = main
+[submodule "flutter"]
+	path = flutter
+	url = https://github.com/relgeo/flutter.git
+	branch = main

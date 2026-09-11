@@ -1,0 +1,23 @@
+version: 0.4
+
+scene:
+  unit: mm
+
+objects:
+  title:
+    type: text
+    at: [80, 24]
+    content: "FACE A\nCHECK"
+    anchor: topCenter
+    meta:
+      fill: "#1F2937"
+      lineHeight: 1.3
+
+  footer:
+    type: text
+    at: [190, 120]
+    content: "Line A\nLine B"
+    anchor: bottomRight
+    meta:
+      fill: "#111827"
+      lineHeight: 1.3

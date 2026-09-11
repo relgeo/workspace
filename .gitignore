@@ -1,0 +1,55 @@
+# Workspace-level local and generated files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Secrets and local environment configuration
+.env
+.env.*
+!.env.example
+*.local
+*.secret
+*.key
+*.pem
+
+# JavaScript / TypeScript dependencies and generated output
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/.astro/
+**/.vite/
+**/.turbo/
+**/coverage/
+**/*.tsbuildinfo
+**/*.log
+**/pnpm-debug.log*
+
+# Flutter / Dart generated state and build output
+**/.dart_tool/
+**/.pub-cache/
+**/.pub/
+**/build/
+**/coverage/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/macos/Flutter/ephemeral/
+**/Pods/
+**/android/local.properties
+**/*.iml
+
+# IDE and operating-system files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+*.suo
+*.user
+
+# Local staging notes and temporary material
+.local/
+private/
+scratch/
+tmp/
+*.tmp

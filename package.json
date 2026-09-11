@@ -1,0 +1,16 @@
+{
+  "name": "relgeo-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Integration workspace for the RelGeo repositories",
+  "packageManager": "pnpm@10.33.3",
+  "scripts": {
+    "install:workspace": "pnpm install --frozen-lockfile",
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm --filter relgeo-playground lint",
+    "check": "pnpm --filter relgeo-docs-site check",
+    "docs:build": "pnpm --filter relgeo-docs-site build",
+    "playground:build": "pnpm --filter relgeo-playground build"
+  }
+}

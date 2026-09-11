@@ -1,0 +1,48 @@
+version: "0.4"
+
+scene:
+  unit: mm
+
+meta:
+  title: Bracket Overview
+  version: "BRKT-2026.07"
+  date: "2026-07-13"
+
+objects:
+  panel:
+    type: rect
+    size: [100, 50]
+    place:
+      topLeft: [0, 0]
+
+views:
+  front:
+    target: panel
+    scale: 1
+
+  detail:
+    target: panel
+    scale: "2:1"
+
+sheets:
+  sheetA:
+    size: A4
+    meta:
+      title: Bracket Assembly Sheet
+      sheetSize: A4 Landscape
+    views:
+      - use: front
+        place:
+          topLeft: [20, 30]
+
+  sheetB:
+    size: A4
+    meta:
+      title: Bracket Detail Sheet
+      version: "BRKT-DET-02"
+      date: "2026-07-14"
+      sheetSize: A4 Detail
+    views:
+      - use: detail
+        place:
+          topLeft: [40, 45]

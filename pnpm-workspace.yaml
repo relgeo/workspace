@@ -1,0 +1,10 @@
+packages:
+  - cli
+  - core
+  - geometry
+  - language-service
+  - playground
+  - relgeo.github.io
+  - remark-relgeo
+  - remark-relgeo-hl
+  - renderer-svg

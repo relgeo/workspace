@@ -1,0 +1,32 @@
+version: "0.4"
+
+scene:
+  unit: mm
+
+objects:
+  base:
+    type: rect
+    size: [100, 50]
+    place:
+      topLeft: [0, 0]
+
+  shifted:
+    type: clone
+    of: base
+    meta:
+      stroke: "#00aa88"
+    transform:
+      - translate: [200, 0]
+
+views:
+  cloneView:
+    target: shifted
+    scale: "1:1"
+
+sheets:
+  drawing1:
+    size: A4
+    views:
+      - use: cloneView
+        place:
+          topLeft: [20, 30]

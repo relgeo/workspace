@@ -1,0 +1,64 @@
+version: 0.4
+
+scene:
+  unit: mm
+
+objects:
+  panel:
+    type: rect
+    size: [120, 70]
+    place:
+      topLeft: [20, 20]
+    meta:
+      stroke: "#111827"
+      fill: "#E5E7EB"
+
+  title:
+    type: text
+    at: [80, 24]
+    content: "FACE A\nCHECK"
+    anchor: topCenter
+    meta:
+      fill: "#1F2937"
+      lineHeight: 1.3
+
+  note:
+    type: annotation
+    text: "EDGE\nBREAK"
+    leader:
+      from: [140, 55]
+      to: [185, 35]
+    meta:
+      role: annotation
+      stroke: "#92400E"
+
+  dim:
+    type: dimension
+    kind: linear
+    from: [20, 20]
+    to: [140, 20]
+    offset: -14
+    text: "120mm"
+    meta:
+      role: dimension
+      stroke: "#0F766E"
+      fill: "#0F172A"
+      fontSize: 10
+      arrowSize: 6
+
+  assembly:
+    type: group
+    children: [panel, title, note, dim]
+
+views:
+  mixedView:
+    target: assembly
+    scale: "1:1"
+
+sheets:
+  drawing1:
+    size: A4
+    views:
+      - use: mixedView
+        place:
+          topLeft: [20, 24]

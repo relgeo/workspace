@@ -1,0 +1,32 @@
+version: "0.4"
+
+scene:
+  unit: mm
+
+meta:
+  version: "1<2&3>"
+  date: "2026-07-08"
+
+objects:
+  note:
+    type: text
+    content: "A&B <main>"
+    place:
+      topLeft: [10, 12]
+    meta:
+      role: annotation
+
+views:
+  "front&detail":
+    target: note
+    scale: "1<2"
+
+sheets:
+  drawing1:
+    size: A4
+    meta:
+      title: "Assembly <A&B>"
+    views:
+      - use: "front&detail"
+        place:
+          topLeft: [20, 30]

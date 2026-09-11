@@ -10,6 +10,12 @@ importers:
 
   cli:
     dependencies:
+      '@relgeo/core':
+        specifier: ^0.5.0
+        version: link:../core
+      '@relgeo/renderer-svg':
+        specifier: ^0.5.0
+        version: link:../renderer-svg
       chalk:
         specifier: ^5.4.1
         version: 5.6.2
@@ -19,12 +25,6 @@ importers:
       fs-extra:
         specifier: ^11.3.0
         version: 11.4.0
-      relgeo-core:
-        specifier: ^0.4.0
-        version: link:../core
-      relgeo-renderer-svg:
-        specifier: ^0.4.0
-        version: link:../renderer-svg
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.4
@@ -44,19 +44,19 @@ importers:
 
   core:
     dependencies:
+      '@relgeo/geometry':
+        specifier: ^0.5.0
+        version: link:../geometry
       js-yaml:
         specifier: ^4.1.1
         version: 4.3.2
-      relgeo-geometry:
-        specifier: ^0.4.0
-        version: link:../geometry
     devDependencies:
+      '@relgeo/renderer-svg':
+        specifier: ^0.5.0
+        version: link:../renderer-svg
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
-      relgeo-renderer-svg:
-        specifier: ^0.4.0
-        version: link:../renderer-svg
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(postcss@8.5.28)(typescript@6.0.3)(yaml@2.9.0)
@@ -92,12 +92,12 @@ importers:
         specifier: ^3.17.5
         version: 3.18.3
     devDependencies:
+      '@relgeo/core':
+        specifier: ^0.5.0
+        version: link:../core
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
-      relgeo-core:
-        specifier: ^0.4.0
-        version: link:../core
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(postcss@8.5.28)(typescript@6.0.3)(yaml@2.9.0)
@@ -125,6 +125,15 @@ importers:
       '@codemirror/view':
         specifier: ^6.42.1
         version: 6.43.11
+      '@relgeo/core':
+        specifier: ^0.5.0
+        version: link:../core
+      '@relgeo/language-service':
+        specifier: ^0.5.0
+        version: link:../language-service
+      '@relgeo/renderer-svg':
+        specifier: ^0.5.0
+        version: link:../renderer-svg
       '@uiw/react-codemirror':
         specifier: ^4.25.9
         version: 4.25.11(@babel/runtime@8.0.5)(@codemirror/autocomplete@6.20.3)(@codemirror/language@6.12.4)(@codemirror/lint@6.9.7)(@codemirror/search@6.7.2)(@codemirror/state@6.7.4)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.43.11)(codemirror@6.0.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -137,15 +146,6 @@ importers:
       react-dom:
         specifier: ^19.2.5
         version: 19.3.0(react@19.3.0)
-      relgeo-core:
-        specifier: ^0.4.0
-        version: link:../core
-      relgeo-language-service:
-        specifier: ^0.4.0
-        version: link:../language-service
-      relgeo-renderer-svg:
-        specifier: ^0.4.0
-        version: link:../renderer-svg
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -192,24 +192,24 @@ importers:
 
   relgeo.github.io:
     dependencies:
+      '@relgeo/core':
+        specifier: ^0.5.0
+        version: link:../core
+      '@relgeo/language-service':
+        specifier: ^0.5.0
+        version: link:../language-service
+      '@relgeo/remark-relgeo':
+        specifier: ^0.5.0
+        version: link:../remark-relgeo
+      '@relgeo/remark-relgeo-hl':
+        specifier: ^0.5.0
+        version: link:../remark-relgeo-hl
+      '@relgeo/renderer-svg':
+        specifier: ^0.5.0
+        version: link:../renderer-svg
       astro:
         specifier: ^5.18.0
         version: 5.18.2(@types/node@24.13.4)(lightningcss@1.33.0)(rollup@4.63.1)(typescript@6.0.3)(yaml@2.9.0)
-      relgeo-core:
-        specifier: ^0.4.0
-        version: link:../core
-      relgeo-language-service:
-        specifier: ^0.4.0
-        version: link:../language-service
-      relgeo-renderer-svg:
-        specifier: ^0.4.0
-        version: link:../renderer-svg
-      remark-relgeo:
-        specifier: ^0.5.0
-        version: link:../remark-relgeo
-      remark-relgeo-hl:
-        specifier: ^0.5.0
-        version: link:../remark-relgeo-hl
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.4
@@ -217,11 +217,11 @@ importers:
 
   remark-relgeo:
     dependencies:
-      relgeo-core:
-        specifier: ^0.4.0
+      '@relgeo/core':
+        specifier: ^0.5.0
         version: link:../core
-      relgeo-renderer-svg:
-        specifier: ^0.4.0
+      '@relgeo/renderer-svg':
+        specifier: ^0.5.0
         version: link:../renderer-svg
       unist-util-visit:
         specifier: ^5.0.0
@@ -246,15 +246,15 @@ importers:
         specifier: ^5.0.0
         version: 5.1.0
     devDependencies:
+      '@relgeo/language-service':
+        specifier: ^0.5.0
+        version: link:../language-service
       '@types/mdast':
         specifier: ^4.0.4
         version: 4.0.4
       '@types/unist':
         specifier: ^3.0.3
         version: 3.0.3
-      relgeo-language-service:
-        specifier: ^0.4.0
-        version: link:../language-service
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(postcss@8.5.28)(typescript@6.0.3)(yaml@2.9.0)
@@ -267,12 +267,12 @@ importers:
 
   renderer-svg:
     dependencies:
-      relgeo-geometry:
-        specifier: ^0.4.0
+      '@relgeo/geometry':
+        specifier: ^0.5.0
         version: link:../geometry
     devDependencies:
-      relgeo-core:
-        specifier: ^0.4.0
+      '@relgeo/core':
+        specifier: ^0.5.0
         version: link:../core
       tsup:
         specifier: ^8.5.1

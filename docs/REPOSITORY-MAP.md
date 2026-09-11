@@ -18,6 +18,22 @@ Peta ini menjelaskan boundary publik dan ownership pada root workspace.
 
 Root `docs/` dan `scripts/` bukan submodule. Keduanya menjadi bagian dari repository `relgeo/workspace`.
 
+## Paket npm Publik
+
+Paket TypeScript berikut diterbitkan pada compatibility line `0.5.x`:
+
+| Package | Repository |
+| --- | --- |
+| `@relgeo/geometry` | `relgeo/geometry` |
+| `@relgeo/core` | `relgeo/core` |
+| `@relgeo/language-service` | `relgeo/language-service` |
+| `@relgeo/renderer-svg` | `relgeo/renderer-svg` |
+| `@relgeo/remark-relgeo` | `relgeo/remark-relgeo` |
+| `@relgeo/remark-relgeo-hl` | `relgeo/remark-relgeo-hl` |
+| `@relgeo/cli` | `relgeo/cli` |
+
+Patch release boleh bergerak mandiri. Perubahan kontrak bahasa yang breaking harus memindahkan seluruh line package secara terkoordinasi ke `0.6.x`.
+
 ## Ownership Dokumentasi
 
 1. `relgeo/workspace` memiliki catatan orkestrasi lintas-repo yang tipis;

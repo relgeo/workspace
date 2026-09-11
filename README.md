@@ -15,6 +15,8 @@ Repository ini bukan rumah implementasi utama. Folder pada level root selain `do
 
 ## Status
 
-Workspace ini sedang disiapkan sebagai baseline publik. Repository anak belum terhubung sebagai remote atau submodule sampai staging dan verification selesai.
+Workspace ini sudah menjadi baseline publik dan repository anak sudah terhubung sebagai submodule. Paket TypeScript pada compatibility line RelGeo DSL `0.5` juga sudah dipublikasikan ke npm sebagai `@relgeo/*` versi `0.5.0`.
+
+Untuk integrasi lokal, gunakan `pnpm install --frozen-lockfile`. Untuk konsumsi publik, install paket dari npm setelah memastikan dependency dasarnya sudah tersedia di registry.
 
 Lihat [peta repository](./docs/REPOSITORY-MAP.md) untuk ownership dan boundary setiap folder.

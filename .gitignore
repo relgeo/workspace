@@ -49,6 +49,7 @@
 
 # Local staging notes and temporary material
 .local/
+.internal/
 private/
 scratch/
 tmp/

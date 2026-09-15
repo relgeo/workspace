@@ -258,7 +258,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Berjalan — baseline verifier, local/public integration gate, pack boundary, dan CI hardening sudah disiapkan; runtime evidence masih terbuka.
+**Status:** Berjalan — local gate 33/33 dan public-registry gate 48/48 sudah lulus; fresh-checkout, CI, dan public smoke masih terbuka.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -467,6 +467,8 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | Mermaid ditetapkan sebagai format default diagram dokumentasi | dependency graph pada dokumen ini sudah dikonversi; pengecualian visual harus diberi alasan |
 | 2026-09-15 | Tahap 1 diturunkan menjadi sub-rencana operasional | Stage A dimulai dengan inventory command dan dependency |
 | 2026-09-15 | Stage A selesai secara read-only | command, lockfile, package manager, dependency, dan clean status sudah dicatat pada sub-rencana |
+| 2026-09-15 | Local integration evidence Tahap 1 diperoleh pada Node 24.21.0/pnpm 10.33.3 | strict verifier, failure injection, seluruh package, Playground, website, dan Pages artifact assertion lulus; public-registry/CI masih terbuka |
+| 2026-09-15 | Public-registry integration evidence Tahap 1 diperoleh pada Node 24.21.0/pnpm 10.33.3 | 48/48 stage lulus setelah runner memakai shared fixtures, package boundary, dan urutan build/test yang checkout-safe; fresh-checkout/CI/smoke masih terbuka |
 
 ## 10. Catatan pemeliharaan
 

@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status:** Implementasi gate, public-registry isolation, pack boundary, dan CI hardening selesai; runtime evidence masih terbuka
+**Status:** Local dan public-registry runtime gate lulus; fresh-checkout, CI, dan public smoke masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -74,9 +74,9 @@ Graph ini menunjukkan urutan validasi, bukan berarti semua package harus saling 
 | Stage | Implementasi | Evidence yang masih diperlukan |
 | --- | --- | --- |
 | A — Inventory | Selesai | tidak ada blocker desain |
-| B — Baseline | Selesai: manifest, strict verifier, compatibility check, failure injection | eksekusi Node dan fresh checkout |
-| C — Packages | Selesai: local/public runner, dependency pinning, pack boundary | lint/test/build aktual setiap package |
-| D — Consumers | Selesai: isolated consumer checkout dan Pages artifact assembly | Playground/website runtime gate dan route artifact |
+| B — Baseline | Selesai: manifest, strict verifier, compatibility check, failure injection | fresh checkout dan regenerasi pada checkout baru |
+| C — Packages | Selesai: local/public runner, dependency pinning, pack boundary; local dan public gate lulus | tidak ada blocker pada runtime gate |
+| D — Consumers | Selesai: isolated consumer checkout dan Pages artifact assembly; local dan public gate lulus | public smoke |
 | E — CI | Selesai: workflow, report artifact, manual dispatch, timeout, concurrency, read-only checkout | workflow GitHub hijau dan reproducible failure |
 
 ## 4. Kondisi awal yang perlu dikunci
@@ -229,7 +229,7 @@ Acceptance:
 - [x] verifikasi tidak membutuhkan akses GitHub API;
 - [x] verifier membandingkan gitlink, checkout aktual, dan manifest;
 - [x] helper untuk regenerasi manifest dengan opsi `--write` tersedia;
-- [ ] regenerasi manifest berhasil dijalankan pada runtime Node;
+- [x] regenerasi manifest berhasil dijalankan pada runtime Node;
 - [x] helper failure injection untuk pointer yang berubah tersedia dan dijalankan sebagai gate.
 
 ### Stage C — Package gate dalam dependency order
@@ -260,12 +260,14 @@ Checklist:
 - [x] runner public mendefinisikan `npm pack --dry-run` sebagai boundary release, bukan pengganti test.
 - [x] runner public memeriksa daftar file pack dan menolak path traversal, path absolute, secret, serta direktori lokal.
 
+Evidence runtime (2026-09-15): `node scripts/verify-baseline.mjs --write` berhasil pada Node 24.21.0 dan menghasilkan manifest yang konsisten dengan `.gitmodules`; local gate lulus 33/33 dan public-registry gate lulus 48/48 pada pnpm 10.33.3.
+
 Acceptance:
 
-- [ ] setiap package lulus command gate dari root workspace;
+- [x] setiap package lulus command gate dari root workspace;
 - [x] runner public menyalin package ke temporary checkout tanpa sibling source dan meng-install dari npm registry;
 - [x] runner public mem-pin dependency `@relgeo/*` ke versi baseline manifest pada temporary checkout;
-- [ ] package consumer lulus terhadap package registry publik;
+- [x] package consumer lulus terhadap package registry publik;
 - [x] failure runner menyebut package dan command yang gagal.
 
 ### Stage D — Consumer gate
@@ -273,20 +275,20 @@ Acceptance:
 Checklist:
 
 - [x] runner mendefinisikan install dan lint/test/audit UX/build Playground;
-- [ ] lint, test, audit UX, dan build Playground lulus pada execution terbaru;
-- [ ] worker Playground terverifikasi memakai package yang terinstall;
+- [x] lint, test, audit UX, dan build Playground lulus pada execution terbaru;
+- [x] worker Playground terverifikasi memakai package yang terinstall;
 - [x] runner public menyalin Playground dan website tanpa sibling source, sehingga alias lokal tidak dapat aktif;
 - [x] runner merakit hasil build Playground ke `website/dist/playground` sebelum `test:pages-artifact`, seperti workflow Pages;
-- [ ] package consumer lulus tanpa workspace link ke source sibling;
+- [x] package consumer lulus tanpa workspace link ke source sibling;
 - [x] runner mendefinisikan install dan check/build/test/artifact assertion website;
-- [ ] website check/build/test/artifact assertion lulus pada execution terbaru;
+- [x] website check/build/test/artifact assertion lulus pada execution terbaru;
 - [ ] bila mode release, jalankan public smoke test setelah deploy yang berhasil.
 
 Acceptance:
 
-- [ ] Playground berhasil tanpa hack path lokal;
-- [ ] website berhasil tanpa mem-build source sibling secara implisit;
-- [ ] output website memuat docs/spec/playground route yang diharapkan.
+- [x] Playground berhasil tanpa hack path lokal;
+- [x] website berhasil tanpa mem-build source sibling secara implisit;
+- [x] output website memuat docs/spec/playground route yang diharapkan.
 
 ### Stage E — CI integration job
 
@@ -350,18 +352,18 @@ Tahap 1 hanya boleh ditandai selesai jika:
 
 - [x] runner documented tersedia dari root workspace;
 - [ ] runner berhasil dari fresh checkout lokal;
-- [ ] semua package wajib lulus dalam dependency order;
-- [ ] Playground lulus tanpa relative source dependency;
-- [ ] website lulus build dan artifact assertions;
+- [x] semua package wajib lulus dalam dependency order pada checkout kerja lokal;
+- [x] Playground lulus tanpa relative source dependency;
+- [x] website lulus build dan artifact assertions pada checkout kerja lokal;
 - [x] runner menghasilkan report yang menyebut workspace revision, baseline revision setiap submodule, compatibility line, dan versi package;
 - [x] minimal satu CI workflow menjalankan gate atau subset yang setara;
 - [x] failure injection sederhana terbukti menghasilkan failure yang jelas pada verifier;
 - [x] dokumentasi root menjelaskan cara menjalankan gate;
-- [x] master plan diperbarui dengan commit implementasi dan bukti statis; runtime evidence tetap menjadi pekerjaan terbuka.
+- [x] master plan diperbarui dengan commit implementasi dan bukti runtime local/public yang tersedia; fresh-checkout, CI, dan smoke tetap terbuka.
 
 ## 10. Rencana eksekusi berikutnya
 
-Implementasi runner sudah tersedia. Pekerjaan berikutnya adalah menghasilkan execution evidence, bukan menambah command baru tanpa hasil pengujian.
+Implementasi runner sudah tersedia. Local dan public-registry runtime evidence sudah tersedia; pekerjaan berikutnya adalah fresh-checkout, CI execution, dan public smoke, bukan menambah command baru tanpa hasil pengujian.
 
 Prasyarat runtime:
 
@@ -402,3 +404,6 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Public pack boundary membaca output JSON dan menolak material lokal/secret/path traversal | implementasi tarball hygiene selesai; pack runtime masih menunggu CI/npm execution |
 | 2026-09-15 | Pack boundary diperluas untuk seluruh file `.env.*`; pin registry dibatasi ke package `@relgeo/*` | hardening static selesai; runtime pack dan public gate masih terbuka |
 | 2026-09-15 | Status matrix implementasi-versus-evidence ditambahkan dan master plan diselaraskan | pekerjaan implementasi terpetakan; runtime evidence tetap terbuka |
+| 2026-09-15 | Node 24.21.0 dan pnpm 10.33.3 dipakai untuk strict verifier, failure injection, dan local integration gate | strict verifier serta failure injection lulus; local gate 33/33 lulus |
+| 2026-09-15 | Public gate pertama menemukan fixture workspace, import sibling, dan urutan build/test yang belum checkout-safe; runner dan test boundary diperbaiki | diagnosis selesai; perubahan renderer-svg dan runner perlu masuk baseline |
+| 2026-09-15 | Public-registry gate final dijalankan pada Node 24.21.0/pnpm 10.33.3 dengan package `@relgeo/*` dipin ke manifest | 48/48 stage lulus, termasuk Playground, website, Pages artifact assertion, dan pack boundary |

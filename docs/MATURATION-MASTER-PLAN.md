@@ -258,7 +258,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Berikutnya — prioritas tertinggi.
+**Status:** Berjalan — Stage A inventory selesai; implementasi berikutnya adalah Stage B.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -283,7 +283,7 @@ Status menggunakan arti berikut:
 - [ ] hasil gate menyebut commit submodule, versi package, dan artifact yang diuji;
 - [ ] CI dapat menjalankan gate dengan environment yang sama atau subset yang jelas.
 
-**Deliverable sub-rencana:** docs/plans/01-cross-repo-integration-gate.md.
+**Deliverable sub-rencana:** [docs/plans/01-cross-repo-integration-gate.md](plans/01-cross-repo-integration-gate.md).
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
@@ -465,6 +465,8 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | Master plan dibuat dari hasil audit lintas-repo terbaru | baseline workspace, website, Playground, package metadata |
 | 2026-09-15 | Prioritas utama ditetapkan pada reproducible integration gate dan release contract | seluruh package 0.5.0, website Pages aktif, Playground audit sudah ditutup secara lokal |
 | 2026-09-15 | Mermaid ditetapkan sebagai format default diagram dokumentasi | dependency graph pada dokumen ini sudah dikonversi; pengecualian visual harus diberi alasan |
+| 2026-09-15 | Tahap 1 diturunkan menjadi sub-rencana operasional | Stage A dimulai dengan inventory command dan dependency |
+| 2026-09-15 | Stage A selesai secara read-only | command, lockfile, package manager, dependency, dan clean status sudah dicatat pada sub-rencana |
 
 ## 10. Catatan pemeliharaan
 

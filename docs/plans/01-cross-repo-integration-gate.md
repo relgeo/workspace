@@ -1,0 +1,360 @@
+# Sub-rencana Tahap 1 — Cross-repo Integration Gate
+
+**Status:** Stage A selesai secara read-only; siap masuk Stage B  
+**Induk:** ../MATURATION-MASTER-PLAN.md  
+**Tanggal:** 2026-09-15  
+**Owner koordinasi:** relgeo/workspace  
+**Scope:** workspace, package TypeScript publik, Playground, website, dan bukti integrasinya
+
+## 1. Tujuan
+
+Membuat satu gate yang dapat dijalankan dari checkout bersih untuk membuktikan bahwa repository-repository RelGeo bekerja sebagai satu dependency graph publik.
+
+Gate ini tidak menggantikan test detail pada repository anak. Gate ini memeriksa bahwa:
+
+- checkout dan submodule berada pada baseline yang diketahui;
+- package dibangun dan diuji menurut dependency order;
+- consumer memakai dependency publik yang benar;
+- Playground dapat dibangun tanpa path source lokal;
+- website dapat mengambil baseline consumer yang benar;
+- hasilnya dapat dibaca manusia dan gagal secara tegas ketika ada mismatch.
+
+## 2. Batasan dan prinsip
+
+### 2.1 Yang termasuk
+
+- bootstrap submodule;
+- verifikasi Git commit dan branch/tag baseline;
+- pemeriksaan package name, version, license, dan dependency line;
+- install dengan lockfile;
+- build, lint, test, dan pack boundary untuk package yang relevan;
+- build Playground;
+- build dan artifact assertion website;
+- public smoke test website setelah deployment bila dijalankan pada mode release;
+- laporan ringkas yang menyebut tahap gagal dan cara memperbaikinya.
+
+### 2.2 Yang tidak termasuk
+
+- menggabungkan semua repository menjadi monorepo;
+- menghapus submodule;
+- memasukkan source repository sibling ke tarball publik;
+- menjalankan deployment production dari command lokal;
+- menggantikan test suite detail milik setiap repository;
+- membuat release npm otomatis sebelum release guard disepakati;
+- menjadikan Flutter prasyarat untuk gate TypeScript tahap pertama.
+
+### 2.3 Local development versus public integration
+
+Local development boleh memakai cara yang nyaman untuk iterasi, termasuk dependency lokal bila diperlukan dan terdokumentasi. Namun mode public integration harus membangun consumer berdasarkan package, commit, tag, atau artifact yang eksplisit. Tidak boleh ada relative import ke folder sibling yang hanya ada di komputer operator.
+
+## 3. Dependency graph
+
+~~~mermaid
+flowchart TD
+  workspace["workspace: orchestration"] --> spec["spec: language contract"]
+  spec --> geometry["geometry: 2D math"]
+  geometry --> core["core: parse and resolve"]
+  core --> rendererSvg["renderer-svg: SVG renderer"]
+  core --> languageService["language-service: diagnostics and completions"]
+  core --> cli["cli: command-line surface"]
+  rendererSvg --> playground["playground: browser IDE"]
+  languageService --> playground
+  rendererSvg --> remarkRelgeo["remark-relgeo: Markdown preview"]
+  languageService --> remarkHl["remark-relgeo-hl: source highlighting"]
+  remarkRelgeo --> website["relgeo.github.io: public docs"]
+  remarkHl --> website
+  spec --> website
+  playground --> website
+~~~
+
+Graph ini menunjukkan urutan validasi, bukan berarti semua package harus saling mengimpor source. Dependency aktual harus dibaca dari package metadata dan lockfile.
+
+## 4. Kondisi awal yang perlu dikunci
+
+Baseline saat sub-rencana dibuat:
+
+| Area | Bukti awal | Cara verifikasi |
+| --- | --- | --- |
+| Workspace | submodule aktif dan clean | git submodule status, git status |
+| Spec | repository spec tersedia | submodule revision dan spec README |
+| Packages | package line 0.5.0 | package.json dan registry metadata |
+| Playground | build/test/lint/audit UX sudah pernah lulus | package scripts dan CI/local evidence |
+| Website | custom Pages workflow aktif | workflow, build, artifact assertions |
+| Public routes | smoke script tersedia | website smoke script dan workflow output |
+
+Sebelum implementasi runner, status aktual harus dibaca ulang. Jangan meng-hardcode commit lama tanpa alasan release yang terdokumentasi.
+
+## 5. Bentuk deliverable
+
+### 5.1 Runner
+
+Tambahkan runner portable di repository workspace, disarankan:
+
+~~~text
+scripts/run-integration-gate.mjs
+~~~
+
+Runner harus:
+
+- dijalankan dari root workspace atau menemukan root berdasarkan lokasi script;
+- menggunakan Node yang tersedia dan memberi pesan jika versi tidak cukup;
+- tidak bergantung pada shell-specific syntax;
+- menerima mode yang jelas, minimal --local dan --report;
+- tidak menulis ke repository anak kecuali command build memang melakukannya ke direktori ignored;
+- mengembalikan exit code non-zero ketika satu stage wajib gagal;
+- menampilkan stage, command, durasi, dan ringkasan hasil;
+- tidak mencetak token, environment privat, atau isi file privat.
+
+### 5.2 Manifest baseline
+
+Simpan manifest publik yang menjawab baseline apa yang sedang diuji. Lokasi dan format final diputuskan saat implementasi, tetapi harus memuat minimal:
+
+~~~yaml
+compatibilityLine: 0.5
+spec:
+  path: spec
+  revision: <git-commit>
+packages:
+  - name: "@relgeo/geometry"
+    path: geometry
+    version: 0.5.0
+    revision: <git-commit>
+...
+consumers:
+  - name: playground
+    path: playground
+    revision: <git-commit>
+  - name: website
+    path: relgeo.github.io
+    revision: <git-commit>
+~~~
+
+Nilai <git-commit> harus berasal dari checkout aktual dan tidak boleh ditebak. Jika manifest dipakai sebagai release evidence, perubahan manifest harus melalui review biasa.
+
+### 5.3 Laporan
+
+Runner menghasilkan laporan terminal yang cukup untuk diagnosis dan, bila dibutuhkan, file report ignored atau artifact CI. Laporan publik tidak boleh memuat absolute path komputer operator.
+
+Format minimal:
+
+~~~text
+RelGeo integration gate
+baseline: <workspace commit>
+compatibility: 0.5
+
+[PASS] submodule baseline
+[PASS] package metadata
+[PASS] geometry: lint, test, build
+[FAIL] core: test
+      reason: ...
+[SKIP] public smoke test
+summary: 1 failed, 3 passed, 1 skipped
+~~~
+
+### 5.4 Evidence inventory Stage A — 2026-09-15
+
+Inventory awal dibaca dari package metadata, lockfile, submodule status, dan isi ignore rule. Semua submodule berada pada branch main dan working tree clean saat inventory dilakukan.
+
+| Repository | Package manager | Lockfile | Command utama | Catatan |
+| --- | --- | --- | --- | --- |
+| geometry | pnpm 10.33.3 | pnpm-lock.yaml | lint, test, build | baseline lengkap |
+| core | pnpm 10.33.3 | belum ada | lint, test, build | dependency runtime ke geometry; dev dependency ke renderer-svg |
+| renderer-svg | pnpm 10.33.3 | belum ada | lint, test, test:dist, build | dependency runtime ke geometry; dev dependency ke core |
+| language-service | belum dideklarasikan | belum ada | lint, test, build | peer dependency ke core |
+| remark-relgeo-hl | belum dideklarasikan | belum ada | lint, test, build | peer dependency ke language-service |
+| remark-relgeo | belum dideklarasikan | belum ada | lint, test, build | runtime dependency ke core dan renderer-svg |
+| cli | pnpm 10.33.3 | belum ada | test, build | runtime dependency ke core dan renderer-svg |
+| playground | pnpm 10.33.3 | pnpm-lock.yaml | lint, test, audit:ux, build | package private; consumer browser |
+| relgeo.github.io | belum dideklarasikan | pnpm-lock.yaml | check, build, test, test:pages-artifact | consumer Astro dan Pages |
+| flutter | Flutter/Dart | pubspec.lock | ditentukan oleh pubspec | gate terpisah pada Tahap 6 |
+| spec | Git/documentation | tidak relevan | tidak ada package command | source contract; perlu validator khusus bila dibutuhkan |
+
+Temuan yang memengaruhi desain runner:
+
+1. package manager dan lockfile belum seragam pada seluruh package; runner tidak boleh mengasumsikan semua repository memiliki lockfile sendiri;
+2. website dan Playground memiliki lockfile sendiri, sedangkan package library mengandalkan registry dependency resolution;
+3. core dan renderer-svg memiliki cycle pada dev dependency; cycle ini harus dicatat dan tidak boleh diselesaikan dengan relative source import tersembunyi;
+4. package manager yang belum dideklarasikan perlu diputuskan apakah akan distandardisasi sebelum CI gate final;
+5. command release seperti pack dry-run tetap menjadi gate terpisah dari lint, test, dan build.
+
+## 6. Stage implementasi
+
+### Stage A — Inventory dan command contract
+
+**Output:** tabel command nyata untuk setiap repository.
+
+Checklist:
+
+- [x] baca package.json atau README pemilik;
+- [x] catat package manager dan lockfile;
+- [x] catat command install, lint, test, build, pack;
+- [x] catat dependency upstream/downstream;
+- [x] catat bahwa dist/build output memakai ignore rule pada repository yang memiliki output build;
+- [ ] catat prerequisite seperti npm authentication atau browser;
+- [x] bedakan command wajib dari command opsional pada inventory awal.
+
+Acceptance:
+
+- [x] tidak ada command gate yang dibuat berdasarkan asumsi; command awal berasal dari metadata repository;
+- [x] setiap stage pada sub-rencana memiliki owner koordinasi workspace atau owner repository consumer;
+- [x] cycle dependency dicatat sebagai fakta dan tidak disembunyikan.
+
+### Stage B — Baseline manifest dan submodule verification
+
+**Output:** manifest baseline dan helper verifikasi.
+
+Checklist:
+
+- [ ] baca root commit workspace;
+- [ ] baca commit setiap submodule;
+- [ ] baca branch/tag yang tersedia;
+- [ ] baca package name/version untuk setiap package;
+- [ ] pastikan package version sesuai compatibility line;
+- [ ] fail jika submodule belum di-initialize atau working tree kotor pada mode strict;
+- [ ] sediakan mode read-only untuk diagnosis lokal.
+
+Acceptance:
+
+- [ ] manifest dapat diregenerasi dari checkout;
+- [ ] verifikasi tidak membutuhkan akses GitHub API;
+- [ ] hasil berbeda ketika pointer submodule berubah.
+
+### Stage C — Package gate dalam dependency order
+
+Urutan awal:
+
+~~~mermaid
+flowchart LR
+  geometry["geometry"] --> core["core"]
+  core --> rendererSvg["renderer-svg"]
+  core --> languageService["language-service"]
+  rendererSvg --> remarkRelgeo["remark-relgeo"]
+  languageService --> remarkHl["remark-relgeo-hl"]
+  core --> cli["cli"]
+  rendererSvg --> cli
+~~~
+
+Checklist:
+
+- [ ] geometry: install, lint, test, build;
+- [ ] core: install, lint, test, build;
+- [ ] renderer-svg: install, lint, test, build;
+- [ ] language-service: install, lint, test, build;
+- [ ] remark-relgeo-hl: install, lint, test, build;
+- [ ] remark-relgeo: install, lint, test, build;
+- [ ] cli: install, test, build;
+- [ ] catat dependency peer yang membutuhkan package registry;
+- [ ] tambahkan pack dry-run sebagai boundary release, bukan pengganti test.
+
+Acceptance:
+
+- [ ] setiap package diuji dari source checkout bersih;
+- [ ] package consumer tidak diam-diam mengarah ke source sibling;
+- [ ] failure menyebut package dan command yang gagal.
+
+### Stage D — Consumer gate
+
+Checklist:
+
+- [ ] install Playground dengan lockfile;
+- [ ] jalankan lint, test, audit UX, dan build Playground;
+- [ ] pastikan worker memakai package yang terinstall;
+- [ ] pastikan tidak ada relative import ke folder sibling core, renderer-svg, atau source lain;
+- [ ] install website dengan lockfile;
+- [ ] jalankan website check dan build;
+- [ ] jalankan built-output dan Pages artifact assertion;
+- [ ] bila mode release, jalankan public smoke test setelah deploy yang berhasil.
+
+Acceptance:
+
+- [ ] Playground berhasil tanpa hack path lokal;
+- [ ] website berhasil tanpa mem-build source sibling secara implisit;
+- [ ] output website memuat docs/spec/playground route yang diharapkan.
+
+### Stage E — CI integration job
+
+CI hanya dibuat setelah Stage A–D lulus lokal.
+
+Checklist:
+
+- [ ] tentukan repository pemilik workflow;
+- [ ] gunakan Node/pnpm version yang eksplisit;
+- [ ] gunakan cache hanya jika lockfile menjadi cache key;
+- [ ] artifact report disimpan ketika gate gagal;
+- [ ] permission workflow minimal;
+- [ ] workflow tidak mengubah atau publish repository;
+- [ ] hasil CI menampilkan commit baseline dan compatibility line.
+
+Acceptance:
+
+- [ ] local dan CI menjalankan entrypoint yang sama atau perbedaan dijelaskan;
+- [ ] failure CI dapat direproduksi secara lokal;
+- [ ] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator.
+
+## 7. Keputusan yang harus dibuat saat implementasi
+
+Berikut bukan blocker untuk menulis sub-rencana, tetapi harus diputuskan sebelum runner dianggap final:
+
+1. Apakah install harus selalu memakai npm registry publik, atau boleh memakai workspace package/link mode pada mode local?
+2. Apakah gate strict mengharuskan semua submodule clean, atau hanya pointer commit yang tepat?
+3. Apakah package pack dry-run dijalankan pada setiap PR atau hanya release candidate?
+4. Apakah website public smoke menjadi bagian gate lokal, gate Pages, atau keduanya?
+5. Apakah manifest baseline di-commit sebagai release snapshot atau selalu digenerate saat CI?
+6. Apakah Flutter mempunyai gate terpisah atau dimasukkan setelah capability matrix tersedia?
+
+Default yang disarankan:
+
+- public mode memakai registry dan lockfile;
+- strict mode menolak working tree kotor;
+- pack dry-run masuk release candidate;
+- public smoke tetap menjadi job setelah deploy, sedangkan gate lokal memeriksa built output;
+- manifest release di-commit, manifest diagnosis boleh digenerate;
+- Flutter tetap gate terpisah pada Tahap 6.
+
+## 8. Risiko dan mitigasi
+
+| Risiko | Dampak | Mitigasi |
+| --- | --- | --- |
+| package registry belum berisi versi yang dibutuhkan | consumer gagal install | fail fast dengan pesan publish order dan versi |
+| lockfile berbeda dari package.json | CI reproducibility rusak | frozen install sebagai default |
+| cycle dependency dev | install/build membingungkan | catat cycle; jangan menyelesaikannya dengan source path tersembunyi |
+| local relative path tersisa | build publik hanya lulus di satu mesin | grep/audit import dan clean checkout build |
+| build menulis file tracked | working tree kotor setelah gate | gunakan dist ignored atau verifikasi lalu bersihkan dengan aman |
+| workflow terlalu besar | diagnosis lambat | stage log dan job summary |
+| baseline berubah diam-diam | hasil tidak dapat dibandingkan | manifest revision dan commit/tag eksplisit |
+
+## 9. Exit gate Tahap 1
+
+Tahap 1 hanya boleh ditandai selesai jika:
+
+- [ ] runner documented tersedia dari root workspace;
+- [ ] runner berhasil dari fresh checkout lokal;
+- [ ] semua package wajib lulus dalam dependency order;
+- [ ] Playground lulus tanpa relative source dependency;
+- [ ] website lulus build dan artifact assertions;
+- [ ] laporan menyebut baseline revision dan versi package;
+- [ ] minimal satu CI workflow menjalankan gate atau subset yang setara;
+- [ ] failure injection sederhana terbukti menghasilkan failure yang jelas;
+- [ ] dokumentasi root menjelaskan cara menjalankan gate;
+- [ ] master plan diperbarui dengan commit dan bukti.
+
+## 10. Rencana eksekusi sesi berikutnya
+
+Urutan kerja konkret:
+
+1. lakukan Stage A: inventory command dan dependency tanpa mengubah kode;
+2. catat hasilnya pada dokumen ini atau file evidence;
+3. putuskan bentuk manifest berdasarkan data aktual;
+4. implementasikan helper read-only untuk baseline;
+5. baru implementasikan runner package gate;
+6. jalankan dari workspace saat ini;
+7. perbaiki mismatch satu per satu;
+8. setelah lokal stabil, tambahkan CI job minimal;
+9. update master plan dan commit hasil Tahap 1.
+
+## 11. Log perubahan sub-rencana
+
+| Tanggal | Perubahan | Status |
+| --- | --- | --- |
+| 2026-09-15 | Sub-rencana Tahap 1 dibuat berdasarkan dependency graph dan kondisi baseline saat ini | siap untuk Stage A |
+| 2026-09-15 | Inventory command, lockfile, package manager, dependency, dan clean status selesai | Stage A read-only selesai; package-manager standardization dan npm/browser prerequisite masih terbuka |

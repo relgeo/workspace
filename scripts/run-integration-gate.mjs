@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import process from "node:process";
-import { spawnSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -24,6 +24,16 @@ if (localMode === publicMode) {
 
 const results = [];
 const temporaryRoots = [];
+const baselineManifest = JSON.parse(
+  fs.readFileSync(path.join(root, "docs", "integration-baseline.json"), "utf8"),
+);
+
+function workspaceRevision() {
+  return execFileSync("git", ["rev-parse", "HEAD"], {
+    cwd: root,
+    encoding: "utf8",
+  }).trim();
+}
 
 function runStage(label, command, args, cwd = root, environment = process.env) {
   const startedAt = Date.now();
@@ -216,6 +226,16 @@ const report = {
   mode: localMode ? "local-workspace" : "public-registry",
   generatedAt: new Date().toISOString(),
   passed: failed.length === 0,
+  baseline: {
+    workspaceRevision: workspaceRevision(),
+    name: baselineManifest.baselineName,
+    compatibilityLine: baselineManifest.compatibilityLine,
+    submodules: baselineManifest.submodules.map((entry) => ({
+      path: entry.path,
+      revision: entry.revision,
+      package: entry.package ?? null,
+    })),
+  },
   summary: {
     total: results.length,
     passed: results.length - failed.length,

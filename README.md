@@ -19,6 +19,8 @@ Workspace ini sudah menjadi baseline publik dan repository anak sudah terhubung 
 
 Untuk integrasi lokal, gunakan `pnpm install --frozen-lockfile`. Untuk konsumsi publik, install paket dari npm setelah memastikan dependency dasarnya sudah tersedia di registry.
 
+Integration gate lintas-repo dapat dijalankan dengan `pnpm run integration:gate -- --local`. Mode ini memakai workspace links untuk iterasi lokal. Untuk menguji consumer tanpa sibling source dan memakai package dari npm, gunakan `pnpm run integration:public`. Keduanya dapat menerima `--report=.local/<nama>.json`; detail helper ada di [scripts/README.md](./scripts/README.md).
+
 Lihat [peta repository](./docs/REPOSITORY-MAP.md) untuk ownership dan boundary setiap folder.
 
 Lihat [master plan pematangan](./docs/MATURATION-MASTER-PLAN.md) untuk urutan peningkatan lintas-repo, exit gate, dan cara menurunkan setiap tahap menjadi sub-rencana yang lebih detail.

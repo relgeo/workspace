@@ -338,11 +338,11 @@ Tahap 1 hanya boleh ditandai selesai jika:
 - [ ] semua package wajib lulus dalam dependency order;
 - [ ] Playground lulus tanpa relative source dependency;
 - [ ] website lulus build dan artifact assertions;
-- [ ] laporan menyebut baseline revision dan versi package;
+- [x] runner menghasilkan report yang menyebut workspace revision, baseline revision setiap submodule, compatibility line, dan versi package;
 - [x] minimal satu CI workflow menjalankan gate atau subset yang setara;
 - [x] failure injection sederhana terbukti menghasilkan failure yang jelas pada verifier;
-- [ ] dokumentasi root menjelaskan cara menjalankan gate;
-- [ ] master plan diperbarui dengan commit dan bukti.
+- [x] dokumentasi root menjelaskan cara menjalankan gate;
+- [x] master plan diperbarui dengan commit implementasi dan bukti statis; runtime evidence tetap menjadi pekerjaan terbuka.
 
 ## 10. Rencana eksekusi sesi berikutnya
 

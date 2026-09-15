@@ -248,6 +248,7 @@ Checklist:
 - [x] runner mendefinisikan cli: test, build;
 - [x] catat dependency peer yang membutuhkan package registry (`language-service` → `core`, `remark-relgeo-hl` → `language-service`);
 - [x] runner public mendefinisikan `npm pack --dry-run` sebagai boundary release, bukan pengganti test.
+- [x] runner public memeriksa daftar file pack dan menolak path traversal, path absolute, secret, serta direktori lokal.
 
 Acceptance:
 
@@ -388,3 +389,4 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Commit `cb98092` mem-pin versi registry pada temporary public gate | drift patch dependency ditutup secara desain; eksekusi npm/CI masih terbuka |
 | 2026-09-15 | Workflow integration ditambah manual dispatch, timeout, dan concurrency cancellation | rerun manual dan proteksi terhadap run menumpuk tersedia; CI execution evidence masih terbuka |
 | 2026-09-15 | Checkout CI dibuat read-only dan report artifact diberi retensi 7 hari; instruksi execution evidence diperbarui | hardening implementasi selesai; seluruh bukti runtime masih menunggu eksekusi |
+| 2026-09-15 | Public pack boundary membaca output JSON dan menolak material lokal/secret/path traversal | implementasi tarball hygiene selesai; pack runtime masih menunggu CI/npm execution |

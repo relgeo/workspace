@@ -81,6 +81,52 @@ function runWorkspacePackageStage(packageName, scriptName) {
   );
 }
 
+function runPackBoundaryStage(packageName, cwd) {
+  const label = packageName + ": npm pack boundary";
+  const startedAt = Date.now();
+  const result = spawnSync("npm", ["pack", "--dry-run", "--json"], {
+    cwd,
+    env: process.env,
+    encoding: "utf8",
+  });
+  let passed = result.status === 0;
+  let error = result.error?.message;
+  if (passed) {
+    try {
+      const packReport = JSON.parse(result.stdout);
+      const files = packReport.flatMap((entry) => entry.files ?? []);
+      const invalidFiles = files
+        .map((entry) => entry.path)
+        .filter((entry) =>
+          typeof entry !== "string" ||
+          path.isAbsolute(entry) ||
+          entry.startsWith("../") ||
+          /(^|\/)(node_modules|\.git|\.local|private|scratch|tmp)(\/|$)/.test(entry) ||
+          /(^|\/)(\.env|[^/]+\.(pem|key|secret))$/i.test(entry),
+        );
+      if (invalidFiles.length > 0) {
+        passed = false;
+        error = "forbidden pack entries: " + invalidFiles.join(", ");
+      }
+    } catch (parseError) {
+      passed = false;
+      error = "could not parse npm pack JSON: " + parseError.message;
+    }
+  }
+  const entry = {
+    label,
+    command: "npm",
+    args: ["pack", "--dry-run", "--json"],
+    passed,
+    exitCode: result.status ?? 1,
+    durationMs: Date.now() - startedAt,
+    ...(error ? { error } : {}),
+  };
+  results.push(entry);
+  console.log((passed ? "[PASS] " : "[FAIL] ") + label + " (" + entry.durationMs + " ms)");
+  return passed;
+}
+
 function copyPlaygroundArtifact(label, source, destination) {
   const startedAt = Date.now();
   let passed = true;
@@ -168,7 +214,7 @@ function runPublicPackage(packageName, repositoryPath, scripts) {
     for (const scriptName of scripts) {
       runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd);
     }
-    runStage(packageName + ": npm pack dry-run", "npm", ["pack", "--dry-run"], cwd);
+    runPackBoundaryStage(packageName, cwd);
     return true;
   } finally {
     restorePackageJson();

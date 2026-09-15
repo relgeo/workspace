@@ -297,7 +297,7 @@ Acceptance:
 
 - [x] local dan CI menjalankan entrypoint yang sama atau perbedaan dijelaskan;
 - [ ] failure CI dapat direproduksi secara lokal;
-- [ ] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator.
+- [x] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator.
 
 ## 7. Keputusan yang harus dibuat saat implementasi
 
@@ -371,3 +371,4 @@ Urutan kerja konkret:
 | 2026-09-15 | Runner public-registry ditambahkan dengan temporary checkout dan pack dry-run | implementasi public mode selesai; runtime npm/CI evidence masih terbuka |
 | 2026-09-15 | Failure injection verifier ditambahkan; peer dependency registry boundary dicatat | implementasi guard selesai; runtime gate dan CI evidence masih terbuka |
 | 2026-09-15 | Runner diperketat dengan Node 24 check dan perakitan artifact Playground sebelum Pages assertion | implementasi fresh-checkout path lebih dekat dengan workflow Pages; runtime evidence masih terbuka |
+| 2026-09-15 | Commit `cb98092` mem-pin versi registry pada temporary public gate | drift patch dependency ditutup secara desain; eksekusi npm/CI masih terbuka |

@@ -258,7 +258,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Berjalan — local gate 33/33 dan public-registry gate 48/48 sudah lulus; fresh-checkout, CI, dan public smoke masih terbuka.
+**Status:** Berjalan — local gate 33/33, public-registry gate 48/48, dan fresh-checkout gate 33/33 sudah lulus; CI dan public smoke masih terbuka.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -470,6 +470,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | Local integration evidence Tahap 1 diperoleh pada Node 24.21.0/pnpm 10.33.3 | strict verifier, failure injection, seluruh package, Playground, website, dan Pages artifact assertion lulus; public-registry/CI masih terbuka |
 | 2026-09-15 | Public-registry integration evidence Tahap 1 diperoleh pada Node 24.21.0/pnpm 10.33.3 | 48/48 stage lulus setelah runner memakai shared fixtures, package boundary, dan urutan build/test yang checkout-safe; fresh-checkout/CI/smoke masih terbuka |
 | 2026-09-15 | Fresh checkout probe Tahap 1 dijalankan dari commit workspace terbaru | clone berhenti pada `renderer-svg@3b66780` karena commit belum dipush ke remote; push submodule dan root pointer masih diperlukan |
+| 2026-09-15 | Fresh checkout GitHub Tahap 1 diulang setelah submodule dan root dipush | seluruh 11 submodule ter-initialize; strict verifier 81 checks dan integration gate 33/33 lulus |
 
 ## 10. Catatan pemeliharaan
 

@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status:** Local dan public-registry runtime gate lulus; fresh-checkout, CI, dan public smoke masih terbuka
+**Status:** Local, public-registry, dan fresh-checkout runtime gate lulus; CI dan public smoke masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -351,7 +351,7 @@ Default yang disarankan:
 Tahap 1 hanya boleh ditandai selesai jika:
 
 - [x] runner documented tersedia dari root workspace;
-- [ ] runner berhasil dari fresh checkout lokal;
+- [x] runner berhasil dari fresh checkout lokal;
 - [x] semua package wajib lulus dalam dependency order pada checkout kerja lokal;
 - [x] Playground lulus tanpa relative source dependency;
 - [x] website lulus build dan artifact assertions pada checkout kerja lokal;
@@ -363,7 +363,7 @@ Tahap 1 hanya boleh ditandai selesai jika:
 
 ## 10. Rencana eksekusi berikutnya
 
-Implementasi runner sudah tersedia. Local dan public-registry runtime evidence sudah tersedia; pekerjaan berikutnya adalah fresh-checkout, CI execution, dan public smoke, bukan menambah command baru tanpa hasil pengujian.
+Implementasi runner sudah tersedia. Local, public-registry, dan fresh-checkout runtime evidence sudah tersedia; pekerjaan berikutnya adalah CI execution dan public smoke, bukan menambah command baru tanpa hasil pengujian.
 
 Prasyarat runtime:
 
@@ -407,4 +407,5 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Node 24.21.0 dan pnpm 10.33.3 dipakai untuk strict verifier, failure injection, dan local integration gate | strict verifier serta failure injection lulus; local gate 33/33 lulus |
 | 2026-09-15 | Public gate pertama menemukan fixture workspace, import sibling, dan urutan build/test yang belum checkout-safe; runner dan test boundary diperbaiki | diagnosis selesai; perubahan renderer-svg dan runner perlu masuk baseline |
 | 2026-09-15 | Public-registry gate final dijalankan pada Node 24.21.0/pnpm 10.33.3 dengan package `@relgeo/*` dipin ke manifest | 48/48 stage lulus, termasuk Playground, website, Pages artifact assertion, dan pack boundary |
-| 2026-09-15 | Fresh checkout probe dari commit workspace `a65c542` berhasil mengambil 10 submodule lalu berhenti karena commit `renderer-svg@3b66780` belum tersedia pada remote GitHub | fresh-checkout evidence menunggu push submodule renderer-svg, kemudian push root pointer |
+| 2026-09-15 | Fresh checkout probe dari commit workspace `a65c542` berhasil mengambil 10 submodule lalu berhenti karena commit `renderer-svg@3b66780` belum tersedia pada remote GitHub | blocker diselesaikan dengan push submodule renderer-svg dan root pointer |
+| 2026-09-15 | Fresh checkout dari GitHub `workspace@8d54163` diinisialisasi dengan seluruh 11 submodule dan menjalankan strict verifier serta local integration gate | fresh-checkout lulus; strict verifier 81 checks dan integration gate 33/33 lulus |

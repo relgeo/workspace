@@ -258,7 +258,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Berjalan — baseline verifier, local-workspace gate, public-registry gate, dan CI job sudah disiapkan; runtime evidence masih terbuka.
+**Status:** Berjalan — baseline verifier, local/public integration gate, pack boundary, dan CI hardening sudah disiapkan; runtime evidence masih terbuka.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 

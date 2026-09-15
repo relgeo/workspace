@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status:** Stage B selesai; local-workspace dan public-registry gate sudah disiapkan, runtime evidence masih terbuka
+**Status:** Implementasi gate, public-registry isolation, pack boundary, dan CI hardening selesai; runtime evidence masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -68,6 +68,16 @@ flowchart TD
 ~~~
 
 Graph ini menunjukkan urutan validasi, bukan berarti semua package harus saling mengimpor source. Dependency aktual harus dibaca dari package metadata dan lockfile.
+
+## 3.1 Status implementasi versus evidence
+
+| Stage | Implementasi | Evidence yang masih diperlukan |
+| --- | --- | --- |
+| A — Inventory | Selesai | tidak ada blocker desain |
+| B — Baseline | Selesai: manifest, strict verifier, compatibility check, failure injection | eksekusi Node dan fresh checkout |
+| C — Packages | Selesai: local/public runner, dependency pinning, pack boundary | lint/test/build aktual setiap package |
+| D — Consumers | Selesai: isolated consumer checkout dan Pages artifact assembly | Playground/website runtime gate dan route artifact |
+| E — CI | Selesai: workflow, report artifact, manual dispatch, timeout, concurrency, read-only checkout | workflow GitHub hijau dan reproducible failure |
 
 ## 4. Kondisi awal yang perlu dikunci
 
@@ -390,3 +400,4 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Workflow integration ditambah manual dispatch, timeout, dan concurrency cancellation | rerun manual dan proteksi terhadap run menumpuk tersedia; CI execution evidence masih terbuka |
 | 2026-09-15 | Checkout CI dibuat read-only dan report artifact diberi retensi 7 hari; instruksi execution evidence diperbarui | hardening implementasi selesai; seluruh bukti runtime masih menunggu eksekusi |
 | 2026-09-15 | Public pack boundary membaca output JSON dan menolak material lokal/secret/path traversal | implementasi tarball hygiene selesai; pack runtime masih menunggu CI/npm execution |
+| 2026-09-15 | Status matrix implementasi-versus-evidence ditambahkan dan master plan diselaraskan | pekerjaan implementasi terpetakan; runtime evidence tetap terbuka |

@@ -291,6 +291,7 @@ Checklist:
 - [x] workflow tidak mengubah atau publish repository;
 - [x] workflow menampilkan workspace revision dan compatibility line sebagai job summary;
 - [x] workflow memiliki job public-registry terpisah dari local-workspace job;
+- [x] workflow menyediakan `workflow_dispatch`, timeout per job, dan concurrency cancellation;
 - [ ] workflow terbaru menjalankan gate sampai selesai.
 
 Acceptance:
@@ -372,3 +373,4 @@ Urutan kerja konkret:
 | 2026-09-15 | Failure injection verifier ditambahkan; peer dependency registry boundary dicatat | implementasi guard selesai; runtime gate dan CI evidence masih terbuka |
 | 2026-09-15 | Runner diperketat dengan Node 24 check dan perakitan artifact Playground sebelum Pages assertion | implementasi fresh-checkout path lebih dekat dengan workflow Pages; runtime evidence masih terbuka |
 | 2026-09-15 | Commit `cb98092` mem-pin versi registry pada temporary public gate | drift patch dependency ditutup secara desain; eksekusi npm/CI masih terbuka |
+| 2026-09-15 | Workflow integration ditambah manual dispatch, timeout, dan concurrency cancellation | rerun manual dan proteksi terhadap run menumpuk tersedia; CI execution evidence masih terbuka |

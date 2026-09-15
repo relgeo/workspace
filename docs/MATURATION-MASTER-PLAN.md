@@ -469,6 +469,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | Stage A selesai secara read-only | command, lockfile, package manager, dependency, dan clean status sudah dicatat pada sub-rencana |
 | 2026-09-15 | Local integration evidence Tahap 1 diperoleh pada Node 24.21.0/pnpm 10.33.3 | strict verifier, failure injection, seluruh package, Playground, website, dan Pages artifact assertion lulus; public-registry/CI masih terbuka |
 | 2026-09-15 | Public-registry integration evidence Tahap 1 diperoleh pada Node 24.21.0/pnpm 10.33.3 | 48/48 stage lulus setelah runner memakai shared fixtures, package boundary, dan urutan build/test yang checkout-safe; fresh-checkout/CI/smoke masih terbuka |
+| 2026-09-15 | Fresh checkout probe Tahap 1 dijalankan dari commit workspace terbaru | clone berhenti pada `renderer-svg@3b66780` karena commit belum dipush ke remote; push submodule dan root pointer masih diperlukan |
 
 ## 10. Catatan pemeliharaan
 

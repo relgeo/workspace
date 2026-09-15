@@ -49,3 +49,21 @@ pnpm run compatibility:check
 Checker membaca `docs/compatibility-matrix.json`, lalu membandingkannya dengan baseline gitlink, `package.json` setiap package/application, deklarasi compatibility pada README, dependency internal, dan release order. Checker sengaja memeriksa policy aktif (`@relgeo/*` memakai `^0.5.0`) tanpa melakukan publish.
 
 Workflow Integration menjalankan pemeriksaan ini sebelum local cross-repo gate. Failure berarti compatibility line, metadata package, deklarasi README, internal dependency range, revision spec, atau release order perlu diperbarui secara terkoordinasi.
+
+## Release readiness dan post-publish verification
+
+Sebelum publish package, jalankan audit metadata dan isi tarball:
+
+~~~text
+pnpm run release:audit
+~~~
+
+Audit memeriksa package publik pada matrix, license MIT, author, repository, `package.json.files`, serta output `npm pack --dry-run --json`. File di luar allowlist publik membuat command gagal.
+
+Setelah publish manual, verifikasi bahwa versi yang diharapkan benar-benar tersedia di npm:
+
+~~~text
+pnpm run release:verify-published
+~~~
+
+Verifier hanya membaca registry dan tidak memerlukan token publish. Checklist urutan publish dan recovery partial release ada di [03-npm-release-guard.md](../docs/plans/03-npm-release-guard.md).

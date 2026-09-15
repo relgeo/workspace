@@ -41,6 +41,9 @@ jobs:
       - name: Run local-workspace integration gate
         run: pnpm run integration:gate -- --local --report=.local/integration-gate.json
 
+      - name: Audit npm release boundaries
+        run: pnpm run release:audit
+
       - name: Upload integration gate report
         if: always()
         uses: actions/upload-artifact@v5

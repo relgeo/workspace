@@ -312,7 +312,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 3 — Release dan npm publishing guard
 
-**Status:** Berikutnya setelah Tahap 2.
+**Status:** Berjalan — release checklist, tarball audit, dan post-publish verifier sudah tersedia dan baseline `0.5.0` terverifikasi; automated publish dan recovery helper masih terbuka.
 
 **Tujuan:** membuat release publik aman, dapat diulang, dan dapat diverifikasi setelah package masuk registry.
 
@@ -329,14 +329,14 @@ Status menggunakan arti berikut:
 
 **Acceptance criteria:**
 
-- [ ] ada satu release checklist seragam;
-- [ ] tarball tidak memuat test, source privat, path lokal, atau file tak diinginkan;
-- [ ] semua package yang dirilis dapat di-install oleh consumer bersih;
-- [ ] hasil post-publish dicatat;
-- [ ] release dapat dihentikan dengan aman di antara package tanpa membuat status membingungkan;
+- [x] ada satu release checklist seragam;
+- [x] tarball tidak memuat test, source privat, path lokal, atau file tak diinginkan;
+- [x] semua package yang dirilis dapat di-install oleh consumer bersih;
+- [x] hasil post-publish dicatat untuk baseline `0.5.0`;
+- [x] release dapat dihentikan dengan aman di antara package tanpa membuat status membingungkan;
 - [ ] automated publishing hanya diaktifkan setelah manual path terbukti stabil.
 
-**Deliverable sub-rencana:** docs/plans/03-npm-release-guard.md.
+**Deliverable sub-rencana:** [docs/plans/03-npm-release-guard.md](plans/03-npm-release-guard.md).
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
@@ -447,7 +447,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 - [x] fresh clone dapat di-bootstrap dengan instruksi singkat dan deterministik;
 - [x] integrasi penuh dapat diuji tanpa path atau file privat operator;
 - [ ] spec, package, Playground, website, dan Flutter memiliki compatibility statement;
-- [ ] release package memakai gate tarball dan post-publish verification;
+- [x] release package memakai gate tarball dan post-publish verification;
 - [ ] fixtures penting dijalankan lintas consumer;
 - [x] website Pages dan public smoke test hijau;
 - [ ] Playground memiliki bukti browser, touch, dan assistive technology yang sesuai scope;
@@ -473,6 +473,8 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | Failure CI lama Tahap 1 direproduksi pada checkout bersih | gate pada baseline `fe94149` menghasilkan 30 passed dan 3 failed pada package yang sama seperti run CI #85; Tahap 1 ditutup secara evidence |
 | 2026-09-15 | Tahap 2 dimulai dengan audit metadata versi dan dependency | seluruh package publik `0.5.0`, consumer mengikuti DSL `0.5`, dan internal ranges teramati `^0.5.0` |
 | 2026-09-15 | Compatibility matrix dan checker lintas-repo dibuat | `docs/compatibility-matrix.json`, `scripts/check-compatibility.mjs`, dan workflow Integration sebelum gate |
+| 2026-09-15 | Tahap 3 diturunkan menjadi release/npm guard | checklist manual, tarball audit, dan post-publish verifier dibuat; publish otomatis tetap ditahan |
+| 2026-09-15 | Baseline npm Tahap 3 diverifikasi | tarball audit `106/106` dan registry verification `7/7` untuk seluruh package `0.5.0` |
 
 ## 10. Catatan pemeliharaan
 

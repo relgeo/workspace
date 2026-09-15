@@ -178,6 +178,14 @@ function copyForPublicGate(repositoryPath) {
       return !excluded.has(firstSegment);
     },
   });
+  if (fs.existsSync(path.join(root, "fixtures"))) {
+    fs.cpSync(path.join(root, "fixtures"), path.join(temporaryRoot, "fixtures"), {
+      recursive: true,
+      filter(sourcePath) {
+        return path.basename(sourcePath) !== ".git";
+      },
+    });
+  }
   temporaryRoots.push(temporaryRoot);
   return target;
 }
@@ -284,13 +292,13 @@ if (localMode) {
   runStage("workspace: frozen install", "pnpm", ["install", "--frozen-lockfile"]);
 
   const packageStages = [
-    ["@relgeo/geometry", ["lint", "test", "build"]],
-    ["@relgeo/core", ["lint", "test", "build"]],
-    ["@relgeo/renderer-svg", ["lint", "test", "build", "test:dist"]],
-    ["@relgeo/language-service", ["lint", "test", "build"]],
-    ["@relgeo/remark-relgeo-hl", ["lint", "test", "build"]],
-    ["@relgeo/remark-relgeo", ["lint", "test", "build"]],
-    ["@relgeo/cli", ["test", "build"]],
+    ["@relgeo/geometry", ["lint", "build", "test"]],
+    ["@relgeo/core", ["lint", "build", "test"]],
+    ["@relgeo/renderer-svg", ["lint", "build", "test", "test:dist"]],
+    ["@relgeo/language-service", ["lint", "build", "test"]],
+    ["@relgeo/remark-relgeo-hl", ["lint", "build", "test"]],
+    ["@relgeo/remark-relgeo", ["lint", "build", "test"]],
+    ["@relgeo/cli", ["build", "test"]],
   ];
 
   for (const [packageName, scripts] of packageStages) {
@@ -323,13 +331,13 @@ if (localMode) {
 } else {
   try {
     const packageStages = [
-      ["@relgeo/geometry", "geometry", ["lint", "test", "build"]],
-      ["@relgeo/core", "core", ["lint", "test", "build"]],
-      ["@relgeo/renderer-svg", "renderer-svg", ["lint", "test", "build", "test:dist"]],
-      ["@relgeo/language-service", "language-service", ["lint", "test", "build"]],
-      ["@relgeo/remark-relgeo-hl", "remark-relgeo-hl", ["lint", "test", "build"]],
-      ["@relgeo/remark-relgeo", "remark-relgeo", ["lint", "test", "build"]],
-      ["@relgeo/cli", "cli", ["test", "build"]],
+      ["@relgeo/geometry", "geometry", ["lint", "build", "test"]],
+      ["@relgeo/core", "core", ["lint", "build", "test"]],
+      ["@relgeo/renderer-svg", "renderer-svg", ["lint", "build", "test", "test:dist"]],
+      ["@relgeo/language-service", "language-service", ["lint", "build", "test"]],
+      ["@relgeo/remark-relgeo-hl", "remark-relgeo-hl", ["lint", "build", "test"]],
+      ["@relgeo/remark-relgeo", "remark-relgeo", ["lint", "build", "test"]],
+      ["@relgeo/cli", "cli", ["build", "test"]],
     ];
 
     for (const [packageName, repositoryPath, scripts] of packageStages) {

@@ -264,6 +264,7 @@ Checklist:
 - [ ] lint, test, audit UX, dan build Playground lulus pada execution terbaru;
 - [ ] worker Playground terverifikasi memakai package yang terinstall;
 - [x] runner public menyalin Playground dan website tanpa sibling source, sehingga alias lokal tidak dapat aktif;
+- [x] runner merakit hasil build Playground ke `website/dist/playground` sebelum `test:pages-artifact`, seperti workflow Pages;
 - [ ] package consumer lulus tanpa workspace link ke source sibling;
 - [x] runner mendefinisikan install dan check/build/test/artifact assertion website;
 - [ ] website check/build/test/artifact assertion lulus pada execution terbaru;
@@ -368,3 +369,4 @@ Urutan kerja konkret:
 | 2026-09-15 | Local-workspace integration runner dan workflow report ditambahkan | command Stage C/D terhubung; runtime evidence, registry mode, dan CI run masih terbuka |
 | 2026-09-15 | Runner public-registry ditambahkan dengan temporary checkout dan pack dry-run | implementasi public mode selesai; runtime npm/CI evidence masih terbuka |
 | 2026-09-15 | Failure injection verifier ditambahkan; peer dependency registry boundary dicatat | implementasi guard selesai; runtime gate dan CI evidence masih terbuka |
+| 2026-09-15 | Runner diperketat dengan Node 24 check dan perakitan artifact Playground sebelum Pages assertion | implementasi fresh-checkout path lebih dekat dengan workflow Pages; runtime evidence masih terbuka |

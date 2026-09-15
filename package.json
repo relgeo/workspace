@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "description": "Integration workspace for the RelGeo repositories",
+  "engines": {
+    "node": ">=24"
+  },
   "packageManager": "pnpm@10.33.3",
   "scripts": {
     "install:workspace": "pnpm install --frozen-lockfile",

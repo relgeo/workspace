@@ -11,6 +11,7 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, "..");
 const localMode = process.argv.includes("--local");
 const publicMode = process.argv.includes("--public");
+const minimumNodeMajor = 24;
 const reportArgument = process.argv.find((argument) => argument.startsWith("--report="));
 const reportPath = reportArgument
   ? path.resolve(root, reportArgument.slice("--report=".length))
@@ -19,6 +20,14 @@ const reportPath = reportArgument
 if (localMode === publicMode) {
   console.error("Usage: node scripts/run-integration-gate.mjs --local|--public [--report=PATH]");
   console.error("Choose exactly one mode.");
+  process.exit(2);
+}
+
+const nodeMajor = Number(process.versions.node.split(".")[0]);
+if (nodeMajor < minimumNodeMajor) {
+  console.error(
+    `RelGeo integration gate requires Node.js ${minimumNodeMajor}+; found ${process.versions.node}.`,
+  );
   process.exit(2);
 }
 
@@ -67,6 +76,31 @@ function runWorkspacePackageStage(packageName, scriptName) {
   );
 }
 
+function copyPlaygroundArtifact(label, source, destination) {
+  const startedAt = Date.now();
+  let passed = true;
+  let error;
+  try {
+    fs.rmSync(destination, { recursive: true, force: true });
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    fs.cpSync(source, destination, { recursive: true });
+  } catch (copyError) {
+    passed = false;
+    error = copyError.message;
+  }
+  results.push({
+    label,
+    command: "copy-built-artifact",
+    args: [],
+    passed,
+    exitCode: passed ? 0 : 1,
+    durationMs: Date.now() - startedAt,
+    ...(error ? { error } : {}),
+  });
+  console.log((passed ? "[PASS] " : "[FAIL] ") + label);
+  return passed;
+}
+
 function copyForPublicGate(repositoryPath) {
   const source = path.join(root, repositoryPath);
   const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), "relgeo-integration-"));
@@ -111,7 +145,7 @@ function runPublicPackage(packageName, repositoryPath, scripts) {
   return true;
 }
 
-function runPublicConsumer(packageName, repositoryPath, scripts) {
+function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
   const cwd = copyForPublicGate(repositoryPath);
   let environment = process.env;
   if (repositoryPath === "relgeo.github.io") {
@@ -136,9 +170,16 @@ function runPublicConsumer(packageName, repositoryPath, scripts) {
   if (!installed) return false;
 
   for (const scriptName of scripts) {
+    if (scriptName === "test:pages-artifact" && options.playgroundDist) {
+      copyPlaygroundArtifact(
+        packageName + ": assemble public Playground artifact",
+        options.playgroundDist,
+        path.join(cwd, "dist", "playground"),
+      );
+    }
     runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd, environment);
   }
-  return true;
+  return { cwd, installed: true };
 }
 
 function cleanupTemporaryRoots() {
@@ -186,6 +227,13 @@ if (localMode) {
   ];
 
   for (const [packageName, scriptName] of consumerStages) {
+    if (packageName === "relgeo-docs-site" && scriptName === "test:pages-artifact") {
+      copyPlaygroundArtifact(
+        "relgeo-docs-site: assemble workspace Playground artifact",
+        path.join(root, "playground", "dist"),
+        path.join(root, "relgeo.github.io", "dist", "playground"),
+      );
+    }
     runWorkspacePackageStage(packageName, scriptName);
   }
 } else {
@@ -204,7 +252,7 @@ if (localMode) {
       runPublicPackage(packageName, repositoryPath, scripts);
     }
 
-    runPublicConsumer("relgeo-playground", "playground", [
+    const publicPlayground = runPublicConsumer("relgeo-playground", "playground", [
       "lint",
       "test",
       "audit:ux",
@@ -215,7 +263,11 @@ if (localMode) {
       "build",
       "test",
       "test:pages-artifact",
-    ]);
+    ], {
+      playgroundDist: publicPlayground?.cwd
+        ? path.join(publicPlayground.cwd, "dist")
+        : null,
+    });
   } finally {
     cleanupTemporaryRoots();
   }

@@ -292,6 +292,7 @@ Checklist:
 - [x] workflow menampilkan workspace revision dan compatibility line sebagai job summary;
 - [x] workflow memiliki job public-registry terpisah dari local-workspace job;
 - [x] workflow menyediakan `workflow_dispatch`, timeout per job, dan concurrency cancellation;
+- [x] checkout CI tidak menyimpan credential Git dan report artifact memiliki retensi terbatas;
 - [ ] workflow terbaru menjalankan gate sampai selesai.
 
 Acceptance:
@@ -347,19 +348,31 @@ Tahap 1 hanya boleh ditandai selesai jika:
 - [x] dokumentasi root menjelaskan cara menjalankan gate;
 - [x] master plan diperbarui dengan commit implementasi dan bukti statis; runtime evidence tetap menjadi pekerjaan terbuka.
 
-## 10. Rencana eksekusi sesi berikutnya
+## 10. Rencana eksekusi berikutnya
+
+Implementasi runner sudah tersedia. Pekerjaan berikutnya adalah menghasilkan execution evidence, bukan menambah command baru tanpa hasil pengujian.
+
+Prasyarat runtime:
+
+- Node.js 24 atau lebih baru;
+- pnpm 10.33.3;
+- checkout workspace dengan seluruh submodule ter-initialize;
+- akses network ke npm registry untuk mode public;
+- tidak ada perubahan tracked pada submodule ketika memakai mode strict.
 
 Urutan kerja konkret:
 
-1. lakukan Stage A: inventory command dan dependency tanpa mengubah kode;
-2. catat hasilnya pada dokumen ini atau file evidence;
-3. putuskan bentuk manifest berdasarkan data aktual;
-4. implementasikan helper read-only untuk baseline;
-5. baru implementasikan runner package gate;
-6. jalankan dari workspace saat ini;
-7. perbaiki mismatch satu per satu;
-8. setelah lokal stabil, tambahkan CI job minimal;
-9. update master plan dan commit hasil Tahap 1.
+1. jalankan `pnpm install --frozen-lockfile` dari root workspace;
+2. jalankan `node scripts/verify-baseline.mjs --strict`;
+3. jalankan `pnpm run verify:baseline:failure` dan pastikan mismatch revision ditolak;
+4. jalankan `pnpm run integration:gate -- --local --report=.local/integration-local.json`;
+5. setelah mode local lulus, jalankan `pnpm run integration:public -- --report=.local/integration-public.json`;
+6. review report untuk package, Playground, website, dan artifact yang gagal; perbaiki di repository pemiliknya;
+7. push workflow workspace, jalankan `Integration` melalui push, pull request, atau `workflow_dispatch`, lalu simpan URL run dan artifact report;
+8. setelah Pages deployment berhasil, jalankan public smoke test dan catat URL, commit website, serta baseline spec/Playground;
+9. hanya setelah semua evidence tersebut tersedia, centang exit gate dan update master plan.
+
+Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mode local menguji workspace links. Keduanya diperlukan karena lulusnya satu mode tidak membuktikan mode lainnya.
 
 ## 11. Log perubahan sub-rencana
 
@@ -374,3 +387,4 @@ Urutan kerja konkret:
 | 2026-09-15 | Runner diperketat dengan Node 24 check dan perakitan artifact Playground sebelum Pages assertion | implementasi fresh-checkout path lebih dekat dengan workflow Pages; runtime evidence masih terbuka |
 | 2026-09-15 | Commit `cb98092` mem-pin versi registry pada temporary public gate | drift patch dependency ditutup secara desain; eksekusi npm/CI masih terbuka |
 | 2026-09-15 | Workflow integration ditambah manual dispatch, timeout, dan concurrency cancellation | rerun manual dan proteksi terhadap run menumpuk tersedia; CI execution evidence masih terbuka |
+| 2026-09-15 | Checkout CI dibuat read-only dan report artifact diberi retensi 7 hari; instruksi execution evidence diperbarui | hardening implementasi selesai; seluruh bukti runtime masih menunggu eksekusi |

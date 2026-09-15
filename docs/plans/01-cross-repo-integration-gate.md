@@ -279,7 +279,7 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-CI hanya dibuat setelah Stage A–D lulus lokal.
+Skeleton CI sudah dibuat setelah kontrak Stage A–D dan runner tersedia. Status required/green baru dapat ditetapkan setelah execution evidence Stage B–D tersedia.
 
 Checklist:
 

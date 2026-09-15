@@ -127,7 +127,7 @@ function verifySubmodule(entry) {
   }
 }
 
-function verifyPackage(entry) {
+function verifyPackage(entry, compatibilityLine) {
   if (!entry.package) return;
   const packagePath = path.join(root, entry.path, "package.json");
   try {
@@ -147,6 +147,14 @@ function verifyPackage(entry) {
       pkg.license === "MIT",
       (pkg.license ?? "missing") + " != MIT",
     );
+    if (entry.package.name.startsWith("@relgeo/")) {
+      const expectedPrefix = compatibilityLine + ".";
+      record(
+        entry.path + ": package compatibility line",
+        typeof pkg.version === "string" && pkg.version.startsWith(expectedPrefix),
+        (pkg.version ?? "missing") + " does not start with " + expectedPrefix,
+      );
+    }
   } catch (error) {
     record(entry.path + ": package metadata readable", false, error.message);
   }
@@ -175,7 +183,7 @@ try {
   );
   for (const entry of entries ?? []) {
     verifySubmodule(entry);
-    verifyPackage(entry);
+    verifyPackage(entry, manifest.compatibilityLine);
   }
 } catch (error) {
   record("baseline verifier", false, error.message);

@@ -6,6 +6,9 @@
   "packageManager": "pnpm@10.33.3",
   "scripts": {
     "install:workspace": "pnpm install --frozen-lockfile",
+    "verify:baseline": "node scripts/verify-baseline.mjs",
+    "verify:baseline:strict": "node scripts/verify-baseline.mjs --strict",
+    "integration:gate": "node scripts/run-integration-gate.mjs",
     "build": "pnpm -r run build",
     "test": "pnpm -r run test",
     "lint": "pnpm --filter relgeo-playground lint",

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "baselineName": "relgeo-public-0.5-staging",
+  "capturedAt": "2026-09-15",
+  "compatibilityLine": "0.5",
+  "repository": "relgeo/workspace",
+  "submodules": [
+    {
+      "path": "spec",
+      "revision": "b96ba3b23de202227eade06614635ef6717df516"
+    },
+    {
+      "path": "geometry",
+      "revision": "36469faf4b953ab185b800504db748eb07147b3e",
+      "package": {
+        "name": "@relgeo/geometry",
+        "version": "0.5.0"
+      }
+    },
+    {
+      "path": "core",
+      "revision": "1a660737e98a387f518ffcd8bedbb3586162a29e",
+      "package": {
+        "name": "@relgeo/core",
+        "version": "0.5.0"
+      }
+    },
+    {
+      "path": "renderer-svg",
+      "revision": "5cbf4fb849dd0452ec23dace1f57241a22a4c228",
+      "package": {
+        "name": "@relgeo/renderer-svg",
+        "version": "0.5.0"
+      }
+    },
+    {
+      "path": "language-service",
+      "revision": "a49b3a6cf4fcb4c2f0c44d95fc76686a8609a27d",
+      "package": {
+        "name": "@relgeo/language-service",
+        "version": "0.5.0"
+      }
+    },
+    {
+      "path": "remark-relgeo-hl",
+      "revision": "507ad18fe1b8c91eb3a48e365b5290cd02b049b8",
+      "package": {
+        "name": "@relgeo/remark-relgeo-hl",
+        "version": "0.5.0"
+      }
+    },
+    {
+      "path": "remark-relgeo",
+      "revision": "134e9d7b67225d55976876521fb8c00f202e74d8",
+      "package": {
+        "name": "@relgeo/remark-relgeo",
+        "version": "0.5.0"
+      }
+    },
+    {
+      "path": "cli",
+      "revision": "7a6c0ce30b0a06fad9f56360edca0e94c27423e0",
+      "package": {
+        "name": "@relgeo/cli",
+        "version": "0.5.0"
+      }
+    },
+    {
+      "path": "playground",
+      "revision": "699dee6b22bd5b05e1512023d5da0e44363d509b",
+      "package": {
+        "name": "relgeo-playground",
+        "version": "0.4.0"
+      }
+    },
+    {
+      "path": "relgeo.github.io",
+      "revision": "5e2dd3a59229d357853c9fa1ccae3cb475efa2f1",
+      "package": {
+        "name": "relgeo-docs-site",
+        "version": "0.5.0"
+      }
+    },
+    {
+      "path": "flutter",
+      "revision": "d74df0ce12f3bdac85cdb7f3531ab0db4ac78e7d"
+    }
+  ]
+}

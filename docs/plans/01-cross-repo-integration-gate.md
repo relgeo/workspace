@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status:** Stage A selesai secara read-only; siap masuk Stage B  
+**Status:** Stage B selesai dan local-workspace gate disiapkan; runtime evidence serta public-registry gate masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -205,19 +205,22 @@ Acceptance:
 
 Checklist:
 
-- [ ] baca root commit workspace;
-- [ ] baca commit setiap submodule;
-- [ ] baca branch/tag yang tersedia;
-- [ ] baca package name/version untuk setiap package;
-- [ ] pastikan package version sesuai compatibility line;
-- [ ] fail jika submodule belum di-initialize atau working tree kotor pada mode strict;
-- [ ] sediakan mode read-only untuk diagnosis lokal.
+- [x] baca root commit workspace;
+- [x] baca commit setiap submodule;
+- [x] baca branch/tag yang tersedia;
+- [x] baca package name/version untuk setiap package;
+- [x] pastikan package version sesuai compatibility line;
+- [x] fail jika submodule belum di-initialize atau working tree kotor pada mode strict;
+- [x] sediakan mode read-only untuk diagnosis lokal.
 
 Acceptance:
 
-- [ ] manifest dapat diregenerasi dari checkout;
-- [ ] verifikasi tidak membutuhkan akses GitHub API;
-- [ ] hasil berbeda ketika pointer submodule berubah.
+- [x] manifest baseline publik disimpan dan memiliki revision setiap submodule;
+- [x] verifikasi tidak membutuhkan akses GitHub API;
+- [x] verifier membandingkan gitlink, checkout aktual, dan manifest;
+- [x] helper untuk regenerasi manifest dengan opsi `--write` tersedia;
+- [ ] regenerasi manifest berhasil dijalankan pada runtime Node;
+- [ ] failure injection untuk pointer yang berubah sudah diuji.
 
 ### Stage C — Package gate dalam dependency order
 
@@ -236,33 +239,32 @@ flowchart LR
 
 Checklist:
 
-- [ ] geometry: install, lint, test, build;
-- [ ] core: install, lint, test, build;
-- [ ] renderer-svg: install, lint, test, build;
-- [ ] language-service: install, lint, test, build;
-- [ ] remark-relgeo-hl: install, lint, test, build;
-- [ ] remark-relgeo: install, lint, test, build;
-- [ ] cli: install, test, build;
+- [x] runner mendefinisikan geometry: lint, test, build;
+- [x] runner mendefinisikan core: lint, test, build;
+- [x] runner mendefinisikan renderer-svg: lint, test, build, test:dist;
+- [x] runner mendefinisikan language-service: lint, test, build;
+- [x] runner mendefinisikan remark-relgeo-hl: lint, test, build;
+- [x] runner mendefinisikan remark-relgeo: lint, test, build;
+- [x] runner mendefinisikan cli: test, build;
 - [ ] catat dependency peer yang membutuhkan package registry;
 - [ ] tambahkan pack dry-run sebagai boundary release, bukan pengganti test.
 
 Acceptance:
 
-- [ ] setiap package diuji dari source checkout bersih;
-- [ ] package consumer tidak diam-diam mengarah ke source sibling;
-- [ ] failure menyebut package dan command yang gagal.
+- [ ] setiap package lulus command gate dari root workspace;
+- [ ] package consumer diuji terhadap package registry publik, bukan hanya workspace links;
+- [x] failure runner menyebut package dan command yang gagal.
 
 ### Stage D — Consumer gate
 
 Checklist:
 
-- [ ] install Playground dengan lockfile;
-- [ ] jalankan lint, test, audit UX, dan build Playground;
-- [ ] pastikan worker memakai package yang terinstall;
-- [ ] pastikan tidak ada relative import ke folder sibling core, renderer-svg, atau source lain;
-- [ ] install website dengan lockfile;
-- [ ] jalankan website check dan build;
-- [ ] jalankan built-output dan Pages artifact assertion;
+- [x] runner mendefinisikan install dan lint/test/audit UX/build Playground;
+- [ ] lint, test, audit UX, dan build Playground lulus pada execution terbaru;
+- [ ] worker Playground terverifikasi memakai package yang terinstall;
+- [ ] package consumer diuji tanpa workspace link ke source sibling;
+- [x] runner mendefinisikan install dan check/build/test/artifact assertion website;
+- [ ] website check/build/test/artifact assertion lulus pada execution terbaru;
 - [ ] bila mode release, jalankan public smoke test setelah deploy yang berhasil.
 
 Acceptance:
@@ -277,13 +279,14 @@ CI hanya dibuat setelah Stage A–D lulus lokal.
 
 Checklist:
 
-- [ ] tentukan repository pemilik workflow;
-- [ ] gunakan Node/pnpm version yang eksplisit;
-- [ ] gunakan cache hanya jika lockfile menjadi cache key;
-- [ ] artifact report disimpan ketika gate gagal;
-- [ ] permission workflow minimal;
-- [ ] workflow tidak mengubah atau publish repository;
-- [ ] hasil CI menampilkan commit baseline dan compatibility line.
+- [x] workspace menjadi pemilik workflow integration;
+- [x] gunakan Node 24 dan pnpm version yang eksplisit;
+- [x] gunakan cache pnpm dengan root lockfile;
+- [x] workflow mengonfigurasi artifact report ketika gate gagal atau selesai;
+- [x] permission workflow minimal;
+- [x] workflow tidak mengubah atau publish repository;
+- [ ] hasil CI menampilkan manifest revision dan compatibility line sebagai job summary;
+- [ ] workflow terbaru menjalankan gate sampai selesai.
 
 Acceptance:
 
@@ -358,3 +361,5 @@ Urutan kerja konkret:
 | --- | --- | --- |
 | 2026-09-15 | Sub-rencana Tahap 1 dibuat berdasarkan dependency graph dan kondisi baseline saat ini | siap untuk Stage A |
 | 2026-09-15 | Inventory command, lockfile, package manager, dependency, dan clean status selesai | Stage A read-only selesai; package-manager standardization dan npm/browser prerequisite masih terbuka |
+| 2026-09-15 | Manifest baseline dan verifier read-only ditambahkan | Stage B implementasi selesai; automatic regeneration dan failure injection masih terbuka |
+| 2026-09-15 | Local-workspace integration runner dan workflow report ditambahkan | command Stage C/D terhubung; runtime evidence, registry mode, dan CI run masih terbuka |

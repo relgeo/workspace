@@ -258,7 +258,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Berjalan — Stage A inventory selesai; implementasi berikutnya adalah Stage B.
+**Status:** Berjalan — Stage A selesai; Stage B dan local-workspace runner disiapkan, runtime evidence masih terbuka.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 

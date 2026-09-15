@@ -36,6 +36,11 @@ const temporaryRoots = [];
 const baselineManifest = JSON.parse(
   fs.readFileSync(path.join(root, "docs", "integration-baseline.json"), "utf8"),
 );
+const baselinePackageVersions = new Map(
+  baselineManifest.submodules
+    .filter((entry) => entry.package?.name && entry.package?.version)
+    .map((entry) => [entry.package.name, entry.package.version]),
+);
 
 function workspaceRevision() {
   return execFileSync("git", ["rev-parse", "HEAD"], {
@@ -128,25 +133,51 @@ function copyForPublicGate(repositoryPath) {
   return target;
 }
 
+function pinPublicRegistryVersions(cwd) {
+  const packagePath = path.join(cwd, "package.json");
+  if (!fs.existsSync(packagePath) || baselinePackageVersions.size === 0) return () => {};
+
+  const original = fs.readFileSync(packagePath, "utf8");
+  const packageJson = JSON.parse(original);
+  const pnpm = packageJson.pnpm && typeof packageJson.pnpm === "object" ? packageJson.pnpm : {};
+  const overrides = pnpm.overrides && typeof pnpm.overrides === "object" ? pnpm.overrides : {};
+  packageJson.pnpm = {
+    ...pnpm,
+    overrides: {
+      ...overrides,
+      ...Object.fromEntries(baselinePackageVersions),
+    },
+  };
+  fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2) + "\n");
+
+  return () => fs.writeFileSync(packagePath, original);
+}
+
 function runPublicPackage(packageName, repositoryPath, scripts) {
   const cwd = copyForPublicGate(repositoryPath);
-  const installed = runStage(
-    packageName + ": public registry install",
-    "pnpm",
-    ["install", "--no-frozen-lockfile", "--registry=https://registry.npmjs.org/"],
-    cwd,
-  );
-  if (!installed) return false;
+  const restorePackageJson = pinPublicRegistryVersions(cwd);
+  try {
+    const installed = runStage(
+      packageName + ": public registry install",
+      "pnpm",
+      ["install", "--no-frozen-lockfile", "--lockfile=false", "--registry=https://registry.npmjs.org/"],
+      cwd,
+    );
+    if (!installed) return false;
 
-  for (const scriptName of scripts) {
-    runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd);
+    for (const scriptName of scripts) {
+      runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd);
+    }
+    runStage(packageName + ": npm pack dry-run", "npm", ["pack", "--dry-run"], cwd);
+    return true;
+  } finally {
+    restorePackageJson();
   }
-  runStage(packageName + ": npm pack dry-run", "npm", ["pack", "--dry-run"], cwd);
-  return true;
 }
 
 function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
   const cwd = copyForPublicGate(repositoryPath);
+  const restorePackageJson = pinPublicRegistryVersions(cwd);
   let environment = process.env;
   if (repositoryPath === "relgeo.github.io") {
     const specTarget = path.join(cwd, ".ci", "spec");
@@ -160,26 +191,30 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
       RELGEO_SPEC_PATH: path.join(specTarget, "id"),
     };
   }
-  const installed = runStage(
-    packageName + ": public registry install",
-    "pnpm",
-    ["install", "--no-frozen-lockfile", "--registry=https://registry.npmjs.org/"],
-    cwd,
-    environment,
-  );
-  if (!installed) return false;
+  try {
+    const installed = runStage(
+      packageName + ": public registry install",
+      "pnpm",
+      ["install", "--no-frozen-lockfile", "--lockfile=false", "--registry=https://registry.npmjs.org/"],
+      cwd,
+      environment,
+    );
+    if (!installed) return false;
 
-  for (const scriptName of scripts) {
-    if (scriptName === "test:pages-artifact" && options.playgroundDist) {
-      copyPlaygroundArtifact(
-        packageName + ": assemble public Playground artifact",
-        options.playgroundDist,
-        path.join(cwd, "dist", "playground"),
-      );
+    for (const scriptName of scripts) {
+      if (scriptName === "test:pages-artifact" && options.playgroundDist) {
+        copyPlaygroundArtifact(
+          packageName + ": assemble public Playground artifact",
+          options.playgroundDist,
+          path.join(cwd, "dist", "playground"),
+        );
+      }
+      runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd, environment);
     }
-    runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd, environment);
+    return { cwd, installed: true };
+  } finally {
+    restorePackageJson();
   }
-  return { cwd, installed: true };
 }
 
 function cleanupTemporaryRoots() {

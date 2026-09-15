@@ -253,6 +253,7 @@ Acceptance:
 
 - [ ] setiap package lulus command gate dari root workspace;
 - [x] runner public menyalin package ke temporary checkout tanpa sibling source dan meng-install dari npm registry;
+- [x] runner public mem-pin dependency `@relgeo/*` ke versi baseline manifest pada temporary checkout;
 - [ ] package consumer lulus terhadap package registry publik;
 - [x] failure runner menyebut package dan command yang gagal.
 

@@ -32,6 +32,8 @@ Manifest snapshot publik berada di `docs/integration-baseline.json`. Verifier ti
 
 Mode `--local` menggunakan root pnpm workspace dan workspace links. Mode `--public` menyalin setiap consumer ke direktori temporary tanpa sibling submodule, lalu meng-install dependency dari npm registry dan menjalankan package/consumer checks di sana. Mode public juga menjalankan `npm pack --dry-run` untuk package library.
 
+Mode public menambahkan override sementara di checkout temporary agar seluruh dependency `@relgeo/*` tepat pada versi baseline manifest, lalu mengabaikan lockfile temporary. Override dan perubahan package manager ini tidak pernah ditulis kembali ke repository sumber.
+
 Sebelum assertion Pages website, runner menyalin `playground/dist` hasil build ke `relgeo.github.io/dist/playground`. Ini meniru perakitan artifact pada workflow Pages dan menjaga agar `test:pages-artifact` tidak lulus atau gagal karena state `dist` lama.
 
 JSON report integration memuat mode, workspace revision, baseline revision setiap submodule, compatibility line, metadata package, serta hasil tiap command. Report ini aman diunggah sebagai artifact CI karena tidak menyimpan absolute path temporary atau environment privat.

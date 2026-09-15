@@ -180,7 +180,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 
 ### 4.4 Hal yang belum boleh dianggap selesai
 
-- [ ] Integrasi lintas-repo belum memiliki satu gate resmi dari fresh clone yang menjalankan dependency graph publik secara penuh.
+- [x] Integrasi lintas-repo memiliki gate resmi dari fresh clone yang menjalankan dependency graph publik secara penuh.
 - [ ] Release order, compatibility matrix, dan bump policy belum menjadi satu kontrak operasional yang dijaga otomatis.
 - [ ] Publish npm masih dapat dilakukan manual dan belum mempunyai release gate lintas-package yang seragam.
 - [ ] Fixture conformance belum menjadi sumber bersama yang diuji oleh seluruh consumer penting.
@@ -258,7 +258,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Berjalan — local gate 33/33, public-registry gate 48/48, fresh-checkout gate 33/33, dan CI terbaru sudah lulus; public smoke serta reproduksi failure CI tertentu masih terbuka.
+**Status:** Selesai — local gate 33/33, public-registry gate 48/48, fresh-checkout gate 33/33, CI terbaru, public smoke 14/14 route, dan reproduksi failure CI sudah lulus.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -447,12 +447,12 @@ Urutan kerja yang disarankan:
 
 RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut terpenuhi:
 
-- [ ] fresh clone dapat di-bootstrap dengan instruksi singkat dan deterministik;
-- [ ] integrasi penuh dapat diuji tanpa path atau file privat operator;
+- [x] fresh clone dapat di-bootstrap dengan instruksi singkat dan deterministik;
+- [x] integrasi penuh dapat diuji tanpa path atau file privat operator;
 - [ ] spec, package, Playground, website, dan Flutter memiliki compatibility statement;
 - [ ] release package memakai gate tarball dan post-publish verification;
 - [ ] fixtures penting dijalankan lintas consumer;
-- [ ] website Pages dan public smoke test hijau;
+- [x] website Pages dan public smoke test hijau;
 - [ ] Playground memiliki bukti browser, touch, dan assistive technology yang sesuai scope;
 - [ ] setiap repository memiliki README/development/release guidance yang tidak bertentangan;
 - [ ] perubahan besar mempunyai changelog/decision record dan rollback path;
@@ -472,6 +472,8 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | Fresh checkout probe Tahap 1 dijalankan dari commit workspace terbaru | clone berhenti pada `renderer-svg@3b66780` karena commit belum dipush ke remote; push submodule dan root pointer masih diperlukan |
 | 2026-09-15 | Fresh checkout GitHub Tahap 1 diulang setelah submodule dan root dipush | seluruh 11 submodule ter-initialize; strict verifier 81 checks dan integration gate 33/33 lulus |
 | 2026-09-15 | CI Tahap 1 diverifikasi pada `relgeo/workspace` | `Integration #87` untuk commit `04960d3` lulus; public smoke dan reproduksi failure CI tertentu masih terbuka |
+| 2026-09-15 | Public smoke Tahap 1 dijalankan terhadap `https://relgeo.github.io` | 14/14 route HTTP 200, termasuk playground, sitemap, favicon, dan apple-touch-icon; hanya reproduksi failure CI tertentu masih terbuka |
+| 2026-09-15 | Failure CI lama Tahap 1 direproduksi pada checkout bersih | gate pada baseline `fe94149` menghasilkan 30 passed dan 3 failed pada package yang sama seperti run CI #85; Tahap 1 ditutup secara evidence |
 
 ## 10. Catatan pemeliharaan
 

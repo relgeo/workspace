@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status:** Local, public-registry, fresh-checkout, dan CI runtime gate lulus; public smoke dan reproduksi failure CI tertentu masih terbuka
+**Status:** Selesai — local, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure CI sudah memiliki evidence
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -76,8 +76,8 @@ Graph ini menunjukkan urutan validasi, bukan berarti semua package harus saling 
 | A — Inventory | Selesai | tidak ada blocker desain |
 | B — Baseline | Selesai: manifest, strict verifier, compatibility check, failure injection, dan fresh checkout | tidak ada blocker runtime; regenerasi berikutnya tetap menjadi maintenance |
 | C — Packages | Selesai: local/public runner, dependency pinning, pack boundary; local dan public gate lulus | tidak ada blocker pada runtime gate |
-| D — Consumers | Selesai: isolated consumer checkout dan Pages artifact assembly; local dan public gate lulus | public smoke |
-| E — CI | Selesai: workflow, report artifact, manual dispatch, timeout, concurrency, read-only checkout, dan run terbaru hijau | reproduksi failure CI tertentu |
+| D — Consumers | Selesai: isolated consumer checkout, Pages artifact assembly, dan public smoke; local dan public gate lulus | tidak ada blocker runtime |
+| E — CI | Selesai: workflow, report artifact, manual dispatch, timeout, concurrency, read-only checkout, run terbaru hijau, dan failure lama tereproduksi lokal | tidak ada blocker runtime |
 
 ## 4. Kondisi awal yang perlu dikunci
 
@@ -282,7 +282,9 @@ Checklist:
 - [x] package consumer lulus tanpa workspace link ke source sibling;
 - [x] runner mendefinisikan install dan check/build/test/artifact assertion website;
 - [x] website check/build/test/artifact assertion lulus pada execution terbaru;
-- [ ] bila mode release, jalankan public smoke test setelah deploy yang berhasil.
+- [x] public smoke test dijalankan setelah deployment yang berhasil.
+
+Evidence public runtime (2026-09-15): `node relgeo.github.io/scripts/smoke-public-site.mjs` terhadap `https://relgeo.github.io` menghasilkan HTTP 200 untuk seluruh 14 route, termasuk `/playground/`, `/sitemap.xml`, `/favicon.svg`, dan `/apple-touch-icon.png`.
 
 Acceptance:
 
@@ -311,7 +313,7 @@ Checklist:
 Acceptance:
 
 - [x] local dan CI menjalankan entrypoint yang sama atau perbedaan dijelaskan;
-- [ ] failure CI tertentu dapat direproduksi secara lokal;
+- [x] failure CI tertentu dapat direproduksi secara lokal;
 - [x] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator.
 
 ## 7. Keputusan yang harus dibuat saat implementasi
@@ -363,7 +365,7 @@ Tahap 1 hanya boleh ditandai selesai jika:
 
 ## 10. Rencana eksekusi berikutnya
 
-Implementasi runner sudah tersedia dan telah lulus pada local, public-registry, fresh-checkout, serta CI. Pekerjaan berikutnya adalah public smoke setelah deployment website dan, bila diperlukan, reproduksi satu failure CI tertentu; jangan menambah command baru tanpa kebutuhan evidence.
+Implementasi runner sudah tersedia dan telah lulus pada local, public-registry, fresh-checkout, CI, serta public smoke. Failure CI lama juga sudah direproduksi pada checkout bersih dengan environment CI yang sama; Tahap 1 selesai dan pekerjaan berikutnya kembali ke urutan master plan.
 
 Prasyarat runtime:
 
@@ -382,9 +384,9 @@ Urutan kerja konkret:
 5. setelah mode local lulus, jalankan `pnpm run integration:public -- --report=.local/integration-public.json`;
 6. review report untuk package, Playground, website, dan artifact yang gagal; perbaiki di repository pemiliknya;
 7. push workflow workspace, jalankan `Integration` melalui push, pull request, atau `workflow_dispatch`, lalu simpan URL run dan artifact report; **selesai**, run terbaru `Integration #87` lulus;
-8. setelah Pages deployment berhasil, jalankan public smoke test dan catat URL, commit website, serta baseline spec/Playground;
-9. bila perlu menutup acceptance terakhir, pilih satu failure CI yang representatif, simpan log ringkasnya, lalu reproduksi dengan failure injection/local command;
-10. setelah public smoke dan evidence reproduksi failure tersedia, centang exit gate dan update master plan.
+8. setelah Pages deployment berhasil, jalankan public smoke test dan catat URL, commit website, serta baseline spec/Playground; **selesai**, 14 route pada `https://relgeo.github.io` mendapat HTTP 200;
+9. pilih satu failure CI yang representatif, simpan log ringkasnya, lalu reproduksi dengan failure injection/local command; **selesai**, checkout `fe94149` menghasilkan 30 lulus dan 3 gagal pada package yang sama seperti CI;
+10. setelah evidence reproduksi failure tersedia atau diputuskan tidak diperlukan untuk baseline, centang exit gate dan update master plan; **selesai**.
 
 Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mode local menguji workspace links. Keduanya diperlukan karena lulusnya satu mode tidak membuktikan mode lainnya.
 
@@ -411,3 +413,5 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Fresh checkout probe dari commit workspace `a65c542` berhasil mengambil 10 submodule lalu berhenti karena commit `renderer-svg@3b66780` belum tersedia pada remote GitHub | blocker diselesaikan dengan push submodule renderer-svg dan root pointer |
 | 2026-09-15 | Fresh checkout dari GitHub `workspace@8d54163` diinisialisasi dengan seluruh 11 submodule dan menjalankan strict verifier serta local integration gate | fresh-checkout lulus; strict verifier 81 checks dan integration gate 33/33 lulus |
 | 2026-09-15 | Workflow GitHub `Integration #87` pada commit `04960d3` diverifikasi selesai sukses | CI integration gate lulus; public smoke dan reproduksi failure CI tertentu masih terbuka |
+| 2026-09-15 | Public smoke test dijalankan terhadap `https://relgeo.github.io` | 14/14 route HTTP 200; public smoke lulus; hanya reproduksi failure CI tertentu yang tersisa |
+| 2026-09-15 | Failure run `#85` direproduksi dari checkout bersih `fe94149` dengan `CI=1` | gate lama menghasilkan 30 passed dan 3 failed pada `renderer-svg`, `remark-relgeo`, dan `cli`; akar masalah urutan test sebelum build serta import dist lokal; failure dapat direproduksi dan sudah tertutup oleh baseline baru |

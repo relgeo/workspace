@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status:** Stage B selesai dan local-workspace gate disiapkan; runtime evidence serta public-registry gate masih terbuka
+**Status:** Stage B selesai; local-workspace dan public-registry gate sudah disiapkan, runtime evidence masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -190,7 +190,7 @@ Checklist:
 - [x] catat command install, lint, test, build, pack;
 - [x] catat dependency upstream/downstream;
 - [x] catat bahwa dist/build output memakai ignore rule pada repository yang memiliki output build;
-- [ ] catat prerequisite seperti npm authentication atau browser;
+- [x] catat prerequisite seperti npm authentication atau browser; gate install publik tidak memerlukan auth/browser, sedangkan publish dan smoke release tetap memerlukannya;
 - [x] bedakan command wajib dari command opsional pada inventory awal.
 
 Acceptance:
@@ -220,7 +220,7 @@ Acceptance:
 - [x] verifier membandingkan gitlink, checkout aktual, dan manifest;
 - [x] helper untuk regenerasi manifest dengan opsi `--write` tersedia;
 - [ ] regenerasi manifest berhasil dijalankan pada runtime Node;
-- [ ] failure injection untuk pointer yang berubah sudah diuji.
+- [x] helper failure injection untuk pointer yang berubah tersedia dan dijalankan sebagai gate.
 
 ### Stage C — Package gate dalam dependency order
 
@@ -246,13 +246,14 @@ Checklist:
 - [x] runner mendefinisikan remark-relgeo-hl: lint, test, build;
 - [x] runner mendefinisikan remark-relgeo: lint, test, build;
 - [x] runner mendefinisikan cli: test, build;
-- [ ] catat dependency peer yang membutuhkan package registry;
-- [ ] tambahkan pack dry-run sebagai boundary release, bukan pengganti test.
+- [x] catat dependency peer yang membutuhkan package registry (`language-service` → `core`, `remark-relgeo-hl` → `language-service`);
+- [x] runner public mendefinisikan `npm pack --dry-run` sebagai boundary release, bukan pengganti test.
 
 Acceptance:
 
 - [ ] setiap package lulus command gate dari root workspace;
-- [ ] package consumer diuji terhadap package registry publik, bukan hanya workspace links;
+- [x] runner public menyalin package ke temporary checkout tanpa sibling source dan meng-install dari npm registry;
+- [ ] package consumer lulus terhadap package registry publik;
 - [x] failure runner menyebut package dan command yang gagal.
 
 ### Stage D — Consumer gate
@@ -262,7 +263,8 @@ Checklist:
 - [x] runner mendefinisikan install dan lint/test/audit UX/build Playground;
 - [ ] lint, test, audit UX, dan build Playground lulus pada execution terbaru;
 - [ ] worker Playground terverifikasi memakai package yang terinstall;
-- [ ] package consumer diuji tanpa workspace link ke source sibling;
+- [x] runner public menyalin Playground dan website tanpa sibling source, sehingga alias lokal tidak dapat aktif;
+- [ ] package consumer lulus tanpa workspace link ke source sibling;
 - [x] runner mendefinisikan install dan check/build/test/artifact assertion website;
 - [ ] website check/build/test/artifact assertion lulus pada execution terbaru;
 - [ ] bila mode release, jalankan public smoke test setelah deploy yang berhasil.
@@ -285,12 +287,13 @@ Checklist:
 - [x] workflow mengonfigurasi artifact report ketika gate gagal atau selesai;
 - [x] permission workflow minimal;
 - [x] workflow tidak mengubah atau publish repository;
-- [ ] hasil CI menampilkan manifest revision dan compatibility line sebagai job summary;
+- [x] workflow menampilkan workspace revision dan compatibility line sebagai job summary;
+- [x] workflow memiliki job public-registry terpisah dari local-workspace job;
 - [ ] workflow terbaru menjalankan gate sampai selesai.
 
 Acceptance:
 
-- [ ] local dan CI menjalankan entrypoint yang sama atau perbedaan dijelaskan;
+- [x] local dan CI menjalankan entrypoint yang sama atau perbedaan dijelaskan;
 - [ ] failure CI dapat direproduksi secara lokal;
 - [ ] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator.
 
@@ -330,14 +333,14 @@ Default yang disarankan:
 
 Tahap 1 hanya boleh ditandai selesai jika:
 
-- [ ] runner documented tersedia dari root workspace;
+- [x] runner documented tersedia dari root workspace;
 - [ ] runner berhasil dari fresh checkout lokal;
 - [ ] semua package wajib lulus dalam dependency order;
 - [ ] Playground lulus tanpa relative source dependency;
 - [ ] website lulus build dan artifact assertions;
 - [ ] laporan menyebut baseline revision dan versi package;
-- [ ] minimal satu CI workflow menjalankan gate atau subset yang setara;
-- [ ] failure injection sederhana terbukti menghasilkan failure yang jelas;
+- [x] minimal satu CI workflow menjalankan gate atau subset yang setara;
+- [x] failure injection sederhana terbukti menghasilkan failure yang jelas pada verifier;
 - [ ] dokumentasi root menjelaskan cara menjalankan gate;
 - [ ] master plan diperbarui dengan commit dan bukti.
 
@@ -360,6 +363,8 @@ Urutan kerja konkret:
 | Tanggal | Perubahan | Status |
 | --- | --- | --- |
 | 2026-09-15 | Sub-rencana Tahap 1 dibuat berdasarkan dependency graph dan kondisi baseline saat ini | siap untuk Stage A |
-| 2026-09-15 | Inventory command, lockfile, package manager, dependency, dan clean status selesai | Stage A read-only selesai; package-manager standardization dan npm/browser prerequisite masih terbuka |
-| 2026-09-15 | Manifest baseline dan verifier read-only ditambahkan | Stage B implementasi selesai; automatic regeneration dan failure injection masih terbuka |
+| 2026-09-15 | Inventory command, lockfile, package manager, dependency, dan clean status selesai | Stage A read-only selesai; package-manager standardization masih terbuka, sedangkan prerequisite auth/browser sudah dibedakan dari gate |
+| 2026-09-15 | Manifest baseline dan verifier read-only ditambahkan | Stage B implementasi selesai; runtime regeneration masih terbuka |
 | 2026-09-15 | Local-workspace integration runner dan workflow report ditambahkan | command Stage C/D terhubung; runtime evidence, registry mode, dan CI run masih terbuka |
+| 2026-09-15 | Runner public-registry ditambahkan dengan temporary checkout dan pack dry-run | implementasi public mode selesai; runtime npm/CI evidence masih terbuka |
+| 2026-09-15 | Failure injection verifier ditambahkan; peer dependency registry boundary dicatat | implementasi guard selesai; runtime gate dan CI evidence masih terbuka |

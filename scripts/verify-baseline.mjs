@@ -8,7 +8,10 @@ import { fileURLToPath } from "node:url";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, "..");
-const manifestPath = path.join(root, "docs", "integration-baseline.json");
+const manifestArgument = process.argv.find((argument) => argument.startsWith("--manifest="));
+const manifestPath = manifestArgument
+  ? path.resolve(root, manifestArgument.slice("--manifest=".length))
+  : path.join(root, "docs", "integration-baseline.json");
 const strict = process.argv.includes("--strict");
 const jsonOutput = process.argv.includes("--json");
 const writeManifest = process.argv.includes("--write");

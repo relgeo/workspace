@@ -38,3 +38,54 @@ jobs:
           name: relgeo-integration-gate-report
           path: .local/integration-gate.json
           if-no-files-found: warn
+
+      - name: Record integration summary
+        if: always()
+        run: |
+          {
+            echo "### RelGeo local-workspace integration"
+            echo "- Compatibility line: 0.5"
+            echo "- Workspace revision: $(git rev-parse HEAD)"
+            echo "- Baseline manifest: docs/integration-baseline.json"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  public:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout workspace and submodules
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.33.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Run public-registry integration gate
+        run: pnpm run integration:public -- --report=.local/integration-public.json
+
+      - name: Upload public integration report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: relgeo-public-integration-report
+          path: .local/integration-public.json
+          if-no-files-found: warn
+
+      - name: Record public integration summary
+        if: always()
+        run: |
+          {
+            echo "### RelGeo public-registry integration"
+            echo "- Compatibility line: 0.5"
+            echo "- Workspace revision: $(git rev-parse HEAD)"
+            echo "- Consumer dependencies: npm registry"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status:** Local, public-registry, dan fresh-checkout runtime gate lulus; CI dan public smoke masih terbuka
+**Status:** Local, public-registry, fresh-checkout, dan CI runtime gate lulus; public smoke dan reproduksi failure CI tertentu masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -74,10 +74,10 @@ Graph ini menunjukkan urutan validasi, bukan berarti semua package harus saling 
 | Stage | Implementasi | Evidence yang masih diperlukan |
 | --- | --- | --- |
 | A — Inventory | Selesai | tidak ada blocker desain |
-| B — Baseline | Selesai: manifest, strict verifier, compatibility check, failure injection | fresh checkout dan regenerasi pada checkout baru |
+| B — Baseline | Selesai: manifest, strict verifier, compatibility check, failure injection, dan fresh checkout | tidak ada blocker runtime; regenerasi berikutnya tetap menjadi maintenance |
 | C — Packages | Selesai: local/public runner, dependency pinning, pack boundary; local dan public gate lulus | tidak ada blocker pada runtime gate |
 | D — Consumers | Selesai: isolated consumer checkout dan Pages artifact assembly; local dan public gate lulus | public smoke |
-| E — CI | Selesai: workflow, report artifact, manual dispatch, timeout, concurrency, read-only checkout | workflow GitHub hijau dan reproducible failure |
+| E — CI | Selesai: workflow, report artifact, manual dispatch, timeout, concurrency, read-only checkout, dan run terbaru hijau | reproduksi failure CI tertentu |
 
 ## 4. Kondisi awal yang perlu dikunci
 
@@ -292,7 +292,7 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-Skeleton CI sudah dibuat setelah kontrak Stage A–D dan runner tersedia. Status required/green baru dapat ditetapkan setelah execution evidence Stage B–D tersedia.
+Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #87` untuk commit `04960d3` pada `relgeo/workspace`.
 
 Checklist:
 
@@ -306,12 +306,12 @@ Checklist:
 - [x] workflow memiliki job public-registry terpisah dari local-workspace job;
 - [x] workflow menyediakan `workflow_dispatch`, timeout per job, dan concurrency cancellation;
 - [x] checkout CI tidak menyimpan credential Git dan report artifact memiliki retensi terbatas;
-- [ ] workflow terbaru menjalankan gate sampai selesai.
+- [x] workflow terbaru menjalankan gate sampai selesai.
 
 Acceptance:
 
 - [x] local dan CI menjalankan entrypoint yang sama atau perbedaan dijelaskan;
-- [ ] failure CI dapat direproduksi secara lokal;
+- [ ] failure CI tertentu dapat direproduksi secara lokal;
 - [x] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator.
 
 ## 7. Keputusan yang harus dibuat saat implementasi
@@ -359,11 +359,11 @@ Tahap 1 hanya boleh ditandai selesai jika:
 - [x] minimal satu CI workflow menjalankan gate atau subset yang setara;
 - [x] failure injection sederhana terbukti menghasilkan failure yang jelas pada verifier;
 - [x] dokumentasi root menjelaskan cara menjalankan gate;
-- [x] master plan diperbarui dengan commit implementasi dan bukti runtime local/public yang tersedia; fresh-checkout, CI, dan smoke tetap terbuka.
+- [x] master plan diperbarui dengan commit implementasi dan bukti runtime local/public/fresh-checkout/CI yang tersedia; public smoke dan reproduksi failure CI tertentu tetap terbuka.
 
 ## 10. Rencana eksekusi berikutnya
 
-Implementasi runner sudah tersedia. Local, public-registry, dan fresh-checkout runtime evidence sudah tersedia; pekerjaan berikutnya adalah CI execution dan public smoke, bukan menambah command baru tanpa hasil pengujian.
+Implementasi runner sudah tersedia dan telah lulus pada local, public-registry, fresh-checkout, serta CI. Pekerjaan berikutnya adalah public smoke setelah deployment website dan, bila diperlukan, reproduksi satu failure CI tertentu; jangan menambah command baru tanpa kebutuhan evidence.
 
 Prasyarat runtime:
 
@@ -381,9 +381,10 @@ Urutan kerja konkret:
 4. jalankan `pnpm run integration:gate -- --local --report=.local/integration-local.json`;
 5. setelah mode local lulus, jalankan `pnpm run integration:public -- --report=.local/integration-public.json`;
 6. review report untuk package, Playground, website, dan artifact yang gagal; perbaiki di repository pemiliknya;
-7. push workflow workspace, jalankan `Integration` melalui push, pull request, atau `workflow_dispatch`, lalu simpan URL run dan artifact report;
+7. push workflow workspace, jalankan `Integration` melalui push, pull request, atau `workflow_dispatch`, lalu simpan URL run dan artifact report; **selesai**, run terbaru `Integration #87` lulus;
 8. setelah Pages deployment berhasil, jalankan public smoke test dan catat URL, commit website, serta baseline spec/Playground;
-9. hanya setelah semua evidence tersebut tersedia, centang exit gate dan update master plan.
+9. bila perlu menutup acceptance terakhir, pilih satu failure CI yang representatif, simpan log ringkasnya, lalu reproduksi dengan failure injection/local command;
+10. setelah public smoke dan evidence reproduksi failure tersedia, centang exit gate dan update master plan.
 
 Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mode local menguji workspace links. Keduanya diperlukan karena lulusnya satu mode tidak membuktikan mode lainnya.
 
@@ -409,3 +410,4 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Public-registry gate final dijalankan pada Node 24.21.0/pnpm 10.33.3 dengan package `@relgeo/*` dipin ke manifest | 48/48 stage lulus, termasuk Playground, website, Pages artifact assertion, dan pack boundary |
 | 2026-09-15 | Fresh checkout probe dari commit workspace `a65c542` berhasil mengambil 10 submodule lalu berhenti karena commit `renderer-svg@3b66780` belum tersedia pada remote GitHub | blocker diselesaikan dengan push submodule renderer-svg dan root pointer |
 | 2026-09-15 | Fresh checkout dari GitHub `workspace@8d54163` diinisialisasi dengan seluruh 11 submodule dan menjalankan strict verifier serta local integration gate | fresh-checkout lulus; strict verifier 81 checks dan integration gate 33/33 lulus |
+| 2026-09-15 | Workflow GitHub `Integration #87` pada commit `04960d3` diverifikasi selesai sukses | CI integration gate lulus; public smoke dan reproduksi failure CI tertentu masih terbuka |

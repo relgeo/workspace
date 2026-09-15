@@ -258,7 +258,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Berjalan — local gate 33/33, public-registry gate 48/48, dan fresh-checkout gate 33/33 sudah lulus; CI dan public smoke masih terbuka.
+**Status:** Berjalan — local gate 33/33, public-registry gate 48/48, fresh-checkout gate 33/33, dan CI terbaru sudah lulus; public smoke serta reproduksi failure CI tertentu masih terbuka.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -275,13 +275,13 @@ Status menggunakan arti berikut:
 
 **Acceptance criteria:**
 
-- [ ] satu command atau satu entrypoint documented menjalankan gate dari fresh clone;
-- [ ] gate tidak membaca direktori privat atau path komputer operator;
-- [ ] gate menggunakan lockfile dan versi/commit yang eksplisit;
-- [ ] consumer tidak bergantung pada source sibling melalui relative path untuk mode publik;
-- [ ] failure mengembalikan exit code non-zero dan ringkasan actionable;
-- [ ] hasil gate menyebut commit submodule, versi package, dan artifact yang diuji;
-- [ ] CI dapat menjalankan gate dengan environment yang sama atau subset yang jelas.
+- [x] satu command atau satu entrypoint documented menjalankan gate dari fresh clone;
+- [x] gate tidak membaca direktori privat atau path komputer operator;
+- [x] gate menggunakan lockfile dan versi/commit yang eksplisit;
+- [x] consumer tidak bergantung pada source sibling melalui relative path untuk mode publik;
+- [x] failure mengembalikan exit code non-zero dan ringkasan actionable;
+- [x] hasil gate menyebut commit submodule, versi package, dan artifact yang diuji;
+- [x] CI dapat menjalankan gate dengan environment yang sama atau subset yang jelas.
 
 **Deliverable sub-rencana:** [docs/plans/01-cross-repo-integration-gate.md](plans/01-cross-repo-integration-gate.md).
 
@@ -471,6 +471,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | Public-registry integration evidence Tahap 1 diperoleh pada Node 24.21.0/pnpm 10.33.3 | 48/48 stage lulus setelah runner memakai shared fixtures, package boundary, dan urutan build/test yang checkout-safe; fresh-checkout/CI/smoke masih terbuka |
 | 2026-09-15 | Fresh checkout probe Tahap 1 dijalankan dari commit workspace terbaru | clone berhenti pada `renderer-svg@3b66780` karena commit belum dipush ke remote; push submodule dan root pointer masih diperlukan |
 | 2026-09-15 | Fresh checkout GitHub Tahap 1 diulang setelah submodule dan root dipush | seluruh 11 submodule ter-initialize; strict verifier 81 checks dan integration gate 33/33 lulus |
+| 2026-09-15 | CI Tahap 1 diverifikasi pada `relgeo/workspace` | `Integration #87` untuk commit `04960d3` lulus; public smoke dan reproduksi failure CI tertentu masih terbuka |
 
 ## 10. Catatan pemeliharaan
 

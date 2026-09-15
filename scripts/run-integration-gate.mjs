@@ -38,7 +38,10 @@ const baselineManifest = JSON.parse(
 );
 const baselinePackageVersions = new Map(
   baselineManifest.submodules
-    .filter((entry) => entry.package?.name && entry.package?.version)
+    .filter(
+      (entry) =>
+        entry.package?.name?.startsWith("@relgeo/") && entry.package?.version,
+    )
     .map((entry) => [entry.package.name, entry.package.version]),
 );
 
@@ -102,7 +105,7 @@ function runPackBoundaryStage(packageName, cwd) {
           path.isAbsolute(entry) ||
           entry.startsWith("../") ||
           /(^|\/)(node_modules|\.git|\.local|private|scratch|tmp)(\/|$)/.test(entry) ||
-          /(^|\/)(\.env|[^/]+\.(pem|key|secret))$/i.test(entry),
+          /(^|\/)(\.env(?:\..*)?|[^/]+\.(pem|key|secret))$/i.test(entry),
         );
       if (invalidFiles.length > 0) {
         passed = false;

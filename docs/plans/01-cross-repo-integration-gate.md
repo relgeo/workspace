@@ -400,4 +400,5 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Workflow integration ditambah manual dispatch, timeout, dan concurrency cancellation | rerun manual dan proteksi terhadap run menumpuk tersedia; CI execution evidence masih terbuka |
 | 2026-09-15 | Checkout CI dibuat read-only dan report artifact diberi retensi 7 hari; instruksi execution evidence diperbarui | hardening implementasi selesai; seluruh bukti runtime masih menunggu eksekusi |
 | 2026-09-15 | Public pack boundary membaca output JSON dan menolak material lokal/secret/path traversal | implementasi tarball hygiene selesai; pack runtime masih menunggu CI/npm execution |
+| 2026-09-15 | Pack boundary diperluas untuk seluruh file `.env.*`; pin registry dibatasi ke package `@relgeo/*` | hardening static selesai; runtime pack dan public gate masih terbuka |
 | 2026-09-15 | Status matrix implementasi-versus-evidence ditambahkan dan master plan diselaraskan | pekerjaan implementasi terpetakan; runtime evidence tetap terbuka |

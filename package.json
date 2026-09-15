@@ -12,6 +12,7 @@
     "verify:baseline": "node scripts/verify-baseline.mjs",
     "verify:baseline:strict": "node scripts/verify-baseline.mjs --strict",
     "verify:baseline:failure": "node scripts/test-baseline-failure.mjs",
+    "compatibility:check": "node scripts/check-compatibility.mjs",
     "integration:gate": "node scripts/run-integration-gate.mjs",
     "integration:public": "node scripts/run-integration-gate.mjs --public",
     "build": "pnpm -r run build",

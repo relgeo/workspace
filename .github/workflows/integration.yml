@@ -35,6 +35,9 @@ jobs:
           node-version: 24
           cache: pnpm
 
+      - name: Check contract compatibility matrix
+        run: pnpm run compatibility:check
+
       - name: Run local-workspace integration gate
         run: pnpm run integration:gate -- --local --report=.local/integration-gate.json
 

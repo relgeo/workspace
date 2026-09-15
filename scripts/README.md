@@ -37,3 +37,15 @@ Mode public menambahkan override sementara di checkout temporary agar seluruh de
 Sebelum assertion Pages website, runner menyalin `playground/dist` hasil build ke `relgeo.github.io/dist/playground`. Ini meniru perakitan artifact pada workflow Pages dan menjaga agar `test:pages-artifact` tidak lulus atau gagal karena state `dist` lama.
 
 JSON report integration memuat mode, workspace revision, baseline revision setiap submodule, compatibility line, metadata package, serta hasil tiap command. Report ini aman diunggah sebagai artifact CI karena tidak menyimpan absolute path temporary atau environment privat.
+
+## Compatibility matrix
+
+Jalankan pemeriksaan konsistensi kontrak dan versi dari root workspace:
+
+~~~text
+pnpm run compatibility:check
+~~~
+
+Checker membaca `docs/compatibility-matrix.json`, lalu membandingkannya dengan baseline gitlink, `package.json` setiap package/application, deklarasi compatibility pada README, dependency internal, dan release order. Checker sengaja memeriksa policy aktif (`@relgeo/*` memakai `^0.5.0`) tanpa melakukan publish.
+
+Workflow Integration menjalankan pemeriksaan ini sebelum local cross-repo gate. Failure berarti compatibility line, metadata package, deklarasi README, internal dependency range, revision spec, atau release order perlu diperbarui secara terkoordinasi.

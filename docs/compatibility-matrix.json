@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "compatibilityLine": "0.5",
+  "baselineManifest": "docs/integration-baseline.json",
+  "contract": {
+    "name": "RelGeo DSL",
+    "version": "0.5",
+    "specPath": "spec",
+    "normativePath": "spec/id",
+    "specRevision": "b96ba3b23de202227eade06614635ef6717df516"
+  },
+  "policy": {
+    "publicPackageVersion": "0.5.x",
+    "internalDependencyRange": "^0.5.0",
+    "patch": "A patch release may move independently while the language contract remains compatible.",
+    "breaking": "A breaking language-contract change moves the coordinated package family to the next compatibility line, for example 0.6.x.",
+    "releaseAtomicity": "Do not publish a breaking family partially without an explicit decision record. Stop before publishing or record the partial state and forward-fix plan.",
+    "releaseOrder": [
+      "spec",
+      "geometry",
+      "core",
+      "renderer-svg",
+      "language-service",
+      "remark-relgeo-hl",
+      "remark-relgeo",
+      "cli",
+      "playground",
+      "relgeo.github.io"
+    ]
+  },
+  "packages": [
+    {
+      "path": "geometry",
+      "name": "@relgeo/geometry",
+      "version": "0.5.0",
+      "compatibilityLine": "0.5",
+      "publishable": true,
+      "versionPolicy": "same-line"
+    },
+    {
+      "path": "core",
+      "name": "@relgeo/core",
+      "version": "0.5.0",
+      "compatibilityLine": "0.5",
+      "publishable": true,
+      "versionPolicy": "same-line"
+    },
+    {
+      "path": "renderer-svg",
+      "name": "@relgeo/renderer-svg",
+      "version": "0.5.0",
+      "compatibilityLine": "0.5",
+      "publishable": true,
+      "versionPolicy": "same-line"
+    },
+    {
+      "path": "language-service",
+      "name": "@relgeo/language-service",
+      "version": "0.5.0",
+      "compatibilityLine": "0.5",
+      "publishable": true,
+      "versionPolicy": "same-line"
+    },
+    {
+      "path": "remark-relgeo-hl",
+      "name": "@relgeo/remark-relgeo-hl",
+      "version": "0.5.0",
+      "compatibilityLine": "0.5",
+      "publishable": true,
+      "versionPolicy": "same-line"
+    },
+    {
+      "path": "remark-relgeo",
+      "name": "@relgeo/remark-relgeo",
+      "version": "0.5.0",
+      "compatibilityLine": "0.5",
+      "publishable": true,
+      "versionPolicy": "same-line"
+    },
+    {
+      "path": "cli",
+      "name": "@relgeo/cli",
+      "version": "0.5.0",
+      "compatibilityLine": "0.5",
+      "publishable": true,
+      "versionPolicy": "same-line"
+    }
+  ],
+  "consumers": [
+    {
+      "path": "playground",
+      "name": "relgeo-playground",
+      "version": "0.4.0",
+      "compatibilityLine": "0.5",
+      "publishable": false,
+      "versionPolicy": "independent"
+    },
+    {
+      "path": "relgeo.github.io",
+      "name": "relgeo-docs-site",
+      "version": "0.5.0",
+      "compatibilityLine": "0.5",
+      "publishable": false,
+      "versionPolicy": "independent"
+    }
+  ]
+}

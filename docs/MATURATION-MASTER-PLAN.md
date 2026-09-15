@@ -37,7 +37,7 @@ Contoh:
 
 ~~~text
 01-cross-repo-integration-gate.md
-02-version-and-release-contract.md
+02-contract-versioning.md
 ~~~
 
 Sub-rencana menjelaskan pekerjaan operasional secara mendalam; dokumen ini tetap menjadi tempat urutan, keputusan, status, dan hubungan antar-tahap.
@@ -181,7 +181,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 ### 4.4 Hal yang belum boleh dianggap selesai
 
 - [x] Integrasi lintas-repo memiliki gate resmi dari fresh clone yang menjalankan dependency graph publik secara penuh.
-- [ ] Release order, compatibility matrix, dan bump policy belum menjadi satu kontrak operasional yang dijaga otomatis.
+- [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
 - [ ] Publish npm masih dapat dilakukan manual dan belum mempunyai release gate lintas-package yang seragam.
 - [ ] Fixture conformance belum menjadi sumber bersama yang diuji oleh seluruh consumer penting.
 - [ ] Flutter belum dibawa ke jalur validasi kontrak yang sama dengan consumer TypeScript.
@@ -287,7 +287,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
-**Status:** Berikutnya setelah Tahap 1.
+**Status:** Berjalan — matriks, deklarasi compatibility, dan CI checker sudah tersedia; atomic release guard serta release checklist masih terbuka.
 
 **Tujuan:** membuat hubungan versi antara spec dan semua consumer menjadi eksplisit.
 
@@ -302,13 +302,13 @@ Status menggunakan arti berikut:
 
 **Acceptance criteria:**
 
-- [ ] ada satu matriks kompatibilitas yang menjadi referensi;
-- [ ] setiap package menyatakan compatibility line-nya;
+- [x] ada satu matriks kompatibilitas yang menjadi referensi;
+- [x] setiap package/application yang relevan menyatakan compatibility line-nya;
 - [ ] breaking change tidak dapat dipublish sebagian tanpa keputusan eksplisit;
 - [ ] release checklist memuat spec, package, consumer, docs, dan tag;
-- [ ] CI mendeteksi mismatch versi atau peer dependency sebelum release.
+- [x] CI mendeteksi mismatch versi atau peer dependency sebelum release.
 
-**Deliverable sub-rencana:** docs/plans/02-contract-versioning.md.
+**Deliverable sub-rencana:** [docs/plans/02-contract-versioning.md](plans/02-contract-versioning.md).
 
 ### Tahap 3 — Release dan npm publishing guard
 
@@ -429,19 +429,16 @@ Status menggunakan arti berikut:
 
 ## 7. Rencana kerja berikutnya yang direkomendasikan
 
-Jangan mulai dari Flutter atau fitur baru. Ambil **Tahap 1 — Cross-repo integration gate** sebagai sub-rencana pertama.
+Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Jangan melompat ke Flutter atau fitur baru; lanjutkan **Tahap 2 — Contract versioning dan compatibility matrix** sampai release guard-nya cukup kuat.
 
-Urutan kerja yang disarankan:
+Urutan kerja yang disarankan sekarang:
 
-1. inventaris command build/test/lint pada setiap package;
-2. tetapkan dependency order dan boundary antara local development dan public consumption;
-3. definisikan format manifest baseline: submodule commit, package version, spec revision;
-4. buat runner lintas-repo yang aman dari fresh clone;
-5. jalankan runner pada macOS lokal;
-6. jalankan subset yang sama pada CI;
-7. perbaiki mismatch yang ditemukan;
-8. simpan laporan dan acceptance evidence;
-9. baru tandai Tahap 1 selesai dan turunkan Tahap 2.
+1. pelihara `docs/compatibility-matrix.json` bersama perubahan spec dan package;
+2. jalankan `pnpm run compatibility:check` sebelum integration gate;
+3. dokumentasikan keputusan breaking/non-breaking dan dampaknya pada compatibility line;
+4. turunkan Tahap 3 menjadi sub-rencana release/npm guard;
+5. buat release checklist, tarball allowlist, dan post-publish verification;
+6. baru aktifkan automation publish setelah manual release path dan rollback decision terbukti.
 
 ## 8. Definition of Done ekosistem
 
@@ -474,6 +471,8 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | CI Tahap 1 diverifikasi pada `relgeo/workspace` | `Integration #87` untuk commit `04960d3` lulus; public smoke dan reproduksi failure CI tertentu masih terbuka |
 | 2026-09-15 | Public smoke Tahap 1 dijalankan terhadap `https://relgeo.github.io` | 14/14 route HTTP 200, termasuk playground, sitemap, favicon, dan apple-touch-icon; hanya reproduksi failure CI tertentu masih terbuka |
 | 2026-09-15 | Failure CI lama Tahap 1 direproduksi pada checkout bersih | gate pada baseline `fe94149` menghasilkan 30 passed dan 3 failed pada package yang sama seperti run CI #85; Tahap 1 ditutup secara evidence |
+| 2026-09-15 | Tahap 2 dimulai dengan audit metadata versi dan dependency | seluruh package publik `0.5.0`, consumer mengikuti DSL `0.5`, dan internal ranges teramati `^0.5.0` |
+| 2026-09-15 | Compatibility matrix dan checker lintas-repo dibuat | `docs/compatibility-matrix.json`, `scripts/check-compatibility.mjs`, dan workflow Integration sebelum gate |
 
 ## 10. Catatan pemeliharaan
 

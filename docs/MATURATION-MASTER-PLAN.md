@@ -532,6 +532,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Official Playground E2E dibuat deployment-aware dan dipromosikan ke gate root | `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/ pnpm test:e2e` lulus `2/2`; local mode juga `2/2`; child commit `143acf6`, root pointer `9e77d33`, local gate `36/36`, dan GitHub `Integration #94` sukses |
 | 2026-09-16 | Release preflight read-only ditambahkan dan dijalankan | `release:preflight` pada `workspace@3f4b76a` lulus root clean, strict baseline `81/81`, compatibility `250/250`, tarball audit `106/106`, dan integration gate `36/36`; evidence dicatat pada sub-rencana Tahap 3 |
 | 2026-09-16 | Sub-rencana Tahap 5 dibuat dan ditautkan | website visual audit, visual rules, Playground UX/UI audit, public smoke, accessibility baseline, dan gate eksternal kini memiliki satu dokumen koordinasi; touch fisik dan assistive technology tetap terbuka |
+| 2026-09-16 | Playground menambahkan mobile-device emulation dengan touchscreen tap | `e070cd9`, E2E lokal `2/2`; bukti automation bertambah, sedangkan handset fisik, keyboard fisik, dan VoiceOver/TalkBack tetap terbuka |
 
 ## 10. Catatan pemeliharaan
 

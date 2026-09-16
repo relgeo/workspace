@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-09-15",
+  "capturedAt": "2026-09-16",
   "compatibilityLine": "0.5",
   "repository": "relgeo/workspace",
   "submodules": [
@@ -15,7 +15,7 @@
     },
     {
       "path": "playground",
-      "revision": "143acf6f22e352f53e84a1b98a3a0d6194bd4e33",
+      "revision": "e070cd96c17fd2d0207bc184c8b2c325c08e196a",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"

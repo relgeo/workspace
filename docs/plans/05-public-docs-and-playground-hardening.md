@@ -99,7 +99,8 @@ Source detail dan history perubahan ada di [`VISUAL-REDESIGN-AUDIT-AND-PLAN.md`]
 - [x] Keyboard traversal, focus trap drawer/dialog, AX tree lokal, accessible names, selected/expanded/pressed state, dan skip link sudah diuji.
 - [x] Reduced-motion CSS, overflow containment, breakpoint matrix browser, dan minimum control sizing sudah memiliki gate.
 - [x] Main bundle diperkecil melalui lazy loading; build tidak lagi menghasilkan advisory chunk di atas 500 kB.
-- [x] Local E2E lulus `2/2` untuk runtime diagnostic dan mobile surface switcher.
+- [x] Local E2E lulus `2/2` untuk runtime diagnostic dan mobile surface switcher; suite terpisah memakai profil iPhone 13 Chromium dan `touchscreen.tap`.
+- [x] Mobile-device emulation memverifikasi touch capability, viewport 390px, dan perpindahan Source/Preview; ini bukan pengganti validasi handset fisik.
 - [x] Deployment-aware E2E dengan `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/` lulus `2/2` pada public Playground.
 - [x] `audit:ux` lulus dengan 13 component files dan 4 dynamic inline styles yang disetujui.
 
@@ -165,6 +166,7 @@ stateDiagram-v2
 - [x] Invalid source mempertahankan preview valid terakhir dan menampilkan error actionable.
 - [x] Runtime diagnostic tetap menampilkan preview dan Errors inspector.
 - [x] Surface switcher dan responsive drawer memiliki behavior test.
+- [x] Surface switcher juga diuji melalui touchscreen tap pada mobile-device emulation.
 - [x] Selection, related depth, graph, values, and source jump memiliki state semantics.
 - [x] Share/copy/reset memiliki feedback, fallback, dan confirmation contract.
 - [ ] Touch gesture pada handset/tablet fisik belum diverifikasi.
@@ -175,6 +177,7 @@ stateDiagram-v2
 - [x] Keyboard sweep lokal mencakup navbar, editor, preview, drawer, Inspector, Graph, Values, Errors, dan dialog.
 - [x] Drawer dan confirmation dialog memiliki focus trap serta focus return.
 - [x] Browser AX tree pada state utama tersedia dan seluruh kontrol yang diuji memiliki accessible name.
+- [x] Dedicated mobile-device emulation berbasis profil iPhone 13 Chromium lulus untuk tap surface switcher dan viewport 390px.
 - [x] Reduced-motion stylesheet dan browser emulation sudah diverifikasi.
 - [x] Browser matrix 390×844, 480, 768×1024, 840, 1024, 1280×720, dan 1440×900 tidak menunjukkan page-level horizontal overflow pada scope yang diuji.
 - [ ] Uji keyboard fisik pada perangkat nyata belum dilakukan.
@@ -283,6 +286,7 @@ Aturan perubahan:
 | Local build/check/test | website 138 pages, 0 Astro diagnostics, assertions lulus |
 | Local Playground E2E | `2/2` lulus |
 | Public Playground E2E | `2/2` lulus dengan `PLAYWRIGHT_BASE_URL` |
+| Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `36/36` lulus |
 | Release preflight | `81/81`, `250/250`, `106/106`, `36/36` lulus |
 | CI evidence | `Integration #99` sukses; `Integration #101` berjalan untuk commit `ebb33b4` |
@@ -297,4 +301,4 @@ Aturan perubahan:
 | 2026-09-16 | Website dan Playground diringkas sebagai dua owner implementasi dengan satu public-surface gate | selesai sebagai struktur koordinasi |
 | 2026-09-16 | Acceptance criteria dipisahkan antara implementation gate dan external validation gate | selesai |
 | 2026-09-16 | Physical touch, keyboard nyata, dan VoiceOver/TalkBack ditetapkan sebagai sisa wajib | terbuka, membutuhkan perangkat/operator |
-
+| 2026-09-16 | Playground menambahkan suite mobile-device emulation dengan touchscreen tap | `e070cd9`, `pnpm run test:e2e` lulus `2/2`; validasi handset fisik dan assistive technology tetap terbuka |

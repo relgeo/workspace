@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 4 — Shared Conformance Fixtures dan Contract Tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, runner Flutter lokal, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; CI/deployment publik terbaru serta keputusan promotion candidate masih terbuka  
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate, policy SVG yang lebih luas, dan smoke terhadap deployment publik terbaru masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -57,7 +57,7 @@ Fixture dibagi menjadi lima status:
 - 2 fixture `capability` pada DSL `v0.5`: candidate boolean/intersection dan evaluator/unit dengan expected scene/SVG snapshot; operasi, unit/evaluator, dan semantic projection ter-normalisasi Flutter sudah lulus lokal, tetapi belum menjadi active semantic Flutter conformance fixture.
 - Repository anak masih dapat memiliki test inline dan test fixture lokal. Sebagian test renderer/consumer mengakses root `fixtures` saat dijalankan melalui workspace; public integration runner menyalin folder tersebut ke checkout temporary.
 
-Gap implementasi: checkout standalone repository anak tidak otomatis membawa `fixtures/`. Keputusan saat ini adalah canonical fixture tetap di root workspace, child repository tetap memakai test/fixture lokalnya sendiri, dan tidak dibuat package fixture publik baru. Validasi package/consumer TypeScript pada checkout temporary berbasis registry, browser smoke lokal, runner Flutter lokal, checkout Flutter terisolasi, operasi/scene projection candidate Flutter, evaluator/unit projection, serta active/runtime-diagnostic/candidate SVG semantic projection sudah lulus; validasi CI pascapush, browser publik terbaru, dan keputusan menjadikan candidate capability sebagai active contract masih diperlukan.
+Gap implementasi: checkout standalone repository anak tidak otomatis membawa `fixtures/`. Keputusan saat ini adalah canonical fixture tetap di root workspace, child repository tetap memakai test/fixture lokalnya sendiri, dan tidak dibuat package fixture publik baru. Validasi package/consumer TypeScript pada checkout temporary berbasis registry, browser smoke lokal, runner Flutter lokal/CI, checkout Flutter terisolasi, operasi/scene projection candidate Flutter, evaluator/unit projection, serta active/runtime-diagnostic/candidate SVG semantic projection sudah lulus; browser publik terbaru dan keputusan menjadikan candidate capability sebagai active contract masih diperlukan.
 
 ## 4. Implementasi tahap ini
 
@@ -149,7 +149,7 @@ Prioritas kerja:
 
 ## 6. Pekerjaan yang masih terbuka
 
-- [ ] runner CI terbaru menghasilkan evidence setelah perubahan ini dipush;
+- [x] runner CI terbaru menghasilkan evidence setelah perubahan ini dipush; `Integration #90` sukses pada job `flutter`, `verify`, dan `public`;
 - [x] active fixture memiliki exact output check untuk highlighting, Markdown preview pipeline, dan CLI selain snapshot resolved-scene/SVG; serialized highlighting output dijaga dengan SHA-256 digest;
 - [x] human-readable highlight snapshot tersedia sebagai `fixtures/expected/10-v05-relational-baseline.highlight.txt` dan dijaga dengan exact check;
 - [x] policy menetapkan package/consumer standalone tidak bergantung pada folder sibling workspace;
@@ -158,12 +158,12 @@ Prioritas kerja:
 - [x] smoke check manual pada Playground publik memuat fixture runtime-diagnostic, mencapai status `READY`, tetap mempertahankan preview, dan menampilkan satu diagnostic pada tab Errors;
 - [x] Pages artifact assertion memverifikasi bundle Playground membawa editor label, state `READY`, tab `Errors`, dan pesan runtime diagnostic;
 - [x] automated browser smoke untuk source → `READY` → preview → runtime diagnostic dan mobile surface switcher tersedia serta lulus lokal `2/2`;
-- [ ] evidence CI pascapush dan browser interaction evidence pada artifact publik masih belum tersedia;
+- [x] evidence CI pascapush untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #90`; browser interaction terhadap deployment publik terbaru tetap terpisah dan masih terbuka;
 - [x] fixture invalid mencakup YAML syntax error dan unknown reference;
 - [x] fixture runtime-diagnostic diperluas ke semantic/runtime diagnostics yang tidak berhenti pada parser;
 - [x] compatibility behavior inventory diselesaikan dan disimpan sebagai audit terpisah;
 - [x] Flutter memiliki adapter fixture yang menerima root portable dan runner workspace yang menyiapkan staging sementara; audit dan desain adapter ada di [`06-flutter-alignment.md`](06-flutter-alignment.md);
-- [x] Flutter menjalankan active/runtime/invalid fixture yang sama secara lokal dan mencatat gap parity capability tambahan pada evidence matrix; evidence CI masih terbuka;
+- [x] Flutter menjalankan active/runtime/invalid fixture yang sama secara lokal dan CI, serta mencatat gap parity capability tambahan pada evidence matrix;
 - [ ] parser/version policy eksplisit dan negative tests memastikan tidak ada compatibility behavior tersembunyi di luar manifest, spec, atau test yang terdokumentasi.
 
 ## 7. Exit gate Tahap 4
@@ -181,11 +181,12 @@ Prioritas kerja:
 - [x] artifact website memverifikasi kontrak runtime Playground yang terpaket;
 - [x] automated browser smoke lokal untuk consumer Playground;
 - [x] public-registry browser smoke standalone lulus `2/2`;
-- [ ] evidence CI pascapush dan browser smoke berbasis interaksi pada deployment publik terbaru;
+- [x] evidence CI pascapush tersedia pada `Integration #90`;
+- [ ] browser smoke berbasis interaksi pada deployment publik terbaru masih perlu dijalankan setelah deployment Pages terkait;
 - [x] inventory compatibility behavior dan mismatch example version sudah direkam;
 - [ ] public historical-version policy, future-version handling, dan negative tests;
 - [x] Flutter memiliki adapter, capability mapping, dan gap record yang terdokumentasi pada [`06-flutter-alignment.md`](06-flutter-alignment.md);
-- [ ] Flutter memiliki fixture parity runtime/SVG yang diverifikasi pada CI; active/candidate evidence lokal dan checkout terisolasi sudah lulus, sedangkan candidate boolean/intersection belum menjadi active contract dan belum memiliki evidence CI.
+- [x] Flutter memiliki fixture parity runtime/SVG yang diverifikasi pada CI `Integration #90`; candidate boolean/intersection dan evaluator/unit tetap belum menjadi active contract.
 
 Tahap 4 belum selesai. Implementasi sekarang menutup fondasi conformance di level workspace; gap berikutnya membutuhkan keputusan packaging/consumer dan bukti runtime yang belum boleh diasumsikan.
 
@@ -231,3 +232,4 @@ Saat menambah atau mengubah fixture:
 | 2026-09-16 | Validator capability candidate diperketat dan conformance diulang | setiap candidate wajib memiliki expected scene/output snapshot; root terbaru `204 passed, 0 failed across 16 fixtures` |
 | 2026-09-16 | Integration gate root diulang setelah candidate evaluator/unit | seluruh stage implementasi lulus; ringkasan `35 passed, 1 failed, 36 total`, dengan satu-satunya failure berupa strict-baseline karena perubahan lokal pada website, Playground, dan Flutter |
 | 2026-09-16 | Baseline manifest diperbarui ke commit submodule yang baru dipush dan gate diulang dari workspace clean | strict verifier `81/81` dan integration gate `36/36` lulus; conformance tetap `204/204` across 16 fixtures |
+| 2026-09-16 | GitHub `Integration #90` menyelesaikan seluruh job | `flutter`, `verify`, dan `public` sukses pada commit workspace `6305b8e`; CI fixture parity dan public-registry gate tertutup, browser smoke deployment publik terbaru serta promotion candidate tetap terbuka |

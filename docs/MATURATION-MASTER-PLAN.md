@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [ ] Evidence CI/browser deployment terbaru serta capability parity tambahan Flutter masih terbuka; checkout Flutter terisolasi sudah lulus secara lokal, tetapi evidence checkout/runner resmi CI belum ada.
+- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #90`; browser smoke terhadap deployment publik terbaru dan capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 
@@ -340,7 +340,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, runner Flutter lokal, dan checkout Flutter terisolasi sudah lulus; CI/deployment publik terbaru serta parity capability tambahan masih terbuka.
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; browser smoke deployment publik terbaru, promotion candidate, dan parity capability tambahan masih terbuka.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -371,7 +371,8 @@ Status menggunakan arti berikut:
 - [x] Pages artifact assertion memverifikasi bundle Playground membawa editor label, state `READY`, tab `Errors`, dan pesan runtime diagnostic;
 - [x] automated browser smoke Playground untuk runtime diagnostic dan mobile surface switcher tersedia serta lulus lokal;
 - [x] automated browser consumer Playground memiliki test source/preview/diagnostic dan mobile surface;
-- [ ] automated browser consumer pada CI dan website runtime berbasis interaksi pada deployment terbaru, serta Flutter pada CI, memiliki evidence fixture yang tervalidasi;
+- [x] automated browser consumer Playground dan Flutter pada CI memiliki evidence fixture yang tervalidasi;
+- [ ] website runtime berbasis interaksi pada deployment Pages terbaru perlu diverifikasi setelah deployment terkait;
 - [ ] tidak ada consumer yang membuat kontrak diam-diam berbeda.
 
 **Deliverable sub-rencana:** [docs/plans/04-shared-conformance-fixtures.md](plans/04-shared-conformance-fixtures.md).
@@ -400,7 +401,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 6 — Flutter alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal, widget smoke, draft release posture, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal sudah lulus, sedangkan parity capability tambahan serta gate CI Flutter masih terbuka.
+**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, draft release posture, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus, sedangkan promotion candidate, parity capability tambahan, dan keputusan platform release masih terbuka.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -441,7 +442,7 @@ Status menggunakan arti berikut:
 
 ## 7. Rencana kerja berikutnya yang direkomendasikan
 
-Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Runner Flutter, checkout Flutter terisolasi, serta active/candidate scene dan SVG semantic projection juga sudah lulus secara lokal tanpa menjadikannya dependency gate TypeScript; evidence CI pascapush/browser publik terbaru, capability parity tambahan, dan policy version tetap harus ditutup secara terpisah.
+Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Runner Flutter, checkout Flutter terisolasi, serta active/candidate scene dan SVG semantic projection sudah lulus lokal dan pada `Integration #90` tanpa menjadikannya dependency gate TypeScript; browser publik terbaru, capability parity tambahan, dan policy version tetap harus ditutup secara terpisah.
 
 Urutan kerja yang disarankan sekarang:
 
@@ -450,7 +451,7 @@ Urutan kerja yang disarankan sekarang:
 3. jalankan `pnpm run conformance:fixtures` setelah build package selesai;
 4. push perubahan Tahap 4 lalu verifikasi CI dan browser/public runtime evidence;
 5. tutup release guard Tahap 2/3 dengan automation atau decision record yang benar-benar dipakai;
-6. jadikan hasil lokal Flutter `3.41.9`/Dart `3.11.5` sebagai baseline sementara, lalu jalankan job CI Flutter terpisah dari checkout bersih; setelah itu putuskan promotion boundary untuk candidate boolean/intersection dan evaluator/unit, serta semantic SVG yang memang masuk active conformance.
+6. jadikan hasil lokal dan CI Flutter `3.41.9`/Dart `3.11.5` sebagai evidence baseline; berikutnya putuskan promotion boundary untuk candidate boolean/intersection dan evaluator/unit, serta semantic SVG yang memang masuk active conformance.
 
 ## 8. Definition of Done ekosistem
 
@@ -522,6 +523,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Integration gate root diulang setelah candidate evaluator/unit | `35 passed, 1 failed, 36 total`; satu failure hanya strict-baseline akibat tiga submodule masih dirty, sementara seluruh package/consumer, E2E, Pages artifact, dan conformance stage lulus |
 | 2026-09-16 | Probe build macOS Flutter dilakukan | locale UTF-8 diperlukan agar CocoaPods berjalan; retry mencapai Xcode tetapi terhenti karena disk penuh. Artefak build dibersihkan; source build macOS dan keputusan platform release tetap terbuka |
 | 2026-09-16 | Baseline submodule diperbarui setelah tiga commit dipush dan integration gate clean diulang | strict verifier `81/81`; integration gate lokal `36/36`; conformance `204/204`; CI pascapush untuk commit terbaru masih perlu diverifikasi |
+| 2026-09-16 | GitHub `Integration #90` diverifikasi selesai | commit `6305b8e` memiliki job `flutter`, `verify`, dan `public` yang semuanya sukses; CI Flutter dan public-registry evidence tersedia, sementara browser deployment publik terbaru, promotion candidate, dan platform release masih terbuka |
 
 ## 10. Catatan pemeliharaan
 

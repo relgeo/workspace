@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 6 — Flutter Contract Alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary tests, runner lokal, evidence Flutter lokal, dan checkout mandiri terisolasi selesai; parity lintas engine yang belum tercakup serta gate CI Flutter masih terbuka  
+**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary tests, runner lokal, checkout mandiri terisolasi, dan gate CI Flutter selesai; parity lintas engine yang belum tercakup, promotion candidate, serta keputusan platform release masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal mulai:** 2026-09-16  
 **Owner koordinasi:** relgeo/workspace  
@@ -35,15 +35,15 @@ Non-goal tahap ini:
 
 ### Gap yang terbukti dari inspeksi
 
-- [x] Flutter sekarang menjadi `nonNodeConsumers.flutter` pada `docs/compatibility-matrix.json` tanpa dimasukkan ke release order Node; status evidence lokal sudah `partial`, sedangkan CI tetap belum terverifikasi;
+- [x] Flutter sekarang menjadi `nonNodeConsumers.flutter` pada `docs/compatibility-matrix.json` tanpa dimasukkan ke release order Node; status evidence tetap `partial`, dan evidence CI job `Integration #90` sudah terverifikasi;
 - [x] test shared fixture tidak lagi mengunci satu literal path: `flutter/test/support/shared_fixture.dart` menerima `RELGEO_FIXTURE_ROOT` dan menyediakan fallback relatif workspace; canonical fixture tetap tidak dibawa ke child repo;
 - [x] active fixture `10-v05-relational-baseline.yaml` memiliki test Flutter dan sudah dijalankan melalui staging fixture; manifest menandai surface Flutter yang memang dicakup evidence;
 - [x] runtime Flutter mengimplementasikan port Dart tersendiri dan pemetaan capability/function/diagnostic ke implementasi TypeScript kini tersedia machine-readable; evidence parity pada tiap mapping tetap terbuka;
 - [x] `flutter/pubspec.yaml` memiliki deskripsi RelGeo dan statement compatibility line `0.5`; application version `1.0.0+1` tetap dipisahkan secara eksplisit;
 - [x] mapping capability/function Flutter terhadap sumber TypeScript dicatat machine-readable di [`../flutter-capability-matrix.json`](../flutter-capability-matrix.json), dengan status evidence yang belum lengkap tetap eksplisit;
 - [x] referensi `v0.4` yang tersisa diklasifikasikan sebagai regression/compatibility history; statement aktif pada README, pubspec, painter, exporter, dan workbench menggunakan `v0.5`;
-- [x] job `flutter analyze`/`flutter test` terpisah sudah ditambahkan pada workflow root; evidence run CI dan bukti build Flutter dari checkout bersih masih terbuka;
-- [x] Flutter SDK lokal tersedia dan diverifikasi melalui terminal VS Code; runner lengkap berhasil pada Flutter `3.41.9` dan Dart `3.11.5`. Ini menutup evidence lokal, bukan evidence CI atau checkout mandiri.
+- [x] job `flutter analyze`/`flutter test` terpisah sudah ditambahkan pada workflow root; job `flutter` pada `Integration #90` berhasil dari checkout CI, sedangkan bukti build Flutter macOS masih terbuka;
+- [x] Flutter SDK lokal tersedia dan diverifikasi melalui terminal VS Code; runner lengkap berhasil pada Flutter `3.41.9` dan Dart `3.11.5`. Evidence lokal, checkout mandiri, dan job CI sudah tersedia; build platform macOS tetap belum terverifikasi.
 
 ## 3. Boundary fixture yang disepakati untuk dibahas
 
@@ -76,14 +76,14 @@ Alternatif membuat package fixture Dart publik atau menyalin seluruh canonical f
 | Capability | TypeScript baseline | Flutter baseline | Status evidence |
 | --- | --- | --- | --- |
 | YAML/DSL input | `@relgeo/core` + YAML boundary consumer | `yaml` + resolver Dart | active shared fixture dan semantic projection lulus lokal; vocabulary diagnostic lintas consumer masih terbuka |
-| scalar/evaluator | core evaluator | `src/core/evaluator.dart` | candidate shared fixture dan semantic projection lulus lokal; belum active baseline dan belum CI |
+| scalar/evaluator | core evaluator | `src/core/evaluator.dart` | candidate shared fixture dan semantic projection lulus lokal serta CI; belum active baseline |
 | dependency graph | core resolver | `src/core/graph.dart` dan resolver | local test dan active shared fixture projection lulus; coverage lintas operation masih terbuka |
-| geometry/intersection | `@relgeo/geometry` | `src/geometry/*` | candidate shared fixture dan semantic projection lulus lokal; active baseline dan CI masih terbuka |
-| boolean | geometry boolean engine | `clipper2` adapter | candidate shared fixture, operasi, dan semantic projection ter-normalisasi lulus lokal; belum menjadi active baseline dan belum ada CI |
+| geometry/intersection | `@relgeo/geometry` | `src/geometry/*` | candidate shared fixture dan semantic projection lulus lokal serta CI; belum active baseline |
+| boolean | geometry boolean engine | `clipper2` adapter | candidate shared fixture, operasi, dan semantic projection ter-normalisasi lulus lokal serta CI; belum menjadi active baseline |
 | SVG output | `@relgeo/renderer-svg` | `SvgExporter` | active, runtime-diagnostic, dan candidate SVG semantic projection lulus lokal; surface capability yang lebih luas dan policy presentation masih terbuka |
 | Canvas presentation | bukan target package utama | `CanvasPainter` | Flutter-specific, divalidasi oleh golden/widget test |
 | diagnostics | core/runtime + language-service | `ConstraintViolation`/workbench diagnostics | runtime local ada; diagnostic code/message mapping belum distandarkan |
-| active contract | DSL `0.5` | compatibility matrix, pubspec, README, painter, exporter, dan workbench | statement aktif eksplisit; active/runtime semantic evidence lokal lulus, CI dan capability tambahan masih terbuka |
+| active contract | DSL `0.5` | compatibility matrix, pubspec, README, painter, exporter, dan workbench | statement aktif eksplisit; active/runtime semantic evidence lokal dan CI lulus, capability tambahan masih terbuka |
 
 Matrix ini adalah baseline audit, bukan claim parity. Mapping machine-readable yang sama tersedia di [`../flutter-capability-matrix.json`](../flutter-capability-matrix.json) dan diperiksa oleh `pnpm run compatibility:check`. Flag `localFlutterTests`, `sharedFixtures`, dan `semanticParity` hanya menyatakan pemeriksaan yang benar-benar sudah dieksekusi; flag tersebut tidak mempromosikan candidate menjadi active contract. Hanya `supportLevel`/`evidenceStatus` bersama keputusan contract yang menentukan status capability. Flag `ci` baru boleh `true` setelah workflow resmi lulus dari checkout bersih. Setiap cell harus berubah menjadi `verified`, `partial`, atau `unsupported` beserta evidence sebelum Tahap 6 ditutup.
 
@@ -189,19 +189,21 @@ sequenceDiagram
 - [x] tentukan channel/version Flutter yang dipin untuk CI: stable `3.41.9`;
 - [x] tambahkan job Flutter terpisah, tidak menjadi dependency job TypeScript;
 - [x] jalankan `flutter pub get --enforce-lockfile`, analyzer non-fatal, dan `flutter test` dari checkout Flutter terisolasi secara lokal; 99 test lulus dan 7 shared-fixture test dilewati secara eksplisit;
-- [ ] bila build desktop masuk scope release, tambahkan `flutter build macos` pada runner macOS; bila belum, catat sebagai non-goal;
+- [ ] bila build desktop masuk scope release, tambahkan `flutter build macos` pada runner macOS; probe lokal terhalang kapasitas disk, dan keputusan scope masih terbuka;
 - [x] simpan summary dan failure output tanpa mengunggah source fixture atau trace yang tidak diperlukan;
-- [ ] pin revision Flutter pada baseline setelah evidence CI pertama lulus.
+- [ ] pin revision Flutter pada baseline setelah evidence CI pertama lulus dan keputusan toolchain final disetujui.
 
 Evidence lokal yang sudah tersedia tidak menggantikan stage di atas: runner workspace
 lulus dengan Flutter `3.41.9`, Dart `3.11.5`, 16 fixture yang di-stage, `pub get`,
-analyzer non-fatal, dan 119 test. Analyzer masih melaporkan 130 lint/info legacy;
-temuan tersebut terlihat tetapi tidak menjadi blocker pada baseline ini.
+analyzer non-fatal, dan 119 test. Job Flutter CI `Integration #90` juga lulus dari
+checkout workspace/submodule resmi; job `verify` dan `public` pada run yang sama
+ikut lulus. Analyzer masih melaporkan 130 lint/info legacy; temuan tersebut terlihat
+tetapi tidak menjadi blocker pada baseline ini.
 
 ### Stage F — Release/readiness decision
 
-- [x] status tiap capability menjadi verified/partial/unsupported; matrix saat ini memakai `partial` untuk capability yang memiliki evidence lokal dan belum memiliki CI/parity penuh;
-- [x] compatibility matrix menyebut Flutter secara jujur sebagai non-Node consumer berstatus `partial` berdasarkan evidence lokal, dengan CI dan capability yang belum diuji tetap terbuka;
+- [x] status tiap capability menjadi verified/partial/unsupported; matrix saat ini memakai `partial` karena active-contract boundary dan parity/presentation yang lebih luas masih terbuka meskipun evidence CI dasar sudah lulus;
+- [x] compatibility matrix menyebut Flutter secara jujur sebagai non-Node consumer berstatus `partial` berdasarkan evidence lokal dan `Integration #90`, dengan capability yang belum dipromosikan tetap terbuka;
 - [x] README dan master plan tidak lagi menyiratkan parity hanya karena test lokal ada;
 - [x] draft release decision record menyatakan rekomendasi Flutter tetap workbench non-publishable; persetujuan posture dan release policy final masih terbuka di [decision record](../decisions/06-flutter-release-posture.md);
 - [x] gap yang tersisa memiliki owner, bukti, dan langkah forward-fix pada register berikut.
@@ -211,12 +213,12 @@ temuan tersebut terlihat tetapi tidak menjadi blocker pada baseline ini.
 | Gap | Owner | Evidence saat ini | Forward-fix |
 | --- | --- | --- | --- |
 | Flutter runtime belum tersedia pada environment koordinasi | relgeo/workspace + relgeo/flutter | resolved locally: SDK Flutter `3.41.9` / Dart `3.11.5` dipakai melalui terminal VS Code dan runner lengkap lulus | ulangi dari CI/checkout bersih; pertahankan `RELGEO_FLUTTER_BIN` sebagai override portable |
-| Evidence CI untuk active fixture dan diagnostic belum tersedia | relgeo/flutter | resolved locally: active/runtime/boundary/widget/golden/candidate capability tests lulus; runner menghasilkan 119 test Flutter passed | jalankan job CI terpisah dan pisahkan capability yang belum tercakup oleh fixture aktif |
-| Evidence standalone Flutter pada CI/official checkout belum tersedia | relgeo/flutter | resolved locally: checkout terisolasi tanpa parent workspace lulus analyzer non-fatal dan 99 test; 7 shared-fixture test skip dengan alasan eksplisit | ulangi dari CI/official checkout; pertahankan fixture canonical sebagai input opt-in |
-| Semantic parity candidate boolean/intersection belum menjadi active contract | relgeo/workspace + relgeo/flutter | operation-level dan semantic projection ter-normalisasi candidate Flutter lulus; expected JSON/SVG TypeScript juga lulus; candidate belum masuk active baseline dan CI belum ada | sepakati apakah candidate masuk active contract, pertahankan normalisasi sebagai aturan evidence, lalu jalankan parity dari CI |
-| Semantic parity candidate evaluator/unit belum menjadi active contract | relgeo/workspace + relgeo/flutter | parameter, `in`/`mm`, derived placement, scene snapshot, dan SVG semantic projection candidate lulus pada runner lokal; candidate belum masuk active baseline dan CI belum ada | sepakati promotion boundary bersama candidate boolean/intersection; pertahankan `cliUnit` eksplisit untuk snapshot non-default |
+| Evidence CI untuk active fixture dan diagnostic | relgeo/flutter | `Integration #90` job `flutter` lulus dari checkout resmi; runner mencakup active/runtime/invalid dan dua candidate dengan 16 fixture serta 119 test | pertahankan evidence CI; pisahkan capability yang belum tercakup oleh fixture aktif saat promotion dibahas |
+| Standalone Flutter checkout tanpa parent workspace belum menjalankan seluruh fixture canonical | relgeo/flutter | checkout terisolasi lokal lulus analyzer non-fatal dan 99 test; 7 shared-fixture test skip dengan alasan eksplisit, sementara official workspace checkout pada `Integration #90` lulus | pertahankan fixture canonical sebagai input opt-in atau sediakan paket fixture resmi bila standalone parity kelak diwajibkan |
+| Semantic parity candidate boolean/intersection belum menjadi active contract | relgeo/workspace + relgeo/flutter | operation-level dan semantic projection ter-normalisasi candidate Flutter lulus lokal dan pada `Integration #90`; expected JSON/SVG TypeScript juga lulus; candidate belum masuk active baseline | sepakati apakah candidate masuk active contract, pertahankan normalisasi sebagai aturan evidence, lalu ubah status matrix secara eksplisit |
+| Semantic parity candidate evaluator/unit belum menjadi active contract | relgeo/workspace + relgeo/flutter | parameter, `in`/`mm`, derived placement, scene snapshot, dan SVG semantic projection candidate lulus lokal dan pada `Integration #90`; candidate belum masuk active baseline | sepakati promotion boundary bersama candidate boolean/intersection; pertahankan `cliUnit` eksplisit untuk snapshot non-default |
 | Cakupan SVG Flutter di luar anchor active/runtime/candidate belum penuh | relgeo/flutter + relgeo/renderer-svg | active, runtime-diagnostic, dan candidate lulus SVG semantic projection lokal; full capability surface, style, viewBox, dan policy presentation belum menjadi contract | perluas semantic anchors dengan tolerance ke capability yang disepakati, bukan raw SVG bytes |
-| CI Flutter belum menghasilkan evidence | relgeo/workspace | job terpisah sudah ada dan toolchain stable `3.41.9` sudah dipin; belum ada run CI terbaru | push workflow, verifikasi run pertama, lalu pin revision bila dibutuhkan |
+| Pin revision Flutter belum ditetapkan pada baseline | relgeo/workspace | `Integration #90` berhasil dengan stable `3.41.9`; workflow dan job Flutter sudah terverifikasi | tetapkan apakah pin version/channel sudah cukup atau simpan revision SDK eksplisit setelah posture release disetujui |
 | Posture release Flutter belum disetujui | maintainer RelGeo | decision record berstatus `Proposed` | setujui/ubah proposal sebelum membuat release policy atau package publik |
 
 ## 6. Acceptance criteria Tahap 6
@@ -227,8 +229,8 @@ temuan tersebut terlihat tetapi tidak menjadi blocker pada baseline ini.
 - [x] mode error memiliki regression test yang mempertahankan preview valid terakhir sambil menampilkan diagnostic; eksekusi Flutter lulus;
 - [x] diagnostic `align` Flutter memiliki projection canonical yang cocok pada type, message, deviation, path, dan involved objects pada hasil test Flutter lokal;
 - [x] invalid input memiliki boundary test untuk YAML syntax, struktur object, dan unknown reference; exact vocabulary lintas consumer masih merupakan gap terpisah;
-- [x] `flutter analyze` non-fatal dan `flutter test` lulus pada toolchain `3.41.9` dari checkout terisolasi lokal; evidence CI bersih masih terbuka;
-- [x] Flutter job berdiri sendiri dan tidak mengubah status gate TypeScript ketika Flutter belum tersedia; run CI pertama masih diperlukan untuk membuktikan konfigurasi remote;
+- [x] `flutter analyze` non-fatal dan `flutter test` lulus pada toolchain `3.41.9` dari checkout terisolasi lokal; job Flutter pada `Integration #90` juga lulus;
+- [x] Flutter job berdiri sendiri dan tidak mengubah status gate TypeScript ketika Flutter belum tersedia; konfigurasi remote terbukti pada `Integration #90`;
 - [x] README, compatibility record, fixture manifest, dan master plan menyatakan status evidence lokal dan gap CI/standalone yang sama;
 - [ ] tidak ada klaim parity final sebelum seluruh capability matrix memiliki evidence.
 
@@ -257,7 +259,7 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 - Runner Flutter lokal dijalankan dengan Flutter `3.41.9` dan Dart `3.11.5`; staging 16 fixture, `flutter pub get --enforce-lockfile`, analyzer non-fatal, serta 119 test lulus.
 - Test semantic projection untuk fixture active dan runtime-diagnostic, boundary invalid, widget smoke, golden, dan regression edit invalid sudah dieksekusi dan lulus secara lokal.
 - Perbaikan yang terverifikasi dalam run tersebut mencakup wrapping pesan violation pada inspector agar tidak overflow dan penjadwalan ulang frame pada regression invalid edit agar perubahan controller diproses oleh widget test.
-- Evidence CI Flutter belum tersedia; active, runtime-diagnostic, dan candidate sudah lulus pada scene projection serta SVG semantic projection ter-normalisasi secara lokal, tetapi candidate masih capability-only dan cakupan SVG/policy presentation yang lebih luas masih terbuka.
+- Evidence CI Flutter tersedia melalui `Integration #90` (job `flutter`, `verify`, dan `public` sukses); active, runtime-diagnostic, dan candidate lulus pada scene projection serta SVG semantic projection ter-normalisasi, tetapi candidate masih capability-only dan cakupan SVG/policy presentation yang lebih luas masih terbuka.
 - Draft release posture Flutter sudah dicatat sebagai decision record; statusnya masih `Proposed` dan tidak dianggap sebagai persetujuan maintainer.
 - Runner `pnpm run flutter:conformance` sudah memiliki jalur blocked yang eksplisit untuk environment tanpa Flutter dan dapat memakai `RELGEO_FLUTTER_BIN`.
 - Capability mapping machine-readable sudah ditambahkan dan path/symbol mapping-nya diverifikasi oleh compatibility checker root.
@@ -305,3 +307,4 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 | 2026-09-16 | Probe build macOS dijalankan dari terminal VS Code | CocoaPods hanya dapat diproses dengan locale UTF-8; retry mencapai Xcode tetapi gagal karena disk penuh. Artefak build dibersihkan, file project/lockfile kembali bersih, dan gate macOS tetap terbuka |
 | 2026-09-16 | Regression suite Flutter diulang setelah probe macOS | `flutter test --reporter compact` lulus `119 test`; tidak ada perubahan tracked pada file macOS atau lockfile |
 | 2026-09-16 | Flutter dipush bersama baseline root dan integration gate clean diulang | submodule Flutter `9de5a1b` cocok dengan manifest; local Flutter suite tetap `119 test` lulus dan integration gate root `36/36` lulus; evidence CI Flutter masih terbuka |
+| 2026-09-16 | Integration `#90` diverifikasi pada GitHub | job `flutter`, `verify`, dan `public` semuanya sukses pada commit `6305b8e`; evidence CI Flutter dan public-registry gate tertutup, sedangkan build macOS dan promotion candidate tetap terbuka |

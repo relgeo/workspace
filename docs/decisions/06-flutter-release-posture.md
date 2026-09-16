@@ -10,9 +10,10 @@
 Flutter sudah memiliki resolver, geometry engine, SVG exporter, dan workbench
 desktop yang substansial. Evidence shared-fixture, semantic projection active,
 runtime, dua candidate capability, boundary, widget, serta golden test sekarang
-sudah lulus lokal pada Flutter `3.41.9` / Dart `3.11.5`. Namun CI, parity SVG
-yang lebih luas, keputusan promotion candidate, dan keputusan platform release
-belum selesai. Probe build macOS lokal juga belum konklusif: retry dengan locale
+sudah lulus lokal pada Flutter `3.41.9` / Dart `3.11.5`. Integration `#90` juga
+memverifikasi job Flutter, verify, dan public-registry dari checkout resmi. Namun
+parity SVG yang lebih luas, keputusan promotion candidate, dan keputusan platform
+release belum selesai. Probe build macOS lokal juga belum konklusif: retry dengan locale
 UTF-8 mencapai Xcode tetapi terhenti karena disk penuh. Karena itu status source
 dan evidence lokal belum cukup untuk menyatakan Flutter sebagai consumer
 conformance penuh atau package release.
@@ -44,10 +45,10 @@ flowchart LR
 
 - [ ] maintainer menyetujui posture non-publishable ini;
 - [x] versi/channel Flutter ditetapkan pada stable `3.41.9`; platform release masih perlu diputuskan;
-- [ ] `flutter pub get --enforce-lockfile`, `flutter analyze`, dan `flutter test`
-  lulus dari checkout bersih;
+- [x] `flutter pub get --enforce-lockfile`, `flutter analyze`, dan `flutter test`
+  lulus dari checkout CI bersih pada `Integration #90`;
 - [x] active fixture, runtime diagnostic, dan candidate capability memiliki
-  evidence semantic Flutter lokal; evidence CI masih terbuka;
+  evidence semantic Flutter lokal dan CI melalui job `flutter` pada `Integration #90`;
 - [x] checkout Flutter terisolasi dapat menjalankan analyzer non-fatal dan test
   unit tanpa parent workspace; shared canonical fixture tetap opt-in;
 - [x] capability matrix diperbarui menjadi `partial` pada capability dengan

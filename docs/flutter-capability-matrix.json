@@ -29,9 +29,9 @@
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
-        "ci": false
+        "ci": true
       },
-      "note": "Active v0.5 fixture input and semantic projection pass locally; parser diagnostic vocabulary is not yet canonicalized across consumers."
+      "note": "Active v0.5 fixture input and semantic projection pass locally and in CI; parser diagnostic vocabulary is not yet canonicalized across consumers."
     },
     {
       "id": "scalar-evaluator",
@@ -50,9 +50,9 @@
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
-        "ci": false
+        "ci": true
       },
-      "note": "The v0.5 evaluator/units capability candidate exercises length parameters, `in`/`mm` conversion, signed literals, derived placement, and preservation of non-numeric strings; its scene and SVG semantic projections pass locally. It remains capability-only until promotion and CI evidence."
+      "note": "The v0.5 evaluator/units capability candidate exercises length parameters, `in`/`mm` conversion, signed literals, derived placement, and preservation of non-numeric strings; its scene and SVG semantic projections pass locally and in CI. It remains capability-only until promotion."
     },
     {
       "id": "dependency-resolution",
@@ -71,9 +71,9 @@
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
-        "ci": false
+        "ci": true
       },
-      "note": "The active v0.5 scene and its resolved semantic snapshot pass locally; CI and broader operation coverage remain open."
+      "note": "The active v0.5 scene and its resolved semantic snapshot pass locally and in CI; broader operation coverage remains open."
     },
     {
       "id": "geometry-intersection",
@@ -92,9 +92,9 @@
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
-        "ci": false
+        "ci": true
       },
-      "note": "The capability candidate exercises line intersection through the shared fixture and passes local semantic comparison; it is not yet part of the active baseline and has no CI evidence."
+      "note": "The capability candidate exercises line intersection through the shared fixture and passes local and CI semantic comparison; it is not yet part of the active baseline."
     },
     {
       "id": "boolean-geometry",
@@ -113,9 +113,9 @@
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
-        "ci": false
+        "ci": true
       },
-      "note": "Clipper2-backed implementations exist; the v0.5 capability candidate passes local operation and normalized semantic-projection checks through a shared fixture, but remains outside the active baseline until the contract decision and CI evidence are complete."
+      "note": "Clipper2-backed implementations exist; the v0.5 capability candidate passes local and CI operation/normalized semantic-projection checks through a shared fixture, but remains outside the active baseline until the contract decision."
     },
     {
       "id": "svg-output",
@@ -134,9 +134,9 @@
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
-        "ci": false
+        "ci": true
       },
-      "note": "Active v0.5, runtime-diagnostic, and boolean/intersection candidate SVG geometry pass local semantic projection against TypeScript expected snapshots; presentation policy and broader SVG capability anchors remain outside the contract, and CI evidence is pending."
+      "note": "Active v0.5, runtime-diagnostic, and boolean/intersection candidate SVG geometry pass local and CI semantic projection against TypeScript expected snapshots; presentation policy and broader SVG capability anchors remain outside the contract."
     },
     {
       "id": "canvas-workbench",
@@ -156,7 +156,7 @@
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": false,
-        "ci": false
+        "ci": true
       },
       "note": "This is a Flutter-specific presentation surface and is not a TypeScript parity target; active fixture widget/golden evidence passes locally."
     },
@@ -177,9 +177,9 @@
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
-        "ci": false
+        "ci": true
       },
-      "note": "Default point align and the canonical runtime diagnostic projection pass locally; cross-consumer vocabulary and CI remain open."
+      "note": "Default point align and the canonical runtime diagnostic projection pass locally and in CI; cross-consumer vocabulary policy remains open."
     }
   ]
 }

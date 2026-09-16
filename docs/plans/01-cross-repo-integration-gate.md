@@ -294,7 +294,7 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #87` untuk commit `04960d3` pada `relgeo/workspace`.
+Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #90` untuk commit `6305b8e` pada `relgeo/workspace`; job `flutter`, `verify`, dan `public` semuanya sukses.
 
 Checklist:
 
@@ -383,7 +383,7 @@ Urutan kerja konkret:
 4. jalankan `pnpm run integration:gate -- --local --report=.local/integration-local.json`;
 5. setelah mode local lulus, jalankan `pnpm run integration:public -- --report=.local/integration-public.json`;
 6. review report untuk package, Playground, website, dan artifact yang gagal; perbaiki di repository pemiliknya;
-7. push workflow workspace, jalankan `Integration` melalui push, pull request, atau `workflow_dispatch`, lalu simpan URL run dan artifact report; **selesai**, run terbaru `Integration #87` lulus;
+7. push workflow workspace, jalankan `Integration` melalui push, pull request, atau `workflow_dispatch`, lalu simpan URL run dan artifact report; **selesai**, `Integration #90` lulus;
 8. setelah Pages deployment berhasil, jalankan public smoke test dan catat URL, commit website, serta baseline spec/Playground; **selesai**, 14 route pada `https://relgeo.github.io` mendapat HTTP 200;
 9. pilih satu failure CI yang representatif, simpan log ringkasnya, lalu reproduksi dengan failure injection/local command; **selesai**, checkout `fe94149` menghasilkan 30 lulus dan 3 gagal pada package yang sama seperti CI;
 10. setelah evidence reproduksi failure tersedia atau diputuskan tidak diperlukan untuk baseline, centang exit gate dan update master plan; **selesai**.

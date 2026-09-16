@@ -1,6 +1,6 @@
 # Compatibility behavior audit
 
-**Status:** Audit inventory selesai; delta diagnostic Flutter, semantic fixture projection, evaluator/unit parity lokal, dan evidence CI `Integration #90` sudah diverifikasi, sedangkan keputusan public-version policy, enforcement, dan promotion capability masih terbuka
+**Status:** Audit inventory selesai; delta diagnostic Flutter, semantic fixture projection, evaluator/unit parity lokal, dan evidence CI `Integration #91` sudah diverifikasi, sedangkan keputusan public-version policy, enforcement, dan promotion capability masih terbuka
 **Tanggal:** 2026-09-15 (diperbarui 2026-09-16)  
 **Scope:** `spec`, `core`, `renderer-svg`, `language-service`, `cli`, Markdown plugins, Playground, website, Flutter, matrix, fixtures, dan test suite
 
@@ -24,7 +24,7 @@ Inventory ini dapat diulang dengan `pnpm run compatibility:audit`. Command bersi
 | Playground examples | `playground/src/examples.ts` dan raw YAML | contoh historis `v0.2`/`v0.3` diberi label historical; beberapa file bernama `v04_*` ternyata mendeklarasikan `v0.5` |
 | Intentional fallback | `playground/src/share-code.ts`, `playground/src/clipboard.ts`, UX audit | Base64 legacy dan clipboard fallback sudah diberi alasan serta test/contract coverage |
 | Dependency line | `scripts/check-compatibility.mjs` | dependency `@relgeo/*` tetap pada `^0.5.0`; checker lulus `250/250`, termasuk record non-Node Flutter |
-| Flutter consumer | `flutter/pubspec.yaml`, Flutter source/tests, shared fixture adapter | workbench non-publishable pada DSL `0.5`; active/runtime dan dua candidate memiliki semantic evidence lokal serta CI `Integration #90` |
+| Flutter consumer | `flutter/pubspec.yaml`, Flutter source/tests, shared fixture adapter | workbench non-publishable pada DSL `0.5`; active/runtime dan dua candidate memiliki semantic evidence lokal serta CI `Integration #91` |
 
 ## Findings
 
@@ -64,7 +64,7 @@ Fixture `14-v05-runtime-align-violation.yaml` menjadi pembanding yang konkret. T
 
 **Dampak:** tinggi untuk semantic conformance. UI Flutter dapat terlihat benar karena tetap menampilkan violation, tetapi consumer yang membaca diagnostic terstruktur akan memperoleh kontrak berbeda.
 
-**Status:** perbaikan default point alignment sudah diterapkan secara lokal dan regression test inline ditambahkan. Runner Flutter memverifikasi fixture runtime-diagnostic canonical, termasuk index constraint, formula deviation, message, dan aturan `involvedObjects` sesuai baseline TypeScript; job Flutter `Integration #90` juga lulus.
+**Status:** perbaikan default point alignment sudah diterapkan secara lokal dan regression test inline ditambahkan. Runner Flutter memverifikasi fixture runtime-diagnostic canonical, termasuk index constraint, formula deviation, message, dan aturan `involvedObjects` sesuai baseline TypeScript; job Flutter `Integration #91` juga lulus.
 
 ## Yang sudah ditutup oleh audit
 

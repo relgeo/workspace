@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #90`; browser smoke terhadap deployment publik terbaru dan capability parity tambahan Flutter masih terbuka.
+- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #91`; browser smoke terhadap deployment publik terbaru dan capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 
@@ -442,7 +442,7 @@ Status menggunakan arti berikut:
 
 ## 7. Rencana kerja berikutnya yang direkomendasikan
 
-Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Runner Flutter, checkout Flutter terisolasi, serta active/candidate scene dan SVG semantic projection sudah lulus lokal dan pada `Integration #90` tanpa menjadikannya dependency gate TypeScript; browser publik terbaru, capability parity tambahan, dan policy version tetap harus ditutup secara terpisah.
+Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Runner Flutter, checkout Flutter terisolasi, serta active/candidate scene dan SVG semantic projection sudah lulus lokal dan pada `Integration #91` tanpa menjadikannya dependency gate TypeScript; browser publik terbaru, capability parity tambahan, dan policy version tetap harus ditutup secara terpisah.
 
 Urutan kerja yang disarankan sekarang:
 
@@ -524,6 +524,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Probe build macOS Flutter dilakukan | locale UTF-8 diperlukan agar CocoaPods berjalan; retry mencapai Xcode tetapi terhenti karena disk penuh. Artefak build dibersihkan; source build macOS dan keputusan platform release tetap terbuka |
 | 2026-09-16 | Baseline submodule diperbarui setelah tiga commit dipush dan integration gate clean diulang | strict verifier `81/81`; integration gate lokal `36/36`; conformance `204/204`; CI pascapush untuk commit terbaru masih perlu diverifikasi |
 | 2026-09-16 | GitHub `Integration #90` diverifikasi selesai | commit `6305b8e` memiliki job `flutter`, `verify`, dan `public` yang semuanya sukses; CI Flutter dan public-registry evidence tersedia, sementara browser deployment publik terbaru, promotion candidate, dan platform release masih terbuka |
+| 2026-09-16 | GitHub `Integration #91` diverifikasi selesai | commit `bdfa895` memiliki job `flutter`, `verify`, dan `public` yang semuanya sukses; evidence CI terbaru tetap hijau, sementara browser deployment publik terbaru, promotion candidate, dan platform release masih terbuka |
 
 ## 10. Catatan pemeliharaan
 

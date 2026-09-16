@@ -295,7 +295,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
-**Status:** Berjalan — matriks, deklarasi compatibility, CI checker, checklist release, dan release decision record validator sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka.
+**Status:** Berjalan — matriks, deklarasi compatibility, CI checker, checklist release, dan release decision record enforcement sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka.
 
 **Tujuan:** membuat hubungan versi antara spec dan semua consumer menjadi eksplisit.
 
@@ -312,7 +312,7 @@ Status menggunakan arti berikut:
 
 - [x] ada satu matriks kompatibilitas yang menjadi referensi;
 - [x] setiap package/application yang relevan menyatakan compatibility line-nya;
-- [ ] breaking change tidak dapat dipublish sebagian tanpa keputusan eksplisit;
+- [x] breaking change membutuhkan keputusan eksplisit yang divalidasi pada release record; blocking publish atomik masih terbuka;
 - [x] release checklist memuat spec, package, consumer, docs, dan tag;
 - [x] CI mendeteksi mismatch versi atau peer dependency sebelum release.
 
@@ -342,7 +342,7 @@ Status menggunakan arti berikut:
 - [x] semua package yang dirilis dapat di-install oleh consumer bersih;
 - [x] hasil post-publish dicatat untuk baseline `0.5.0`;
 - [x] release dapat dihentikan dengan aman di antara package tanpa membuat status membingungkan;
-- [x] release preflight read-only menggabungkan clean-tree check, strict baseline, compatibility check, tarball audit, dan local integration gate;
+- [x] release preflight read-only menggabungkan clean-tree check, strict baseline, compatibility check, release decision record, tarball audit, dan local integration gate;
 - [ ] automated publishing hanya diaktifkan setelah manual path terbukti stabil.
 
 **Deliverable sub-rencana:** [docs/plans/03-npm-release-guard.md](plans/03-npm-release-guard.md).

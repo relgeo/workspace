@@ -315,6 +315,7 @@ Status menggunakan arti berikut:
 - [x] breaking change membutuhkan keputusan eksplisit yang divalidasi pada release record; blocking publish atomik masih terbuka;
 - [x] release checklist memuat spec, package, consumer, docs, dan tag;
 - [x] CI mendeteksi mismatch versi atau peer dependency sebelum release.
+- [x] CI memvalidasi release decision record sebelum integration gate.
 
 **Deliverable sub-rencana:** [docs/plans/02-contract-versioning.md](plans/02-contract-versioning.md).
 

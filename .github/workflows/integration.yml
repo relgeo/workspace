@@ -81,6 +81,9 @@ jobs:
       - name: Audit compatibility behavior inventory
         run: pnpm run compatibility:audit
 
+      - name: Check release decision record
+        run: pnpm run release:record:check
+
       - name: Run local-workspace integration gate
         run: pnpm run integration:gate -- --local --report=.local/integration-gate.json
 

@@ -110,6 +110,7 @@ npm publish --access public
 - [x] root script `pnpm run release:audit` dan `pnpm run release:verify-published` tersedia.
 - [x] `docs/releases/TEMPLATE.md`, record `0.5.0`, dan `scripts/check-release-record.mjs` tersedia untuk mencegah package/consumer hilang dari ledger release.
 - [x] matrix dan release-record validator kini memeriksa klasifikasi contract change, rationale, approval status, serta policy forward-fix untuk record partial.
+- [x] workflow Integration menjalankan `release:record:check` sebagai gate CI eksplisit sebelum integration gate.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.
 - [ ] automated publishing belum diaktifkan.

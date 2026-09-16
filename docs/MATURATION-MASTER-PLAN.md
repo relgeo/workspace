@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #94`; browser smoke deployment publik terbaru dan E2E deployment-aware juga lulus, sedangkan capability parity tambahan Flutter masih terbuka.
+- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #99`; browser smoke deployment publik terbaru dan E2E deployment-aware juga lulus, sedangkan capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 

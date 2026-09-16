@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 4 — Shared Conformance Fixtures dan Contract Tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate, policy SVG yang lebih luas, dan smoke terhadap deployment publik terbaru masih terbuka
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, browser smoke deployment publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate dan policy SVG yang lebih luas masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -57,7 +57,7 @@ Fixture dibagi menjadi lima status:
 - 2 fixture `capability` pada DSL `v0.5`: candidate boolean/intersection dan evaluator/unit dengan expected scene/SVG snapshot; operasi, unit/evaluator, dan semantic projection ter-normalisasi Flutter sudah lulus lokal, tetapi belum menjadi active semantic Flutter conformance fixture.
 - Repository anak masih dapat memiliki test inline dan test fixture lokal. Sebagian test renderer/consumer mengakses root `fixtures` saat dijalankan melalui workspace; public integration runner menyalin folder tersebut ke checkout temporary.
 
-Gap implementasi: checkout standalone repository anak tidak otomatis membawa `fixtures/`. Keputusan saat ini adalah canonical fixture tetap di root workspace, child repository tetap memakai test/fixture lokalnya sendiri, dan tidak dibuat package fixture publik baru. Validasi package/consumer TypeScript pada checkout temporary berbasis registry, browser smoke lokal, runner Flutter lokal/CI, checkout Flutter terisolasi, operasi/scene projection candidate Flutter, evaluator/unit projection, serta active/runtime-diagnostic/candidate SVG semantic projection sudah lulus; browser publik terbaru dan keputusan menjadikan candidate capability sebagai active contract masih diperlukan.
+Gap implementasi: checkout standalone repository anak tidak otomatis membawa `fixtures/`. Keputusan saat ini adalah canonical fixture tetap di root workspace, child repository tetap memakai test/fixture lokalnya sendiri, dan tidak dibuat package fixture publik baru. Validasi package/consumer TypeScript pada checkout temporary berbasis registry, browser smoke lokal dan publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, operasi/scene projection candidate Flutter, evaluator/unit projection, serta active/runtime-diagnostic/candidate SVG semantic projection sudah lulus; keputusan menjadikan candidate capability sebagai active contract masih diperlukan.
 
 ## 4. Implementasi tahap ini
 
@@ -143,7 +143,7 @@ Prioritas kerja:
 
 1. push root workspace agar integration gate terbaru (termasuk runner) dieksekusi oleh CI;
 2. jalankan validasi standalone pada checkout repository anak sesuai policy manifest;
-3. jalankan automated browser smoke pada CI dan ulangi browser smoke terhadap artifact publik setelah deployment;
+3. jalankan automated browser smoke pada CI dan ulangi browser smoke terhadap artifact publik setelah deployment; **selesai**, smoke publik terbaru lulus;
 4. tambahkan minimal satu fixture error pada boundary baru jika consumer tersebut menjanjikan diagnostics;
 5. jalankan adapter Flutter yang sudah tersedia setelah keputusan binding/runtime Flutter jelas.
 
@@ -158,7 +158,7 @@ Prioritas kerja:
 - [x] smoke check manual pada Playground publik memuat fixture runtime-diagnostic, mencapai status `READY`, tetap mempertahankan preview, dan menampilkan satu diagnostic pada tab Errors;
 - [x] Pages artifact assertion memverifikasi bundle Playground membawa editor label, state `READY`, tab `Errors`, dan pesan runtime diagnostic;
 - [x] automated browser smoke untuk source → `READY` → preview → runtime diagnostic dan mobile surface switcher tersedia serta lulus lokal `2/2`;
-- [x] evidence CI pascapush untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #91`; browser interaction terhadap deployment publik terbaru tetap terpisah dan masih terbuka;
+- [x] evidence CI pascapush untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #91`;
 - [x] fixture invalid mencakup YAML syntax error dan unknown reference;
 - [x] fixture runtime-diagnostic diperluas ke semantic/runtime diagnostics yang tidak berhenti pada parser;
 - [x] compatibility behavior inventory diselesaikan dan disimpan sebagai audit terpisah;
@@ -182,7 +182,7 @@ Prioritas kerja:
 - [x] automated browser smoke lokal untuk consumer Playground;
 - [x] public-registry browser smoke standalone lulus `2/2`;
 - [x] evidence CI pascapush tersedia pada `Integration #91`;
-- [ ] browser smoke berbasis interaksi pada deployment publik terbaru masih perlu dijalankan setelah deployment Pages terkait;
+- [x] browser smoke berbasis interaksi pada deployment publik terbaru lulus: `READY`, preview, tab `Errors` dengan diagnostic expected, enam route HTTP utama `200`, dan console browser bersih;
 - [x] inventory compatibility behavior dan mismatch example version sudah direkam;
 - [ ] public historical-version policy, future-version handling, dan negative tests;
 - [x] Flutter memiliki adapter, capability mapping, dan gap record yang terdokumentasi pada [`06-flutter-alignment.md`](06-flutter-alignment.md);
@@ -233,4 +233,5 @@ Saat menambah atau mengubah fixture:
 | 2026-09-16 | Integration gate root diulang setelah candidate evaluator/unit | seluruh stage implementasi lulus; ringkasan `35 passed, 1 failed, 36 total`, dengan satu-satunya failure berupa strict-baseline karena perubahan lokal pada website, Playground, dan Flutter |
 | 2026-09-16 | Baseline manifest diperbarui ke commit submodule yang baru dipush dan gate diulang dari workspace clean | strict verifier `81/81` dan integration gate `36/36` lulus; conformance tetap `204/204` across 16 fixtures |
 | 2026-09-16 | GitHub `Integration #90` menyelesaikan seluruh job | `flutter`, `verify`, dan `public` sukses pada commit workspace `6305b8e`; CI fixture parity dan public-registry gate tertutup, browser smoke deployment publik terbaru serta promotion candidate tetap terbuka |
-| 2026-09-16 | GitHub `Integration #91` menyelesaikan seluruh job | `flutter`, `verify`, dan `public` sukses pada commit workspace `bdfa895`; CI fixture parity dan public-registry gate tertutup, browser smoke deployment publik terbaru serta promotion candidate tetap terbuka |
+| 2026-09-16 | GitHub `Integration #91` menyelesaikan seluruh job | `flutter`, `verify`, dan `public` sukses pada commit workspace `bdfa895`; CI fixture parity dan public-registry gate tertutup, browser smoke deployment publik terbaru kemudian diverifikasi, dan promotion candidate tetap terbuka |
+| 2026-09-16 | Browser smoke deployment publik terbaru diverifikasi | Playground publik mencapai `READY`, preview tetap tersedia, tab `Errors` menampilkan `Points are not aligned. Distance: 14.1421`, console browser tidak memiliki error/warning, dan route utama/docs/spec/playground/sitemap HTTP `200` |

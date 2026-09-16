@@ -60,7 +60,10 @@ const auditDocument = await read("docs/compatibility-behavior-audit.md");
 check(matrix.compatibilityLine === "0.5", "matrix declares public compatibility line 0.5");
 check(manifest.compatibilityLine === matrix.compatibilityLine, "fixture manifest and matrix use the same compatibility line");
 check(parser.includes('ACTIVE_REL_GEO_SPEC_VERSION = "0.5"'), "parser declares active RelGeo DSL version 0.5");
-check(auditDocument.includes("Version acceptance parser belum eksplisit"), "audit document records the parser version-policy finding");
+check(parser.includes("SUPPORTED_REL_GEO_SPEC_VERSIONS"), "parser declares supported public versions");
+check(parser.includes("REGRESSION_ONLY_REL_GEO_SPEC_VERSIONS"), "parser declares regression-only versions");
+check(parser.includes('UNSUPPORTED_SPEC_VERSION'), "parser declares an actionable unsupported-version diagnostic");
+check(auditDocument.includes("Version acceptance parser sekarang eksplisit"), "audit document records the implemented parser version policy");
 
 const testGroups = [
   ["core regression tests", "core/src/__tests__"],
@@ -109,10 +112,6 @@ if (filenameMismatches.length > 0) {
   for (const mismatch of filenameMismatches) {
     warn(`${mismatch.path}: filename v${mismatch.filenameVersion}, declared v${mismatch.declaredVersion}`);
   }
-}
-
-if (!parser.includes("SUPPORTED_REL_GEO_SPEC_VERSIONS")) {
-  warn("parser has no explicit supported-version allowlist; future-version policy remains an open decision");
 }
 
 const summary = {

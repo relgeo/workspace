@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 4 — Shared Conformance Fixtures dan Contract Tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate dan policy SVG yang lebih luas masih terbuka
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version policy parser, negative version fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate dan policy SVG yang lebih luas masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -52,7 +52,7 @@ Fixture dibagi menjadi lima status:
 
 - 9 fixture `supported-legacy` pada DSL `v0.4` untuk coverage presentasional/sheet yang masih didukung runtime.
 - 1 fixture `active` pada DSL `v0.5`: `10-v05-relational-baseline.yaml`.
-- 3 fixture `invalid` pada DSL `v0.5`: object tanpa field `type`, YAML syntax rusak, dan unknown reference untuk menguji parser dan language-service diagnostics.
+- 5 fixture `invalid`: tiga invalid behavior `v0.5`, satu future version `v0.6`, dan satu unknown version `1.0` untuk menguji parser dan language-service diagnostics.
 - 1 fixture `runtime-diagnostic` pada DSL `v0.5`: dokumen valid dengan relasi `align` yang sengaja tidak terpenuhi untuk menguji diagnostic pasca-resolve.
 - 2 fixture `capability` pada DSL `v0.5`: candidate boolean/intersection dan evaluator/unit dengan expected scene/SVG snapshot; operasi, unit/evaluator, dan semantic projection ter-normalisasi Flutter sudah lulus lokal, tetapi belum menjadi active semantic Flutter conformance fixture.
 - Repository anak masih dapat memiliki test inline dan test fixture lokal. Sebagian test renderer/consumer mengakses root `fixtures` saat dijalankan melalui workspace; public integration runner menyalin folder tersebut ke checkout temporary.
@@ -66,7 +66,7 @@ Gap implementasi: checkout standalone repository anak tidak otomatis membawa `fi
 - [x] manifest machine-readable tersedia di `fixtures/manifest.json`;
 - [x] setiap fixture memiliki `id`, path, contract version, status, dan surface;
 - [x] manifest memisahkan active v0.5 dari supported legacy v0.4;
-- [x] manifest memuat tiga invalid fixture dengan expected diagnostic;
+- [x] manifest memuat lima invalid fixture dengan expected diagnostic, termasuk future/unknown version;
 - [x] ownership strategy standalone/child repository dicatat machine-readable pada manifest;
 - [x] manifest menetapkan owner koordinasi dan alasan untuk setiap kelas status; README fixture menjelaskan boundary dan aturan penambahan.
 
@@ -94,13 +94,13 @@ pnpm run conformance:fixtures
 Bukti pada 2026-09-16:
 
 ```text
-summary: 204 passed, 0 failed across 16 fixtures
+summary: 228 passed, 0 failed across 18 fixtures
 ```
 
 Runner memeriksa sembilan fixture legacy, satu active v0.5 lintas surface, satu runtime-diagnostic v0.5, dua capability candidate v0.5, dan tiga invalid v0.5. Angka pass mencakup validasi manifest, parse/resolve, output/security renderer, language-service diagnostics/tokens, dua remark surface, exact serialized highlighting digest, exact preview-pipeline SVG, exact CLI SVG, expected violation dan snapshot runtime-diagnostic, serta expected snapshot kedua candidate capability. Untuk candidate evaluator/unit, metadata `cliUnit: mm` meneruskan target unit secara eksplisit karena default CLI tetap `px`.
 
 Flutter conformance runner pada 2026-09-16 juga lulus secara lokal: Flutter `3.41.9`,
-Dart `3.11.5`, 16 fixture di-stage, `flutter pub get --enforce-lockfile`, analyzer
+Dart `3.11.5`, 18 fixture di-stage, `flutter pub get --enforce-lockfile`, analyzer
 non-fatal, dan 119 test Flutter. Fixture active dan runtime-diagnostic diverifikasi
 melalui semantic projection; candidate boolean/intersection dan evaluator/unit juga
 lulus pada level operasi/evaluator serta semantic projection ter-normalisasi. Candidate
@@ -115,10 +115,10 @@ Public-registry integration gate pada 2026-09-15 lulus `48 passed, 0 failed, 48 
 - [x] inventory read-only terhadap parser, runtime regression tests, language service, fixture manifest, Playground examples, fallback, dan dependency line dilakukan;
 - [x] hasil audit disimpan di [`../compatibility-behavior-audit.md`](../compatibility-behavior-audit.md);
 - [x] fallback Base64 legacy dan clipboard sudah diklasifikasikan sebagai behavior yang disengaja dan terdokumentasi;
-- [x] mismatch nama file contoh `v04_*` dengan deklarasi DSL `v0.5` dicatat;
+- [x] mismatch nama file contoh `v04_*` dengan deklarasi DSL `v0.5` diperbaiki menjadi `v05_*`, dengan example key internal tetap kompatibel;
 - [x] inventory behavior dapat diulang dengan command read-only `pnpm run compatibility:audit`;
-- [ ] policy eksplisit untuk public support `v0.1`–`v0.4` dan penanganan future version belum diputuskan;
-- [ ] negative conformance tests untuk version policy belum ditambahkan.
+- [x] policy eksplisit untuk public support `v0.1`–`v0.4` dan penanganan future version ditetapkan pada matrix/manifest;
+- [x] negative conformance tests untuk future/unknown version ditambahkan pada core dan language-service.
 
 ## 5. Urutan penyelesaian berikutnya
 
@@ -164,13 +164,13 @@ Prioritas kerja:
 - [x] compatibility behavior inventory diselesaikan dan disimpan sebagai audit terpisah;
 - [x] Flutter memiliki adapter fixture yang menerima root portable dan runner workspace yang menyiapkan staging sementara; audit dan desain adapter ada di [`06-flutter-alignment.md`](06-flutter-alignment.md);
 - [x] Flutter menjalankan active/runtime/invalid fixture yang sama secara lokal dan CI, serta mencatat gap parity capability tambahan pada evidence matrix;
-- [ ] parser/version policy eksplisit dan negative tests memastikan tidak ada compatibility behavior tersembunyi di luar manifest, spec, atau test yang terdokumentasi.
+- [x] parser/version policy eksplisit dan negative tests memastikan tidak ada compatibility behavior versi tersembunyi di luar manifest, spec, atau test yang terdokumentasi.
 
 ## 7. Exit gate Tahap 4
 
 - [x] fixture memiliki owner/status/alasan yang dapat ditelusuri melalui manifest dan README;
 - [x] satu active fixture melintasi parse, resolve, renderer, language service, Markdown, dan CLI pada workspace runner;
-- [x] tiga invalid fixture diuji pada parser dan language service;
+- [x] lima invalid fixture diuji pada parser dan language service, termasuk future/unknown version;
 - [x] satu runtime-diagnostic fixture diuji pada resolver, renderer, language service, dan CLI;
 - [x] gate dijalankan dari root tanpa path privat operator;
 - [x] output SVG active menghasilkan snapshot/diff assertion yang dapat direview;
@@ -184,7 +184,7 @@ Prioritas kerja:
 - [x] evidence CI pascapush tersedia pada `Integration #94`;
 - [x] browser smoke berbasis interaksi pada deployment publik terbaru lulus: `READY`, preview, tab `Errors` dengan diagnostic expected, enam route HTTP utama `200`, dan console browser bersih;
 - [x] inventory compatibility behavior dan mismatch example version sudah direkam;
-- [ ] public historical-version policy, future-version handling, dan negative tests;
+- [x] public historical-version policy, future-version handling, dan negative tests;
 - [x] Flutter memiliki adapter, capability mapping, dan gap record yang terdokumentasi pada [`06-flutter-alignment.md`](06-flutter-alignment.md);
 - [x] Flutter memiliki fixture parity runtime/SVG yang diverifikasi pada CI `Integration #91`; candidate boolean/intersection dan evaluator/unit tetap belum menjadi active contract.
 
@@ -218,6 +218,9 @@ Saat menambah atau mengubah fixture:
 | 2026-09-15 | Compatibility behavior audit diselesaikan | parser version gate, historical regression coverage, fallback yang disengaja, dan mismatch nama file `v04_*` dicatat di `docs/compatibility-behavior-audit.md`; policy public historical/future version masih terbuka |
 | 2026-09-15 | Compatibility behavior audit dimasukkan ke workflow Integration | command read-only lulus lokal dengan `7 passed, 9 warnings, 0 failed`; CI pascapush belum menjadi evidence |
 | 2026-09-15 | Pages artifact assertion diperkuat untuk runtime Playground | bundle terpaket kini wajib memuat editor accessibility label, state `READY`, tab `Errors`, dan pesan diagnostic align; browser interaction evidence masih terbuka |
+| 2026-09-16 | Public version policy diformalkan dan parser diberi allowlist eksplisit | matrix/manifest membedakan active `0.5`, supported legacy `0.4`, regression-only `0.1`–`0.3`; future/unknown version menghasilkan `UNSUPPORTED_SPEC_VERSION` |
+| 2026-09-16 | Negative version fixtures ditambahkan | fixture `17` (`0.6`) dan `18` (`1.0`) diuji pada core/language-service; conformance `228/228` across 18 fixtures |
+| 2026-09-16 | Nama tujuh contoh aktif diselaraskan dengan contract `v0.5` | file `v04_*` menjadi `v05_*`; key internal dipertahankan untuk compatibility state; Playground lint/test/build lulus dan audit mismatch menjadi `0 warning` |
 | 2026-09-16 | Automated browser smoke Playground ditambahkan | Playwright `1.63.0` exact; dua test lokal lulus untuk runtime diagnostic dan mobile surface switcher; CI pascapush masih diperlukan |
 | 2026-09-16 | Automated browser smoke dijalankan melalui integration gate penuh | `35/36` stage lulus; Playwright install dan `relgeo-playground: test:e2e` lulus, satu failure hanya strict baseline karena submodule lokal belum clean |
 | 2026-09-16 | Automated browser smoke dijalankan pada public-registry gate | `49/50` stage lulus; Playwright install dan `test:e2e` lulus dengan package npm publik, satu failure hanya strict baseline karena submodule lokal belum clean |

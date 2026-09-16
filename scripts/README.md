@@ -58,7 +58,7 @@ Untuk inventory behavior historis dan mismatch penamaan contoh, jalankan:
 pnpm run compatibility:audit
 ~~~
 
-Command ini bersifat read-only. Warning tidak otomatis menggagalkan gate: warning saat ini mencatat filename `v04_*` yang berisi DSL `v0.5` dan parser yang belum memiliki allowlist future-version. Keputusan kontrak tetap harus dibuat sebelum warning tersebut diubah menjadi enforcement.
+Command ini bersifat read-only. Audit memisahkan active `v0.5`, supported legacy `v0.4`, regression-only `v0.1`–`v0.3`, dan future/unknown version yang ditolak parser. Warning hanya dipakai untuk behavior yang masih memerlukan keputusan terpisah.
 
 ## Shared conformance fixtures
 
@@ -107,7 +107,7 @@ lint debt itu ditangani secara terpisah. Runner berhenti dengan status `2` bila 
 tidak tersedia. Gunakan `RELGEO_FLUTTER_BIN` jika executable Flutter tidak bernama
 `flutter` atau tidak berada di `PATH`.
 
-Evidence lokal 2026-09-16: Flutter `3.41.9`, Dart `3.11.5`, 16 fixture di-stage, dan 119
+Evidence lokal 2026-09-16: Flutter `3.41.9`, Dart `3.11.5`, 18 fixture canonical pada workspace (16 fixture di-stage untuk runner Flutter), dan 119
 test Flutter lulus. Checkout Flutter terisolasi juga lulus 99 test dengan 7 shared-fixture
 test dilewati secara eksplisit; CI tetap merupakan gate terpisah.
 

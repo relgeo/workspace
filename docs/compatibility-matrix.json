@@ -12,6 +12,14 @@
   "policy": {
     "publicPackageVersion": "0.5.x",
     "internalDependencyRange": "^0.5.0",
+    "versionAcceptance": {
+      "active": "0.5",
+      "supportedLegacy": ["0.4"],
+      "regressionOnly": ["0.1", "0.2", "0.3"],
+      "unsupportedFuture": true,
+      "omittedDefaultsTo": "0.5",
+      "parserDiagnosticCode": "UNSUPPORTED_SPEC_VERSION"
+    },
     "patch": "A patch release may move independently while the language contract remains compatible.",
     "breaking": "A breaking language-contract change moves the coordinated package family to the next compatibility line, for example 0.6.x.",
     "releaseAtomicity": "Do not publish a breaking family partially without an explicit decision record. Stop before publishing or record the partial state and forward-fix plan.",

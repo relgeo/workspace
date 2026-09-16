@@ -127,6 +127,12 @@ pnpm run release:verify-published
 
 Audit tarball lokal pada checkout yang sudah dibuild menjadi evidence tambahan sebelum release berikutnya.
 
+Perubahan policy parser/schema pada 2026-09-16 sudah lulus source-level gate,
+tetapi tidak mengubah `@relgeo/core@0.5.0` atau `@relgeo/language-service@0.5.0`
+yang immutable di registry. Release patch untuk artefak tersebut masih harus
+disiapkan dan dipublish manual sebelum public-registry gate dapat membuktikan
+policy baru pada instalasi fresh.
+
 - `pnpm run release:record:check` memvalidasi record machine-readable baseline `0.5.0` terhadap matrix; record memuat urutan, seluruh package, consumer, dan evidence manual/public yang tersedia.
 
 Preflight seragam sebelum publish manual:
@@ -164,3 +170,4 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-15 | Release decision record baseline `0.5.0` dibuat dan divalidasi | `docs/releases/0.5.0.{md,json}`, template, dan `release:record:check`; package/consumer/order/evidence konsisten |
 | 2026-09-16 | Release preflight read-only ditambahkan | `release:preflight` mengurutkan clean-tree check, strict baseline, compatibility check, tarball audit, dan local integration gate; publish tetap manual |
 | 2026-09-16 | Release preflight pertama dijalankan dari commit bersih | root clean; strict baseline `81/81`; compatibility `250/250`; tarball audit `106/106`; integration gate lokal `36/36`; status `passed`; report berada di `.local/release-preflight-2026-09-16.json` |
+| 2026-09-16 | Parser dan language-service schema version policy diterapkan pada source-next | core parser menolak future/unknown version, schema editor membatasi history `0.1`–`0.5`; source gate lulus, registry masih berada pada package baseline `0.5.0` sehingga release patch manual tetap terbuka |

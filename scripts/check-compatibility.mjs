@@ -81,6 +81,19 @@ check(
   matrix.policy.internalDependencyRange === `^${matrix.compatibilityLine}.0`,
   "internal dependency policy has an explicit current-line lower bound",
 );
+const versionAcceptance = matrix.policy.versionAcceptance;
+check(versionAcceptance?.active === matrix.compatibilityLine, "version policy identifies the active compatibility line");
+check(
+  Array.isArray(versionAcceptance?.supportedLegacy) && versionAcceptance.supportedLegacy.length > 0,
+  "version policy declares supported legacy versions",
+);
+check(
+  Array.isArray(versionAcceptance?.regressionOnly) && versionAcceptance.regressionOnly.length > 0,
+  "version policy declares regression-only versions",
+);
+check(versionAcceptance?.unsupportedFuture === true, "version policy rejects undeclared future versions");
+check(versionAcceptance?.omittedDefaultsTo === matrix.compatibilityLine, "version policy declares the omitted-version default");
+check(versionAcceptance?.parserDiagnosticCode === "UNSUPPORTED_SPEC_VERSION", "version policy declares the parser diagnostic code");
 
 check(flutterCapabilityMatrix?.schemaVersion === 1, "Flutter capability matrix schema version is supported");
 check(

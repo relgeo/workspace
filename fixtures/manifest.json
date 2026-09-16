@@ -16,6 +16,14 @@
     "runtime-diagnostic": "valid document with an expected post-resolve constraint violation",
     "capability": "candidate coverage for a capability not yet enabled on every consumer"
   },
+  "versionAcceptance": {
+    "active": "0.5",
+    "supportedLegacy": ["0.4"],
+    "regressionOnly": ["0.1", "0.2", "0.3"],
+    "unsupportedFuture": true,
+    "omittedDefaultsTo": "0.5",
+    "parserDiagnosticCode": "UNSUPPORTED_SPEC_VERSION"
+  },
   "fixtures": [
     {
       "id": "text-anchor-multiline",
@@ -188,6 +196,22 @@
       "status": "invalid",
       "surfaces": ["core", "language-service"],
       "expectedDiagnostic": "Unknown identifier: missing.center"
+    },
+    {
+      "id": "v06-invalid-unsupported-version",
+      "path": "reference/17-v06-invalid-unsupported-version.yaml",
+      "contractVersion": "0.6",
+      "status": "invalid",
+      "surfaces": ["core", "language-service"],
+      "expectedDiagnostic": "Unsupported RelGeo DSL version"
+    },
+    {
+      "id": "v10-invalid-unknown-version",
+      "path": "reference/18-v10-invalid-unknown-version.yaml",
+      "contractVersion": "1.0",
+      "status": "invalid",
+      "surfaces": ["core", "language-service"],
+      "expectedDiagnostic": "Unsupported RelGeo DSL version"
     }
   ]
 }

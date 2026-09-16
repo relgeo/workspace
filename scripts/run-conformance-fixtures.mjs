@@ -79,7 +79,13 @@ check(manifest.standaloneStrategy?.childRepositoryPolicy === "standalone-local-t
 check(manifest.standaloneStrategy?.distribution === "not-published-as-package", "fixture manifest avoids a new public fixture package surface");
 check(manifest.standaloneStrategy?.integrationAuthority === "workspace-root-runner", "fixture manifest assigns cross-repo conformance to the root runner");
 check(manifest.statusPolicy?.active && manifest.statusPolicy?.["supported-legacy"] && manifest.statusPolicy?.invalid && manifest.statusPolicy?.["runtime-diagnostic"] && manifest.statusPolicy?.capability, "fixture manifest documents every fixture status policy");
-check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 16, "fixture manifest contains the 9 legacy, 1 active, 1 runtime-diagnostic, 2 capability candidates, and 3 invalid fixtures");
+check(manifest.versionAcceptance?.active === manifest.compatibilityLine, "fixture manifest identifies the active version");
+check(Array.isArray(manifest.versionAcceptance?.supportedLegacy) && manifest.versionAcceptance.supportedLegacy.length > 0, "fixture manifest declares supported legacy versions");
+check(Array.isArray(manifest.versionAcceptance?.regressionOnly) && manifest.versionAcceptance.regressionOnly.length > 0, "fixture manifest declares regression-only versions");
+check(manifest.versionAcceptance?.unsupportedFuture === true, "fixture manifest rejects undeclared future versions");
+check(manifest.versionAcceptance?.omittedDefaultsTo === manifest.compatibilityLine, "fixture manifest declares the omitted-version default");
+check(manifest.versionAcceptance?.parserDiagnosticCode === "UNSUPPORTED_SPEC_VERSION", "fixture manifest declares the parser diagnostic code");
+check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 18, "fixture manifest contains the 9 legacy, 1 active, 1 runtime-diagnostic, 2 capability candidates, and 5 invalid fixtures");
 
 const fixtureIds = new Set();
 const fixturePaths = new Set();
@@ -123,7 +129,7 @@ for (const fixture of manifest.fixtures ?? []) {
 const activeFixtures = manifest.fixtures.filter((fixture) => fixture.status === "active");
 check(activeFixtures.length === 1, "fixture manifest has exactly one active baseline fixture");
 const invalidFixtures = manifest.fixtures.filter((fixture) => fixture.status === "invalid");
-check(invalidFixtures.length === 3, "fixture manifest has the three invalid diagnostic fixtures");
+check(invalidFixtures.length === 5, "fixture manifest has the five invalid diagnostic fixtures");
 const runtimeDiagnosticFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-diagnostic");
 check(runtimeDiagnosticFixtures.length === 1, "fixture manifest has one runtime-diagnostic fixture");
 

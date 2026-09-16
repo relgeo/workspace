@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 2 — Contract Versioning dan Compatibility Matrix
 
-**Status:** Berjalan — matriks, deklarasi, pemeriksaan CI, checklist release, dan release decision record validator sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka
+**Status:** Berjalan — matriks, deklarasi, pemeriksaan CI, version acceptance policy, checklist release, dan release decision record validator sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -115,6 +115,8 @@ Command harus menghasilkan exit code non-zero ketika package mengubah compatibil
 - [x] release decision record template dan validator menjaga package/consumer/order tetap lengkap pada baseline `0.5.0`.
 - [x] inventory compatibility behavior disimpan di `docs/compatibility-behavior-audit.md`.
 - [x] command read-only `pnpm run compatibility:audit` tersedia untuk mengulang inventory tersebut.
+- [x] public historical/future version policy dan negative conformance fixtures sudah ditetapkan serta dijaga parser.
+- [x] language-service JSON Schema kini membatasi nilai version pada compatibility history yang dideklarasikan; test schema lulus `66/66`.
 - [ ] belum ada automated release transaction atau rollback/forward-fix helper; publish masih manual sesuai keputusan sebelumnya.
 - [x] Flutter sudah masuk matrix sebagai non-Node consumer berstatus `partial`; alignment CI dan release posture tetap dikelola pada Tahap 6.
 - [ ] metadata compatibility line belum ditambahkan sebagai field standar ke setiap `package.json`; untuk baseline ini deklarasi pusat plus README dan dependency ranges dipilih agar tidak memaksa sembilan repository anak melakukan commit tambahan.
@@ -152,3 +154,5 @@ Jika hanya ada patch release, update package entry dan baseline yang relevan tan
 | 2026-09-15 | Release record baseline `0.5.0` ditambahkan | `docs/releases/0.5.0.{md,json}` dan `release:record:check` memvalidasi matrix/order/package/consumer/evidence |
 | 2026-09-15 | Audit compatibility behavior dilakukan | coverage historis, parser version handling, fallback, dan mismatch example version dicatat; explicit historical/future version policy masih terbuka |
 | 2026-09-15 | Compatibility behavior audit dimasukkan ke workflow Integration | command read-only lulus lokal dengan `7 passed, 9 warnings, 0 failed`; warning policy dan mismatch nama file tetap non-blocking sampai keputusan kontrak dibuat |
+| 2026-09-16 | Version acceptance policy ditetapkan dan diuji negatif | matrix/manifest membedakan active `0.5`, supported legacy `0.4`, regression-only `0.1`–`0.3`; parser menolak `0.6`/`1.0` dengan `UNSUPPORTED_SPEC_VERSION`; conformance `228/228` |
+| 2026-09-16 | Language-service schema diselaraskan dengan parser version policy | enum string/number `0.1`–`0.5` dan default `0.5` ditambahkan; lint, test `66/66`, dan build lulus; package npm publik masih `0.5.0` sampai release patch manual |

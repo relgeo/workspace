@@ -109,8 +109,8 @@ Source detail dan evidence screenshot ada di [`playground/docs/UX-UI-AUDIT-AND-P
 ### 5.3 Delivery dan evidence lintas-repo
 
 - [x] Local integration gate lulus `36/36`.
-- [x] Release preflight lulus: strict baseline `81/81`, compatibility `250/250`, release audit `106/106`, dan integration `36/36`.
-- [x] GitHub `Integration #99` lulus untuk job `flutter`, `verify`, dan `public`.
+- [x] Release preflight lulus: strict baseline `81/81`, compatibility `256/256`, release audit `106/106`, dan integration `36/36` pada baseline sebelum policy-version fixture ditambahkan; compatibility terbaru `256/256` diverifikasi ulang setelah policy tersebut.
+- [x] GitHub `Integration #99` lulus untuk job `flutter`, `verify`, dan `public`; commit berikutnya menunggu verifikasi setelah batch policy ini dipush.
 - [x] Public Playground smoke mencapai `READY`, preview tetap terlihat, tab `Errors` menampilkan diagnostic expected, dan console browser bersih.
 - [x] Root commit `ebb33b4` sudah dipush; workflow baru `Integration #101` dipicu untuk memvalidasi commit tersebut.
 
@@ -142,7 +142,7 @@ Source detail dan evidence screenshot ada di [`playground/docs/UX-UI-AUDIT-AND-P
 - [x] Language Spec index menggunakan authoritative sidebar dan reading column.
 - [x] Leaf pages mengurangi nested card dan membedakan reading surface dari utility navigation.
 - [x] Normative spec tetap bersumber dari repository `spec`, bukan disalin manual ke website.
-- [ ] Review editorial konten setelah contract/version policy berubah.
+- [x] Review editorial konten setelah contract/version policy berubah; Language Status website EN/ID kini menjelaskan active, supported legacy, regression-only, dan future-version behavior.
 
 ### Workstream D — Playground workbench interaction
 
@@ -251,7 +251,7 @@ Sampai kondisi tersebut terpenuhi, status Tahap 5 tetap **Berjalan**.
 
 ### Menunggu keputusan atau scope
 
-- [ ] final support policy historical/future version dapat memengaruhi copy docs dan capability status;
+- [x] final support policy historical/future version sudah diterapkan pada copy Language Status website EN/ID dan capability wording tetap tidak overclaim;
 - [ ] promotion candidate Flutter dan parity SVG yang lebih luas dikelola Tahap 6, bukan blocker implementasi website saat ini;
 - [ ] graph zoom/minimap dan usability review dengan pengguna lain bersifat opsional;
 - [ ] optimasi font lintas perangkat bersifat opsional.
@@ -288,7 +288,7 @@ Aturan perubahan:
 | Public Playground E2E | `2/2` lulus dengan `PLAYWRIGHT_BASE_URL` |
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `36/36` lulus |
-| Release preflight | `81/81`, `250/250`, `106/106`, `36/36` lulus |
+| Release preflight | snapshot baseline: `81/81`, `250/250`, `106/106`, `36/36`; compatibility terkini `256/256` |
 | CI evidence | Root commit `f953b32` sudah dipush; verifikasi run CI pascapush masih menunggu hasil terbaru |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
 

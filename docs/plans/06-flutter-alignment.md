@@ -117,7 +117,7 @@ comparison dicatat di
 - [x] hilangkan ketergantungan test terhadap `../fixtures` sebagai satu-satunya path;
 - [x] tambahkan `scripts/stage-flutter-fixtures.mjs` dan command `pnpm run fixtures:stage:flutter` untuk menyalin fixture canonical secara deterministik ke staging directory Flutter;
 - [x] tambahkan runner `pnpm run flutter:conformance` untuk staging fixture sementara lalu menjalankan `flutter pub get --enforce-lockfile`, analyzer dengan baseline lint non-fatal yang terlihat jelas, dan `flutter test` dalam urutan deterministik;
-- [x] jalankan runner lokal lengkap melalui SDK Flutter yang tersedia; staging 16 fixture, dependency resolution, analyzer, dan 119 test Flutter berhasil;
+- [x] jalankan runner lokal lengkap melalui SDK Flutter yang tersedia; staging 18 fixture, dependency resolution, analyzer, dan 119 test Flutter berhasil;
 - [x] jalankan test Flutter dari checkout terisolasi tanpa parent workspace; 99 test lulus dan 7 shared-fixture test dilewati secara eksplisit karena fixture canonical memang dimiliki root workspace;
 - [x] catat proposal bahwa fixture v0.4 dipertahankan sebagai regression history, sedangkan active conformance ditargetkan ke v0.5; persetujuan maintainer tetap terbuka di [decision record](../decisions/06-flutter-release-posture.md).
 
@@ -194,7 +194,7 @@ sequenceDiagram
 - [ ] pin revision Flutter pada baseline setelah evidence CI pertama lulus dan keputusan toolchain final disetujui.
 
 Evidence lokal yang sudah tersedia tidak menggantikan stage di atas: runner workspace
-lulus dengan Flutter `3.41.9`, Dart `3.11.5`, 16 fixture yang di-stage, `pub get`,
+lulus dengan Flutter `3.41.9`, Dart `3.11.5`, 18 fixture yang di-stage, `pub get`,
 analyzer non-fatal, dan 119 test. Job Flutter CI `Integration #94` juga lulus dari
 checkout workspace/submodule resmi; job `verify` dan `public` pada run yang sama
 ikut lulus. Analyzer masih melaporkan 130 lint/info legacy; temuan tersebut terlihat
@@ -256,15 +256,15 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 ## 8. Bukti saat ini
 
 - Audit source/readme/pubspec/test dilakukan pada 2026-09-16.
-- Runner Flutter lokal dijalankan dengan Flutter `3.41.9` dan Dart `3.11.5`; staging 16 fixture, `flutter pub get --enforce-lockfile`, analyzer non-fatal, serta 119 test lulus.
+- Runner Flutter lokal dijalankan dengan Flutter `3.41.9` dan Dart `3.11.5`; staging 18 fixture, `flutter pub get --enforce-lockfile`, analyzer non-fatal, serta 119 test lulus.
 - Test semantic projection untuk fixture active dan runtime-diagnostic, boundary invalid, widget smoke, golden, dan regression edit invalid sudah dieksekusi dan lulus secara lokal.
 - Perbaikan yang terverifikasi dalam run tersebut mencakup wrapping pesan violation pada inspector agar tidak overflow dan penjadwalan ulang frame pada regression invalid edit agar perubahan controller diproses oleh widget test.
 - Evidence CI Flutter terbaru tersedia melalui `Integration #99` (job `flutter`, `verify`, dan `public` sukses); active, runtime-diagnostic, dan candidate lulus pada scene projection serta SVG semantic projection ter-normalisasi, tetapi candidate masih capability-only dan cakupan SVG/policy presentation yang lebih luas masih terbuka.
 - Draft release posture Flutter sudah dicatat sebagai decision record; statusnya masih `Proposed` dan tidak dianggap sebagai persetujuan maintainer.
 - Runner `pnpm run flutter:conformance` sudah memiliki jalur blocked yang eksplisit untuk environment tanpa Flutter dan dapat memakai `RELGEO_FLUTTER_BIN`.
 - Capability mapping machine-readable sudah ditambahkan dan path/symbol mapping-nya diverifikasi oleh compatibility checker root.
-- Compatibility checker root lulus `250 passed, 0 failed`, termasuk validasi capability matrix Flutter dan record non-Node untuk Flutter.
-- Root conformance runner saat ini menghasilkan `204 passed, 0 failed across 16 fixtures` untuk consumer TypeScript/CLI; angka ini tidak termasuk 119 test Flutter. Validator manifest juga mewajibkan setiap capability candidate memiliki snapshot scene dan output yang dapat direview.
+- Compatibility checker root lulus `256 passed, 0 failed`, termasuk validasi capability matrix Flutter, record non-Node untuk Flutter, dan version acceptance policy.
+- Root conformance runner saat ini menghasilkan `228 passed, 0 failed across 18 fixtures` untuk consumer TypeScript/CLI; angka ini tidak termasuk 119 test Flutter. Validator manifest juga mewajibkan setiap capability candidate memiliki snapshot scene dan output yang dapat direview.
 - Definisi machine-readable untuk arti setiap evidence flag sudah ditambahkan: local test, shared fixture, semantic parity, dan CI dibedakan dari status active/partial; checker compatibility tetap lulus setelah perubahan.
 - Gap evaluator/unit lokal dirapikan: Flutter kini mendukung inch (`in`), signed unit literal, konversi `LengthUnit.ip`, dan mempertahankan string non-numerik saat normalisasi; regression suite evaluator lulus `6/6`.
 - Candidate evaluator/unit kemudian diuji lintas core, renderer, CLI, dan Flutter melalui fixture canonical ke-16; target unit CLI `mm` dicatat eksplisit agar snapshot tidak bergantung pada default `px` CLI.

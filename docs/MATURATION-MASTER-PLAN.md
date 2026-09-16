@@ -188,9 +188,9 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 
 ## 5. Prioritas utama yang disepakati
 
-### Prioritas 1 — Reproducible cross-repo integration gate
+### Prioritas 1 — Reproducible cross-repo integration gate — selesai
 
-Ini adalah pekerjaan paling penting berikutnya. Selama setiap repository dapat lulus sendirian tetapi belum diuji sebagai rantai publik dari checkout bersih, kita belum mempunyai bukti bahwa ekosistem benar-benar siap dipelihara.
+Prioritas ini sudah ditutup sebagai fondasi. Root sekarang memiliki strict baseline, local/public integration runner, fresh-checkout behavior, artifact assertion, browser E2E, dan CI evidence. Tahap ini tetap menjadi gate wajib setiap perubahan lintas-repo, tetapi bukan lagi pekerjaan berikutnya.
 
 Target rantai minimum:
 
@@ -209,25 +209,33 @@ Gate harus menjawab:
 - apakah website dapat mengambil baseline Playground dan spec yang benar;
 - apakah artifact publik dan route utama tetap valid.
 
-### Prioritas 2 — Compatibility dan release contract
+### Prioritas 2 — Compatibility dan release contract — baseline selesai, propagasi publik terbuka
 
-Buat kontrak eksplisit mengenai hubungan spec, package, Playground, website, dan Flutter. 0.5.x harus mempunyai matriks kompatibilitas yang dapat dibaca manusia dan diperiksa script.
+Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-service schema enum, negative fixtures, dan checker. Sisa tahap ini bukan merumuskan policy lagi, melainkan mempropagasikan perubahan source-next ke release patch npm dan memverifikasi registry fresh install.
 
-### Prioritas 3 — Release automation yang aman
+### Prioritas 3 — Release automation yang aman — berikutnya
 
-Setelah gate integrasi stabil, standardisasi proses pack, publish, tag, changelog, provenance, dan verifikasi pascapublish. Publish manual tetap boleh sebagai jalur darurat, tetapi bukan satu-satunya proses yang diketahui.
+Dengan integration gate stabil, langkah operasional berikutnya adalah menyiapkan release patch core/language-service secara manual dan terdokumentasi, lalu memperkuat guard untuk mencegah partial publish tanpa decision record. Automated publish tetap ditahan sampai jalur manual dan recovery terbukti.
 
-### Prioritas 4 — Shared conformance fixtures
+### Prioritas 4 — Shared conformance fixtures — hampir selesai
 
-Satukan fixture penting untuk parse, resolve, diagnostics, render, highlighting, Markdown, CLI, Playground, dan website. Satu perubahan kontrak harus terlihat dampaknya pada seluruh consumer.
+Fixture penting untuk parse, resolve, diagnostics, render, highlighting, Markdown, CLI, Playground, website, dan Flutter sudah tersedia. Sisa keputusan adalah apakah dua capability candidate Flutter dipromosikan menjadi active contract dan seberapa luas policy SVG presentation perlu dibuat.
 
-### Prioritas 5 — Public product hardening
+### Prioritas 5 — Public product hardening — implementation selesai, evidence eksternal terbuka
 
-Tutup dua gate eksternal Playground, lanjutkan smoke publik rutin, dan pastikan docs menjelaskan status capability secara jujur.
+Implementation dan browser emulation sudah kuat. Sisa wajib adalah validasi touch nyata, keyboard fisik, dan VoiceOver/TalkBack pada perangkat operator, lalu satu public smoke setelah temuan eksternal ditutup.
 
-### Prioritas 6 — Flutter alignment dan feature expansion
+### Prioritas 6 — Flutter alignment dan feature expansion — berjalan terbatas
 
-Setelah adapter Flutter dan contract/integration gate tersedia, jalankan fixture yang sama pada Flutter dan catat parity/gap. Baru setelah itu perluasan fitur besar atau peningkatan surface baru menjadi prioritas utama.
+Adapter, runner, CI, dan semantic projection sudah tersedia. Flutter tetap workbench non-publishable; sisa utamanya adalah promotion decision capability, parity SVG/presentation yang lebih luas, dan validasi build platform bila release artifact Flutter kelak dipertimbangkan. Feature expansion ditahan sampai keputusan itu jelas.
+
+### Urutan pengerjaan setelah batch ini
+
+1. Publish dan verifikasi patch npm untuk source policy yang sudah berubah (`core` dan `language-service`), tanpa mengubah compatibility line `0.5`.
+2. Jalankan public-registry integration gate dan update release record/baseline hanya setelah registry benar-benar memuat artefak baru.
+3. Tambahkan enforcement decision-record pada release guard untuk setiap breaking-family release; tetap pertahankan manual publish.
+4. Lakukan touch/keyboard/screen-reader validation pada perangkat nyata bila perangkat tersedia.
+5. Bahas promosi candidate Flutter dan cakupan SVG presentation setelah evidence tersebut ditinjau.
 
 ## 6. Tahapan pematangan
 
@@ -258,7 +266,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Selesai — local gate 33/33, public-registry gate 48/48, fresh-checkout gate 33/33, CI terbaru, public smoke 14/14 route, dan reproduksi failure CI sudah lulus.
+**Status:** Selesai — local gate 36/36, public-registry gate 48/48, fresh-checkout gate 33/33, CI terbaru, public smoke 14/14 route, dan reproduksi failure CI sudah lulus.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -341,7 +349,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; promotion candidate dan parity capability tambahan masih terbuka.
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; promotion candidate dan parity capability tambahan masih terbuka.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -374,6 +382,7 @@ Status menggunakan arti berikut:
 - [x] automated browser consumer Playground memiliki test source/preview/diagnostic dan mobile surface;
 - [x] automated browser consumer Playground dan Flutter pada CI memiliki evidence fixture yang tervalidasi;
 - [x] website runtime berbasis interaksi pada deployment Pages terbaru diverifikasi: Playground mencapai `READY`, preview tetap tampil, tab `Errors` memuat diagnostic expected, dan console browser bersih;
+- [x] historical/future version policy dan negative conformance fixtures menjaga parser serta language-service tetap eksplisit;
 - [ ] tidak ada consumer yang membuat kontrak diam-diam berbeda.
 
 **Deliverable sub-rencana:** [docs/plans/04-shared-conformance-fixtures.md](plans/04-shared-conformance-fixtures.md).
@@ -445,7 +454,7 @@ Status menggunakan arti berikut:
 
 ## 7. Rencana kerja berikutnya yang direkomendasikan
 
-Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Runner Flutter, checkout Flutter terisolasi, serta active/candidate scene dan SVG semantic projection sudah lulus lokal dan pada `Integration #91` tanpa menjadikannya dependency gate TypeScript; browser publik terbaru sudah diverifikasi, sementara capability parity tambahan dan policy version tetap harus ditutup secara terpisah.
+Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Runner Flutter, checkout Flutter terisolasi, serta active/candidate scene dan SVG semantic projection sudah lulus lokal dan pada `Integration #91` tanpa menjadikannya dependency gate TypeScript; browser publik terbaru sudah diverifikasi, sementara capability parity tambahan tetap harus ditutup secara terpisah.
 
 Urutan kerja yang disarankan sekarang:
 
@@ -469,7 +478,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 - [ ] Playground memiliki bukti browser, touch, dan assistive technology yang sesuai scope;
 - [ ] setiap repository memiliki README/development/release guidance yang tidak bertentangan;
 - [ ] perubahan besar mempunyai changelog/decision record dan rollback path;
-- [ ] public historical-version policy dan future-version handling memiliki negative conformance tests;
+- [x] public historical-version policy dan future-version handling memiliki negative conformance tests;
 - [ ] fitur baru tidak mengorbankan reproducibility atau source-of-truth boundary.
 
 ## 9. Log perubahan master plan
@@ -497,7 +506,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-15 | Public-registry standalone gate Tahap 4 dijalankan | package TypeScript, Playground, dan website dipasang dari registry pada checkout temporary; `48/48` stage lulus; browser runtime publik, CI setelah push, dan Flutter evidence masih terbuka |
 | 2026-09-15 | Direct public Playground browser smoke Tahap 4 dijalankan | URL publik mencapai `READY` dengan preview dan diagnostic runtime yang diharapkan; smoke manual selesai, automated browser/website evidence, CI setelah push, dan Flutter evidence masih terbuka |
 | 2026-09-15 | Release decision record baseline `0.5.0` ditambahkan | template, machine-readable validator, dan record package/consumer/order/evidence tersedia; automated publish/recovery transaction dan partial-release evidence masih terbuka |
-| 2026-09-15 | Compatibility behavior audit Tahap 2/4 diselesaikan | `docs/compatibility-behavior-audit.md` mencatat parser version handling, historical regression coverage, fallback yang disengaja, dan mismatch nama file contoh; explicit historical/future version policy masih terbuka |
+| 2026-09-15 | Compatibility behavior audit Tahap 2/4 diselesaikan | `docs/compatibility-behavior-audit.md` mencatat parser version handling, historical regression coverage, fallback yang disengaja, dan mismatch nama file contoh; policy versi kemudian diformalkan pada 2026-09-16 |
 | 2026-09-15 | Compatibility behavior audit dimasukkan ke workflow Integration | command read-only lulus lokal dengan `7 passed, 9 warnings, 0 failed`; evidence CI pascapush masih terbuka |
 | 2026-09-15 | Pages artifact assertion diperkuat untuk runtime Playground | bundle terpaket kini wajib memuat editor accessibility label, state `READY`, tab `Errors`, dan pesan diagnostic align; browser interaction evidence masih terbuka |
 | 2026-09-16 | Automated browser smoke Playground ditambahkan ke jalur integration gate | Playwright `1.63.0` exact; dua test lokal lulus; unit test dipisahkan dari folder `e2e`; CI pascapush masih menjadi evidence berikutnya |
@@ -534,6 +543,9 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Sub-rencana Tahap 5 dibuat dan ditautkan | website visual audit, visual rules, Playground UX/UI audit, public smoke, accessibility baseline, dan gate eksternal kini memiliki satu dokumen koordinasi; touch fisik dan assistive technology tetap terbuka |
 | 2026-09-16 | Playground menambahkan mobile-device emulation dengan touchscreen tap | `e070cd9`, E2E lokal `2/2`; bukti automation bertambah, sedangkan handset fisik, keyboard fisik, dan VoiceOver/TalkBack tetap terbuka |
 | 2026-09-16 | Audit Playground diselaraskan ke baseline `e73b212` dan root gate diulang | root `f953b32`, strict baseline `81/81`, compatibility `250/250`, integration `36/36`; CI pascapush terbaru masih perlu diverifikasi |
+| 2026-09-16 | Public version policy diformalkan lintas matrix, manifest, dan parser | active `0.5`, supported legacy `0.4`, regression-only `0.1`–`0.3`, omitted default `0.5`; future/unknown version ditolak dengan `UNSUPPORTED_SPEC_VERSION` |
+| 2026-09-16 | Negative conformance version fixtures ditambahkan | fixture `17` (`0.6`) dan `18` (`1.0`); core `427/427`, compatibility `256/256`, conformance `228/228` across 18 fixtures |
+| 2026-09-16 | Language-service schema dan root integration gate diselaraskan dengan version policy | schema membatasi version `0.1`–`0.5`; lint/test `66/66`; strict baseline `81/81`; local integration gate `36/36`; registry masih menyediakan core/language-service `0.5.0` sehingga release patch manual tetap terbuka |
 
 ## 10. Catatan pemeliharaan
 

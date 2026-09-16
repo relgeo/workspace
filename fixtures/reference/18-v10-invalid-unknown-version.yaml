@@ -1,0 +1,5 @@
+version: "1.0"
+objects:
+  origin:
+    type: point
+    at: [0, 0]

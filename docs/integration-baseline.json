@@ -7,7 +7,7 @@
   "submodules": [
     {
       "path": "relgeo.github.io",
-      "revision": "5ac4b9cb5418d133e680693dd7e7c1065f23dec6",
+      "revision": "cee089c5892d890e04816c545a6d970b11be5cdb",
       "package": {
         "name": "relgeo-docs-site",
         "version": "0.5.0"
@@ -15,7 +15,7 @@
     },
     {
       "path": "playground",
-      "revision": "e73b212d513013a72e98520c5bbd0cae4f1c38ff",
+      "revision": "60bafa910939482a34e7e44030f697cf79d5bfbf",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"
@@ -27,7 +27,7 @@
     },
     {
       "path": "core",
-      "revision": "1a660737e98a387f518ffcd8bedbb3586162a29e",
+      "revision": "72d8bd82e05134fde5f38bcd532b7c8d12d16f87",
       "package": {
         "name": "@relgeo/core",
         "version": "0.5.0"
@@ -43,7 +43,7 @@
     },
     {
       "path": "language-service",
-      "revision": "a49b3a6cf4fcb4c2f0c44d95fc76686a8609a27d",
+      "revision": "5155890314957655c77b3dd184b6f6e3f270d2e0",
       "package": {
         "name": "@relgeo/language-service",
         "version": "0.5.0"

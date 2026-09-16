@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 3 — Release dan npm Publishing Guard
 
-**Status:** Berjalan — checklist, tarball audit, dan post-publish verifier sudah dibuat; automated publish dan recovery transaction belum diaktifkan  
+**Status:** Berjalan — checklist, tarball audit, post-publish verifier, dan release decision record validator sudah dibuat serta baseline `0.5.0` sudah dicatat; automated publish dan recovery transaction belum diaktifkan
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -107,6 +107,7 @@ npm publish --access public
 - [x] `scripts/audit-release-readiness.mjs` memeriksa metadata, `package.json.files`, dan isi `npm pack --dry-run` untuk seluruh package publik.
 - [x] `scripts/verify-published-packages.mjs` memeriksa versi setiap package langsung dari npm registry tanpa memerlukan token.
 - [x] root script `pnpm run release:audit` dan `pnpm run release:verify-published` tersedia.
+- [x] `docs/releases/TEMPLATE.md`, record `0.5.0`, dan `scripts/check-release-record.mjs` tersedia untuk mencegah package/consumer hilang dari ledger release.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.
 - [ ] automated publishing belum diaktifkan.
@@ -114,8 +115,8 @@ npm publish --access public
 
 ## 5. Bukti awal
 
-- `integration:gate --local` lulus `33/33` pada baseline 2026-09-15.
-- Public-registry gate sebelumnya lulus `48/48`, termasuk pack boundary dan consumer install.
+- `integration:gate --local` lulus `34/34` pada baseline 2026-09-15, termasuk shared conformance fixture stage.
+- Public-registry gate lulus `48/48`, termasuk pack boundary dan consumer install pada checkout temporary.
 - `release:audit` lulus `106/106` untuk tujuh package pada checkout yang sudah dibuild.
 - `release:verify-published` lulus `7/7`; seluruh tujuh package `0.5.0` terkonfirmasi tersedia di npm pada 2026-09-15. Command yang dapat dijalankan ulang:
 
@@ -125,6 +126,8 @@ pnpm run release:verify-published
 
 Audit tarball lokal pada checkout yang sudah dibuild menjadi evidence tambahan sebelum release berikutnya.
 
+- `pnpm run release:record:check` memvalidasi record machine-readable baseline `0.5.0` terhadap matrix; record memuat urutan, seluruh package, consumer, dan evidence manual/public yang tersedia.
+
 ## 6. Exit gate Tahap 3
 
 - [x] satu checklist release seragam tersedia;
@@ -133,8 +136,9 @@ Audit tarball lokal pada checkout yang sudah dibuild menjadi evidence tambahan s
 - [x] post-publish version verifier tersedia;
 - [x] release dapat dihentikan secara manual dengan aturan partial-release yang jelas;
 - [x] post-publish evidence untuk baseline `0.5.0` dijalankan dan dicatat;
+- [x] decision record template digunakan untuk mencatat baseline `0.5.0` dan divalidasi terhadap matrix;
 - [ ] automated publishing diaktifkan setelah jalur manual terbukti stabil;
-- [ ] recovery helper terotomasi atau decision record template dipakai pada release nyata.
+- [ ] recovery helper transaction terotomasi atau diuji pada partial release nyata.
 
 Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum dilakukan. Implementasi guard dapat dipakai sekarang tanpa menunggu automation.
 
@@ -147,3 +151,4 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-15 | Registry post-publish verifier dibuat | `scripts/verify-published-packages.mjs` |
 | 2026-09-15 | Audit tarball dan registry dijalankan | `release:audit` 106/106; `release:verify-published` 7/7 untuk versi `0.5.0` |
 | 2026-09-15 | Checklist manual dan recovery partial release ditulis | automation publish tetap sengaja belum aktif |
+| 2026-09-15 | Release decision record baseline `0.5.0` dibuat dan divalidasi | `docs/releases/0.5.0.{md,json}`, template, dan `release:record:check`; package/consumer/order/evidence konsisten |

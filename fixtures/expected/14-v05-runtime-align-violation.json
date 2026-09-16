@@ -1,0 +1,42 @@
+{
+  "unit": "px",
+  "autoSize": true,
+  "padding": 20,
+  "objects": {
+    "first": {
+      "id": "first",
+      "type": "point",
+      "x": 0,
+      "y": 0,
+      "meta": {}
+    },
+    "second": {
+      "id": "second",
+      "type": "point",
+      "x": 10,
+      "y": 10,
+      "meta": {}
+    }
+  },
+  "bbox": {
+    "x": 0,
+    "y": 0,
+    "width": 10,
+    "height": 10
+  },
+  "violations": [
+    {
+      "type": "align",
+      "message": "Points are not aligned. Distance: 14.1421",
+      "deviation": 14.142135623730951,
+      "path": "constraints[0]",
+      "involvedObjects": [],
+      "visualHelper": {
+        "x1": 0,
+        "y1": 0,
+        "x2": 10,
+        "y2": 10
+      }
+    }
+  ]
+}

@@ -258,6 +258,19 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
     );
     if (!installed) return false;
 
+    if (repositoryPath === "playground") {
+      const playwrightInstallArgs = ["exec", "playwright", "install"];
+      if (process.env.CI) playwrightInstallArgs.push("--with-deps");
+      playwrightInstallArgs.push("chromium");
+      runStage(
+        packageName + ": Playwright Chromium (public registry)",
+        "pnpm",
+        playwrightInstallArgs,
+        cwd,
+        environment,
+      );
+    }
+
     for (const scriptName of scripts) {
       if (scriptName === "test:pages-artifact" && options.playgroundDist) {
         copyPlaygroundArtifact(
@@ -291,6 +304,16 @@ runStage("baseline: failure injection", process.execPath, [
 if (localMode) {
   runStage("workspace: frozen install", "pnpm", ["install", "--frozen-lockfile"]);
 
+  const playwrightInstallArgs = ["exec", "playwright", "install"];
+  if (process.env.CI) playwrightInstallArgs.push("--with-deps");
+  playwrightInstallArgs.push("chromium");
+  runStage(
+    "workspace: Playwright Chromium",
+    "pnpm",
+    playwrightInstallArgs,
+    path.join(root, "playground"),
+  );
+
   const packageStages = [
     ["@relgeo/geometry", ["lint", "build", "test"]],
     ["@relgeo/core", ["lint", "build", "test"]],
@@ -312,6 +335,7 @@ if (localMode) {
     ["relgeo-playground", "test"],
     ["relgeo-playground", "audit:ux"],
     ["relgeo-playground", "build"],
+    ["relgeo-playground", "test:e2e"],
     ["relgeo-docs-site", "check"],
     ["relgeo-docs-site", "build"],
     ["relgeo-docs-site", "test"],
@@ -328,6 +352,10 @@ if (localMode) {
     }
     runWorkspacePackageStage(packageName, scriptName);
   }
+
+  runStage("workspace: shared conformance fixtures", process.execPath, [
+    "scripts/run-conformance-fixtures.mjs",
+  ]);
 } else {
   try {
     const packageStages = [
@@ -349,6 +377,7 @@ if (localMode) {
       "test",
       "audit:ux",
       "build",
+      "test:e2e",
     ]);
     runPublicConsumer("relgeo-docs-site", "relgeo.github.io", [
       "check",

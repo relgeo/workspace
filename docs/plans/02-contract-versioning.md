@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 2 — Contract Versioning dan Compatibility Matrix
 
-**Status:** Berjalan — matriks, deklarasi, dan pemeriksaan CI sudah dibuat; atomic release guard dan checklist release masih menjadi pekerjaan Tahap 3
+**Status:** Berjalan — matriks, deklarasi, pemeriksaan CI, checklist release, dan release decision record validator sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -61,7 +61,7 @@ sequenceDiagram
   Apps-->>Owner: report release evidence
 ~~~
 
-Diagram ini belum berarti publish otomatis. Ia menjadi urutan keputusan yang akan dipakai ketika Tahap 3 membuat release guard.
+Diagram ini belum berarti publish otomatis. Ia menjadi urutan keputusan yang dipakai bersama release guard Tahap 3.
 
 ## 3. Baseline aktual
 
@@ -111,9 +111,12 @@ Command harus menghasilkan exit code non-zero ketika package mengubah compatibil
 ## 5. Hal yang belum tertutup
 
 - [ ] breaking change belum dicegah oleh publish guard lintas-package; saat ini baru dideteksi sebagai mismatch oleh compatibility check.
-- [ ] release checklist operasional yang mencakup spec, package, consumer, docs, tag, dan post-publish evidence belum dibuat; ini deliverable Tahap 3.
+- [x] release checklist operasional yang mencakup spec, package, consumer, docs, tag, dan post-publish evidence tersedia di sub-rencana Tahap 3.
+- [x] release decision record template dan validator menjaga package/consumer/order tetap lengkap pada baseline `0.5.0`.
+- [x] inventory compatibility behavior disimpan di `docs/compatibility-behavior-audit.md`.
+- [x] command read-only `pnpm run compatibility:audit` tersedia untuk mengulang inventory tersebut.
 - [ ] belum ada automated release transaction atau rollback/forward-fix helper; publish masih manual sesuai keputusan sebelumnya.
-- [ ] Flutter belum masuk matrix sebagai consumer yang diverifikasi; alignment-nya tetap Tahap 6.
+- [x] Flutter sudah masuk matrix sebagai non-Node consumer berstatus `partial`; alignment CI dan release posture tetap dikelola pada Tahap 6.
 - [ ] metadata compatibility line belum ditambahkan sebagai field standar ke setiap `package.json`; untuk baseline ini deklarasi pusat plus README dan dependency ranges dipilih agar tidak memaksa sembilan repository anak melakukan commit tambahan.
 
 ## 6. Exit gate Tahap 2
@@ -122,7 +125,7 @@ Command harus menghasilkan exit code non-zero ketika package mengubah compatibil
 - [x] setiap package/application yang relevan menyatakan compatibility line pada README dan matrix;
 - [x] CI mendeteksi mismatch versi atau peer dependency sebelum integration gate;
 - [ ] breaking family tidak dapat dipublish sebagian tanpa keputusan eksplisit;
-- [ ] release checklist lengkap tersedia dan dipakai pada release nyata.
+- [x] release checklist lengkap tersedia; pemakaian ulang pada release berikutnya tetap menjadi evidence pemeliharaan Tahap 3.
 
 Tahap 2 belum boleh ditandai selesai sampai dua checkbox terakhir dipindahkan ke release guard Tahap 3 atau mempunyai evidence operasional yang setara.
 
@@ -145,4 +148,7 @@ Jika hanya ada patch release, update package entry dan baseline yang relevan tan
 | 2026-09-15 | Audit metadata package dan consumer dilakukan | seluruh package publik `0.5.0`; Playground `0.4.0`; internal ranges `^0.5.0` |
 | 2026-09-15 | Matrix dan compatibility checker dibuat | `docs/compatibility-matrix.json`, `scripts/check-compatibility.mjs` |
 | 2026-09-15 | Checker dimasukkan ke workflow Integration | dijalankan sebelum local integration gate; CI berikutnya menjadi evidence runtime |
-
+| 2026-09-15 | Checklist release lintas contract/package/consumer diturunkan ke Tahap 3 | tersedia di `docs/plans/03-npm-release-guard.md`; atomic partial-publish enforcement masih terbuka |
+| 2026-09-15 | Release record baseline `0.5.0` ditambahkan | `docs/releases/0.5.0.{md,json}` dan `release:record:check` memvalidasi matrix/order/package/consumer/evidence |
+| 2026-09-15 | Audit compatibility behavior dilakukan | coverage historis, parser version handling, fallback, dan mismatch example version dicatat; explicit historical/future version policy masih terbuka |
+| 2026-09-15 | Compatibility behavior audit dimasukkan ke workflow Integration | command read-only lulus lokal dengan `7 passed, 9 warnings, 0 failed`; warning policy dan mismatch nama file tetap non-blocking sampai keputusan kontrak dibuat |

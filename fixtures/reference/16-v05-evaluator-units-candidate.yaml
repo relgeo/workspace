@@ -1,0 +1,41 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Evaluator and Units Candidate
+  description: Capability candidate for scalar parameters, unit normalization, and derived placement.
+
+scene:
+  unit: mm
+  padding: 4
+  autoSize: true
+
+parameters:
+  panelWidth:
+    type: length
+    default: 2cm
+  panelHeight:
+    type: length
+    default: 25.4mm
+  inset:
+    type: length
+    default: 5mm
+
+derived:
+  panelX: inset + 1cm
+  panelY: inset * 2
+
+objects:
+  panel:
+    type: rect
+    size: [panelWidth, panelHeight]
+    place:
+      topLeft: [panelX, panelY]
+
+  center:
+    type: point
+    at: [panel.centerX, panel.centerY]
+
+  marker:
+    type: circle
+    radius: 2mm
+    center: center

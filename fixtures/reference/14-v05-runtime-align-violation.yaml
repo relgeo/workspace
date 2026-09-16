@@ -1,0 +1,19 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Runtime Align Diagnostic
+  description: Valid geometry with an intentionally unsatisfied relation.
+
+objects:
+  first:
+    type: point
+    at: [0, 0]
+
+  second:
+    type: point
+    at: [10, 10]
+
+constraints:
+  - align:
+      target: first
+      with: second

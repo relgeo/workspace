@@ -14,6 +14,46 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  flutter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout workspace and submodules
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Setup Node.js for the workspace runner
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.9
+          cache: true
+          pub-cache: true
+
+      - name: Record Flutter toolchain
+        run: flutter --version
+
+      - name: Run Flutter conformance gate
+        run: node scripts/run-flutter-conformance.mjs
+
+      - name: Record Flutter summary
+        if: always()
+        run: |
+          {
+            echo "### RelGeo Flutter conformance"
+            echo "- Flutter channel: stable"
+            echo "- Flutter version: 3.41.9"
+            echo "- Runner: scripts/run-flutter-conformance.mjs"
+            echo "- Gate is independent of TypeScript/package jobs"
+          } >> "$GITHUB_STEP_SUMMARY"
+
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -37,6 +77,9 @@ jobs:
 
       - name: Check contract compatibility matrix
         run: pnpm run compatibility:check
+
+      - name: Audit compatibility behavior inventory
+        run: pnpm run compatibility:audit
 
       - name: Run local-workspace integration gate
         run: pnpm run integration:gate -- --local --report=.local/integration-gate.json

@@ -174,7 +174,7 @@ Inventory awal dibaca dari package metadata, lockfile, submodule status, dan isi
 | remark-relgeo-hl | belum dideklarasikan | belum ada | lint, test, build | peer dependency ke language-service |
 | remark-relgeo | belum dideklarasikan | belum ada | lint, test, build | runtime dependency ke core dan renderer-svg |
 | cli | pnpm 10.33.3 | belum ada | test, build | runtime dependency ke core dan renderer-svg |
-| playground | pnpm 10.33.3 | pnpm-lock.yaml | lint, test, audit:ux, build | package private; consumer browser |
+| playground | pnpm 10.33.3 | pnpm-lock.yaml | lint, test, audit:ux, build, test:e2e | package private; consumer browser |
 | relgeo.github.io | belum dideklarasikan | pnpm-lock.yaml | check, build, test, test:pages-artifact | consumer Astro dan Pages |
 | flutter | Flutter/Dart | pubspec.lock | ditentukan oleh pubspec | gate terpisah pada Tahap 6 |
 | spec | Git/documentation | tidak relevan | tidak ada package command | source contract; perlu validator khusus bila dibutuhkan |
@@ -415,3 +415,4 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Workflow GitHub `Integration #87` pada commit `04960d3` diverifikasi selesai sukses | CI integration gate lulus; public smoke dan reproduksi failure CI tertentu masih terbuka |
 | 2026-09-15 | Public smoke test dijalankan terhadap `https://relgeo.github.io` | 14/14 route HTTP 200; public smoke lulus; hanya reproduksi failure CI tertentu yang tersisa |
 | 2026-09-15 | Failure run `#85` direproduksi dari checkout bersih `fe94149` dengan `CI=1` | gate lama menghasilkan 30 passed dan 3 failed pada `renderer-svg`, `remark-relgeo`, dan `cli`; akar masalah urutan test sebelum build serta import dist lokal; failure dapat direproduksi dan sudah tertutup oleh baseline baru |
+| 2026-09-16 | Local integration gate diperluas dengan automated browser smoke Playground | gate memasang Chromium sesuai environment, menjalankan `test:e2e` setelah build, dan menjaga unit test terpisah dari folder `e2e`; CI pascapush masih diperlukan |

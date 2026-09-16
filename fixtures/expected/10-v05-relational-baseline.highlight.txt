@@ -1,0 +1,53 @@
+01 | version: 0.5 | 0:7:keyword:version 7:8:punctuation:: 9:12:number:0.5
+02 |  |
+03 | meta: | 0:4:keyword:meta 4:5:punctuation::
+04 |   name: RelGeo v0.5 Relational Baseline | 2:6:meta-key:name 6:7:punctuation:: 8:14:identifier:RelGeo 15:17:reference:v0 17:18:operator:. 18:19:number:5 20:30:identifier:Relational 31:39:identifier:Baseline
+05 |   description: Small active-contract fixture shared across the public TypeScript surfaces. | 2:13:meta-key:description 13:14:punctuation:: 15:20:identifier:Small 21:36:identifier:active-contract 37:44:identifier:fixture 45:51:identifier:shared 52:58:identifier:across 59:62:identifier:the 63:69:identifier:public 70:80:identifier:TypeScript 81:89:reference:surfaces 89:90:operator:.
+06 |  |
+07 | scene: | 0:5:keyword:scene 5:6:punctuation::
+08 |   unit: mm | 2:6:key:unit 6:7:punctuation:: 8:10:identifier:mm
+09 |   padding: 12 | 2:9:key:padding 9:10:punctuation:: 11:13:number:12
+10 |   autoSize: true | 2:10:key:autoSize 10:11:punctuation:: 12:16:boolean:true
+11 |  |
+12 | metaPresets: | 0:11:container-keyword:metaPresets 11:12:punctuation::
+13 |   outlineStyle: | 2:14:meta-preset-key:outlineStyle 14:15:punctuation::
+14 |     fill: "#e0f2fe" | 4:8:key:fill 8:9:punctuation:: 10:19:string:"#e0f2fe"
+15 |     stroke: "#0f4c5c" | 4:10:key:stroke 10:11:punctuation:: 12:21:string:"#0f4c5c"
+16 |     strokeWidth: 1 | 4:15:key:strokeWidth 15:16:punctuation:: 17:18:number:1
+17 |  |
+18 | objects: | 0:7:container-keyword:objects 7:8:punctuation::
+19 |   base: | 2:6:object-id:base 6:7:punctuation::
+20 |     type: rect | 4:8:geometry-key:type 8:9:punctuation:: 10:14:object-type:rect
+21 |     size: [80, 40] | 4:8:geometry-key:size 8:9:punctuation:: 10:11:punctuation:[ 11:13:number:80 13:14:punctuation:, 15:17:number:40 17:18:punctuation:]
+22 |     place: | 4:9:layout-key:place 9:10:punctuation::
+23 |       topLeft: [10, 10] | 6:13:layout-key:topLeft 13:14:punctuation:: 15:16:punctuation:[ 16:18:number:10 18:19:punctuation:, 20:22:number:10 22:23:punctuation:]
+24 |     meta: | 4:8:presentation-key:meta 8:9:punctuation::
+25 |       fill: "#f8fafc" | 6:10:meta-key:fill 10:11:punctuation:: 12:21:string:"#f8fafc"
+26 |       stroke: "#1e293b" | 6:12:meta-key:stroke 12:13:punctuation:: 14:23:string:"#1e293b"
+27 |  |
+28 |   hole: | 2:6:object-id:hole 6:7:punctuation::
+29 |     type: circle | 4:8:geometry-key:type 8:9:punctuation:: 10:16:object-type:circle
+30 |     radius: 6 | 4:10:geometry-key:radius 10:11:punctuation:: 12:13:number:6
+31 |     center: base.center | 4:10:geometry-key:center 10:11:punctuation:: 12:16:reference:base 16:17:operator:. 17:23:anchor:center
+32 |     meta: | 4:8:presentation-key:meta 8:9:punctuation::
+33 |       fill: "#ffffff" | 6:10:meta-key:fill 10:11:punctuation:: 12:21:string:"#ffffff"
+34 |       stroke: "#dc2626" | 6:12:meta-key:stroke 12:13:punctuation:: 14:23:string:"#dc2626"
+35 |  |
+36 |   outline: | 2:9:object-id:outline 9:10:punctuation::
+37 |     type: polygon | 4:8:geometry-key:type 8:9:punctuation:: 10:17:object-type:polygon
+38 |     points: | 4:10:geometry-key:points 10:11:punctuation::
+39 |       - base.topLeft | 6:7:operator:- 8:12:reference:base 12:13:operator:. 13:20:anchor:topLeft
+40 |       - base.topRight | 6:7:operator:- 8:12:reference:base 12:13:operator:. 13:21:anchor:topRight
+41 |       - base.bottomRight | 6:7:operator:- 8:12:reference:base 12:13:operator:. 13:24:anchor:bottomRight
+42 |       - base.bottomLeft | 6:7:operator:- 8:12:reference:base 12:13:operator:. 13:23:anchor:bottomLeft
+43 |     metaPreset: outlineStyle | 4:14:presentation-key:metaPreset 14:15:punctuation:: 16:28:identifier:outlineStyle
+44 |  |
+45 |   label: | 2:7:object-id:label 7:8:punctuation::
+46 |     type: text | 4:8:geometry-key:type 8:9:punctuation:: 10:14:object-type:text
+47 |     content: "RelGeo v0.5" | 4:11:geometry-key:content 11:12:punctuation:: 13:26:string:"RelGeo v0.5"
+48 |     at: [50, 62] | 4:6:geometry-key:at 6:7:punctuation:: 8:9:punctuation:[ 9:11:number:50 11:12:punctuation:, 13:15:number:62 15:16:punctuation:]
+49 |     anchor: topCenter | 4:10:key:anchor 10:11:punctuation:: 12:21:anchor:topCenter
+50 |     meta: | 4:8:presentation-key:meta 8:9:punctuation::
+51 |       fill: "#0f172a" | 6:10:meta-key:fill 10:11:punctuation:: 12:21:string:"#0f172a"
+52 |       fontSize: 6 | 6:14:meta-key:fontSize 14:15:punctuation:: 16:17:number:6
+53 |  |

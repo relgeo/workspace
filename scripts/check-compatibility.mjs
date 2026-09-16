@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,6 +8,7 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const matrixPath = resolve(root, "docs/compatibility-matrix.json");
 const baselinePath = resolve(root, "docs/integration-baseline.json");
+const flutterCapabilityPath = resolve(root, "docs/flutter-capability-matrix.json");
 const jsonOutput = process.argv.includes("--json");
 const failures = [];
 const results = [];
@@ -46,14 +48,29 @@ function allDependencies(packageJson) {
 
 const matrix = await readJson(matrixPath);
 const baseline = await readJson(baselinePath);
+let flutterCapabilityMatrix;
+try {
+  flutterCapabilityMatrix = await readJson(flutterCapabilityPath);
+} catch (error) {
+  fail(`Flutter capability matrix is unreadable (${error.message})`);
+}
 const baselineByPath = new Map(baseline.submodules.map((entry) => [entry.path, entry]));
 const entries = [...matrix.packages, ...matrix.consumers];
+const nonNodeConsumers = matrix.nonNodeConsumers ?? [];
 const entryByPath = new Map(entries.map((entry) => [entry.path, entry]));
 const packageByName = new Map(matrix.packages.map((entry) => [entry.name, entry]));
 
 check(matrix.schemaVersion === 1, "matrix schema version is supported");
 check(entryByPath.size === entries.length, "matrix entries do not contain duplicate paths");
 check(packageByName.size === matrix.packages.length, "matrix packages do not contain duplicate names");
+check(
+  new Set(nonNodeConsumers.map((entry) => entry.path)).size === nonNodeConsumers.length,
+  "matrix non-Node consumers do not contain duplicate paths",
+);
+check(
+  nonNodeConsumers.every((entry) => !entryByPath.has(entry.path)),
+  "matrix non-Node consumers do not duplicate package or Node consumer paths",
+);
 check(matrix.compatibilityLine === baseline.compatibilityLine, "matrix and baseline use the same compatibility line");
 check(matrix.contract.version === matrix.compatibilityLine, "contract version matches compatibility line");
 check(
@@ -64,6 +81,57 @@ check(
   matrix.policy.internalDependencyRange === `^${matrix.compatibilityLine}.0`,
   "internal dependency policy has an explicit current-line lower bound",
 );
+
+check(flutterCapabilityMatrix?.schemaVersion === 1, "Flutter capability matrix schema version is supported");
+check(
+  flutterCapabilityMatrix?.compatibilityLine === matrix.compatibilityLine,
+  "Flutter capability matrix follows the current compatibility line",
+);
+const evidenceDefinitionKeys = [
+  "localFlutterTests",
+  "sharedFixtures",
+  "semanticParity",
+  "ci",
+  "activeContractBoundary",
+];
+check(
+  evidenceDefinitionKeys.every(
+    (key) => typeof flutterCapabilityMatrix?.evidenceDefinitions?.[key] === "string" && flutterCapabilityMatrix.evidenceDefinitions[key].length > 0,
+  ),
+  "Flutter capability matrix defines the evidence and active-contract boundary",
+);
+const capabilities = Array.isArray(flutterCapabilityMatrix?.capabilities)
+  ? flutterCapabilityMatrix.capabilities
+  : [];
+check(capabilities.length > 0, "Flutter capability matrix contains capabilities");
+check(
+  new Set(capabilities.map((capability) => capability.id)).size === capabilities.length,
+  "Flutter capability matrix capability ids are unique",
+);
+const supportLevels = new Set(["verified", "partial", "flutter-only", "unsupported"]);
+const evidenceStatuses = new Set(["verified", "partial", "unverified"]);
+for (const capability of capabilities) {
+  check(typeof capability.id === "string" && capability.id.length > 0, "Flutter capability has an id");
+  check(typeof capability.name === "string" && capability.name.length > 0, `${capability.id}: capability has a name`);
+  check(supportLevels.has(capability.supportLevel), `${capability.id}: support level is explicit`);
+  check(evidenceStatuses.has(capability.evidenceStatus), `${capability.id}: evidence status is explicit`);
+  for (const surface of ["typescript", "flutter"]) {
+    const mapping = capability[surface];
+    check(mapping && Array.isArray(mapping.paths) && Array.isArray(mapping.symbols), `${capability.id}: ${surface} mapping is structured`);
+    for (const path of mapping?.paths ?? []) {
+      check(existsSync(resolve(root, path)), `${capability.id}: ${surface} source exists at ${path}`);
+    }
+  }
+  const evidence = capability.evidence;
+  check(
+    evidence &&
+      typeof evidence.localFlutterTests === "boolean" &&
+      typeof evidence.sharedFixtures === "boolean" &&
+      typeof evidence.semanticParity === "boolean" &&
+      typeof evidence.ci === "boolean",
+    `${capability.id}: evidence flags are explicit`,
+  );
+}
 
 const expectedReleasePaths = entries.map((entry) => entry.path);
 const releasePaths = matrix.policy.releaseOrder;
@@ -135,6 +203,45 @@ for (const packageEntry of matrix.packages) {
 for (const consumer of matrix.consumers) {
   check(consumer.publishable === false, `${consumer.path}: consumer is not marked as an npm package`);
   check(consumer.compatibilityLine === matrix.compatibilityLine, `${consumer.path}: consumer follows ${matrix.compatibilityLine}`);
+}
+
+for (const consumer of nonNodeConsumers) {
+  const consumerRoot = resolve(root, consumer.path);
+  const pubspecPath = resolve(consumerRoot, "pubspec.yaml");
+  let pubspec;
+
+  check(Boolean(baselineByPath.get(consumer.path)), `${consumer.path}: path exists in the integration baseline`);
+  check(consumer.publishable === false, `${consumer.path}: non-Node consumer is not marked publishable`);
+  check(consumer.compatibilityLine === matrix.compatibilityLine, `${consumer.path}: non-Node consumer follows ${matrix.compatibilityLine}`);
+  check(consumer.status === "unverified" || consumer.status === "partial" || consumer.status === "verified", `${consumer.path}: non-Node consumer has a supported evidence status`);
+  check(
+    consumer.verification &&
+      typeof consumer.verification.sharedFixtures === "boolean" &&
+      typeof consumer.verification.semanticParity === "boolean" &&
+      typeof consumer.verification.ci === "boolean",
+    `${consumer.path}: non-Node consumer verification flags are explicit`,
+  );
+
+  try {
+    const rawPubspec = await readFile(pubspecPath, "utf8");
+    const nameMatch = /^name:\s*([^\s#]+)/m.exec(rawPubspec);
+    const versionMatch = /^version:\s*([^\s#]+)/m.exec(rawPubspec);
+    pubspec = { name: nameMatch?.[1], version: versionMatch?.[1] };
+  } catch (error) {
+    fail(`${consumer.path}: pubspec.yaml is unreadable (${error.message})`);
+    continue;
+  }
+
+  check(pubspec.name === consumer.name, `${consumer.path}: pubspec name matches the matrix`);
+  check(pubspec.version === consumer.applicationVersion, `${consumer.path}: application version matches the matrix`);
+
+  try {
+    const readme = await readFile(resolve(consumerRoot, "README.md"), "utf8");
+    const marker = new RegExp(`(?:v|DSL\\s*)?${escapeRegExp(consumer.compatibilityLine)}(?:\\.x)?\\b`);
+    check(marker.test(readme), `${consumer.path}: README declares compatibility line ${consumer.compatibilityLine}`);
+  } catch (error) {
+    fail(`${consumer.path}: README.md is unreadable (${error.message})`);
+  }
 }
 
 const summary = {

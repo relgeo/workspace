@@ -24,3 +24,5 @@ Integration gate lintas-repo dapat dijalankan dengan `pnpm run integration:gate 
 Lihat [peta repository](./docs/REPOSITORY-MAP.md) untuk ownership dan boundary setiap folder.
 
 Lihat [master plan pematangan](./docs/MATURATION-MASTER-PLAN.md) untuk urutan peningkatan lintas-repo, exit gate, dan cara menurunkan setiap tahap menjadi sub-rencana yang lebih detail.
+
+Release decision record dan snapshot evidence publik ada di [docs/releases](./docs/releases/); validasi baseline dapat dijalankan dengan `pnpm run release:record:check`.

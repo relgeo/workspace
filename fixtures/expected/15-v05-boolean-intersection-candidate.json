@@ -1,0 +1,205 @@
+{
+  "unit": "mm",
+  "autoSize": true,
+  "padding": 8,
+  "objects": {
+    "horizontal": {
+      "id": "horizontal",
+      "type": "line",
+      "x1": 0,
+      "y1": 24,
+      "x2": 100,
+      "y2": 24
+    },
+    "vertical": {
+      "id": "vertical",
+      "type": "line",
+      "x1": 50,
+      "y1": 0,
+      "x2": 50,
+      "y2": 60
+    },
+    "crossing": {
+      "id": "crossing",
+      "type": "point",
+      "x": 50,
+      "y": 24,
+      "meta": {}
+    },
+    "left": {
+      "id": "left",
+      "type": "rect",
+      "x": 10,
+      "y": 10,
+      "width": 40,
+      "height": 30
+    },
+    "right": {
+      "id": "right",
+      "type": "rect",
+      "x": 30,
+      "y": 20,
+      "width": 40,
+      "height": 30
+    },
+    "overlap": {
+      "id": "overlap",
+      "type": "boolean",
+      "operation": "intersect",
+      "points": [
+        {
+          "x": 30,
+          "y": 20
+        },
+        {
+          "x": 50,
+          "y": 20
+        },
+        {
+          "x": 50,
+          "y": 40
+        },
+        {
+          "x": 30,
+          "y": 40
+        },
+        {
+          "x": 30,
+          "y": 20
+        }
+      ],
+      "segments": [
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 20,
+          "x2": 50,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 50,
+          "y1": 20,
+          "x2": 50,
+          "y2": 40
+        },
+        {
+          "type": "line",
+          "x1": 50,
+          "y1": 40,
+          "x2": 30,
+          "y2": 40
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 40,
+          "x2": 30,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 20,
+          "x2": 30,
+          "y2": 20
+        }
+      ],
+      "holes": []
+    },
+    "cut": {
+      "id": "cut",
+      "type": "boolean",
+      "operation": "subtract",
+      "points": [
+        {
+          "x": 10,
+          "y": 10
+        },
+        {
+          "x": 50,
+          "y": 10
+        },
+        {
+          "x": 50,
+          "y": 20
+        },
+        {
+          "x": 30,
+          "y": 20
+        },
+        {
+          "x": 30,
+          "y": 40
+        },
+        {
+          "x": 10,
+          "y": 40
+        },
+        {
+          "x": 10,
+          "y": 10
+        }
+      ],
+      "segments": [
+        {
+          "type": "line",
+          "x1": 10,
+          "y1": 10,
+          "x2": 50,
+          "y2": 10
+        },
+        {
+          "type": "line",
+          "x1": 50,
+          "y1": 10,
+          "x2": 50,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 50,
+          "y1": 20,
+          "x2": 30,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 20,
+          "x2": 30,
+          "y2": 40
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 40,
+          "x2": 10,
+          "y2": 40
+        },
+        {
+          "type": "line",
+          "x1": 10,
+          "y1": 40,
+          "x2": 10,
+          "y2": 10
+        },
+        {
+          "type": "line",
+          "x1": 10,
+          "y1": 10,
+          "x2": 10,
+          "y2": 10
+        }
+      ],
+      "holes": []
+    }
+  },
+  "bbox": {
+    "x": 0,
+    "y": 0,
+    "width": 100,
+    "height": 60
+  },
+  "violations": []
+}

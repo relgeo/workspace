@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10.999999999999998 6 27.999999999999993 33.4" width="100%" style="display: block;" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arrow-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="red" />
+    </marker>
+    <marker id="arrow-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="green" />
+    </marker>
+  </defs>
+  
+    <rect x="14.999999999999998" y="10" width="19.999999999999996" height="25.4" id="panel" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 24.499999999999996 22.7 L 25.499999999999996 22.7 M 24.999999999999996 22.2 L 24.999999999999996 23.2" id="center" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="24.999999999999996" cy="22.7" r="2" id="marker" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    
+    
+  
+</svg>

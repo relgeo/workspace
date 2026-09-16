@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "compatibilityLine": "0.5",
+  "fixtureRoot": "fixtures",
+  "owner": "relgeo/workspace",
+  "standaloneStrategy": {
+    "canonicalOwner": "relgeo/workspace",
+    "childRepositoryPolicy": "standalone-local-tests",
+    "distribution": "not-published-as-package",
+    "integrationAuthority": "workspace-root-runner"
+  },
+  "statusPolicy": {
+    "active": "current compatibility-line baseline",
+    "supported-legacy": "backwards-compatibility coverage",
+    "invalid": "expected parser and diagnostic failure",
+    "runtime-diagnostic": "valid document with an expected post-resolve constraint violation",
+    "capability": "candidate coverage for a capability not yet enabled on every consumer"
+  },
+  "fixtures": [
+    {
+      "id": "text-anchor-multiline",
+      "path": "reference/01-text-anchor-multiline.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "mixed-presentational-sheet",
+      "path": "reference/02-mixed-presentational-sheet.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "sheet-title-block",
+      "path": "reference/03-sheet-title-block.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "grouped-sheet-rooting",
+      "path": "reference/04-grouped-sheet-rooting.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "clone-sheet-target",
+      "path": "reference/05-clone-sheet-target.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "nested-structural-sheet",
+      "path": "reference/06-nested-structural-sheet.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "component-sheet-meta-override",
+      "path": "reference/07-component-sheet-meta-override.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "sheet-xml-escaping",
+      "path": "reference/08-sheet-xml-escaping.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "multi-sheet-title-block",
+      "path": "reference/09-multi-sheet-title-block.yaml",
+      "contractVersion": "0.4",
+      "status": "supported-legacy",
+      "surfaces": ["core", "renderer-svg"]
+    },
+    {
+      "id": "v05-relational-baseline",
+      "path": "reference/10-v05-relational-baseline.yaml",
+      "contractVersion": "0.5",
+      "status": "active",
+      "surfaces": [
+        "core",
+        "renderer-svg",
+        "language-service",
+        "remark-relgeo-hl",
+        "remark-relgeo",
+        "cli",
+        "playground",
+        "relgeo.github.io"
+      ],
+      "expectedObjectIds": ["base", "hole", "outline", "label"],
+      "expectedObjectTypes": {
+        "base": "rect",
+        "hole": "circle",
+        "outline": "polygon",
+        "label": "text"
+      },
+      "expectedHighlightSnapshotPath": "expected/10-v05-relational-baseline.highlight.txt",
+      "expectedHighlightSha256": "d094f19533ee50bbf40eff7540cfb7da3a11fa1ec38d82c426f0e5f77d272e8c",
+      "expectedOutputPath": "expected/10-v05-relational-baseline.svg",
+      "expectedResolvedPath": "expected/10-v05-relational-baseline.json"
+    },
+    {
+      "id": "v05-runtime-align-violation",
+      "path": "reference/14-v05-runtime-align-violation.yaml",
+      "contractVersion": "0.5",
+      "status": "runtime-diagnostic",
+      "surfaces": ["core", "renderer-svg", "language-service", "cli"],
+      "expectedViolations": [
+        {
+          "type": "align",
+          "path": "constraints[0]"
+        }
+      ],
+      "expectedOutputPath": "expected/14-v05-runtime-align-violation.svg",
+      "expectedResolvedPath": "expected/14-v05-runtime-align-violation.json"
+    },
+    {
+      "id": "v05-boolean-intersection-candidate",
+      "path": "reference/15-v05-boolean-intersection-candidate.yaml",
+      "contractVersion": "0.5",
+      "status": "capability",
+      "surfaces": ["core", "renderer-svg", "cli"],
+      "expectedObjectIds": [
+        "horizontal",
+        "vertical",
+        "crossing",
+        "left",
+        "right",
+        "overlap",
+        "cut"
+      ],
+      "expectedObjectTypes": {
+        "horizontal": "line",
+        "vertical": "line",
+        "crossing": "point",
+        "left": "rect",
+        "right": "rect",
+        "overlap": "boolean",
+        "cut": "boolean"
+      },
+      "expectedOutputPath": "expected/15-v05-boolean-intersection-candidate.svg",
+      "expectedResolvedPath": "expected/15-v05-boolean-intersection-candidate.json"
+    },
+    {
+      "id": "v05-evaluator-units-candidate",
+      "path": "reference/16-v05-evaluator-units-candidate.yaml",
+      "contractVersion": "0.5",
+      "status": "capability",
+      "surfaces": ["core", "renderer-svg", "cli", "flutter"],
+      "expectedObjectIds": ["panel", "center", "marker"],
+      "expectedObjectTypes": {
+        "panel": "rect",
+        "center": "point",
+        "marker": "circle"
+      },
+      "expectedOutputPath": "expected/16-v05-evaluator-units-candidate.svg",
+      "expectedResolvedPath": "expected/16-v05-evaluator-units-candidate.json",
+      "cliUnit": "mm"
+    },
+    {
+      "id": "v05-invalid-missing-type",
+      "path": "reference/11-v05-invalid-missing-type.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service"],
+      "expectedDiagnostic": "missing required field: type"
+    },
+    {
+      "id": "v05-invalid-yaml-syntax",
+      "path": "reference/12-v05-invalid-yaml-syntax.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service"],
+      "expectedDiagnostic": "YAML Parse Error"
+    },
+    {
+      "id": "v05-invalid-unknown-reference",
+      "path": "reference/13-v05-invalid-unknown-reference.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service"],
+      "expectedDiagnostic": "Unknown identifier: missing.center"
+    }
+  ]
+}

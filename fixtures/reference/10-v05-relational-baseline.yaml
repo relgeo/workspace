@@ -1,0 +1,52 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Relational Baseline
+  description: Small active-contract fixture shared across the public TypeScript surfaces.
+
+scene:
+  unit: mm
+  padding: 12
+  autoSize: true
+
+metaPresets:
+  outlineStyle:
+    fill: "#e0f2fe"
+    stroke: "#0f4c5c"
+    strokeWidth: 1
+
+objects:
+  base:
+    type: rect
+    size: [80, 40]
+    place:
+      topLeft: [10, 10]
+    meta:
+      fill: "#f8fafc"
+      stroke: "#1e293b"
+
+  hole:
+    type: circle
+    radius: 6
+    center: base.center
+    meta:
+      fill: "#ffffff"
+      stroke: "#dc2626"
+
+  outline:
+    type: polygon
+    points:
+      - base.topLeft
+      - base.topRight
+      - base.bottomRight
+      - base.bottomLeft
+    metaPreset: outlineStyle
+
+  label:
+    type: text
+    content: "RelGeo v0.5"
+    at: [50, 62]
+    anchor: topCenter
+    meta:
+      fill: "#0f172a"
+      fontSize: 6

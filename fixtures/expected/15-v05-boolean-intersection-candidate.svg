@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-8 -8 116 76" width="100%" style="display: block;" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arrow-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="red" />
+    </marker>
+    <marker id="arrow-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="green" />
+    </marker>
+  </defs>
+  
+    <line x1="0" y1="24" x2="100" y2="24" id="horizontal" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <line x1="50" y1="0" x2="50" y2="60" id="vertical" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 48.83380962103094 24 L 51.16619037896906 24 M 50 22.83380962103094 L 50 25.16619037896906" id="crossing" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <rect x="10" y="10" width="40" height="30" id="left" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <rect x="30" y="20" width="40" height="30" id="right" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 30 20 L 50 20 L 50 40 L 30 40 L 30 20 L 30 20 Z"  id="overlap" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 10 10 L 50 10 L 50 20 L 30 20 L 30 40 L 10 40 L 10 10 L 10 10 Z"  id="cut" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    
+    
+  
+</svg>

@@ -103,5 +103,21 @@
       "publishable": false,
       "versionPolicy": "independent"
     }
+  ],
+  "nonNodeConsumers": [
+    {
+      "path": "flutter",
+      "name": "relgeo_flutter",
+      "applicationVersion": "1.0.0+1",
+      "compatibilityLine": "0.5",
+      "publishable": false,
+      "role": "workbench",
+      "status": "partial",
+      "verification": {
+        "sharedFixtures": true,
+        "semanticParity": true,
+        "ci": false
+      }
+    }
   ]
 }

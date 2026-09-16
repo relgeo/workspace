@@ -1,0 +1,48 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Boolean and Intersection Candidate
+  description: Candidate fixture covering boolean geometry and line intersection.
+
+scene:
+  unit: mm
+  padding: 8
+  autoSize: true
+
+objects:
+  horizontal:
+    type: line
+    from: [0, 24]
+    to: [100, 24]
+
+  vertical:
+    type: line
+    from: [50, 0]
+    to: [50, 60]
+
+  crossing:
+    type: point
+    at: intersection(horizontal, vertical)
+
+  left:
+    type: rect
+    size: [40, 30]
+    place:
+      topLeft: [10, 10]
+
+  right:
+    type: rect
+    size: [40, 30]
+    place:
+      topLeft: [30, 20]
+
+  overlap:
+    type: boolean
+    operation: intersect
+    shapes: [left, right]
+
+  cut:
+    type: boolean
+    operation: subtract
+    base: left
+    tools: [right]

@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "compatibilityLine": "0.5",
+  "consumer": "flutter",
+  "owner": "relgeo/workspace",
+  "evidencePolicy": "A capability is not verified until its declared Flutter evidence and cross-consumer comparison have been executed. Evidence flags describe executed checks; supportLevel and evidenceStatus still determine whether the capability is active, partial, Flutter-only, or unsupported.",
+  "evidenceDefinitions": {
+    "localFlutterTests": "The relevant Flutter unit, widget, golden, or conformance test has passed in the local runner.",
+    "sharedFixtures": "The check consumed a canonical workspace fixture through the portable fixture adapter; this does not make a capability part of the active contract.",
+    "semanticParity": "The declared semantic projection matched the TypeScript expected snapshot under the documented normalization and tolerance rules.",
+    "ci": "The same declared evidence passed in the official integration workflow from a clean checkout.",
+    "activeContractBoundary": "A capability candidate remains partial until an explicit contract decision promotes it to the active fixture/baseline; local evidence alone never performs that promotion."
+  },
+  "capabilities": [
+    {
+      "id": "dsl-input",
+      "name": "YAML and DSL input",
+      "typescript": {
+        "paths": ["core/src/parser.ts", "core/src/validator.ts"],
+        "symbols": ["parseRelGeo", "Validator"]
+      },
+      "flutter": {
+        "paths": ["flutter/lib/src/core/resolver.dart", "flutter/lib/src/ui/cad_workbench.dart"],
+        "symbols": ["resolveGeometry", "CadWorkbench"]
+      },
+      "supportLevel": "partial",
+      "evidenceStatus": "partial",
+      "evidence": {
+        "localFlutterTests": true,
+        "sharedFixtures": true,
+        "semanticParity": true,
+        "ci": false
+      },
+      "note": "Active v0.5 fixture input and semantic projection pass locally; parser diagnostic vocabulary is not yet canonicalized across consumers."
+    },
+    {
+      "id": "scalar-evaluator",
+      "name": "Scalar expressions and units",
+      "typescript": {
+        "paths": ["core/src/evaluator.ts", "core/src/units.ts"],
+        "symbols": ["evaluateExpression", "normalizeUnit"]
+      },
+      "flutter": {
+        "paths": ["flutter/lib/src/core/evaluator.dart", "flutter/lib/src/core/units.dart"],
+        "symbols": ["Evaluator", "normalizeUnit"]
+      },
+      "supportLevel": "partial",
+      "evidenceStatus": "partial",
+      "evidence": {
+        "localFlutterTests": true,
+        "sharedFixtures": true,
+        "semanticParity": true,
+        "ci": false
+      },
+      "note": "The v0.5 evaluator/units capability candidate exercises length parameters, `in`/`mm` conversion, signed literals, derived placement, and preservation of non-numeric strings; its scene and SVG semantic projections pass locally. It remains capability-only until promotion and CI evidence."
+    },
+    {
+      "id": "dependency-resolution",
+      "name": "Dependency graph and scene resolution",
+      "typescript": {
+        "paths": ["core/src/graph.ts", "core/src/resolver/index.ts"],
+        "symbols": ["sortUnified", "resolveGeometry"]
+      },
+      "flutter": {
+        "paths": ["flutter/lib/src/core/graph.dart", "flutter/lib/src/core/resolver.dart"],
+        "symbols": ["sortUnified", "resolveGeometry"]
+      },
+      "supportLevel": "partial",
+      "evidenceStatus": "partial",
+      "evidence": {
+        "localFlutterTests": true,
+        "sharedFixtures": true,
+        "semanticParity": true,
+        "ci": false
+      },
+      "note": "The active v0.5 scene and its resolved semantic snapshot pass locally; CI and broader operation coverage remain open."
+    },
+    {
+      "id": "geometry-intersection",
+      "name": "Geometry primitives and intersections",
+      "typescript": {
+        "paths": ["geometry/src/types.ts", "geometry/src/intersection.ts", "core/src/resolver/intersection.ts"],
+        "symbols": ["intersectLineCircle", "intersectLineArc"]
+      },
+      "flutter": {
+        "paths": ["flutter/lib/src/geometry/types.dart", "flutter/lib/src/geometry/intersection.dart"],
+        "symbols": ["intersectLineCircle", "intersectLineArc"]
+      },
+      "supportLevel": "partial",
+      "evidenceStatus": "partial",
+      "evidence": {
+        "localFlutterTests": true,
+        "sharedFixtures": true,
+        "semanticParity": true,
+        "ci": false
+      },
+      "note": "The capability candidate exercises line intersection through the shared fixture and passes local semantic comparison; it is not yet part of the active baseline and has no CI evidence."
+    },
+    {
+      "id": "boolean-geometry",
+      "name": "Boolean geometry",
+      "typescript": {
+        "paths": ["geometry/src/boolean/BooleanEngine.ts", "geometry/src/boolean/ClipperBooleanEngine.ts"],
+        "symbols": ["BooleanEngine", "ClipperBooleanEngine"]
+      },
+      "flutter": {
+        "paths": ["flutter/lib/src/geometry/clipper_boolean.dart"],
+        "symbols": ["ClipperBooleanEngine"]
+      },
+      "supportLevel": "partial",
+      "evidenceStatus": "partial",
+      "evidence": {
+        "localFlutterTests": true,
+        "sharedFixtures": true,
+        "semanticParity": true,
+        "ci": false
+      },
+      "note": "Clipper2-backed implementations exist; the v0.5 capability candidate passes local operation and normalized semantic-projection checks through a shared fixture, but remains outside the active baseline until the contract decision and CI evidence are complete."
+    },
+    {
+      "id": "svg-output",
+      "name": "SVG output",
+      "typescript": {
+        "paths": ["renderer-svg/src/index.ts", "renderer-svg/src/primitives.ts"],
+        "symbols": ["renderToSVG"]
+      },
+      "flutter": {
+        "paths": ["flutter/lib/src/ui/svg_exporter.dart"],
+        "symbols": ["SvgExporter.generateSVG"]
+      },
+      "supportLevel": "partial",
+      "evidenceStatus": "partial",
+      "evidence": {
+        "localFlutterTests": true,
+        "sharedFixtures": true,
+        "semanticParity": true,
+        "ci": false
+      },
+      "note": "Active v0.5, runtime-diagnostic, and boolean/intersection candidate SVG geometry pass local semantic projection against TypeScript expected snapshots; presentation policy and broader SVG capability anchors remain outside the contract, and CI evidence is pending."
+    },
+    {
+      "id": "canvas-workbench",
+      "name": "Canvas presentation and desktop workbench",
+      "typescript": {
+        "role": "not-applicable",
+        "paths": [],
+        "symbols": []
+      },
+      "flutter": {
+        "paths": ["flutter/lib/src/ui/canvas_painter.dart", "flutter/lib/src/ui/cad_workbench.dart"],
+        "symbols": ["CanvasPainter", "CadWorkbench"]
+      },
+      "supportLevel": "flutter-only",
+      "evidenceStatus": "partial",
+      "evidence": {
+        "localFlutterTests": true,
+        "sharedFixtures": true,
+        "semanticParity": false,
+        "ci": false
+      },
+      "note": "This is a Flutter-specific presentation surface and is not a TypeScript parity target; active fixture widget/golden evidence passes locally."
+    },
+    {
+      "id": "runtime-diagnostics",
+      "name": "Runtime constraint diagnostics",
+      "typescript": {
+        "paths": ["core/src/resolver/constraints.ts", "core/src/__tests__/constraints_diagnostics.test.ts"],
+        "symbols": ["processConstraints", "ConstraintError"]
+      },
+      "flutter": {
+        "paths": ["flutter/lib/src/core/constraints.dart", "flutter/test/constraints_diagnostics_test.dart"],
+        "symbols": ["processConstraints", "ConstraintViolation"]
+      },
+      "supportLevel": "partial",
+      "evidenceStatus": "partial",
+      "evidence": {
+        "localFlutterTests": true,
+        "sharedFixtures": true,
+        "semanticParity": true,
+        "ci": false
+      },
+      "note": "Default point align and the canonical runtime diagnostic projection pass locally; cross-consumer vocabulary and CI remain open."
+    }
+  ]
+}

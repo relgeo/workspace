@@ -1,0 +1,66 @@
+{
+  "unit": "mm",
+  "autoSize": true,
+  "padding": 12,
+  "objects": {
+    "base": {
+      "id": "base",
+      "type": "rect",
+      "x": 10,
+      "y": 10,
+      "width": 80,
+      "height": 40,
+      "meta": {
+        "fill": "#f8fafc",
+        "stroke": "#1e293b"
+      }
+    },
+    "hole": {
+      "id": "hole",
+      "type": "circle",
+      "cx": 50,
+      "cy": 30,
+      "radius": 6,
+      "meta": {
+        "fill": "#ffffff",
+        "stroke": "#dc2626"
+      }
+    },
+    "outline": {
+      "id": "outline",
+      "type": "polygon",
+      "points": [
+        { "x": 10, "y": 10 },
+        { "x": 90, "y": 10 },
+        { "x": 90, "y": 50 },
+        { "x": 10, "y": 50 }
+      ],
+      "meta": {
+        "fill": "#e0f2fe",
+        "stroke": "#0f4c5c",
+        "strokeWidth": 1
+      }
+    },
+    "label": {
+      "id": "label",
+      "type": "text",
+      "x": 30.200000000000003,
+      "y": 62,
+      "width": 39.599999999999994,
+      "height": 6,
+      "content": "RelGeo v0.5",
+      "anchor": "topCenter",
+      "meta": {
+        "fill": "#0f172a",
+        "fontSize": 6
+      }
+    }
+  },
+  "bbox": {
+    "x": 10,
+    "y": 10,
+    "width": 80,
+    "height": 58
+  },
+  "violations": []
+}

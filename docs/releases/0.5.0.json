@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "0.5.0",
+  "compatibilityLine": "0.5",
+  "status": "completed",
+  "recordedAt": "2026-09-15",
+  "publicationMode": "manual-2fa",
+  "decision": {
+    "kind": "baseline-compatible",
+    "contractChange": "none",
+    "specRevision": "b96ba3b23de202227eade06614635ef6717df516",
+    "partialReleasePolicy": "stop-and-record-then-forward-fix-next-patch",
+    "notes": "Initial public compatibility-line baseline; publication was performed manually and verified afterwards."
+  },
+  "releaseOrder": [
+    "spec",
+    "geometry",
+    "core",
+    "renderer-svg",
+    "language-service",
+    "remark-relgeo-hl",
+    "remark-relgeo",
+    "cli",
+    "playground",
+    "relgeo.github.io"
+  ],
+  "packages": [
+    { "path": "geometry", "name": "@relgeo/geometry", "version": "0.5.0", "status": "published" },
+    { "path": "core", "name": "@relgeo/core", "version": "0.5.0", "status": "published" },
+    { "path": "renderer-svg", "name": "@relgeo/renderer-svg", "version": "0.5.0", "status": "published" },
+    { "path": "language-service", "name": "@relgeo/language-service", "version": "0.5.0", "status": "published" },
+    { "path": "remark-relgeo-hl", "name": "@relgeo/remark-relgeo-hl", "version": "0.5.0", "status": "published" },
+    { "path": "remark-relgeo", "name": "@relgeo/remark-relgeo", "version": "0.5.0", "status": "published" },
+    { "path": "cli", "name": "@relgeo/cli", "version": "0.5.0", "status": "published" }
+  ],
+  "consumers": [
+    { "path": "playground", "name": "relgeo-playground", "version": "0.4.0", "status": "verified" },
+    { "path": "relgeo.github.io", "name": "relgeo-docs-site", "version": "0.5.0", "status": "verified" }
+  ],
+  "evidence": {
+    "compatibilityCheck": { "command": "pnpm run compatibility:check", "status": "passed" },
+    "localIntegration": { "command": "pnpm run integration:gate -- --local", "passed": 34, "failed": 0 },
+    "publicIntegration": { "command": "pnpm run integration:public", "passed": 48, "failed": 0 },
+    "conformanceFixtures": { "command": "pnpm run conformance:fixtures", "passed": 147, "failed": 0, "fixtures": 14 },
+    "releaseAudit": { "command": "pnpm run release:audit", "passed": 106, "failed": 0 },
+    "registryVerification": { "command": "pnpm run release:verify-published", "passed": 7, "failed": 0 },
+    "publicPlaygroundSmoke": {
+      "automated": false,
+      "status": "passed",
+      "url": "https://relgeo.github.io/playground/",
+      "checks": [
+        "editor is visible",
+        "runtime-diagnostic fixture reaches READY",
+        "preview remains available",
+        "Errors tab shows one diagnostic: Points are not aligned. Distance: 14.1421"
+      ]
+    }
+  },
+  "followUp": {
+    "automatedPublishing": "not-enabled",
+    "automatedRecoveryTransaction": "not-enabled",
+    "openGates": [
+      "CI evidence after the next workspace push",
+      "automated browser and website runtime assertions",
+      "Flutter fixture parity"
+    ]
+  }
+}

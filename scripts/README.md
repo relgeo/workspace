@@ -28,6 +28,8 @@ pnpm run integration:gate -- --local --report=.local/integration-local.json
 pnpm run integration:public -- --report=.local/integration-public.json
 ~~~
 
+Mode `--local` juga memasang Chromium Playwright bila diperlukan dan menjalankan automated browser smoke Playground setelah build. Hasil pass/fail dicetak langsung pada log gate; browser trace atau source tidak diunggah otomatis.
+
 Manifest snapshot publik berada di `docs/integration-baseline.json`. Verifier tidak membutuhkan GitHub API; ia membandingkan manifest dengan gitlink workspace, checkout submodule, working tree, dan `package.json` lokal. Opsi `--write` memperbarui snapshot dari checkout saat ini dan hanya boleh dipakai secara sengaja. Opsi `--manifest=PATH` dipakai oleh failure-injection untuk menguji snapshot sementara tanpa mengubah file publik. Opsi `--require-main` hanya untuk validasi lokal; CI submodule checkout biasanya detached.
 
 Mode `--local` menggunakan root pnpm workspace dan workspace links. Mode `--public` menyalin setiap consumer ke direktori temporary tanpa sibling submodule, lalu meng-install dependency dari npm registry dan menjalankan package/consumer checks di sana. Mode public juga menjalankan `npm pack --dry-run --json` untuk package library dan menolak path absolute/parent traversal serta material `node_modules`, `.git`, file `.env`/`.env.*`, secret, dan direktori lokal.
@@ -50,6 +52,65 @@ Checker membaca `docs/compatibility-matrix.json`, lalu membandingkannya dengan b
 
 Workflow Integration menjalankan pemeriksaan ini sebelum local cross-repo gate. Failure berarti compatibility line, metadata package, deklarasi README, internal dependency range, revision spec, atau release order perlu diperbarui secara terkoordinasi.
 
+Untuk inventory behavior historis dan mismatch penamaan contoh, jalankan:
+
+~~~text
+pnpm run compatibility:audit
+~~~
+
+Command ini bersifat read-only. Warning tidak otomatis menggagalkan gate: warning saat ini mencatat filename `v04_*` yang berisi DSL `v0.5` dan parser yang belum memiliki allowlist future-version. Keputusan kontrak tetap harus dibuat sebelum warning tersebut diubah menjadi enforcement.
+
+## Shared conformance fixtures
+
+Jalankan fixture lintas surface dari root workspace:
+
+~~~text
+pnpm run conformance:fixtures
+~~~
+
+Runner membaca `fixtures/manifest.json` dan fixture YAML di `fixtures/reference/`. Fixture
+`active` diuji melalui parse, resolve, renderer SVG, language service, highlighting,
+Markdown preview, dan CLI. Fixture `supported-legacy` menjaga bukti backwards
+compatibility. Fixture `invalid` harus ditolak parser dan menghasilkan diagnostics yang
+dapat dibaca language service. Fixture `runtime-diagnostic` harus tetap lolos
+parse/resolve, tetapi menghasilkan violation terstruktur yang diharapkan setelah resolve.
+Fixture `capability` adalah candidate untuk capability yang belum dipromosikan ke
+active contract; runner mewajibkan expected scene/output snapshot dan tetap
+melaporkan evidence-nya terpisah dari baseline aktif.
+
+Runner ini adalah gate workspace-level. Repository anak tetap dapat diuji standalone,
+tetapi fixture bersama perlu disediakan oleh checkout workspace atau oleh packaging test
+yang eksplisit; runner tidak mengubah repository anak secara diam-diam.
+
+Untuk menyiapkan fixture canonical ke staging directory Flutter yang di-ignore:
+
+~~~text
+pnpm run fixtures:stage:flutter
+RELGEO_FIXTURE_ROOT=.local/flutter-fixtures flutter test test/reference_fixtures_test.dart
+~~~
+
+Tool staging tidak mengubah fixture sumber dan tidak menghapus directory output. CI dapat
+memberikan `--out=PATH` ke directory temporary yang baru dibuat, lalu meneruskan path yang
+sama sebagai `RELGEO_FIXTURE_ROOT`.
+
+Untuk menjalankan seluruh urutan verifikasi Flutter, gunakan runner workspace:
+
+~~~text
+pnpm run flutter:conformance
+~~~
+
+Runner tersebut men-stage fixture canonical ke directory temporary, lalu menjalankan
+`flutter pub get --enforce-lockfile`, `flutter analyze --no-fatal-warnings
+--no-fatal-infos`, dan `flutter test` dari repository Flutter. Warning/info analyzer tetap
+dicetak sebagai debt yang terlihat, tetapi tidak memblokir baseline conformance sampai
+lint debt itu ditangani secara terpisah. Runner berhenti dengan status `2` bila Flutter SDK
+tidak tersedia. Gunakan `RELGEO_FLUTTER_BIN` jika executable Flutter tidak bernama
+`flutter` atau tidak berada di `PATH`.
+
+Evidence lokal 2026-09-16: Flutter `3.41.9`, Dart `3.11.5`, 16 fixture di-stage, dan 119
+test Flutter lulus. Checkout Flutter terisolasi juga lulus 99 test dengan 7 shared-fixture
+test dilewati secara eksplisit; CI tetap merupakan gate terpisah.
+
 ## Release readiness dan post-publish verification
 
 Sebelum publish package, jalankan audit metadata dan isi tarball:
@@ -67,3 +128,11 @@ pnpm run release:verify-published
 ~~~
 
 Verifier hanya membaca registry dan tidak memerlukan token publish. Checklist urutan publish dan recovery partial release ada di [03-npm-release-guard.md](../docs/plans/03-npm-release-guard.md).
+
+Decision record release lintas-repo disimpan di [`docs/releases/`](../docs/releases/). Validasi snapshot machine-readable baseline dapat dijalankan dengan:
+
+~~~text
+pnpm run release:record:check
+~~~
+
+Validator memastikan compatibility line, revision `spec`, release order, seluruh package, seluruh consumer, status evidence, dan batasan publik record tetap cocok dengan matrix. Validator tidak menjalankan publish dan tidak menyimpan credential.

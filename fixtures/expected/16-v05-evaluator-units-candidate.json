@@ -1,0 +1,36 @@
+{
+  "unit": "mm",
+  "autoSize": true,
+  "padding": 4,
+  "objects": {
+    "panel": {
+      "id": "panel",
+      "type": "rect",
+      "x": 14.999999999999998,
+      "y": 10,
+      "width": 19.999999999999996,
+      "height": 25.4
+    },
+    "center": {
+      "id": "center",
+      "type": "point",
+      "x": 24.999999999999996,
+      "y": 22.7,
+      "meta": {}
+    },
+    "marker": {
+      "id": "marker",
+      "type": "circle",
+      "cx": 24.999999999999996,
+      "cy": 22.7,
+      "radius": 2
+    }
+  },
+  "bbox": {
+    "x": 14.999999999999998,
+    "y": 10,
+    "width": 19.999999999999993,
+    "height": 25.4
+  },
+  "violations": []
+}

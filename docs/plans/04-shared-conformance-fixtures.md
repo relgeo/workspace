@@ -158,7 +158,7 @@ Prioritas kerja:
 - [x] smoke check manual pada Playground publik memuat fixture runtime-diagnostic, mencapai status `READY`, tetap mempertahankan preview, dan menampilkan satu diagnostic pada tab Errors;
 - [x] Pages artifact assertion memverifikasi bundle Playground membawa editor label, state `READY`, tab `Errors`, dan pesan runtime diagnostic;
 - [x] automated browser smoke untuk source → `READY` → preview → runtime diagnostic dan mobile surface switcher tersedia serta lulus lokal `2/2`;
-- [x] evidence CI pascapush untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #99` (`workspace@2a36be4`);
+- [x] evidence CI pascapush untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #105` (`workspace@a866fcc`);
 - [x] fixture invalid mencakup YAML syntax error dan unknown reference;
 - [x] fixture runtime-diagnostic diperluas ke semantic/runtime diagnostics yang tidak berhenti pada parser;
 - [x] compatibility behavior inventory diselesaikan dan disimpan sebagai audit terpisah;
@@ -241,3 +241,4 @@ Saat menambah atau mengubah fixture:
 | 2026-09-16 | Official Playground E2E dibuat deployment-aware | `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/ pnpm test:e2e` lulus `2/2`; local mode tetap lulus `2/2`, dan `goto('./')` mencegah base path publik terpotong ke root domain |
 | 2026-09-16 | Integration gate memverifikasi runner deployment-aware | `playground@143acf6` dan root `workspace@9e77d33` tervalidasi; `Integration #94` sukses pada job `flutter`, `verify`, dan `public` |
 | 2026-09-16 | Integration gate terbaru diverifikasi pada GitHub | `Integration #99` sukses pada `workspace@2a36be4`; job `flutter`, `verify`, dan `public` hijau setelah release preflight dan pembaruan master plan |
+| 2026-09-16 | Integration gate memverifikasi policy version acceptance terbaru | `Integration #105` sukses pada `workspace@a866fcc`; job `flutter`, `verify`, dan `public` hijau, conformance serta public-registry gate tetap lulus |

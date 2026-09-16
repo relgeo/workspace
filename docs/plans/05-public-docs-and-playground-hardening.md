@@ -110,7 +110,7 @@ Source detail dan evidence screenshot ada di [`playground/docs/UX-UI-AUDIT-AND-P
 
 - [x] Local integration gate lulus `36/36`.
 - [x] Release preflight lulus: strict baseline `81/81`, compatibility `256/256`, release audit `106/106`, dan integration `36/36` pada baseline sebelum policy-version fixture ditambahkan; compatibility terbaru `256/256` diverifikasi ulang setelah policy tersebut.
-- [x] GitHub `Integration #99` lulus untuk job `flutter`, `verify`, dan `public`; commit berikutnya menunggu verifikasi setelah batch policy ini dipush.
+- [x] GitHub `Integration #105` lulus untuk job `flutter`, `verify`, dan `public` pada `workspace@a866fcc`; warning action artifact Node 20 pada run tersebut dicatat dan action dinaikkan ke v6.
 - [x] Public Playground smoke mencapai `READY`, preview tetap terlihat, tab `Errors` menampilkan diagnostic expected, dan console browser bersih.
 - [x] Root commit `ebb33b4` sudah dipush; workflow baru `Integration #101` dipicu untuk memvalidasi commit tersebut.
 
@@ -289,7 +289,7 @@ Aturan perubahan:
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `36/36` lulus |
 | Release preflight | snapshot baseline: `81/81`, `250/250`, `106/106`, `36/36`; compatibility terkini `256/256` |
-| CI evidence | Root commit `f953b32` sudah dipush; verifikasi run CI pascapush masih menunggu hasil terbaru |
+| CI evidence | `Integration #105` pada `workspace@a866fcc` sukses untuk job `flutter`, `verify`, dan `public`; warning Node 20 dari action artifact dicatat sebagai alasan upgrade ke v6 |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
 
 ## 12. Log perubahan
@@ -303,3 +303,4 @@ Aturan perubahan:
 | 2026-09-16 | Physical touch, keyboard nyata, dan VoiceOver/TalkBack ditetapkan sebagai sisa wajib | terbuka, membutuhkan perangkat/operator |
 | 2026-09-16 | Playground menambahkan suite mobile-device emulation dengan touchscreen tap | `e73b212`, `pnpm run test:e2e` lulus `2/2`; validasi handset fisik dan assistive technology tetap terbuka |
 | 2026-09-16 | Root integration gate diulang setelah pointer Playground dan manifest diselaraskan | root `f953b32`, `36/36` pass; CI pascapush terbaru tetap perlu diverifikasi |
+| 2026-09-16 | Policy version acceptance dan action artifact diperbarui | `Integration #105` pada `workspace@a866fcc` sukses; workflow berikutnya memakai `actions/upload-artifact@v6` |

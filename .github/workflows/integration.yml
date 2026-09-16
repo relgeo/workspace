@@ -89,7 +89,7 @@ jobs:
 
       - name: Upload integration gate report
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: relgeo-integration-gate-report
           path: .local/integration-gate.json
@@ -133,7 +133,7 @@ jobs:
 
       - name: Upload public integration report
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: relgeo-public-integration-report
           path: .local/integration-public.json

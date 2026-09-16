@@ -115,13 +115,18 @@ test dilewati secara eksplisit; CI tetap merupakan gate terpisah.
 
 Sebelum menjalankan publish manual, jalankan preflight read-only dari working tree
 yang sudah bersih. Preflight tidak menjalankan `npm publish`; ia memeriksa baseline,
-compatibility matrix, audit tarball, dan integration gate lokal dalam urutan yang sama
-dengan release boundary:
+compatibility matrix, release decision record, audit tarball, dan integration gate
+lokal dalam urutan yang sama dengan release boundary:
 
 ~~~text
 pnpm run release:preflight
 pnpm run release:preflight -- --report=.local/release-preflight.json
+pnpm run release:preflight -- --record=0.5.1 --report=.local/release-preflight-0.5.1.json
 ~~~
+
+Gunakan `--record=<version>` untuk memvalidasi record candidate selain default
+baseline `0.5.0`. Jika record belum ada atau keputusan release tidak lengkap,
+preflight berhenti sebelum audit dan integration gate.
 
 Jika ada perubahan yang belum di-commit, preflight berhenti sebelum menjalankan gate.
 Report opsional hanya berisi status command dan durasi, bukan credential atau output

@@ -110,7 +110,7 @@ Command harus menghasilkan exit code non-zero ketika package mengubah compatibil
 
 ## 5. Hal yang belum tertutup
 
-- [ ] breaking change belum dicegah oleh publish guard lintas-package; saat ini baru dideteksi sebagai mismatch oleh compatibility check.
+- [x] release record kini diwajibkan menyatakan klasifikasi perubahan, rationale, approval status, dan policy partial-release sesuai matrix; pencegahan publish parsial secara atomik tetap terbuka.
 - [x] release checklist operasional yang mencakup spec, package, consumer, docs, tag, dan post-publish evidence tersedia di sub-rencana Tahap 3.
 - [x] release decision record template dan validator menjaga package/consumer/order tetap lengkap pada baseline `0.5.0`.
 - [x] inventory compatibility behavior disimpan di `docs/compatibility-behavior-audit.md`.
@@ -126,7 +126,7 @@ Command harus menghasilkan exit code non-zero ketika package mengubah compatibil
 - [x] satu matriks kompatibilitas menjadi referensi;
 - [x] setiap package/application yang relevan menyatakan compatibility line pada README dan matrix;
 - [x] CI mendeteksi mismatch versi atau peer dependency sebelum integration gate;
-- [ ] breaking family tidak dapat dipublish sebagian tanpa keputusan eksplisit;
+- [x] breaking family membutuhkan decision record eksplisit yang divalidasi sebelum release evidence dianggap lengkap; blocking publish atomik tetap terbuka.
 - [x] release checklist lengkap tersedia; pemakaian ulang pada release berikutnya tetap menjadi evidence pemeliharaan Tahap 3.
 
 Tahap 2 belum boleh ditandai selesai sampai dua checkbox terakhir dipindahkan ke release guard Tahap 3 atau mempunyai evidence operasional yang setara.
@@ -156,3 +156,4 @@ Jika hanya ada patch release, update package entry dan baseline yang relevan tan
 | 2026-09-15 | Compatibility behavior audit dimasukkan ke workflow Integration | command read-only lulus lokal dengan `7 passed, 9 warnings, 0 failed`; warning policy dan mismatch nama file tetap non-blocking sampai keputusan kontrak dibuat |
 | 2026-09-16 | Version acceptance policy ditetapkan dan diuji negatif | matrix/manifest membedakan active `0.5`, supported legacy `0.4`, regression-only `0.1`–`0.3`; parser menolak `0.6`/`1.0` dengan `UNSUPPORTED_SPEC_VERSION`; conformance `228/228` |
 | 2026-09-16 | Language-service schema diselaraskan dengan parser version policy | enum string/number `0.1`–`0.5` dan default `0.5` ditambahkan; lint, test `66/66`, dan build lulus; package npm publik masih `0.5.0` sampai release patch manual |
+| 2026-09-16 | Decision record enforcement ditambahkan | matrix dan validator memeriksa klasifikasi contract change, rationale, approval status, serta partial-release policy; publish transaction atomik belum diaktifkan |

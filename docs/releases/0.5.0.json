@@ -8,6 +8,8 @@
   "decision": {
     "kind": "baseline-compatible",
     "contractChange": "none",
+    "rationale": "Initial public compatibility-line baseline; no breaking contract change was introduced.",
+    "approvalStatus": "approved",
     "specRevision": "b96ba3b23de202227eade06614635ef6717df516",
     "partialReleasePolicy": "stop-and-record-then-forward-fix-next-patch",
     "notes": "Initial public compatibility-line baseline; publication was performed manually and verified afterwards."

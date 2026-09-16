@@ -10,6 +10,8 @@
 ## 1. Decision
 
 - Contract change: none / patch-compatible / breaking.
+- Rationale and compatibility impact: `<short explanation>`.
+- Approval status: approved / rejected / deferred.
 - Spec revision: `<commit>`.
 - Reason and compatibility impact: `<short explanation>`.
 - Release order: follow `docs/compatibility-matrix.json`.

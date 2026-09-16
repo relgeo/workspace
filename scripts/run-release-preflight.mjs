@@ -7,7 +7,9 @@ import { spawnSync } from "node:child_process";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const reportArgument = process.argv.find((argument) => argument.startsWith("--report="));
+const recordArgument = process.argv.find((argument) => argument.startsWith("--record="));
 const reportPath = reportArgument ? resolve(root, reportArgument.slice("--report=".length)) : null;
+const recordVersion = recordArgument?.slice("--record=".length) || "0.5.0";
 const startedAt = new Date().toISOString();
 const steps = [];
 
@@ -62,6 +64,7 @@ function runStep(name, command, args) {
 const ok = checkRootIsClean()
   && runStep("strict baseline", "pnpm", ["run", "verify:baseline:strict"])
   && runStep("compatibility matrix", "pnpm", ["run", "compatibility:check"])
+  && runStep("release decision record", "pnpm", ["run", "release:record:check", recordVersion])
   && runStep("release tarball audit", "pnpm", ["run", "release:audit"])
   && runStep("local integration gate", "pnpm", ["run", "integration:gate", "--", "--local"]);
 

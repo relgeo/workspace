@@ -106,9 +106,10 @@ npm publish --access public
 
 - [x] `scripts/audit-release-readiness.mjs` memeriksa metadata, `package.json.files`, dan isi `npm pack --dry-run` untuk seluruh package publik.
 - [x] `scripts/verify-published-packages.mjs` memeriksa versi setiap package langsung dari npm registry tanpa memerlukan token.
-- [x] `scripts/run-release-preflight.mjs` menyediakan satu pemeriksaan read-only sebelum publish: root clean, strict baseline, compatibility matrix, tarball audit, dan local integration gate.
+- [x] `scripts/run-release-preflight.mjs` menyediakan satu pemeriksaan read-only sebelum publish: root clean, strict baseline, compatibility matrix, release decision record, tarball audit, dan local integration gate; `--record=<version>` mendukung candidate record.
 - [x] root script `pnpm run release:audit` dan `pnpm run release:verify-published` tersedia.
 - [x] `docs/releases/TEMPLATE.md`, record `0.5.0`, dan `scripts/check-release-record.mjs` tersedia untuk mencegah package/consumer hilang dari ledger release.
+- [x] matrix dan release-record validator kini memeriksa klasifikasi contract change, rationale, approval status, serta policy forward-fix untuk record partial.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.
 - [ ] automated publishing belum diaktifkan.
@@ -139,10 +140,12 @@ Preflight seragam sebelum publish manual:
 
 ~~~bash
 pnpm run release:preflight -- --report=.local/release-preflight.json
+pnpm run release:preflight -- --record=0.5.1 --report=.local/release-preflight-0.5.1.json
 ~~~
 
 Command ini read-only terhadap repository dan registry. Ia berhenti bila root working
-tree tidak bersih atau salah satu gate gagal; ia tidak menjalankan `npm publish`.
+tree tidak bersih, release decision record tidak sah, atau salah satu gate gagal; ia
+tidak menjalankan `npm publish`.
 
 ## 6. Exit gate Tahap 3
 
@@ -171,3 +174,4 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-16 | Release preflight read-only ditambahkan | `release:preflight` mengurutkan clean-tree check, strict baseline, compatibility check, tarball audit, dan local integration gate; publish tetap manual |
 | 2026-09-16 | Release preflight pertama dijalankan dari commit bersih | root clean; strict baseline `81/81`; compatibility `250/250`; tarball audit `106/106`; integration gate lokal `36/36`; status `passed`; report berada di `.local/release-preflight-2026-09-16.json` |
 | 2026-09-16 | Parser dan language-service schema version policy diterapkan pada source-next | core parser menolak future/unknown version, schema editor membatasi history `0.1`–`0.5`; source gate lulus, registry masih berada pada package baseline `0.5.0` sehingga release patch manual tetap terbuka |
+| 2026-09-16 | Release decision enforcement diperkuat | matrix mendeklarasikan kondisi record wajib, klasifikasi perubahan yang diizinkan, dan policy forward-fix; `release:record:check` memvalidasi rationale/approval dan partial-release policy |

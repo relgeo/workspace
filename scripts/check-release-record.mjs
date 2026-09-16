@@ -48,6 +48,35 @@ if (matrix && record) {
   check(record.releaseVersion === recordVersion, `record version is ${recordVersion}`);
   check(record.status === "completed", "release record has a completed status");
   check(record.compatibilityLine === matrix.compatibilityLine, "record and matrix use the same compatibility line");
+  const releaseDecision = matrix.policy?.releaseDecision;
+  check(
+    Array.isArray(releaseDecision?.requiredWhen) &&
+      releaseDecision.requiredWhen.includes("breaking") &&
+      releaseDecision.requiredWhen.includes("partial"),
+    "matrix declares when a release decision record is required",
+  );
+  check(
+    Array.isArray(releaseDecision?.allowedContractChanges) &&
+      releaseDecision.allowedContractChanges.includes(record.decision?.contractChange),
+    "record contract-change classification is allowed by the matrix",
+  );
+  check(
+    typeof record.decision?.rationale === "string" && record.decision.rationale.trim().length > 0,
+    "record contains a compatibility rationale",
+  );
+  check(
+    ["approved", "rejected", "deferred"].includes(record.decision?.approvalStatus),
+    "record contains an explicit approval status",
+  );
+  check(
+    record.status !== "completed" || record.decision?.approvalStatus === "approved",
+    "completed release record has approval",
+  );
+  check(
+    record.status !== "partial" ||
+      record.decision?.partialReleasePolicy === releaseDecision?.partialReleasePolicy,
+    "partial release record follows the matrix forward-fix policy",
+  );
   check(record.decision?.specRevision === matrix.contract.specRevision, "record spec revision matches the matrix contract revision");
   check(sameArray(record.releaseOrder, matrix.policy.releaseOrder), "record release order matches the compatibility matrix");
   check(entriesMatch(record.packages, matrix.packages, "published"), "every matrix package is recorded as published at the expected version");

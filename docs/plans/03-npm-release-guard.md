@@ -163,3 +163,4 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-15 | Checklist manual dan recovery partial release ditulis | automation publish tetap sengaja belum aktif |
 | 2026-09-15 | Release decision record baseline `0.5.0` dibuat dan divalidasi | `docs/releases/0.5.0.{md,json}`, template, dan `release:record:check`; package/consumer/order/evidence konsisten |
 | 2026-09-16 | Release preflight read-only ditambahkan | `release:preflight` mengurutkan clean-tree check, strict baseline, compatibility check, tarball audit, dan local integration gate; publish tetap manual |
+| 2026-09-16 | Release preflight pertama dijalankan dari commit bersih | root clean; strict baseline `81/81`; compatibility `250/250`; tarball audit `106/106`; integration gate lokal `36/36`; status `passed`; report berada di `.local/release-preflight-2026-09-16.json` |

@@ -380,7 +380,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 5 — Public docs, website, dan Playground hardening
 
-**Status:** Baseline sudah kuat; gate eksternal masih terbuka.
+**Status:** Berjalan — sub-rencana formal sudah dibuat; baseline implementasi, browser QA, dan public smoke kuat, sementara gate perangkat fisik dan assistive technology masih terbuka.
 
 **Tujuan:** memastikan public surface mudah dipercaya dan tidak overclaim capability.
 
@@ -399,6 +399,8 @@ Status menggunakan arti berikut:
 - [ ] optimasi font dan visual lintas perangkat.
 
 **Exit gate:** tidak ada blocker aksesibilitas atau alur utama yang diketahui; sisa hanya limitation yang terdokumentasi.
+
+**Deliverable sub-rencana:** [docs/plans/05-public-docs-and-playground-hardening.md](plans/05-public-docs-and-playground-hardening.md).
 
 ### Tahap 6 — Flutter alignment
 
@@ -450,7 +452,7 @@ Urutan kerja yang disarankan sekarang:
 1. pelihara `docs/compatibility-matrix.json` bersama perubahan spec dan package;
 2. jalankan `pnpm run compatibility:check` sebelum integration gate;
 3. jalankan `pnpm run conformance:fixtures` setelah build package selesai;
-4. push perubahan Tahap 4 lalu verifikasi CI dan browser/public runtime evidence;
+4. pertahankan public docs dan Playground melalui sub-rencana Tahap 5, lalu lengkapi validasi perangkat fisik dan assistive technology;
 5. tutup release guard Tahap 2/3 dengan automation atau decision record yang benar-benar dipakai;
 6. jadikan hasil lokal dan CI Flutter `3.41.9`/Dart `3.11.5` sebagai evidence baseline; berikutnya putuskan promotion boundary untuk candidate boolean/intersection dan evaluator/unit, serta semantic SVG yang memang masuk active conformance.
 
@@ -529,6 +531,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Browser smoke deployment publik terbaru dijalankan | `https://relgeo.github.io/playground/` mencapai `READY`, fixture runtime diagnostic menampilkan preview dan tab `Errors` dengan pesan expected; route utama, `/en/`, `/en/docs/`, `/en/docs/language-spec/`, `/playground/`, dan `/sitemap.xml` semuanya HTTP 200, console browser bersih |
 | 2026-09-16 | Official Playground E2E dibuat deployment-aware dan dipromosikan ke gate root | `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/ pnpm test:e2e` lulus `2/2`; local mode juga `2/2`; child commit `143acf6`, root pointer `9e77d33`, local gate `36/36`, dan GitHub `Integration #94` sukses |
 | 2026-09-16 | Release preflight read-only ditambahkan dan dijalankan | `release:preflight` pada `workspace@3f4b76a` lulus root clean, strict baseline `81/81`, compatibility `250/250`, tarball audit `106/106`, dan integration gate `36/36`; evidence dicatat pada sub-rencana Tahap 3 |
+| 2026-09-16 | Sub-rencana Tahap 5 dibuat dan ditautkan | website visual audit, visual rules, Playground UX/UI audit, public smoke, accessibility baseline, dan gate eksternal kini memiliki satu dokumen koordinasi; touch fisik dan assistive technology tetap terbuka |
 
 ## 10. Catatan pemeliharaan
 

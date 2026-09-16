@@ -289,7 +289,7 @@ Aturan perubahan:
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `36/36` lulus |
 | Release preflight | `81/81`, `250/250`, `106/106`, `36/36` lulus |
-| CI evidence | `Integration #99` sukses; `Integration #101` berjalan untuk commit `ebb33b4` |
+| CI evidence | Root commit `f953b32` sudah dipush; verifikasi run CI pascapush masih menunggu hasil terbaru |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
 
 ## 12. Log perubahan
@@ -301,4 +301,5 @@ Aturan perubahan:
 | 2026-09-16 | Website dan Playground diringkas sebagai dua owner implementasi dengan satu public-surface gate | selesai sebagai struktur koordinasi |
 | 2026-09-16 | Acceptance criteria dipisahkan antara implementation gate dan external validation gate | selesai |
 | 2026-09-16 | Physical touch, keyboard nyata, dan VoiceOver/TalkBack ditetapkan sebagai sisa wajib | terbuka, membutuhkan perangkat/operator |
-| 2026-09-16 | Playground menambahkan suite mobile-device emulation dengan touchscreen tap | `e070cd9`, `pnpm run test:e2e` lulus `2/2`; validasi handset fisik dan assistive technology tetap terbuka |
+| 2026-09-16 | Playground menambahkan suite mobile-device emulation dengan touchscreen tap | `e73b212`, `pnpm run test:e2e` lulus `2/2`; validasi handset fisik dan assistive technology tetap terbuka |
+| 2026-09-16 | Root integration gate diulang setelah pointer Playground dan manifest diselaraskan | root `f953b32`, `36/36` pass; CI pascapush terbaru tetap perlu diverifikasi |

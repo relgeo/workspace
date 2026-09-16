@@ -533,6 +533,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Release preflight read-only ditambahkan dan dijalankan | `release:preflight` pada `workspace@3f4b76a` lulus root clean, strict baseline `81/81`, compatibility `250/250`, tarball audit `106/106`, dan integration gate `36/36`; evidence dicatat pada sub-rencana Tahap 3 |
 | 2026-09-16 | Sub-rencana Tahap 5 dibuat dan ditautkan | website visual audit, visual rules, Playground UX/UI audit, public smoke, accessibility baseline, dan gate eksternal kini memiliki satu dokumen koordinasi; touch fisik dan assistive technology tetap terbuka |
 | 2026-09-16 | Playground menambahkan mobile-device emulation dengan touchscreen tap | `e070cd9`, E2E lokal `2/2`; bukti automation bertambah, sedangkan handset fisik, keyboard fisik, dan VoiceOver/TalkBack tetap terbuka |
+| 2026-09-16 | Audit Playground diselaraskan ke baseline `e73b212` dan root gate diulang | root `f953b32`, strict baseline `81/81`, compatibility `250/250`, integration `36/36`; CI pascapush terbaru masih perlu diverifikasi |
 
 ## 10. Catatan pemeliharaan
 

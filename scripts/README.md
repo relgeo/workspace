@@ -113,6 +113,20 @@ test dilewati secara eksplisit; CI tetap merupakan gate terpisah.
 
 ## Release readiness dan post-publish verification
 
+Sebelum menjalankan publish manual, jalankan preflight read-only dari working tree
+yang sudah bersih. Preflight tidak menjalankan `npm publish`; ia memeriksa baseline,
+compatibility matrix, audit tarball, dan integration gate lokal dalam urutan yang sama
+dengan release boundary:
+
+~~~text
+pnpm run release:preflight
+pnpm run release:preflight -- --report=.local/release-preflight.json
+~~~
+
+Jika ada perubahan yang belum di-commit, preflight berhenti sebelum menjalankan gate.
+Report opsional hanya berisi status command dan durasi, bukan credential atau output
+tarball.
+
 Sebelum publish package, jalankan audit metadata dan isi tarball:
 
 ~~~text

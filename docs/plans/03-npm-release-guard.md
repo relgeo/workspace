@@ -106,6 +106,7 @@ npm publish --access public
 
 - [x] `scripts/audit-release-readiness.mjs` memeriksa metadata, `package.json.files`, dan isi `npm pack --dry-run` untuk seluruh package publik.
 - [x] `scripts/verify-published-packages.mjs` memeriksa versi setiap package langsung dari npm registry tanpa memerlukan token.
+- [x] `scripts/run-release-preflight.mjs` menyediakan satu pemeriksaan read-only sebelum publish: root clean, strict baseline, compatibility matrix, tarball audit, dan local integration gate.
 - [x] root script `pnpm run release:audit` dan `pnpm run release:verify-published` tersedia.
 - [x] `docs/releases/TEMPLATE.md`, record `0.5.0`, dan `scripts/check-release-record.mjs` tersedia untuk mencegah package/consumer hilang dari ledger release.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
@@ -127,6 +128,15 @@ pnpm run release:verify-published
 Audit tarball lokal pada checkout yang sudah dibuild menjadi evidence tambahan sebelum release berikutnya.
 
 - `pnpm run release:record:check` memvalidasi record machine-readable baseline `0.5.0` terhadap matrix; record memuat urutan, seluruh package, consumer, dan evidence manual/public yang tersedia.
+
+Preflight seragam sebelum publish manual:
+
+~~~bash
+pnpm run release:preflight -- --report=.local/release-preflight.json
+~~~
+
+Command ini read-only terhadap repository dan registry. Ia berhenti bila root working
+tree tidak bersih atau salah satu gate gagal; ia tidak menjalankan `npm publish`.
 
 ## 6. Exit gate Tahap 3
 
@@ -152,3 +162,4 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-15 | Audit tarball dan registry dijalankan | `release:audit` 106/106; `release:verify-published` 7/7 untuk versi `0.5.0` |
 | 2026-09-15 | Checklist manual dan recovery partial release ditulis | automation publish tetap sengaja belum aktif |
 | 2026-09-15 | Release decision record baseline `0.5.0` dibuat dan divalidasi | `docs/releases/0.5.0.{md,json}`, template, dan `release:record:check`; package/consumer/order/evidence konsisten |
+| 2026-09-16 | Release preflight read-only ditambahkan | `release:preflight` mengurutkan clean-tree check, strict baseline, compatibility check, tarball audit, dan local integration gate; publish tetap manual |

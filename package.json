@@ -15,6 +15,7 @@
     "compatibility:check": "node scripts/check-compatibility.mjs",
     "compatibility:audit": "node scripts/audit-compatibility-behavior.mjs",
     "release:audit": "node scripts/audit-release-readiness.mjs",
+    "release:preflight": "node scripts/run-release-preflight.mjs",
     "release:verify-published": "node scripts/verify-published-packages.mjs",
     "release:record:check": "node scripts/check-release-record.mjs",
     "conformance:fixtures": "node scripts/run-conformance-fixtures.mjs",

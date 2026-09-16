@@ -521,6 +521,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Validator capability candidate diperketat | manifest kini mewajibkan expected scene/output snapshot untuk setiap candidate; conformance terbaru lulus `204/204` across 16 fixtures |
 | 2026-09-16 | Integration gate root diulang setelah candidate evaluator/unit | `35 passed, 1 failed, 36 total`; satu failure hanya strict-baseline akibat tiga submodule masih dirty, sementara seluruh package/consumer, E2E, Pages artifact, dan conformance stage lulus |
 | 2026-09-16 | Probe build macOS Flutter dilakukan | locale UTF-8 diperlukan agar CocoaPods berjalan; retry mencapai Xcode tetapi terhenti karena disk penuh. Artefak build dibersihkan; source build macOS dan keputusan platform release tetap terbuka |
+| 2026-09-16 | Baseline submodule diperbarui setelah tiga commit dipush dan integration gate clean diulang | strict verifier `81/81`; integration gate lokal `36/36`; conformance `204/204`; CI pascapush untuk commit terbaru masih perlu diverifikasi |
 
 ## 10. Catatan pemeliharaan
 

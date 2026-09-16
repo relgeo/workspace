@@ -260,7 +260,7 @@ Checklist:
 - [x] runner public mendefinisikan `npm pack --dry-run` sebagai boundary release, bukan pengganti test.
 - [x] runner public memeriksa daftar file pack dan menolak path traversal, path absolute, secret, serta direktori lokal.
 
-Evidence runtime (2026-09-15): `node scripts/verify-baseline.mjs --write` berhasil pada Node 24.21.0 dan menghasilkan manifest yang konsisten dengan `.gitmodules`; local gate lulus 33/33 dan public-registry gate lulus 48/48 pada pnpm 10.33.3.
+Evidence runtime: baseline manifest sekarang konsisten dengan `.gitmodules`; local gate final pada workspace clean lulus `36/36` dengan Node 24.21.0 dan pnpm 10.33.3. Public-registry gate sebelumnya juga lulus `48/48` pada toolchain yang sama.
 
 Acceptance:
 
@@ -416,3 +416,4 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Public smoke test dijalankan terhadap `https://relgeo.github.io` | 14/14 route HTTP 200; public smoke lulus; hanya reproduksi failure CI tertentu yang tersisa |
 | 2026-09-15 | Failure run `#85` direproduksi dari checkout bersih `fe94149` dengan `CI=1` | gate lama menghasilkan 30 passed dan 3 failed pada `renderer-svg`, `remark-relgeo`, dan `cli`; akar masalah urutan test sebelum build serta import dist lokal; failure dapat direproduksi dan sudah tertutup oleh baseline baru |
 | 2026-09-16 | Local integration gate diperluas dengan automated browser smoke Playground | gate memasang Chromium sesuai environment, menjalankan `test:e2e` setelah build, dan menjaga unit test terpisah dari folder `e2e`; CI pascapush masih diperlukan |
+| 2026-09-16 | Baseline revision website, Playground, dan Flutter disegarkan setelah submodule dipush | strict verifier lulus `81/81`; integration gate lokal pada workspace clean lulus `36/36`, termasuk package, E2E, website, Pages artifact, dan conformance `204/204` |

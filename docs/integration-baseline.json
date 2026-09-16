@@ -7,7 +7,7 @@
   "submodules": [
     {
       "path": "relgeo.github.io",
-      "revision": "5e2dd3a59229d357853c9fa1ccae3cb475efa2f1",
+      "revision": "5ac4b9cb5418d133e680693dd7e7c1065f23dec6",
       "package": {
         "name": "relgeo-docs-site",
         "version": "0.5.0"
@@ -15,7 +15,7 @@
     },
     {
       "path": "playground",
-      "revision": "699dee6b22bd5b05e1512023d5da0e44363d509b",
+      "revision": "f9971eddf12044251aaeb97b547793d79976ba9d",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"
@@ -83,7 +83,7 @@
     },
     {
       "path": "flutter",
-      "revision": "d74df0ce12f3bdac85cdb7f3531ab0db4ac78e7d"
+      "revision": "9de5a1b3cbda21815591b56f13ca2666065abd90"
     }
   ]
 }

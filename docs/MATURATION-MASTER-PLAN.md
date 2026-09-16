@@ -312,7 +312,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 3 — Release dan npm publishing guard
 
-**Status:** Berjalan — release checklist, tarball audit, post-publish verifier, dan record baseline `0.5.0` sudah tersedia/terverifikasi; automated publish dan recovery transaction masih terbuka.
+**Status:** Berjalan — release checklist, read-only release preflight, tarball audit, post-publish verifier, dan record baseline `0.5.0` sudah tersedia/terverifikasi; automated publish dan recovery transaction masih terbuka.
 
 **Tujuan:** membuat release publik aman, dapat diulang, dan dapat diverifikasi setelah package masuk registry.
 
@@ -334,6 +334,7 @@ Status menggunakan arti berikut:
 - [x] semua package yang dirilis dapat di-install oleh consumer bersih;
 - [x] hasil post-publish dicatat untuk baseline `0.5.0`;
 - [x] release dapat dihentikan dengan aman di antara package tanpa membuat status membingungkan;
+- [x] release preflight read-only menggabungkan clean-tree check, strict baseline, compatibility check, tarball audit, dan local integration gate;
 - [ ] automated publishing hanya diaktifkan setelah manual path terbukti stabil.
 
 **Deliverable sub-rencana:** [docs/plans/03-npm-release-guard.md](plans/03-npm-release-guard.md).
@@ -527,6 +528,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | GitHub `Integration #91` diverifikasi selesai | commit `bdfa895` memiliki job `flutter`, `verify`, dan `public` yang semuanya sukses; evidence CI terbaru tetap hijau, browser deployment publik terbaru kemudian diverifikasi, sementara promotion candidate dan platform release masih terbuka |
 | 2026-09-16 | Browser smoke deployment publik terbaru dijalankan | `https://relgeo.github.io/playground/` mencapai `READY`, fixture runtime diagnostic menampilkan preview dan tab `Errors` dengan pesan expected; route utama, `/en/`, `/en/docs/`, `/en/docs/language-spec/`, `/playground/`, dan `/sitemap.xml` semuanya HTTP 200, console browser bersih |
 | 2026-09-16 | Official Playground E2E dibuat deployment-aware dan dipromosikan ke gate root | `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/ pnpm test:e2e` lulus `2/2`; local mode juga `2/2`; child commit `143acf6`, root pointer `9e77d33`, local gate `36/36`, dan GitHub `Integration #94` sukses |
+| 2026-09-16 | Release preflight read-only ditambahkan dan dijalankan | `release:preflight` pada `workspace@3f4b76a` lulus root clean, strict baseline `81/81`, compatibility `250/250`, tarball audit `106/106`, dan integration gate `36/36`; evidence dicatat pada sub-rencana Tahap 3 |
 
 ## 10. Catatan pemeliharaan
 

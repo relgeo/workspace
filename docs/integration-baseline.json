@@ -15,7 +15,7 @@
     },
     {
       "path": "playground",
-      "revision": "f9971eddf12044251aaeb97b547793d79976ba9d",
+      "revision": "143acf6f22e352f53e84a1b98a3a0d6194bd4e33",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"

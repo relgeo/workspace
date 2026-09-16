@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "0.5.1",
+  "baseReleaseVersion": "0.5.0",
+  "compatibilityLine": "0.5",
+  "status": "planned",
+  "recordedAt": "2026-09-16",
+  "publicationMode": "manual-2fa",
+  "decision": {
+    "kind": "patch-compatible",
+    "contractChange": "patch-compatible",
+    "rationale": "Propagate the explicit DSL version acceptance policy to the core parser and language-service schema without changing the 0.5 contract line.",
+    "approvalStatus": "deferred",
+    "specRevision": "b96ba3b23de202227eade06614635ef6717df516",
+    "partialReleasePolicy": "stop-and-record-then-forward-fix-next-patch",
+    "notes": "This is a public release candidate plan. No npm publish is implied until the two affected package versions are bumped, audited, published manually, and verified from the registry."
+  },
+  "releaseOrder": [
+    "spec",
+    "geometry",
+    "core",
+    "renderer-svg",
+    "language-service",
+    "remark-relgeo-hl",
+    "remark-relgeo",
+    "cli",
+    "playground",
+    "relgeo.github.io"
+  ],
+  "packagePlan": [
+    { "path": "geometry", "name": "@relgeo/geometry", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" },
+    { "path": "core", "name": "@relgeo/core", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned", "reason": "Publish parser version acceptance policy." },
+    { "path": "renderer-svg", "name": "@relgeo/renderer-svg", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" },
+    { "path": "language-service", "name": "@relgeo/language-service", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned", "reason": "Publish schema version policy aligned with the parser." },
+    { "path": "remark-relgeo-hl", "name": "@relgeo/remark-relgeo-hl", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" },
+    { "path": "remark-relgeo", "name": "@relgeo/remark-relgeo", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" },
+    { "path": "cli", "name": "@relgeo/cli", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" }
+  ],
+  "consumers": [
+    { "path": "playground", "name": "relgeo-playground", "version": "0.4.0", "status": "pending" },
+    { "path": "relgeo.github.io", "name": "relgeo-docs-site", "version": "0.5.0", "status": "pending" }
+  ],
+  "sourceChanges": [
+    { "path": "core", "revision": "72d8bd8", "summary": "Explicit parser version acceptance policy and unsupported-version diagnostic." },
+    { "path": "language-service", "revision": "5155890", "summary": "Schema version enum/default aligned with the compatibility policy." }
+  ],
+  "evidence": {
+    "sourcePolicy": {
+      "status": "passed",
+      "strictBaseline": "81/81",
+      "compatibilityMatrix": "256/256",
+      "conformanceFixtures": "228/228"
+    },
+    "registryVerification": { "status": "pending", "reason": "Requires manual npm publish after package version bumps." },
+    "publicIntegration": { "status": "pending", "reason": "Run only after the affected packages are available at 0.5.1." }
+  },
+  "nextSteps": [
+    "Bump core and language-service to 0.5.1 in their child repositories.",
+    "Run release preflight and tarball audit from a clean workspace.",
+    "Publish the two packages manually with npm 2FA/passkey.",
+    "Verify npm registry versions and run the public-registry integration gate.",
+    "Replace this planned record with completed evidence only after all checks pass."
+  ]
+}

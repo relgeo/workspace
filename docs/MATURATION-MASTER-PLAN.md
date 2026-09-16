@@ -209,13 +209,13 @@ Gate harus menjawab:
 - apakah website dapat mengambil baseline Playground dan spec yang benar;
 - apakah artifact publik dan route utama tetap valid.
 
-### Prioritas 2 — Compatibility dan release contract — baseline selesai, propagasi publik terbuka
+### Prioritas 2 — Compatibility dan release contract — baseline selesai, candidate patch disiapkan
 
-Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-service schema enum, negative fixtures, dan checker. Sisa tahap ini bukan merumuskan policy lagi, melainkan mempropagasikan perubahan source-next ke release patch npm dan memverifikasi registry fresh install.
+Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-service schema enum, negative fixtures, dan checker. Candidate `0.5.1` sudah dicatat untuk mempropagasikan perubahan source-next ke `core` dan `language-service`; registry fresh install masih menunggu publish manual.
 
-### Prioritas 3 — Release automation yang aman — berikutnya
+### Prioritas 3 — Release automation yang aman — guard diperkuat, transaction masih berikutnya
 
-Dengan integration gate stabil, langkah operasional berikutnya adalah menyiapkan release patch core/language-service secara manual dan terdokumentasi, lalu memperkuat guard untuk mencegah partial publish tanpa decision record. Automated publish tetap ditahan sampai jalur manual dan recovery terbukti.
+Dengan integration gate stabil, candidate patch `0.5.1` dan guard status-aware sudah disiapkan. Langkah operasional berikutnya adalah bump/publish manual `core` dan `language-service`, verifikasi registry, lalu memperkuat recovery transaction. Automated publish tetap ditahan sampai jalur manual dan recovery terbukti.
 
 ### Prioritas 4 — Shared conformance fixtures — hampir selesai
 

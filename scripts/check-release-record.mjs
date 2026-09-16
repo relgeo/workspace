@@ -34,6 +34,30 @@ function entriesMatch(actual, expected, status) {
   });
 }
 
+function planEntriesMatch(actual, expected) {
+  const allowedStatuses = new Set(["retained", "planned", "published", "failed", "skipped"]);
+  return Array.isArray(actual) && actual.length === expected.length && expected.every((entry) => {
+    const found = actual.find((candidate) => candidate.path === entry.path);
+    return found?.path === entry.path &&
+      found.name === entry.name &&
+      found.fromVersion === entry.version &&
+      typeof found.targetVersion === "string" &&
+      /^\d+\.\d+\.\d+$/.test(found.targetVersion) &&
+      allowedStatuses.has(found.status);
+  });
+}
+
+function consumerPlanMatches(actual, expected) {
+  const allowedStatuses = new Set(["pending", "verified", "blocked", "not-run"]);
+  return Array.isArray(actual) && actual.length === expected.length && expected.every((entry) => {
+    const found = actual.find((candidate) => candidate.path === entry.path);
+    return found?.path === entry.path &&
+      found.name === entry.name &&
+      found.version === entry.version &&
+      allowedStatuses.has(found.status);
+  });
+}
+
 let matrix;
 let record;
 try {
@@ -46,7 +70,7 @@ try {
 if (matrix && record) {
   check(record.schemaVersion === 1, "release record schema version is supported");
   check(record.releaseVersion === recordVersion, `record version is ${recordVersion}`);
-  check(record.status === "completed", "release record has a completed status");
+  check(["planned", "partial", "completed"].includes(record.status), "release record status is supported");
   check(record.compatibilityLine === matrix.compatibilityLine, "record and matrix use the same compatibility line");
   const releaseDecision = matrix.policy?.releaseDecision;
   check(
@@ -79,26 +103,46 @@ if (matrix && record) {
   );
   check(record.decision?.specRevision === matrix.contract.specRevision, "record spec revision matches the matrix contract revision");
   check(sameArray(record.releaseOrder, matrix.policy.releaseOrder), "record release order matches the compatibility matrix");
-  check(entriesMatch(record.packages, matrix.packages, "published"), "every matrix package is recorded as published at the expected version");
-  check(entriesMatch(record.consumers, matrix.consumers, "verified"), "every matrix consumer is recorded as verified at the expected version");
   check(record.publicationMode === "manual-2fa", "publication mode is explicit and does not imply automated publishing");
 
-  const evidence = record.evidence ?? {};
-  for (const [key, label] of [
-    ["localIntegration", "local integration evidence"],
-    ["publicIntegration", "public integration evidence"],
-    ["conformanceFixtures", "conformance fixture evidence"],
-    ["releaseAudit", "release audit evidence"],
-    ["registryVerification", "registry verification evidence"],
-  ]) {
-    check(Number.isInteger(evidence[key]?.passed) && evidence[key].passed > 0, `${label} has a positive pass count`);
-    check(evidence[key]?.failed === 0, `${label} has zero failures`);
+  if (record.status === "completed") {
+    check(entriesMatch(record.packages, matrix.packages, "published"), "every matrix package is recorded as published at the expected version");
+    check(entriesMatch(record.consumers, matrix.consumers, "verified"), "every matrix consumer is recorded as verified at the expected version");
+  } else {
+    check(record.baseReleaseVersion === "0.5.0", "planned or partial record identifies the current base release");
+    check(planEntriesMatch(record.packagePlan, matrix.packages), "candidate package plan covers every matrix package");
+    check(consumerPlanMatches(record.consumers, matrix.consumers), "candidate consumer plan covers every matrix consumer");
+
+    const changedPackages = record.packagePlan?.filter((entry) => entry.targetVersion !== entry.fromVersion) ?? [];
+    check(changedPackages.length > 0, "candidate package plan contains at least one versioned package change");
+    check(
+      changedPackages.every((entry) => entry.targetVersion.startsWith(`${matrix.compatibilityLine}.`)),
+      "candidate package changes stay on the active compatibility line",
+    );
+    check(
+      record.status !== "partial" || record.recovery?.forwardFixVersion === record.releaseVersion,
+      "partial record identifies its forward-fix version",
+    );
   }
-  check(evidence.compatibilityCheck?.status === "passed", "compatibility check evidence is passed");
-  check(evidence.publicPlaygroundSmoke?.automated === false, "public Playground smoke is honestly marked as manual");
-  check(evidence.publicPlaygroundSmoke?.status === "passed", "public Playground smoke evidence is passed");
-  check(typeof evidence.publicPlaygroundSmoke?.url === "string" && evidence.publicPlaygroundSmoke.url.startsWith("https://"), "public Playground smoke records an HTTPS URL");
-  check(Array.isArray(evidence.publicPlaygroundSmoke?.checks) && evidence.publicPlaygroundSmoke.checks.length >= 3, "public Playground smoke records actionable checks");
+
+  const evidence = record.evidence ?? {};
+  if (record.status === "completed") {
+    for (const [key, label] of [
+      ["localIntegration", "local integration evidence"],
+      ["publicIntegration", "public integration evidence"],
+      ["conformanceFixtures", "conformance fixture evidence"],
+      ["releaseAudit", "release audit evidence"],
+      ["registryVerification", "registry verification evidence"],
+    ]) {
+      check(Number.isInteger(evidence[key]?.passed) && evidence[key].passed > 0, `${label} has a positive pass count`);
+      check(evidence[key]?.failed === 0, `${label} has zero failures`);
+    }
+    check(evidence.compatibilityCheck?.status === "passed", "compatibility check evidence is passed");
+    check(evidence.publicPlaygroundSmoke?.automated === false, "public Playground smoke is honestly marked as manual");
+    check(evidence.publicPlaygroundSmoke?.status === "passed", "public Playground smoke evidence is passed");
+    check(typeof evidence.publicPlaygroundSmoke?.url === "string" && evidence.publicPlaygroundSmoke.url.startsWith("https://"), "public Playground smoke records an HTTPS URL");
+    check(Array.isArray(evidence.publicPlaygroundSmoke?.checks) && evidence.publicPlaygroundSmoke.checks.length >= 3, "public Playground smoke records actionable checks");
+  }
 
   const serialized = JSON.stringify(record);
   check(!serialized.includes("/Users/") && !serialized.includes("/home/"), "release record contains no operator-specific absolute path");

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -10,6 +10,7 @@ const reportArgument = process.argv.find((argument) => argument.startsWith("--re
 const recordArgument = process.argv.find((argument) => argument.startsWith("--record="));
 const reportPath = reportArgument ? resolve(root, reportArgument.slice("--report=".length)) : null;
 const recordVersion = recordArgument?.slice("--record=".length) || "0.5.0";
+const recordPath = resolve(root, "docs/releases", `${recordVersion}.json`);
 const startedAt = new Date().toISOString();
 const steps = [];
 
@@ -61,10 +62,31 @@ function runStep(name, command, args) {
   return false;
 }
 
+async function checkCompletedReleaseRecord() {
+  try {
+    const releaseRecord = JSON.parse(await readFile(recordPath, "utf8"));
+    if (releaseRecord.status !== "completed") {
+      record("release decision record is completed", "failed", {
+        details: `record ${recordVersion} has status ${releaseRecord.status}; preflight is only valid for a completed release`,
+      });
+      console.error(`[FAIL] release decision record is completed: ${recordVersion} is ${releaseRecord.status}`);
+      return false;
+    }
+    record("release decision record is completed", "passed");
+    console.log(`[PASS] release decision record is completed: ${recordVersion}`);
+    return true;
+  } catch (error) {
+    record("release decision record is completed", "failed", { details: error.message });
+    console.error(`[FAIL] release decision record is completed: ${error.message}`);
+    return false;
+  }
+}
+
 const ok = checkRootIsClean()
   && runStep("strict baseline", "pnpm", ["run", "verify:baseline:strict"])
   && runStep("compatibility matrix", "pnpm", ["run", "compatibility:check"])
   && runStep("release decision record", "pnpm", ["run", "release:record:check", recordVersion])
+  && await checkCompletedReleaseRecord()
   && runStep("release tarball audit", "pnpm", ["run", "release:audit"])
   && runStep("local integration gate", "pnpm", ["run", "integration:gate", "--", "--local"]);
 

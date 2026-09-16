@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 2 — Contract Versioning dan Compatibility Matrix
 
-**Status:** Berjalan — matriks, deklarasi, pemeriksaan CI, version acceptance policy, checklist release, dan release decision record validator sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka
+**Status:** Berjalan — matriks, deklarasi, pemeriksaan CI, version acceptance policy, checklist release, release decision record validator, dan candidate patch plan sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -111,6 +111,8 @@ Command harus menghasilkan exit code non-zero ketika package mengubah compatibil
 ## 5. Hal yang belum tertutup
 
 - [x] release record kini diwajibkan menyatakan klasifikasi perubahan, rationale, approval status, dan policy partial-release sesuai matrix; pencegahan publish parsial secara atomik tetap terbuka.
+- [x] release record mendukung status `planned`, `partial`, dan `completed` sehingga rencana patch dapat ditinjau tanpa dianggap sebagai publikasi.
+- [x] candidate `0.5.1` mencatat propagasi policy parser/schema ke `core` dan `language-service`; verifikasi npm masih menunggu publish manual.
 - [x] release checklist operasional yang mencakup spec, package, consumer, docs, tag, dan post-publish evidence tersedia di sub-rencana Tahap 3.
 - [x] release decision record template dan validator menjaga package/consumer/order tetap lengkap pada baseline `0.5.0`.
 - [x] inventory compatibility behavior disimpan di `docs/compatibility-behavior-audit.md`.

@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 3 — Release dan npm Publishing Guard
 
-**Status:** Berjalan — checklist, tarball audit, post-publish verifier, dan release decision record validator sudah dibuat serta baseline `0.5.0` sudah dicatat; automated publish dan recovery transaction belum diaktifkan
+**Status:** Berjalan — checklist, tarball audit, post-publish verifier, release decision record validator, candidate plan `0.5.1`, dan status-aware preflight sudah tersedia; publish manual, automated publish, dan recovery transaction belum selesai
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -110,11 +110,16 @@ npm publish --access public
 - [x] root script `pnpm run release:audit` dan `pnpm run release:verify-published` tersedia.
 - [x] `docs/releases/TEMPLATE.md`, record `0.5.0`, dan `scripts/check-release-record.mjs` tersedia untuk mencegah package/consumer hilang dari ledger release.
 - [x] matrix dan release-record validator kini memeriksa klasifikasi contract change, rationale, approval status, serta policy forward-fix untuk record partial.
+- [x] validator membedakan record `planned`, `partial`, dan `completed`; candidate plan dapat diperiksa tanpa mengklaim publish sudah terjadi.
+- [x] `docs/releases/0.5.1.json` mencatat target patch untuk `core` dan `language-service`, package yang dipertahankan, consumer pending, dan langkah manual berikutnya.
+- [x] preflight memerlukan record berstatus `completed` setelah validasi record; candidate `planned` tidak dapat lolos sebagai release final.
+- [x] dokumentasi membedakan validasi record candidate dari preflight release final.
 - [x] workflow Integration menjalankan `release:record:check` sebagai gate CI eksplisit sebelum integration gate.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.
 - [ ] automated publishing belum diaktifkan.
 - [ ] automated partial-release transaction/rollback helper belum ada.
+- [ ] candidate `0.5.1` belum dibump, dipublish, diverifikasi dari npm, atau diuji pada public-registry gate.
 
 ## 5. Bukti awal
 
@@ -176,3 +181,5 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-16 | Release preflight pertama dijalankan dari commit bersih | root clean; strict baseline `81/81`; compatibility `250/250`; tarball audit `106/106`; integration gate lokal `36/36`; status `passed`; report berada di `.local/release-preflight-2026-09-16.json` |
 | 2026-09-16 | Parser dan language-service schema version policy diterapkan pada source-next | core parser menolak future/unknown version, schema editor membatasi history `0.1`–`0.5`; source gate lulus, registry masih berada pada package baseline `0.5.0` sehingga release patch manual tetap terbuka |
 | 2026-09-16 | Release decision enforcement diperkuat | matrix mendeklarasikan kondisi record wajib, klasifikasi perubahan yang diizinkan, dan policy forward-fix; `release:record:check` memvalidasi rationale/approval dan partial-release policy |
+| 2026-09-16 | Release record dibuat status-aware | `planned`, `partial`, dan `completed` dibedakan; candidate plan tidak dapat dipakai oleh preflight sebelum statusnya `completed` |
+| 2026-09-16 | Candidate patch `0.5.1` dicatat | `core` dan `language-service` direncanakan naik dari `0.5.0` ke `0.5.1`; publish/registry/public integration masih menunggu tindakan manual |

@@ -124,9 +124,11 @@ pnpm run release:preflight -- --report=.local/release-preflight.json
 pnpm run release:preflight -- --record=0.5.1 --report=.local/release-preflight-0.5.1.json
 ~~~
 
-Gunakan `--record=<version>` untuk memvalidasi record candidate selain default
-baseline `0.5.0`. Jika record belum ada atau keputusan release tidak lengkap,
-preflight berhenti sebelum audit dan integration gate.
+Gunakan `--record=<version>` untuk memilih record selain default baseline
+`0.5.0`. `release:record:check` dapat memvalidasi record berstatus `planned`
+atau `partial` sebagai dokumen rencana, tetapi preflight release final hanya
+menerima record berstatus `completed`. Dengan demikian candidate dapat direview
+lebih awal tanpa membuatnya terlihat sudah dipublish.
 
 Jika ada perubahan yang belum di-commit, preflight berhenti sebelum menjalankan gate.
 Report opsional hanya berisi status command dan durasi, bukan credential atau output

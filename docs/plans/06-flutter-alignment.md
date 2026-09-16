@@ -35,14 +35,14 @@ Non-goal tahap ini:
 
 ### Gap yang terbukti dari inspeksi
 
-- [x] Flutter sekarang menjadi `nonNodeConsumers.flutter` pada `docs/compatibility-matrix.json` tanpa dimasukkan ke release order Node; status evidence tetap `partial`, dan evidence CI job `Integration #91` sudah terverifikasi;
+- [x] Flutter sekarang menjadi `nonNodeConsumers.flutter` pada `docs/compatibility-matrix.json` tanpa dimasukkan ke release order Node; status evidence tetap `partial`, dan evidence CI job `Integration #94` sudah terverifikasi;
 - [x] test shared fixture tidak lagi mengunci satu literal path: `flutter/test/support/shared_fixture.dart` menerima `RELGEO_FIXTURE_ROOT` dan menyediakan fallback relatif workspace; canonical fixture tetap tidak dibawa ke child repo;
 - [x] active fixture `10-v05-relational-baseline.yaml` memiliki test Flutter dan sudah dijalankan melalui staging fixture; manifest menandai surface Flutter yang memang dicakup evidence;
 - [x] runtime Flutter mengimplementasikan port Dart tersendiri dan pemetaan capability/function/diagnostic ke implementasi TypeScript kini tersedia machine-readable; evidence parity pada tiap mapping tetap terbuka;
 - [x] `flutter/pubspec.yaml` memiliki deskripsi RelGeo dan statement compatibility line `0.5`; application version `1.0.0+1` tetap dipisahkan secara eksplisit;
 - [x] mapping capability/function Flutter terhadap sumber TypeScript dicatat machine-readable di [`../flutter-capability-matrix.json`](../flutter-capability-matrix.json), dengan status evidence yang belum lengkap tetap eksplisit;
 - [x] referensi `v0.4` yang tersisa diklasifikasikan sebagai regression/compatibility history; statement aktif pada README, pubspec, painter, exporter, dan workbench menggunakan `v0.5`;
-- [x] job `flutter analyze`/`flutter test` terpisah sudah ditambahkan pada workflow root; job `flutter` pada `Integration #91` berhasil dari checkout CI, sedangkan bukti build Flutter macOS masih terbuka;
+- [x] job `flutter analyze`/`flutter test` terpisah sudah ditambahkan pada workflow root; job `flutter` pada `Integration #94` berhasil dari checkout CI, sedangkan bukti build Flutter macOS masih terbuka;
 - [x] Flutter SDK lokal tersedia dan diverifikasi melalui terminal VS Code; runner lengkap berhasil pada Flutter `3.41.9` dan Dart `3.11.5`. Evidence lokal, checkout mandiri, dan job CI sudah tersedia; build platform macOS tetap belum terverifikasi.
 
 ## 3. Boundary fixture yang disepakati untuk dibahas
@@ -195,7 +195,7 @@ sequenceDiagram
 
 Evidence lokal yang sudah tersedia tidak menggantikan stage di atas: runner workspace
 lulus dengan Flutter `3.41.9`, Dart `3.11.5`, 16 fixture yang di-stage, `pub get`,
-analyzer non-fatal, dan 119 test. Job Flutter CI `Integration #91` juga lulus dari
+analyzer non-fatal, dan 119 test. Job Flutter CI `Integration #94` juga lulus dari
 checkout workspace/submodule resmi; job `verify` dan `public` pada run yang sama
 ikut lulus. Analyzer masih melaporkan 130 lint/info legacy; temuan tersebut terlihat
 tetapi tidak menjadi blocker pada baseline ini.
@@ -229,8 +229,8 @@ tetapi tidak menjadi blocker pada baseline ini.
 - [x] mode error memiliki regression test yang mempertahankan preview valid terakhir sambil menampilkan diagnostic; eksekusi Flutter lulus;
 - [x] diagnostic `align` Flutter memiliki projection canonical yang cocok pada type, message, deviation, path, dan involved objects pada hasil test Flutter lokal;
 - [x] invalid input memiliki boundary test untuk YAML syntax, struktur object, dan unknown reference; exact vocabulary lintas consumer masih merupakan gap terpisah;
-- [x] `flutter analyze` non-fatal dan `flutter test` lulus pada toolchain `3.41.9` dari checkout terisolasi lokal; job Flutter pada `Integration #91` juga lulus;
-- [x] Flutter job berdiri sendiri dan tidak mengubah status gate TypeScript ketika Flutter belum tersedia; konfigurasi remote terbukti pada `Integration #91`;
+- [x] `flutter analyze` non-fatal dan `flutter test` lulus pada toolchain `3.41.9` dari checkout terisolasi lokal; job Flutter pada `Integration #94` juga lulus;
+- [x] Flutter job berdiri sendiri dan tidak mengubah status gate TypeScript ketika Flutter belum tersedia; konfigurasi remote terbukti pada `Integration #94`;
 - [x] README, compatibility record, fixture manifest, dan master plan menyatakan status evidence lokal dan gap CI/standalone yang sama;
 - [ ] tidak ada klaim parity final sebelum seluruh capability matrix memiliki evidence.
 
@@ -259,7 +259,7 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 - Runner Flutter lokal dijalankan dengan Flutter `3.41.9` dan Dart `3.11.5`; staging 16 fixture, `flutter pub get --enforce-lockfile`, analyzer non-fatal, serta 119 test lulus.
 - Test semantic projection untuk fixture active dan runtime-diagnostic, boundary invalid, widget smoke, golden, dan regression edit invalid sudah dieksekusi dan lulus secara lokal.
 - Perbaikan yang terverifikasi dalam run tersebut mencakup wrapping pesan violation pada inspector agar tidak overflow dan penjadwalan ulang frame pada regression invalid edit agar perubahan controller diproses oleh widget test.
-- Evidence CI Flutter tersedia melalui `Integration #91` (job `flutter`, `verify`, dan `public` sukses); active, runtime-diagnostic, dan candidate lulus pada scene projection serta SVG semantic projection ter-normalisasi, tetapi candidate masih capability-only dan cakupan SVG/policy presentation yang lebih luas masih terbuka.
+- Evidence CI Flutter tersedia melalui `Integration #94` (job `flutter`, `verify`, dan `public` sukses); active, runtime-diagnostic, dan candidate lulus pada scene projection serta SVG semantic projection ter-normalisasi, tetapi candidate masih capability-only dan cakupan SVG/policy presentation yang lebih luas masih terbuka.
 - Draft release posture Flutter sudah dicatat sebagai decision record; statusnya masih `Proposed` dan tidak dianggap sebagai persetujuan maintainer.
 - Runner `pnpm run flutter:conformance` sudah memiliki jalur blocked yang eksplisit untuk environment tanpa Flutter dan dapat memakai `RELGEO_FLUTTER_BIN`.
 - Capability mapping machine-readable sudah ditambahkan dan path/symbol mapping-nya diverifikasi oleh compatibility checker root.
@@ -308,3 +308,4 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 | 2026-09-16 | Regression suite Flutter diulang setelah probe macOS | `flutter test --reporter compact` lulus `119 test`; tidak ada perubahan tracked pada file macOS atau lockfile |
 | 2026-09-16 | Flutter dipush bersama baseline root dan integration gate clean diulang | submodule Flutter `9de5a1b` cocok dengan manifest; local Flutter suite tetap `119 test` lulus dan integration gate root `36/36` lulus; evidence CI Flutter masih terbuka |
 | 2026-09-16 | Integration `#90` diverifikasi pada GitHub | job `flutter`, `verify`, dan `public` semuanya sukses pada commit `6305b8e`; evidence CI Flutter dan public-registry gate tertutup, sedangkan build macOS dan promotion candidate tetap terbuka |
+| 2026-09-16 | Evidence CI Flutter pascapush diverifikasi | `Integration #94` pada `workspace@9e77d33` sukses untuk job `flutter`, `verify`, dan `public`; build macOS, pin revision SDK, dan promotion candidate tetap terbuka |

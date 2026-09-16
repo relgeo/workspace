@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #105` untuk `workspace@a866fcc`; browser smoke deployment publik terbaru dan E2E deployment-aware juga lulus, sedangkan capability parity tambahan Flutter masih terbuka.
+- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #106` untuk `workspace@b3f7bb6`; browser smoke deployment publik terbaru dan E2E deployment-aware juga lulus, sedangkan capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 
@@ -547,6 +547,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Negative conformance version fixtures ditambahkan | fixture `17` (`0.6`) dan `18` (`1.0`); core `427/427`, compatibility `256/256`, conformance `228/228` across 18 fixtures |
 | 2026-09-16 | Language-service schema dan root integration gate diselaraskan dengan version policy | schema membatasi version `0.1`–`0.5`; lint/test `66/66`; strict baseline `81/81`; local integration gate `36/36`; registry masih menyediakan core/language-service `0.5.0` sehingga release patch manual tetap terbuka |
 | 2026-09-16 | GitHub `Integration #105` memverifikasi policy version acceptance terbaru | job `flutter`, `verify`, dan `public` sukses pada `workspace@a866fcc`; dua warning Node 20 dari `actions/upload-artifact@v5` dicatat dan action dinaikkan ke v6 untuk workflow berikutnya |
+| 2026-09-16 | GitHub `Integration #106` memverifikasi workflow artifact Node 24 | job `flutter`, `verify`, dan `public` sukses pada `workspace@b3f7bb6`; dua artifact report terbentuk dan warning Node 20 tidak lagi muncul |
 
 ## 10. Catatan pemeliharaan
 

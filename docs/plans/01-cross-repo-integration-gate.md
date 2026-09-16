@@ -294,7 +294,7 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #91` untuk commit `bdfa895` pada `relgeo/workspace`; job `flutter`, `verify`, dan `public` semuanya sukses.
+Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #94` untuk commit `9e77d33` pada `relgeo/workspace`; job `flutter`, `verify`, dan `public` semuanya sukses. Run ini juga membawa pointer Playground `143acf6`, yaitu versi yang sudah mendukung browser smoke terhadap deployment publik melalui `PLAYWRIGHT_BASE_URL`.
 
 Checklist:
 
@@ -417,3 +417,5 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-15 | Failure run `#85` direproduksi dari checkout bersih `fe94149` dengan `CI=1` | gate lama menghasilkan 30 passed dan 3 failed pada `renderer-svg`, `remark-relgeo`, dan `cli`; akar masalah urutan test sebelum build serta import dist lokal; failure dapat direproduksi dan sudah tertutup oleh baseline baru |
 | 2026-09-16 | Local integration gate diperluas dengan automated browser smoke Playground | gate memasang Chromium sesuai environment, menjalankan `test:e2e` setelah build, dan menjaga unit test terpisah dari folder `e2e`; CI pascapush masih diperlukan |
 | 2026-09-16 | Baseline revision website, Playground, dan Flutter disegarkan setelah submodule dipush | strict verifier lulus `81/81`; integration gate lokal pada workspace clean lulus `36/36`, termasuk package, E2E, website, Pages artifact, dan conformance `204/204` |
+| 2026-09-16 | Official Playground E2E dibuat deployment-aware | `playwright.config.ts` menerima `PLAYWRIGHT_BASE_URL`, `goto('./')` aman untuk base path `/playground/`, dan command yang sama lulus lokal `2/2` serta terhadap `https://relgeo.github.io/playground/` `2/2`; perubahan dipush sebagai `playground@143acf6` |
+| 2026-09-16 | CI memverifikasi baseline Playground deployment-aware | root pointer `playground@143acf6` tercatat pada `workspace@9e77d33`; local integration gate lulus `36/36` dan GitHub `Integration #94` sukses pada job `flutter`, `verify`, dan `public` |

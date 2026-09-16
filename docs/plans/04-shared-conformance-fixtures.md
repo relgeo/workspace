@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 4 — Shared Conformance Fixtures dan Contract Tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, browser smoke deployment publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate dan policy SVG yang lebih luas masih terbuka
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, human-readable highlighting snapshot, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate dan policy SVG yang lebih luas masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -158,7 +158,7 @@ Prioritas kerja:
 - [x] smoke check manual pada Playground publik memuat fixture runtime-diagnostic, mencapai status `READY`, tetap mempertahankan preview, dan menampilkan satu diagnostic pada tab Errors;
 - [x] Pages artifact assertion memverifikasi bundle Playground membawa editor label, state `READY`, tab `Errors`, dan pesan runtime diagnostic;
 - [x] automated browser smoke untuk source → `READY` → preview → runtime diagnostic dan mobile surface switcher tersedia serta lulus lokal `2/2`;
-- [x] evidence CI pascapush untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #91`;
+- [x] evidence CI pascapush untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #94`;
 - [x] fixture invalid mencakup YAML syntax error dan unknown reference;
 - [x] fixture runtime-diagnostic diperluas ke semantic/runtime diagnostics yang tidak berhenti pada parser;
 - [x] compatibility behavior inventory diselesaikan dan disimpan sebagai audit terpisah;
@@ -181,7 +181,7 @@ Prioritas kerja:
 - [x] artifact website memverifikasi kontrak runtime Playground yang terpaket;
 - [x] automated browser smoke lokal untuk consumer Playground;
 - [x] public-registry browser smoke standalone lulus `2/2`;
-- [x] evidence CI pascapush tersedia pada `Integration #91`;
+- [x] evidence CI pascapush tersedia pada `Integration #94`;
 - [x] browser smoke berbasis interaksi pada deployment publik terbaru lulus: `READY`, preview, tab `Errors` dengan diagnostic expected, enam route HTTP utama `200`, dan console browser bersih;
 - [x] inventory compatibility behavior dan mismatch example version sudah direkam;
 - [ ] public historical-version policy, future-version handling, dan negative tests;
@@ -235,3 +235,5 @@ Saat menambah atau mengubah fixture:
 | 2026-09-16 | GitHub `Integration #90` menyelesaikan seluruh job | `flutter`, `verify`, dan `public` sukses pada commit workspace `6305b8e`; CI fixture parity dan public-registry gate tertutup, browser smoke deployment publik terbaru serta promotion candidate tetap terbuka |
 | 2026-09-16 | GitHub `Integration #91` menyelesaikan seluruh job | `flutter`, `verify`, dan `public` sukses pada commit workspace `bdfa895`; CI fixture parity dan public-registry gate tertutup, browser smoke deployment publik terbaru kemudian diverifikasi, dan promotion candidate tetap terbuka |
 | 2026-09-16 | Browser smoke deployment publik terbaru diverifikasi | Playground publik mencapai `READY`, preview tetap tersedia, tab `Errors` menampilkan `Points are not aligned. Distance: 14.1421`, console browser tidak memiliki error/warning, dan route utama/docs/spec/playground/sitemap HTTP `200` |
+| 2026-09-16 | Official Playground E2E dibuat deployment-aware | `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/ pnpm test:e2e` lulus `2/2`; local mode tetap lulus `2/2`, dan `goto('./')` mencegah base path publik terpotong ke root domain |
+| 2026-09-16 | Integration gate memverifikasi runner deployment-aware | `playground@143acf6` dan root `workspace@9e77d33` tervalidasi; `Integration #94` sukses pada job `flutter`, `verify`, dan `public` |

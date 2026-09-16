@@ -114,6 +114,7 @@ npm publish --access public
 - [x] `docs/releases/0.5.1.json` mencatat target patch untuk `core` dan `language-service`, package yang dipertahankan, consumer pending, dan langkah manual berikutnya.
 - [x] preflight memerlukan record berstatus `completed` setelah validasi record; candidate `planned` tidak dapat lolos sebagai release final.
 - [x] dokumentasi membedakan validasi record candidate dari preflight release final.
+- [x] `release:candidate:audit` memeriksa candidate planned/partial, clean tree, local package version, dan source revision tanpa publish atau akses npm.
 - [x] workflow Integration menjalankan `release:record:check` sebagai gate CI eksplisit sebelum integration gate.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.
@@ -183,3 +184,4 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-16 | Release decision enforcement diperkuat | matrix mendeklarasikan kondisi record wajib, klasifikasi perubahan yang diizinkan, dan policy forward-fix; `release:record:check` memvalidasi rationale/approval dan partial-release policy |
 | 2026-09-16 | Release record dibuat status-aware | `planned`, `partial`, dan `completed` dibedakan; candidate plan tidak dapat dipakai oleh preflight sebelum statusnya `completed` |
 | 2026-09-16 | Candidate patch `0.5.1` dicatat | `core` dan `language-service` direncanakan naik dari `0.5.0` ke `0.5.1`; publish/registry/public integration masih menunggu tindakan manual |
+| 2026-09-16 | Audit candidate lokal ditambahkan | `release:candidate:audit -- --version=0.5.1` memeriksa status record, clean tree, package version, dan source revision sebelum bump/publish |

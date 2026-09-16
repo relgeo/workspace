@@ -130,6 +130,18 @@ atau `partial` sebagai dokumen rencana, tetapi preflight release final hanya
 menerima record berstatus `completed`. Dengan demikian candidate dapat direview
 lebih awal tanpa membuatnya terlihat sudah dipublish.
 
+Untuk memeriksa candidate patch terhadap checkout lokal sebelum bump versi, jalankan:
+
+~~~text
+pnpm run release:candidate:audit -- --version=0.5.1
+~~~
+
+Audit ini tidak mengubah file dan tidak menghubungi npm. Ia memeriksa bahwa candidate
+berstatus `planned` atau `partial`, working tree bersih, package yang direncanakan
+masih berasal dari versi dasar atau sudah berada pada target, dan revision source
+change masih cocok dengan record. Status `INFO` menunjukkan package yang masih perlu
+dinaikkan versinya; itu bukan keberhasilan publish.
+
 Jika ada perubahan yang belum di-commit, preflight berhenti sebelum menjalankan gate.
 Report opsional hanya berisi status command dan durasi, bukan credential atau output
 tarball.

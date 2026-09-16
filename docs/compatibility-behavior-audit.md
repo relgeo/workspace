@@ -1,6 +1,6 @@
 # Compatibility behavior audit
 
-**Status:** Audit inventory selesai; delta diagnostic Flutter, semantic fixture projection, evaluator/unit parity lokal, dan evidence CI `Integration #91` sudah diverifikasi, sedangkan keputusan public-version policy, enforcement, dan promotion capability masih terbuka
+**Status:** Audit inventory selesai; delta diagnostic Flutter, semantic fixture projection, evaluator/unit parity lokal, dan evidence CI terbaru `Integration #99` sudah diverifikasi, sedangkan keputusan public-version policy, enforcement, dan promotion capability masih terbuka
 **Tanggal:** 2026-09-15 (diperbarui 2026-09-16)  
 **Scope:** `spec`, `core`, `renderer-svg`, `language-service`, `cli`, Markdown plugins, Playground, website, Flutter, matrix, fixtures, dan test suite
 

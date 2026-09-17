@@ -560,6 +560,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-18 | Baseline Flutter diselaraskan setelah CI menemukan manifest tertinggal | `docs/integration-baseline.json` kini menunjuk ke child commit `e46f1ad`, strict baseline kembali `81/81`, dan local integration gate kembali `36/36`; `Integration #117` tetap dicatat sebagai failure diagnostik pada root commit `225092b`, sementara verifikasi CI untuk perbaikan ini masih menunggu run berikutnya |
 | 2026-09-18 | Job build macOS Flutter ditambahkan ke CI | workflow root kini memiliki job `flutter-macos` pada `macos-latest` dengan Flutter stable `3.41.9`, locale UTF-8, lockfile enforcement, dan release build; evidence CI macOS pertama masih terbuka |
 | 2026-09-18 | `Integration #119` memverifikasi build macOS Flutter di CI | `workspace@dc40653` sukses untuk job `flutter`, `flutter-macos`, `verify`, dan `public`; macOS runner `macos-latest` menyelesaikan `flutter build macos --no-pub --release`, dua artifact report tersedia, dan kedua Playwright smoke lulus |
+| 2026-09-18 | Release guard dan CI evidence diselaraskan pada commit terbaru | `08be7d8` memvalidasi release order/bump policy; `release:record:check` `20/20`, candidate audit `36/36`, compatibility `256/256`, strict baseline `81/81`, dan `Integration #121` sukses pada `verify`, `flutter`, `flutter-macos`, serta `public`. Full gate lokal berikutnya tertunda karena disk penuh/EPERM saat membuat temporary file |
 
 ## 10. Catatan pemeliharaan
 

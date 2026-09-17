@@ -294,7 +294,7 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #94` untuk commit `9e77d33` pada `relgeo/workspace`; job `flutter`, `verify`, dan `public` semuanya sukses. Run ini juga membawa pointer Playground `143acf6`, yaitu versi yang sudah mendukung browser smoke terhadap deployment publik melalui `PLAYWRIGHT_BASE_URL`.
+Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #121` untuk commit `08be7d8` pada `relgeo/workspace`; job `flutter`, `flutter-macos`, `verify`, dan `public` semuanya sukses. Baseline ini juga membawa browser smoke Playground deployment-aware melalui `PLAYWRIGHT_BASE_URL` serta guard release-record sebelum integration gate.
 
 Checklist:
 
@@ -419,3 +419,4 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-16 | Baseline revision website, Playground, dan Flutter disegarkan setelah submodule dipush | strict verifier lulus `81/81`; integration gate lokal pada workspace clean lulus `36/36`, termasuk package, E2E, website, Pages artifact, dan conformance `204/204` |
 | 2026-09-16 | Official Playground E2E dibuat deployment-aware | `playwright.config.ts` menerima `PLAYWRIGHT_BASE_URL`, `goto('./')` aman untuk base path `/playground/`, dan command yang sama lulus lokal `2/2` serta terhadap `https://relgeo.github.io/playground/` `2/2`; perubahan dipush sebagai `playground@143acf6` |
 | 2026-09-16 | CI memverifikasi baseline Playground deployment-aware | root pointer `playground@143acf6` tercatat pada `workspace@9e77d33`; local integration gate lulus `36/36` dan GitHub `Integration #94` sukses pada job `flutter`, `verify`, dan `public` |
+| 2026-09-18 | CI memverifikasi guard release dan Flutter macOS pada baseline terbaru | `Integration #121` pada `workspace@08be7d8` sukses pada job `verify`, `flutter`, `flutter-macos`, dan `public`; failure-injection release record serta dua browser smoke tetap lulus |

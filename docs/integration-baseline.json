@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-09-16",
+  "capturedAt": "2026-09-17",
   "compatibilityLine": "0.5",
   "repository": "relgeo/workspace",
   "submodules": [
     {
       "path": "relgeo.github.io",
-      "revision": "cee089c5892d890e04816c545a6d970b11be5cdb",
+      "revision": "5c4576ec83ff7d4beebcbc1553c716711b91db68",
       "package": {
         "name": "relgeo-docs-site",
         "version": "0.5.0"

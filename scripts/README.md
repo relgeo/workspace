@@ -169,3 +169,11 @@ pnpm run release:record:check
 ~~~
 
 Validator memastikan compatibility line, revision `spec`, release order, seluruh package, seluruh consumer, status evidence, dan batasan publik record tetap cocok dengan matrix. Validator tidak menjalankan publish dan tidak menyimpan credential.
+
+Failure-injection release record sengaja membuat candidate `0.5.1` menjadi partial dengan
+forward-fix yang sama seperti versi gagal. Command ini harus gagal dan membuktikan bahwa
+guard menolak recovery yang mencoba memakai ulang versi npm yang sama:
+
+~~~text
+pnpm run release:record:failure
+~~~

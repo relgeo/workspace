@@ -7,7 +7,10 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const matrixPath = resolve(root, "docs/compatibility-matrix.json");
 const recordVersion = process.argv.find((arg) => /^\d+\.\d+\.\d+$/.test(arg)) ?? "0.5.0";
-const recordPath = resolve(root, "docs/releases", `${recordVersion}.json`);
+const recordFileArgument = process.argv.find((arg) => arg.startsWith("--record-file="));
+const recordPath = recordFileArgument
+  ? resolve(root, recordFileArgument.slice("--record-file=".length))
+  : resolve(root, "docs/releases", `${recordVersion}.json`);
 const jsonOutput = process.argv.includes("--json");
 const results = [];
 const failures = [];
@@ -191,7 +194,7 @@ if (matrix && record) {
 }
 
 const summary = {
-  record: recordPath.slice(root.length + 1),
+  record: recordPath.startsWith(`${root}/`) ? recordPath.slice(root.length + 1) : recordPath,
   compatibilityLine: record?.compatibilityLine ?? null,
   passed: results.filter(({ status }) => status === "PASS").length,
   failed: failures.length,

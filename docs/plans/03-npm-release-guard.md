@@ -116,6 +116,7 @@ npm publish --access public
 - [x] dokumentasi membedakan validasi record candidate dari preflight release final.
 - [x] `release:candidate:audit` memeriksa candidate planned/partial, clean tree, local package version, dan source revision tanpa publish atau akses npm.
 - [x] validator partial-release memeriksa last published package, first failed package, urutan release, forward-fix version yang lebih baru, dan larangan republish versi gagal.
+- [x] failure-injection `release:record:failure` membuktikan validator menolak partial recovery yang memakai ulang versi gagal sebagai forward-fix.
 - [x] workflow Integration menjalankan `release:record:check` sebagai gate CI eksplisit sebelum integration gate.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.
@@ -188,4 +189,5 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-16 | Audit candidate lokal ditambahkan dan dijalankan | `release:candidate:audit` lulus `36/36`; `core` dan `language-service` ditandai perlu bump, package lain retained, source revision cocok, dan working tree bersih |
 | 2026-09-16 | Preflight baseline dijalankan setelah guard status-aware | release preflight `0.5.0` lulus strict baseline `81/81`, compatibility `256/256`, release audit, dan integration gate lokal `36/36`; candidate `0.5.1` sengaja berhenti karena masih `planned` |
 | 2026-09-17 | Schema recovery partial-release diperketat | validator kini mewajibkan last published, first failed, forward-fix lebih baru, urutan konsisten, dan `noRepublishSameVersion: true`; automated transaction tetap belum diaktifkan |
+| 2026-09-17 | Failure-injection release record ditambahkan | `release:record:failure` menolak partial recovery yang memakai ulang versi gagal; publish manual dan recovery nyata tetap terbuka |
 | 2026-09-16 | Audit candidate lokal ditambahkan | `release:candidate:audit -- --version=0.5.1` memeriksa status record, clean tree, package version, dan source revision sebelum bump/publish |

@@ -556,6 +556,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-17 | GitHub `Integration #114` memverifikasi sinkronisasi evidence lintas rencana | job `flutter`, `verify`, dan `public` sukses pada `workspace@8aab44d`; dua artifact report dan browser smoke lintas local/public tersedia |
 | 2026-09-17 | GitHub `Integration #115` memverifikasi refresh evidence terakhir | job `flutter`, `verify`, dan `public` sukses pada `workspace@f380079`; dua artifact report dan browser smoke lintas local/public tersedia |
 | 2026-09-17 | Failure-injection release record ditambahkan | `release:record:failure` menolak partial recovery yang memakai ulang versi gagal; publish manual dan recovery nyata tetap terbuka |
+| 2026-09-17 | Build Flutter macOS berhasil diverifikasi ulang | `flutter build macos --no-pub` lulus pada child commit `e46f1ad` dan menghasilkan artefak Release `relgeo_flutter.app` 45.2 MB; pointer root dan CI untuk commit tersebut masih perlu diperbarui |
 
 ## 10. Catatan pemeliharaan
 

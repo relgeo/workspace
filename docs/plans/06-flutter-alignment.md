@@ -42,8 +42,8 @@ Non-goal tahap ini:
 - [x] `flutter/pubspec.yaml` memiliki deskripsi RelGeo dan statement compatibility line `0.5`; application version `1.0.0+1` tetap dipisahkan secara eksplisit;
 - [x] mapping capability/function Flutter terhadap sumber TypeScript dicatat machine-readable di [`../flutter-capability-matrix.json`](../flutter-capability-matrix.json), dengan status evidence yang belum lengkap tetap eksplisit;
 - [x] referensi `v0.4` yang tersisa diklasifikasikan sebagai regression/compatibility history; statement aktif pada README, pubspec, painter, exporter, dan workbench menggunakan `v0.5`;
-- [x] job `flutter analyze`/`flutter test` terpisah sudah ditambahkan pada workflow root; job `flutter` pada `Integration #94` berhasil dari checkout CI, sedangkan bukti build Flutter macOS masih terbuka;
-- [x] Flutter SDK lokal tersedia dan diverifikasi melalui terminal VS Code; runner lengkap berhasil pada Flutter `3.41.9` dan Dart `3.11.5`. Evidence lokal, checkout mandiri, dan job CI sudah tersedia; build platform macOS tetap belum terverifikasi.
+- [x] job `flutter analyze`/`flutter test` terpisah sudah ditambahkan pada workflow root; job `flutter` pada `Integration #94` berhasil dari checkout CI, dan build Flutter macOS kini juga sudah lulus secara lokal;
+- [x] Flutter SDK lokal tersedia dan diverifikasi melalui terminal VS Code; runner lengkap berhasil pada Flutter `3.41.9` dan Dart `3.11.5`. Evidence lokal, checkout mandiri, job CI, dan build platform macOS lokal sudah tersedia; pin toolchain serta validasi CI macOS tetap terbuka.
 
 ## 3. Boundary fixture yang disepakati untuk dibahas
 
@@ -189,7 +189,7 @@ sequenceDiagram
 - [x] tentukan channel/version Flutter yang dipin untuk CI: stable `3.41.9`;
 - [x] tambahkan job Flutter terpisah, tidak menjadi dependency job TypeScript;
 - [x] jalankan `flutter pub get --enforce-lockfile`, analyzer non-fatal, dan `flutter test` dari checkout Flutter terisolasi secara lokal; 99 test lulus dan 7 shared-fixture test dilewati secara eksplisit;
-- [ ] bila build desktop masuk scope release, tambahkan `flutter build macos` pada runner macOS; probe lokal terhalang kapasitas disk, dan keputusan scope masih terbuka;
+- [x] bila build desktop masuk scope release, `flutter build macos --no-pub` berhasil secara lokal pada checkout Flutter dan menghasilkan `relgeo_flutter.app`; runner macOS CI serta keputusan scope release masih terbuka;
 - [x] simpan summary dan failure output tanpa mengunggah source fixture atau trace yang tidak diperlukan;
 - [ ] pin revision Flutter pada baseline setelah evidence CI pertama lulus dan keputusan toolchain final disetujui.
 
@@ -269,7 +269,7 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 - Gap evaluator/unit lokal dirapikan: Flutter kini mendukung inch (`in`), signed unit literal, konversi `LengthUnit.ip`, dan mempertahankan string non-numerik saat normalisasi; regression suite evaluator lulus `6/6`.
 - Candidate evaluator/unit kemudian diuji lintas core, renderer, CLI, dan Flutter melalui fixture canonical ke-16; target unit CLI `mm` dicatat eksplisit agar snapshot tidak bergantung pada default `px` CLI.
 - Full Flutter test suite diulang setelah patch unit/evaluator dan candidate fixture dan lulus `119 test`; shared fixture tersedia pada workspace sehingga conformance active/runtime/candidate ikut berjalan, sedangkan analyzer tetap memakai baseline lint/info non-fatal.
-- Probe `flutter build macos --no-pub` dilakukan pada 2026-09-16. Percobaan awal tertahan oleh locale CocoaPods non-UTF-8; percobaan ulang dengan `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` berhasil melewati CocoaPods dan masuk ke Xcode, tetapi berhenti karena `No space left on device` saat menulis build database/LLVM output. Artefak `flutter/build` kemudian dibersihkan; source build macOS tetap belum terverifikasi.
+- Probe `flutter build macos --no-pub` dilakukan pada 2026-09-16. Percobaan awal tertahan oleh locale CocoaPods non-UTF-8; percobaan ulang saat itu berhenti karena `No space left on device`, sehingga artefak build dibersihkan.
 
 ## 9. Log perubahan
 
@@ -313,3 +313,4 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 | 2026-09-16 | Evidence CI Flutter diperbarui setelah policy version acceptance | `Integration #105` pada `workspace@a866fcc` sukses untuk job `flutter`, `verify`, dan `public`; build macOS, pin revision SDK, dan promotion candidate tetap terbuka |
 | 2026-09-16 | Evidence CI Flutter diperbarui setelah workflow artifact Node 24 | `Integration #106` pada `workspace@b3f7bb6` sukses untuk job `flutter`, `verify`, dan `public`; build macOS, pin revision SDK, dan promotion candidate tetap terbuka |
 | 2026-09-17 | Evidence CI Flutter diperbarui setelah sinkronisasi rencana | `Integration #115` pada `workspace@f380079` sukses untuk job `flutter`, `verify`, dan `public`; build macOS, pin revision SDK, dan promotion candidate tetap terbuka |
+| 2026-09-17 | Build Flutter macOS berhasil diverifikasi ulang | `flutter build macos --no-pub` lulus dengan locale UTF-8 pada child commit `e46f1ad` dan menghasilkan `relgeo_flutter.app` 45.2 MB; perubahan CocoaPods macOS dipush, sedangkan validasi CI macOS, pin SDK, dan promotion candidate tetap terbuka |

@@ -54,6 +54,52 @@ jobs:
             echo "- Gate is independent of TypeScript/package jobs"
           } >> "$GITHUB_STEP_SUMMARY"
 
+  flutter-macos:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    env:
+      LANG: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
+    steps:
+      - name: Checkout workspace and submodules
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.9
+          cache: true
+          pub-cache: true
+
+      - name: Record Flutter toolchain
+        run: flutter --version
+
+      - name: Enable macOS desktop
+        run: flutter config --enable-macos-desktop
+
+      - name: Install Flutter dependencies
+        working-directory: flutter
+        run: flutter pub get --enforce-lockfile
+
+      - name: Build macOS release
+        working-directory: flutter
+        run: flutter build macos --no-pub --release
+
+      - name: Record macOS build summary
+        if: always()
+        run: |
+          {
+            echo "### RelGeo Flutter macOS build"
+            echo "- Flutter channel: stable"
+            echo "- Flutter version: 3.41.9"
+            echo "- Command: flutter build macos --no-pub --release"
+            echo "- Runner: macos-latest"
+          } >> "$GITHUB_STEP_SUMMARY"
+
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 30

@@ -42,8 +42,9 @@ Non-goal tahap ini:
 - [x] `flutter/pubspec.yaml` memiliki deskripsi RelGeo dan statement compatibility line `0.5`; application version `1.0.0+1` tetap dipisahkan secara eksplisit;
 - [x] mapping capability/function Flutter terhadap sumber TypeScript dicatat machine-readable di [`../flutter-capability-matrix.json`](../flutter-capability-matrix.json), dengan status evidence yang belum lengkap tetap eksplisit;
 - [x] referensi `v0.4` yang tersisa diklasifikasikan sebagai regression/compatibility history; statement aktif pada README, pubspec, painter, exporter, dan workbench menggunakan `v0.5`;
-- [x] job `flutter analyze`/`flutter test` terpisah sudah ditambahkan pada workflow root; job `flutter` pada `Integration #94` berhasil dari checkout CI, dan build Flutter macOS kini juga sudah lulus secara lokal;
-- [x] Flutter SDK lokal tersedia dan diverifikasi melalui terminal VS Code; runner lengkap berhasil pada Flutter `3.41.9` dan Dart `3.11.5`. Evidence lokal, checkout mandiri, job CI, dan build platform macOS lokal sudah tersedia; pin toolchain serta validasi CI macOS tetap terbuka.
+- [x] job `flutter analyze`/`flutter test` terpisah sudah ditambahkan pada workflow root; job `flutter` pada `Integration #94` berhasil dari checkout CI, dan build Flutter macOS juga sudah lulus secara lokal;
+- [x] Flutter SDK lokal tersedia dan diverifikasi melalui terminal VS Code; runner lengkap berhasil pada Flutter `3.41.9` dan Dart `3.11.5`. Evidence lokal, checkout mandiri, job CI, dan build platform macOS lokal sudah tersedia; job `flutter-macos` kini juga ditambahkan ke workflow root dengan locale UTF-8 dan runner `macos-latest`.
+- [ ] Verifikasi hijau pertama untuk job `flutter-macos` masih menunggu run CI setelah workflow ini dipush; hasil lokal tidak menggantikan evidence runner macOS.
 
 ## 3. Boundary fixture yang disepakati untuk dibahas
 
@@ -189,7 +190,8 @@ sequenceDiagram
 - [x] tentukan channel/version Flutter yang dipin untuk CI: stable `3.41.9`;
 - [x] tambahkan job Flutter terpisah, tidak menjadi dependency job TypeScript;
 - [x] jalankan `flutter pub get --enforce-lockfile`, analyzer non-fatal, dan `flutter test` dari checkout Flutter terisolasi secara lokal; 99 test lulus dan 7 shared-fixture test dilewati secara eksplisit;
-- [x] bila build desktop masuk scope release, `flutter build macos --no-pub` berhasil secara lokal pada checkout Flutter dan menghasilkan `relgeo_flutter.app`; runner macOS CI serta keputusan scope release masih terbuka;
+- [x] bila build desktop masuk scope release, `flutter build macos --no-pub` berhasil secara lokal pada checkout Flutter dan menghasilkan `relgeo_flutter.app`; job macOS CI sudah ditambahkan untuk verifikasi reproduktif;
+- [ ] Keberhasilan job macOS CI, keputusan pin/revisi SDK final, dan keputusan scope release desktop masih terbuka;
 - [x] simpan summary dan failure output tanpa mengunggah source fixture atau trace yang tidak diperlukan;
 - [ ] pin revision Flutter pada baseline setelah evidence CI pertama lulus dan keputusan toolchain final disetujui.
 
@@ -315,3 +317,4 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 | 2026-09-17 | Evidence CI Flutter diperbarui setelah sinkronisasi rencana | `Integration #115` pada `workspace@f380079` sukses untuk job `flutter`, `verify`, dan `public`; build macOS, pin revision SDK, dan promotion candidate tetap terbuka |
 | 2026-09-17 | Build Flutter macOS berhasil diverifikasi ulang | `flutter build macos --no-pub` lulus dengan locale UTF-8 pada child commit `e46f1ad` dan menghasilkan `relgeo_flutter.app` 45.2 MB; perubahan CocoaPods macOS dipush, sedangkan validasi CI macOS, pin SDK, dan promotion candidate tetap terbuka |
 | 2026-09-18 | Baseline Flutter diselaraskan setelah CI menemukan manifest tertinggal | `docs/integration-baseline.json` diperbarui dari `9de5a1b` ke `e46f1ad`; strict baseline `81/81` dan local integration gate `36/36` kembali lulus. `Integration #117` dicatat sebagai failure diagnostik pada root `225092b`; verifikasi CI atas perbaikan manifest masih menunggu run berikutnya |
+| 2026-09-18 | Job build macOS Flutter ditambahkan ke workflow Integration | job `flutter-macos` memakai `macos-latest`, Flutter stable `3.41.9`, locale UTF-8, `pub get --enforce-lockfile`, dan `flutter build macos --no-pub --release`; verifikasi runner CI pertama masih terbuka |

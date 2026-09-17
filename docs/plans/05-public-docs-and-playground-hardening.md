@@ -110,9 +110,9 @@ Source detail dan evidence screenshot ada di [`playground/docs/UX-UI-AUDIT-AND-P
 
 - [x] Local integration gate lulus `36/36`.
 - [x] Release preflight lulus: strict baseline `81/81`, compatibility `256/256`, release audit `106/106`, dan integration `36/36` pada baseline sebelum policy-version fixture ditambahkan; compatibility terbaru `256/256` diverifikasi ulang setelah policy tersebut.
-- [x] GitHub `Integration #115` lulus untuk job `flutter`, `verify`, dan `public` pada `workspace@f380079`; action artifact Node 24 berjalan tanpa warning Node 20, dan report integration serta Playwright tersedia.
+- [x] GitHub `Integration #116` lulus untuk job `flutter`, `verify`, dan `public` pada `workspace@e7999d5`; action artifact Node 24 berjalan tanpa warning Node 20, dan report integration serta Playwright tersedia. `Integration #117` gagal karena manifest baseline Flutter tertinggal dari pointer submodule baru; perbaikan lokal sudah lulus `36/36` dan menunggu verifikasi CI.
 - [x] Public Playground smoke mencapai `READY`, preview tetap terlihat, tab `Errors` menampilkan diagnostic expected, dan console browser bersih.
-- [x] Root commit `f380079` sudah dipush; `Integration #115` memvalidasi sinkronisasi evidence lintas rencana dan seluruh job selesai sukses.
+- [x] Root commit `e7999d5` sudah dipush; `Integration #116` memvalidasi sinkronisasi evidence lintas rencana dan seluruh job selesai sukses. Perubahan berikutnya memperbaiki mismatch manifest yang ditemukan `Integration #117`.
 
 ## 6. Workstream dan status
 
@@ -289,7 +289,7 @@ Aturan perubahan:
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `36/36` lulus |
 | Release preflight | snapshot baseline: `81/81`, `250/250`, `106/106`, `36/36`; compatibility terkini `256/256` |
-| CI evidence | `Integration #115` pada `workspace@f380079` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia; action artifact Node 24 tidak lagi menghasilkan warning Node 20 |
+| CI evidence | `Integration #116` pada `workspace@e7999d5` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia; action artifact Node 24 tidak lagi menghasilkan warning Node 20. `Integration #117` gagal karena baseline manifest Flutter tertinggal dan sedang diperbaiki |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
 
 ## 12. Log perubahan

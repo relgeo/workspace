@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #115` untuk `workspace@f380079`; job `flutter`, `verify`, dan `public` sukses, artifact report tersedia, serta browser smoke/E2E deployment-aware tetap lulus. Capability parity tambahan Flutter masih terbuka.
+- [x] Evidence CI terbaru yang sukses untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #116` untuk `workspace@e7999d5`; job `flutter`, `verify`, dan `public` sukses, artifact report tersedia, serta browser smoke/E2E deployment-aware tetap lulus. `Integration #117` menemukan baseline manifest Flutter tertinggal setelah pointer macOS build dipromosikan; manifest sudah diselaraskan lokal dan gate `36/36` kembali lulus. Capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 
@@ -557,6 +557,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-17 | GitHub `Integration #115` memverifikasi refresh evidence terakhir | job `flutter`, `verify`, dan `public` sukses pada `workspace@f380079`; dua artifact report dan browser smoke lintas local/public tersedia |
 | 2026-09-17 | Failure-injection release record ditambahkan | `release:record:failure` menolak partial recovery yang memakai ulang versi gagal; publish manual dan recovery nyata tetap terbuka |
 | 2026-09-17 | Build Flutter macOS berhasil diverifikasi ulang | `flutter build macos --no-pub` lulus pada child commit `e46f1ad` dan menghasilkan artefak Release `relgeo_flutter.app` 45.2 MB; pointer root dan CI untuk commit tersebut masih perlu diperbarui |
+| 2026-09-18 | Baseline Flutter diselaraskan setelah CI menemukan manifest tertinggal | `docs/integration-baseline.json` kini menunjuk ke child commit `e46f1ad`, strict baseline kembali `81/81`, dan local integration gate kembali `36/36`; `Integration #117` tetap dicatat sebagai failure diagnostik pada root commit `225092b`, sementara verifikasi CI untuk perbaikan ini masih menunggu run berikutnya |
 
 ## 10. Catatan pemeliharaan
 

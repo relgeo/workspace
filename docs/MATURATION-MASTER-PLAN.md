@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #113` untuk `workspace@2ba78fb`; job `flutter`, `verify`, dan `public` sukses, artifact report tersedia, serta browser smoke/E2E deployment-aware tetap lulus. Capability parity tambahan Flutter masih terbuka.
+- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #114` untuk `workspace@8aab44d`; job `flutter`, `verify`, dan `public` sukses, artifact report tersedia, serta browser smoke/E2E deployment-aware tetap lulus. Capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 
@@ -553,6 +553,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-17 | Recovery partial-release diperketat | validator dan template kini memerlukan last published, first failed, forward-fix yang lebih baru, urutan konsisten, dan larangan republish versi gagal; automated transaction masih terbuka |
 | 2026-09-17 | GitHub `Integration #112` memverifikasi failure-injection release guard | job `flutter`, `verify`, dan `public` sukses pada `workspace@0adadf8`; local/public integration summary, artifact report, dan Playwright annotations tersedia |
 | 2026-09-17 | GitHub `Integration #113` memverifikasi evidence dokumentasi terbaru | job `flutter`, `verify`, dan `public` sukses pada `workspace@2ba78fb`; local/public integration summary, dua artifact report, dan dua Playwright smoke tersedia |
+| 2026-09-17 | GitHub `Integration #114` memverifikasi sinkronisasi evidence lintas rencana | job `flutter`, `verify`, dan `public` sukses pada `workspace@8aab44d`; dua artifact report dan browser smoke lintas local/public tersedia |
 | 2026-09-17 | Failure-injection release record ditambahkan | `release:record:failure` menolak partial recovery yang memakai ulang versi gagal; publish manual dan recovery nyata tetap terbuka |
 
 ## 10. Catatan pemeliharaan

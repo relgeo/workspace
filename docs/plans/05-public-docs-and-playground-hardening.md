@@ -110,9 +110,9 @@ Source detail dan evidence screenshot ada di [`playground/docs/UX-UI-AUDIT-AND-P
 
 - [x] Local integration gate lulus `36/36`.
 - [x] Release preflight lulus: strict baseline `81/81`, compatibility `256/256`, release audit `106/106`, dan integration `36/36` pada baseline sebelum policy-version fixture ditambahkan; compatibility terbaru `256/256` diverifikasi ulang setelah policy tersebut.
-- [x] GitHub `Integration #113` lulus untuk job `flutter`, `verify`, dan `public` pada `workspace@2ba78fb`; action artifact Node 24 berjalan tanpa warning Node 20, dan report integration serta Playwright tersedia.
+- [x] GitHub `Integration #114` lulus untuk job `flutter`, `verify`, dan `public` pada `workspace@8aab44d`; action artifact Node 24 berjalan tanpa warning Node 20, dan report integration serta Playwright tersedia.
 - [x] Public Playground smoke mencapai `READY`, preview tetap terlihat, tab `Errors` menampilkan diagnostic expected, dan console browser bersih.
-- [x] Root commit `2ba78fb` sudah dipush; `Integration #113` memvalidasi evidence dokumentasi terbaru dan seluruh job selesai sukses.
+- [x] Root commit `8aab44d` sudah dipush; `Integration #114` memvalidasi sinkronisasi evidence lintas rencana dan seluruh job selesai sukses.
 
 ## 6. Workstream dan status
 
@@ -289,7 +289,7 @@ Aturan perubahan:
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `36/36` lulus |
 | Release preflight | snapshot baseline: `81/81`, `250/250`, `106/106`, `36/36`; compatibility terkini `256/256` |
-| CI evidence | `Integration #113` pada `workspace@2ba78fb` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia; action artifact Node 24 tidak lagi menghasilkan warning Node 20 |
+| CI evidence | `Integration #114` pada `workspace@8aab44d` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia; action artifact Node 24 tidak lagi menghasilkan warning Node 20 |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
 
 ## 12. Log perubahan
@@ -307,3 +307,4 @@ Aturan perubahan:
 | 2026-09-16 | Upgrade artifact action diverifikasi pada CI | `Integration #106` pada `workspace@b3f7bb6` sukses dan seluruh job berjalan tanpa warning Node 20 |
 | 2026-09-17 | Failure-injection release guard dan cross-repo gate diverifikasi pada CI | `Integration #112` pada `workspace@0adadf8` sukses untuk job `flutter`, `verify`, dan `public`; artifact report dan Playwright annotations tersedia |
 | 2026-09-17 | Evidence dokumentasi terbaru diverifikasi pada CI | `Integration #113` pada `workspace@2ba78fb` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |
+| 2026-09-17 | Sinkronisasi evidence lintas rencana diverifikasi pada CI | `Integration #114` pada `workspace@8aab44d` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |

@@ -51,7 +51,24 @@ try {
     throw new Error("Validator failed, but did not identify the unsafe forward-fix version");
   }
 
-  console.log("Release record failure injection passed: an unsafe partial recovery is rejected.");
+  const orderRecord = JSON.parse(fs.readFileSync(sourceRecord, "utf8"));
+  orderRecord.packagePlan.reverse();
+  const orderRecordPath = path.join(temporaryRoot, "0.5.1-order.json");
+  fs.writeFileSync(orderRecordPath, JSON.stringify(orderRecord, null, 2) + "\n");
+  const orderResult = spawnSync(
+    process.execPath,
+    ["scripts/check-release-record.mjs", `--record-file=${orderRecordPath}`, "--json"],
+    { cwd: root, encoding: "utf8" },
+  );
+  if (orderResult.status === 0) {
+    throw new Error("Release record validator unexpectedly accepted a reordered package plan");
+  }
+  const orderReport = JSON.parse(orderResult.stdout);
+  if (!orderReport.failures?.some((failure) => failure.includes("package order and bump policy"))) {
+    throw new Error("Validator failed, but did not identify the reordered package plan");
+  }
+
+  console.log("Release record failure injection passed: unsafe recovery and reordered package plans are rejected.");
 } finally {
   fs.rmSync(temporaryRoot, { recursive: true, force: true });
 }

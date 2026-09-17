@@ -181,7 +181,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 ### 4.4 Hal yang belum boleh dianggap selesai
 
 - [x] Integrasi lintas-repo memiliki gate resmi dari fresh clone yang menjalankan dependency graph publik secara penuh.
-- [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
+- [x] Release order dan bump policy menjadi satu kontrak operasional pada compatibility matrix dan divalidasi oleh release-record checker; partial publish tetap harus dihentikan dan dicatat.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
 - [x] Evidence CI terbaru yang sukses untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #119` untuk `workspace@dc40653`; job `flutter`, `flutter-macos`, `verify`, dan `public` sukses, artifact report tersedia, serta browser smoke/E2E deployment-aware tetap lulus. `Integration #117` menemukan baseline manifest Flutter tertinggal setelah pointer macOS build dipromosikan; mismatch itu sudah diperbaiki dan CI macOS kini tervalidasi. Capability parity tambahan Flutter masih terbuka.

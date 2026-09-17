@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 3 — Release dan npm Publishing Guard
 
-**Status:** Berjalan — checklist, tarball audit, post-publish verifier, release decision record validator, candidate plan `0.5.1`, dan status-aware preflight sudah tersedia; publish manual, automated publish, dan recovery transaction belum selesai
+**Status:** Berjalan — checklist, tarball audit, post-publish verifier, release decision record validator, machine-checked release order/bump policy, candidate plan `0.5.1`, dan status-aware preflight sudah tersedia; publish manual, automated publish, dan recovery transaction belum selesai
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -110,6 +110,7 @@ npm publish --access public
 - [x] root script `pnpm run release:audit` dan `pnpm run release:verify-published` tersedia.
 - [x] `docs/releases/TEMPLATE.md`, record `0.5.0`, dan `scripts/check-release-record.mjs` tersedia untuk mencegah package/consumer hilang dari ledger release.
 - [x] matrix dan release-record validator kini memeriksa klasifikasi contract change, rationale, approval status, serta policy forward-fix untuk record partial.
+- [x] matrix mendeklarasikan bump policy `none`, `patch-compatible`, dan `breaking`; validator memeriksa urutan package plan, status retained/changed, serta bump patch untuk candidate patch-compatible.
 - [x] validator membedakan record `planned`, `partial`, dan `completed`; candidate plan dapat diperiksa tanpa mengklaim publish sudah terjadi.
 - [x] `docs/releases/0.5.1.json` mencatat target patch untuk `core` dan `language-service`, package yang dipertahankan, consumer pending, dan langkah manual berikutnya.
 - [x] preflight memerlukan record berstatus `completed` setelah validasi record; candidate `planned` tidak dapat lolos sebagai release final.
@@ -117,6 +118,7 @@ npm publish --access public
 - [x] `release:candidate:audit` memeriksa candidate planned/partial, clean tree, local package version, dan source revision tanpa publish atau akses npm.
 - [x] validator partial-release memeriksa last published package, first failed package, urutan release, forward-fix version yang lebih baru, dan larangan republish versi gagal.
 - [x] failure-injection `release:record:failure` membuktikan validator menolak partial recovery yang memakai ulang versi gagal sebagai forward-fix.
+- [x] failure-injection juga membuktikan validator menolak package plan yang urutannya menyimpang dari matrix.
 - [x] workflow Integration menjalankan `release:record:check` sebagai gate CI eksplisit sebelum integration gate.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.

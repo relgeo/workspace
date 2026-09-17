@@ -50,6 +50,37 @@ function planEntriesMatch(actual, expected) {
   });
 }
 
+function versionTuple(value) {
+  const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(value ?? "");
+  return match ? match.slice(1).map(Number) : null;
+}
+
+function patchIncreases(fromVersion, targetVersion) {
+  const from = versionTuple(fromVersion);
+  const target = versionTuple(targetVersion);
+  return Boolean(from && target && target[0] === from[0] && target[1] === from[1] && target[2] > from[2]);
+}
+
+function releasePackagePlanMatches(actual, expected, contractChange, bumpPolicy) {
+  if (!planEntriesMatch(actual, expected)) return false;
+  if (!sameArray(actual.map((entry) => entry.path), expected.map((entry) => entry.path))) return false;
+
+  return actual.every((entry) => {
+    const isRetained = entry.targetVersion === entry.fromVersion;
+    if (isRetained && entry.status !== "retained") return false;
+    if (!isRetained && !["planned", "published", "failed", "skipped"].includes(entry.status)) return false;
+    if (contractChange === "none") return isRetained;
+    if (contractChange === "patch-compatible") {
+      return isRetained || (
+        bumpPolicy?.[contractChange]?.sameCompatibilityLine === true &&
+        bumpPolicy?.[contractChange]?.targetPatchMustIncrease === true &&
+        patchIncreases(entry.fromVersion, entry.targetVersion)
+      );
+    }
+    return true;
+  });
+}
+
 function consumerPlanMatches(actual, expected) {
   const allowedStatuses = new Set(["pending", "verified", "blocked", "not-run"]);
   return Array.isArray(actual) && actual.length === expected.length && expected.every((entry) => {
@@ -128,7 +159,10 @@ if (matrix && record) {
     check(entriesMatch(record.consumers, matrix.consumers, "verified"), "every matrix consumer is recorded as verified at the expected version");
   } else {
     check(record.baseReleaseVersion === "0.5.0", "planned or partial record identifies the current base release");
-    check(planEntriesMatch(record.packagePlan, matrix.packages), "candidate package plan covers every matrix package");
+    check(
+      releasePackagePlanMatches(record.packagePlan, matrix.packages, record.decision?.contractChange, matrix.policy?.bumpPolicy),
+      "candidate package plan follows matrix package order and bump policy",
+    );
     check(consumerPlanMatches(record.consumers, matrix.consumers), "candidate consumer plan covers every matrix consumer");
 
     const changedPackages = record.packagePlan?.filter((entry) => entry.targetVersion !== entry.fromVersion) ?? [];

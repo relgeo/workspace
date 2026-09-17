@@ -58,6 +58,21 @@ function consumerPlanMatches(actual, expected) {
   });
 }
 
+function semverParts(value) {
+  const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(value ?? "");
+  return match ? match.slice(1).map(Number) : null;
+}
+
+function isGreaterVersion(candidate, base) {
+  const left = semverParts(candidate);
+  const right = semverParts(base);
+  if (!left || !right) return false;
+  for (let index = 0; index < left.length; index += 1) {
+    if (left[index] !== right[index]) return left[index] > right[index];
+  }
+  return false;
+}
+
 let matrix;
 let record;
 try {
@@ -119,10 +134,36 @@ if (matrix && record) {
       changedPackages.every((entry) => entry.targetVersion.startsWith(`${matrix.compatibilityLine}.`)),
       "candidate package changes stay on the active compatibility line",
     );
-    check(
-      record.status !== "partial" || record.recovery?.forwardFixVersion === record.releaseVersion,
-      "partial record identifies its forward-fix version",
-    );
+    if (record.status === "partial") {
+      const recovery = record.recovery;
+      const lastPublished = recovery?.lastPublishedPackage;
+      const firstFailed = recovery?.firstFailedPackage;
+      const releaseOrder = matrix.policy.releaseOrder;
+      check(recovery?.noRepublishSameVersion === true, "partial recovery forbids republishing the failed version");
+      check(recovery?.partialReleasePolicy === releaseDecision?.partialReleasePolicy, "partial recovery repeats the matrix policy");
+      check(typeof recovery?.forwardFixVersion === "string", "partial recovery identifies a forward-fix version");
+      check(isGreaterVersion(recovery?.forwardFixVersion, record.releaseVersion), "forward-fix version is newer than the partial release");
+      check(recovery?.forwardFixVersion?.startsWith(`${matrix.compatibilityLine}.`), "forward-fix stays on the active compatibility line");
+      check(
+        typeof lastPublished?.path === "string" &&
+          typeof lastPublished?.name === "string" &&
+          lastPublished?.status === "published" &&
+          lastPublished?.version === record.releaseVersion,
+        "partial recovery records the last package published at the failed version",
+      );
+      check(
+        typeof firstFailed?.path === "string" &&
+          typeof firstFailed?.name === "string" &&
+          firstFailed?.status === "failed" &&
+          firstFailed?.version === record.releaseVersion,
+        "partial recovery records the first package that failed",
+      );
+      check(
+        releaseOrder.indexOf(lastPublished?.path) >= 0 &&
+          releaseOrder.indexOf(firstFailed?.path) > releaseOrder.indexOf(lastPublished?.path),
+        "partial recovery package order is coherent",
+      );
+    }
   }
 
   const evidence = record.evidence ?? {};

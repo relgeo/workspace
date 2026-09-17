@@ -113,6 +113,7 @@ Command harus menghasilkan exit code non-zero ketika package mengubah compatibil
 - [x] release record kini diwajibkan menyatakan klasifikasi perubahan, rationale, approval status, dan policy partial-release sesuai matrix; pencegahan publish parsial secara atomik tetap terbuka.
 - [x] release record mendukung status `planned`, `partial`, dan `completed` sehingga rencana patch dapat ditinjau tanpa dianggap sebagai publikasi.
 - [x] candidate `0.5.1` mencatat propagasi policy parser/schema ke `core` dan `language-service`; verifikasi npm masih menunggu publish manual.
+- [x] partial-release record kini memiliki recovery fields yang dapat divalidasi terhadap release order dan compatibility line.
 - [x] release checklist operasional yang mencakup spec, package, consumer, docs, tag, dan post-publish evidence tersedia di sub-rencana Tahap 3.
 - [x] release decision record template dan validator menjaga package/consumer/order tetap lengkap pada baseline `0.5.0`.
 - [x] inventory compatibility behavior disimpan di `docs/compatibility-behavior-audit.md`.

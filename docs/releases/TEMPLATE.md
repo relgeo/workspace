@@ -15,7 +15,7 @@
 - Spec revision: `<commit>`.
 - Reason and compatibility impact: `<short explanation>`.
 - Release order: follow `docs/compatibility-matrix.json`.
-- If partial: last published package `<name>@<version>`, first failed package `<name>`, forward-fix `<version>`.
+- If partial: record `lastPublishedPackage`, `firstFailedPackage`, `forwardFixVersion`, `partialReleasePolicy`, and `noRepublishSameVersion: true` in the machine-readable record.
 
 ## 2. Package and consumer state
 
@@ -40,6 +40,20 @@ Tambahkan seluruh package publik dan consumer yang terdampak. Status `pending` t
 ## 4. Recovery decision
 
 Jika ada partial release, jangan menghapus package atau memaksa overwrite versi npm. Hentikan urutan, simpan status aktual, perbaiki package, naikkan patch version, lalu ulangi verifier dan public integration.
+
+Contoh recovery machine-readable:
+
+~~~json
+{
+  "recovery": {
+    "lastPublishedPackage": { "path": "core", "name": "@relgeo/core", "version": "0.5.1", "status": "published" },
+    "firstFailedPackage": { "path": "language-service", "name": "@relgeo/language-service", "version": "0.5.1", "status": "failed" },
+    "forwardFixVersion": "0.5.2",
+    "partialReleasePolicy": "stop-and-record-then-forward-fix-next-patch",
+    "noRepublishSameVersion": true
+  }
+}
+~~~
 
 ## 5. Sign-off
 

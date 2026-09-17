@@ -550,6 +550,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | GitHub `Integration #105` memverifikasi policy version acceptance terbaru | job `flutter`, `verify`, dan `public` sukses pada `workspace@a866fcc`; dua warning Node 20 dari `actions/upload-artifact@v5` dicatat dan action dinaikkan ke v6 untuk workflow berikutnya |
 | 2026-09-16 | GitHub `Integration #106` memverifikasi workflow artifact Node 24 | job `flutter`, `verify`, dan `public` sukses pada `workspace@b3f7bb6`; dua artifact report terbentuk dan warning Node 20 tidak lagi muncul |
 | 2026-09-16 | Release record dibuat status-aware dan candidate `0.5.1` diaudit | workspace commit `6d33737`; record candidate `21/21`, audit candidate lokal `36/36`; hanya bump/publish manual `core` dan `language-service` serta verifikasi registry yang tersisa pada jalur patch ini |
+| 2026-09-17 | Recovery partial-release diperketat | validator dan template kini memerlukan last published, first failed, forward-fix yang lebih baru, urutan konsisten, dan larangan republish versi gagal; automated transaction masih terbuka |
 
 ## 10. Catatan pemeliharaan
 

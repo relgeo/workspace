@@ -59,6 +59,11 @@ const entries = [...matrix.packages, ...matrix.consumers];
 const nonNodeConsumers = matrix.nonNodeConsumers ?? [];
 const entryByPath = new Map(entries.map((entry) => [entry.path, entry]));
 const packageByName = new Map(matrix.packages.map((entry) => [entry.name, entry]));
+const expectedAuthor = {
+  name: "Agus Made",
+  email: "krisnaparta@gmail.com",
+  url: "https://github.com/agusmade",
+};
 
 check(matrix.schemaVersion === 1, "matrix schema version is supported");
 check(entryByPath.size === entries.length, "matrix entries do not contain duplicate paths");
@@ -173,6 +178,9 @@ for (const entry of entries) {
   check(Boolean(baselineEntry), `${entry.path}: path exists in the integration baseline`);
   check(packageJson.name === entry.name, `${entry.path}: package name matches the matrix`);
   check(packageJson.version === entry.version, `${entry.path}: package version matches the matrix`);
+  check(packageJson.author?.name === expectedAuthor.name, `${entry.path}: author name matches the public metadata contract`);
+  check(packageJson.author?.email === expectedAuthor.email, `${entry.path}: author email matches the public metadata contract`);
+  check(packageJson.author?.url === expectedAuthor.url, `${entry.path}: author URL matches the public metadata contract`);
   check(Boolean(baselineEntry?.package), `${entry.path}: baseline records package metadata`);
   check(baselineEntry?.package?.name === entry.name, `${entry.path}: baseline package name matches the matrix`);
   check(baselineEntry?.package?.version === entry.version, `${entry.path}: baseline package version matches the matrix`);

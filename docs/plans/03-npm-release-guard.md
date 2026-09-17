@@ -122,6 +122,7 @@ npm publish --access public
 - [x] workflow Integration menjalankan `release:record:check` sebagai gate CI eksplisit sebelum integration gate.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.
+- [x] compatibility checker memaksa metadata author publik (`Agus Made`, email terverifikasi, dan URL GitHub) konsisten pada seluruh package/consumer, sehingga drift metadata gagal di CI.
 - [ ] automated publishing belum diaktifkan.
 - [ ] automated partial-release transaction/rollback helper belum ada; schema recovery dan validator sudah tersedia.
 - [ ] candidate `0.5.1` belum dibump, dipublish, diverifikasi dari npm, atau diuji pada public-registry gate.
@@ -195,3 +196,4 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-16 | Audit candidate lokal ditambahkan | `release:candidate:audit -- --version=0.5.1` memeriksa status record, clean tree, package version, dan source revision sebelum bump/publish |
 | 2026-09-18 | Urutan release dan bump policy dijadikan kontrak yang divalidasi mesin | `release:record:check` lulus `20/20`, failure-injection menolak recovery tidak aman dan urutan package yang salah, candidate audit lulus `36/36`; compatibility `256/256` dan strict baseline `81/81` lulus |
 | 2026-09-18 | CI memverifikasi release guard terbaru | `Integration #121` pada `workspace@08be7d8` sukses untuk job `verify`, `flutter`, `flutter-macos`, dan `public`; local full gate tidak diulang karena filesystem tinggal sekitar 3.3 GiB dan sempat gagal `EPERM` saat membuat file temporary |
+| 2026-09-18 | Public author metadata dijadikan compatibility contract | `scripts/check-compatibility.mjs` memvalidasi nama, email, dan URL author pada seluruh package/consumer; local compatibility lulus `283/283`; perubahan dipush sebagai `workspace@2d5015f`, CI pascapush menunggu verifikasi |

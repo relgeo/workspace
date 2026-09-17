@@ -154,7 +154,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 
 - [x] Workspace publik terbentuk dengan submodule dan repository map.
 - [x] Repository Wave 1 dan Wave 2 sudah dibuat dan baseline publik sudah dipush.
-- [x] Library TypeScript utama memakai MIT dan metadata author yang konsisten.
+- [x] Library TypeScript utama memakai MIT dan metadata author yang konsisten; compatibility checker kini menjaga metadata itu tetap konsisten pada package/consumer publik.
 - [x] Package publik utama sudah berada pada 0.5.0 di npm.
 - [x] Root workspace tidak memuat history repository lama sebagai history publik package anak.
 

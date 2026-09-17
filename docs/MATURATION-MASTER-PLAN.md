@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [ ] Release order dan bump policy belum menjadi satu kontrak operasional yang mencegah partial publish.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #106` untuk `workspace@b3f7bb6`; browser smoke deployment publik terbaru dan E2E deployment-aware juga lulus, sedangkan capability parity tambahan Flutter masih terbuka.
+- [x] Evidence CI terbaru untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #112` untuk `workspace@0adadf8`; job `flutter`, `verify`, dan `public` sukses, artifact report tersedia, serta browser smoke/E2E deployment-aware tetap lulus. Capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 
@@ -551,6 +551,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | GitHub `Integration #106` memverifikasi workflow artifact Node 24 | job `flutter`, `verify`, dan `public` sukses pada `workspace@b3f7bb6`; dua artifact report terbentuk dan warning Node 20 tidak lagi muncul |
 | 2026-09-16 | Release record dibuat status-aware dan candidate `0.5.1` diaudit | workspace commit `6d33737`; record candidate `21/21`, audit candidate lokal `36/36`; hanya bump/publish manual `core` dan `language-service` serta verifikasi registry yang tersisa pada jalur patch ini |
 | 2026-09-17 | Recovery partial-release diperketat | validator dan template kini memerlukan last published, first failed, forward-fix yang lebih baru, urutan konsisten, dan larangan republish versi gagal; automated transaction masih terbuka |
+| 2026-09-17 | GitHub `Integration #112` memverifikasi failure-injection release guard | job `flutter`, `verify`, dan `public` sukses pada `workspace@0adadf8`; local/public integration summary, artifact report, dan Playwright annotations tersedia |
 | 2026-09-17 | Failure-injection release record ditambahkan | `release:record:failure` menolak partial recovery yang memakai ulang versi gagal; publish manual dan recovery nyata tetap terbuka |
 
 ## 10. Catatan pemeliharaan

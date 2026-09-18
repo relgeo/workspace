@@ -119,6 +119,7 @@ npm publish --access public
 - [x] validator partial-release memeriksa last published package, first failed package, urutan release, forward-fix version yang lebih baru, dan larangan republish versi gagal.
 - [x] failure-injection `release:record:failure` membuktikan validator menolak partial recovery yang memakai ulang versi gagal sebagai forward-fix.
 - [x] failure-injection juga membuktikan validator menolak package plan yang urutannya menyimpang dari matrix.
+- [x] `release:recovery:plan` menyediakan recovery plan read-only dari record `partial`; helper hanya menyusun boundary dan langkah forward-fix, tidak menyentuh git, npm, atau credential.
 - [x] workflow Integration menjalankan `release:record:check` sebagai gate CI eksplisit sebelum integration gate.
 - [x] integration gate yang sudah ada tetap menjadi prasyarat; audit release tidak menggantikannya.
 - [x] manual stop/recovery rule terdokumentasi sehingga publish dapat dihentikan tanpa menghapus versi npm.
@@ -172,6 +173,16 @@ tidak menjalankan `npm publish`.
 
 Tahap 3 selesai untuk jalur release manual. Automated publishing dan recovery transaction tetap menjadi pekerjaan lanjutan yang sengaja ditahan.
 
+Recovery planner dapat dipakai untuk meninjau record partial tanpa mutasi:
+
+~~~bash
+pnpm run release:recovery:plan -- --record-file=docs/releases/<partial-version>.json
+pnpm run release:recovery:plan -- --record-file=docs/releases/<partial-version>.json --json
+~~~
+
+Planner ini bukan transaction runner. Publish tetap manual, dan record baru harus dibuat
+untuk forward-fix version.
+
 ## 7. Log perubahan
 
 | Tanggal | Perubahan | Bukti/status |
@@ -198,3 +209,4 @@ Tahap 3 selesai untuk jalur release manual. Automated publishing dan recovery tr
 | 2026-09-18 | Public author metadata dijadikan compatibility contract | `scripts/check-compatibility.mjs` memvalidasi nama, email, dan URL author pada seluruh package/consumer; local compatibility lulus `283/283`; perubahan dipush sebagai `workspace@2d5015f`, CI pascapush menunggu verifikasi |
 | 2026-09-18 | Patch release `0.5.1` diselesaikan | `@relgeo/core@0.5.1` dan `@relgeo/language-service@0.5.1` dipublish manual; registry `7/7`, release audit `106/106`, fixtures `228/228`, local gate `36/36`, public gate `50/50`; GitHub `Integration #128` dan follow-up `#129` seluruh job sukses |
 | 2026-09-18 | Validator release historis diperkuat | completed record menyimpan `matrixSnapshot`; record `0.5.0` dan `0.5.1` sama-sama lulus `35/35` tanpa melemahkan exact version matching |
+| 2026-09-18 | Recovery planner read-only ditambahkan dan failure-injection diperbarui | `release:recovery:plan` menyusun boundary partial/forward-fix tanpa mutasi; `release:record:failure` kembali lulus dan mencakup unsafe forward-fix, urutan package, serta planner |

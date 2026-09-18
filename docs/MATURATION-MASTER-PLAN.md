@@ -215,7 +215,7 @@ Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-s
 
 ### Prioritas 3 — Release automation yang aman — jalur manual selesai, automation masih ditahan
 
-Dengan integration gate stabil, patch `0.5.1`, guard status-aware, snapshot matrix historis, dan verifikasi registry sudah selesai. Langkah berikutnya adalah memperkuat recovery transaction dan, bila diperlukan, merancang automated publishing; publish otomatis tetap ditahan sampai kontrak operasionalnya benar-benar dibutuhkan.
+Dengan integration gate stabil, patch `0.5.1`, guard status-aware, snapshot matrix historis, verifikasi registry, dan recovery planner read-only sudah tersedia. Langkah berikutnya adalah memperkuat recovery transaction dan, bila diperlukan, merancang automated publishing; publish otomatis tetap ditahan sampai kontrak operasionalnya benar-benar dibutuhkan.
 
 ### Prioritas 4 — Shared conformance fixtures — hampir selesai
 
@@ -321,7 +321,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 3 — Release dan npm publishing guard
 
-**Status:** Berjalan — release checklist, read-only release preflight, tarball audit, post-publish verifier, record baseline `0.5.0`, dan completed record `0.5.1` sudah tersedia/terverifikasi; automated publish dan recovery transaction masih terbuka.
+**Status:** Berjalan — release checklist, read-only release preflight, tarball audit, post-publish verifier, record baseline `0.5.0`, completed record `0.5.1`, dan read-only recovery planner sudah tersedia/terverifikasi; automated publish dan recovery transaction masih terbuka.
 
 **Tujuan:** membuat release publik aman, dapat diulang, dan dapat diverifikasi setelah package masuk registry.
 
@@ -463,7 +463,7 @@ Urutan kerja yang disarankan sekarang:
 2. jalankan `pnpm run compatibility:check` sebelum integration gate;
 3. jalankan `pnpm run conformance:fixtures` setelah build package selesai;
 4. pertahankan public docs dan Playground melalui sub-rencana Tahap 5, lalu lengkapi validasi perangkat fisik dan assistive technology;
-5. pertahankan release manual sebagai jalur resmi; hanya rancang automation/recovery setelah kebutuhan operasional dan failure evidence nyata tersedia;
+5. pertahankan release manual sebagai jalur resmi; gunakan recovery planner read-only untuk partial record, dan hanya rancang automation/recovery transaction setelah kebutuhan operasional dan failure evidence nyata tersedia;
 6. jadikan hasil lokal dan CI Flutter `3.41.9`/Dart `3.11.5` sebagai evidence baseline; berikutnya putuskan promotion boundary untuk candidate boolean/intersection dan evaluator/unit, serta semantic SVG yang memang masuk active conformance.
 
 ## 8. Definition of Done ekosistem

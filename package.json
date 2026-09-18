@@ -20,6 +20,7 @@
     "release:verify-published": "node scripts/verify-published-packages.mjs",
     "release:record:check": "node scripts/check-release-record.mjs",
     "release:record:failure": "node scripts/test-release-record-failure.mjs",
+    "release:recovery:plan": "node scripts/plan-release-recovery.mjs",
     "conformance:fixtures": "node scripts/run-conformance-fixtures.mjs",
     "fixtures:stage:flutter": "node scripts/stage-flutter-fixtures.mjs --out=.local/flutter-fixtures",
     "flutter:conformance": "node scripts/run-flutter-conformance.mjs",

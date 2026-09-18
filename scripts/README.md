@@ -170,6 +170,16 @@ pnpm run release:record:check
 
 Validator memastikan compatibility line, revision `spec`, release order, seluruh package, seluruh consumer, status evidence, dan batasan publik record tetap cocok dengan matrix. Validator tidak menjalankan publish dan tidak menyimpan credential.
 
+Untuk menyusun recovery plan secara read-only dari release record berstatus `partial`:
+
+~~~text
+pnpm run release:recovery:plan -- --record-file=docs/releases/<partial-version>.json
+pnpm run release:recovery:plan -- --record-file=docs/releases/<partial-version>.json --json
+~~~
+
+Planner hanya membaca matrix dan record. Ia tidak menjalankan `git`, `npm publish`, atau
+mengubah file apa pun.
+
 Failure-injection release record sengaja membuat candidate `0.5.1` menjadi partial dengan
 forward-fix yang sama seperti versi gagal. Command ini harus gagal dan membuktikan bahwa
 guard menolak recovery yang mencoba memakai ulang versi npm yang sama:

@@ -3,17 +3,17 @@
   "releaseVersion": "0.5.1",
   "baseReleaseVersion": "0.5.0",
   "compatibilityLine": "0.5",
-  "status": "planned",
-  "recordedAt": "2026-09-16",
+  "status": "completed",
+  "recordedAt": "2026-09-18",
   "publicationMode": "manual-2fa",
   "decision": {
     "kind": "patch-compatible",
     "contractChange": "patch-compatible",
     "rationale": "Propagate the explicit DSL version acceptance policy to the core parser and language-service schema without changing the 0.5 contract line.",
-    "approvalStatus": "deferred",
+    "approvalStatus": "approved",
     "specRevision": "b96ba3b23de202227eade06614635ef6717df516",
     "partialReleasePolicy": "stop-and-record-then-forward-fix-next-patch",
-    "notes": "This is a public release candidate plan. No npm publish is implied until the two affected package versions are bumped, audited, published manually, and verified from the registry."
+    "notes": "The two affected packages were published manually with npm 2FA/passkey, verified from the registry, and passed the Node 24 local-workspace and public-registry integration gates."
   },
   "releaseOrder": [
     "spec",
@@ -27,38 +27,65 @@
     "playground",
     "relgeo.github.io"
   ],
-  "packagePlan": [
-    { "path": "geometry", "name": "@relgeo/geometry", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" },
-    { "path": "core", "name": "@relgeo/core", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned", "reason": "Publish parser version acceptance policy." },
-    { "path": "renderer-svg", "name": "@relgeo/renderer-svg", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" },
-    { "path": "language-service", "name": "@relgeo/language-service", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned", "reason": "Publish schema version policy aligned with the parser." },
-    { "path": "remark-relgeo-hl", "name": "@relgeo/remark-relgeo-hl", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" },
-    { "path": "remark-relgeo", "name": "@relgeo/remark-relgeo", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" },
-    { "path": "cli", "name": "@relgeo/cli", "fromVersion": "0.5.0", "targetVersion": "0.5.0", "status": "retained" }
+  "matrixSnapshot": {
+    "compatibilityLine": "0.5",
+    "packages": [
+      { "path": "geometry", "name": "@relgeo/geometry", "version": "0.5.0" },
+      { "path": "core", "name": "@relgeo/core", "version": "0.5.1" },
+      { "path": "renderer-svg", "name": "@relgeo/renderer-svg", "version": "0.5.0" },
+      { "path": "language-service", "name": "@relgeo/language-service", "version": "0.5.1" },
+      { "path": "remark-relgeo-hl", "name": "@relgeo/remark-relgeo-hl", "version": "0.5.0" },
+      { "path": "remark-relgeo", "name": "@relgeo/remark-relgeo", "version": "0.5.0" },
+      { "path": "cli", "name": "@relgeo/cli", "version": "0.5.0" }
+    ],
+    "consumers": [
+      { "path": "playground", "name": "relgeo-playground", "version": "0.4.0" },
+      { "path": "relgeo.github.io", "name": "relgeo-docs-site", "version": "0.5.0" }
+    ]
+  },
+  "packages": [
+    { "path": "geometry", "name": "@relgeo/geometry", "version": "0.5.0", "status": "published" },
+    { "path": "core", "name": "@relgeo/core", "version": "0.5.1", "status": "published" },
+    { "path": "renderer-svg", "name": "@relgeo/renderer-svg", "version": "0.5.0", "status": "published" },
+    { "path": "language-service", "name": "@relgeo/language-service", "version": "0.5.1", "status": "published" },
+    { "path": "remark-relgeo-hl", "name": "@relgeo/remark-relgeo-hl", "version": "0.5.0", "status": "published" },
+    { "path": "remark-relgeo", "name": "@relgeo/remark-relgeo", "version": "0.5.0", "status": "published" },
+    { "path": "cli", "name": "@relgeo/cli", "version": "0.5.0", "status": "published" }
   ],
   "consumers": [
-    { "path": "playground", "name": "relgeo-playground", "version": "0.4.0", "status": "pending" },
-    { "path": "relgeo.github.io", "name": "relgeo-docs-site", "version": "0.5.0", "status": "pending" }
+    { "path": "playground", "name": "relgeo-playground", "version": "0.4.0", "status": "verified" },
+    { "path": "relgeo.github.io", "name": "relgeo-docs-site", "version": "0.5.0", "status": "verified" }
   ],
   "sourceChanges": [
-    { "path": "core", "revision": "72d8bd8", "summary": "Explicit parser version acceptance policy and unsupported-version diagnostic." },
-    { "path": "language-service", "revision": "5155890", "summary": "Schema version enum/default aligned with the compatibility policy." }
+    { "path": "core", "revision": "070defe7fb79146f9b56289faefd9fa52b886260", "summary": "Published parser version acceptance policy and unsupported-version diagnostic as 0.5.1." },
+    { "path": "language-service", "revision": "39c06dd8505d480672b0953d523f3675a7f30075", "summary": "Published schema version policy aligned with the parser as 0.5.1." }
   ],
   "evidence": {
-    "sourcePolicy": {
+    "compatibilityCheck": { "command": "pnpm run compatibility:check", "status": "passed", "passed": 283, "failed": 0 },
+    "localIntegration": { "command": "pnpm run integration:gate -- --local", "passed": 36, "failed": 0, "ciRun": 128 },
+    "publicIntegration": { "command": "pnpm run integration:public", "passed": 50, "failed": 0, "ciRun": 128 },
+    "conformanceFixtures": { "command": "pnpm run conformance:fixtures", "passed": 228, "failed": 0, "fixtures": 18 },
+    "releaseAudit": { "command": "pnpm run release:audit", "passed": 106, "failed": 0 },
+    "registryVerification": { "command": "pnpm run release:verify-published", "passed": 7, "failed": 0 },
+    "publicPlaygroundSmoke": {
+      "automated": false,
       "status": "passed",
-      "strictBaseline": "81/81",
-      "compatibilityMatrix": "256/256",
-      "conformanceFixtures": "228/228"
-    },
-    "registryVerification": { "status": "pending", "reason": "Requires manual npm publish after package version bumps." },
-    "publicIntegration": { "status": "pending", "reason": "Run only after the affected packages are available at 0.5.1." }
+      "url": "https://relgeo.github.io/playground/",
+      "checks": [
+        "editor is visible",
+        "runtime-diagnostic fixture reaches READY",
+        "preview remains available",
+        "Errors tab shows one diagnostic: Points are not aligned. Distance: 14.1421",
+        "CI public-registry Playwright smoke passed 2 checks in Integration #128"
+      ]
+    }
   },
-  "nextSteps": [
-    "Bump core and language-service to 0.5.1 in their child repositories.",
-    "Run release preflight and tarball audit from a clean workspace.",
-    "Publish the two packages manually with npm 2FA/passkey.",
-    "Verify npm registry versions and run the public-registry integration gate.",
-    "Replace this planned record with completed evidence only after all checks pass."
-  ]
+  "followUp": {
+    "automatedPublishing": "not-enabled",
+    "automatedRecoveryTransaction": "not-enabled",
+    "openGates": [
+      "Automated publishing remains intentionally disabled; future releases continue to use the manual 2FA procedure.",
+      "Historical release records now use immutable matrix snapshots for auditability."
+    ]
+  }
 }

@@ -17,4 +17,4 @@ Record tidak mengaktifkan publish otomatis. Ia menjadi bukti keputusan dan ledge
 
 - [`0.5.0.md`](0.5.0.md) — baseline publik `0.5.0`, dipublish manual dan diverifikasi setelah publish.
 - [`0.5.0.json`](0.5.0.json) — snapshot machine-readable yang divalidasi oleh `release:record:check`.
-- [`0.5.1.json`](0.5.1.json) — candidate plan untuk mempublikasikan perubahan policy parser/schema; statusnya masih `planned`, bukan bukti bahwa npm sudah dipublish.
+- [`0.5.1.json`](0.5.1.json) dan [`0.5.1.md`](0.5.1.md) — patch release selesai; `core` dan `language-service` tersedia sebagai `0.5.1`, seluruh gate registry/CI dicatat, dan snapshot matrix disimpan untuk audit historis.

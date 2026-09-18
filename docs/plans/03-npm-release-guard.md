@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 3 — Release dan npm Publishing Guard
 
-**Status:** Berjalan — checklist, tarball audit, post-publish verifier, release decision record validator, machine-checked release order/bump policy, candidate plan `0.5.1`, dan status-aware preflight sudah tersedia; publish manual, automated publish, dan recovery transaction belum selesai
+**Status:** Berjalan — release manual `0.5.1` selesai dan seluruh evidence lintas registry/CI tercatat; automated publishing dan recovery transaction tetap belum diaktifkan
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -112,7 +112,7 @@ npm publish --access public
 - [x] matrix dan release-record validator kini memeriksa klasifikasi contract change, rationale, approval status, serta policy forward-fix untuk record partial.
 - [x] matrix mendeklarasikan bump policy `none`, `patch-compatible`, dan `breaking`; validator memeriksa urutan package plan, status retained/changed, serta bump patch untuk candidate patch-compatible.
 - [x] validator membedakan record `planned`, `partial`, dan `completed`; candidate plan dapat diperiksa tanpa mengklaim publish sudah terjadi.
-- [x] `docs/releases/0.5.1.json` mencatat target patch untuk `core` dan `language-service`, package yang dipertahankan, consumer pending, dan langkah manual berikutnya.
+- [x] `docs/releases/0.5.1.{md,json}` mencatat release completed untuk `core` dan `language-service`, package yang dipertahankan, consumer verified, evidence CI, dan snapshot matrix historis.
 - [x] preflight memerlukan record berstatus `completed` setelah validasi record; candidate `planned` tidak dapat lolos sebagai release final.
 - [x] dokumentasi membedakan validasi record candidate dari preflight release final.
 - [x] `release:candidate:audit` memeriksa candidate planned/partial, clean tree, local package version, dan source revision tanpa publish atau akses npm.
@@ -125,7 +125,7 @@ npm publish --access public
 - [x] compatibility checker memaksa metadata author publik (`Agus Made`, email terverifikasi, dan URL GitHub) konsisten pada seluruh package/consumer, sehingga drift metadata gagal di CI.
 - [ ] automated publishing belum diaktifkan.
 - [ ] automated partial-release transaction/rollback helper belum ada; schema recovery dan validator sudah tersedia.
-- [ ] candidate `0.5.1` belum dibump, dipublish, diverifikasi dari npm, atau diuji pada public-registry gate.
+- [x] release patch `0.5.1` dibump, dipublish manual, diverifikasi dari npm, dan diuji pada public-registry gate.
 
 ## 5. Bukti awal
 
@@ -140,11 +140,10 @@ pnpm run release:verify-published
 
 Audit tarball lokal pada checkout yang sudah dibuild menjadi evidence tambahan sebelum release berikutnya.
 
-Perubahan policy parser/schema pada 2026-09-16 sudah lulus source-level gate,
-tetapi tidak mengubah `@relgeo/core@0.5.0` atau `@relgeo/language-service@0.5.0`
-yang immutable di registry. Release patch untuk artefak tersebut masih harus
-disiapkan dan dipublish manual sebelum public-registry gate dapat membuktikan
-policy baru pada instalasi fresh.
+Perubahan policy parser/schema pada 2026-09-16 dipublikasikan sebagai
+`@relgeo/core@0.5.1` dan `@relgeo/language-service@0.5.1`. Registry verifier
+lulus `7/7`, sedangkan public-registry gate pada Integration `#128` lulus
+`50/50` pada instalasi fresh.
 
 - `pnpm run release:record:check` memvalidasi record machine-readable baseline `0.5.0` terhadap matrix; record memuat urutan, seluruh package, consumer, dan evidence manual/public yang tersedia.
 
@@ -166,12 +165,12 @@ tidak menjalankan `npm publish`.
 - [x] consumer install/public integration sudah menjadi gate yang ada;
 - [x] post-publish version verifier tersedia;
 - [x] release dapat dihentikan secara manual dengan aturan partial-release yang jelas;
-- [x] post-publish evidence untuk baseline `0.5.0` dijalankan dan dicatat;
+- [x] post-publish evidence untuk baseline `0.5.0` dan patch `0.5.1` dijalankan dan dicatat;
 - [x] decision record template digunakan untuk mencatat baseline `0.5.0` dan divalidasi terhadap matrix;
 - [ ] automated publishing diaktifkan setelah jalur manual terbukti stabil;
 - [ ] recovery helper transaction terotomasi atau diuji pada partial release nyata.
 
-Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum dilakukan. Implementasi guard dapat dipakai sekarang tanpa menunggu automation.
+Tahap 3 selesai untuk jalur release manual. Automated publishing dan recovery transaction tetap menjadi pekerjaan lanjutan yang sengaja ditahan.
 
 ## 7. Log perubahan
 
@@ -197,3 +196,5 @@ Tahap 3 belum selesai karena evidence release baru dan automation sengaja belum 
 | 2026-09-18 | Urutan release dan bump policy dijadikan kontrak yang divalidasi mesin | `release:record:check` lulus `20/20`, failure-injection menolak recovery tidak aman dan urutan package yang salah, candidate audit lulus `36/36`; compatibility `256/256` dan strict baseline `81/81` lulus |
 | 2026-09-18 | CI memverifikasi release guard terbaru | `Integration #121` pada `workspace@08be7d8` sukses untuk job `verify`, `flutter`, `flutter-macos`, dan `public`; local full gate tidak diulang karena filesystem tinggal sekitar 3.3 GiB dan sempat gagal `EPERM` saat membuat file temporary |
 | 2026-09-18 | Public author metadata dijadikan compatibility contract | `scripts/check-compatibility.mjs` memvalidasi nama, email, dan URL author pada seluruh package/consumer; local compatibility lulus `283/283`; perubahan dipush sebagai `workspace@2d5015f`, CI pascapush menunggu verifikasi |
+| 2026-09-18 | Patch release `0.5.1` diselesaikan | `@relgeo/core@0.5.1` dan `@relgeo/language-service@0.5.1` dipublish manual; registry `7/7`, release audit `106/106`, fixtures `228/228`, local gate `36/36`, public gate `50/50`; GitHub `Integration #128` seluruh job sukses |
+| 2026-09-18 | Validator release historis diperkuat | completed record menyimpan `matrixSnapshot`; record `0.5.0` dan `0.5.1` sama-sama lulus `35/35` tanpa melemahkan exact version matching |

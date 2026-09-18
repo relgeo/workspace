@@ -209,13 +209,13 @@ Gate harus menjawab:
 - apakah website dapat mengambil baseline Playground dan spec yang benar;
 - apakah artifact publik dan route utama tetap valid.
 
-### Prioritas 2 — Compatibility dan release contract — baseline selesai, candidate patch disiapkan
+### Prioritas 2 — Compatibility dan release contract — selesai untuk patch 0.5.1
 
-Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-service schema enum, negative fixtures, dan checker. Candidate `0.5.1` sudah dicatat untuk mempropagasikan perubahan source-next ke `core` dan `language-service`; registry fresh install masih menunggu publish manual.
+Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-service schema enum, negative fixtures, dan checker. Patch `0.5.1` sudah dipublikasikan untuk `core` dan `language-service`, diverifikasi dari npm, dan lulus fresh public-registry integration.
 
-### Prioritas 3 — Release automation yang aman — guard diperkuat, transaction masih berikutnya
+### Prioritas 3 — Release automation yang aman — jalur manual selesai, automation masih berikutnya
 
-Dengan integration gate stabil, candidate patch `0.5.1` dan guard status-aware sudah disiapkan. Langkah operasional berikutnya adalah bump/publish manual `core` dan `language-service`, verifikasi registry, lalu memperkuat recovery transaction. Automated publish tetap ditahan sampai jalur manual dan recovery terbukti.
+Dengan integration gate stabil, patch `0.5.1` dan guard status-aware sudah selesai. Langkah berikutnya adalah memperkuat recovery transaction dan, bila diperlukan, merancang automated publishing; publish otomatis tetap ditahan sampai kontrak operasionalnya benar-benar dibutuhkan.
 
 ### Prioritas 4 — Shared conformance fixtures — hampir selesai
 
@@ -546,10 +546,10 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Audit Playground diselaraskan ke baseline `e73b212` dan root gate diulang | root `f953b32`, strict baseline `81/81`, compatibility `250/250`, integration `36/36`; CI pascapush terbaru masih perlu diverifikasi |
 | 2026-09-16 | Public version policy diformalkan lintas matrix, manifest, dan parser | active `0.5`, supported legacy `0.4`, regression-only `0.1`–`0.3`, omitted default `0.5`; future/unknown version ditolak dengan `UNSUPPORTED_SPEC_VERSION` |
 | 2026-09-16 | Negative conformance version fixtures ditambahkan | fixture `17` (`0.6`) dan `18` (`1.0`); core `427/427`, compatibility `256/256`, conformance `228/228` across 18 fixtures |
-| 2026-09-16 | Language-service schema dan root integration gate diselaraskan dengan version policy | schema membatasi version `0.1`–`0.5`; lint/test `66/66`; strict baseline `81/81`; local integration gate `36/36`; registry masih menyediakan core/language-service `0.5.0` sehingga release patch manual tetap terbuka |
+| 2026-09-16 | Language-service schema dan root integration gate diselaraskan dengan version policy | schema membatasi version `0.1`–`0.5`; lint/test `66/66`; strict baseline `81/81`; local integration gate `36/36`; release patch manual kemudian disiapkan |
 | 2026-09-16 | GitHub `Integration #105` memverifikasi policy version acceptance terbaru | job `flutter`, `verify`, dan `public` sukses pada `workspace@a866fcc`; dua warning Node 20 dari `actions/upload-artifact@v5` dicatat dan action dinaikkan ke v6 untuk workflow berikutnya |
 | 2026-09-16 | GitHub `Integration #106` memverifikasi workflow artifact Node 24 | job `flutter`, `verify`, dan `public` sukses pada `workspace@b3f7bb6`; dua artifact report terbentuk dan warning Node 20 tidak lagi muncul |
-| 2026-09-16 | Release record dibuat status-aware dan candidate `0.5.1` diaudit | workspace commit `6d33737`; record candidate `21/21`, audit candidate lokal `36/36`; hanya bump/publish manual `core` dan `language-service` serta verifikasi registry yang tersisa pada jalur patch ini |
+| 2026-09-16 | Release record dibuat status-aware dan candidate `0.5.1` diaudit | workspace commit `6d33737`; record candidate `21/21`, audit candidate lokal `36/36`; jalur publish manual kemudian diselesaikan pada 2026-09-18 |
 | 2026-09-17 | Recovery partial-release diperketat | validator dan template kini memerlukan last published, first failed, forward-fix yang lebih baru, urutan konsisten, dan larangan republish versi gagal; automated transaction masih terbuka |
 | 2026-09-17 | GitHub `Integration #112` memverifikasi failure-injection release guard | job `flutter`, `verify`, dan `public` sukses pada `workspace@0adadf8`; local/public integration summary, artifact report, dan Playwright annotations tersedia |
 | 2026-09-17 | GitHub `Integration #113` memverifikasi evidence dokumentasi terbaru | job `flutter`, `verify`, dan `public` sukses pada `workspace@2ba78fb`; local/public integration summary, dua artifact report, dan dua Playwright smoke tersedia |

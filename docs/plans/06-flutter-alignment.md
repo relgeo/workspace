@@ -1,6 +1,8 @@
 # Sub-rencana Tahap 6 — Flutter Contract Alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary tests, runner lokal, checkout mandiri terisolasi, build macOS, dan gate CI Flutter selesai; parity lintas engine yang belum tercakup, promotion candidate, serta keputusan platform release masih terbuka
+**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary tests, runner lokal, checkout mandiri terisolasi, build macOS, gate CI Flutter, dan posture release sudah disetujui; promotion candidate dan parity lintas engine yang belum tercakup masih terbuka
+
+Pekerjaan lanjutan untuk dua gap tersebut dipecah ke [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](07-flutter-capability-promotion-and-svg-parity.md).
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal mulai:** 2026-09-16  
 **Owner koordinasi:** relgeo/workspace  
@@ -192,9 +194,9 @@ sequenceDiagram
 - [x] jalankan `flutter pub get --enforce-lockfile`, analyzer non-fatal, dan `flutter test` dari checkout Flutter terisolasi secara lokal; 99 test lulus dan 7 shared-fixture test dilewati secara eksplisit;
 - [x] bila build desktop masuk scope release, `flutter build macos --no-pub` berhasil secara lokal pada checkout Flutter dan menghasilkan `relgeo_flutter.app`; job macOS CI sudah ditambahkan untuk verifikasi reproduktif;
 - [x] Keberhasilan job macOS CI sudah diverifikasi pada `Integration #119`;
-- [ ] Keputusan pin/revisi SDK final dan keputusan scope release desktop masih terbuka;
+- [x] Keputusan posture Flutter diterima: workbench non-publishable, stable `3.41.9` sebagai baseline line `0.5.x`, dan build macOS sebagai CI gate, bukan release desktop;
 - [x] simpan summary dan failure output tanpa mengunggah source fixture atau trace yang tidak diperlukan;
-- [ ] pin revision Flutter pada baseline setelah evidence CI pertama lulus dan keputusan toolchain final disetujui.
+- [x] pin version/channel Flutter pada baseline setelah evidence CI lulus; exact SDK revision dicatat sebagai evidence bila diperlukan, bukan sebagai package contract.
 
 Evidence lokal yang sudah tersedia tidak menggantikan stage di atas: runner workspace
 lulus dengan Flutter `3.41.9`, Dart `3.11.5`, 18 fixture yang di-stage, `pub get`,
@@ -208,7 +210,7 @@ tetapi tidak menjadi blocker pada baseline ini.
 - [x] status tiap capability menjadi verified/partial/unsupported; matrix saat ini memakai `partial` karena active-contract boundary dan parity/presentation yang lebih luas masih terbuka meskipun evidence CI dasar sudah lulus;
 - [x] compatibility matrix menyebut Flutter secara jujur sebagai non-Node consumer berstatus `partial` berdasarkan evidence lokal dan `Integration #91`, dengan capability yang belum dipromosikan tetap terbuka;
 - [x] README dan master plan tidak lagi menyiratkan parity hanya karena test lokal ada;
-- [x] draft release decision record menyatakan rekomendasi Flutter tetap workbench non-publishable; persetujuan posture dan release policy final masih terbuka di [decision record](../decisions/06-flutter-release-posture.md);
+- [x] release decision record menyatakan Flutter tetap workbench non-publishable; posture dan release policy final diterima melalui [decision record lintas-repo](../decisions/07-cross-repo-open-decisions.md), sedangkan record Flutter khusus tetap menjadi rationale teknis;
 - [x] gap yang tersisa memiliki owner, bukti, dan langkah forward-fix pada register berikut.
 
 ### Gap register
@@ -222,7 +224,7 @@ tetapi tidak menjadi blocker pada baseline ini.
 | Semantic parity candidate evaluator/unit belum menjadi active contract | relgeo/workspace + relgeo/flutter | parameter, `in`/`mm`, derived placement, scene snapshot, dan SVG semantic projection candidate lulus lokal dan pada `Integration #91`; candidate belum masuk active baseline | sepakati promotion boundary bersama candidate boolean/intersection; pertahankan `cliUnit` eksplisit untuk snapshot non-default |
 | Cakupan SVG Flutter di luar anchor active/runtime/candidate belum penuh | relgeo/flutter + relgeo/renderer-svg | active, runtime-diagnostic, dan candidate lulus SVG semantic projection lokal; full capability surface, style, viewBox, dan policy presentation belum menjadi contract | perluas semantic anchors dengan tolerance ke capability yang disepakati, bukan raw SVG bytes |
 | Pin revision Flutter belum ditetapkan pada baseline | relgeo/workspace | `Integration #91` berhasil dengan stable `3.41.9`; workflow dan job Flutter sudah terverifikasi | tetapkan apakah pin version/channel sudah cukup atau simpan revision SDK eksplisit setelah posture release disetujui |
-| Posture release Flutter belum disetujui | maintainer RelGeo | decision record berstatus `Proposed` | setujui/ubah proposal sebelum membuat release policy atau package publik |
+| Posture release Flutter belum disetujui | maintainer RelGeo | diterima pada `docs/decisions/07-cross-repo-open-decisions.md` | pertahankan workbench non-publishable dan jangan membuat package/release desktop tanpa keputusan baru |
 
 ## 6. Acceptance criteria Tahap 6
 
@@ -263,7 +265,9 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 - Test semantic projection untuk fixture active dan runtime-diagnostic, boundary invalid, widget smoke, golden, dan regression edit invalid sudah dieksekusi dan lulus secara lokal.
 - Perbaikan yang terverifikasi dalam run tersebut mencakup wrapping pesan violation pada inspector agar tidak overflow dan penjadwalan ulang frame pada regression invalid edit agar perubahan controller diproses oleh widget test.
 - Evidence CI Flutter terbaru tersedia melalui `Integration #132` pada `workspace@321c7b2` (job `flutter`, `flutter-macos`, `verify`, dan `public` sukses). Mismatch manifest Flutter yang ditemukan pada `Integration #117` sudah diperbaiki dan tetap hijau pada beberapa run sesudahnya. Active, runtime-diagnostic, dan candidate lulus pada scene projection serta SVG semantic projection ter-normalisasi, tetapi candidate masih capability-only dan cakupan SVG/policy presentation yang lebih luas masih terbuka.
-- Draft release posture Flutter sudah dicatat sebagai decision record; statusnya masih `Proposed` dan tidak dianggap sebagai persetujuan maintainer.
+- Draft release posture Flutter tetap tersedia sebagai rationale teknis; keputusan
+  maintainer yang berlaku adalah posture `Accepted` pada
+  `docs/decisions/07-cross-repo-open-decisions.md`.
 - Runner `pnpm run flutter:conformance` sudah memiliki jalur blocked yang eksplisit untuk environment tanpa Flutter dan dapat memakai `RELGEO_FLUTTER_BIN`.
 - Capability mapping machine-readable sudah ditambahkan dan path/symbol mapping-nya diverifikasi oleh compatibility checker root.
 - Compatibility checker root lulus `256 passed, 0 failed`, termasuk validasi capability matrix Flutter, record non-Node untuk Flutter, dan version acceptance policy.
@@ -321,4 +325,4 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 | 2026-09-18 | Job build macOS Flutter ditambahkan ke workflow Integration | job `flutter-macos` memakai `macos-latest`, Flutter stable `3.41.9`, locale UTF-8, `pub get --enforce-lockfile`, dan `flutter build macos --no-pub --release`; verifikasi runner CI pertama masih terbuka |
 | 2026-09-18 | Build macOS Flutter diverifikasi pada runner CI | `Integration #119` pada `workspace@dc40653` sukses untuk job `flutter`, `flutter-macos`, `verify`, dan `public`; runner `macos-latest` menyelesaikan release build, sehingga gap validasi CI macOS ditutup |
 | 2026-09-18 | `Integration #129` mengonfirmasi baseline Flutter tetap hijau setelah release record `0.5.1` ditutup | `workspace@aea1188` sukses pada job `flutter`, `flutter-macos`, `verify`, dan `public`; candidate capability tetap belum dipromosikan menjadi active contract dan pin revision Flutter masih memerlukan keputusan eksplisit |
-| 2026-09-18 | `Integration #132` mengonfirmasi baseline Flutter tetap hijau setelah pin toolchain Node lokal | `workspace@321c7b2` sukses pada job `flutter`, `flutter-macos`, `verify`, dan `public`; candidate capability tetap belum dipromosikan menjadi active contract, pin revision Flutter dan keputusan platform release masih memerlukan keputusan eksplisit |
+| 2026-09-18 | `Integration #132` mengonfirmasi baseline Flutter tetap hijau setelah pin toolchain Node lokal | `workspace@321c7b2` sukses pada job `flutter`, `flutter-macos`, `verify`, dan `public`; candidate capability tetap belum dipromosikan menjadi active contract, sementara posture platform release sudah diterima sebagai workbench non-publishable |

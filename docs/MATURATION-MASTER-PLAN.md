@@ -233,7 +233,12 @@ Implementation dan browser emulation sudah kuat. Sisa wajib adalah validasi touc
 
 ### Prioritas 6 — Flutter alignment dan feature expansion — berjalan terbatas
 
-Adapter, runner, CI, dan semantic projection sudah tersedia. Flutter tetap workbench non-publishable; sisa utamanya adalah promotion decision capability, parity SVG/presentation yang lebih luas, dan validasi build platform bila release artifact Flutter kelak dipertimbangkan. Feature expansion ditahan sampai keputusan itu jelas.
+Adapter, runner, CI, dan semantic projection sudah tersedia. Posture Flutter
+sebagai workbench non-publishable, baseline stable `3.41.9`, dan build macOS
+sebagai CI gate sudah disetujui. Sisa utamanya adalah promotion capability
+satu per satu dan parity SVG/presentation yang lebih luas. Feature expansion
+ditahan sampai acceptance contract capability jelas. Detail pengerjaan ada di
+[Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md).
 
 ### Urutan pengerjaan setelah batch ini
 
@@ -420,7 +425,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 6 — Flutter alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, draft release posture, build macOS CI, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus, sedangkan promotion candidate, parity capability tambahan, dan keputusan platform release masih terbuka.
+**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, release posture yang sudah disetujui, build macOS CI, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus, sedangkan promotion candidate dan parity capability tambahan masih terbuka.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 

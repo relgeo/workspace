@@ -68,7 +68,7 @@
     {
       "path": "core",
       "name": "@relgeo/core",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
@@ -84,7 +84,7 @@
     {
       "path": "language-service",
       "name": "@relgeo/language-service",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"

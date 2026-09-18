@@ -361,7 +361,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; evidence terbaru mencakup `228/228` fixture checks dan Integration #132; promotion candidate dan parity capability tambahan masih terbuka.
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; runner kini mendukung beberapa fixture `active` tanpa mengganti baseline relasional; evidence terbaru mencakup `228/228` fixture checks dan local integration `36/36`, dengan Integration #138 sebagai CI terbaru yang telah diverifikasi; promotion candidate dan parity capability tambahan masih terbuka.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -425,7 +425,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 6 — Flutter alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, release posture yang sudah disetujui, build macOS CI, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus, sedangkan promotion candidate dan parity capability tambahan masih terbuka.
+**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, release posture yang sudah disetujui, build macOS CI, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus; boundary contract candidate boolean/intersection dan policy multi-active fixture sudah dicatat, sedangkan promotion candidate, negative fixtures lintas consumer, dan parity capability tambahan masih terbuka.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -558,6 +558,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-16 | Public version policy diformalkan lintas matrix, manifest, dan parser | active `0.5`, supported legacy `0.4`, regression-only `0.1`–`0.3`, omitted default `0.5`; future/unknown version ditolak dengan `UNSUPPORTED_SPEC_VERSION` |
 | 2026-09-16 | Negative conformance version fixtures ditambahkan | fixture `17` (`0.6`) dan `18` (`1.0`); core `427/427`, compatibility `256/256`, conformance `228/228` across 18 fixtures |
 | 2026-09-16 | Language-service schema dan root integration gate diselaraskan dengan version policy | schema membatasi version `0.1`–`0.5`; lint/test `66/66`; strict baseline `81/81`; local integration gate `36/36`; release patch manual kemudian disiapkan |
+| 2026-09-18 | Policy multi-active conformance fixture diterapkan dan gate lokal diulang | runner berubah dari tepat satu menjadi minimal satu fixture `active`; baseline Fixture 10 tetap dipertahankan; conformance `228/228`; integration gate Node `24.21.0` melalui terminal VS Code lulus `36/36`; candidate 15/16 tetap `capability` sampai negative fixture dan keputusan promosi selesai |
 | 2026-09-16 | GitHub `Integration #105` memverifikasi policy version acceptance terbaru | job `flutter`, `verify`, dan `public` sukses pada `workspace@a866fcc`; dua warning Node 20 dari `actions/upload-artifact@v5` dicatat dan action dinaikkan ke v6 untuk workflow berikutnya |
 | 2026-09-16 | GitHub `Integration #106` memverifikasi workflow artifact Node 24 | job `flutter`, `verify`, dan `public` sukses pada `workspace@b3f7bb6`; dua artifact report terbentuk dan warning Node 20 tidak lagi muncul |
 | 2026-09-16 | Release record dibuat status-aware dan candidate `0.5.1` diaudit | workspace commit `6d33737`; record candidate `21/21`, audit candidate lokal `36/36`; jalur publish manual kemudian diselesaikan pada 2026-09-18 |

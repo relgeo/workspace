@@ -6,6 +6,8 @@
 **Parent:** [MATURATION-MASTER-PLAN.md](../MATURATION-MASTER-PLAN.md)  
 **Decision record:** [07-cross-repo-open-decisions.md](../decisions/07-cross-repo-open-decisions.md)
 
+**Candidate review:** [08-boolean-intersection-contract-review.md](../decisions/08-boolean-intersection-contract-review.md)
+
 ## 1. Tujuan
 
 Sub-rencana ini menerjemahkan keputusan maintainer menjadi pekerjaan teknis
@@ -69,14 +71,17 @@ mengembalikan status ke `candidate` atau `partial`, bukan memaksa status
   candidate yang tersedia;
 - [x] decision record menerima promosi bertahap dan semantic parity berlapis;
 - [x] posture Flutter non-publishable dan baseline stable `3.41.9` diterima;
-- [ ] acceptance contract untuk candidate boolean/intersection ditulis sebagai
-  bagian normatif atau decision record capability;
+- [x] draft acceptance contract untuk candidate boolean/intersection ditulis
+  sebagai decision record; persetujuan maintainer masih terbuka;
 - [ ] daftar property presentation SVG yang benar-benar diperlukan disetujui.
 
 ## 5. Stage B — Promosi boolean/intersection
 
 ### B1. Review contract
 
+- [x] inventory spec, fixture, resolver, engine, dan error behavior selesai;
+- [x] rekomendasi promotion boundary dan pemisahan implementation detail
+  terdokumentasi pada [Decision Record 08](../decisions/08-boolean-intersection-contract-review.md);
 - [ ] tetapkan operasi yang masuk contract: line intersection, boolean
   intersection, dan boolean subtraction;
 - [ ] tetapkan jenis object dan topology yang dijamin;
@@ -185,7 +190,8 @@ Sub-rencana ini belum selesai sebelum:
 
 ## 11. Status saat ini
 
-Fondasi teknis dan keputusan policy sudah selesai. Pekerjaan yang tersisa
-berada pada contract review dan persetujuan acceptance, bukan pada kekurangan
-runner atau toolchain. Candidate boolean/intersection menjadi urutan pertama;
-candidate evaluator/unit menunggu hasilnya.
+Fondasi teknis dan keputusan policy sudah selesai. Inventory dan draft contract
+candidate boolean/intersection juga sudah selesai; yang tersisa adalah
+persetujuan maintainer, negative fixtures, promotion eksplisit, dan evidence
+lintas consumer setelah promotion. Pekerjaan ini bukan lagi kekurangan runner
+atau toolchain. Candidate evaluator/unit menunggu hasil candidate pertama.

@@ -107,6 +107,12 @@ Aturannya:
 
 Diagram tidak perlu dibuat di tool eksternal hanya untuk menghasilkan gambar. Tool visual dipakai bila kebutuhan memang melampaui diagram dokumentasi biasa.
 
+Keputusan lintas-repo yang belum ditutup—QA perangkat nyata, posture Flutter,
+promosi capability candidate, parity SVG, serta otomasi publish/recovery npm—
+dicatat terpusat di [07-cross-repo-open-decisions.md](./decisions/07-cross-repo-open-decisions.md).
+Dokumen itu menjadi tempat persetujuan maintainer sebelum sub-rencana
+implementasi berikutnya dibuat.
+
 ## 3. Gambaran ekosistem saat ini
 
 ### 3.1 Repository dan peran

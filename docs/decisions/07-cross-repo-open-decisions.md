@@ -1,6 +1,6 @@
 # RelGeo Cross-Repo Open Decisions
 
-**Status:** Proposed  
+**Status:** Accepted with iOS evidence deferred
 **Tanggal:** 2026-09-18  
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** Playground, Flutter, renderer parity, dan release npm
@@ -41,6 +41,18 @@ flowchart TD
 | SDK Flutter dan platform release | keputusan posture produk/toolchain | tetap workbench non-publishable; pin Flutter stable `3.41.9` di CI dan tunda release desktop | ya |
 | Otomasi npm dan recovery | keputusan risiko release | pertahankan publish manual untuk beberapa release berikutnya; jika diotomasi, gunakan OIDC + environment approval dan forward-fix, bukan rollback | ya |
 
+## 2.1 Keputusan yang sudah disetujui
+
+Rekomendasi dokumen ini disetujui sebagai arah kerja, dengan satu batasan:
+
+- policy QA perangkat nyata diterima, tetapi evidence iOS nyata ditunda sampai
+  ada akses ke iPhone/iPad milik sendiri, pinjaman, atau layanan real-device;
+- promosi capability Flutter dilakukan satu per satu dan tidak otomatis;
+- semantic parity SVG berlapis menjadi policy acceptance;
+- Flutter tetap workbench non-publishable dengan baseline stable `3.41.9`;
+- publish npm tetap manual; target automation masa depan adalah OIDC dengan
+  approval environment dan recovery forward-fix, bukan rollback.
+
 ## 3. Keputusan A — QA perangkat nyata
 
 ### 3.1 Apa yang sebenarnya perlu diputuskan
@@ -76,9 +88,12 @@ sebagai selesai; tandai evidence sebagai terbatas.
 
 ### 3.4 Keputusan yang dicatat
 
-- [ ] menyetujui matrix minimum iPhone + Android + macOS VoiceOver;
-- [ ] memilih perangkat aktual dan tanggal pengujian;
-- [ ] menyetujui format evidence di audit Playground.
+- [x] menyetujui matrix minimum iPhone + Android + macOS VoiceOver;
+- [ ] memilih perangkat aktual dan tanggal pengujian; **ditunda karena akses iOS belum tersedia**;
+- [x] menyetujui format evidence di audit Playground.
+
+Status evidence iOS saat ini: **pending external device access**. Android dan
+macOS tetap dapat diuji lebih dahulu, tetapi Tahap 5 belum boleh ditutup penuh.
 
 ## 4. Keputusan B — Promosi capability candidate Flutter
 
@@ -112,10 +127,10 @@ kontrak publik.
 
 ### 4.3 Keputusan yang dicatat
 
-- [ ] menyetujui kebijakan promosi satu per satu;
+- [x] menyetujui kebijakan promosi satu per satu;
 - [ ] candidate pertama yang diprioritaskan: `boolean/intersection` atau
   `evaluator/unit`;
-- [ ] menyetujui bahwa evidence semantic projection saja belum cukup tanpa
+- [x] menyetujui bahwa evidence semantic projection saja belum cukup tanpa
   contract dan dokumentasi public.
 
 ## 5. Keputusan C — Cakupan parity SVG Flutter
@@ -149,10 +164,10 @@ belum tentu harus identik.
 
 ### 5.3 Keputusan yang dicatat
 
-- [ ] menyetujui semantic parity berlapis sebagai policy resmi;
+- [x] menyetujui semantic parity berlapis sebagai policy resmi;
 - [ ] menyetujui daftar property presentation yang benar-benar perlu menjadi
   contract;
-- [ ] menunda raw SVG equality sebagai non-goal.
+- [x] menunda raw SVG equality sebagai non-goal.
 
 ## 6. Keputusan D — Pin SDK Flutter dan posture platform release
 
@@ -187,10 +202,10 @@ signing, distribusi, dan support platform terlalu dini.
 
 ### 6.3 Keputusan yang dicatat
 
-- [ ] menyetujui Flutter sebagai workbench non-publishable;
-- [ ] menyetujui Flutter stable `3.41.9` sebagai baseline line `0.5.x`;
-- [ ] menyetujui build macOS sebagai CI gate, bukan release desktop;
-- [ ] menyetujui bahwa exact revision SDK dicatat sebagai evidence bila perlu,
+- [x] menyetujui Flutter sebagai workbench non-publishable;
+- [x] menyetujui Flutter stable `3.41.9` sebagai baseline line `0.5.x`;
+- [x] menyetujui build macOS sebagai CI gate, bukan release desktop;
+- [x] menyetujui bahwa exact revision SDK dicatat sebagai evidence bila perlu,
   bukan sebagai package contract.
 
 ## 7. Keputusan E — Otomasi publish npm dan recovery partial release
@@ -252,11 +267,11 @@ langsung mengaktifkan publish otomatis.
 
 ### 7.4 Keputusan yang dicatat
 
-- [ ] menyetujui manual publish sebagai policy resmi untuk release berikutnya;
-- [ ] menyetujui bahwa recovery selalu forward-fix, bukan rollback;
-- [ ] menyetujui OIDC sebagai target automation masa depan;
-- [ ] menyetujui required reviewer pada environment publish;
-- [ ] menyetujui bahwa publish multi-package tidak boleh menjadi satu transaksi
+- [x] menyetujui manual publish sebagai policy resmi untuk release berikutnya;
+- [x] menyetujui bahwa recovery selalu forward-fix, bukan rollback;
+- [x] menyetujui OIDC sebagai target automation masa depan;
+- [x] menyetujui required reviewer pada environment publish;
+- [x] menyetujui bahwa publish multi-package tidak boleh menjadi satu transaksi
   yang mengklaim atomic rollback.
 
 ## 8. Urutan penerapan yang direkomendasikan
@@ -277,11 +292,11 @@ relevan tersedia.
 
 | ID | Keputusan | Status | Tanggal | Evidence/commit |
 | --- | --- | --- | --- | --- |
-| A | QA perangkat nyata | Proposed | — | — |
-| B | Promosi capability Flutter | Proposed | — | — |
-| C | Parity SVG Flutter | Proposed | — | — |
-| D | SDK dan posture platform Flutter | Proposed | — | — |
-| E | Otomasi npm dan recovery | Proposed | — | — |
+| A | QA perangkat nyata | Accepted; iOS evidence deferred | 2026-09-18 | akses perangkat iOS belum tersedia |
+| B | Promosi capability Flutter | Accepted | 2026-09-18 | kebijakan promosi bertahap |
+| C | Parity SVG Flutter | Accepted | 2026-09-18 | semantic parity berlapis |
+| D | SDK dan posture platform Flutter | Accepted | 2026-09-18 | workbench non-publishable; stable `3.41.9` |
+| E | Otomasi npm dan recovery | Accepted | 2026-09-18 | manual sekarang; OIDC sebagai target masa depan |
 
 Setelah keputusan diambil, ubah status menjadi `Accepted`, `Rejected`, atau
 `Deferred`, lalu buat atau perbarui sub-rencana implementasi yang relevan.

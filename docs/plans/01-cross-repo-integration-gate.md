@@ -294,7 +294,7 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #129` untuk commit `aea1188` pada `relgeo/workspace`; job `flutter`, `flutter-macos`, `verify`, dan `public` semuanya sukses. Baseline ini juga membawa browser smoke Playground deployment-aware melalui `PLAYWRIGHT_BASE_URL` serta guard release-record sebelum integration gate.
+Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #132` untuk commit `321c7b2` pada `relgeo/workspace`; job `flutter`, `flutter-macos`, `verify`, dan `public` semuanya sukses. Baseline ini juga membawa browser smoke Playground deployment-aware melalui `PLAYWRIGHT_BASE_URL` serta guard release-record sebelum integration gate.
 
 Checklist:
 
@@ -420,3 +420,4 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-16 | Official Playground E2E dibuat deployment-aware | `playwright.config.ts` menerima `PLAYWRIGHT_BASE_URL`, `goto('./')` aman untuk base path `/playground/`, dan command yang sama lulus lokal `2/2` serta terhadap `https://relgeo.github.io/playground/` `2/2`; perubahan dipush sebagai `playground@143acf6` |
 | 2026-09-16 | CI memverifikasi baseline Playground deployment-aware | root pointer `playground@143acf6` tercatat pada `workspace@9e77d33`; local integration gate lulus `36/36` dan GitHub `Integration #94` sukses pada job `flutter`, `verify`, dan `public` |
 | 2026-09-18 | CI memverifikasi release record completed dan Flutter macOS pada baseline terbaru | `Integration #129` pada `workspace@aea1188` sukses pada job `verify`, `flutter`, `flutter-macos`, dan `public`; release record `0.5.0`/`0.5.1`, failure-injection release guard, conformance, serta dua browser smoke tetap lulus |
+| 2026-09-18 | Pin Node lokal ditambahkan dan diverifikasi pada CI | root `workspace@321c7b2` memiliki `.node-version` `24.21.0`; `Integration #132` sukses pada job `verify`, `flutter`, `flutter-macos`, dan `public` dengan durasi 3m58s |

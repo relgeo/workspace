@@ -109,10 +109,10 @@ Source detail dan evidence screenshot ada di [`playground/docs/UX-UI-AUDIT-AND-P
 ### 5.3 Delivery dan evidence lintas-repo
 
 - [x] Local integration gate lulus `36/36`.
-- [x] Release preflight lulus: strict baseline `81/81`, compatibility `283/283`, release audit `106/106`, dan integration `36/36`; angka kompatibilitas terbaru diverifikasi kembali pada Integration #129.
-- [x] GitHub `Integration #129` lulus untuk job `flutter`, `flutter-macos`, `verify`, dan `public` pada `workspace@aea1188`; action artifact Node 24 berjalan tanpa warning Node 20, build macOS runner lulus, dan report integration serta Playwright tersedia. `Integration #117` tetap dicatat sebagai failure diagnostik historis karena manifest baseline Flutter tertinggal dari pointer submodule baru; mismatch itu sudah diperbaiki.
+- [x] Release preflight lulus: strict baseline `81/81`, compatibility `283/283`, release audit `106/106`, dan integration `36/36`; angka kompatibilitas terbaru diverifikasi kembali pada Integration #132.
+- [x] GitHub `Integration #132` lulus untuk job `flutter`, `flutter-macos`, `verify`, dan `public` pada `workspace@321c7b2`; action artifact Node 24 berjalan tanpa warning Node 20, build macOS runner lulus, dan report integration serta Playwright tersedia. `Integration #117` tetap dicatat sebagai failure diagnostik historis karena manifest baseline Flutter tertinggal dari pointer submodule baru; mismatch itu sudah diperbaiki.
 - [x] Public Playground smoke mencapai `READY`, preview tetap terlihat, tab `Errors` menampilkan diagnostic expected, dan console browser bersih.
-- [x] Root commit `aea1188` sudah dipush; `Integration #129` memvalidasi sinkronisasi evidence lintas rencana, build macOS Flutter, release record completed, dan seluruh job selesai sukses.
+- [x] Root commit `321c7b2` sudah dipush; `Integration #132` memvalidasi bootstrap Node 24, sinkronisasi evidence lintas rencana, build macOS Flutter, release record completed, dan seluruh job selesai sukses.
 
 ## 6. Workstream dan status
 

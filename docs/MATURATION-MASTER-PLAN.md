@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [x] Release order dan bump policy menjadi satu kontrak operasional pada compatibility matrix dan divalidasi oleh release-record checker; partial publish tetap harus dihentikan dan dicatat.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru yang sukses untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #129` untuk `workspace@aea1188`; job `flutter`, `flutter-macos`, `verify`, dan `public` sukses, artifact report tersedia, release records valid, serta browser smoke/E2E deployment-aware tetap lulus. Capability parity tambahan Flutter masih terbuka.
+- [x] Evidence CI terbaru yang sukses untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #132` untuk `workspace@321c7b2`; job `flutter`, `flutter-macos`, `verify`, dan `public` sukses, artifact report tersedia, release records valid, serta browser smoke/E2E deployment-aware tetap lulus. Capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 
@@ -350,7 +350,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; evidence terbaru mencakup `228/228` fixture checks dan Integration #129; promotion candidate dan parity capability tambahan masih terbuka.
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; evidence terbaru mencakup `228/228` fixture checks dan Integration #132; promotion candidate dan parity capability tambahan masih terbuka.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -561,6 +561,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-18 | Job build macOS Flutter ditambahkan ke CI | workflow root kini memiliki job `flutter-macos` pada `macos-latest` dengan Flutter stable `3.41.9`, locale UTF-8, lockfile enforcement, dan release build; evidence CI macOS pertama masih terbuka |
 | 2026-09-18 | `Integration #119` memverifikasi build macOS Flutter di CI | `workspace@dc40653` sukses untuk job `flutter`, `flutter-macos`, `verify`, dan `public`; macOS runner `macos-latest` menyelesaikan `flutter build macos --no-pub --release`, dua artifact report tersedia, dan kedua Playwright smoke lulus |
 | 2026-09-18 | Release guard dan CI evidence diselaraskan pada commit terbaru | `08be7d8` memvalidasi release order/bump policy; `release:record:check` untuk record historis dan completed lulus, candidate audit `36/36`, compatibility `283/283`, strict baseline `81/81`, dan `Integration #129` pada `aea1188` sukses pada `verify`, `flutter`, `flutter-macos`, serta `public`. Patch `0.5.1` sudah selesai; automation publish/recovery dan validasi perangkat fisik tetap terbuka |
+| 2026-09-18 | Pin toolchain Node lokal didokumentasikan dan diverifikasi pada CI terbaru | root commit `321c7b2` menambahkan `.node-version` `24.21.0` dan instruksi bootstrap; `Integration #132` sukses pada `verify`, `flutter`, `flutter-macos`, dan `public` dalam 3m58s. Environment lokal yang masih memakai Node `22.23.2` tetap menjadi tindakan operator, bukan kegagalan CI |
 
 ## 10. Catatan pemeliharaan
 

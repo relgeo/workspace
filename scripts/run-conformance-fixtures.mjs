@@ -85,7 +85,7 @@ check(Array.isArray(manifest.versionAcceptance?.regressionOnly) && manifest.vers
 check(manifest.versionAcceptance?.unsupportedFuture === true, "fixture manifest rejects undeclared future versions");
 check(manifest.versionAcceptance?.omittedDefaultsTo === manifest.compatibilityLine, "fixture manifest declares the omitted-version default");
 check(manifest.versionAcceptance?.parserDiagnosticCode === "UNSUPPORTED_SPEC_VERSION", "fixture manifest declares the parser diagnostic code");
-check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 18, "fixture manifest contains the 9 legacy, 1 active, 1 runtime-diagnostic, 2 capability candidates, and 5 invalid fixtures");
+check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 18, "fixture manifest contains the expected 18-entry baseline set");
 
 const fixtureIds = new Set();
 const fixturePaths = new Set();
@@ -127,7 +127,7 @@ for (const fixture of manifest.fixtures ?? []) {
 }
 
 const activeFixtures = manifest.fixtures.filter((fixture) => fixture.status === "active");
-check(activeFixtures.length === 1, "fixture manifest has exactly one active baseline fixture");
+check(activeFixtures.length >= 1, "fixture manifest has at least one active baseline fixture");
 const invalidFixtures = manifest.fixtures.filter((fixture) => fixture.status === "invalid");
 check(invalidFixtures.length === 5, "fixture manifest has the five invalid diagnostic fixtures");
 const runtimeDiagnosticFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-diagnostic");

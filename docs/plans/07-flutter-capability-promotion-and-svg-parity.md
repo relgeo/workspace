@@ -83,12 +83,14 @@ mengembalikan status ke `candidate` atau `partial`, bukan memaksa status
 - [x] inventory spec, fixture, resolver, engine, dan error behavior selesai;
 - [x] rekomendasi promotion boundary dan pemisahan implementation detail
   terdokumentasi pada [Decision Record 08](../decisions/08-boolean-intersection-contract-review.md);
-- [ ] tetapkan operasi yang masuk contract: line intersection, boolean
+- [x] tetapkan operasi yang masuk contract: line intersection, boolean
   intersection, dan boolean subtraction;
-- [ ] tetapkan jenis object dan topology yang dijamin;
-- [ ] tetapkan perilaku degenerate input, ring closure, arah ring, dan tolerance;
-- [ ] pastikan nama operasi, error behavior, dan output semantics tercermin
+- [x] tetapkan jenis object dan topology yang dijamin;
+- [x] tetapkan perilaku degenerate input, ring closure, arah ring, dan tolerance;
+- [x] pastikan nama operasi, error behavior, dan output semantics tercermin
   pada spec atau decision record yang dirujuk.
+- [x] ubah invariant runner agar lebih dari satu fixture `active` dapat
+  dipelihara tanpa mengganti relational baseline.
 
 ### B2. Promote fixture
 
@@ -193,8 +195,10 @@ Sub-rencana ini belum selesai sebelum:
 
 ## 11. Status saat ini
 
-Fondasi teknis dan keputusan policy sudah selesai. Inventory dan draft contract
-candidate boolean/intersection juga sudah selesai; yang tersisa adalah
-persetujuan maintainer, negative fixtures, promotion eksplisit, dan evidence
-lintas consumer setelah promotion. Pekerjaan ini bukan lagi kekurangan runner
-atau toolchain. Candidate evaluator/unit menunggu hasil candidate pertama.
+Fondasi teknis, keputusan policy, dan boundary contract candidate
+boolean/intersection sudah selesai secara prinsip. Audit juga menemukan bahwa
+runner masih memaksa satu active fixture; policy multi-active perlu diterapkan
+sebelum fixture 15 dipromosikan tanpa mengorbankan fixture 10. Setelah itu
+yang tersisa adalah negative fixtures, promotion eksplisit, evidence lintas
+consumer, dan sinkronisasi matrix/docs. Candidate evaluator/unit menunggu
+hasil candidate pertama.

@@ -1,6 +1,6 @@
 # Decision Record 08 — Boolean/Intersection Contract Review
 
-**Status:** Draft rekomendasi — menunggu persetujuan maintainer  
+**Status:** Boundary disetujui secara prinsip; implementasi promosi menunggu penyelesaian model active-fixture
 **Tanggal:** 2026-09-18  
 **Owner:** relgeo/workspace + relgeo/core + relgeo/geometry + relgeo/flutter  
 **Terkait:** [Sub-Rencana 07](../plans/07-flutter-capability-promotion-and-svg-parity.md)
@@ -127,25 +127,60 @@ Saya merekomendasikan maintainer menyetujui pilihan berikut:
 5. **Flutter:** promotion hanya setelah fixture aktif lulus TypeScript,
    Flutter, CLI, Playground, dan CI dari checkout bersih.
 
-## 7. Checklist tindak lanjut
+## 7. Temuan kesiapan promosi
+
+Review terhadap runner conformance menemukan satu hambatan desain yang harus
+diselesaikan sebelum fixture 15 dapat dipromosikan. Manifest memiliki fixture
+10 sebagai baseline relasional yang masih diperlukan, sementara promosi
+capability tidak boleh menghapus baseline tersebut. Runner kini sudah diubah
+agar menerima minimal satu fixture `active`, sehingga beberapa baseline dapat
+hidup berdampingan.
+
+```mermaid
+flowchart TD
+  candidate["Fixture 15 boolean/intersection"] --> promote["Promote to active"]
+  promote --> invariant["Runner menerima minimal satu active fixture"]
+  invariant --> baseline["Fixture 10 relational baseline sudah active"]
+  baseline --> choice{"Pilih kebijakan"}
+  choice --> replace["Ganti baseline 10\nberisiko kehilangan baseline"]
+  choice --> multi["Pertahankan beberapa active fixture\nrekomendasi"]
+  multi --> runner["Runner, docs, dan matrix mendukungnya"]
+  runner --> verify["Jalankan full consumer matrix"]
+```
+
+Invariant manifest sekarang adalah “minimal satu fixture active; setiap fixture
+active wajib memiliki snapshot resolved/output”. Owner canonical tetap berada
+di level manifest. Dengan begitu fixture 10 tetap menjadi baseline relasional
+dan fixture 15 dapat menjadi baseline capability setelah negative fixture
+serta evidence lintas consumer tersedia. Status fixture tetap tidak berubah
+secara otomatis hanya karena runner sudah mendukung beberapa active fixture.
+
+## 8. Checklist tindak lanjut
 
 - [x] inventory spec, fixture, resolver, engine, matrix, dan error tests;
 - [x] rekomendasi surface promotion pertama ditulis;
 - [x] boundary implementation-detail vs contract ditulis;
-- [ ] maintainer menyetujui keputusan pada bagian 6;
+- [x] arah contract dan promosi bertahap pada bagian 6 disetujui secara prinsip;
+- [x] boundary operasi awal, topology, tolerance, error behavior, dan output
+  semantics dicatat sebagai rekomendasi contract;
+- [x] audit kesiapan promosi menemukan invariant single-active-fixture;
+- [x] ubah policy runner agar beberapa fixture `active` dapat dipelihara;
 - [ ] tambahkan negative fixture untuk unsupported/degenerate boundary;
 - [ ] ubah fixture 15 menjadi `active` hanya setelah keputusan diterima;
 - [ ] jalankan full consumer matrix dan simpan evidence release;
 - [ ] perbarui matrix, README, spec reference, dan Sub-Rencana 07.
 
-## 8. Kesimpulan
+## 9. Kesimpulan
 
-Secara teknis candidate sudah cukup matang untuk direview, tetapi belum cukup
-sempit dan eksplisit untuk langsung disebut active. Rekomendasi terbaik adalah
-promosi kecil dengan tiga surface di atas, sambil menahan klaim untuk operation
-dan topology yang belum memiliki fixture lintas consumer.
+Secara teknis candidate sudah cukup matang untuk direview, dan boundary
+promosi awal sudah diterima secara prinsip. Candidate belum boleh disebut
+active sebelum negative fixture dan evidence lintas consumer selesai.
+Policy multi-active fixture sudah diterapkan pada runner tanpa mengubah status
+candidate secara otomatis. Rekomendasi terbaik tetap promosi kecil dengan tiga
+surface di atas, sambil menahan klaim untuk operation dan topology yang belum
+memiliki fixture lintas consumer.
 
-## 9. Inventaris presentation SVG
+## 10. Inventaris presentation SVG
 
 Audit renderer TypeScript dan exporter Flutter menunjukkan empat kelompok
 property yang tidak boleh dicampur dengan semantic geometry:

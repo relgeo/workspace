@@ -10,7 +10,7 @@
     "integrationAuthority": "workspace-root-runner"
   },
   "statusPolicy": {
-    "active": "current compatibility-line baseline",
+    "active": "current compatibility-line baseline(s)",
     "supported-legacy": "backwards-compatibility coverage",
     "invalid": "expected parser and diagnostic failure",
     "runtime-diagnostic": "valid document with an expected post-resolve constraint violation",

@@ -37,6 +37,11 @@ function entriesMatch(actual, expected, status) {
   });
 }
 
+function entryIdentitiesMatch(actual, expected) {
+  return Array.isArray(actual) && actual.length === expected.length &&
+    actual.every((entry, index) => entry.path === expected[index].path && entry.name === expected[index].name);
+}
+
 function planEntriesMatch(actual, expected) {
   const allowedStatuses = new Set(["retained", "planned", "published", "failed", "skipped"]);
   return Array.isArray(actual) && actual.length === expected.length && expected.every((entry) => {
@@ -155,8 +160,12 @@ if (matrix && record) {
   check(record.publicationMode === "manual-2fa", "publication mode is explicit and does not imply automated publishing");
 
   if (record.status === "completed") {
-    check(entriesMatch(record.packages, matrix.packages, "published"), "every matrix package is recorded as published at the expected version");
-    check(entriesMatch(record.consumers, matrix.consumers, "verified"), "every matrix consumer is recorded as verified at the expected version");
+    const snapshot = record.matrixSnapshot;
+    check(snapshot?.compatibilityLine === matrix.compatibilityLine, "completed record contains a snapshot for the active compatibility line");
+    check(entryIdentitiesMatch(snapshot?.packages, matrix.packages), "completed record snapshot covers the current package identities in order");
+    check(entryIdentitiesMatch(snapshot?.consumers, matrix.consumers), "completed record snapshot covers the current consumer identities in order");
+    check(entriesMatch(record.packages, snapshot?.packages, "published"), "every snapshot package is recorded as published at its recorded version");
+    check(entriesMatch(record.consumers, snapshot?.consumers, "verified"), "every snapshot consumer is recorded as verified at its recorded version");
   } else {
     check(record.baseReleaseVersion === "0.5.0", "planned or partial record identifies the current base release");
     check(

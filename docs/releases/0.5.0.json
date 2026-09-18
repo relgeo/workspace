@@ -26,6 +26,22 @@
     "playground",
     "relgeo.github.io"
   ],
+  "matrixSnapshot": {
+    "compatibilityLine": "0.5",
+    "packages": [
+      { "path": "geometry", "name": "@relgeo/geometry", "version": "0.5.0" },
+      { "path": "core", "name": "@relgeo/core", "version": "0.5.0" },
+      { "path": "renderer-svg", "name": "@relgeo/renderer-svg", "version": "0.5.0" },
+      { "path": "language-service", "name": "@relgeo/language-service", "version": "0.5.0" },
+      { "path": "remark-relgeo-hl", "name": "@relgeo/remark-relgeo-hl", "version": "0.5.0" },
+      { "path": "remark-relgeo", "name": "@relgeo/remark-relgeo", "version": "0.5.0" },
+      { "path": "cli", "name": "@relgeo/cli", "version": "0.5.0" }
+    ],
+    "consumers": [
+      { "path": "playground", "name": "relgeo-playground", "version": "0.4.0" },
+      { "path": "relgeo.github.io", "name": "relgeo-docs-site", "version": "0.5.0" }
+    ]
+  },
   "packages": [
     { "path": "geometry", "name": "@relgeo/geometry", "version": "0.5.0", "status": "published" },
     { "path": "core", "name": "@relgeo/core", "version": "0.5.0", "status": "published" },

@@ -160,9 +160,10 @@ eksplisit untuk menahan promosi.
 - [x] workflow CI memiliki job Flutter dan macOS terpisah;
 - [x] Integration terbaru menjalankan `verify`, `flutter`, `flutter-macos`, dan
   `public` dengan sukses;
-- [ ] setiap perubahan matrix/candidate memiliki decision record atau commit
-  rationale;
-- [ ] local integration gate, public-registry gate, dan conformance report
+- [x] setiap perubahan matrix/candidate memiliki decision record atau commit
+  rationale; Decision Record 08 dan commit `fb4dce5` mencatat inventory
+  contract serta scope presentation SVG;
+- [x] local integration gate, public-registry gate, dan conformance report
   disimpan pada evidence release yang sesuai;
 - [ ] master plan dan plan Tahap 6 memakai status yang sama dengan matrix;
 - [ ] public docs tidak menyebut capability candidate sebagai fitur active;

@@ -115,9 +115,9 @@ Diagram tidak perlu dibuat di tool eksternal hanya untuk menghasilkan gambar. To
 | --- | --- | --- | --- |
 | Contract | spec | kontrak normatif DSL | aktif pada 0.5, source utama saat ini di id/ |
 | Runtime | geometry | matematika geometri 2D | package @relgeo/geometry@0.5.0 |
-| Runtime | core | parse, resolve, dan semantic engine | package @relgeo/core@0.5.0 |
+| Runtime | core | parse, resolve, dan semantic engine | package @relgeo/core@0.5.1 |
 | Runtime | renderer-svg | render resolved geometry ke SVG | package @relgeo/renderer-svg@0.5.0 |
-| Language | language-service | schema, token, diagnostics, completions | package @relgeo/language-service@0.5.0 |
+| Language | language-service | schema, token, diagnostics, completions | package @relgeo/language-service@0.5.1 |
 | Markdown | remark-relgeo-hl | source highlighting pada fenced block | package @relgeo/remark-relgeo-hl@0.5.0 |
 | Markdown | remark-relgeo | preview/embed pada Markdown | package @relgeo/remark-relgeo@0.5.0 |
 | CLI | cli | command-line surface | package @relgeo/cli@0.5.0 |
@@ -155,7 +155,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [x] Workspace publik terbentuk dengan submodule dan repository map.
 - [x] Repository Wave 1 dan Wave 2 sudah dibuat dan baseline publik sudah dipush.
 - [x] Library TypeScript utama memakai MIT dan metadata author yang konsisten; compatibility checker kini menjaga metadata itu tetap konsisten pada package/consumer publik.
-- [x] Package publik utama sudah berada pada 0.5.0 di npm.
+- [x] Package publik utama berada pada compatibility line 0.5.x di npm; patch `0.5.1` untuk `core` dan `language-service` sudah diverifikasi.
 - [x] Root workspace tidak memuat history repository lama sebagai history publik package anak.
 
 ### 4.2 Website dan deployment
@@ -184,7 +184,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [x] Release order dan bump policy menjadi satu kontrak operasional pada compatibility matrix dan divalidasi oleh release-record checker; partial publish tetap harus dihentikan dan dicatat.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru yang sukses untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #119` untuk `workspace@dc40653`; job `flutter`, `flutter-macos`, `verify`, dan `public` sukses, artifact report tersedia, serta browser smoke/E2E deployment-aware tetap lulus. `Integration #117` menemukan baseline manifest Flutter tertinggal setelah pointer macOS build dipromosikan; mismatch itu sudah diperbaiki dan CI macOS kini tervalidasi. Capability parity tambahan Flutter masih terbuka.
+- [x] Evidence CI terbaru yang sukses untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #129` untuk `workspace@aea1188`; job `flutter`, `flutter-macos`, `verify`, dan `public` sukses, artifact report tersedia, release records valid, serta browser smoke/E2E deployment-aware tetap lulus. Capability parity tambahan Flutter masih terbuka.
 
 ## 5. Prioritas utama yang disepakati
 
@@ -213,9 +213,9 @@ Gate harus menjawab:
 
 Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-service schema enum, negative fixtures, dan checker. Patch `0.5.1` sudah dipublikasikan untuk `core` dan `language-service`, diverifikasi dari npm, dan lulus fresh public-registry integration.
 
-### Prioritas 3 — Release automation yang aman — jalur manual selesai, automation masih berikutnya
+### Prioritas 3 — Release automation yang aman — jalur manual selesai, automation masih ditahan
 
-Dengan integration gate stabil, patch `0.5.1` dan guard status-aware sudah selesai. Langkah berikutnya adalah memperkuat recovery transaction dan, bila diperlukan, merancang automated publishing; publish otomatis tetap ditahan sampai kontrak operasionalnya benar-benar dibutuhkan.
+Dengan integration gate stabil, patch `0.5.1`, guard status-aware, snapshot matrix historis, dan verifikasi registry sudah selesai. Langkah berikutnya adalah memperkuat recovery transaction dan, bila diperlukan, merancang automated publishing; publish otomatis tetap ditahan sampai kontrak operasionalnya benar-benar dibutuhkan.
 
 ### Prioritas 4 — Shared conformance fixtures — hampir selesai
 
@@ -266,7 +266,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Selesai — local gate 36/36, public-registry gate 48/48, fresh-checkout gate 33/33, CI terbaru, public smoke 14/14 route, dan reproduksi failure CI sudah lulus.
+**Status:** Selesai — local gate 36/36, public-registry gate 50/50, fresh-checkout gate 33/33, CI terbaru, public smoke 14/14 route, dan reproduksi failure CI sudah lulus.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -295,7 +295,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
-**Status:** Berjalan — matriks, deklarasi compatibility, CI checker, checklist release, dan release decision record enforcement sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka.
+**Status:** Berjalan — matriks, deklarasi compatibility, CI checker, checklist release, release decision record enforcement, dan patch `0.5.1` sudah tersedia/terverifikasi; atomic publish enforcement serta evidence partial-release nyata masih terbuka.
 
 **Tujuan:** membuat hubungan versi antara spec dan semua consumer menjadi eksplisit.
 
@@ -321,7 +321,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 3 — Release dan npm publishing guard
 
-**Status:** Berjalan — release checklist, read-only release preflight, tarball audit, post-publish verifier, dan record baseline `0.5.0` sudah tersedia/terverifikasi; automated publish dan recovery transaction masih terbuka.
+**Status:** Berjalan — release checklist, read-only release preflight, tarball audit, post-publish verifier, record baseline `0.5.0`, dan completed record `0.5.1` sudah tersedia/terverifikasi; automated publish dan recovery transaction masih terbuka.
 
 **Tujuan:** membuat release publik aman, dapat diulang, dan dapat diverifikasi setelah package masuk registry.
 
@@ -350,7 +350,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; promotion candidate dan parity capability tambahan masih terbuka.
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; evidence terbaru mencakup `228/228` fixture checks dan Integration #129; promotion candidate dan parity capability tambahan masih terbuka.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -414,7 +414,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 6 — Flutter alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, draft release posture, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus, sedangkan promotion candidate, parity capability tambahan, dan keputusan platform release masih terbuka.
+**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, draft release posture, build macOS CI, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus, sedangkan promotion candidate, parity capability tambahan, dan keputusan platform release masih terbuka.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -463,7 +463,7 @@ Urutan kerja yang disarankan sekarang:
 2. jalankan `pnpm run compatibility:check` sebelum integration gate;
 3. jalankan `pnpm run conformance:fixtures` setelah build package selesai;
 4. pertahankan public docs dan Playground melalui sub-rencana Tahap 5, lalu lengkapi validasi perangkat fisik dan assistive technology;
-5. tutup release guard Tahap 2/3 dengan automation atau decision record yang benar-benar dipakai;
+5. pertahankan release manual sebagai jalur resmi; hanya rancang automation/recovery setelah kebutuhan operasional dan failure evidence nyata tersedia;
 6. jadikan hasil lokal dan CI Flutter `3.41.9`/Dart `3.11.5` sebagai evidence baseline; berikutnya putuskan promotion boundary untuk candidate boolean/intersection dan evaluator/unit, serta semantic SVG yang memang masuk active conformance.
 
 ## 8. Definition of Done ekosistem
@@ -560,7 +560,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-18 | Baseline Flutter diselaraskan setelah CI menemukan manifest tertinggal | `docs/integration-baseline.json` kini menunjuk ke child commit `e46f1ad`, strict baseline kembali `81/81`, dan local integration gate kembali `36/36`; `Integration #117` tetap dicatat sebagai failure diagnostik pada root commit `225092b`, sementara verifikasi CI untuk perbaikan ini masih menunggu run berikutnya |
 | 2026-09-18 | Job build macOS Flutter ditambahkan ke CI | workflow root kini memiliki job `flutter-macos` pada `macos-latest` dengan Flutter stable `3.41.9`, locale UTF-8, lockfile enforcement, dan release build; evidence CI macOS pertama masih terbuka |
 | 2026-09-18 | `Integration #119` memverifikasi build macOS Flutter di CI | `workspace@dc40653` sukses untuk job `flutter`, `flutter-macos`, `verify`, dan `public`; macOS runner `macos-latest` menyelesaikan `flutter build macos --no-pub --release`, dua artifact report tersedia, dan kedua Playwright smoke lulus |
-| 2026-09-18 | Release guard dan CI evidence diselaraskan pada commit terbaru | `08be7d8` memvalidasi release order/bump policy; `release:record:check` `20/20`, candidate audit `36/36`, compatibility `256/256`, strict baseline `81/81`, dan `Integration #121` sukses pada `verify`, `flutter`, `flutter-macos`, serta `public`. Full gate lokal berikutnya tertunda karena disk penuh/EPERM saat membuat temporary file |
+| 2026-09-18 | Release guard dan CI evidence diselaraskan pada commit terbaru | `08be7d8` memvalidasi release order/bump policy; `release:record:check` untuk record historis dan completed lulus, candidate audit `36/36`, compatibility `283/283`, strict baseline `81/81`, dan `Integration #129` pada `aea1188` sukses pada `verify`, `flutter`, `flutter-macos`, serta `public`. Patch `0.5.1` sudah selesai; automation publish/recovery dan validasi perangkat fisik tetap terbuka |
 
 ## 10. Catatan pemeliharaan
 

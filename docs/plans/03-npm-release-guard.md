@@ -132,7 +132,7 @@ npm publish --access public
 - `integration:gate --local` lulus `34/34` pada baseline 2026-09-15, termasuk shared conformance fixture stage.
 - Public-registry gate lulus `48/48`, termasuk pack boundary dan consumer install pada checkout temporary.
 - `release:audit` lulus `106/106` untuk tujuh package pada checkout yang sudah dibuild.
-- `release:verify-published` lulus `7/7`; seluruh tujuh package `0.5.0` terkonfirmasi tersedia di npm pada 2026-09-15. Command yang dapat dijalankan ulang:
+- `release:verify-published` lulus `7/7`; lima package tetap berada pada `0.5.0`, sedangkan `@relgeo/core` dan `@relgeo/language-service` sudah terkonfirmasi pada `0.5.1` di npm. Command yang dapat dijalankan ulang:
 
 ~~~bash
 pnpm run release:verify-published
@@ -196,5 +196,5 @@ Tahap 3 selesai untuk jalur release manual. Automated publishing dan recovery tr
 | 2026-09-18 | Urutan release dan bump policy dijadikan kontrak yang divalidasi mesin | `release:record:check` lulus `20/20`, failure-injection menolak recovery tidak aman dan urutan package yang salah, candidate audit lulus `36/36`; compatibility `256/256` dan strict baseline `81/81` lulus |
 | 2026-09-18 | CI memverifikasi release guard terbaru | `Integration #121` pada `workspace@08be7d8` sukses untuk job `verify`, `flutter`, `flutter-macos`, dan `public`; local full gate tidak diulang karena filesystem tinggal sekitar 3.3 GiB dan sempat gagal `EPERM` saat membuat file temporary |
 | 2026-09-18 | Public author metadata dijadikan compatibility contract | `scripts/check-compatibility.mjs` memvalidasi nama, email, dan URL author pada seluruh package/consumer; local compatibility lulus `283/283`; perubahan dipush sebagai `workspace@2d5015f`, CI pascapush menunggu verifikasi |
-| 2026-09-18 | Patch release `0.5.1` diselesaikan | `@relgeo/core@0.5.1` dan `@relgeo/language-service@0.5.1` dipublish manual; registry `7/7`, release audit `106/106`, fixtures `228/228`, local gate `36/36`, public gate `50/50`; GitHub `Integration #128` seluruh job sukses |
+| 2026-09-18 | Patch release `0.5.1` diselesaikan | `@relgeo/core@0.5.1` dan `@relgeo/language-service@0.5.1` dipublish manual; registry `7/7`, release audit `106/106`, fixtures `228/228`, local gate `36/36`, public gate `50/50`; GitHub `Integration #128` dan follow-up `#129` seluruh job sukses |
 | 2026-09-18 | Validator release historis diperkuat | completed record menyimpan `matrixSnapshot`; record `0.5.0` dan `0.5.1` sama-sama lulus `35/35` tanpa melemahkan exact version matching |

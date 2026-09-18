@@ -10,7 +10,7 @@ Script root harus:
 4. menjelaskan dependency dan failure dengan jelas;
 5. tidak membaca atau mempublikasikan isi `.local/` dan `private/`.
 
-Integration gate membutuhkan Node.js 24 atau lebih baru dan pnpm 10.33.3; workflow CI mengonfigurasi keduanya secara eksplisit.
+Integration gate membutuhkan Node.js 24 atau lebih baru dan pnpm 10.33.3; workflow CI mengonfigurasi keduanya secara eksplisit. Root juga mem-pin Node `24.21.0` pada `.node-version` agar local operator tidak menjalankan Node 22 secara tidak sengaja.
 
 Script deployment detail menjadi ownership repository tujuan masing-masing.
 

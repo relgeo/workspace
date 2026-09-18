@@ -15,7 +15,9 @@ Repository ini bukan rumah implementasi utama. Folder pada level root selain `do
 
 ## Status
 
-Workspace ini sudah menjadi baseline publik dan repository anak sudah terhubung sebagai submodule. Paket TypeScript pada compatibility line RelGeo DSL `0.5` juga sudah dipublikasikan ke npm sebagai `@relgeo/*` versi `0.5.0`.
+Workspace ini sudah menjadi baseline publik dan repository anak sudah terhubung sebagai submodule. Paket TypeScript berada pada compatibility line RelGeo DSL `0.5`; baseline package berada pada `0.5.0`, dengan `@relgeo/core` dan `@relgeo/language-service` sudah memiliki patch `0.5.1` di npm.
+
+Toolchain Node lokal dipin pada `24.21.0` melalui [.node-version](./.node-version). Gunakan nvm, mise, asdf, atau pengelola versi lain yang membaca file tersebut sebelum menjalankan gate.
 
 Untuk integrasi lokal, gunakan `pnpm install --frozen-lockfile`. Untuk konsumsi publik, install paket dari npm setelah memastikan dependency dasarnya sudah tersedia di registry.
 

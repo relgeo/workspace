@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-09-17",
+  "capturedAt": "2026-09-18",
   "compatibilityLine": "0.5",
   "repository": "relgeo/workspace",
   "submodules": [
@@ -27,10 +27,10 @@
     },
     {
       "path": "core",
-      "revision": "72d8bd82e05134fde5f38bcd532b7c8d12d16f87",
+      "revision": "070defe7fb79146f9b56289faefd9fa52b886260",
       "package": {
         "name": "@relgeo/core",
-        "version": "0.5.0"
+        "version": "0.5.1"
       }
     },
     {
@@ -43,10 +43,10 @@
     },
     {
       "path": "language-service",
-      "revision": "5155890314957655c77b3dd184b6f6e3f270d2e0",
+      "revision": "39c06dd8505d480672b0953d523f3675a7f30075",
       "package": {
         "name": "@relgeo/language-service",
-        "version": "0.5.0"
+        "version": "0.5.1"
       }
     },
     {

@@ -165,7 +165,7 @@ secara otomatis hanya karena runner sudah mendukung beberapa active fixture.
   semantics dicatat sebagai rekomendasi contract;
 - [x] audit kesiapan promosi menemukan invariant single-active-fixture;
 - [x] ubah policy runner agar beberapa fixture `active` dapat dipelihara;
-- [ ] tambahkan negative fixture untuk unsupported/degenerate boundary;
+- [x] tambahkan negative fixture untuk empty-result dan multipart-result boundaries;
 - [ ] ubah fixture 15 menjadi `active` hanya setelah keputusan diterima;
 - [ ] jalankan full consumer matrix dan simpan evidence release;
 - [ ] perbarui matrix, README, spec reference, dan Sub-Rencana 07.
@@ -174,7 +174,10 @@ secara otomatis hanya karena runner sudah mendukung beberapa active fixture.
 
 Secara teknis candidate sudah cukup matang untuk direview, dan boundary
 promosi awal sudah diterima secara prinsip. Candidate belum boleh disebut
-active sebelum negative fixture dan evidence lintas consumer selesai.
+active sebelum evidence lintas consumer selesai. Negative fixture untuk
+`BOOLEAN_EMPTY_RESULT` sekarang menjadi bagian dari conformance workspace;
+boundary unsupported/degenerate lain tetap ditahan sampai memiliki contract
+dan fixture yang spesifik.
 Policy multi-active fixture sudah diterapkan pada runner tanpa mengubah status
 candidate secara otomatis. Rekomendasi terbaik tetap promosi kecil dengan tiga
 surface di atas, sambil menahan klaim untuk operation dan topology yang belum

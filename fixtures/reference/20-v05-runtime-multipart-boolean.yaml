@@ -1,0 +1,28 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Multipart Boolean Result
+  description: Runtime-error fixture for a subtract operation that produces multiple islands in single mode.
+
+scene:
+  unit: mm
+
+objects:
+  panel:
+    type: rect
+    size: [100, 100]
+
+  cutter:
+    type: rect
+    size: [120, 20]
+    place:
+      centerX: 50
+      centerY: 50
+
+  split:
+    type: boolean
+    operation: subtract
+    base: panel
+    tools: [cutter]
+    result:
+      mode: single

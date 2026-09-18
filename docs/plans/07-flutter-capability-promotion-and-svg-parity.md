@@ -97,7 +97,8 @@ mengembalikan status ke `candidate` atau `partial`, bukan memaksa status
 - [ ] ubah status fixture dari `capability` menjadi `active` hanya setelah B1
   disetujui;
 - [ ] pertahankan expected scene dan SVG semantic snapshot sebagai baseline;
-- [ ] tambahkan negative fixture untuk operasi yang sengaja belum didukung;
+- [x] tambahkan negative fixtures untuk empty-result dan multipart-result
+  boundaries yang sengaja ditolak pada runtime;
 - [ ] update capability matrix dari `partial/candidate` sesuai contract yang
   benar-benar diterima.
 
@@ -199,6 +200,7 @@ Fondasi teknis, keputusan policy, dan boundary contract candidate
 boolean/intersection sudah selesai secara prinsip. Audit juga menemukan bahwa
 runner masih memaksa satu active fixture; policy multi-active perlu diterapkan
 sebelum fixture 15 dipromosikan tanpa mengorbankan fixture 10. Setelah itu
-yang tersisa adalah negative fixtures, promotion eksplisit, evidence lintas
-consumer, dan sinkronisasi matrix/docs. Candidate evaluator/unit menunggu
-hasil candidate pertama.
+negative fixture empty-result sudah ditambahkan, sedangkan yang tersisa adalah
+promotion eksplisit, evidence lintas consumer, negative boundary lain yang
+lebih spesifik, dan sinkronisasi matrix/docs. Candidate evaluator/unit
+menunggu hasil candidate pertama.

@@ -20,7 +20,7 @@ Inventory ini dapat diulang dengan `pnpm run compatibility:audit`. Command bersi
 | Parser | `core/src/parser.ts` | active `0.5`, supported legacy `0.4`, regression-only `0.1`–`0.3`, omitted version default `0.5`, dan unsupported-version diagnostic eksplisit |
 | Runtime regression | test `core` dan `renderer-svg` | test historis menggunakan dokumen `v0.1`, `v0.2`, `v0.3`, dan `v0.4` |
 | Language service | `language-service/src/__tests__/language_service.test.ts` | ada coverage `v0.3`, `v0.4`, dan `v0.5` |
-| Shared fixture | `fixtures/manifest.json` | 1 active `v0.5`, 9 supported-legacy `v0.4`, 5 invalid (termasuk future/unknown version), 1 runtime-diagnostic `v0.5`, 2 capability candidates `v0.5` |
+| Shared fixture | `fixtures/manifest.json` | 1 active `v0.5`, 9 supported-legacy `v0.4`, 5 invalid (termasuk future/unknown version), 1 runtime-diagnostic `v0.5`, 2 runtime-error `v0.5`, 2 capability candidates `v0.5` |
 | Playground examples | `playground/src/examples.ts` dan raw YAML | contoh historis `v0.2`/`v0.3` diberi label historical; nama file aktif sudah diselaraskan ke `v05_*` tanpa mengubah example key internal |
 | Intentional fallback | `playground/src/share-code.ts`, `playground/src/clipboard.ts`, UX audit | Base64 legacy dan clipboard fallback sudah diberi alasan serta test/contract coverage |
 | Dependency line | `scripts/check-compatibility.mjs` | dependency `@relgeo/*` tetap pada `^0.5.0`; checker lulus `256/256`, termasuk record non-Node Flutter |
@@ -94,7 +94,7 @@ Implementasi policy ini:
 1. `versionAcceptance` pada matrix dan manifest memisahkan active, supported legacy, regression-only, omitted default, dan future policy;
 2. parser core menolak future/unknown version dengan diagnostic code khusus;
 3. fixture `17` dan `18` mengunci negative behavior pada core dan language-service;
-4. conformance terbaru lulus `228 passed, 0 failed across 18 fixtures`.
+4. conformance terbaru lulus `253 passed, 0 failed across 20 fixtures`, termasuk boundary resolver/CLI `BOOLEAN_EMPTY_RESULT` dan `BOOLEAN_MULTIPART_RESULT`.
 
 Yang masih terbuka adalah keputusan release atomicity dan promotion capability pada tahap lain. Policy versi baseline dan penamaan contoh tidak lagi menjadi open item.
 

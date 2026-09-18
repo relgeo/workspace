@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 4 — Shared Conformance Fixtures dan Contract Tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/capability-candidate, workspace runner, exact consumer checks, version policy parser, negative version fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate dan policy SVG yang lebih luas masih terbuka
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/runtime-error/capability-candidate, workspace runner, exact consumer checks, version policy parser, negative version fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate dan policy SVG yang lebih luas masih terbuka
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -38,7 +38,7 @@ Fixture canonical tetap dimiliki `relgeo/workspace`, tidak diterbitkan sebagai p
 
 Policy ini dicatat machine-readable pada `fixtures/manifest.json` melalui `standaloneStrategy`. Dengan begitu keputusan ownership tidak tersembunyi di script atau asumsi operator.
 
-Fixture dibagi menjadi lima status:
+Fixture dibagi menjadi enam status:
 
 | Status | Makna | Perlakuan |
 | --- | --- | --- |
@@ -46,6 +46,7 @@ Fixture dibagi menjadi lima status:
 | `supported-legacy` | kontrak lama yang masih sengaja didukung | harus tetap dapat diparse/resolved sesuai coverage yang dideklarasikan |
 | `invalid` | input yang sengaja melanggar kontrak | harus ditolak dan menghasilkan diagnostic yang diharapkan |
 | `runtime-diagnostic` | dokumen valid yang menghasilkan violation setelah resolve | parse/resolve tetap berhasil, violation dan output diagnostic harus stabil |
+| `runtime-error` | dokumen valid secara struktur yang sengaja gagal saat resolve | parser/language service menerima input, resolver/consumer melaporkan error contract yang diharapkan |
 | `capability` | candidate untuk capability yang belum diaktifkan sebagai baseline semua consumer | harus memiliki expected snapshot dan evidence lokal; tidak otomatis menjadi active contract |
 
 ## 3. Inventory baseline
@@ -54,6 +55,7 @@ Fixture dibagi menjadi lima status:
 - 1 fixture `active` pada DSL `v0.5`: `10-v05-relational-baseline.yaml`.
 - 5 fixture `invalid`: tiga invalid behavior `v0.5`, satu future version `v0.6`, dan satu unknown version `1.0` untuk menguji parser dan language-service diagnostics.
 - 1 fixture `runtime-diagnostic` pada DSL `v0.5`: dokumen valid dengan relasi `align` yang sengaja tidak terpenuhi untuk menguji diagnostic pasca-resolve.
+- 2 fixture `runtime-error` pada DSL `v0.5`: boolean `intersect` kosong (`BOOLEAN_EMPTY_RESULT`) dan boolean multipart pada mode `single` (`BOOLEAN_MULTIPART_RESULT`) untuk menguji boundary resolver dan CLI.
 - 2 fixture `capability` pada DSL `v0.5`: candidate boolean/intersection dan evaluator/unit dengan expected scene/SVG snapshot; operasi, unit/evaluator, dan semantic projection ter-normalisasi Flutter sudah lulus lokal, tetapi belum menjadi active semantic Flutter conformance fixture.
 - Repository anak masih dapat memiliki test inline dan test fixture lokal. Sebagian test renderer/consumer mengakses root `fixtures` saat dijalankan melalui workspace; public integration runner menyalin folder tersebut ke checkout temporary.
 
@@ -80,6 +82,7 @@ Gap implementasi: checkout standalone repository anak tidak otomatis membawa `fi
 - [x] fixture active memiliki snapshot resolved-scene deterministik untuk geometry, bbox, metadata, dan violations;
 - [x] fixture invalid diuji agar parser menolak dan language service memunculkan diagnostic yang diharapkan;
 - [x] fixture runtime-diagnostic diuji agar parse/resolve tetap berhasil dan violation terstruktur, renderer, language service, serta CLI tetap memiliki perilaku yang dapat direview;
+- [x] fixture runtime-error diuji agar parser/language service menerima struktur, sedangkan resolver dan CLI menolak dengan error contract yang diharapkan;
 - [x] root command `pnpm run conformance:fixtures` tersedia;
 - [x] workflow Integration menjalankan runner sebagai bagian dari local integration gate setelah seluruh package/consumer build.
 
@@ -94,10 +97,10 @@ pnpm run conformance:fixtures
 Bukti pada 2026-09-16:
 
 ```text
-summary: 228 passed, 0 failed across 18 fixtures
+summary: 253 passed, 0 failed across 20 fixtures
 ```
 
-Runner memeriksa sembilan fixture legacy, satu active v0.5 lintas surface, satu runtime-diagnostic v0.5, dua capability candidate v0.5, dan tiga invalid v0.5. Angka pass mencakup validasi manifest, parse/resolve, output/security renderer, language-service diagnostics/tokens, dua remark surface, exact serialized highlighting digest, exact preview-pipeline SVG, exact CLI SVG, expected violation dan snapshot runtime-diagnostic, serta expected snapshot kedua candidate capability. Untuk candidate evaluator/unit, metadata `cliUnit: mm` meneruskan target unit secara eksplisit karena default CLI tetap `px`.
+Runner memeriksa sembilan fixture legacy, satu active v0.5 lintas surface, satu runtime-diagnostic v0.5, dua runtime-error v0.5, dua capability candidate v0.5, dan lima invalid v0.5. Angka pass mencakup validasi manifest, parse/resolve, error boundary resolver/CLI, output/security renderer, language-service diagnostics/tokens, dua remark surface, exact serialized highlighting digest, exact preview-pipeline SVG, exact CLI SVG, expected violation dan snapshot runtime-diagnostic, serta expected snapshot kedua candidate capability. Untuk candidate evaluator/unit, metadata `cliUnit: mm` meneruskan target unit secara eksplisit karena default CLI tetap `px`.
 
 Flutter conformance runner pada 2026-09-16 juga lulus secara lokal: Flutter `3.41.9`,
 Dart `3.11.5`, 18 fixture di-stage, `flutter pub get --enforce-lockfile`, analyzer

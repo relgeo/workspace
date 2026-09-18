@@ -1,0 +1,26 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Empty Boolean Result
+  description: Runtime-error fixture for a valid intersect operation with disjoint operands.
+
+scene:
+  unit: mm
+
+objects:
+  left:
+    type: rect
+    size: [10, 10]
+    place:
+      topLeft: [0, 0]
+
+  right:
+    type: rect
+    size: [10, 10]
+    place:
+      topLeft: [20, 0]
+
+  empty:
+    type: boolean
+    operation: intersect
+    shapes: [left, right]

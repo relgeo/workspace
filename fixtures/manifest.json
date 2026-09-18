@@ -14,6 +14,7 @@
     "supported-legacy": "backwards-compatibility coverage",
     "invalid": "expected parser and diagnostic failure",
     "runtime-diagnostic": "valid document with an expected post-resolve constraint violation",
+    "runtime-error": "valid document with an expected post-resolve resolution error",
     "capability": "candidate coverage for a capability not yet enabled on every consumer"
   },
   "versionAcceptance": {
@@ -212,6 +213,22 @@
       "status": "invalid",
       "surfaces": ["core", "language-service"],
       "expectedDiagnostic": "Unsupported RelGeo DSL version"
+    },
+    {
+      "id": "v05-runtime-empty-boolean",
+      "path": "reference/19-v05-runtime-empty-boolean.yaml",
+      "contractVersion": "0.5",
+      "status": "runtime-error",
+      "surfaces": ["core", "language-service", "cli"],
+      "expectedResolutionError": "BOOLEAN_EMPTY_RESULT"
+    },
+    {
+      "id": "v05-runtime-multipart-boolean",
+      "path": "reference/20-v05-runtime-multipart-boolean.yaml",
+      "contractVersion": "0.5",
+      "status": "runtime-error",
+      "surfaces": ["core", "language-service", "cli"],
+      "expectedResolutionError": "BOOLEAN_MULTIPART_RESULT"
     }
   ]
 }

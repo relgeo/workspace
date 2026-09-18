@@ -78,21 +78,21 @@ check(manifest.standaloneStrategy?.canonicalOwner === "relgeo/workspace", "fixtu
 check(manifest.standaloneStrategy?.childRepositoryPolicy === "standalone-local-tests", "fixture manifest keeps child repositories independently testable");
 check(manifest.standaloneStrategy?.distribution === "not-published-as-package", "fixture manifest avoids a new public fixture package surface");
 check(manifest.standaloneStrategy?.integrationAuthority === "workspace-root-runner", "fixture manifest assigns cross-repo conformance to the root runner");
-check(manifest.statusPolicy?.active && manifest.statusPolicy?.["supported-legacy"] && manifest.statusPolicy?.invalid && manifest.statusPolicy?.["runtime-diagnostic"] && manifest.statusPolicy?.capability, "fixture manifest documents every fixture status policy");
+check(manifest.statusPolicy?.active && manifest.statusPolicy?.["supported-legacy"] && manifest.statusPolicy?.invalid && manifest.statusPolicy?.["runtime-diagnostic"] && manifest.statusPolicy?.["runtime-error"] && manifest.statusPolicy?.capability, "fixture manifest documents every fixture status policy");
 check(manifest.versionAcceptance?.active === manifest.compatibilityLine, "fixture manifest identifies the active version");
 check(Array.isArray(manifest.versionAcceptance?.supportedLegacy) && manifest.versionAcceptance.supportedLegacy.length > 0, "fixture manifest declares supported legacy versions");
 check(Array.isArray(manifest.versionAcceptance?.regressionOnly) && manifest.versionAcceptance.regressionOnly.length > 0, "fixture manifest declares regression-only versions");
 check(manifest.versionAcceptance?.unsupportedFuture === true, "fixture manifest rejects undeclared future versions");
 check(manifest.versionAcceptance?.omittedDefaultsTo === manifest.compatibilityLine, "fixture manifest declares the omitted-version default");
 check(manifest.versionAcceptance?.parserDiagnosticCode === "UNSUPPORTED_SPEC_VERSION", "fixture manifest declares the parser diagnostic code");
-check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 18, "fixture manifest contains the expected 18-entry baseline set");
+check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 20, "fixture manifest contains the expected 20-entry baseline set");
 
 const fixtureIds = new Set();
 const fixturePaths = new Set();
 for (const fixture of manifest.fixtures ?? []) {
   check(!fixtureIds.has(fixture.id), `${fixture.id}: fixture id is unique`);
   check(!fixturePaths.has(fixture.path), `${fixture.id}: fixture path is unique`);
-  check(["active", "supported-legacy", "invalid", "runtime-diagnostic", "capability"].includes(fixture.status), `${fixture.id}: fixture status is recognized`);
+  check(["active", "supported-legacy", "invalid", "runtime-diagnostic", "runtime-error", "capability"].includes(fixture.status), `${fixture.id}: fixture status is recognized`);
   check(Array.isArray(fixture.surfaces) && fixture.surfaces.length > 0, `${fixture.id}: fixture declares at least one surface`);
   if (fixture.status === "active") {
     check(typeof fixture.expectedOutputPath === "string" && fixture.expectedOutputPath.length > 0, `${fixture.id}: active fixture declares a reviewable output snapshot`);
@@ -105,6 +105,9 @@ for (const fixture of manifest.fixtures ?? []) {
     check(Array.isArray(fixture.expectedViolations) && fixture.expectedViolations.length > 0, `${fixture.id}: runtime-diagnostic fixture declares expected violations`);
     check(typeof fixture.expectedOutputPath === "string" && fixture.expectedOutputPath.length > 0, `${fixture.id}: runtime-diagnostic fixture declares a reviewable output snapshot`);
     check(typeof fixture.expectedResolvedPath === "string" && fixture.expectedResolvedPath.length > 0, `${fixture.id}: runtime-diagnostic fixture declares a reviewable resolved-scene snapshot`);
+  }
+  if (fixture.status === "runtime-error") {
+    check(typeof fixture.expectedResolutionError === "string" && fixture.expectedResolutionError.length > 0, `${fixture.id}: runtime-error fixture declares an expected resolution error`);
   }
   if (fixture.status === "capability") {
     check(
@@ -132,6 +135,8 @@ const invalidFixtures = manifest.fixtures.filter((fixture) => fixture.status ===
 check(invalidFixtures.length === 5, "fixture manifest has the five invalid diagnostic fixtures");
 const runtimeDiagnosticFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-diagnostic");
 check(runtimeDiagnosticFixtures.length === 1, "fixture manifest has one runtime-diagnostic fixture");
+const runtimeErrorFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-error");
+check(runtimeErrorFixtures.length === 2, "fixture manifest has the two runtime-error fixtures");
 
 for (const fixture of manifest.fixtures) {
   const fixturePath = resolve(root, manifest.fixtureRoot, fixture.path);
@@ -158,6 +163,40 @@ for (const fixture of manifest.fixtures) {
 
     const diagnostics = new languageService.RelGeoLanguageService().getDiagnostics(source);
     check(diagnostics.some((diagnostic) => diagnostic.message.includes(fixture.expectedDiagnostic)), `${fixture.id}: language service exposes the expected diagnostic`);
+    continue;
+  }
+
+  if (fixture.status === "runtime-error") {
+    let runtimeErrorDoc;
+    try {
+      runtimeErrorDoc = core.parseRelGeo(source);
+      check(String(runtimeErrorDoc.version) === fixture.contractVersion, `${fixture.id}: parsed contract version is ${fixture.contractVersion}`);
+    } catch (error) {
+      check(false, `${fixture.id}: parser accepts the structurally valid runtime-error fixture (${error.message})`);
+      continue;
+    }
+
+    let resolutionError;
+    try {
+      core.resolveGeometry(runtimeErrorDoc);
+    } catch (error) {
+      resolutionError = error;
+    }
+    check(Boolean(resolutionError), `${fixture.id}: resolver rejects the runtime-error fixture`);
+    check(resolutionError?.code === fixture.expectedResolutionError, `${fixture.id}: resolver reports ${fixture.expectedResolutionError}`);
+
+    const runtimeErrorService = new languageService.RelGeoLanguageService();
+    check(runtimeErrorService.getDiagnostics(source).length === 0, `${fixture.id}: language service accepts the structurally valid runtime-error fixture`);
+    check(runtimeErrorService.getSemanticTokens(source).length > 0, `${fixture.id}: language service emits semantic tokens for the runtime-error fixture`);
+
+    const runtimeErrorCli = spawnSync(process.execPath, cliCompileArgs(fixturePath, fixture), {
+      cwd: root,
+      encoding: "utf8",
+      env: process.env,
+    });
+    const runtimeErrorCliOutput = `${runtimeErrorCli.stdout}\n${runtimeErrorCli.stderr}`;
+    check(runtimeErrorCli.status !== 0, `${fixture.id}: CLI rejects the runtime-error fixture`);
+    check(runtimeErrorCliOutput.includes(fixture.expectedResolutionError), `${fixture.id}: CLI exposes ${fixture.expectedResolutionError}`);
     continue;
   }
 

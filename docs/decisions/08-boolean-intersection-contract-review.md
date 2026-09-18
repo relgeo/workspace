@@ -144,3 +144,23 @@ Secara teknis candidate sudah cukup matang untuk direview, tetapi belum cukup
 sempit dan eksplisit untuk langsung disebut active. Rekomendasi terbaik adalah
 promosi kecil dengan tiga surface di atas, sambil menahan klaim untuk operation
 dan topology yang belum memiliki fixture lintas consumer.
+
+## 9. Inventaris presentation SVG
+
+Audit renderer TypeScript dan exporter Flutter menunjukkan empat kelompok
+property yang tidak boleh dicampur dengan semantic geometry:
+
+| Property | Rekomendasi | Alasan |
+|---|---|---|
+| `id`, object kind, primitive/path geometry | semantic core | diperlukan untuk identity, scene projection, dan geometry comparison |
+| `data-role`, `data-intent`, `data-label`, visibility/filter role | presentation contract terpilih | dibutuhkan consumer yang mencari metadata atau menyaring role; perlu fixture khusus sebelum dipromosikan |
+| `fill`, `stroke`, `stroke-width`, opacity, dash, font family/size | presentation best-effort | renderer boleh punya kebijakan visual berbeda selama semantic geometry sama |
+| `viewBox`, width/height, padding, `preserveAspectRatio` | surface-specific | bergantung pada target SVG/export context dan belum cocok menjadi parity inti |
+| text metrics, line wrapping, dimension typography | surface-specific | dipengaruhi font/runtime dan tidak stabil lintas TypeScript/Flutter |
+| diagnostic overlay dan animasi violation | runtime diagnostic presentation | harus diuji sebagai diagnostic surface terpisah, bukan bagian geometri |
+| whitespace, attribute order, path formatting, marker implementation | implementation detail | tidak membawa makna contract |
+
+Kesimpulan inventaris: untuk promotion pertama, tidak perlu memperluas
+comparator SVG. Jika kemudian metadata atau diagnostic overlay menjadi public
+consumer contract, buat fixture dan comparator presentation terpisah dengan
+scope yang sempit.

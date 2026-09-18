@@ -73,6 +73,7 @@ mengembalikan status ke `candidate` atau `partial`, bukan memaksa status
 - [x] posture Flutter non-publishable dan baseline stable `3.41.9` diterima;
 - [x] draft acceptance contract untuk candidate boolean/intersection ditulis
   sebagai decision record; persetujuan maintainer masih terbuka;
+- [x] inventaris property presentation SVG dan klasifikasi awalnya ditulis;
 - [ ] daftar property presentation SVG yang benar-benar diperlukan disetujui.
 
 ## 5. Stage B — Promosi boolean/intersection
@@ -135,8 +136,8 @@ eksplisit untuk menahan promosi.
 
 ### D2. Presentation layer — berdasarkan kebutuhan
 
-- [ ] inventaris style, viewBox, text, metadata, dan diagnostic overlay yang
-  dipakai consumer publik;
+- [x] inventaris style, viewBox, text, metadata, dan diagnostic overlay yang
+  dipakai oleh renderer/exporter sudah dibuat pada Decision Record 08;
 - [ ] tandai setiap property sebagai `contract`, `implementation detail`, atau
   `best effort`;
 - [ ] tambahkan fixture presentation hanya untuk property yang memiliki

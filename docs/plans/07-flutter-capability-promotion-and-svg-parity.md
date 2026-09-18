@@ -138,11 +138,12 @@ eksplisit untuk menahan promosi.
 
 - [x] inventaris style, viewBox, text, metadata, dan diagnostic overlay yang
   dipakai oleh renderer/exporter sudah dibuat pada Decision Record 08;
-- [ ] tandai setiap property sebagai `contract`, `implementation detail`, atau
-  `best effort`;
+- [x] tandai setiap property sebagai `contract`, `implementation detail`, atau
+  `best effort`; klasifikasi awal tercatat pada Decision Record 08;
 - [ ] tambahkan fixture presentation hanya untuk property yang memiliki
   consumer atau kebutuhan release yang jelas;
-- [ ] jangan menjadikan formatting/attribute order/raw bytes sebagai contract;
+- [x] jangan menjadikan formatting/attribute order/raw bytes sebagai contract;
+  hal itu dicatat sebagai implementation detail/non-goal;
 - [ ] buat comparator terpisah jika presentation policy sudah disetujui.
 
 ### D3. Exit criteria SVG
@@ -150,9 +151,9 @@ eksplisit untuk menahan promosi.
 - [ ] semantic core tetap lulus pada active, runtime-diagnostic, dan semua
   candidate yang dipromosikan;
 - [ ] presentation policy memiliki expected snapshot dan tolerance sendiri;
-- [ ] perbedaan yang tidak di-contract tercatat sebagai limitation, bukan
+- [x] perbedaan yang tidak di-contract tercatat sebagai limitation, bukan
   failure parity;
-- [ ] renderer TypeScript dan Flutter tidak mengklaim full SVG parity sebelum
+- [x] renderer TypeScript dan Flutter tidak mengklaim full SVG parity sebelum
   seluruh capability yang relevan masuk matrix.
 
 ## 8. Stage E — CI, docs, dan release evidence
@@ -166,7 +167,7 @@ eksplisit untuk menahan promosi.
 - [x] local integration gate, public-registry gate, dan conformance report
   disimpan pada evidence release yang sesuai;
 - [ ] master plan dan plan Tahap 6 memakai status yang sama dengan matrix;
-- [ ] public docs tidak menyebut capability candidate sebagai fitur active;
+- [x] public docs tidak menyebut capability candidate sebagai fitur active;
 - [ ] release notes menyebut perubahan contract bila capability dipromosikan.
 
 ## 9. Hal yang sengaja belum dikerjakan

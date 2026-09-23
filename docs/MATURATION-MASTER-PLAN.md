@@ -110,8 +110,10 @@ Diagram tidak perlu dibuat di tool eksternal hanya untuk menghasilkan gambar. To
 Keputusan lintas-repo yang belum ditutup—QA perangkat nyata, posture Flutter,
 promosi capability candidate, parity SVG, serta otomasi publish/recovery npm—
 dicatat terpusat di [07-cross-repo-open-decisions.md](./decisions/07-cross-repo-open-decisions.md).
-Dokumen itu menjadi tempat persetujuan maintainer sebelum sub-rencana
-implementasi berikutnya dibuat.
+Rekomendasi operasional yang dipadatkan untuk persetujuan maintainer tersedia
+di [09-open-work-recommendations.md](./decisions/09-open-work-recommendations.md).
+Kedua dokumen itu menjadi rujukan sebelum sub-rencana implementasi berikutnya
+dibuat.
 
 ## 3. Gambaran ekosistem saat ini
 

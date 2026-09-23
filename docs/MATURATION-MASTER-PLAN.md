@@ -596,6 +596,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-23 | Launch smoke macOS lokal ditutup | MacBook Air arm64/macOS `14.5`; Flutter release app terbuka, diagnostics menunjukkan 0 constraint violations, values dan SVG export terverifikasi, lalu aplikasi keluar bersih. Keyboard traversal penuh dan accessibility review tetap terbuka |
 | 2026-09-23 | Baseline analyzer Flutter dibersihkan | child commit `7917d17`; empat warning terakhir dihapus tanpa perubahan kontrak, `dart analyze` menjadi `0 WARNING` dan `108 INFO` non-blocking, `flutter test` tetap lulus 119 test, dan `flutter:conformance` melewati fixture staging, lockfile enforcement, analyzer, serta test gate |
 | 2026-09-23 | Playground E2E dan desktop matrix diverifikasi ulang | Playground child commit `3969d47`; audit UX, lint, unit test `85/85`, build, dan E2E `2/2` lulus dengan browser fallback lokal; `Integration #151` sukses pada `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public` |
+| 2026-09-23 | Local integration gate diberi fallback browser yang eksplisit | workspace commit `515bda4`; `PLAYWRIGHT_EXECUTABLE_PATH` mencegah download Chromium saat browser kompatibel sudah tersedia, dan gate lokal lulus `35/35` dengan strict baseline `81/81` |
 
 ## 10. Catatan pemeliharaan
 

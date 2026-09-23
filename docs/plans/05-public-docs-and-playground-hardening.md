@@ -291,7 +291,7 @@ Aturan perubahan:
 | Local Playground E2E | `2/2` lulus |
 | Public Playground E2E | `2/2` lulus dengan `PLAYWRIGHT_BASE_URL` |
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
-| Local integration | `36/36` lulus |
+| Local integration | `35/35` lulus pada workspace commit `515bda4` dengan `PLAYWRIGHT_EXECUTABLE_PATH`; browser E2E tetap memakai Chrome lokal tanpa download Chromium tambahan |
 | Release preflight | snapshot baseline: `81/81`, `250/250`, `106/106`, `36/36`; compatibility terkini `256/256` |
 | CI evidence | `Integration #151` pada `workspace@21ee21b` sukses untuk job `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; artifact desktop serta browser smoke tersedia |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
@@ -314,3 +314,4 @@ Aturan perubahan:
 | 2026-09-17 | Sinkronisasi evidence lintas rencana diverifikasi pada CI | `Integration #114` pada `workspace@8aab44d` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |
 | 2026-09-17 | Refresh evidence terakhir diverifikasi pada CI | `Integration #115` pada `workspace@f380079` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |
 | 2026-09-23 | Fallback browser lokal dan evidence terbaru ditambahkan | Playground child commit `3969d47`; audit UX, lint, unit test `85/85`, production build, dan E2E `2/2` lulus; `Integration #151` juga sukses pada seluruh job termasuk Windows |
+| 2026-09-23 | Root integration gate diberi fallback browser lokal | workspace commit `515bda4`; `PLAYWRIGHT_EXECUTABLE_PATH` melewati download Chromium hanya bila diberikan eksplisit; local integration gate lulus `35/35` dengan strict baseline `81/81` |

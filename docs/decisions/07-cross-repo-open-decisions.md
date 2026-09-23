@@ -1,6 +1,6 @@
 # RelGeo Cross-Repo Open Decisions
 
-**Status:** Accepted with iOS evidence deferred
+**Status:** Accepted with Android/iOS deferred; desktop/web/CLI prioritized
 **Tanggal:** 2026-09-18  
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** Playground, Flutter, renderer parity, dan release npm
@@ -16,6 +16,12 @@ manual `0.5.1` yang lulus. Tujuannya adalah memisahkan:
 
 Dokumen ini tidak mengaktifkan perubahan apa pun. Ia menjadi tempat mencatat
 keputusan sebelum sub-rencana implementasi dibuat.
+
+**Pembaruan keputusan 2026-09-23:** scope Android dan iOS ditunda tanpa tanggal
+sampai web/PWA, macOS Flutter, Linux/Ubuntu Flutter, Windows Flutter, dan CLI
+lebih komprehensif serta kokoh. Rekomendasi operasional terbaru dan strategi
+build Windows dicatat pada [09-open-work-recommendations.md](09-open-work-recommendations.md)
+dan menjadi rujukan utama untuk keputusan perangkat.
 
 ## 1. Peta keputusan
 

@@ -1,6 +1,6 @@
 # RelGeo Open Work — Recommendation Record
 
-**Status:** Draft rekomendasi untuk persetujuan maintainer  
+**Status:** Accepted dengan mobile ditunda; desktop expansion menjadi prioritas
 **Tanggal:** 2026-09-23  
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** Flutter capability, SVG parity, QA perangkat, toolchain, dan release npm  
@@ -58,7 +58,7 @@ dahulu, menjalankan evidence yang tersedia, baru kemudian mengotomasi release.
 | Promosi capability | Promosikan satu capability per keputusan; mulai dari `boolean/intersection`, lalu `evaluator/unit` | perlu persetujuan maintainer |
 | SVG parity | Gunakan semantic parity berlapis; geometry adalah contract inti, presentation hanya bila ada consumer nyata | arah teknis sudah disetujui; scope presentation terbuka |
 | Flutter | Tetap workbench non-publishable; pin stable `3.41.9`; build macOS hanya CI confidence gate | sudah disetujui |
-| QA perangkat | Uji Android fisik dan macOS VoiceOver sekarang; iOS melalui pinjaman/device lab; jangan klaim Tahap 5 selesai sebelum iOS evidence ada | strategi disetujui; perangkat/tanggal terbuka |
+| Platform dan QA | Tunda Android/iOS sampai waktu yang belum ditentukan; prioritaskan web/PWA, macOS Flutter, Linux Flutter, Windows Flutter, dan CLI | arah disetujui; desktop evidence dan Windows artifact masih terbuka |
 | npm publishing | Pertahankan manual publish untuk minimal dua release berikutnya; siapkan OIDC + environment approval setelah itu | perlu persetujuan timing |
 | Recovery npm | Jangan rollback atau republish versi; gunakan partial record dan forward-fix patch | sudah menjadi policy |
 | SDK/toolchain | Pertahankan pin CI dan catat revision sebagai evidence bila perlu; jangan buka package pub.dev/desktop release | sudah disetujui |
@@ -86,9 +86,9 @@ matrix dan dokumentasi diperbarui, lalu full integration gate dijalankan.
 
 ### Keputusan yang diperlukan
 
-- [ ] setujui `boolean/intersection` sebagai capability pertama yang dipromosikan;
-- [ ] setujui `evaluator/unit` menunggu hasil promosi pertama;
-- [ ] setujui bahwa promosi selalu memerlukan decision record dan fixture active.
+- [x] setujui `boolean/intersection` sebagai capability pertama yang dipromosikan;
+- [x] setujui `evaluator/unit` menunggu hasil promosi pertama;
+- [x] setujui bahwa promosi selalu memerlukan decision record dan fixture active.
 
 ## 5. Keputusan B — SVG parity
 
@@ -109,9 +109,9 @@ property ke contract inti. Inventaris boleh tetap ada sebagai daftar kandidat.
 
 ### Keputusan yang diperlukan
 
-- [ ] setujui bahwa tidak ada property presentation tambahan yang dipromosikan
+- [x] setujui bahwa tidak ada property presentation tambahan yang dipromosikan
   pada release `0.5.x` tanpa consumer konkret;
-- [ ] setujui comparator presentation terpisah hanya bila kebutuhan tersebut
+- [x] setujui comparator presentation terpisah hanya bila kebutuhan tersebut
   muncul;
 - [x] pertahankan raw SVG byte equality sebagai non-goal.
 
@@ -136,28 +136,48 @@ packaging, support matrix, dan recovery platform.
 - [x] stable `3.41.9` menjadi baseline;
 - [x] macOS build adalah CI gate, bukan komitmen desktop release.
 
-## 7. Keputusan D — QA perangkat nyata dan akses iOS
+## 7. Keputusan D — Scope platform dan QA perangkat
 
 ### Rekomendasi
 
-Pisahkan pekerjaan yang bisa dilakukan sekarang dari evidence yang membutuhkan
-perangkat eksternal:
+Untuk sementara, Android dan iOS dikeluarkan dari target implementasi dan QA
+aktif. Penundaan ini tidak memiliki tanggal akhir; mobile baru diaktifkan lagi
+setelah surface utama sudah komprehensif, kokoh, dan benar-benar berguna.
 
-**Sekarang:**
+Prioritas implementasi dan evidence menjadi:
 
-- Android fisik + Chrome: touch, scroll, drawer, surface switcher, virtual
-  keyboard, dan TalkBack jika tersedia;
-- macOS + keyboard fisik + VoiceOver: landmark, dialog, tabs, drawer, Errors,
-  Graph, status `READY`, dan recovery.
+1. web/PWA;
+2. macOS Flutter;
+3. Linux Flutter, minimal Ubuntu;
+4. Windows Flutter pada Windows 11;
+5. CLI.
 
-**Kemudian:**
+QA accessibility yang relevan untuk sekarang adalah keyboard/VoiceOver pada
+macOS, browser accessibility pada web/PWA, dan smoke test desktop. Android,
+iOS, Safari touch, virtual keyboard mobile, TalkBack, dan VoiceOver iOS tidak
+menjadi exit gate line saat ini.
 
-- iPhone/iPad melalui perangkat pinjaman, rekan, atau real-device service;
-- Safari touch dan virtual keyboard dicatat sebagai evidence terpisah.
+### Strategi Windows dari Mac/Ubuntu
 
-Tidak memiliki iPhone bukan alasan untuk menghentikan seluruh pekerjaan, tetapi
-Tahap 5 tidak boleh ditandai selesai penuh tanpa evidence iOS. Jika belum ada
-akses iOS, status yang benar adalah `Accepted; iOS evidence deferred`.
+Mac dan Ubuntu tetap menjadi mesin pengembangan utama, tetapi build Windows
+sebaiknya dilakukan oleh runner Windows di CI. Flutter secara resmi meminta
+environment Windows untuk menyiapkan dan membangun target Windows; karena itu
+cross-compile langsung dari Mac atau Ubuntu bukan jalur utama yang perlu
+dipelihara.
+
+Tahap distribusinya:
+
+1. **Artifact internal pertama:** GitHub Actions `windows-latest` menjalankan
+   `flutter build windows --release` dan mengunggah folder Release sebagai ZIP.
+   ZIP harus membawa `.exe`, seluruh DLL, dan folder `data`.
+2. **Installer untuk keluarga/pengguna awal:** setelah smoke test pada Windows
+   11 lulus, buat MSIX menggunakan `msix` atau installer Windows yang sesuai.
+3. **Distribusi publik:** baru pertimbangkan signing certificate, Windows
+   Store, atau installer release setelah ada kebutuhan pengguna yang nyata.
+
+Dengan urutan ini, komputer Windows 11 istri dapat menerima artifact dari CI
+tanpa mengharuskan Anda memiliki komputer Windows untuk proses build. Namun
+artifact tetap harus diuji pada Windows 11 nyata sebelum dianggap usable.
 
 ### Format evidence minimum
 
@@ -169,14 +189,42 @@ akses iOS, status yang benar adalah `Accepted; iOS evidence deferred`.
 - hasil per skenario;
 - issue atau limitation yang ditemukan.
 
+### Keputusan yang dicatat
+
+- [x] Android ditunda tanpa tanggal sampai scope desktop/web/CLI matang;
+- [x] iOS ditunda tanpa tanggal sampai scope desktop/web/CLI matang;
+- [x] macOS, Linux/Ubuntu, Windows 11, web/PWA, dan CLI menjadi scope utama;
+- [ ] siapkan smoke-test Windows 11 pada komputer yang tersedia;
+- [ ] tentukan kapan mobile diaktifkan kembali.
+
+## 8. Keputusan E — Jalur artefak Windows
+
+### Rekomendasi
+
+Implementasikan workflow terpisah `flutter-windows` di root workspace dengan
+karakteristik berikut:
+
+- runner `windows-latest`;
+- Flutter stable yang sama dengan baseline CI;
+- `flutter pub get --enforce-lockfile`;
+- `flutter analyze` dan `flutter test`;
+- `flutter build windows --release`;
+- assertion bahwa executable, DLL, dan `data` tersedia;
+- packaging ZIP sebagai artifact;
+- smoke test manual pada Windows 11 sebelum memilih installer.
+
+Jangan mulai dari MSIX signing. ZIP release lebih sederhana untuk membuktikan
+bahwa binary dan dependency benar-benar berjalan. Setelah smoke test stabil,
+barulah buat sub-rencana packaging MSIX/installer dan signing.
+
 ### Keputusan yang diperlukan
 
-- [x] setujui Android dan macOS diuji lebih dahulu;
-- [x] setujui iOS evidence ditunda sampai perangkat tersedia;
-- [ ] tentukan perangkat Android dan tanggal QA pertama;
-- [ ] tentukan sumber akses iOS atau real-device service.
+- [x] gunakan Windows CI runner sebagai build authority;
+- [x] mulai dengan ZIP artifact, bukan installer bersigning;
+- [ ] jalankan smoke test artifact pada Windows 11;
+- [ ] setelah smoke test lulus, pilih MSIX atau installer tradisional.
 
-## 8. Keputusan E — npm publishing dan recovery
+## 9. Keputusan F — npm publishing dan recovery
 
 ### Rekomendasi sekarang
 
@@ -207,12 +255,12 @@ risiko tanpa menghilangkan kebutuhan keputusan operator.
 
 ### Keputusan yang diperlukan
 
-- [ ] setujui minimal dua release manual tambahan sebelum automation;
+- [x] setujui minimal dua release manual tambahan sebelum automation;
 - [x] setujui forward-fix sebagai satu-satunya recovery normal;
 - [x] setujui larangan republish versi npm yang sama;
-- [ ] setujui OIDC + protected environment sebagai target automation.
+- [x] setujui OIDC + protected environment sebagai target automation.
 
-## 9. Urutan pengerjaan yang direkomendasikan
+## 10. Urutan pengerjaan yang direkomendasikan
 
 ```mermaid
 sequenceDiagram
@@ -226,7 +274,7 @@ sequenceDiagram
   W->>W: Promote fixture dan matrix
   W->>CI: Jalankan full integration gate
   CI-->>W: Verifikasi clean checkout
-  QA->>W: Tambahkan Android/macOS evidence
+  QA->>W: Tambahkan desktop/web evidence
   M->>W: Putuskan scope SVG presentation
   M->>N: Pertahankan publish manual dua release
   N-->>W: Registry verification dan public integration
@@ -238,26 +286,29 @@ Urutan praktis:
 1. Setujui candidate `boolean/intersection`.
 2. Promosikan fixture dan matrix secara eksplisit.
 3. Jalankan full local dan CI gate.
-4. Jalankan Android/macOS QA dan simpan evidence.
+4. Tambahkan Windows CI artifact dan uji pada Windows 11; lanjutkan QA web/macOS/Linux.
 5. Tunda evaluator/unit sampai hasil tahap pertama stabil.
 6. Jalankan dua release npm berikutnya secara manual.
 7. Setelah dua release tanpa recovery failure, buat sub-rencana automation OIDC.
 
-## 10. Sisa terbuka setelah rekomendasi ini
+## 11. Sisa terbuka setelah rekomendasi ini
 
 | Item | Mengapa belum selesai | Tindakan berikutnya |
 | --- | --- | --- |
 | Promosi boolean/intersection | menunggu persetujuan contract maintainer | setujui B lalu buat sub-rencana promosi |
 | Promosi evaluator/unit | sengaja menunggu candidate pertama | jangan dikerjakan sebelum B stabil |
 | Presentation SVG | belum ada consumer yang memerlukan | pertahankan semantic-only untuk `0.5.x` |
-| Android/macOS QA | perangkat dan jadwal belum dicatat | lakukan sesi QA pertama |
-| iOS QA | tidak ada akses perangkat saat ini | pinjam perangkat atau gunakan real-device service |
+| Desktop/web QA | Windows artifact dan matrix Linux belum diverifikasi pada perangkat target | buat workflow Windows dan lakukan smoke test |
+| Android/iOS QA | sengaja ditunda tanpa tanggal | jangan jadikan blocker; buka kembali setelah scope utama matang |
+| Windows packaging | belum ada artifact/installer teruji | mulai dari ZIP, lalu evaluasi MSIX |
 | npm automation | jalur manual baru selesai satu patch release | tunggu dua release manual tambahan |
 | Recovery transaction automation | belum ada partial-release run nyata | pertahankan planner/validator read-only |
 
-## 11. Exit condition dokumen
+## 12. Exit condition dokumen
 
-Dokumen ini dapat diubah statusnya menjadi `Accepted` setelah maintainer
-menyetujui checklist keputusan pada bagian 4, 5, 7, dan 8. Setelah itu setiap
-keputusan implementasi harus dipindahkan ke sub-rencana teknis yang relevan;
-dokumen ini tetap menjadi ringkasan induk, bukan tempat detail implementasi.
+Checklist keputusan pada bagian 4, 5, 7, dan 8 telah diterima secara umum oleh
+maintainer. Yang masih terbuka hanya pekerjaan eksekusi: promosi capability,
+workflow Windows, smoke test Windows 11, dan keputusan kapan scope mobile dibuka
+kembali. Detail implementasi harus dipindahkan ke sub-rencana teknis yang
+relevan; dokumen ini tetap menjadi ringkasan induk, bukan tempat detail
+implementasi.

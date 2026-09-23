@@ -107,8 +107,8 @@ Aturannya:
 
 Diagram tidak perlu dibuat di tool eksternal hanya untuk menghasilkan gambar. Tool visual dipakai bila kebutuhan memang melampaui diagram dokumentasi biasa.
 
-Keputusan lintas-repo yang belum ditutup—QA perangkat nyata, posture Flutter,
-promosi capability candidate, parity SVG, serta otomasi publish/recovery npm—
+Keputusan lintas-repo yang belum ditutup—promosi capability candidate, parity
+SVG, desktop artifact QA, serta otomasi publish/recovery npm—
 dicatat terpusat di [07-cross-repo-open-decisions.md](./decisions/07-cross-repo-open-decisions.md).
 Rekomendasi operasional yang dipadatkan untuk persetujuan maintainer tersedia
 di [09-open-work-recommendations.md](./decisions/09-open-work-recommendations.md).

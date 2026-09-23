@@ -42,6 +42,13 @@ Contoh:
 
 Sub-rencana menjelaskan pekerjaan operasional secara mendalam; dokumen ini tetap menjadi tempat urutan, keputusan, status, dan hubungan antar-tahap.
 
+### Sub-rencana aktif dan peta keputusan
+
+- [03 — Release dan npm Publishing Guard](./plans/03-npm-release-guard.md)
+- [07 — Flutter Capability Promotion dan SVG Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md)
+- [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md)
+- [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
+
 ## 2. Keputusan dan prinsip yang tidak boleh berubah tanpa keputusan baru
 
 ### 2.1 Boundary repository
@@ -363,7 +370,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/runtime-error/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; runner kini mendukung beberapa fixture `active` tanpa mengganti baseline relasional dan mengunci boundary `BOOLEAN_EMPTY_RESULT` serta `BOOLEAN_MULTIPART_RESULT`; evidence terbaru mencakup `253/253` fixture checks dan local integration `36/36`, dengan Integration #138 sebagai CI terbaru yang telah diverifikasi; promotion candidate dan parity capability tambahan masih terbuka.
+**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/runtime-error/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; runner kini mendukung beberapa fixture `active` tanpa mengganti baseline relasional dan mengunci boundary `BOOLEAN_EMPTY_RESULT` serta `BOOLEAN_MULTIPART_RESULT`; evidence terbaru mencakup `253/253` fixture checks dan local integration `36/36`, dengan Integration #142 sebagai CI terbaru yang telah diverifikasi; promotion candidate dan parity capability tambahan masih terbuka.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -404,15 +411,16 @@ Status menggunakan arti berikut:
 
 ### Tahap 5 — Public docs, website, dan Playground hardening
 
-**Status:** Berjalan — sub-rencana formal sudah dibuat; baseline implementasi, browser QA, dan public smoke kuat, sementara gate perangkat fisik dan assistive technology masih terbuka.
+**Status:** Berjalan — sub-rencana formal sudah dibuat; baseline implementasi, browser QA, dan public smoke kuat. Mobile Android/iOS sengaja ditunda tanpa tanggal; pekerjaan aktif bergeser ke web/PWA accessibility dan desktop artifact QA.
 
 **Tujuan:** memastikan public surface mudah dipercaya dan tidak overclaim capability.
 
 **Pekerjaan tersisa:**
 
-- [ ] uji touch pada perangkat fisik: pan, pinch, scroll, drawer, target sentuh;
-- [ ] validasi VoiceOver/TalkBack: landmark, dialog, drawer, tabs, errors, graph;
-- [ ] catat model perangkat, OS, browser, dan hasilnya pada audit Playground;
+- [ ] uji keyboard/VoiceOver pada macOS desktop dan browser accessibility web/PWA;
+- [ ] uji artifact Flutter pada macOS, Ubuntu/Linux, dan Windows 11;
+- [ ] catat OS, browser, desktop runtime, dan hasilnya pada audit Playground/Flutter;
+- [ ] mobile touch, TalkBack, VoiceOver iOS, dan Safari touch tetap ditunda tanpa tanggal;
 - [ ] jalankan smoke publik setelah setiap release yang memengaruhi website/playground;
 - [ ] jaga agar docs dan capability status mengikuti package/spec baseline.
 
@@ -450,7 +458,7 @@ Status menggunakan arti berikut:
 - [x] README Flutter menjelaskan batas integrasi dan status release; parity dan release policy Flutter tetap terbuka;
 - [x] workflow dan matrix tidak mengklaim parity final sebelum bukti capability tersedia.
 
-**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md).
+**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](plans/07-flutter-capability-promotion-and-svg-parity.md), dan [docs/plans/08-desktop-platform-delivery.md](plans/08-desktop-platform-delivery.md).
 
 ### Tahap 7 — Release maturity dan perluasan fitur
 

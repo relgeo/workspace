@@ -103,8 +103,9 @@ Evidence launch smoke lokal: MacBook Air arm64, macOS `14.5`, Flutter
 `3.41.9`. Release app terbuka dengan status `COMPILED OK`; tab diagnostics
 menunjukkan `Constraint Violations: 0`, tab values menampilkan parameter dan
 scene bounds, tombol SVG model menghasilkan preview SVG, dan proses keluar
-bersih melalui Flutter runner. Keyboard traversal penuh dan accessibility
-review belum ditutup.
+bersih melalui Flutter runner. Bundle juga terverifikasi sebagai universal
+`arm64`/`x86_64`, dengan bundle ID `com.relgeo.relgeoFlutter` dan versi aplikasi
+`1.0.0`. Keyboard traversal penuh dan accessibility review belum ditutup.
 
 ### Ubuntu/Linux
 

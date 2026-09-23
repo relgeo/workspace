@@ -43,7 +43,7 @@ desktop yang dapat dijalankan.
 | --- | --- | --- | --- | --- |
 | macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | CI + archive; smoke pending |
 | Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | job + archive; smoke pending |
-| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | job + ZIP assertion; CI/smoke pending |
+| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | CI + ZIP assertion hijau; Win11 smoke pending |
 | Web/PWA | Linux CI / website workflow | static deployment | browser E2E dan public smoke | sudah berjalan |
 | CLI | Linux CI / Node matrix | npm package/binary surface | lint, test, install, command smoke | sudah berjalan |
 
@@ -116,7 +116,7 @@ tersebut sebagai baseline yang harus dirapikan bertahap.
 Workflow Windows minimal harus melakukan:
 
 ```yaml
-- uses: actions/checkout@v4
+- uses: actions/checkout@v7
 - uses: subosito/flutter-action@v2
   with:
     channel: stable
@@ -176,7 +176,14 @@ itu tidak dimasukkan ke gate artifact pertama.
 - [x] upload artifact dengan nama yang memuat OS, arch, dan commit;
 - [x] simpan build summary tanpa memasukkan binary besar ke repository;
 - [ ] tambahkan assertion ke integration gate setelah artifact stabil;
-- [ ] update integration baseline dan master plan dengan commit/run evidence.
+- [x] catat commit/run evidence pada sub-plan dan master plan.
+
+### Evidence CI pertama
+
+GitHub `Integration #147` pada commit `791ae33` sukses untuk job `flutter`,
+`flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`.
+Job native menyelesaikan build release, assertion isi bundle, dan upload artifact
+macOS `.zip`, Linux `.tar.gz`, serta Windows `.zip`. Run: [Integration #147](https://github.com/relgeo/workspace/actions/runs/35834154089).
 
 ## 10. Exit gate
 
@@ -184,11 +191,11 @@ Sub-rencana ini selesai untuk tahap artifact ketika:
 
 - [ ] macOS release build dan launch smoke lulus;
 - [ ] Ubuntu/Linux release build dan smoke lulus;
-- [ ] Windows CI build lulus pada `windows-latest`;
-- [ ] Windows ZIP memuat executable, DLL, dan `data` lengkap;
+- [x] Windows CI build lulus pada `windows-latest`;
+- [x] Windows ZIP memuat executable, DLL, dan `data` lengkap;
 - [ ] ZIP berhasil dijalankan pada Windows 11;
-- [ ] evidence tersimpan dan dapat ditelusuri;
-- [ ] web/PWA dan CLI tetap lulus gate tanpa bergantung pada desktop build.
+- [x] evidence tersimpan dan dapat ditelusuri;
+- [x] web/PWA dan CLI tetap lulus gate tanpa bergantung pada desktop build.
 
 Installer MSIX atau installer tradisional memiliki exit gate terpisah dan tidak
 perlu diselesaikan untuk menyatakan artifact desktop awal berhasil.

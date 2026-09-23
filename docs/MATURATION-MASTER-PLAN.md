@@ -243,10 +243,11 @@ Implementation dan browser emulation sudah kuat. Sisa wajib adalah validasi touc
 ### Prioritas 6 — Flutter alignment dan feature expansion — berjalan terbatas
 
 Adapter, runner, CI, dan semantic projection sudah tersedia. Posture Flutter
-sebagai workbench non-publishable, baseline stable `3.41.9`, dan build macOS
-sebagai CI gate sudah disetujui. Sisa utamanya adalah promotion capability
-satu per satu dan parity SVG/presentation yang lebih luas. Feature expansion
-ditahan sampai acceptance contract capability jelas. Detail pengerjaan ada di
+sebagai workbench non-publishable, baseline stable `3.41.9`, serta CI artifact
+build macOS/Linux/Windows sudah disetujui dan dibuktikan pada `Integration #147`.
+Sisa utamanya adalah smoke test pada mesin target, promotion capability satu per
+satu, dan parity SVG/presentation yang lebih luas. Feature expansion ditahan
+sampai acceptance contract capability jelas. Detail pengerjaan ada di
 [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md).
 
 ### Urutan pengerjaan setelah batch ini
@@ -418,7 +419,8 @@ Status menggunakan arti berikut:
 **Pekerjaan tersisa:**
 
 - [ ] uji keyboard/VoiceOver pada macOS desktop dan browser accessibility web/PWA;
-- [ ] uji artifact Flutter pada macOS, Ubuntu/Linux, dan Windows 11;
+- [x] build dan archive artifact Flutter pada macOS, Ubuntu/Linux, dan Windows CI;
+- [ ] uji artifact Flutter pada macOS, Ubuntu/Linux, dan Windows 11 nyata/VM;
 - [ ] catat OS, browser, desktop runtime, dan hasilnya pada audit Playground/Flutter;
 - [ ] mobile touch, TalkBack, VoiceOver iOS, dan Safari touch tetap ditunda tanpa tanggal;
 - [ ] jalankan smoke publik setelah setiap release yang memengaruhi website/playground;
@@ -436,7 +438,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 6 — Flutter alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, release posture yang sudah disetujui, build macOS CI, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus; boundary contract candidate boolean/intersection dan policy multi-active fixture sudah dicatat, negative resolver boundary TypeScript/CLI sudah ditambahkan, sedangkan promotion candidate, negative fixtures lintas Flutter consumer, dan parity capability tambahan masih terbuka.
+**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, release posture yang sudah disetujui, build/artifact CI macOS/Linux/Windows pada `Integration #147`, dan checkout Flutter terisolasi selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus; boundary contract candidate boolean/intersection dan policy multi-active fixture sudah dicatat, negative resolver boundary TypeScript/CLI sudah ditambahkan, sedangkan smoke target nyata, promotion candidate, negative fixtures lintas Flutter consumer, dan parity capability tambahan masih terbuka.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -587,6 +589,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-18 | Release guard dan CI evidence diselaraskan pada commit terbaru | `08be7d8` memvalidasi release order/bump policy; `release:record:check` untuk record historis dan completed lulus, candidate audit `36/36`, compatibility `283/283`, strict baseline `81/81`, dan `Integration #129` pada `aea1188` sukses pada `verify`, `flutter`, `flutter-macos`, serta `public`. Patch `0.5.1` sudah selesai; automation publish/recovery dan validasi perangkat fisik tetap terbuka |
 | 2026-09-18 | Pin toolchain Node lokal didokumentasikan dan diverifikasi pada CI terbaru | root commit `321c7b2` menambahkan `.node-version` `24.21.0` dan instruksi bootstrap; `Integration #132` sukses pada `verify`, `flutter`, `flutter-macos`, dan `public` dalam 3m58s. Environment lokal yang masih memakai Node `22.23.2` tetap menjadi tindakan operator, bukan kegagalan CI |
 | 2026-09-18 | GitHub memverifikasi boundary conformance boolean terbaru | `Integration #142` pada workspace commit `a4ee3aa` sukses pada seluruh job `verify`, `flutter`, `flutter-macos`, dan `public`; fixture 19/20 serta conformance `253/253` kini memiliki evidence CI terbaru |
+| 2026-09-23 | Desktop artifact gates ditambahkan dan diverifikasi | commit `791ae33`; `Integration #147` sukses pada `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; native build menghasilkan serta meng-assert archive macOS/Linux/Windows. Smoke test pada macOS/Ubuntu/Windows 11 nyata, installer, dan launch/accessibility QA masih terbuka |
 
 ## 10. Catatan pemeliharaan
 

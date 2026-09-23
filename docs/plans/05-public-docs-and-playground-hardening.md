@@ -103,6 +103,10 @@ Source detail dan history perubahan ada di [`VISUAL-REDESIGN-AUDIT-AND-PLAN.md`]
 - [x] Mobile-device emulation memverifikasi touch capability, viewport 390px, dan perpindahan Source/Preview; ini bukan pengganti validasi handset fisik.
 - [x] Deployment-aware E2E dengan `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/` lulus `2/2` pada public Playground.
 - [x] `audit:ux` lulus dengan 13 component files dan 4 dynamic inline styles yang disetujui.
+- [x] E2E lokal terbaru lulus `2/2` pada child commit `3969d47`; fallback
+  `PLAYWRIGHT_EXECUTABLE_PATH` memungkinkan validasi memakai browser Chromium
+  lokal ketika cache Playwright tidak dapat diunduh karena disk penuh. CI tetap
+  memakai browser Playwright pinned.
 
 Source detail dan evidence screenshot ada di [`playground/docs/UX-UI-AUDIT-AND-PLAN.md`](../../playground/docs/UX-UI-AUDIT-AND-PLAN.md).
 
@@ -289,7 +293,7 @@ Aturan perubahan:
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `36/36` lulus |
 | Release preflight | snapshot baseline: `81/81`, `250/250`, `106/106`, `36/36`; compatibility terkini `256/256` |
-| CI evidence | `Integration #119` pada `workspace@dc40653` sukses untuk job `flutter`, `flutter-macos`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia; action artifact Node 24 tidak lagi menghasilkan warning Node 20 |
+| CI evidence | `Integration #151` pada `workspace@21ee21b` sukses untuk job `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; artifact desktop serta browser smoke tersedia |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
 
 ## 12. Log perubahan
@@ -309,3 +313,4 @@ Aturan perubahan:
 | 2026-09-17 | Evidence dokumentasi terbaru diverifikasi pada CI | `Integration #113` pada `workspace@2ba78fb` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |
 | 2026-09-17 | Sinkronisasi evidence lintas rencana diverifikasi pada CI | `Integration #114` pada `workspace@8aab44d` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |
 | 2026-09-17 | Refresh evidence terakhir diverifikasi pada CI | `Integration #115` pada `workspace@f380079` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |
+| 2026-09-23 | Fallback browser lokal dan evidence terbaru ditambahkan | Playground child commit `3969d47`; audit UX, lint, unit test `85/85`, production build, dan E2E `2/2` lulus; `Integration #151` juga sukses pada seluruh job termasuk Windows |

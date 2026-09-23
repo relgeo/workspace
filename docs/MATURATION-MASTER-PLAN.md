@@ -414,7 +414,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 5 — Public docs, website, dan Playground hardening
 
-**Status:** Berjalan — sub-rencana formal sudah dibuat; baseline implementasi, browser QA, dan public smoke kuat. Mobile Android/iOS sengaja ditunda tanpa tanggal; pekerjaan aktif bergeser ke web/PWA accessibility dan desktop artifact QA.
+**Status:** Berjalan — sub-rencana formal sudah dibuat; baseline implementasi, browser QA, public smoke, dan CI #151 sudah kuat. Mobile Android/iOS sengaja ditunda tanpa tanggal; pekerjaan aktif bergeser ke validasi perangkat desktop dan assistive technology.
 
 **Tujuan:** memastikan public surface mudah dipercaya dan tidak overclaim capability.
 
@@ -440,7 +440,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 6 — Flutter alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, release posture yang sudah disetujui, build/artifact CI macOS/Linux/Windows pada `Integration #147`, launch smoke macOS lokal, checkout Flutter terisolasi, dan cleanup analyzer warning pada child commit `7917d17` selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus; boundary contract candidate boolean/intersection dan policy multi-active fixture sudah dicatat, negative resolver boundary TypeScript/CLI sudah ditambahkan, sedangkan keyboard/accessibility QA, smoke Ubuntu/Windows 11 nyata, promotion candidate, negative fixtures lintas Flutter consumer, dan parity capability tambahan masih terbuka.
+**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, release posture yang sudah disetujui, build/artifact CI macOS/Linux/Windows pada `Integration #151`, launch smoke macOS lokal, checkout Flutter terisolasi, dan cleanup analyzer warning pada child commit `7917d17` selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus; boundary contract candidate boolean/intersection dan policy multi-active fixture sudah dicatat, negative resolver boundary TypeScript/CLI sudah ditambahkan, sedangkan keyboard/accessibility QA, smoke Ubuntu/Windows 11 nyata, promotion candidate, negative fixtures lintas Flutter consumer, dan parity capability tambahan masih terbuka.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -595,6 +595,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-23 | Desktop artifact gates ditambahkan dan diverifikasi | commit `791ae33`; `Integration #147` sukses pada `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; native build menghasilkan serta meng-assert archive macOS/Linux/Windows. Smoke test pada macOS/Ubuntu/Windows 11 nyata, installer, dan launch/accessibility QA masih terbuka |
 | 2026-09-23 | Launch smoke macOS lokal ditutup | MacBook Air arm64/macOS `14.5`; Flutter release app terbuka, diagnostics menunjukkan 0 constraint violations, values dan SVG export terverifikasi, lalu aplikasi keluar bersih. Keyboard traversal penuh dan accessibility review tetap terbuka |
 | 2026-09-23 | Baseline analyzer Flutter dibersihkan | child commit `7917d17`; empat warning terakhir dihapus tanpa perubahan kontrak, `dart analyze` menjadi `0 WARNING` dan `108 INFO` non-blocking, `flutter test` tetap lulus 119 test, dan `flutter:conformance` melewati fixture staging, lockfile enforcement, analyzer, serta test gate |
+| 2026-09-23 | Playground E2E dan desktop matrix diverifikasi ulang | Playground child commit `3969d47`; audit UX, lint, unit test `85/85`, build, dan E2E `2/2` lulus dengan browser fallback lokal; `Integration #151` sukses pada `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public` |
 
 ## 10. Catatan pemeliharaan
 

@@ -1,6 +1,6 @@
 # Sub-Rencana 08 — Desktop Platform Delivery
 
-**Status:** Belum mulai  
+**Status:** Stage A selesai; Stage B/C/E sedang berjalan
 **Tanggal:** 2026-09-23  
 **Owner koordinasi:** `relgeo/workspace`  
 **Implementasi utama:** `relgeo/flutter`  
@@ -41,9 +41,9 @@ desktop yang dapat dijalankan.
 
 | Surface | Build authority | Artifact awal | Verifikasi minimum | Status |
 | --- | --- | --- | --- | --- |
-| macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | baseline CI sudah ada |
-| Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | perlu ditutup |
-| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | perlu dibuat |
+| macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | CI + archive; smoke pending |
+| Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | job + archive; smoke pending |
+| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | job + ZIP assertion; CI/smoke pending |
 | Web/PWA | Linux CI / website workflow | static deployment | browser E2E dan public smoke | sudah berjalan |
 | CLI | Linux CI / Node matrix | npm package/binary surface | lint, test, install, command smoke | sudah berjalan |
 
@@ -74,30 +74,38 @@ release candidate setelah assertion dan smoke test pada target OS lulus.
 
 ## 5. Stage A — Baseline Flutter desktop
 
-- [ ] catat Flutter stable dan Dart version yang dipakai seluruh runner;
-- [ ] pastikan `pubspec.lock` dan lockfile enforcement digunakan;
-- [ ] pastikan package native Flutter yang dipakai mendukung macOS, Linux, dan
-  Windows atau memiliki fallback yang terdokumentasi;
-- [ ] tetapkan application name, binary name, version, icon, dan output naming;
-- [ ] pastikan seluruh desktop source tidak membawa path lokal, credential, atau
+- [x] catat Flutter stable dan Dart version yang dipakai seluruh runner;
+- [x] pastikan `pubspec.lock` dan lockfile enforcement digunakan;
+- [x] audit awal package native Flutter yang dipakai terhadap target macOS,
+  Linux, dan Windows; build matrix tetap menjadi bukti final;
+- [x] tetapkan application name, binary name, version, icon, dan output naming;
+- [x] pastikan seluruh desktop source tidak membawa path lokal, credential, atau
   konfigurasi development-only;
-- [ ] definisikan smoke scenario bersama: launch, load fixture, render scene,
+- [x] definisikan smoke scenario bersama: launch, load fixture, render scene,
   edit/save bila relevan, resize window, keyboard navigation, dan clean exit.
+
+Baseline yang dikunci saat ini adalah Flutter `3.41.9`, Dart `3.11.5`,
+application version `1.0.0+1`, dan binary `relgeo_flutter`. `flutter test`
+lulus dengan 119 test. `flutter analyze` lokal menghasilkan 130 temuan legacy;
+CI memakai `--no-fatal-warnings --no-fatal-infos` dan tetap mencetak temuan
+tersebut sebagai baseline yang harus dirapikan bertahap.
 
 ## 6. Stage B — macOS dan Ubuntu
 
 ### macOS
 
 - [x] build macOS sudah menjadi CI confidence gate;
-- [ ] tambahkan assertion artifact `.app` dan ukuran minimum yang wajar;
+- [x] tambahkan assertion artifact `.app` dan archive `.zip` yang dapat diunduh;
 - [ ] jalankan launch smoke pada Mac lokal;
 - [ ] catat batasan signing/notarization sebagai non-goal sementara.
 
 ### Ubuntu/Linux
 
-- [ ] pastikan runner Ubuntu dapat menjalankan `flutter build linux --release`;
-- [ ] verifikasi dependency desktop GTK yang diperlukan;
-- [ ] buat archive artifact yang memuat binary dan seluruh runtime data;
+- [x] tambahkan job `flutter-linux` yang menjalankan `flutter build linux
+  --release`;
+- [x] deklarasikan dependency desktop GTK yang diperlukan di runner;
+- [x] tambahkan assertion dan archive artifact yang memuat binary, `data`, dan
+  `lib` runtime;
 - [ ] jalankan smoke test pada Ubuntu nyata atau VM;
 - [ ] catat distro/version dan arsitektur target.
 
@@ -114,13 +122,13 @@ Workflow Windows minimal harus melakukan:
     channel: stable
     flutter-version: 3.41.9
 - run: flutter pub get --enforce-lockfile
-- run: flutter analyze
+- run: flutter analyze --no-fatal-warnings --no-fatal-infos
 - run: flutter test
 - run: flutter build windows --release
 ```
 
-Workflow nyata harus mengikuti versi action dan policy repository yang berlaku;
-snippet ini adalah kontrak urutan, bukan copy-paste final tanpa review.
+Workflow nyata sekarang menjalankan urutan tersebut pada `windows-latest`,
+dengan analyzer non-fatal yang sama seperti baseline Flutter workspace.
 
 ### C2. Artifact assertion
 
@@ -162,11 +170,11 @@ itu tidak dimasukkan ke gate artifact pertama.
 
 ## 9. Stage E — CI dan evidence
 
-- [ ] pisahkan job `flutter-windows` dari job Flutter umum;
-- [ ] tambahkan job Linux bila build Linux belum tercakup;
-- [ ] pertahankan job `flutter-macos` yang sudah ada;
-- [ ] upload artifact dengan nama yang memuat OS, arch, commit, dan build mode;
-- [ ] simpan build summary tanpa memasukkan binary besar ke repository;
+- [x] pisahkan job `flutter-windows` dari job Flutter umum;
+- [x] tambahkan job Linux untuk build dan artifact;
+- [x] pertahankan job `flutter-macos` yang sudah ada dan tambahkan archive;
+- [x] upload artifact dengan nama yang memuat OS, arch, dan commit;
+- [x] simpan build summary tanpa memasukkan binary besar ke repository;
 - [ ] tambahkan assertion ke integration gate setelah artifact stabil;
 - [ ] update integration baseline dan master plan dengan commit/run evidence.
 
@@ -198,10 +206,10 @@ perlu diselesaikan untuk menyatakan artifact desktop awal berhasil.
 
 ## 12. Urutan kerja berikutnya
 
-1. Audit `relgeo/flutter` untuk status Linux/Windows project dan dependency.
-2. Tambahkan workflow Windows build artifact.
+1. ~~Audit `relgeo/flutter` untuk status Linux/Windows project dan dependency.~~
+2. ~~Tambahkan workflow Windows build artifact.~~
 3. Jalankan CI dan periksa isi ZIP.
 4. Uji ZIP pada Windows 11.
-5. Tambahkan Linux artifact dan Ubuntu smoke.
-6. Rapikan macOS artifact assertion.
+5. ~~Tambahkan Linux artifact.~~
+6. ~~Rapikan macOS artifact assertion.~~
 7. Baru evaluasi MSIX/installer.

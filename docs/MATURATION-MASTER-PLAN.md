@@ -576,6 +576,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-18 | `Integration #119` memverifikasi build macOS Flutter di CI | `workspace@dc40653` sukses untuk job `flutter`, `flutter-macos`, `verify`, dan `public`; macOS runner `macos-latest` menyelesaikan `flutter build macos --no-pub --release`, dua artifact report tersedia, dan kedua Playwright smoke lulus |
 | 2026-09-18 | Release guard dan CI evidence diselaraskan pada commit terbaru | `08be7d8` memvalidasi release order/bump policy; `release:record:check` untuk record historis dan completed lulus, candidate audit `36/36`, compatibility `283/283`, strict baseline `81/81`, dan `Integration #129` pada `aea1188` sukses pada `verify`, `flutter`, `flutter-macos`, serta `public`. Patch `0.5.1` sudah selesai; automation publish/recovery dan validasi perangkat fisik tetap terbuka |
 | 2026-09-18 | Pin toolchain Node lokal didokumentasikan dan diverifikasi pada CI terbaru | root commit `321c7b2` menambahkan `.node-version` `24.21.0` dan instruksi bootstrap; `Integration #132` sukses pada `verify`, `flutter`, `flutter-macos`, dan `public` dalam 3m58s. Environment lokal yang masih memakai Node `22.23.2` tetap menjadi tindakan operator, bukan kegagalan CI |
+| 2026-09-18 | GitHub memverifikasi boundary conformance boolean terbaru | `Integration #142` pada workspace commit `a4ee3aa` sukses pada seluruh job `verify`, `flutter`, `flutter-macos`, dan `public`; fixture 19/20 serta conformance `253/253` kini memiliki evidence CI terbaru |
 
 ## 10. Catatan pemeliharaan
 

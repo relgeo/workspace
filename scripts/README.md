@@ -28,7 +28,13 @@ pnpm run integration:gate -- --local --report=.local/integration-local.json
 pnpm run integration:public -- --report=.local/integration-public.json
 ~~~
 
-Mode `--local` juga memasang Chromium Playwright bila diperlukan dan menjalankan automated browser smoke Playground setelah build. Hasil pass/fail dicetak langsung pada log gate; browser trace atau source tidak diunggah otomatis.
+Mode `--local` juga memasang Chromium Playwright bila diperlukan dan menjalankan automated browser smoke Playground setelah build. Jika browser Chromium-compatible sudah tersedia tetapi disk tidak cukup untuk cache Playwright, set `PLAYWRIGHT_EXECUTABLE_PATH`; gate akan melewati download hanya pada kondisi itu:
+
+~~~text
+PLAYWRIGHT_EXECUTABLE_PATH="/path/to/your/chromium-or-chrome" pnpm run integration:gate -- --local
+~~~
+
+Hasil pass/fail dicetak langsung pada log gate; browser trace atau source tidak diunggah otomatis. CI tidak mengatur variabel fallback tersebut dan tetap memasang browser pinned.
 
 Manifest snapshot publik berada di `docs/integration-baseline.json`. Verifier tidak membutuhkan GitHub API; ia membandingkan manifest dengan gitlink workspace, checkout submodule, working tree, dan `package.json` lokal. Opsi `--write` memperbarui snapshot dari checkout saat ini dan hanya boleh dipakai secara sengaja. Opsi `--manifest=PATH` dipakai oleh failure-injection untuk menguji snapshot sementara tanpa mengubah file publik. Opsi `--require-main` hanya untuk validasi lokal; CI submodule checkout biasanya detached.
 

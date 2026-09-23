@@ -41,7 +41,7 @@ desktop yang dapat dijalankan.
 
 | Surface | Build authority | Artifact awal | Verifikasi minimum | Status |
 | --- | --- | --- | --- | --- |
-| macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | CI + archive; smoke pending |
+| macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | CI + local launch hijau; keyboard QA pending |
 | Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | job + archive; smoke pending |
 | Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | CI + ZIP assertion hijau; Win11 smoke pending |
 | Web/PWA | Linux CI / website workflow | static deployment | browser E2E dan public smoke | sudah berjalan |
@@ -96,8 +96,15 @@ tersebut sebagai baseline yang harus dirapikan bertahap.
 
 - [x] build macOS sudah menjadi CI confidence gate;
 - [x] tambahkan assertion artifact `.app` dan archive `.zip` yang dapat diunduh;
-- [ ] jalankan launch smoke pada Mac lokal;
-- [ ] catat batasan signing/notarization sebagai non-goal sementara.
+- [x] jalankan launch smoke pada Mac lokal;
+- [x] catat batasan signing/notarization sebagai non-goal sementara.
+
+Evidence launch smoke lokal: MacBook Air arm64, macOS `14.5`, Flutter
+`3.41.9`. Release app terbuka dengan status `COMPILED OK`; tab diagnostics
+menunjukkan `Constraint Violations: 0`, tab values menampilkan parameter dan
+scene bounds, tombol SVG model menghasilkan preview SVG, dan proses keluar
+bersih melalui Flutter runner. Keyboard traversal penuh dan accessibility
+review belum ditutup.
 
 ### Ubuntu/Linux
 
@@ -189,7 +196,7 @@ macOS `.zip`, Linux `.tar.gz`, serta Windows `.zip`. Run: [Integration #147](htt
 
 Sub-rencana ini selesai untuk tahap artifact ketika:
 
-- [ ] macOS release build dan launch smoke lulus;
+- [x] macOS release build dan launch smoke lulus;
 - [ ] Ubuntu/Linux release build dan smoke lulus;
 - [x] Windows CI build lulus pada `windows-latest`;
 - [x] Windows ZIP memuat executable, DLL, dan `data` lengkap;
@@ -215,7 +222,7 @@ perlu diselesaikan untuk menyatakan artifact desktop awal berhasil.
 
 1. ~~Audit `relgeo/flutter` untuk status Linux/Windows project dan dependency.~~
 2. ~~Tambahkan workflow Windows build artifact.~~
-3. Jalankan CI dan periksa isi ZIP.
+3. ~~Jalankan CI dan periksa isi ZIP.~~
 4. Uji ZIP pada Windows 11.
 5. ~~Tambahkan Linux artifact.~~
 6. ~~Rapikan macOS artifact assertion.~~

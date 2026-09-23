@@ -84,6 +84,20 @@ function runWorkspacePackageStage(packageName, scriptName) {
   );
 }
 
+function ensurePlaywrightChromium(label, cwd, environment = process.env) {
+  if (environment.PLAYWRIGHT_EXECUTABLE_PATH) {
+    console.log(
+      `[INFO] ${label}: using PLAYWRIGHT_EXECUTABLE_PATH; skipping browser download`,
+    );
+    return true;
+  }
+
+  const playwrightInstallArgs = ["exec", "playwright", "install"];
+  if (process.env.CI) playwrightInstallArgs.push("--with-deps");
+  playwrightInstallArgs.push("chromium");
+  return runStage(label, "pnpm", playwrightInstallArgs, cwd, environment);
+}
+
 function runPackBoundaryStage(packageName, cwd) {
   const label = packageName + ": npm pack boundary";
   const startedAt = Date.now();
@@ -259,13 +273,8 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
     if (!installed) return false;
 
     if (repositoryPath === "playground") {
-      const playwrightInstallArgs = ["exec", "playwright", "install"];
-      if (process.env.CI) playwrightInstallArgs.push("--with-deps");
-      playwrightInstallArgs.push("chromium");
-      runStage(
+      ensurePlaywrightChromium(
         packageName + ": Playwright Chromium (public registry)",
-        "pnpm",
-        playwrightInstallArgs,
         cwd,
         environment,
       );
@@ -304,14 +313,10 @@ runStage("baseline: failure injection", process.execPath, [
 if (localMode) {
   runStage("workspace: frozen install", "pnpm", ["install", "--frozen-lockfile"]);
 
-  const playwrightInstallArgs = ["exec", "playwright", "install"];
-  if (process.env.CI) playwrightInstallArgs.push("--with-deps");
-  playwrightInstallArgs.push("chromium");
-  runStage(
+  ensurePlaywrightChromium(
     "workspace: Playwright Chromium",
-    "pnpm",
-    playwrightInstallArgs,
     path.join(root, "playground"),
+    process.env,
   );
 
   const packageStages = [

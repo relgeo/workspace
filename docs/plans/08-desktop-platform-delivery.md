@@ -86,9 +86,11 @@ release candidate setelah assertion dan smoke test pada target OS lulus.
 
 Baseline yang dikunci saat ini adalah Flutter `3.41.9`, Dart `3.11.5`,
 application version `1.0.0+1`, dan binary `relgeo_flutter`. `flutter test`
-lulus dengan 119 test. `flutter analyze` lokal menghasilkan 130 temuan legacy;
-CI memakai `--no-fatal-warnings --no-fatal-infos` dan tetap mencetak temuan
-tersebut sebagai baseline yang harus dirapikan bertahap.
+lulus dengan 119 test. Cleanup analyzer pada child commit `7917d17` menghapus
+semua warning runtime-relevan; `dart analyze` kini menghasilkan `0 WARNING`
+dan `108 INFO` yang tersisa berupa deprecation/style lint non-blocking. CI tetap
+memakai `--no-fatal-warnings --no-fatal-infos` agar info tersebut terlihat tanpa
+menghalangi artifact gate.
 
 ## 6. Stage B — macOS dan Ubuntu
 

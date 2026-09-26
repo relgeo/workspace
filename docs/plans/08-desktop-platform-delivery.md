@@ -110,6 +110,13 @@ bersih melalui Flutter runner. Bundle juga terverifikasi sebagai universal
 `arm64`/`x86_64`, dengan bundle ID `com.relgeo.relgeoFlutter` dan versi aplikasi
 `1.0.0`. Keyboard traversal penuh dan accessibility review belum ditutup.
 
+Pada Flutter commit `e1931ff`, boundary window juga sudah dipisahkan secara
+platform-neutral melalui `WorkbenchWindowHost` dan
+`WorkbenchWindowConfiguration`. Kontrak ini sudah dapat diinjeksi ke
+`RelGeoCADApp`, tetapi belum menjadi implementasi native macOS/Linux/Windows;
+validasi ulang setelah perubahan tersebut masih menunggu terminal/runner yang
+dapat diakses.
+
 ### Ubuntu/Linux
 
 - [x] tambahkan job `flutter-linux` yang menjalankan `flutter build linux

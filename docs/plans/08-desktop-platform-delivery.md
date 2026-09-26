@@ -115,7 +115,9 @@ platform-neutral melalui `WorkbenchWindowHost` dan
 `WorkbenchWindowConfiguration`. Kontrak ini sudah dapat diinjeksi ke
 `RelGeoCADApp`, tetapi belum menjadi implementasi native macOS/Linux/Windows;
 validasi ulang setelah perubahan tersebut masih menunggu terminal/runner yang
-dapat diakses.
+dapat diakses. Commit lanjutan menyelaraskan source runner ke default
+`1440×900` dan minimum `1024×640`; build/runtime verification lintas host tetap
+menjadi gate berikutnya.
 
 ### Ubuntu/Linux
 

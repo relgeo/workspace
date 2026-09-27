@@ -49,6 +49,7 @@ Sub-rencana menjelaskan pekerjaan operasional secara mendalam; dokumen ini tetap
 - [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md)
 - [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
 - [10 — Desktop Runtime Smoke Checklist](./plans/10-desktop-runtime-smoke-checklist.md)
+- [Flutter 02 — Workbench Layout dan Panel System](./flutter/docs/plans/02-workbench-layout-and-panel-system.md)
 
 ## 2. Keputusan dan prinsip yang tidak boleh berubah tanpa keputusan baru
 
@@ -464,7 +465,7 @@ Status menggunakan arti berikut:
 - [x] README Flutter menjelaskan batas integrasi dan status release; parity dan release policy Flutter tetap terbuka;
 - [x] workflow dan matrix tidak mengklaim parity final sebelum bukti capability tersedia.
 
-**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](plans/07-flutter-capability-promotion-and-svg-parity.md), [docs/plans/08-desktop-platform-delivery.md](plans/08-desktop-platform-delivery.md), dan [docs/plans/10-desktop-runtime-smoke-checklist.md](plans/10-desktop-runtime-smoke-checklist.md).
+**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](plans/07-flutter-capability-promotion-and-svg-parity.md), [docs/plans/08-desktop-platform-delivery.md](plans/08-desktop-platform-delivery.md), [docs/plans/10-desktop-runtime-smoke-checklist.md](plans/10-desktop-runtime-smoke-checklist.md), dan [flutter/docs/plans/02-workbench-layout-and-panel-system.md](flutter/docs/plans/02-workbench-layout-and-panel-system.md).
 
 ### Tahap 7 — Release maturity dan perluasan fitur
 

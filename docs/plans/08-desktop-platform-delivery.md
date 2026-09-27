@@ -167,6 +167,9 @@ GitHub Actions artifact. Mengunggah `.exe` saja tidak cukup.
 
 ### C3. Smoke test Windows 11
 
+Prosedur lengkap dan template evidence tersedia di
+[09-desktop-runtime-smoke-checklist.md](09-desktop-runtime-smoke-checklist.md).
+
 - [ ] unduh ZIP dari run CI;
 - [ ] ekstrak pada Windows 11;
 - [ ] jalankan executable;

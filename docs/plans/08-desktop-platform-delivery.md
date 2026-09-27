@@ -110,7 +110,7 @@ bersih melalui Flutter runner. Bundle juga terverifikasi sebagai universal
 `arm64`/`x86_64`, dengan bundle ID `com.relgeo.relgeoFlutter` dan versi aplikasi
 `1.0.0`. Keyboard traversal penuh dan accessibility review belum ditutup.
 
-Pada Flutter commit `e1931ff`, boundary window juga sudah dipisahkan secara
+Pada Flutter commit `4709b95`, boundary window sudah dipisahkan secara
 platform-neutral melalui `WorkbenchWindowHost` dan
 `WorkbenchWindowConfiguration`. Kontrak tersebut kini sudah diterapkan pada
 runner macOS/Linux/Windows melalui channel `relgeo/window`, dengan ukuran
@@ -214,7 +214,7 @@ Audit workflow pada 2026-09-27 tidak menemukan celah cakupan: workflow saat ini
 sudah mengompilasi source runner native pada runner OS masing-masing, menjalankan
 test/analyzer Flutter, memeriksa isi artifact, dan mengunggah archive. Evidence
 `Integration #147` tetap merupakan evidence historis sebelum bridge native
-window terbaru; run baru setelah commit `42895d1` dan `ad17dc4` masih diperlukan.
+window terbaru; run baru setelah commit `4709b95` masih diperlukan.
 Build langsung Xcode lokal menutup source compilation macOS, tetapi belum
 menggantikan fresh integration run pada runner GitHub.
 

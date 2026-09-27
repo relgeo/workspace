@@ -112,12 +112,14 @@ bersih melalui Flutter runner. Bundle juga terverifikasi sebagai universal
 
 Pada Flutter commit `e1931ff`, boundary window juga sudah dipisahkan secara
 platform-neutral melalui `WorkbenchWindowHost` dan
-`WorkbenchWindowConfiguration`. Kontrak ini sudah dapat diinjeksi ke
-`RelGeoCADApp`, tetapi belum menjadi implementasi native macOS/Linux/Windows;
-validasi ulang setelah perubahan tersebut masih menunggu terminal/runner yang
-dapat diakses. Commit lanjutan menyelaraskan source runner ke default
-`1440×900` dan minimum `1024×640`; build/runtime verification lintas host tetap
-menjadi gate berikutnya.
+`WorkbenchWindowConfiguration`. Kontrak tersebut kini sudah diterapkan pada
+runner macOS/Linux/Windows melalui channel `relgeo/window`, dengan ukuran
+default `1440×900` dan minimum `1024×640`. Direct `xcodebuild` melalui
+`macos/Runner.xcworkspace` juga berhasil membangun app debug `arm64` setelah
+perubahan bridge terbaru. Wrapper `flutter build macos` masih gagal menemukan
+destination arm64 pada host lokal, sehingga fresh macOS CI tetap dibutuhkan;
+build Linux/Windows dan runtime verification lintas host tetap menjadi gate
+berikutnya.
 
 ### Ubuntu/Linux
 
@@ -213,6 +215,8 @@ sudah mengompilasi source runner native pada runner OS masing-masing, menjalanka
 test/analyzer Flutter, memeriksa isi artifact, dan mengunggah archive. Evidence
 `Integration #147` tetap merupakan evidence historis sebelum bridge native
 window terbaru; run baru setelah commit `42895d1` dan `ad17dc4` masih diperlukan.
+Build langsung Xcode lokal menutup source compilation macOS, tetapi belum
+menggantikan fresh integration run pada runner GitHub.
 
 ## 10. Exit gate
 

@@ -1,6 +1,6 @@
 # Sub-Rencana 08 — Desktop Platform Delivery
 
-**Status:** Stage A selesai; Stage B/C/E sedang berjalan
+**Status:** Stage A selesai; source-level native window bridge selesai; Stage B/C/E masih menunggu verifikasi fresh CI dan smoke test target OS
 **Tanggal:** 2026-09-23  
 **Owner koordinasi:** `relgeo/workspace`  
 **Implementasi utama:** `relgeo/flutter`  
@@ -195,7 +195,10 @@ itu tidak dimasukkan ke gate artifact pertama.
 - [x] pertahankan job `flutter-macos` yang sudah ada dan tambahkan archive;
 - [x] upload artifact dengan nama yang memuat OS, arch, dan commit;
 - [x] simpan build summary tanpa memasukkan binary besar ke repository;
-- [ ] tambahkan assertion ke integration gate setelah artifact stabil;
+- [~] workflow integration sudah menjalankan analyzer, test, native build,
+  artifact assertion, dan archive untuk macOS, Linux, serta Windows; fresh run
+  setelah perubahan native window bridge masih menunggu dan harus menjadi bukti
+  terbaru sebelum gate ini ditandai selesai;
 - [x] catat commit/run evidence pada sub-plan dan master plan.
 
 ### Evidence CI pertama
@@ -204,6 +207,12 @@ GitHub `Integration #147` pada commit `791ae33` sukses untuk job `flutter`,
 `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`.
 Job native menyelesaikan build release, assertion isi bundle, dan upload artifact
 macOS `.zip`, Linux `.tar.gz`, serta Windows `.zip`. Run: [Integration #147](https://github.com/relgeo/workspace/actions/runs/35834154089).
+
+Audit workflow pada 2026-09-27 tidak menemukan celah cakupan: workflow saat ini
+sudah mengompilasi source runner native pada runner OS masing-masing, menjalankan
+test/analyzer Flutter, memeriksa isi artifact, dan mengunggah archive. Evidence
+`Integration #147` tetap merupakan evidence historis sebelum bridge native
+window terbaru; run baru setelah commit `42895d1` dan `ad17dc4` masih diperlukan.
 
 ## 10. Exit gate
 
@@ -236,7 +245,9 @@ perlu diselesaikan untuk menyatakan artifact desktop awal berhasil.
 1. ~~Audit `relgeo/flutter` untuk status Linux/Windows project dan dependency.~~
 2. ~~Tambahkan workflow Windows build artifact.~~
 3. ~~Jalankan CI dan periksa isi ZIP.~~
-4. Uji ZIP pada Windows 11.
-5. ~~Tambahkan Linux artifact.~~
-6. ~~Rapikan macOS artifact assertion.~~
-7. Baru evaluasi MSIX/installer.
+4. Jalankan fresh integration run setelah native window bridge terbaru dan
+   simpan evidence hasilnya.
+5. Uji ZIP pada Windows 11.
+6. ~~Tambahkan Linux artifact.~~
+7. ~~Rapikan macOS artifact assertion.~~
+8. Baru evaluasi MSIX/installer.

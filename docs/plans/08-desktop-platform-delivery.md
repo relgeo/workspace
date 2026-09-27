@@ -115,11 +115,11 @@ platform-neutral melalui `WorkbenchWindowHost` dan
 `WorkbenchWindowConfiguration`. Kontrak tersebut kini sudah diterapkan pada
 runner macOS/Linux/Windows melalui channel `relgeo/window`, dengan ukuran
 default `1440×900` dan minimum `1024×640`. Direct `xcodebuild` melalui
-`macos/Runner.xcworkspace` juga berhasil membangun app debug `arm64` setelah
-perubahan bridge terbaru. Wrapper `flutter build macos` masih gagal menemukan
-destination arm64 pada host lokal, sehingga fresh macOS CI tetap dibutuhkan;
-build Linux/Windows dan runtime verification lintas host tetap menjadi gate
-berikutnya.
+`macos/Runner.xcworkspace` berhasil membangun app Debug `arm64` dan app Release
+universal (`arm64`/`x86_64`) setelah perubahan bridge terbaru. Wrapper `flutter
+build macos` masih gagal menemukan destination arm64 pada host lokal, sehingga
+fresh macOS CI tetap dibutuhkan; build Linux/Windows dan runtime verification
+lintas host tetap menjadi gate berikutnya.
 
 ### Ubuntu/Linux
 
@@ -218,8 +218,9 @@ sudah mengompilasi source runner native pada runner OS masing-masing, menjalanka
 test/analyzer Flutter, memeriksa isi artifact, dan mengunggah archive. Evidence
 `Integration #147` tetap merupakan evidence historis sebelum bridge native
 window terbaru; run baru setelah commit `4709b95` masih diperlukan.
-Build langsung Xcode lokal menutup source compilation macOS, tetapi belum
-menggantikan fresh integration run pada runner GitHub.
+Build langsung Xcode lokal menutup source compilation Debug/Release macOS dan
+audit source-level kebersihan artifact, tetapi belum menggantikan fresh
+integration run pada runner GitHub.
 
 ## 10. Exit gate
 

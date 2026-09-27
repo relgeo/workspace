@@ -1,4 +1,4 @@
-# Sub-Rencana 09 — Desktop Runtime Smoke Checklist
+# Sub-Rencana 10 — Desktop Runtime Smoke Checklist
 
 **Status:** Checklist siap; eksekusi target OS masih terbuka  
 **Repository pemilik:** `relgeo/workspace`  

@@ -48,6 +48,7 @@ Sub-rencana menjelaskan pekerjaan operasional secara mendalam; dokumen ini tetap
 - [07 — Flutter Capability Promotion dan SVG Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md)
 - [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md)
 - [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
+- [10 — Desktop Runtime Smoke Checklist](./plans/10-desktop-runtime-smoke-checklist.md)
 
 ## 2. Keputusan dan prinsip yang tidak boleh berubah tanpa keputusan baru
 
@@ -463,7 +464,7 @@ Status menggunakan arti berikut:
 - [x] README Flutter menjelaskan batas integrasi dan status release; parity dan release policy Flutter tetap terbuka;
 - [x] workflow dan matrix tidak mengklaim parity final sebelum bukti capability tersedia.
 
-**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](plans/07-flutter-capability-promotion-and-svg-parity.md), dan [docs/plans/08-desktop-platform-delivery.md](plans/08-desktop-platform-delivery.md).
+**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](plans/07-flutter-capability-promotion-and-svg-parity.md), [docs/plans/08-desktop-platform-delivery.md](plans/08-desktop-platform-delivery.md), dan [docs/plans/10-desktop-runtime-smoke-checklist.md](plans/10-desktop-runtime-smoke-checklist.md).
 
 ### Tahap 7 — Release maturity dan perluasan fitur
 

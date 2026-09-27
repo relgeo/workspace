@@ -599,6 +599,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-23 | Safe lint cleanup Flutter dilanjutkan | child commit `89d2e95`; 60 auto-fix dan 4 lint manual diterapkan tanpa perubahan kontrak, `dart analyze` kini `0 WARNING` dan `47 INFO` deprecation-only, serta `flutter test` tetap lulus 119 test |
 | 2026-09-23 | Playground E2E dan desktop matrix diverifikasi ulang | Playground child commit `3969d47`; audit UX, lint, unit test `85/85`, build, dan E2E `2/2` lulus dengan browser fallback lokal; `Integration #151` sukses pada `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public` |
 | 2026-09-23 | Local integration gate diberi fallback browser yang eksplisit | workspace commit `515bda4`; `PLAYWRIGHT_EXECUTABLE_PATH` mencegah download Chromium saat browser kompatibel sudah tersedia, dan gate lokal lulus `35/35` dengan strict baseline `81/81` |
+| 2026-09-27 | Evidence Release macOS dan audit kebersihan source diperbarui | Direct `xcodebuild` melalui `macos/Runner.xcworkspace` pada Flutter berhasil membangun app Release universal (`arm64`/`x86_64`); source audit tidak menemukan path lokal, private key, token, atau pola password. Fresh CI setelah native bridge terbaru, Ubuntu/Windows 11 smoke, dan accessibility runtime tetap terbuka |
 
 ## 10. Catatan pemeliharaan
 

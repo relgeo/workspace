@@ -49,6 +49,7 @@ Sub-rencana menjelaskan pekerjaan operasional secara mendalam; dokumen ini tetap
 - [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md)
 - [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
 - [10 — Desktop Runtime Smoke Checklist](./plans/10-desktop-runtime-smoke-checklist.md)
+- [11 — MCP Server dan Agent-Assisted RelGeo Authoring](./plans/11-mcp-agent-integration.md)
 - [Flutter 02 — Workbench Layout dan Panel System](./flutter/docs/plans/02-workbench-layout-and-panel-system.md)
 
 ## 2. Keputusan dan prinsip yang tidak boleh berubah tanpa keputusan baru

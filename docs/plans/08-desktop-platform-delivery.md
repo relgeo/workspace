@@ -1,6 +1,6 @@
 # Sub-Rencana 08 — Desktop Platform Delivery
 
-**Status implementasi:** fondasi dan source-level native window bridge tersedia; parsial. **Status evidence:** Integration #151 berlaku untuk revision sebelum Flutter pointer `edc9488`; fresh CI belum ada. Ubuntu/Linux dan Windows 11 runtime smoke masih menunggu host/VM. macOS lokal pada pointer terbaru baru terbukti melalui direct Xcode Debug x86_64, bukan universal/arm64 release build.
+**Status implementasi:** fondasi dan source-level native window bridge tersedia; parsial. **Status evidence:** Integration #151 berlaku untuk revision sebelum Flutter pointer `edc9488`; fresh CI belum ada. Berdasarkan keputusan manusia 2026-10-08, Ubuntu/Linux dan Windows 11 runtime smoke di-defer sampai host/VM atau runner tersedia. Artifact CI tidak disebut usable tanpa smoke target; defer ini bukan blocker goal.
 **Tanggal:** 2026-09-23  
 **Owner koordinasi:** `relgeo/workspace`  
 **Implementasi utama:** `relgeo/flutter`  
@@ -42,14 +42,31 @@ desktop yang dapat dijalankan.
 | Surface | Build authority | Artifact awal | Verifikasi minimum | Status |
 | --- | --- | --- | --- | --- |
 | macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | CI + local launch hijau; keyboard QA pending |
-| Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | job + archive; smoke pending |
-| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | CI + ZIP assertion hijau; Win11 smoke pending |
+| Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | CI + archive evidence; runtime smoke deferred, artifact non-usable |
+| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | CI + ZIP assertion evidence; smoke deferred, ZIP non-usable |
 | Web/PWA | Linux CI / website workflow | static deployment | browser E2E dan public smoke | sudah berjalan |
 | CLI | Linux CI / Node matrix | npm package/binary surface | lint, test, install, command smoke | sudah berjalan |
 
 Flutter menjelaskan bahwa target Windows, macOS, dan Linux membutuhkan setup
 platform pada OS masing-masing. Karena itu matrix ini memakai native runner,
 bukan asumsi cross-compilation dari Mac.
+
+### 3.1 Reconciled artifact provenance matrix — 2026-10-08
+
+| Evidence source | Workspace commit | Flutter pointer | Toolchain | Target / artifact | Assertion and status |
+| --- | --- | --- | --- | --- | --- |
+| `Integration #147` — `flutter-macos` | `791ae33adffabaa509223a4f271b6d7babc740bd8` | `e46f1ad7eb8c8df85bada582e3c5066dc73f62a1` | Flutter stable `3.41.9`, Dart `3.11.5` | macOS runner; `relgeo-flutter-macos-${runner.arch}-791ae33adffabaa509223a4f271b6d7babc740bd8.zip` | `.app` directory and executable asserted; archive uploaded; runtime/accessibility smoke is separate |
+| `Integration #147` — `flutter-linux` | `791ae33adffabaa509223a4f271b6d7babc740bd8` | `e46f1ad7eb8c8df85bada582e3c5066dc73f62a1` | Flutter stable `3.41.9`, Dart `3.11.5` | Ubuntu runner x64; `relgeo-flutter-linux-x64-791ae33adffabaa509223a4f271b6d7babc740bd8.tar.gz` | executable `relgeo_flutter`, `data`, and `lib` asserted; archive uploaded; runtime smoke deferred |
+| `Integration #147` — `flutter-windows` | `791ae33adffabaa509223a4f271b6d7babc740bd8` | `e46f1ad7eb8c8df85bada582e3c5066dc73f62a1` | Flutter stable `3.41.9`, Dart `3.11.5` | Windows runner x64; `relgeo-flutter-windows-x64-791ae33adffabaa509223a4f271b6d7babc740bd8.zip` | `relgeo_flutter.exe`, `flutter_windows.dll`, and `data` asserted before ZIP; Windows 11 smoke deferred, ZIP non-usable |
+| Current workspace static artifact | `d3ec2b0430f12bd95f2be312fa7438b6d97757d6` | `edc9488952db7edc74dd2caa7fc2064f03ff62f9` | Flutter baseline `3.41.9`, Dart `3.11.5` | macOS `14.5` arm64; local `RelGeo.app`, universal `arm64 + x86_64` | bundle metadata and executable architecture/hash verified locally; interactive window smoke limited by native-app approval |
+
+`Integration #151` remains the canonical cross-repo report for workspace
+`21ee21b2ea8965a8faad45ddd37485a0d55942f8` with Flutter pointer
+`7917d17cd269f24c431d035d3c0351e35cbb3c17`; it predates the current Flutter
+pointer `edc9488` and is not silently promoted to current-pointer evidence.
+The matrix distinguishes CI archive assertions from runtime usability: no
+Linux or Windows artifact is called usable while the human decision defers
+target smoke.
 
 ## 4. Arsitektur pipeline
 
@@ -128,8 +145,34 @@ lintas host tetap menjadi gate berikutnya.
 - [x] deklarasikan dependency desktop GTK yang diperlukan di runner;
 - [x] tambahkan assertion dan archive artifact yang memuat binary, `data`, dan
   `lib` runtime;
-- [ ] jalankan smoke test pada Ubuntu nyata atau VM;
-- [ ] catat distro/version dan arsitektur target.
+- [~] jalankan smoke test pada Ubuntu nyata atau VM — di-defer sampai host/VM tersedia;
+- [~] catat distro/version dan arsitektur target — menunggu target runtime yang disetujui.
+
+### Ubuntu/Linux runtime evidence checkpoint — 2026-10-08
+
+Artifact provenance yang tersedia berasal dari workflow `flutter-linux` pada
+`Integration #147`, workspace commit
+`791ae33adffabaa509223a4f271b6d7babc740bd8`, Flutter submodule commit
+`e46f1ad7eb8c8df85bada582e3c5066dc73f62a1`, runner `ubuntu-latest`, target
+`x64`, Flutter stable `3.41.9`, Dart `3.11.5`, dan archive bernama
+`relgeo-flutter-linux-x64-791ae33adffabaa509223a4f271b6d7babc740bd8.tar.gz`.
+Workflow meng-assert executable `relgeo_flutter`, folder `data`, dan folder
+`lib` sebelum upload.
+
+Runtime smoke belum dapat dijalankan pada task ini. Provenance attempt:
+workspace `d3ec2b0430f12bd95f2be312fa7438b6d97757d6`, Flutter submodule
+`edc9488952db7edc74dd2caa7fc2064f03ff62f9`, tanggal `2026-10-08`, host macOS
+`14.5` arm64. Tidak ada Ubuntu/Linux VM atau container aktif pada host; Docker
+tidak memiliki workload yang dapat dipakai dan QEMU/Wine tidak tersedia.
+
+| Skenario | Hasil 2026-10-08 | Klasifikasi |
+| --- | --- | --- |
+| Download/extract `.tar.gz` | Tidak dijalankan; artifact CI tidak tersedia lokal dan GitHub API tidak dapat diakses karena kredensial `gh` kedaluwarsa | limitation akses |
+| Launch/load/render fixture | Tidak dijalankan | belum ada target Ubuntu/Linux |
+| Resize/keyboard/file access/clean exit | Tidak dijalankan | belum ada target Ubuntu/Linux |
+
+Kesimpulan: Linux memiliki build/archive provenance, tetapi belum memiliki
+runtime evidence dan tidak boleh disebut usable.
 
 ## 7. Stage C — Windows CI artifact
 
@@ -170,14 +213,40 @@ GitHub Actions artifact. Mengunggah `.exe` saja tidak cukup.
 Prosedur lengkap dan template evidence tersedia di
 [10-desktop-runtime-smoke-checklist.md](10-desktop-runtime-smoke-checklist.md).
 
-- [ ] unduh ZIP dari run CI;
-- [ ] ekstrak pada Windows 11;
-- [ ] jalankan executable;
-- [ ] load fixture atau dokumen contoh;
-- [ ] verifikasi preview/render;
-- [ ] uji resize, keyboard, file open/save bila tersedia;
-- [ ] catat missing runtime DLL, crash, warning, dan masalah font;
-- [ ] simpan model Windows, versi OS, arsitektur, commit, dan run URL.
+- [~] unduh ZIP dari run CI — di-defer; akses artifact CI belum tersedia;
+- [~] ekstrak pada Windows 11 — di-defer sampai host/VM tersedia;
+- [~] jalankan executable — di-defer;
+- [~] load fixture atau dokumen contoh — di-defer;
+- [~] verifikasi preview/render — di-defer;
+- [~] uji resize, keyboard, file open/save bila tersedia — di-defer;
+- [~] catat missing runtime DLL, crash, warning, dan masalah font — di-defer;
+- [~] simpan model Windows, versi OS, arsitektur, commit, dan run URL — provenance artifact CI tetap tersimpan, hasil runtime menunggu.
+
+### Windows 11 runtime evidence checkpoint — 2026-10-08
+
+Artifact provenance yang tersedia berasal dari workflow `flutter-windows` pada
+`Integration #147`, workspace commit
+`791ae33adffabaa509223a4f271b6d7babc740bd8`, Flutter submodule commit
+`e46f1ad7eb8c8df85bada582e3c5066dc73f62a1`, runner `windows-latest`, target
+`x64`, Flutter stable `3.41.9`, Dart `3.11.5`, dan archive bernama
+`relgeo-flutter-windows-x64-791ae33adffabaa509223a4f271b6d7babc740bd8.zip`.
+Workflow meng-assert `relgeo_flutter.exe`, `flutter_windows.dll`, dan folder
+`data` sebelum upload.
+
+Runtime smoke belum dapat dijalankan pada task ini. Provenance attempt:
+workspace `d3ec2b0430f12bd95f2be312fa7438b6d97757d6`, Flutter submodule
+`edc9488952db7edc74dd2caa7fc2064f03ff62f9`, tanggal `2026-10-08`, host macOS
+`14.5` arm64. Tidak ada Windows 11 host/VM atau artifact ZIP lokal yang dapat
+digunakan; GitHub API tidak dapat diakses dari sesi ini.
+
+| Skenario | Hasil 2026-10-08 | Klasifikasi |
+| --- | --- | --- |
+| Download/extract ZIP | Tidak dijalankan; artifact CI hanya terdaftar pada provenance historis dan kredensial `gh` kedaluwarsa | limitation akses |
+| Launch/load/render fixture | Tidak dijalankan | belum ada target Windows 11 |
+| Resize/keyboard/file access/clean exit | Tidak dijalankan | belum ada target Windows 11 |
+
+Kesimpulan: Windows memiliki build/ZIP assertion provenance, tetapi ZIP belum
+usable dan tidak boleh disebut usable sebelum smoke Windows 11 nyata/VM lulus.
 
 ## 8. Stage D — Packaging installer
 
@@ -222,15 +291,21 @@ Build langsung Xcode lokal menutup source compilation Debug/Release macOS dan
 audit source-level kebersihan artifact, tetapi belum menggantikan fresh
 integration run pada runner GitHub.
 
+### Runtime smoke checkpoint log
+
+| Tanggal | Workspace / Flutter | Host dan toolchain | Hasil |
+| --- | --- | --- | --- |
+| 2026-10-08 | `d3ec2b0` / `edc9488` | macOS `14.5` arm64; Flutter SDK lokal tidak dapat membaca `engine.stamp` karena permission; Docker tidak menyediakan Linux workload; QEMU/Wine tidak tersedia; `gh auth status` melaporkan token GitHub kedaluwarsa | Linux dan Windows runtime smoke tidak dijalankan; status artifact tetap build-only dan non-usable |
+
 ## 10. Exit gate
 
 Sub-rencana ini selesai untuk tahap artifact ketika:
 
 - [x] macOS release build dan launch smoke lulus;
-- [ ] Ubuntu/Linux release build dan smoke lulus;
+- [~] Ubuntu/Linux release build dan smoke lulus — runtime smoke di-defer, build/archive evidence tetap tersimpan;
 - [x] Windows CI build lulus pada `windows-latest`;
 - [x] Windows ZIP memuat executable, DLL, dan `data` lengkap;
-- [ ] ZIP berhasil dijalankan pada Windows 11;
+- [~] ZIP berhasil dijalankan pada Windows 11 — di-defer sampai host/VM tersedia;
 - [x] evidence tersimpan dan dapat ditelusuri;
 - [x] web/PWA dan CLI tetap lulus gate tanpa bergantung pada desktop build.
 
@@ -259,3 +334,8 @@ perlu diselesaikan untuk menyatakan artifact desktop awal berhasil.
 6. ~~Tambahkan Linux artifact.~~
 7. ~~Rapikan macOS artifact assertion.~~
 8. Baru evaluasi MSIX/installer.
+
+Keputusan 2026-10-08: langkah runtime Ubuntu/Linux dan Windows 11 sengaja
+di-defer karena host/VM target belum tersedia. Jangan mengganti langkah ini
+dengan Docker Compose atau mengubah status artifact menjadi usable. Buka kembali
+ketika runner/host yang sesuai tersedia.

@@ -56,6 +56,21 @@
       "relgeo.github.io"
     ]
   },
+  "repositoryBoundaries": {
+    "mcp": {
+      "stagingPath": "mcp",
+      "targetRepository": "relgeo/mcp",
+      "packageName": "relgeo_mcp",
+      "owner": "Agus Made",
+      "orchestrator": "relgeo/workspace",
+      "protocolOwner": "relgeo/mcp",
+      "hostAdapter": "flutter/lib/src/mcp/workbench_agent_bridge.dart",
+      "widgetLayerAllowed": false,
+      "filesystemWritesAllowed": false,
+      "autosaveAllowed": false,
+      "remoteMcpAllowed": false
+    }
+  },
   "packages": [
     {
       "path": "geometry",
@@ -112,6 +127,34 @@
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
+    }
+  ],
+  "dartPackages": [
+    {
+      "path": "mcp",
+      "repository": "relgeo/mcp",
+      "name": "relgeo_mcp",
+      "version": "0.1.0-dev.1",
+      "compatibilityLine": "0.5",
+      "publishable": false,
+      "status": "spike",
+      "owner": "Agus Made",
+      "orchestrator": "relgeo/workspace",
+      "releasePolicy": "Keep private until SDK and transport conformance passes; do not add to the npm release family.",
+      "dependsOn": {
+        "normativeSpec": "spec/id@b96ba3b23de202227eade06614635ef6717df516",
+        "core": "@relgeo/core 0.5.x compatibility contract",
+        "languageService": "@relgeo/language-service 0.5.x compatibility contract",
+        "renderer": "@relgeo/renderer-svg 0.5.x compatibility contract",
+        "cli": "optional future stdio host; no runtime dependency in the package",
+        "flutter": "host-only path dependency ../mcp; bridge in flutter/lib/src/mcp"
+      },
+      "compatibilityImpact": {
+        "specChange": "Refresh bundled snapshot/provenance and revalidate tools before desktop release.",
+        "dtoBreakingChange": "Coordinated update of relgeo_mcp and Flutter host bridge.",
+        "transportChange": "Adapter-only change; rerun protocol fixture and SDK conformance.",
+        "npmReleaseOrder": "excluded"
+      }
     }
   ],
   "consumers": [

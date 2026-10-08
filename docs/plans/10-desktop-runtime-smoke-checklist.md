@@ -1,6 +1,6 @@
 # Sub-Rencana 10 — Desktop Runtime Smoke Checklist
 
-**Status:** Checklist siap; eksekusi target OS parsial/menunggu. Android/iOS berada di luar scope yang disetujui dan tidak menjadi item tertunda checklist ini.
+**Status:** Checklist siap; artifact CI macOS/Ubuntu/Linux/Windows tersedia secara historis. Berdasarkan keputusan manusia 2026-10-08, host smoke Ubuntu/Linux dan Windows 11 di-defer tanpa klaim usable. macOS keyboard/VoiceOver juga belum terbukti. Android/iOS berada di luar scope yang disetujui dan tidak menjadi item tertunda checklist ini.
 **Repository pemilik:** `relgeo/workspace`  
 **Implementasi:** `relgeo/flutter`  
 **Parent:** [08-desktop-platform-delivery.md](08-desktop-platform-delivery.md)  
@@ -25,6 +25,35 @@ Catat data berikut untuk setiap eksekusi:
 | Arsitektur | `arm64` / `x64` |
 | Display/session | Retina, scaling, Wayland/X11, atau DPI |
 | Tester/date | `...` |
+
+### 1.2 Desktop artifact provenance matrix
+
+| Target | CI source and commits | Archive / contents assertion | Runtime status |
+| --- | --- | --- | --- |
+| macOS | `Integration #147`; workspace `791ae33adffabaa509223a4f271b6d7babc740bd8`; Flutter `e46f1ad7eb8c8df85bada582e3c5066dc73f62a1` | `relgeo-flutter-macos-${runner.arch}-791ae33adffabaa509223a4f271b6d7babc740bd8.zip`; `.app` and executable asserted | Historical launch evidence; current interactive/accessibility limitation recorded in §4.1 |
+| Ubuntu/Linux x64 | `Integration #147`; workspace `791ae33adffabaa509223a4f271b6d7babc740bd8`; Flutter `e46f1ad7eb8c8df85bada582e3c5066dc73f62a1` | `relgeo-flutter-linux-x64-791ae33adffabaa509223a4f271b6d7babc740bd8.tar.gz`; executable, `data`, `lib` asserted | Deferred; archive is not usable without target smoke |
+| Windows x64 | `Integration #147`; workspace `791ae33adffabaa509223a4f271b6d7babc740bd8`; Flutter `e46f1ad7eb8c8df85bada582e3c5066dc73f62a1` | `relgeo-flutter-windows-x64-791ae33adffabaa509223a4f271b6d7babc740bd8.zip`; `.exe`, `flutter_windows.dll`, `data` asserted | Deferred; ZIP is not usable without Windows 11 smoke |
+
+The current workspace pointer is `d3ec2b0430f12bd95f2be312fa7438b6d97757d6`
+with Flutter `edc9488952db7edc74dd2caa7fc2064f03ff62f9`. It is recorded
+separately from the historical CI artifacts and must not inherit their status.
+
+### 1.1 Evidence checkpoint workspace — 2026-10-08
+
+Browser evidence yang dijalankan pada task ini memakai workspace
+`d3ec2b0430f12bd95f2be312fa7438b6d97757d6`, Playground
+`ecc1407a8ba0da3929042137ff43b8e69f50b556`, dan Flutter
+`edc9488952db7edc74dd2caa7fc2064f03ff62f9`. Host adalah macOS `14.5`
+arm64; toolchain Node `22.23.2` (di bawah requirement root `>=24`), pnpm
+`10.33.3`, dan Playwright `1.63.0`.
+
+Build/lint/unit/audit Playground lulus (`93/93` unit). Task ini tidak mengubah
+status desktop artifact: macOS, Ubuntu/Linux, dan Windows tetap memiliki build /
+archive evidence CI historis pada `Integration #151`, tetapi smoke target nyata
+belum boleh ditandai selesai. Windows dimulai dari ZIP CI dan tetap **tidak
+usable** sampai diekstrak serta dijalankan pada Windows 11 nyata/VM. Signing,
+installer publik, Android/iOS, dan mobile assistive technology tetap di luar
+exit gate ini.
 
 ## 2. Alur smoke test
 
@@ -71,6 +100,27 @@ flowchart TD
 - [ ] Tab berpindah melalui kontrol utama dengan urutan masuk akal;
 - [ ] Enter/Space mengaktifkan kontrol custom;
 - [ ] light/dark toggle berpindah tanpa restart; sebelum pilihan eksplisit, default mengikuti system; reset pilihan kembali ke system.
+
+### 4.1 macOS smoke evidence checkpoint — 2026-10-08
+
+| Field | Nilai |
+| --- | --- |
+| Workspace / Flutter | `d3ec2b0430f12bd95f2be312fa7438b6d97757d6` / `edc9488952db7edc74dd2caa7fc2064f03ff62f9` |
+| Artifact | `flutter/build/macos/Build/Products/Release/RelGeo.app`; bundle `com.relgeo.relgeoFlutter`, version `1.0.0 (1)` |
+| Toolchain | Flutter stable baseline `3.41.9`, Dart `3.11.5`; release executable is universal `arm64 + x86_64`; SHA-256 `6aa9fc1aee08a7fbe5f514ec14078c7b2e5ee350af7aea0c5f8b3acd0e00c1e0` |
+| Host / date | MacBook Air, macOS `14.5` (`23F79`), arm64; `2026-10-08` |
+| Launch | Partial: native launch was requested and the CUA state reported RelGeo running, but CUA refused to bind the RelGeo app (`Computer Use was not approved to use RelGeo`). No crash/dialog result can be claimed. |
+| Window / AX | Blocked by the same app-approval boundary; no current window AX tree or screenshot was obtained. |
+| Fixture/render/diagnostic/export | Not re-run on the current Release window because the window could not be bound. Historical local evidence in `docs/plans/08-desktop-platform-delivery.md` records `COMPILED OK`, zero constraint violations, values, SVG export, and clean exit on a prior macOS smoke. |
+| Resize / keyboard | Not passed in this checkpoint. Historical Flutter child evidence records Debug native menu/zoom and splitter pointer smoke, but not full keyboard traversal. |
+| VoiceOver | Not run; no VoiceOver announcement or AX traversal is claimed. |
+| Clean exit | Not verified in this checkpoint because the native window was not controllable. |
+
+Conclusion: the current Release artifact is provenance-valid and universal, but
+this checkpoint is launch/process-only. The app-approval limitation prevents a
+full window, fixture, resize, keyboard, export, clean-exit, or VoiceOver pass.
+The remaining boxes in §4 and §7 must stay open until an approved native-app
+session is available.
 
 ## 5. Ubuntu/Linux
 

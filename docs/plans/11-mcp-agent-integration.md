@@ -1,7 +1,7 @@
 # Sub-Rencana 11 — MCP Server dan Agent-Assisted RelGeo Authoring
 
-**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** belum dimulai; contract/tool schema, package boundary, dan delivery plan masih perlu diturunkan sebelum coding. Belum ada sub-rencana teknis rinci atau kode MCP.
-**Repository pemilik:** `relgeo/workspace` sebagai orkestrator; implementasi utama direncanakan pada package/repository MCP Dart baru
+**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security dan typed MVP tool/resource schema tersedia; adapter SDK/transport serta delivery integration masih perlu diturunkan sebelum implementasi penuh.
+**Repository pemilik:** `relgeo/workspace` sebagai orkestrator; package MCP ditetapkan sebagai `relgeo_mcp` pada target repository `relgeo/mcp` (saat ini staging di `mcp/`)
 **Pemilik keputusan:** Agus Made
 **Compatibility line:** RelGeo DSL 0.5.x
 **Prasyarat:** `spec`, `core`, `language-service`, `cli`, dan RelGeo Desktop Flutter
@@ -112,10 +112,16 @@ untuk endpoint yang diakses client melalui jaringan. [MCP server guide](https://
 Rencana package dan executable:
 
 ```text
-relgeo_mcp                 pure Dart package: protocol, tools, resources, prompts
+relgeo/mcp                 target repository; package name: relgeo_mcp
+relgeo_mcp                 pure Dart package: contract, protocol adapters, tools, resources, prompts
 RelGeo Desktop              embed relgeo_mcp dan menjalankan Streamable HTTP lokal
 bin/relgeo_mcp.dart         executable Dart standalone bila kelak diperlukan
 ```
+
+Session/security contract evidence sekarang berada di `mcp/` dan
+`docs/mcp/01-session-bridge-security-contract.md`. Package tersebut tetap
+pure-Dart; adapter desktop berada di `flutter/lib/src/mcp/` dan hanya
+menjembatani session/editor host.
 
 Implementasi awal menggunakan Dart karena RelGeo Desktop sudah memakai Flutter
 dan Dart. MCP dapat berjalan di dalam proses aplikasi yang sama, sehingga tidak
@@ -131,6 +137,11 @@ spike. `dart_mcp` dipublikasikan oleh `labs.dart.dev` namun masih experimental;
 dari publisher pihak ketiga. Dependency final belum dikunci sebelum conformance
 test dan smoke test desktop lulus. [`dart_mcp`](https://pub.dev/packages/dart_mcp)
 dan [`mcp_dart`](https://pub.dev/packages/mcp_dart)
+
+Evidence spike kandidat, fixture protocol bersama, hasil stdio, batasan
+Streamable HTTP pada managed runner, Inspector validation, dan baseline Flutter
+dicatat di `docs/mcp/02-sdk-transport-spike.md`. Tidak ada kandidat SDK yang
+dikunci pada package sebelum conformance lintas transport lulus.
 
 ### 3.3 Agent bridge boundary
 
@@ -191,6 +202,14 @@ relgeo://document/active/diagnostics
 Resource spec harus mengambil makna normatif dari `relgeo/spec`, bukan menyalin
 versi yang diedit manual ke MCP Server. Resource active document hanya tersedia
 dalam desktop-connected mode.
+
+Typed provenance support is now present in the pure-Dart contract package:
+`DocumentationResult` carries `source`, `sourceUrl`, `specVersion`, and
+`revision`; only `spec` is normative, while website material remains
+explanatory. The typed tool/resource catalog and canonical URI parser are now
+in `mcp/lib/src/contract/mcp_schema.dart`; the adapter/resource resolver and
+full tool execution still belong to the next MCP package task. See
+`docs/mcp/04-mvp-tool-resource-contract.md` for the contract and evidence map.
 
 ### 4.3 Dokumentasi GitHub dan website
 
@@ -330,6 +349,14 @@ DocumentEditResult
   diagnostics
 ```
 
+Contract ini telah dispike sebagai tipe pure-Dart. `ActiveDocumentSnapshot`
+memiliki document identity, source, dirty state, diagnostics, dan monotonic
+revision. `DocumentEditProposal` hanya menerima bounded non-overlapping source
+ranges; adapter desktop melakukan revision/document guard sebelum satu setter
+editor, sehingga satu proposal menjadi satu undoable transaction. Implementasi
+tidak memanggil Save, Save As, export, atau filesystem. Evidence selengkapnya
+ada pada `docs/mcp/01-session-bridge-security-contract.md`.
+
 Patch dengan `baseRevision` yang sudah kedaluwarsa harus ditolak sebagai
 `stale`, bukan diterapkan secara diam-diam. Patch yang lolos validasi diterapkan
 langsung ke source aktif sebagai satu transaksi undoable. Penerapan ini tidak
@@ -389,17 +416,24 @@ log atau source code.
 - [x] menetapkan Flutter sebagai host/bridge, bukan pemilik seluruh protocol;
 - [x] menetapkan fokus MVP pada syntax discovery dan validation;
 - [x] menetapkan panel mandiri desktop tetap menjadi source editing surface;
-- [ ] menentukan nama repository final dan package name;
-- [ ] menambahkan matrix dependency dan compatibility evidence.
+- [x] menetapkan target repository `relgeo/mcp` dan package name `relgeo_mcp`;
+- [x] menambahkan boundary, dependency relation, dan compatibility/release matrix.
 
 ### Tahap 1 — Dart MCP package spike
 
-- [ ] buat package `relgeo_mcp` pure Dart;
-- [ ] evaluasi `dart_mcp` dan `mcp_dart` dengan protocol fixture yang sama;
-- [ ] implementasikan transport Streamable HTTP untuk desktop;
-- [ ] implementasikan transport stdio untuk executable/host lokal;
-- [ ] expose `find_syntax`, `get_examples`, dan `validate_source`;
-- [ ] hubungkan resources ke spec dan examples yang versioned;
+- [x] buat package `relgeo_mcp` pure Dart;
+- [~] evaluasi `dart_mcp` dan `mcp_dart` dengan protocol fixture yang sama;
+- [~] implementasikan transport Streamable HTTP untuk desktop;
+- [x] implementasikan transport stdio untuk executable/host lokal;
+- [x] define typed `find_syntax`, `get_syntax_rule`, `get_examples`,
+  `complete_source`, `validate_source`, `explain_diagnostic`, dan
+  `render_source` contracts;
+- [x] define canonical resource URI templates untuk spec, examples,
+  diagnostics, dan active document;
+- [x] map contract ownership ke language-service, core, renderer, dan
+  active-session bridge;
+- [ ] expose tools melalui adapter MCP dan hubungkan resources ke snapshot
+  spec/examples yang versioned;
 - [ ] gunakan language-service untuk completion/diagnostics;
 - [ ] gunakan core untuk parse/resolve/validation;
 - [ ] expose resource spec dan dokumentasi website/GitHub dengan provenance;
@@ -407,6 +441,12 @@ log atau source code.
 - [ ] dukung cache internal dan fallback offline;
 - [ ] uji melalui MCP Inspector dan fixture conformance;
 - [ ] pastikan desktop tidak membutuhkan Node.js/npm.
+
+Catatan spike: fixture wire contract dan stdio round-trip lulus; loopback
+Streamable HTTP sudah memiliki server/harness dan remote host ditolak, tetapi
+binding socket tidak dapat dijalankan pada managed sandbox. Kandidat SDK belum
+dikunci; evidence dan command validation ada di
+`docs/mcp/02-sdk-transport-spike.md`.
 
 ### Tahap 2 — Authoring quality
 
@@ -495,7 +535,7 @@ log atau source code.
 | Menyalin seluruh spec ke prompt | Gunakan resource/rule/example retrieval yang terarah |
 | Dokumentasi remote berubah | Pin revision/version, bundle snapshot, cache internal, dan sediakan offline fallback |
 | Konflik spec vs website | `relgeo/spec` selalu menjadi sumber normatif |
-| Package name | Rencanakan package Dart `relgeo_mcp`; finalisasi pada Tahap 0 |
+| Package/repository MCP | `relgeo_mcp` pada target repository `relgeo/mcp`; staging saat ini berada di `mcp/` dan private/non-publishable |
 | Standalone executable | Tunda sampai kebutuhan non-Flutter nyata; gunakan package yang sama |
 
 ## 12. Definition of done

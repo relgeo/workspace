@@ -1,8 +1,28 @@
 # Sub-rencana Tahap 6 — Flutter Contract Alignment
 
-**Status implementasi:** parsial; fondasi alignment dan runner tersedia. **Status keputusan:** Flutter non-publishable, stable 3.41.9, dan target desktop macOS/Linux/Windows disetujui; mobile ditunda. **Status evidence:** Integration #151 mendahului Flutter pointer `edc9488`; pointer terbaru belum mendapat integration CI. Promotion boolean/intersection sudah disetujui tetapi belum diterapkan; pekerjaan Flutter sementara dijeda.
+**Status implementasi:** parsial; fondasi alignment dan runner tersedia. **Status keputusan:** Flutter non-publishable, stable 3.41.9, dan target desktop macOS/Linux/Windows disetujui; mobile ditunda. **Status evidence:** Integration #151 mendahului Flutter pointer `edc9488`; pointer terbaru memiliki evidence child-repo yang dapat ditelusuri, tetapi belum mendapat integration CI. Promotion boolean/intersection sudah disetujui tetapi belum diterapkan; pekerjaan Flutter sementara dijeda.
 
 Pekerjaan lanjutan untuk dua gap tersebut dipecah ke [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](07-flutter-capability-promotion-and-svg-parity.md).
+
+## 0. Checkpoint evidence — 2026-10-08
+
+Gitlink workspace menunjuk tepat ke Flutter
+`edc9488952db7edc74dd2caa7fc2064f03ff62f9` (`edc9488`), checkout child bersih.
+Evidence terbaru yang dapat ditelusuri pada revision itu berada di
+`flutter/docs/plans/03-docking-tree-and-drop-preview.md` (catatan 2026-10-07):
+300 test, analyzer, web build, dan direct Xcode x86_64 Debug build. Evidence ini
+bersifat child-repo/local dan tidak membuktikan universal/arm64 release atau
+integration CI.
+
+`Integration #151` pada `workspace@21ee21b` tetap dipertahankan sebagai CI evidence lintas-repo historis
+terakhir. Tidak ada run CI baru yang menguji `edc9488`; gap ini dicatat eksplisit,
+bukan digantikan oleh hasil local TypeScript atau oleh perubahan pointer baseline.
+Root checkpoint yang menyertainya lulus strict baseline `81/81`, compatibility
+`283/283`, dan conformance `253/253` pada Node `24.21.0`/pnpm `10.33.3`.
+Transcript manual `.internal/tmp-test.txt` pada pointer yang sama menambahkan
+evidence workspace: `flutter:conformance` lulus staging fixture, `flutter pub get`,
+analyze, dan 300 test; transcript juga mencatat local `35/35` dan public `50/50`.
+Evidence ini bukan run CI baru dan tidak menggantikan `Integration #151`.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal mulai:** 2026-09-16  
 **Status note:** Detail historis di bagian bawah mencatat keadaan saat tanggalnya masing-masing. Ringkasan dan tindakan saat ini ada di bagian atas serta gap register; jangan membaca status “terbuka” pada log lama sebagai status terbaru tanpa memeriksa tanggal.
@@ -219,7 +239,7 @@ tetapi tidak menjadi blocker pada baseline ini.
 | Gap | Owner | Evidence saat ini | Forward-fix |
 | --- | --- | --- | --- |
 | Flutter runtime belum tersedia pada environment koordinasi | relgeo/workspace + relgeo/flutter | resolved locally: SDK Flutter `3.41.9` / Dart `3.11.5` dipakai melalui terminal VS Code dan runner lengkap lulus | ulangi dari CI/checkout bersih; pertahankan `RELGEO_FLUTTER_BIN` sebagai override portable |
-| Evidence CI untuk active fixture dan diagnostic | relgeo/flutter | `Integration #91` job `flutter` lulus dari checkout resmi; runner mencakup active/runtime/invalid dan dua candidate dengan 16 fixture serta 119 test | pertahankan evidence CI; pisahkan capability yang belum tercakup oleh fixture aktif saat promotion dibahas |
+| Evidence CI untuk active fixture dan diagnostic | relgeo/flutter | `Integration #151` job `flutter` lulus untuk pointer historis; pointer `edc9488` belum memiliki integration CI baru | pertahankan evidence CI historis dan jalankan refresh resmi sebelum mengubah status capability |
 | Standalone Flutter checkout tanpa parent workspace belum menjalankan seluruh fixture canonical | relgeo/flutter | checkout terisolasi lokal lulus analyzer non-fatal dan 99 test; 7 shared-fixture test skip dengan alasan eksplisit, sementara official workspace checkout pada `Integration #91` lulus | pertahankan fixture canonical sebagai input opt-in atau sediakan paket fixture resmi bila standalone parity kelak diwajibkan |
 | Semantic parity candidate boolean/intersection belum menjadi active contract | relgeo/workspace + relgeo/flutter | operation-level dan semantic projection ter-normalisasi candidate Flutter lulus lokal dan pada `Integration #91`; expected JSON/SVG TypeScript juga lulus; candidate belum masuk active baseline | sepakati apakah candidate masuk active contract, pertahankan normalisasi sebagai aturan evidence, lalu ubah status matrix secara eksplisit |
 | Semantic parity candidate evaluator/unit belum menjadi active contract | relgeo/workspace + relgeo/flutter | parameter, `in`/`mm`, derived placement, scene snapshot, dan SVG semantic projection candidate lulus lokal dan pada `Integration #91`; candidate belum masuk active baseline | sepakati promotion boundary bersama candidate boolean/intersection; pertahankan `cliUnit` eksplisit untuk snapshot non-default |
@@ -235,7 +255,7 @@ tetapi tidak menjadi blocker pada baseline ini.
 - [x] mode error memiliki regression test yang mempertahankan preview valid terakhir sambil menampilkan diagnostic; eksekusi Flutter lulus;
 - [x] diagnostic `align` Flutter memiliki projection canonical yang cocok pada type, message, deviation, path, dan involved objects pada hasil test Flutter lokal;
 - [x] invalid input memiliki boundary test untuk YAML syntax, struktur object, dan unknown reference; exact vocabulary lintas consumer masih merupakan gap terpisah;
-- [x] `flutter analyze` non-fatal dan `flutter test` lulus pada toolchain `3.41.9` dari checkout terisolasi lokal; job Flutter pada `Integration #94` juga lulus;
+- [x] `flutter analyze` non-fatal dan `flutter test` lulus pada toolchain `3.41.9` dari checkout terisolasi lokal; job Flutter pada `Integration #151` juga lulus untuk pointer historis;
 - [x] Flutter job berdiri sendiri dan tidak mengubah status gate TypeScript ketika Flutter belum tersedia; konfigurasi remote terbukti pada `Integration #94`;
 - [x] README, compatibility record, fixture manifest, dan master plan menyatakan status evidence lokal dan gap CI/standalone yang sama;
 - [ ] tidak ada klaim parity final sebelum seluruh capability matrix memiliki evidence.
@@ -327,3 +347,5 @@ Keputusan berikut membutuhkan persetujuan maintainer sebelum implementasi parser
 | 2026-09-18 | Build macOS Flutter diverifikasi pada runner CI | `Integration #119` pada `workspace@dc40653` sukses untuk job `flutter`, `flutter-macos`, `verify`, dan `public`; runner `macos-latest` menyelesaikan release build, sehingga gap validasi CI macOS ditutup |
 | 2026-09-18 | `Integration #129` mengonfirmasi baseline Flutter tetap hijau setelah release record `0.5.1` ditutup | `workspace@aea1188` sukses pada job `flutter`, `flutter-macos`, `verify`, dan `public`; candidate capability tetap belum dipromosikan menjadi active contract dan pin revision Flutter masih memerlukan keputusan eksplisit |
 | 2026-09-18 | `Integration #132` mengonfirmasi baseline Flutter tetap hijau setelah pin toolchain Node lokal | `workspace@321c7b2` sukses pada job `flutter`, `flutter-macos`, `verify`, dan `public`; candidate capability tetap belum dipromosikan menjadi active contract, sementara posture platform release sudah diterima sebagai workbench non-publishable |
+| 2026-09-23 | Evidence CI terakhir sebelum pointer Flutter maju | `Integration #151` pada `workspace@21ee21b` sukses untuk job `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; run tidak mencakup pointer `edc9488` |
+| 2026-10-08 | Pointer Flutter dan evidence direkonsiliasi | gitlink `flutter@edc9488952db7edc74dd2caa7fc2064f03ff62f9`; child note 2026-10-07 merekam 300 test, analyzer, web build, dan direct Xcode x86_64 Debug; `Integration #151` tetap CI evidence historis dan gap CI untuk pointer terbaru dinyatakan eksplisit |

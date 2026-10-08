@@ -1,10 +1,38 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status implementasi:** Selesai. **Status evidence:** Integration #151 adalah run lintas-repo sukses terakhir yang tercatat, tetapi workspace kemudian maju ke Flutter `edc9488`; CI refresh untuk pointer terbaru masih menunggu. Public smoke dan gate lokal tetap dapat diulang.
+**Status implementasi:** Selesai. **Status evidence:** Integration #151 adalah run lintas-repo sukses terakhir yang tercatat, tetapi workspace kemudian maju ke Flutter `edc9488`. Checkpoint workspace HEAD `d3ec2b0` sudah diverifikasi untuk baseline, compatibility, dan conformance; refresh CI untuk pointer terbaru masih menunggu. Public smoke dan gate lokal tetap dapat diulang.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
 **Scope:** workspace, package TypeScript publik, Playground, website, dan bukti integrasinya
+
+## 0. Checkpoint evidence — 2026-10-08
+
+Workspace HEAD `d3ec2b0430f12bd95f2be312fa7438b6d97757d6` memakai Node `24.21.0`
+dan pnpm `10.33.3`. Baseline strict lulus `81/81`, compatibility lulus
+`283/283`, dan conformance lulus `253/253` across 20 fixtures. Manifest sekarang
+identik dengan seluruh gitlink checkout, termasuk `playground@ecc1407` dan
+`flutter@edc9488`.
+
+Local runner pertama menghasilkan `33/36` stage lulus. Tiga stage yang gagal adalah
+purge install tanpa TTY, pembuatan cache Playwright yang ditolak environment, dan
+bind server E2E `127.0.0.1:4173` yang ditolak sandbox. Rerun current setelah
+dependency tidak dapat dipulihkan menghasilkan `6/35` pada
+`.local/integration-local-current.json`; angka tersebut juga bukan local gate penuh.
+Artefak replay Node `24.21.0` di `.local/integration-local-node24-recovery.json`
+mencatat `33/36`: seluruh package/consumer dan shared conformance lulus; tiga stage
+yang gagal adalah frozen install, Playwright Chromium, dan Playground E2E karena
+batas environment.
+Probe public-registry current menghasilkan `2/11` pada
+`.local/integration-public-current.json` karena DNS `registry.npmjs.org` tidak
+tersedia. Evidence CI lintas-repo yang tetap valid adalah `Integration #151` pada
+`workspace@21ee21b`, pada pointer sebelum `flutter@edc9488`; tidak ada klaim CI baru
+untuk pointer terbaru.
+Transcript manual `.internal/tmp-test.txt` kemudian menjalankan command local dan
+public yang sama pada Node `24.21.0`/pnpm `10.33.3` dengan browser fallback system
+Chrome: local `35/35` dan public `50/50` lulus. Transcript tersebut juga mencatat
+`flutter:conformance` lulus analyze dan 300 test. Ini evidence manual workspace,
+terpisah dari evidence CI canonical `Integration #151`.
 
 ## 1. Tujuan
 
@@ -260,7 +288,13 @@ Checklist:
 - [x] runner public mendefinisikan `npm pack --dry-run` sebagai boundary release, bukan pengganti test.
 - [x] runner public memeriksa daftar file pack dan menolak path traversal, path absolute, secret, serta direktori lokal.
 
-Evidence runtime: baseline manifest sekarang konsisten dengan `.gitmodules`; local gate final pada workspace clean lulus `36/36` dengan Node 24.21.0 dan pnpm 10.33.3. Public-registry gate sebelumnya juga lulus `48/48` pada toolchain yang sama.
+Evidence runtime: baseline manifest konsisten dengan `.gitmodules`; checkpoint
+terbaru pada workspace clean lulus strict `81/81`, compatibility `283/283`, dan
+conformance `253/253`. Transcript manual terbaru mencatat local `35/35` dan
+public-registry `50/50` lulus dengan Node `24.21.0`/pnpm `10.33.3`; artefak executor
+`33/36`, `6/35`, dan `2/11` tetap menjadi diagnostic history. CI terbaru yang
+tercatat tetap `Integration #151` dan dipertahankan tanpa dipindahkan ke pointer
+`edc9488`.
 
 Acceptance:
 
@@ -294,7 +328,12 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-Workflow CI menjalankan runner setelah kontrak Stage A–D tersedia. Evidence CI terakhir yang dicatat pada rencana lintas-repo adalah `Integration #151`; job `flutter`, `flutter-macos`, `verify`, dan `public` sukses untuk pointer saat itu. Setelahnya pointer Flutter berubah menjadi `edc9488`; run itu belum menguji pointer terbaru. Baseline workflow juga membawa browser smoke Playground deployment-aware melalui `PLAYWRIGHT_BASE_URL` serta guard release-record sebelum integration gate.
+Workflow CI menjalankan runner setelah kontrak Stage A–D tersedia. Evidence CI
+terakhir yang dicatat pada rencana lintas-repo adalah `Integration #151`; job
+`flutter`, `flutter-macos`, `verify`, dan `public` sukses untuk pointer saat itu.
+Setelahnya pointer Flutter berubah menjadi `edc9488`; run itu belum menguji pointer
+terbaru. Baseline workflow juga membawa browser smoke Playground deployment-aware
+melalui `PLAYWRIGHT_BASE_URL` serta guard release-record sebelum integration gate.
 
 Checklist:
 
@@ -415,3 +454,5 @@ Mode public sengaja menguji versi registry yang dipin ke manifest, sedangkan mod
 | 2026-09-16 | CI memverifikasi baseline Playground deployment-aware | root pointer `playground@143acf6` tercatat pada `workspace@9e77d33`; local integration gate lulus `36/36` dan GitHub `Integration #94` sukses pada job `flutter`, `verify`, dan `public` |
 | 2026-09-18 | CI memverifikasi release record completed dan Flutter macOS pada baseline terbaru | `Integration #129` pada `workspace@aea1188` sukses pada job `verify`, `flutter`, `flutter-macos`, dan `public`; release record `0.5.0`/`0.5.1`, failure-injection release guard, conformance, serta dua browser smoke tetap lulus |
 | 2026-09-18 | Pin Node lokal ditambahkan dan diverifikasi pada CI | root `workspace@321c7b2` memiliki `.node-version` `24.21.0`; `Integration #132` sukses pada job `verify`, `flutter`, `flutter-macos`, dan `public` dengan durasi 3m58s |
+| 2026-09-23 | CI lintas-repo terakhir yang tercatat sukses | `Integration #151` pada `workspace@21ee21b` sukses untuk job `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; pointer setelahnya belum mendapat CI refresh |
+| 2026-10-08 | Baseline HEAD direkonsiliasi tanpa memperluas klaim CI | workspace `d3ec2b0`, strict `81/81`, compatibility `283/283`, conformance `253/253`; transcript manual `.internal/tmp-test.txt` mencatat local `35/35` dan public `50/50`; artefak executor `33/36`, `6/35`, dan `2/11` dipertahankan sebagai diagnostic history; `Integration #151` tetap evidence CI historis untuk pointer sebelum `flutter@edc9488` |

@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 5 — Public Docs, Website, dan Playground Hardening
 
-**Status implementasi:** website/Playground baseline, build, browser QA, accessibility tree, dan smoke evidence selesai pada revision yang tercatat. **Evidence aktif tertunda:** keyboard/VoiceOver runtime macOS dan browser accessibility web. **Ditunda sengaja:** touch/perangkat Android/iOS, TalkBack, iOS VoiceOver, dan Safari mobile tanpa tanggal; bukan exit-gate blocker.
+**Status implementasi:** website/Playground baseline, build, browser QA, dan accessibility contract tersedia pada revision yang tercatat. **Evidence checkpoint 2026-10-08:** build/lint/unit/audit lulus pada workspace HEAD; fresh browser runtime memiliki limitation environment yang dicatat di §11, dan VoiceOver nyata belum dijalankan. **Ditunda sengaja:** touch/perangkat Android/iOS, TalkBack, iOS VoiceOver, dan Safari mobile tanpa tanggal; bukan exit-gate blocker.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-16  
 **Owner koordinasi:** relgeo/workspace  
@@ -99,11 +99,11 @@ Source detail dan history perubahan ada di [`VISUAL-REDESIGN-AUDIT-AND-PLAN.md`]
 - [x] Keyboard traversal, focus trap drawer/dialog, AX tree lokal, accessible names, selected/expanded/pressed state, dan skip link sudah diuji.
 - [x] Reduced-motion CSS, overflow containment, breakpoint matrix browser, dan minimum control sizing sudah memiliki gate.
 - [x] Main bundle diperkecil melalui lazy loading; build tidak lagi menghasilkan advisory chunk di atas 500 kB.
-- [x] Local E2E lulus `2/2` untuk runtime diagnostic dan mobile surface switcher; suite terpisah memakai profil iPhone 13 Chromium dan `touchscreen.tap`.
+- [x] Local E2E historis lulus `2/2` untuk runtime diagnostic dan mobile surface switcher; suite terpisah memakai profil iPhone 13 Chromium dan `touchscreen.tap`.
 - [x] Mobile-device emulation memverifikasi touch capability, viewport 390px, dan perpindahan Source/Preview; ini bukan pengganti validasi handset fisik.
-- [x] Deployment-aware E2E dengan `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/` lulus `2/2` pada public Playground.
+- [x] Deployment-aware E2E historis dengan `PLAYWRIGHT_BASE_URL=https://relgeo.github.io/playground/` lulus `2/2` pada public Playground; rerun 2026-10-08 dicatat sebagai limitation environment di §11.
 - [x] `audit:ux` lulus dengan 13 component files dan 4 dynamic inline styles yang disetujui.
-- [x] E2E lokal terbaru lulus `2/2` pada child commit `3969d47`; fallback
+- [x] E2E lokal historis lulus `2/2` pada child commit `3969d47`; fallback
   `PLAYWRIGHT_EXECUTABLE_PATH` memungkinkan validasi memakai browser Chromium
   lokal ketika cache Playwright tidak dapat diunduh karena disk penuh. CI tetap
   memakai browser Playwright pinned.
@@ -180,7 +180,7 @@ stateDiagram-v2
 - [x] Landmark `main`, conditional skip link, visible focus, button types, labels, roles, dan states sudah diaudit.
 - [x] Keyboard sweep lokal mencakup navbar, editor, preview, drawer, Inspector, Graph, Values, Errors, dan dialog.
 - [x] Drawer dan confirmation dialog memiliki focus trap serta focus return.
-- [x] Browser AX tree pada state utama tersedia dan seluruh kontrol yang diuji memiliki accessible name.
+- [x] Browser AX tree pada state utama tersedia dan seluruh kontrol yang diuji memiliki accessible name; fresh-run limitation dicatat, bukan dianggap sebagai pass runtime baru.
 - [x] Dedicated mobile-device emulation berbasis profil iPhone 13 Chromium lulus untuk tap surface switcher dan viewport 390px.
 - [x] Reduced-motion stylesheet dan browser emulation sudah diverifikasi.
 - [x] Browser matrix 390×844, 480, 768×1024, 840, 1024, 1280×720, dan 1440×900 tidak menunjukkan page-level horizontal overflow pada scope yang diuji.
@@ -192,7 +192,7 @@ stateDiagram-v2
 
 - [x] Website build, artifact assertion, and Pages deployment path tersedia.
 - [x] Public route smoke tersedia.
-- [x] Public Playground browser smoke tersedia secara manual dan deployment-aware secara otomatis.
+- [x] Public Playground browser smoke tersedia secara manual dan deployment-aware secara otomatis pada evidence historis; rerun fresh 2026-10-08 dibatasi environment.
 - [x] Integration CI memvalidasi package, Playground, website, Flutter, and public-registry paths.
 - [x] Release preflight terdokumentasi sebagai boundary sebelum publish manual.
 - [ ] Public smoke perlu dijalankan ulang setelah setiap release yang mengubah website atau Playground.
@@ -288,13 +288,14 @@ Aturan perubahan:
 | Website visual rules | `relgeo.github.io/docs/VISUAL-DESIGN-RULES.md` |
 | Playground UX/UI audit | `playground/docs/UX-UI-AUDIT-AND-PLAN.md` |
 | Local build/check/test | website 138 pages, 0 Astro diagnostics, assertions lulus |
-| Local Playground E2E | `2/2` lulus |
-| Public Playground E2E | `2/2` lulus dengan `PLAYWRIGHT_BASE_URL` |
+| Local Playground E2E | Historis `2/2` lulus; fresh 2026-10-08 tidak start karena sandbox menolak bind `127.0.0.1:4173` (`EPERM`) |
+| Public Playground E2E | Historis `2/2` lulus dengan `PLAYWRIGHT_BASE_URL`; fresh 2026-10-08 browser process berhenti (`SIGABRT`/`SIGTRAP`) sebelum page creation dan DNS `curl` tidak tersedia |
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `35/35` lulus pada workspace commit `515bda4` dengan `PLAYWRIGHT_EXECUTABLE_PATH`; browser E2E tetap memakai Chrome lokal tanpa download Chromium tambahan |
 | Release preflight | snapshot baseline: `81/81`, `250/250`, `106/106`, `36/36`; compatibility terkini `256/256` |
 | CI evidence | `Integration #151` pada `workspace@21ee21b` sukses untuk job `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; artifact desktop serta browser smoke tersedia |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
+| Fresh browser/accessibility checkpoint (2026-10-08) | Workspace `d3ec2b0430f12bd95f2be312fa7438b6d97757d6`; Playground `ecc1407a8ba0da3929042137ff43b8e69f50b556`; website `5c4576ec83ff7d4beebcbc1553c716711b91db68`; Flutter `edc9488952db7edc74dd2caa7fc2064f03ff62f9`; Node `22.23.2` (di bawah requirement `>=24`), pnpm `10.33.3`, Playwright `1.63.0`; macOS `14.5` arm64; build/lint/93 unit/audit lulus, fresh Playwright dan public fetch terbatas environment |
 
 ## 12. Log perubahan
 
@@ -314,4 +315,5 @@ Aturan perubahan:
 | 2026-09-17 | Sinkronisasi evidence lintas rencana diverifikasi pada CI | `Integration #114` pada `workspace@8aab44d` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |
 | 2026-09-17 | Refresh evidence terakhir diverifikasi pada CI | `Integration #115` pada `workspace@f380079` sukses untuk job `flutter`, `verify`, dan `public`; dua artifact report dan dua Playwright annotations tersedia |
 | 2026-09-23 | Fallback browser lokal dan evidence terbaru ditambahkan | Playground child commit `3969d47`; audit UX, lint, unit test `85/85`, production build, dan E2E `2/2` lulus; `Integration #151` juga sukses pada seluruh job termasuk Windows |
+| 2026-10-08 | Browser accessibility/runtime evidence disinkronkan ke HEAD | Workspace `d3ec2b0`, Playground `ecc1407`, website `5c4576e`, Flutter `edc9488`; macOS `14.5` arm64; Node `22.23.2`, pnpm `10.33.3`, Playwright `1.63.0`; build/lint/93 unit/audit lulus. Fresh local E2E tertahan `EPERM` saat bind server, public E2E tertahan browser `SIGABRT`/`SIGTRAP` dan DNS; limitation dicatat, VoiceOver nyata serta mobile tetap deferred |
 | 2026-09-23 | Root integration gate diberi fallback browser lokal | workspace commit `515bda4`; `PLAYWRIGHT_EXECUTABLE_PATH` melewati download Chromium hanya bila diberikan eksplisit; local integration gate lulus `35/35` dengan strict baseline `81/81` |

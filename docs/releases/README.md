@@ -18,3 +18,33 @@ Record tidak mengaktifkan publish otomatis. Ia menjadi bukti keputusan dan ledge
 - [`0.5.0.md`](0.5.0.md) — baseline publik `0.5.0`, dipublish manual dan diverifikasi setelah publish.
 - [`0.5.0.json`](0.5.0.json) — snapshot machine-readable yang divalidasi oleh `release:record:check`.
 - [`0.5.1.json`](0.5.1.json) dan [`0.5.1.md`](0.5.1.md) — patch release selesai; `core` dan `language-service` tersedia sebagai `0.5.1`, seluruh gate registry/CI dicatat, dan snapshot matrix disimpan untuk audit historis.
+
+## Evaluasi automation gate — 2026-10-08
+
+Keputusan 2026-09-23 mensyaratkan dua release manual tambahan sebelum evaluasi
+OIDC. Audit repository dan registry pada tanggal ini menghasilkan **0/2**
+release pascakeputusan yang dapat dicatat sebagai `completed`: registry masih
+menunjukkan `@relgeo/core@0.5.1`, belum ada record `0.5.2` atau sesudahnya,
+dan `npm whoami` mengembalikan `401 Unauthorized`. Karena publish manual
+dengan 2FA/passkey belum dapat dijalankan, automation tetap **disabled**.
+
+Evidence lokal yang dapat diulang:
+
+- `pnpm run compatibility:check`: `283 passed, 0 failed`;
+- `NPM_CONFIG_CACHE=/private/tmp/relgeo-npm-cache pnpm run release:audit`:
+  `106 passed, 0 failed`;
+- `pnpm run release:record:check 0.5.0`: `35 passed, 0 failed`;
+- `pnpm run release:record:check 0.5.1`: `35 passed, 0 failed`;
+- `pnpm run release:record:failure`: failure-injection recovery guard lulus.
+
+Audit default `release:audit` sempat gagal karena cache npm lokal tidak dapat
+ditulis; penggunaan cache sementara di atas menutup masalah lingkungan tanpa
+mengubah cache pengguna. Registry verification tidak dipromosikan menjadi
+evidence baru karena probe serial registry dihentikan setelah timeout dan
+tidak menghasilkan laporan lengkap.
+
+Gate automation hanya boleh dibuka setelah dua record `completed` baru masing-
+masing memuat preflight, compatibility/integration, tarball, manual publish
+2FA/passkey, registry verification, dan public integration. Jika publish
+berhenti setelah sebagian package, simpan record `partial` dan lakukan
+forward-fix pada versi patch yang lebih baru; jangan republish versi yang sama.

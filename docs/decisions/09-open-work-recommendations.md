@@ -59,7 +59,7 @@ menjalankan evidence yang tersedia, baru mengevaluasi automation release.
 | SVG parity | Gunakan semantic parity berlapis; geometry adalah contract inti, presentation hanya bila ada consumer nyata | disetujui; tidak menambah property presentation pada 0.5.x tanpa kebutuhan consumer |
 | Flutter | Tetap workbench non-publishable; pin stable `3.41.9`; build macOS hanya CI confidence gate | sudah disetujui |
 | Platform dan QA | Tunda Android/iOS tanpa tanggal; prioritaskan web/PWA, macOS, Linux, Windows, dan CLI | keputusan disetujui; desktop runtime evidence masih terbuka; artifact Windows CI tersedia |
-| npm publishing | Pertahankan manual publish untuk dua siklus tambahan setelah persetujuan 2026-09-23; evaluasi OIDC + environment approval sesudahnya | disetujui bersyarat; 0/2 siklus tambahan tercatat |
+| npm publishing | Pertahankan manual publish untuk dua siklus tambahan setelah persetujuan 2026-09-23; evaluasi OIDC + environment approval sesudahnya | disetujui bersyarat; audit 2026-10-08 masih 0/2 dan gate automation tertutup |
 | Recovery npm | Jangan rollback atau republish versi; gunakan partial record dan forward-fix patch | sudah menjadi policy |
 | SDK/toolchain | Pertahankan pin CI dan catat revision sebagai evidence bila perlu; jangan buka package pub.dev/desktop release | sudah disetujui |
 
@@ -89,6 +89,23 @@ matrix dan dokumentasi diperbarui, lalu full integration gate dijalankan.
 - [x] setujui `boolean/intersection` sebagai capability pertama yang dipromosikan;
 - [x] setujui `evaluator/unit` menunggu hasil promosi pertama;
 - [x] setujui bahwa promosi selalu memerlukan decision record dan fixture active.
+
+### Boundary yang mengikat keputusan
+
+Keputusan ini hanya menyetujui boundary promotion pertama, bukan seluruh
+surface boolean pada spec atau seluruh kemampuan engine. Scope yang dapat
+menjadi active adalah line-line intersection pada fixture, rectangle
+`intersect`, dan rectangle `subtract`, dengan outer/hole topology, ring
+closure, semantic tolerance, serta error `INVALID_BOOLEAN_OPERATION`,
+`BOOLEAN_EMPTY_RESULT`, `BOOLEAN_MULTIPART_RESULT`, `NO_INTERSECTION`, dan
+`MULTIPLE_INTERSECTIONS` sebagaimana dirinci pada [Decision Record
+08](08-boolean-intersection-contract-review.md).
+
+Operand non-rectangle, `union`, `xor`, degenerate/self-intersecting input,
+unknown-reference error code, dan detail engine/ordering tetap di luar active
+contract sampai memiliki evidence dan keputusan tersendiri. Fixture 15 tetap
+candidate sampai clean-checkout CI/public/Flutter evidence lengkap; fixture
+16 evaluator/unit tidak ikut dipromosikan.
 
 ## 5. Keputusan B — SVG parity
 
@@ -260,6 +277,28 @@ risiko tanpa menghilangkan kebutuhan keputusan operator.
 - [x] setujui larangan republish versi npm yang sama;
 - [x] setujui OIDC + protected environment sebagai target automation.
 
+### Evaluasi gate aktual — 2026-10-08
+
+Gate belum memenuhi exit criteria dan automation tidak boleh diaktifkan.
+Tidak ada record `completed` pascakeputusan 2026-09-23; registry masih berada
+pada `0.5.1`, dan pemeriksaan `npm whoami` memerlukan autentikasi (`401
+Unauthorized`). Dengan demikian dua siklus manual belum dapat diklaim selesai.
+
+| Exit criterion | Status audit | Evidence |
+| --- | --- | --- |
+| Dua release manual pascakeputusan | **belum** (`0/2`) | `docs/releases/` hanya memiliki completed `0.5.0` dan `0.5.1` |
+| Preflight, compatibility/integration, dan tarball per release | **belum untuk release baru** | compatibility `283/283`; tarball `106/106` lokal; belum terikat ke record release baru |
+| Manual publish 2FA/passkey | **blocked** | `npm whoami` mengembalikan `401 Unauthorized` |
+| Registry verification dan public integration | **belum untuk release baru** | tidak ada versi npm baru atau record baru yang bisa diverifikasi |
+| Partial-release recovery | **policy siap, runtime belum** | validator/failure-injection lulus; tidak ada partial publish nyata |
+| OIDC + protected environment | **tertahan** | baru boleh dirancang setelah dua release stabil tanpa recovery failure |
+
+Probe lokal yang tidak mengubah repository lulus: `compatibility:check`
+`283/283`, tarball audit `106/106` dengan cache sementara, kedua release
+record historis `35/35`, dan `release:record:failure`. Ini adalah evidence
+readiness, bukan pengganti publish, registry verification, atau public
+integration untuk dua release baru.
+
 ## 10. Urutan pengerjaan yang direkomendasikan
 
 ```mermaid
@@ -301,7 +340,7 @@ Urutan praktis:
 | Desktop/web QA | Windows artifact CI ada; target runtime Ubuntu/Windows 11 dan desktop/web accessibility belum diverifikasi | smoke target yang tersedia dan catat limitation |
 | Android/iOS QA | sengaja ditunda tanpa tanggal | jangan jadikan blocker; buka kembali setelah scope utama matang |
 | Windows packaging | ZIP CI ada, Windows 11 runtime belum diuji; belum ada installer formal | uji ZIP dahulu; evaluasi MSIX hanya bila perlu |
-| npm automation | jalur manual tersedia; dua siklus pascakeputusan belum tercatat | tetap manual sampai 2 siklus manual tambahan selesai |
+| npm automation | jalur manual tersedia; audit 2026-10-08 menunjukkan dua siklus pascakeputusan belum tercatat dan npm auth belum tersedia | tetap manual sampai 2 siklus manual tambahan selesai; jangan aktifkan OIDC |
 | Recovery transaction automation | belum ada partial-release run nyata | pertahankan planner/validator read-only |
 
 ## 12. Exit condition dokumen

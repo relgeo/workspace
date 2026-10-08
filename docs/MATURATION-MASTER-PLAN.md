@@ -6,6 +6,55 @@
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** seluruh repository publik RelGeo dan integrasinya sebagai satu ekosistem
 
+## 0. Checkpoint evidence — 2026-10-08
+
+Checkpoint ini memisahkan hasil yang benar-benar dijalankan pada workspace HEAD dari
+evidence CI historis. Workspace HEAD adalah `d3ec2b0430f12bd95f2be312fa7438b6d97757d6`.
+`docs/integration-baseline.json` sudah diregenerasi dari checkout aktual; seluruh 11
+gitlink dan checkout submodule bersih, termasuk `playground@ecc1407` dan
+`flutter@edc9488952db7edc74dd2caa7fc2064f03ff62f9`.
+
+Dengan Node `24.21.0` dan pnpm `10.33.3`, hasil aktual checkpoint ini adalah:
+
+- strict baseline: `81/81` lulus;
+- compatibility checker: `283/283` lulus;
+- shared conformance: `253/253` lulus pada 20 fixture;
+- local integration runner pertama mencapai `33/36` stage lulus. Tiga failure adalah
+  batas environment (purge install tanpa TTY, cache browser Playwright tidak dapat
+  dibuat, dan sandbox menolak bind server `127.0.0.1:4173`), bukan failure package
+  atau fixture. Rerun current setelah dependency tidak dapat dipulihkan dari registry
+  menghasilkan report gap `6/35` (`.local/integration-local-current.json`), bukan
+  local gate lulus;
+- artefak replay Node `24.21.0` yang tersimpan di
+  `.local/integration-local-node24-recovery.json` mencatat `33/36`; package,
+  consumer, dan conformance lulus, sedangkan tiga failure yang tercatat adalah
+  frozen install, Playwright Chromium, dan Playground E2E akibat batas environment;
+- public-registry runner current menghasilkan report gap `2/11`
+  (`.local/integration-public-current.json`) karena akses DNS ke
+  `registry.npmjs.org` gagal. Evidence public-registry CI terakhir yang valid tetap
+  `Integration #151` pada `workspace@21ee21b`.
+- Evidence manual terbaru pada `.internal/tmp-test.txt`, dengan command yang sama
+  pada Node `24.21.0` dan pnpm `10.33.3`, mencatat local integration `35/35` dan
+  public-registry integration `50/50`; `PLAYWRIGHT_EXECUTABLE_PATH` menunjuk system
+  Chrome. Transcript yang sama mencatat `flutter:conformance` lulus analyze dan 300
+  test. Ini adalah manual workspace evidence, bukan CI canonical; evidence CI
+  canonical terbaru tetap `Integration #151`.
+
+Untuk Flutter pointer terbaru, child repository pada `edc9488` memiliki evidence
+tertelusur di `flutter/docs/plans/03-docking-tree-and-drop-preview.md` (catatan
+2026-10-07): 300 test, analyzer, web build, dan direct Xcode x86_64 Debug build.
+Catatan tersebut bukan pengganti integration CI; tidak ada run CI baru yang menguji
+pointer ini. `Integration #151` pada `workspace@21ee21b` dipertahankan sebagai evidence
+CI historis untuk pointer workspace sebelum `edc9488`.
+
+Replay command executor pada sesi 2026-10-08 tercatat pada
+`.local/integration-local-node24-recovery.json` dengan `33/36` dan batas
+environment. Transcript manual `.internal/tmp-test.txt` kemudian mencatat local
+`35/35`, public `50/50`, dan Flutter conformance lulus pada toolchain yang diminta.
+Evidence manual ini dapat dipakai untuk status workspace saat ini, tetapi tidak
+mengubah status CI canonical: tidak ada run CI baru untuk pointer Flutter
+`edc9488`, dan `Integration #151` tetap evidence CI terakhir.
+
 ## 1. Tujuan dokumen
 
 Dokumen ini adalah dokumen induk untuk mematangkan ekosistem RelGeo setelah pemisahan dari workspace lama menjadi multi-repository publik. Isinya bukan backlog harian dan bukan pengganti dokumentasi detail setiap repository.
@@ -223,7 +272,8 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [x] CSS sudah memiliki token dan layer yang eksplisit.
 - [x] Screenshot baseline dan manifest tersimpan pada repository Playground.
 - [x] Browser automation/emulation, responsive surface, dan accessibility-tree baseline telah diverifikasi pada CI yang tercatat.
-- [ ] Validasi keyboard dan VoiceOver pada macOS serta accessibility runtime pada web masih menunggu evidence.
+- [x] Browser accessibility contract dan limitation fresh runtime dicatat pada audit Playground dan sub-rencana Tahap 5; DOM/AX/keyboard automation historis lulus, sedangkan host 2026-10-08 menolak local bind dan browser process berhenti sebelum page creation.
+- [~] Validasi keyboard fisik dan VoiceOver nyata pada macOS belum dilakukan; limitation ini tetap terbuka dan tidak digantikan oleh AX tree automation.
 - [~] Android/iOS fisik, TalkBack, iOS VoiceOver, dan Safari touch sengaja ditunda tanpa tanggal; bukan blocker scope aktif.
 
 ### 4.4 Hal yang belum boleh dianggap selesai
@@ -233,7 +283,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
 - [x] `Integration #151` adalah evidence lintas-repo terakhir yang dicatat sukses untuk package, Playground, website, public registry, dan Flutter pada pointer workspace saat itu.
-- [ ] Pointer Flutter pada workspace maju ke `edc9488952db7edc74dd2caa7fc2064f03ff62f9` setelah #151; CI untuk pointer terbaru belum dijalankan. Ini refresh evidence, bukan bukti implementasi gagal.
+- [~] Pointer Flutter pada workspace maju ke `edc9488952db7edc74dd2caa7fc2064f03ff62f9` setelah #151. Evidence lokal terbaru terlacak pada catatan child repository; CI lintas-repo untuk pointer ini belum dijalankan. Ini gap evidence, bukan bukti implementasi gagal.
 - [x] npm `@relgeo/core@0.5.1` dan `@relgeo/language-service@0.5.1` dipublikasikan dan registry-verified pada 2026-09-18.
 - [~] Android/iOS mobile QA ditunda berdasarkan keputusan maintainer; tidak masuk acceptance gate aktif.
 
@@ -272,9 +322,9 @@ Guard, verifikasi registry, dan recovery planner read-only tersedia. Otomasi pub
 
 Fixture dan runner lintas-consumer sudah tersedia. Keputusan menerima `boolean/intersection` sebagai promotion pertama dan menunda `evaluator/unit` sudah dibuat; implementasi perubahan status fixture/matrix dan gate penuh masih belum selesai. Tidak ada keputusan untuk memperluas SVG presentation pada line 0.5.x; property tambahan sengaja tidak dimasukkan tanpa kebutuhan consumer.
 
-### Prioritas 5 — Public product hardening — implementasi selesai; evidence desktop/accessibility tertunda
+### Prioritas 5 — Public product hardening — implementasi selesai; evidence desktop/accessibility tercatat dengan limitation
 
-Website/Playground implementation dan browser automation sudah kuat. Sisa aktifnya adalah keyboard/accessibility runtime pada macOS dan web serta smoke publik setelah perubahan yang berdampak. Android/iOS touch dan assistive technology sengaja ditunda tanpa tanggal, dan bukan blocker tahap ini.
+Website/Playground implementation dan browser automation sudah kuat. Evidence web accessibility kini mencatat pass automation historis serta limitation fresh runtime pada host 2026-10-08. Keyboard fisik/VoiceOver macOS dan smoke artifact pada host Ubuntu/Windows tetap terbuka. Android/iOS touch dan assistive technology sengaja ditunda tanpa tanggal, dan bukan blocker tahap ini.
 
 ### Prioritas 6 — Flutter alignment dan feature expansion — parsial; Flutter sementara dijeda
 
@@ -322,7 +372,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status implementasi:** Selesai. **Status verifikasi:** menunggu refresh CI untuk workspace HEAD `f35680a` / Flutter pointer `edc9488`; evidence terakhir sebelumnya Integration #151. Public smoke terakhir yang tercatat 14/14 route.
+**Status implementasi:** Selesai. **Status verifikasi:** checkpoint workspace HEAD `d3ec2b0` lulus strict baseline, compatibility, dan conformance; transcript manual terbaru mencatat local `35/35`, public `50/50`, dan Flutter conformance lulus. Artefak executor `33/36`, `6/35`, dan `2/11` tetap disimpan sebagai batas diagnostik environment. CI lintas-repo terakhir tetap Integration #151 dan mendahului pointer Flutter `edc9488`. Public smoke terakhir yang tercatat 14/14 route.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -351,7 +401,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
-**Status implementasi:** Selesai untuk policy, matrix, dan release-decision guard. **Status verifikasi:** evidence checker tercatat pada run sebelumnya; refresh lintas-repo menunggu CI workspace HEAD. Skenario partial release tidak dijalankan sengaja karena tidak perlu membuat release gagal demi membuktikan recovery policy. Publish automation terpisah dan sengaja ditunda di Tahap 3.
+**Status implementasi:** Selesai untuk policy, matrix, dan release-decision guard. **Status verifikasi:** compatibility checker checkpoint workspace HEAD lulus `283/283`; evidence CI lintas-repo terbaru tetap Integration #151. Skenario partial release tidak dijalankan sengaja karena tidak perlu membuat release gagal demi membuktikan recovery policy. Publish automation terpisah dan sengaja ditunda di Tahap 3.
 
 **Tujuan:** membuat hubungan versi antara spec dan semua consumer menjadi eksplisit.
 
@@ -406,7 +456,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi:** 253/253 fixture checks dan Integration #151 menjadi evidence terakhir yang tersedia; baseline pointer terbaru menunggu CI refresh. **Pekerjaan terkait namun terpisah:** promosi capability yang disetujui ada di Tahap 6 / plan 07; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
+**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi:** checkpoint workspace HEAD menghasilkan `253/253` fixture checks; Integration #151 tetap menjadi evidence CI terakhir, sehingga status CI pada pointer terbaru masih menunggu refresh. **Pekerjaan terkait namun terpisah:** promosi capability yang disetujui ada di Tahap 6 / plan 07; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -447,16 +497,16 @@ menjadikannya checklist overdue.
 
 ### Tahap 5 — Public docs, website, dan Playground hardening
 
-**Status implementasi:** baseline website/Playground dan browser QA selesai. **Status verifikasi:** keyboard/VoiceOver macOS dan web accessibility runtime masih menunggu; public smoke adalah pemeriksaan berulang pasca-perubahan. Android/iOS mobile QA sengaja ditunda tanpa tanggal dan tidak memblokir exit gate.
+**Status implementasi:** baseline website/Playground dan browser QA selesai. **Status verifikasi:** web accessibility automation evidence dan limitation fresh runtime sudah dicatat; keyboard/VoiceOver macOS nyata masih menunggu. Public smoke adalah pemeriksaan berulang pasca-perubahan. Android/iOS mobile QA sengaja ditunda tanpa tanggal dan tidak memblokir exit gate.
 
 **Tujuan:** memastikan public surface mudah dipercaya dan tidak overclaim capability.
 
 **Pekerjaan tersisa:**
 
-- [ ] uji keyboard/VoiceOver pada macOS desktop dan browser accessibility web/PWA;
+- [~] uji keyboard/VoiceOver pada macOS desktop belum dilakukan; browser accessibility web/PWA memiliki automation evidence dan limitation yang terdokumentasi;
 - [x] build dan archive artifact Flutter pada macOS, Ubuntu/Linux, dan Windows CI;
-- [ ] uji artifact Flutter pada macOS, Ubuntu/Linux, dan Windows 11 nyata/VM;
-- [ ] catat OS, browser, desktop runtime, dan hasilnya pada audit Playground/Flutter;
+- [~] uji artifact Flutter pada macOS, Ubuntu/Linux, dan Windows 11 nyata/VM — macOS evidence dipertahankan; Ubuntu/Linux dan Windows 11 di-defer sampai host/VM tersedia, bukan blocker;
+- [x] catat OS, browser/toolchain, commit workspace/submodule, arsitektur, tanggal, dan hasil browser accessibility pada audit Playground dan sub-rencana Tahap 5;
 - [~] mobile touch, TalkBack, VoiceOver iOS, dan Safari touch sengaja ditunda tanpa tanggal;
 - [~] smoke publik setelah release yang memengaruhi website/Playground adalah maintenance berulang, bukan satu deliverable yang menunggu;
 - [ ] jaga agar docs dan capability status mengikuti package/spec baseline.
@@ -473,7 +523,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 6 — Flutter alignment
 
-**Status implementasi:** parsial. **Keputusan:** non-publishable, stable 3.41.9, desktop macOS/Linux/Windows disetujui; Android/iOS ditunda. **Verifikasi:** CI #151 berlaku untuk revision terdahulu; workspace HEAD menunjuk Flutter `edc9488`, tanpa CI lintas-repo pada pointer itu. Analyze, 300 test, web build, dan direct Xcode x86_64 Debug build lokal tercatat pada revision terbaru; itu tidak membuktikan universal/arm64 release build. Native dock/floating QA, target Ubuntu/Windows 11, accessibility, dan promotion boolean masih terbuka. Pekerjaan Flutter dijeda selama audit dokumen.
+**Status implementasi:** parsial. **Keputusan:** non-publishable, stable 3.41.9, desktop macOS/Linux/Windows disetujui; Android/iOS ditunda. **Verifikasi:** CI #151 berlaku untuk revision terdahulu; workspace HEAD menunjuk Flutter `edc9488`, tanpa CI lintas-repo pada pointer itu. Catatan child repository pada pointer terbaru merekam analyzer, 300 test, web build, dan direct Xcode x86_64 Debug build; itu tidak membuktikan universal/arm64 release build atau integration CI. Native dock/floating QA, target Ubuntu/Windows 11, accessibility, dan promotion boolean masih terbuka. Pekerjaan Flutter dijeda selama audit dokumen.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -548,7 +598,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | --- | --- | --- |
 | 2026-09-15 | Master plan dibuat dari hasil audit lintas-repo terbaru | baseline workspace, website, Playground, package metadata |
 | 2026-09-15 | Prioritas utama ditetapkan pada reproducible integration gate dan release contract | seluruh package 0.5.0, website Pages aktif, Playground audit sudah ditutup secara lokal |
-| 2026-10-08 | Status master dan sub-plan direkonsiliasi; implementasi, evidence, keputusan, dan penundaan dipisahkan | workspace `f35680a`, Flutter pointer `edc9488`; Integration #151 historis, CI refresh pointer terbaru belum ada |
+| 2026-10-08 | Status master dan sub-plan direkonsiliasi; implementasi, evidence, keputusan, dan penundaan dipisahkan | workspace `d3ec2b0`, Flutter pointer `edc9488`; Integration #151 historis, CI refresh pointer terbaru belum ada |
 | 2026-09-15 | Mermaid ditetapkan sebagai format default diagram dokumentasi | dependency graph pada dokumen ini sudah dikonversi; pengecualian visual harus diberi alasan |
 | 2026-09-15 | Tahap 1 diturunkan menjadi sub-rencana operasional | Stage A dimulai dengan inventory command dan dependency |
 | 2026-09-15 | Stage A selesai secara read-only | command, lockfile, package manager, dependency, dan clean status sudah dicatat pada sub-rencana |
@@ -633,6 +683,9 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | 2026-09-23 | Playground E2E dan desktop matrix diverifikasi ulang | Playground child commit `3969d47`; audit UX, lint, unit test `85/85`, build, dan E2E `2/2` lulus dengan browser fallback lokal; `Integration #151` sukses pada `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public` |
 | 2026-09-23 | Local integration gate diberi fallback browser yang eksplisit | workspace commit `515bda4`; `PLAYWRIGHT_EXECUTABLE_PATH` mencegah download Chromium saat browser kompatibel sudah tersedia, dan gate lokal lulus `35/35` dengan strict baseline `81/81` |
 | 2026-09-27 | Evidence Release macOS dan audit kebersihan source diperbarui | Direct `xcodebuild` melalui `macos/Runner.xcworkspace` pada Flutter berhasil membangun app Release universal (`arm64`/`x86_64`); source audit tidak menemukan path lokal, private key, token, atau pola password. Fresh CI setelah native bridge terbaru, Ubuntu/Windows 11 smoke, dan accessibility runtime tetap terbuka |
+| 2026-10-08 | Baseline dan evidence direkonsiliasi pada workspace HEAD | `d3ec2b0`; manifest seluruh 11 gitlink konsisten; strict `81/81`, compatibility `283/283`, conformance `253/253`; transcript manual `.internal/tmp-test.txt` mencatat local `35/35`, public `50/50`, dan Flutter conformance 300 test lulus; artefak executor `33/36`, `6/35`, dan `2/11` dipertahankan sebagai diagnostic history; `Integration #151` tetap menjadi CI evidence terakhir dan tidak digantikan oleh klaim untuk Flutter `edc9488` |
+| 2026-10-08 | Browser accessibility/runtime evidence ditutup sebagai evidence dengan limitation | workspace `d3ec2b0`; Playground `ecc1407`; website `5c4576e`; Flutter `edc9488`; macOS `14.5` arm64; Node `22.23.2` (di bawah requirement `>=24`), pnpm `10.33.3`, Playwright `1.63.0`; build/lint/93 unit/audit lulus, local bind `EPERM`, public browser `SIGABRT`/`SIGTRAP`, DNS unavailable; VoiceOver nyata dan mobile tetap terbuka/deferred |
+| 2026-10-08 | Keputusan manusia: defer smoke lintas-OS | Ubuntu/Linux dan Windows 11 runtime smoke di-defer karena host/VM/runner belum tersedia; provenance artifact CI dan limitation tetap dicatat, artifact tidak disebut usable, Docker Compose tidak dipakai sebagai pengganti, dan pekerjaan independen tidak diblokir |
 
 ## 10. Catatan pemeliharaan
 

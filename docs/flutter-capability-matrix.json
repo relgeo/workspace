@@ -94,7 +94,7 @@
         "semanticParity": true,
         "ci": true
       },
-      "note": "The capability candidate exercises line intersection through the shared fixture and passes local and CI semantic comparison; it is not yet part of the active baseline."
+      "note": "The capability candidate exercises line intersection through the shared fixture and passes supporting local and historical CI semantic comparison; current-pointer canonical evidence is still required, so it is not yet part of the active baseline."
     },
     {
       "id": "boolean-geometry",
@@ -115,7 +115,7 @@
         "semanticParity": true,
         "ci": true
       },
-      "note": "Clipper2-backed implementations exist; the v0.5 capability candidate passes local and CI operation/normalized semantic-projection checks through a shared fixture, but remains outside the active baseline until the contract decision."
+      "note": "Clipper2-backed implementations exist; the v0.5 capability candidate passes supporting local and historical CI operation/normalized semantic-projection checks through a shared fixture, but remains outside the active baseline until current-pointer canonical evidence and the contract gate are complete."
     },
     {
       "id": "svg-output",

@@ -16,8 +16,8 @@ candidate fixture `15-v05-boolean-intersection-candidate`:
 - boolean `subtract`;
 - semantic scene dan SVG projection lintas TypeScript dan Flutter.
 
-Dokumen ini belum mengubah status fixture menjadi `active`. Ia adalah bahan
-review untuk keputusan promosi.
+Dokumen ini belum mengubah status fixture menjadi `active`. Ia adalah record
+otoritatif untuk boundary promosi; activation tetap menunggu evidence gate.
 
 ## 2. Evidence saat ini
 
@@ -27,16 +27,92 @@ review untuk keputusan promosi.
 | Spec | `intersection(...)` menghasilkan `point` atau `collection<point>` bergantung konteks dan mendukung selector. | Normatif yang sudah ada |
 | Fixture 15 | Menguji line-line intersection, rectangle intersection, dan rectangle subtraction. | Candidate evidence |
 | TypeScript | `ClipperBooleanEngine` menyediakan empat operasi; resolver memvalidasi operand, empty result, dan multipart result. | Implementasi |
-| Flutter | Adapter Clipper2 menyediakan operasi boolean, dan semantic projection candidate lulus lokal serta CI. | Implementasi + evidence |
+| Flutter | Adapter Clipper2 menyediakan operasi boolean, dan semantic projection candidate memiliki evidence lokal supporting. | Implementasi + supporting/partial; canonical CI terbaru belum tersedia |
 | Geometry normalization | Rect, circle, polygon, path, boolean, dan clone dinormalisasi; circle disampling menjadi 64 titik; cleaning memakai ambang `1e-7`. | Detail implementasi |
 | Ordering/topology | Output ring/island dan titik penutup dinormalisasi oleh comparator; urutan engine tidak boleh dianggap sebagai contract tanpa keputusan eksplisit. | Gap contract |
 
-## 3. Rekomendasi contract minimum
+Evidence lokal yang konsisten pada `.internal/tmp-test.txt` dan
+`.local/integration-manual-evidence.json` cukup untuk memvalidasi candidate
+secara supporting/partial pada tahap review ini. Evidence tersebut tidak
+mengubah boundary menjadi active contract dan tidak menggantikan canonical CI
+atau public gate pada tahap activation.
+
+## 3. Boundary contract yang disetujui untuk promotion pertama
+
+Bagian ini adalah teks boundary normatif untuk fixture yang kelak dipromosikan
+menjadi `active`. Ia tidak mengubah status fixture saat ini dan tidak mengubah
+implementasi consumer. Active contract hanya berlaku setelah seluruh evidence
+lintas consumer dan clean-checkout gate pada Sub-Rencana 07 lulus.
+
+### 3.1 Surface yang dijamin
+
+Promotion pertama menjamin surface berikut:
+
+- `intersection(horizontal, vertical)` untuk dua `line` finite dan
+  non-degenerate pada fixture; tanpa selector, hasil wajib satu `point`;
+- boolean `intersect` dengan minimal dua operand `rect` closed, finite, dan
+  non-degenerate pada field `shapes`;
+- boolean `subtract` dengan satu `rect` `base` dan minimal satu `rect` pada
+  field `tools`;
+- hasil boolean berjenis `boolean`, mempertahankan identity object, bbox,
+  anchors yang tersedia, outer ring, dan hole topology pada resolved scene;
+- `result.mode: single` (default) hanya menerima satu island; `result.mode:
+  multi` mempertahankan seluruh island secara semantik.
+
+`union`, `xor`, operand selain rectangle, selector intersection yang lebih
+luas, dan topology yang belum memiliki fixture lintas consumer tetap berada di
+luar boundary ini meskipun sebagian sudah didukung oleh implementation.
+
+### 3.2 Topology, ring, dan numerik
+
+- jumlah island dan hubungan outer-ring/hole dibandingkan secara semantik;
+- ring dianggap closed setelah normalisasi; duplicate closing endpoint tidak
+  dihitung sebagai vertex tambahan;
+- arah ring, starting vertex, urutan island, urutan hole, attribute order,
+  whitespace, dan formatting SVG bukan contract; comparator melakukan
+  canonicalization yang sudah ada;
+- acceptance memakai tolerance semantic comparator yang sudah terdokumentasi
+  (`1e-6` pada projection fixture); tolerance itu adalah evidence rule, bukan
+  parameter DSL yang boleh diperlebar untuk meloloskan fixture;
+- cleaning internal (`1e-7`) dan sampling/representasi engine tidak menjadi
+  jaminan publik.
+
+Input zero-area, non-finite, self-intersecting, atau closed-shape degenerat
+lainnya tidak termasuk contract promotion pertama. Bentuk tersebut harus tetap
+candidate/unsupported sampai memiliki decision record dan fixture tersendiri.
+
+### 3.3 Error boundary
+
+Runtime normal wajib mempertahankan error berikut untuk surface yang dijamin:
+
+| Kondisi | Error contract |
+|---|---|
+| operation tidak dikenal | `INVALID_BOOLEAN_OPERATION` |
+| `subtract` tanpa `base` atau `tools` | `INVALID_BOOLEAN_OPERATION` |
+| operasi berbasis `shapes` tanpa operand | `INVALID_BOOLEAN_OPERATION` |
+| hasil boolean kosong | `BOOLEAN_EMPTY_RESULT` |
+| hasil multipart pada mode `single` | `BOOLEAN_MULTIPART_RESULT` |
+| line intersection tidak menghasilkan titik pada konteks point | `NO_INTERSECTION` |
+| line intersection ambigu tanpa selector | `MULTIPLE_INTERSECTIONS` |
+
+Unknown reference, invalid shape normalization, dan kegagalan engine umum
+belum mendapat error code lintas consumer yang cukup stabil; ketiganya tidak
+boleh diklaim sebagai bagian dari active boundary ini.
+
+### 3.4 Gate activation
+
+Boundary di atas adalah prasyarat, bukan bukti activation. Fixture 15 tetap
+`capability` sampai TypeScript geometry/core/renderer, Flutter conformance,
+CLI, Playground, semantic SVG comparator, integration gate lokal, dan public
+gate lulus dari checkout bersih. Fixture 16 evaluator/unit tetap `candidate`
+dan tidak ikut berubah status.
+
+## 4. Review rationale dan batas perluasan
 
 Rekomendasi saya adalah mempromosikan hanya surface yang benar-benar sudah
 memiliki fixture lintas consumer, lalu memperluasnya secara terpisah.
 
-### 3.1 Line intersection
+### 4.1 Line intersection
 
 Untuk promosi pertama, jaminan minimum adalah:
 
@@ -52,7 +128,7 @@ Kemampuan line-circle, circle-circle, arc, path-like, selector kompleks, dan
 multi-result tetap boleh didukung implementasi, tetapi tidak ikut diklaim
 sebagai bagian dari promotion pertama kecuali fixture-nya ditambahkan.
 
-### 3.2 Boolean intersection dan subtraction
+### 4.2 Boolean intersection dan subtraction
 
 Untuk promotion pertama, jaminan minimum adalah:
 
@@ -74,7 +150,7 @@ yang lebih luas tetap merupakan perluasan contract berikutnya. Mereka sudah
 tersedia pada sebagian implementation surface atau spec, tetapi belum
 tercakup oleh fixture promotion pertama.
 
-## 4. Error dan input boundary
+## 5. Error dan input boundary review
 
 | Kondisi | Keputusan rekomendasi | Status |
 |---|---|---|
@@ -88,7 +164,7 @@ tercakup oleh fixture promotion pertama.
 | ring orientation dan starting vertex | bukan contract; comparator melakukan normalisasi | rekomendasi siap diterima |
 | tolerance dan circle sampling | implementation detail, bukan jaminan geometry | jangan dipromosikan sebagai contract |
 
-## 5. Topology dan determinism
+## 6. Topology dan determinism
 
 Acceptance comparator sebaiknya memeriksa:
 
@@ -111,9 +187,9 @@ Yang perlu dijamin:
 - ordering hanya dijamin setelah canonicalization comparator;
 - tolerance tidak boleh diperlebar diam-diam untuk membuat fixture lulus.
 
-## 6. Keputusan yang masih diminta
+## 7. Scope exclusions yang sudah dikonfirmasi
 
-Saya merekomendasikan maintainer menyetujui pilihan berikut:
+Keputusan 09 mengonfirmasi pilihan berikut sebagai boundary promotion pertama:
 
 1. **Promosi awal:** line-line intersection + rectangle `intersect` +
    rectangle `subtract`.
@@ -127,7 +203,7 @@ Saya merekomendasikan maintainer menyetujui pilihan berikut:
 5. **Flutter:** promotion hanya setelah fixture aktif lulus TypeScript,
    Flutter, CLI, Playground, dan CI dari checkout bersih.
 
-## 7. Temuan kesiapan promosi
+## 8. Temuan kesiapan promosi
 
 Review terhadap runner conformance menemukan satu hambatan desain yang harus
 diselesaikan sebelum fixture 15 dapat dipromosikan. Manifest memiliki fixture
@@ -155,14 +231,14 @@ dan fixture 15 dapat menjadi baseline capability setelah negative fixture
 serta evidence lintas consumer tersedia. Status fixture tetap tidak berubah
 secara otomatis hanya karena runner sudah mendukung beberapa active fixture.
 
-## 8. Checklist tindak lanjut
+## 9. Checklist tindak lanjut
 
 - [x] inventory spec, fixture, resolver, engine, matrix, dan error tests;
 - [x] rekomendasi surface promotion pertama ditulis;
 - [x] boundary implementation-detail vs contract ditulis;
-- [x] arah contract dan promosi bertahap pada bagian 6 disetujui secara prinsip;
+- [x] arah contract dan promosi bertahap pada bagian 7 disetujui secara prinsip;
 - [x] boundary operasi awal, topology, tolerance, error behavior, dan output
-  semantics dicatat sebagai rekomendasi contract;
+  semantics ditetapkan sebagai contract boundary;
 - [x] audit kesiapan promosi menemukan invariant single-active-fixture;
 - [x] ubah policy runner agar beberapa fixture `active` dapat dipelihara;
 - [x] tambahkan negative fixture untuk empty-result dan multipart-result boundaries;
@@ -170,7 +246,7 @@ secara otomatis hanya karena runner sudah mendukung beberapa active fixture.
 - [ ] jalankan full consumer matrix dan simpan evidence release;
 - [ ] perbarui matrix, README, spec reference, dan Sub-Rencana 07.
 
-## 9. Kesimpulan
+## 10. Kesimpulan
 
 Secara teknis candidate sudah cukup matang untuk direview, dan boundary
 promosi awal sudah diterima secara prinsip. Candidate belum boleh disebut
@@ -183,7 +259,7 @@ candidate secara otomatis. Rekomendasi terbaik tetap promosi kecil dengan tiga
 surface di atas, sambil menahan klaim untuk operation dan topology yang belum
 memiliki fixture lintas consumer.
 
-## 10. Inventaris presentation SVG
+## 11. Inventaris presentation SVG
 
 Audit renderer TypeScript dan exporter Flutter menunjukkan empat kelompok
 property yang tidak boleh dicampur dengan semantic geometry:

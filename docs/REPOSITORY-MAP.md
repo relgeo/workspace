@@ -15,8 +15,38 @@ Peta ini menjelaskan boundary publik dan ownership pada root workspace.
 | `remark-relgeo/` | `relgeo/remark-relgeo` | plugin Markdown preview/embed |
 | `remark-relgeo-hl/` | `relgeo/remark-relgeo-hl` | plugin Markdown highlighting |
 | `flutter/` | `relgeo/flutter` | workbench Flutter |
+| `mcp/` | `relgeo/mcp` (target repository) | pure-Dart MCP contract, tools/resources, and transport adapters |
 
 Root `docs/` dan `scripts/` bukan submodule. Keduanya menjadi bagian dari repository `relgeo/workspace`.
+
+## Boundary MCP dan Flutter
+
+`mcp/` adalah staging directory untuk package Dart `relgeo_mcp` sampai
+repository target `relgeo/mcp` dipisahkan. Package ini memiliki owner teknis
+MCP dan owner keputusan lintas-repo `Agus Made`; `relgeo/workspace` mengatur
+orchestration dan evidence selama fase spike.
+
+`relgeo_mcp` boleh bergantung pada kontrak RelGeo yang sudah dipin, tetapi tidak
+bergantung pada Flutter, `BuildContext`, widget, filesystem, atau lifecycle
+halaman. `flutter/lib/src/mcp/workbench_agent_bridge.dart` adalah satu-satunya
+arah integrasi host: ia mengimplementasikan `RelGeoAgentBridge` terhadap
+document session/editor/undo. Protocol logic, tool schema, resource URI, token,
+dan transport tidak ditempatkan di widget layer.
+
+Compatibility policy:
+
+1. `relgeo_mcp` mengikuti compatibility line DSL `0.5`, tetapi versi Dart
+   `0.1.0-dev.1` tetap private/non-publishable selama conformance SDK dan
+   transport belum selesai;
+2. dependency Flutter saat ini adalah path dependency `../mcp` untuk menjaga
+   spike dapat diuji dalam workspace; setelah extraction, dependency berubah
+   menjadi package release yang dipin, tanpa mengubah ownership bridge;
+3. package MCP bukan anggota release order npm. Perubahan normatif pada
+   `spec/id` memerlukan pembaruan MCP snapshot/provenance sebelum release
+   desktop, sedangkan perubahan protocol/transport dapat dirilis independen
+   selama DTO contract tetap kompatibel;
+4. perubahan `RelGeoAgentBridge` atau `mcp_schema.dart` yang breaking adalah
+   compatibility event untuk Flutter host dan harus dicatat bersama matrix.
 
 ## Paket npm Publik
 

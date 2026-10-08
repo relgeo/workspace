@@ -9,6 +9,95 @@
 
 **Candidate review:** [08-boolean-intersection-contract-review.md](../decisions/08-boolean-intersection-contract-review.md)
 
+**Promotion boundary:** Decision Record 08 §3 adalah contract normatif untuk
+promotion pertama. Ia mengunci line-line intersection pada fixture, rectangle
+`intersect`/`subtract`, topology/ring semantics, comparator tolerance, dan
+error boundary tanpa mengaktifkan fixture atau memperluas claim ke `union`,
+`xor`, operand non-rectangle, atau degenerate input.
+
+## 0. Checkpoint gate promotion — 2026-10-08
+
+Promotion belum dilakukan. Replay command wajib pada workspace HEAD
+`d3ec2b0430f12bd95f2be312fa7438b6d97757d6` dengan Node `24.21.0` menghasilkan:
+
+- artefak `pnpm run integration:gate -- --local` pada Node `24.21.0` di
+  `.local/integration-local-node24-recovery.json` mencatat `33/36` stage lulus.
+  Strict baseline, TypeScript geometry/core/renderer/language-service, CLI,
+  Playground lint/unit/build, docs check/build, serta shared conformance `253/253`
+  lulus; tiga failure adalah frozen install, Playwright Chromium, dan Playground
+  E2E karena batas environment;
+- `pnpm run integration:public` lulus strict baseline, lalu gagal pada public
+  registry install pertama (`@relgeo/geometry`) dengan `ENOTFOUND
+  registry.npmjs.org`. Retry berulang dihentikan setelah akar masalah yang sama
+  terkonfirmasi pada registry boundary;
+- supporting `pnpm run compatibility:check` lulus `283/283`;
+- `pnpm run flutter:conformance` belum dapat dimulai karena Flutter SDK gagal
+  menulis `bin/cache/engine.stamp` di luar workspace (`EPERM`), sehingga ini
+  tetap bukan evidence Flutter checkout bersih;
+- percobaan sebelumnya dengan PATH default Node `22.23.2` berhenti preflight;
+  percobaan Node 24 di atas adalah evidence gate yang relevan untuk baseline ini.
+
+Report current yang telah tersimpan tetap dibaca konservatif:
+`.local/integration-local-current.json` (`6/35`, gagal pada install/dependency dan
+consumer stages) serta `.local/integration-public-current.json` (`2/11`, registry
+DNS gagal). Keduanya bukan evidence gate hijau dan tidak menggantikan replay Node
+24 di atas. Evidence CI terakhir yang valid
+adalah `Integration #151`, sebelum pointer Flutter `edc9488`; itu tidak cukup untuk
+mempromosikan candidate pada baseline sekarang.
+
+Transcript manual `.internal/tmp-test.txt` kemudian mencatat local `35/35`, public
+`50/50`, dan `flutter:conformance` lulus dengan 300 test pada Node `24.21.0` /
+pnpm `10.33.3`. Evidence ini mendukung gate workspace manual, tetapi bukan CI
+canonical; promotion tetap menunggu keputusan capability dan evidence CI baru untuk
+pointer `edc9488`.
+
+Akibatnya fixture `15-v05-boolean-intersection-candidate` dan capability
+`boolean-geometry` tetap `capability`/`partial`, sedangkan fixture 16 evaluator/unit
+tetap candidate. Tidak ada perubahan status active sampai local, public-registry,
+Flutter conformance, CLI/Playground, dan semantic SVG comparator lulus dari
+checkout bersih.
+
+### 0.1 Consumer verification rerun — 2026-10-08
+
+Setelah dependency workspace dipulihkan dari pnpm store offline, verification
+Node `24.21.0` menghasilkan evidence berikut:
+
+- `pnpm run conformance:fixtures`: `253 passed, 0 failed across 20 fixtures`,
+  termasuk fixture 15 dan runtime errors `BOOLEAN_EMPTY_RESULT` serta
+  `BOOLEAN_MULTIPART_RESULT`;
+- `pnpm -r run test`: geometry `66`, core `427`, renderer-svg `79`,
+  language-service `66`, CLI `9`, Playground `93`, remark-relgeo `5`,
+  remark-relgeo-hl `3`, serta docs-site built-output assertions lulus;
+- Playground lint dan production build lulus; CLI build lulus dan smoke compile
+  fixture 15 menghasilkan SVG yang memuat object `overlap` dan `cut` tanpa
+  executable markup;
+- semantic SVG comparator Flutter tetap terverifikasi secara source-level:
+  canonicalization ring dan perbandingan numerik `1e-6` dipakai, sedangkan
+  style, viewBox, whitespace, dan attribute formatting tidak dibandingkan;
+- `pnpm run flutter:conformance` belum dapat menjalankan test karena Flutter SDK
+  gagal menulis `bin/cache/engine.stamp` di luar workspace (`EPERM`). Karena itu
+  evidence Flutter checkout bersih belum lengkap dan promotion tidak dilakukan.
+
+Evidence ini membuktikan consumer TypeScript/CLI/Playground dan aturan semantic
+projection, tetapi tidak menggantikan Flutter conformance atau public/CI gate.
+Fixture 15 tetap `capability`; fixture 16 evaluator/unit tetap `candidate`.
+
+### 0.2 Reconciliation keputusan evidence — 2026-10-08
+
+Keputusan manusia menerima `.internal/tmp-test.txt` dan
+`.local/integration-manual-evidence.json` sebagai supporting local evidence
+untuk local `35/35`, public `50/50`, dan Flutter `300 tests`. Klasifikasi ini
+tidak mengubahnya menjadi CI/public canonical evidence. Canonical gap yang
+masih terbuka adalah:
+
+- Flutter conformance pada checkout bersih dengan pointer `edc9488`;
+- clean-checkout consumer verification yang dapat ditautkan ke baseline terbaru;
+- integration/public gate canonical pada baseline yang sama.
+
+Selama tiga gap tersebut belum ditutup oleh runner yang memiliki akses toolchain
+dan network yang diperlukan, fixture 15 tetap `capability`, capability
+`boolean-geometry` tetap `partial`, dan evaluator/unit tetap menunggu.
+
 ## 1. Tujuan
 
 Sub-rencana ini menerjemahkan keputusan maintainer menjadi pekerjaan teknis

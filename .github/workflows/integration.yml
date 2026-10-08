@@ -41,7 +41,7 @@ jobs:
         run: flutter --version
 
       - name: Run Flutter conformance gate
-        run: node scripts/run-flutter-conformance.mjs
+        run: node scripts/run-flutter-conformance.mjs --exclude-tags=golden
 
       - name: Record Flutter summary
         if: always()
@@ -85,6 +85,10 @@ jobs:
         working-directory: flutter
         run: flutter pub get --enforce-lockfile
 
+      - name: Run macOS Flutter tests including goldens
+        working-directory: flutter
+        run: flutter test
+
       - name: Build macOS release
         working-directory: flutter
         run: flutter build macos --no-pub --release
@@ -93,9 +97,9 @@ jobs:
         working-directory: flutter
         run: |
           set -euo pipefail
-          app="build/macos/Build/Products/Release/relgeo_flutter.app"
+          app="build/macos/Build/Products/Release/RelGeo.app"
           test -d "$app"
-          test -x "$app/Contents/MacOS/relgeo_flutter"
+          test -x "$app/Contents/MacOS/RelGeo"
           archive="$RUNNER_TEMP/relgeo_flutter-macos-${{ runner.arch }}-${{ github.sha }}.zip"
           ditto -c -k --sequesterRsrc --keepParent "$app" "$archive"
           echo "RELGEO_MACOS_ARCHIVE=$archive" >> "$GITHUB_ENV"
@@ -159,7 +163,7 @@ jobs:
 
       - name: Run Flutter tests
         working-directory: flutter
-        run: flutter test
+        run: flutter test --exclude-tags=golden
 
       - name: Build Linux release
         working-directory: flutter
@@ -231,7 +235,7 @@ jobs:
 
       - name: Run Flutter tests
         working-directory: flutter
-        run: flutter test
+        run: flutter test --exclude-tags=golden
 
       - name: Build Windows release
         working-directory: flutter

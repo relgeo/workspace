@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const flutterDir = resolve(root, "flutter");
 const flutterBinary = process.env.RELGEO_FLUTTER_BIN || "flutter";
+const flutterTestArgs = process.argv.slice(2);
 const stagingRoot = mkdtempSync(join(tmpdir(), "relgeo-flutter-fixtures-"));
 const environment = {
   ...process.env,
@@ -87,7 +88,14 @@ try {
     )
   ) {
     process.exitCode = 1;
-  } else if (!run("flutter test", flutterBinary, ["test"], { cwd: flutterDir })) {
+  } else if (
+    !run(
+      `flutter test${flutterTestArgs.length ? ` ${flutterTestArgs.join(" ")}` : ""}`,
+      flutterBinary,
+      ["test", ...flutterTestArgs],
+      { cwd: flutterDir },
+    )
+  ) {
     process.exitCode = 1;
   }
 } finally {

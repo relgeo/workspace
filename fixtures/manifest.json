@@ -135,7 +135,7 @@
       "id": "v05-boolean-intersection-candidate",
       "path": "reference/15-v05-boolean-intersection-candidate.yaml",
       "contractVersion": "0.5",
-      "status": "capability",
+      "status": "active",
       "surfaces": ["core", "renderer-svg", "cli", "flutter"],
       "expectedObjectIds": [
         "horizontal",

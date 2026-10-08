@@ -1,7 +1,7 @@
 # Compatibility behavior audit
 
-**Status:** inventory dan parser/version policy selesai. Release decision guard tersedia; npm publish tidak diklaim atomik. Promotion `boolean/intersection` disetujui tetapi implementasinya belum diterapkan pada fixture/matrix.
-**Tanggal:** 2026-09-15 (status direkonsiliasi 2026-10-08)
+**Status:** inventory dan parser/version policy selesai. Release decision guard tersedia; npm publish tidak diklaim atomik. Promotion `boolean/intersection` diterapkan pada fixture 15 dan capability matrix untuk boundary terbatas; evaluator/unit tetap candidate.
+**Tanggal:** 2026-09-15 (status direkonsiliasi 2026-10-09)
 **Scope:** `spec`, `core`, `renderer-svg`, `language-service`, `cli`, Markdown plugins, Playground, website, Flutter, matrix, fixtures, dan test suite
 
 ## Ringkasan
@@ -20,11 +20,11 @@ Inventory ini dapat diulang dengan `pnpm run compatibility:audit`. Command bersi
 | Parser | `core/src/parser.ts` | active `0.5`, supported legacy `0.4`, regression-only `0.1`–`0.3`, omitted version default `0.5`, dan unsupported-version diagnostic eksplisit |
 | Runtime regression | test `core` dan `renderer-svg` | test historis menggunakan dokumen `v0.1`, `v0.2`, `v0.3`, dan `v0.4` |
 | Language service | `language-service/src/__tests__/language_service.test.ts` | ada coverage `v0.3`, `v0.4`, dan `v0.5` |
-| Shared fixture | `fixtures/manifest.json` | 1 active `v0.5`, 9 supported-legacy `v0.4`, 5 invalid (termasuk future/unknown version), 1 runtime-diagnostic `v0.5`, 2 runtime-error `v0.5`, 2 capability candidates `v0.5` |
+| Shared fixture | `fixtures/manifest.json` | 2 active `v0.5` (relational baseline dan boolean/intersection), 9 supported-legacy `v0.4`, 5 invalid (termasuk future/unknown version), 1 runtime-diagnostic `v0.5`, 2 runtime-error `v0.5`, 1 capability candidate `v0.5` (evaluator/unit) |
 | Playground examples | `playground/src/examples.ts` dan raw YAML | contoh historis `v0.2`/`v0.3` diberi label historical; nama file aktif sudah diselaraskan ke `v05_*` tanpa mengubah example key internal |
 | Intentional fallback | `playground/src/share-code.ts`, `playground/src/clipboard.ts`, UX audit | Base64 legacy dan clipboard fallback sudah diberi alasan serta test/contract coverage |
 | Dependency line | `scripts/check-compatibility.mjs` | dependency `@relgeo/*` tetap pada `^0.5.0`; checker lulus `256/256`, termasuk record non-Node Flutter |
-| Flutter consumer | `flutter/pubspec.yaml`, Flutter source/tests, shared fixture adapter | workbench non-publishable pada DSL `0.5`; evidence lokal/CI candidate bersifat historis, pointer terbaru menunggu CI refresh |
+| Flutter consumer | `flutter/pubspec.yaml`, Flutter source/tests, shared fixture adapter | workbench non-publishable pada DSL `0.5`; fixture 15 lulus canonical cross-platform CI run 37832260326, evaluator/unit tetap candidate |
 
 ## Findings
 
@@ -96,7 +96,7 @@ Implementasi policy ini:
 3. fixture `17` dan `18` mengunci negative behavior pada core dan language-service;
 4. conformance terbaru lulus `253 passed, 0 failed across 20 fixtures`, termasuk boundary resolver/CLI `BOOLEAN_EMPTY_RESULT` dan `BOOLEAN_MULTIPART_RESULT`.
 
-Policy versi baseline dan penamaan contoh bukan open item. Tidak ada jaminan transaksi atomik untuk npm multi-package; release decision guard dan recovery planner read-only membantu operator mengelola partial release. Promotion `boolean/intersection` sudah diputuskan, tetapi implementasi promotion masih terbuka pada plan 07.
+Policy versi baseline dan penamaan contoh bukan open item. Tidak ada jaminan transaksi atomik untuk npm multi-package; release decision guard dan recovery planner read-only membantu operator mengelola partial release. Promotion `boolean/intersection` sudah diterapkan pada fixture 15 dan matrix untuk boundary terbatas; evaluator/unit tetap terbuka pada plan 07.
 
 ## Status boundary publik
 

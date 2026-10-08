@@ -86,15 +86,15 @@
         "paths": ["flutter/lib/src/geometry/types.dart", "flutter/lib/src/geometry/intersection.dart"],
         "symbols": ["intersectLineCircle", "intersectLineArc"]
       },
-      "supportLevel": "partial",
-      "evidenceStatus": "partial",
+      "supportLevel": "verified",
+      "evidenceStatus": "verified",
       "evidence": {
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
         "ci": true
       },
-      "note": "The capability candidate exercises line intersection through the shared fixture and passes supporting local and historical CI semantic comparison; current-pointer canonical evidence is still required, so it is not yet part of the active baseline."
+      "note": "The active v0.5 contract covers finite non-degenerate line intersection exercised by fixture 15; local and canonical CI semantic comparison pass on root 328c869. Circle/arc and degenerate extensions remain outside this contract."
     },
     {
       "id": "boolean-geometry",
@@ -107,15 +107,15 @@
         "paths": ["flutter/lib/src/geometry/clipper_boolean.dart"],
         "symbols": ["ClipperBooleanEngine"]
       },
-      "supportLevel": "partial",
-      "evidenceStatus": "partial",
+      "supportLevel": "verified",
+      "evidenceStatus": "verified",
       "evidence": {
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
         "ci": true
       },
-      "note": "Clipper2-backed implementations exist; the v0.5 capability candidate passes supporting local and historical CI operation/normalized semantic-projection checks through a shared fixture, but remains outside the active baseline until current-pointer canonical evidence and the contract gate are complete."
+      "note": "The active v0.5 contract covers rectangle intersect/subtract, single-island results, ring closure/topology, documented tolerance, and documented runtime errors as exercised by fixture 15 and canonical CI root 328c869. Union, xor, non-rectangle operands, degenerate inputs, and multipart policy remain outside this contract."
     },
     {
       "id": "svg-output",
@@ -136,7 +136,7 @@
         "semanticParity": true,
         "ci": true
       },
-      "note": "Active v0.5, runtime-diagnostic, and boolean/intersection candidate SVG geometry pass local and CI semantic projection against TypeScript expected snapshots; presentation policy and broader SVG capability anchors remain outside the contract."
+      "note": "Active v0.5, runtime-diagnostic, and boolean/intersection SVG geometry pass local and canonical CI semantic projection against TypeScript expected snapshots; presentation policy and broader SVG capability anchors remain outside the contract."
     },
     {
       "id": "canvas-workbench",

@@ -1,6 +1,6 @@
 # RelGeo Open Work — Recommendation Record
 
-**Status:** Accepted dengan mobile ditunda; desktop expansion menjadi prioritas
+**Status:** Accepted dengan boolean/intersection fixture 15 active pada scope terbatas; evaluator/unit dan mobile tetap ditunda
 **Tanggal:** 2026-09-23  
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** Flutter capability, SVG parity, QA perangkat, toolchain, dan release npm  
@@ -12,9 +12,9 @@
 - [Maturation Master Plan](../MATURATION-MASTER-PLAN.md)
 
 Dokumen ini awalnya merangkum pekerjaan terbuka dan rekomendasi untuk keputusan
-maintainer. Rekomendasi utamanya kini telah disetujui; status di bawah
-membedakan keputusan yang sudah diterima dari implementasi/evidence yang masih
-harus dikerjakan. Sub-plan teknis menjadi pemilik detail eksekusi.
+maintainer. Rekomendasi boolean/intersection kini telah diterapkan pada fixture
+15 setelah canonical CI run 37832260326; status di bawah membedakan boundary
+active itu dari evaluator/unit dan pekerjaan platform yang masih terbuka.
 
 ## 1. Status evidence saat ini
 
@@ -55,7 +55,7 @@ menjalankan evidence yang tersedia, baru mengevaluasi automation release.
 
 | Area | Rekomendasi terbaik | Status rekomendasi |
 | --- | --- | --- |
-| Promosi capability | Promosikan satu capability per keputusan; mulai dari `boolean/intersection`, lalu `evaluator/unit` | keputusan disetujui; implementasi promotion pertama belum selesai |
+| Promosi capability | Promosikan satu capability per keputusan; mulai dari `boolean/intersection`, lalu `evaluator/unit` | fixture 15 boolean/intersection active pada scope contract; evaluator/unit tetap candidate |
 | SVG parity | Gunakan semantic parity berlapis; geometry adalah contract inti, presentation hanya bila ada consumer nyata | disetujui; tidak menambah property presentation pada 0.5.x tanpa kebutuhan consumer |
 | Flutter | Tetap workbench non-publishable; pin stable `3.41.9`; build macOS hanya CI confidence gate | sudah disetujui |
 | Platform dan QA | Tunda Android/iOS tanpa tanggal; prioritaskan web/PWA, macOS, Linux, Windows, dan CLI | keputusan disetujui; desktop runtime evidence masih terbuka; artifact Windows CI tersedia |
@@ -65,12 +65,13 @@ menjalankan evidence yang tersedia, baru mengevaluasi automation release.
 
 ## 4. Keputusan A — Promosi capability Flutter
 
-### Rekomendasi
+### Rekomendasi dan status pelaksanaan
 
 Promosikan capability secara berurutan, bukan borongan:
 
-1. `boolean/intersection` menjadi kandidat pertama karena contract-nya lebih
-   terlokalisasi;
+1. `boolean/intersection` menjadi capability active pertama karena contract-nya
+   lebih terlokalisasi; fixture 15 sudah aktif setelah canonical run
+   37832260326;
 2. `evaluator/unit` ditinjau setelah capability pertama aktif dan stabil;
 3. tidak ada promosi otomatis hanya karena test lulus.
 
@@ -103,9 +104,9 @@ closure, semantic tolerance, serta error `INVALID_BOOLEAN_OPERATION`,
 
 Operand non-rectangle, `union`, `xor`, degenerate/self-intersecting input,
 unknown-reference error code, dan detail engine/ordering tetap di luar active
-contract sampai memiliki evidence dan keputusan tersendiri. Fixture 15 tetap
-candidate sampai clean-checkout CI/public/Flutter evidence lengkap; fixture
-16 evaluator/unit tidak ikut dipromosikan.
+contract sampai memiliki evidence dan keputusan tersendiri. Fixture 15 kini
+active setelah clean-checkout CI/public/Flutter evidence canonical run
+37832260326; fixture 16 evaluator/unit tidak ikut dipromosikan.
 
 ## 5. Keputusan B — SVG parity
 
@@ -323,8 +324,8 @@ sequenceDiagram
 Urutan praktis:
 
 1. [x] Setujui candidate `boolean/intersection`.
-2. [ ] Promosikan fixture dan matrix secara eksplisit.
-3. Jalankan full local dan CI gate.
+2. [x] Promosikan fixture 15 dan matrix secara eksplisit.
+3. [x] Jalankan full local dan CI gate melalui canonical run 37832260326.
 4. Tambahkan Windows CI artifact dan uji pada Windows 11; lanjutkan QA web/macOS/Linux.
 5. Tunda evaluator/unit sampai hasil tahap pertama stabil.
 6. Jalankan dua release npm berikutnya secara manual.
@@ -334,7 +335,7 @@ Urutan praktis:
 
 | Item | Mengapa belum selesai | Tindakan berikutnya |
 | --- | --- | --- |
-| Promosi boolean/intersection | keputusan sudah disetujui; implementasi belum dilakukan | ubah fixture/matrix, lalu jalankan full gate |
+| Promosi boolean/intersection | keputusan disetujui dan fixture 15 active pada scope terbatas | pertahankan evidence; evaluasi evaluator/unit secara terpisah |
 | Promosi evaluator/unit | sengaja menunggu candidate pertama | jangan dikerjakan sebelum B stabil |
 | Presentation SVG | belum ada consumer yang memerlukan | pertahankan semantic-only untuk `0.5.x` |
 | Desktop/web QA | Windows artifact CI ada; target runtime Ubuntu/Windows 11 dan desktop/web accessibility belum diverifikasi | smoke target yang tersedia dan catat limitation |

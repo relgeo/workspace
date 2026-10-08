@@ -1,8 +1,8 @@
 # Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity
 
-**Status keputusan:** boundary boolean/intersection disetujui sebagai promotion pertama; evaluator/unit menunggu. **Status implementasi:** parsial—fixture/matrix promotion belum diterapkan. **Status evidence:** candidate historis lulus; perlu gate pada baseline terbaru. Flutter development dijeda selama audit docs.
+**Status keputusan:** boundary boolean/intersection disetujui sebagai promotion pertama; evaluator/unit menunggu. **Status implementasi:** fixture 15 dan capability matrix sudah dipromosikan pada scope contract terbatas; fixture 16 evaluator/unit tetap capability/candidate. **Status evidence:** canonical GitHub Actions run 37832260326 pada root 328c869 lulus seluruh enam job.
 **Tanggal mulai:** 2026-09-18  
-**Status terakhir diperiksa:** 2026-10-08
+**Status terakhir diperiksa:** 2026-10-09
 **Owner:** relgeo/workspace + relgeo/flutter + relgeo/renderer-svg  
 **Parent:** [MATURATION-MASTER-PLAN.md](../MATURATION-MASTER-PLAN.md)  
 **Decision record:** [07-cross-repo-open-decisions.md](../decisions/07-cross-repo-open-decisions.md)
@@ -15,7 +15,7 @@ promotion pertama. Ia mengunci line-line intersection pada fixture, rectangle
 error boundary tanpa mengaktifkan fixture atau memperluas claim ke `union`,
 `xor`, operand non-rectangle, atau degenerate input.
 
-## 0. Checkpoint gate promotion — 2026-10-08
+## 0. Checkpoint gate promotion — 2026-10-08 (historical)
 
 Promotion belum dilakukan. Replay command wajib pada workspace HEAD
 `d3ec2b0430f12bd95f2be312fa7438b6d97757d6` dengan Node `24.21.0` menghasilkan:
@@ -82,7 +82,7 @@ Evidence ini membuktikan consumer TypeScript/CLI/Playground dan aturan semantic
 projection, tetapi tidak menggantikan Flutter conformance atau public/CI gate.
 Fixture 15 tetap `capability`; fixture 16 evaluator/unit tetap `candidate`.
 
-### 0.2 Reconciliation keputusan evidence — 2026-10-08
+### 0.2 Reconciliation keputusan evidence — 2026-10-08 (sebelum refresh canonical)
 
 Keputusan manusia menerima `.internal/tmp-test.txt` dan
 `.local/integration-manual-evidence.json` sebagai supporting local evidence
@@ -97,6 +97,49 @@ masih terbuka adalah:
 Selama tiga gap tersebut belum ditutup oleh runner yang memiliki akses toolchain
 dan network yang diperlukan, fixture 15 tetap `capability`, capability
 `boolean-geometry` tetap `partial`, dan evaluator/unit tetap menunggu.
+
+### 0.3 Audit checkpoint — 2026-10-09 (sebelum run canonical)
+
+Audit read-only pada 2026-10-09 tidak menemukan canonical CI/public/Flutter
+evidence baru. Report terbaru tetap local `33/36`, local-current `6/35`, dan
+public-current `2/11`; report hijau September bersifat historis. Ini dicatat
+sebagai evidence gap eksternal, bukan defect source. Retry dari executor terbatas
+dihentikan sesuai keputusan maintainer.
+
+Supporting `.internal/tmp-test.txt` tetap diterima untuk local `35/35`, public
+`50/50`, dan Flutter `300 tests`, tetapi tidak mengubah status canonical. Fixture
+15 dan `boolean-geometry` tetap `capability`/`partial`; evaluator/unit tetap
+menunggu sampai evidence untuk pointer terbaru tersedia.
+
+Daftar gap pada checkpoint ini telah digantikan oleh evidence canonical pada
+§0.4; supporting transcript tetap dipertahankan sebagai evidence lokal.
+
+### 0.4 Canonical CI evidence — 2026-10-09
+
+GitHub Actions run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326)
+pada root commit `328c869b2ffe023806c8a85a9e9ccffa8f523145` sekarang menjadi
+evidence canonical terbaru dan menggantikan checkpoint executor lama. Run
+berstatus `Success`, seluruh enam job lulus (`verify`, `public`, `flutter`,
+`flutter-macos`, `flutter-linux`, `flutter-windows`), dan lima artifact tersedia.
+
+Run ini menutup gate lintas-platform untuk baseline tersebut. Setelah manifest,
+capability matrix, README/docs, dan evidence record disinkronkan, fixture 15
+dan scope `boolean/intersection` yang disetujui menjadi active. Fixture 16
+evaluator/unit tetap `capability`/candidate dan tidak ikut dipromosikan.
+
+### 0.5 Promotion sync — 2026-10-09
+
+Promotion pertama selesai pada boundary yang telah dikunci Decision Record 08:
+fixture 15 sekarang `active`, expected scene/SVG snapshot tetap menjadi baseline,
+dan matrix menandai line intersection serta rectangle `intersect`/`subtract`
+sebagai `verified`. Evidence canonical adalah run
+[37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326)
+pada root `328c869`; local compatibility `283/283` dan shared conformance
+`260/260` juga lulus setelah fixture 15 dipromosikan.
+
+Status active tidak mencakup `union`, `xor`, operand non-rectangle, input
+degenerate/non-finite/self-intersecting, multipart policy, atau SVG presentation
+parity. Evaluator/unit dan scalar/unit policy tetap candidate untuk Stage C.
 
 ## 1. Tujuan
 
@@ -183,22 +226,22 @@ mengembalikan status ke `candidate` atau `partial`, bukan memaksa status
 
 ### B2. Promote fixture
 
-- [ ] ubah status fixture dari `capability` menjadi `active` hanya setelah B1
-  disetujui;
-- [ ] pertahankan expected scene dan SVG semantic snapshot sebagai baseline;
+- [x] ubah status fixture 15 dari `capability` menjadi `active` setelah B1
+  disetujui dan canonical CI lulus;
+- [x] pertahankan expected scene dan SVG semantic snapshot sebagai baseline;
 - [x] tambahkan negative fixtures untuk empty-result dan multipart-result
   boundaries yang sengaja ditolak pada runtime;
-- [ ] update capability matrix dari `partial/candidate` sesuai contract yang
-  benar-benar diterima.
+- [x] update capability matrix dari `partial/candidate` sesuai contract yang
+  benar-benar diterima; evaluator/unit tetap candidate.
 
 ### B3. Verify consumer matrix
 
-- [ ] TypeScript geometry/core/renderer lulus seluruh test terkait;
-- [ ] Flutter unit/conformance lulus dari checkout bersih;
-- [ ] comparator semantic lulus tanpa toleransi baru yang tidak terdokumentasi;
-- [ ] CLI dan Playground tetap menghasilkan output yang konsisten;
-- [ ] CI integration dan public-registry gate lulus;
-- [ ] README dan docs menyebut capability sebagai active hanya setelah semua
+- [x] TypeScript geometry/core/renderer lulus seluruh test terkait;
+- [x] Flutter unit/conformance lulus dari checkout bersih pada canonical run;
+- [x] comparator semantic lulus tanpa toleransi baru yang tidak terdokumentasi;
+- [x] CLI dan Playground tetap menghasilkan output yang konsisten;
+- [x] CI integration dan public-registry gate lulus pada canonical run;
+- [x] README dan docs menyebut scope capability sebagai active setelah semua
   evidence tersedia.
 
 ## 6. Stage C — Promosi evaluator/unit
@@ -276,20 +319,18 @@ eksplisit untuk menahan promosi.
 
 Sub-rencana ini belum selesai sebelum:
 
-- [ ] minimal satu candidate memiliki contract decision yang diterima;
-- [ ] fixture candidate tersebut menjadi active secara eksplisit;
-- [ ] TypeScript dan Flutter lulus semantic conformance dari clean checkout;
-- [ ] SVG semantic core dan presentation scope tercatat;
-- [ ] capability matrix, master plan, README, dan release evidence sinkron;
-- [ ] CI terbaru hijau setelah perubahan tersebut.
+- [x] minimal satu candidate memiliki contract decision yang diterima;
+- [x] fixture candidate tersebut menjadi active secara eksplisit;
+- [x] TypeScript dan Flutter lulus semantic conformance dari clean checkout;
+- [x] SVG semantic core dan presentation scope tercatat;
+- [x] capability matrix, master plan, README, dan release evidence sinkron;
+- [x] CI terbaru hijau setelah perubahan tersebut.
 
 ## 11. Status saat ini
 
-Fondasi teknis, keputusan policy, dan boundary contract candidate
-boolean/intersection sudah selesai secara prinsip. Audit juga menemukan bahwa
-runner masih memaksa satu active fixture; policy multi-active perlu diterapkan
-sebelum fixture 15 dipromosikan tanpa mengorbankan fixture 10. Setelah itu
-negative fixture empty-result sudah ditambahkan, sedangkan yang tersisa adalah
-promotion eksplisit, evidence lintas consumer, negative boundary lain yang
-lebih spesifik, dan sinkronisasi matrix/docs. Candidate evaluator/unit
-menunggu hasil candidate pertama.
+Fondasi teknis, keputusan policy, dan boundary contract
+boolean/intersection telah dipromosikan secara terbatas melalui fixture 15.
+Fixture 10 tetap active sebagai relational baseline; fixture 16 evaluator/unit
+tetap capability/candidate sampai Stage C memiliki contract unit/evaluator dan
+evidence tersendiri. SVG presentation, operasi boolean di luar boundary, dan
+platform release tetap sengaja di luar promotion ini.

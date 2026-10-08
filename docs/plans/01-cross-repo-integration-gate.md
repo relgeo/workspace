@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status implementasi:** Selesai. **Status evidence:** Integration #151 adalah run lintas-repo sukses terakhir yang tercatat, tetapi workspace kemudian maju ke Flutter `edc9488`. Checkpoint workspace HEAD `d3ec2b0` sudah diverifikasi untuk baseline, compatibility, dan conformance; refresh CI untuk pointer terbaru masih menunggu. Public smoke dan gate lokal tetap dapat diulang.
+**Status implementasi:** Selesai. **Status evidence:** GitHub Actions run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) pada root `328c869` adalah run lintas-repo canonical terbaru; seluruh enam job sukses dan lima artifact tersedia. `Integration #151` dipertahankan sebagai historical predecessor. Promotion capability tetap merupakan langkah terpisah.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  

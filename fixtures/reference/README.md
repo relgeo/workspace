@@ -32,7 +32,8 @@ Fixture awal:
 12. `12-v05-invalid-yaml-syntax.yaml` — fixture invalid untuk YAML syntax diagnostics DSL `v0.5`
 13. `13-v05-invalid-unknown-reference.yaml` — fixture invalid untuk unknown-reference diagnostics DSL `v0.5`
 14. `14-v05-runtime-align-violation.yaml` — fixture valid secara struktur yang menghasilkan runtime diagnostic `align` setelah resolve DSL `v0.5`
-15. `15-v05-boolean-intersection-candidate.yaml` — candidate capability untuk intersection/subtract dan semantic geometry projection
+15. `15-v05-boolean-intersection-candidate.yaml` — fixture `active` untuk scope contract intersection/subtract dan semantic geometry projection; nama file dipertahankan sebagai historical identifier
+16. `16-v05-evaluator-units-candidate.yaml` — capability candidate untuk evaluator/unit; belum active
 16. `16-v05-evaluator-units-candidate.yaml` — candidate capability untuk parameter length, unit conversion, derived placement, dan semantic geometry projection
 17. `19-v05-runtime-empty-boolean.yaml` — fixture valid secara struktur yang ditolak saat resolve dengan `BOOLEAN_EMPTY_RESULT`
 18. `20-v05-runtime-multipart-boolean.yaml` — fixture valid secara struktur yang ditolak saat resolve dengan `BOOLEAN_MULTIPART_RESULT`
@@ -43,4 +44,10 @@ Fixture 12 sengaja memotong flow collection YAML. Fixture 13 merujuk `missing.ce
 Fixture 14 sengaja memakai dua titik yang tidak sejajar. Parser dan resolver tetap berhasil, tetapi resolver harus menghasilkan satu violation `align` pada `constraints[0]`; snapshot scene dan SVG menjaga bentuk diagnostic serta visual helper tetap dapat direview.
 Fixture 19 sengaja memakai dua rectangle yang tidak beririsan. Parser dan language service harus menerima struktur dokumennya, sedangkan resolver dan CLI harus menolak hasil boolean kosong dengan `BOOLEAN_EMPTY_RESULT`.
 Fixture 20 sengaja membelah satu rectangle menjadi dua island dengan mode hasil `single`. Parser dan language service harus menerima struktur dokumennya, sedangkan resolver dan CLI harus menolak hasil multipart dengan `BOOLEAN_MULTIPART_RESULT`.
-Fixture 15 dan 16 berstatus `capability`, bukan active baseline. Keduanya boleh mengunci expected scene/SVG dan evidence lintas consumer, tetapi promosi ke active contract memerlukan keputusan compatibility dan evidence CI. Promosi tidak menggantikan Fixture 10; beberapa fixture `active` dapat hidup berdampingan selama masing-masing memiliki snapshot dan evidence yang dapat direview. Fixture 16 memakai `cliUnit: mm` pada manifest karena snapshot CLI harus eksplisit memakai unit sumber `mm`, sedangkan default CLI tetap `px`.
+Fixture 15 berstatus `active` pada scope boolean/intersection yang dikunci
+Decision Record 08 dan canonical run 37832260326; fixture 16 tetap
+`capability`/candidate untuk evaluator/unit. Promosi fixture 15 tidak
+menggantikan Fixture 10; beberapa fixture `active` dapat hidup berdampingan
+selama masing-masing memiliki snapshot dan evidence yang dapat direview. Fixture
+16 memakai `cliUnit: mm` pada manifest karena snapshot CLI harus eksplisit
+memakai unit sumber `mm`, sedangkan default CLI tetap `px`.

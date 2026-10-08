@@ -49,7 +49,7 @@ flowchart TD
 | Topik | Jenis keputusan | Rekomendasi terbaik | Persetujuan maintainer |
 | --- | --- | --- | --- |
 | QA perangkat nyata | evidence operasional | macOS/web accessibility aktif; mobile fisik ditunda tanpa tanggal | keputusan scope diterima; desktop/web evidence masih perlu |
-| Promosi capability Flutter | keputusan contract | satu per satu; mulai `boolean/intersection`, evaluator/unit menunggu | disetujui; implementasi promotion belum selesai |
+| Promosi capability Flutter | keputusan contract | satu per satu; fixture 15 `boolean/intersection` active, evaluator/unit menunggu | diterapkan pada canonical run 37832260326; evaluator/unit tetap candidate |
 | Parity SVG Flutter | keputusan acceptance | semantic geometry sebagai inti; raw SVG equality bukan target | disetujui; tidak ada property presentation tambahan untuk 0.5.x tanpa consumer |
 | SDK Flutter dan platform | keputusan posture/toolchain | workbench non-publishable, stable `3.41.9`, desktop macOS/Linux/Windows; mobile ditunda | disetujui; runtime smoke desktop masih terbuka |
 | Otomasi npm dan recovery | keputusan risiko release | manual dahulu; OIDC + environment approval kelak, forward-fix bukan rollback | target automation disetujui bersyarat; 2 siklus manual pascakeputusan belum terpenuhi |
@@ -141,8 +141,8 @@ kontrak publik.
 ### 4.3 Keputusan yang dicatat
 
 - [x] menyetujui kebijakan promosi satu per satu;
-- [ ] candidate pertama yang diprioritaskan: `boolean/intersection` atau
-  `evaluator/unit`;
+- [x] candidate pertama yang diprioritaskan: `boolean/intersection`;
+- [x] fixture 15 `boolean/intersection` dipromosikan pada scope contract setelah canonical CI/public/Flutter evidence;
 - [x] menyetujui bahwa evidence semantic projection saja belum cukup tanpa
   contract dan dokumentasi public.
 

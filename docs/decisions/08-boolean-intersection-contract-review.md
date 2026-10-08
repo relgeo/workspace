@@ -1,6 +1,6 @@
 # Decision Record 08 — Boolean/Intersection Contract Review
 
-**Status keputusan:** disetujui sebagai promotion pertama pada Decision 09. **Status implementasi:** belum dipromosikan ke fixture/matrix active; pekerjaan itu masih terbuka dan Flutter sementara dijeda.
+**Status keputusan:** disetujui sebagai promotion pertama pada Decision 09. **Status implementasi:** boundary contract telah dipromosikan pada fixture 15 dan capability matrix; evaluator/unit tetap candidate.
 **Tanggal:** 2026-09-18  
 **Owner:** relgeo/workspace + relgeo/core + relgeo/geometry + relgeo/flutter  
 **Terkait:** [Sub-Rencana 07](../plans/07-flutter-capability-promotion-and-svg-parity.md)
@@ -16,8 +16,9 @@ candidate fixture `15-v05-boolean-intersection-candidate`:
 - boolean `subtract`;
 - semantic scene dan SVG projection lintas TypeScript dan Flutter.
 
-Dokumen ini belum mengubah status fixture menjadi `active`. Ia adalah record
-otoritatif untuk boundary promosi; activation tetap menunggu evidence gate.
+Dokumen ini menetapkan boundary normatif yang sekarang dipakai fixture 15
+`active`. Activation hanya berlaku untuk scope yang tertulis di §3; operasi
+boolean lain, input degeneratif, dan evaluator/unit tidak ikut teraktivasi.
 
 ## 2. Evidence saat ini
 
@@ -25,9 +26,9 @@ otoritatif untuk boundary promosi; activation tetap menunggu evidence gate.
 |---|---|---|
 | Spec | Boolean v0.5 mencantumkan `union`, `subtract`, `intersect`, `xor` pada `ClosedShape 2D` dan mode `single`/`multi`. | Normatif yang sudah ada |
 | Spec | `intersection(...)` menghasilkan `point` atau `collection<point>` bergantung konteks dan mendukung selector. | Normatif yang sudah ada |
-| Fixture 15 | Menguji line-line intersection, rectangle intersection, dan rectangle subtraction. | Candidate evidence |
+| Fixture 15 | Menguji line-line intersection, rectangle intersection, dan rectangle subtraction. | Active contract evidence |
 | TypeScript | `ClipperBooleanEngine` menyediakan empat operasi; resolver memvalidasi operand, empty result, dan multipart result. | Implementasi |
-| Flutter | Adapter Clipper2 menyediakan operasi boolean, dan semantic projection candidate memiliki evidence lokal supporting. | Implementasi + supporting/partial; canonical CI terbaru belum tersedia |
+| Flutter | Adapter Clipper2 menyediakan operasi boolean; fixture 15 semantic projection lulus canonical cross-platform CI. | Active contract evidence pada scope terbatas |
 | Geometry normalization | Rect, circle, polygon, path, boolean, dan clone dinormalisasi; circle disampling menjadi 64 titik; cleaning memakai ambang `1e-7`. | Detail implementasi |
 | Ordering/topology | Output ring/island dan titik penutup dinormalisasi oleh comparator; urutan engine tidak boleh dianggap sebagai contract tanpa keputusan eksplisit. | Gap contract |
 
@@ -227,9 +228,10 @@ flowchart TD
 Invariant manifest sekarang adalah “minimal satu fixture active; setiap fixture
 active wajib memiliki snapshot resolved/output”. Owner canonical tetap berada
 di level manifest. Dengan begitu fixture 10 tetap menjadi baseline relasional
-dan fixture 15 dapat menjadi baseline capability setelah negative fixture
-serta evidence lintas consumer tersedia. Status fixture tetap tidak berubah
-secara otomatis hanya karena runner sudah mendukung beberapa active fixture.
+dan fixture 15 menjadi baseline capability active setelah negative fixture,
+consumer evidence, dan canonical run tersedia. Fixture 16 evaluator/unit tetap
+capability dan status fixture tidak berubah otomatis hanya karena runner
+mendukung beberapa active fixture.
 
 ## 9. Checklist tindak lanjut
 
@@ -242,21 +244,20 @@ secara otomatis hanya karena runner sudah mendukung beberapa active fixture.
 - [x] audit kesiapan promosi menemukan invariant single-active-fixture;
 - [x] ubah policy runner agar beberapa fixture `active` dapat dipelihara;
 - [x] tambahkan negative fixture untuk empty-result dan multipart-result boundaries;
-- [ ] ubah fixture 15 menjadi `active` hanya setelah keputusan diterima;
-- [ ] jalankan full consumer matrix dan simpan evidence release;
-- [ ] perbarui matrix, README, spec reference, dan Sub-Rencana 07.
+- [x] ubah fixture 15 menjadi `active` setelah keputusan diterima;
+- [x] jalankan full consumer matrix dan simpan evidence release;
+- [x] perbarui matrix, README, spec reference, dan Sub-Rencana 07.
 
 ## 10. Kesimpulan
 
-Secara teknis candidate sudah cukup matang untuk direview, dan boundary
-promosi awal sudah diterima secara prinsip. Candidate belum boleh disebut
-active sebelum evidence lintas consumer selesai. Negative fixture untuk
+Boundary promosi awal sudah diterima dan diterapkan pada fixture 15 setelah
+evidence lintas consumer dan canonical run 37832260326. Negative fixture untuk
 `BOOLEAN_EMPTY_RESULT` sekarang menjadi bagian dari conformance workspace;
 boundary unsupported/degenerate lain tetap ditahan sampai memiliki contract
 dan fixture yang spesifik.
 Policy multi-active fixture sudah diterapkan pada runner tanpa mengubah status
-candidate secara otomatis. Rekomendasi terbaik tetap promosi kecil dengan tiga
-surface di atas, sambil menahan klaim untuk operation dan topology yang belum
+candidate secara otomatis. Fixture 16 evaluator/unit tetap capability/candidate,
+sementara klaim untuk operation dan topology yang belum
 memiliki fixture lintas consumer.
 
 ## 11. Inventaris presentation SVG

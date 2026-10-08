@@ -174,7 +174,7 @@ jobs:
         run: |
           set -euo pipefail
           bundle="build/linux/x64/release/bundle"
-          test -x "$bundle/relgeo_flutter"
+          test -x "$bundle/relgeo"
           test -d "$bundle/data"
           test -d "$bundle/lib"
           archive="$RUNNER_TEMP/relgeo_flutter-linux-x64-${{ github.sha }}.tar.gz"
@@ -246,8 +246,8 @@ jobs:
         working-directory: flutter
         shell: pwsh
         run: |
-          $exe = Get-ChildItem -Path "build/windows" -Recurse -Filter "relgeo_flutter.exe" | Select-Object -First 1
-          if ($null -eq $exe) { throw "relgeo_flutter.exe was not found under build/windows" }
+          $exe = Get-ChildItem -Path "build/windows" -Recurse -Filter "relgeo.exe" | Select-Object -First 1
+          if ($null -eq $exe) { throw "relgeo.exe was not found under build/windows" }
           $release = $exe.Directory.FullName
           $dll = Join-Path $release "flutter_windows.dll"
           $data = Join-Path $release "data"

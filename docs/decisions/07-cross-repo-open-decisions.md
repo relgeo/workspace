@@ -5,7 +5,7 @@
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** Playground, Flutter, renderer parity, dan release npm
 
-Dokumen ini mengumpulkan keputusan yang masih terbuka setelah baseline RelGeo
+Dokumen ini awalnya mengumpulkan keputusan yang masih terbuka setelah baseline RelGeo
 memiliki integration gate, release preflight, conformance fixtures, dan release
 manual `0.5.1` yang lulus. Tujuannya adalah memisahkan:
 
@@ -22,6 +22,13 @@ sampai web/PWA, macOS Flutter, Linux/Ubuntu Flutter, Windows Flutter, dan CLI
 lebih komprehensif serta kokoh. Rekomendasi operasional terbaru dan strategi
 build Windows dicatat pada [09-open-work-recommendations.md](09-open-work-recommendations.md)
 dan menjadi rujukan utama untuk keputusan perangkat.
+
+**Status reconciliation 2026-10-08:** dokumen ini sekarang merupakan decision
+history, bukan daftar semua keputusan yang masih menunggu. Keputusan scope
+Flutter/platform, promosi pertama `boolean/intersection`, batas SVG semantic,
+dan penundaan mobile telah diterima melalui dokumen ini serta Decision 09.
+Item yang belum selesai adalah eksekusi atau evidence, bukan approval, kecuali
+secara eksplisit ditandai sebagai keputusan baru.
 
 ## 1. Peta keputusan
 
@@ -41,18 +48,18 @@ flowchart TD
 
 | Topik | Jenis keputusan | Rekomendasi terbaik | Persetujuan maintainer |
 | --- | --- | --- | --- |
-| QA perangkat nyata | evidence operasional | uji iPhone/Safari, Android/Chrome, dan macOS/VoiceOver; simpan evidence terstruktur | tidak perlu keputusan produk, tetapi perlu waktu/perangkat |
-| Promosi capability Flutter | keputusan contract | jangan promosi otomatis; evaluasi dan promosi satu per satu setelah contract serta fixture active disetujui | ya |
-| Parity SVG Flutter | keputusan acceptance | gunakan semantic parity sebagai contract; pisahkan geometry dari presentation/style/viewBox | ya untuk scope acceptance |
-| SDK Flutter dan platform release | keputusan posture produk/toolchain | tetap workbench non-publishable; pin Flutter stable `3.41.9` di CI dan tunda release desktop | ya |
-| Otomasi npm dan recovery | keputusan risiko release | pertahankan publish manual untuk beberapa release berikutnya; jika diotomasi, gunakan OIDC + environment approval dan forward-fix, bukan rollback | ya |
+| QA perangkat nyata | evidence operasional | macOS/web accessibility aktif; mobile fisik ditunda tanpa tanggal | keputusan scope diterima; desktop/web evidence masih perlu |
+| Promosi capability Flutter | keputusan contract | satu per satu; mulai `boolean/intersection`, evaluator/unit menunggu | disetujui; implementasi promotion belum selesai |
+| Parity SVG Flutter | keputusan acceptance | semantic geometry sebagai inti; raw SVG equality bukan target | disetujui; tidak ada property presentation tambahan untuk 0.5.x tanpa consumer |
+| SDK Flutter dan platform | keputusan posture/toolchain | workbench non-publishable, stable `3.41.9`, desktop macOS/Linux/Windows; mobile ditunda | disetujui; runtime smoke desktop masih terbuka |
+| Otomasi npm dan recovery | keputusan risiko release | manual dahulu; OIDC + environment approval kelak, forward-fix bukan rollback | target automation disetujui bersyarat; 2 siklus manual pascakeputusan belum terpenuhi |
 
 ## 2.1 Keputusan yang sudah disetujui
 
 Rekomendasi dokumen ini disetujui sebagai arah kerja, dengan satu batasan:
 
-- policy QA perangkat nyata diterima, tetapi evidence iOS nyata ditunda sampai
-  ada akses ke iPhone/iPad milik sendiri, pinjaman, atau layanan real-device;
+- saran awal untuk matrix iPhone/Android/macOS VoiceOver disupersede oleh
+  keputusan berikutnya: Android/iOS ditunda tanpa tanggal dan bukan exit gate;
 - promosi capability Flutter dilakukan satu per satu dan tidak otomatis;
 - semantic parity SVG berlapis menjadi policy acceptance;
 - Flutter tetap workbench non-publishable dengan baseline stable `3.41.9`;
@@ -77,9 +84,9 @@ atau assistive technology pada perangkat nyata.
 3. **Matrix lengkap banyak ukuran/perangkat** — lebih kuat, tetapi tidak
    proporsional untuk baseline publik RelGeo saat ini.
 
-### 3.3 Rekomendasi
+### 3.3 Rekomendasi awal — superseded
 
-Gunakan pilihan 2 sebagai exit gate minimum:
+Rekomendasi awalnya adalah pilihan 2 sebagai exit gate minimum:
 
 - iPhone dengan iOS/Safari saat ini: touch target, drawer, surface switcher,
   virtual keyboard, scroll, pan, dan pinch;
@@ -92,14 +99,14 @@ Catat model perangkat, OS, browser, viewport, tanggal, hasil, dan issue yang
 ditemukan. Jika salah satu perangkat tidak tersedia, jangan menandai exit gate
 sebagai selesai; tandai evidence sebagai terbatas.
 
-### 3.4 Keputusan yang dicatat
+### 3.4 Keputusan terbaru yang dicatat
 
-- [x] menyetujui matrix minimum iPhone + Android + macOS VoiceOver;
-- [ ] memilih perangkat aktual dan tanggal pengujian; **ditunda karena akses iOS belum tersedia**;
+- [x] menetapkan Android/iOS di luar scope aktif, ditunda tanpa tanggal, dan bukan exit gate;
+- [ ] menjalankan keyboard/VoiceOver macOS dan browser accessibility web; ini evidence runtime yang masih aktif, bukan keputusan;
 - [x] menyetujui format evidence di audit Playground.
 
-Status evidence iOS saat ini: **pending external device access**. Android dan
-macOS tetap dapat diuji lebih dahulu, tetapi Tahap 5 belum boleh ditutup penuh.
+Status Android/iOS: **intentionally deferred, no date**. Keputusan ini
+menimpa rekomendasi awal di §3.3. Mobile QA tidak memblokir Tahap 5.
 
 ## 4. Keputusan B — Promosi capability candidate Flutter
 
@@ -291,8 +298,9 @@ langsung mengaktifkan publish otomatis.
 6. Setelah pola release stabil, buat sub-rencana terpisah untuk OIDC publish
    dan partial-release recovery.
 
-Urutan ini menjaga keputusan berisiko tinggi tetap datang setelah evidence yang
-relevan tersedia.
+Urutan ini adalah rencana awal September. Keputusan berikutnya dan status
+eksekusi terbaru ada di Decision 09 dan master plan; daftar ini dipertahankan
+sebagai sejarah, bukan backlog aktif.
 
 ## 9. Catatan keputusan maintainer
 

@@ -1,6 +1,6 @@
 # Sub-Rencana 08 — Desktop Platform Delivery
 
-**Status:** Stage A selesai; source-level native window bridge selesai; Stage B/C/E masih menunggu verifikasi fresh CI dan smoke test target OS
+**Status implementasi:** fondasi dan source-level native window bridge tersedia; parsial. **Status evidence:** Integration #151 berlaku untuk revision sebelum Flutter pointer `edc9488`; fresh CI belum ada. Ubuntu/Linux dan Windows 11 runtime smoke masih menunggu host/VM. macOS lokal pada pointer terbaru baru terbukti melalui direct Xcode Debug x86_64, bukan universal/arm64 release build.
 **Tanggal:** 2026-09-23  
 **Owner koordinasi:** `relgeo/workspace`  
 **Implementasi utama:** `relgeo/flutter`  

@@ -16,13 +16,13 @@ keputusan yang hanya berupa penundaan tidak berubah menjadi backlog palsu.
 
 | Keputusan | Sub-rencana pemilik | Status | Tindakan berikutnya |
 | --- | --- | --- | --- |
-| Promosi capability satu per satu | [07-flutter-capability-promotion-and-svg-parity](07-flutter-capability-promotion-and-svg-parity.md) | Berjalan | review dan promosi `boolean/intersection` |
-| SVG semantic parity berlapis | [07-flutter-capability-promotion-and-svg-parity](07-flutter-capability-promotion-and-svg-parity.md) | Berjalan | pertahankan semantic core; jangan tambah presentation tanpa consumer |
+| Promosi capability satu per satu | [07-flutter-capability-promotion-and-svg-parity](07-flutter-capability-promotion-and-svg-parity.md) | keputusan diterima; implementasi parsial | terapkan promotion `boolean/intersection` setelah Flutter dijeda selesai |
+| SVG semantic parity berlapis | [07-flutter-capability-promotion-and-svg-parity](07-flutter-capability-promotion-and-svg-parity.md) | keputusan diterima | pertahankan semantic core; presentation tambahan tidak masuk 0.5.x tanpa consumer |
 | Flutter non-publishable, stable `3.41.9` | [08-desktop-platform-delivery](08-desktop-platform-delivery.md) | Diterima | gunakan baseline pada seluruh desktop runner |
-| Web/PWA, macOS, Linux, Windows, CLI sebagai scope utama | [08-desktop-platform-delivery](08-desktop-platform-delivery.md) | Diterima | mulai dari workflow Windows artifact |
+| Web/PWA, macOS, Linux, Windows, CLI sebagai scope utama | [08-desktop-platform-delivery](08-desktop-platform-delivery.md) | Diterima | workflow artifact ada; lanjutkan target runtime smoke dan accessibility |
 | Android/iOS ditunda tanpa tanggal | decision record 09 | Diterima | tidak ada implementasi mobile sampai scope dibuka kembali |
-| npm manual untuk dua release berikutnya | [03-npm-release-guard](03-npm-release-guard.md) | Diterima | lanjutkan preflight dan publish manual |
-| OIDC + protected environment setelah jalur manual stabil | [03-npm-release-guard](03-npm-release-guard.md) | Diterima sebagai target | buat sub-plan automation setelah dua release |
+| npm manual untuk dua release berikutnya | [03-npm-release-guard](03-npm-release-guard.md) | Diterima bersyarat; 0/2 siklus pascakeputusan tercatat | gunakan preflight/publish manual untuk dua rilis tambahan |
+| OIDC + protected environment setelah jalur manual stabil | [03-npm-release-guard](03-npm-release-guard.md) | target masa depan, belum waktunya | evaluasi setelah dua rilis manual tambahan |
 | Forward-fix untuk partial release | [03-npm-release-guard](03-npm-release-guard.md) | Diterima | pertahankan planner/validator read-only |
 
 ## 3. Urutan orkestrasi

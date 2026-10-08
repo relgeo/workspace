@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status:** Selesai — local, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure CI sudah memiliki evidence; run CI terbaru #129 hijau
+**Status implementasi:** Selesai. **Status evidence:** Integration #151 adalah run lintas-repo sukses terakhir yang tercatat, tetapi workspace kemudian maju ke Flutter `edc9488`; CI refresh untuk pointer terbaru masih menunggu. Public smoke dan gate lokal tetap dapat diulang.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -294,7 +294,7 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-Workflow CI sudah menjalankan runner setelah kontrak Stage A–D dan runner tersedia. Run terbaru yang diverifikasi adalah `Integration #132` untuk commit `321c7b2` pada `relgeo/workspace`; job `flutter`, `flutter-macos`, `verify`, dan `public` semuanya sukses. Baseline ini juga membawa browser smoke Playground deployment-aware melalui `PLAYWRIGHT_BASE_URL` serta guard release-record sebelum integration gate.
+Workflow CI menjalankan runner setelah kontrak Stage A–D tersedia. Evidence CI terakhir yang dicatat pada rencana lintas-repo adalah `Integration #151`; job `flutter`, `flutter-macos`, `verify`, dan `public` sukses untuk pointer saat itu. Setelahnya pointer Flutter berubah menjadi `edc9488`; run itu belum menguji pointer terbaru. Baseline workflow juga membawa browser smoke Playground deployment-aware melalui `PLAYWRIGHT_BASE_URL` serta guard release-record sebelum integration gate.
 
 Checklist:
 
@@ -316,25 +316,19 @@ Acceptance:
 - [x] failure CI tertentu dapat direproduksi secara lokal;
 - [x] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator.
 
-## 7. Keputusan yang harus dibuat saat implementasi
+## 7. Keputusan implementasi yang sudah ditutup
 
-Berikut bukan blocker untuk menulis sub-rencana, tetapi harus diputuskan sebelum runner dianggap final:
+Daftar ini dulu berupa pertanyaan desain. Implementasi Stage A–E dan bukti
+runner menutupnya dengan aturan berikut; ini bukan lagi approval terbuka.
 
-1. Apakah install harus selalu memakai npm registry publik, atau boleh memakai workspace package/link mode pada mode local?
-2. Apakah gate strict mengharuskan semua submodule clean, atau hanya pointer commit yang tepat?
-3. Apakah package pack dry-run dijalankan pada setiap PR atau hanya release candidate?
-4. Apakah website public smoke menjadi bagian gate lokal, gate Pages, atau keduanya?
-5. Apakah manifest baseline di-commit sebagai release snapshot atau selalu digenerate saat CI?
-6. Apakah Flutter mempunyai gate terpisah atau dimasukkan setelah capability matrix tersedia?
-
-Default yang disarankan:
-
-- public mode memakai registry dan lockfile;
-- strict mode menolak working tree kotor;
-- pack dry-run masuk release candidate;
-- public smoke tetap menjadi job setelah deploy, sedangkan gate lokal memeriksa built output;
-- manifest release di-commit, manifest diagnosis boleh digenerate;
-- Flutter tetap gate terpisah pada Tahap 6.
+| Pertanyaan awal | Keputusan yang dipakai | Status |
+| --- | --- | --- |
+| Registry publik atau workspace link? | Local gate boleh memakai workspace checkout sesuai mode; public gate memakai registry, lockfile, dan temporary checkout tanpa source sibling. | Selesai |
+| Strict baseline memeriksa apa? | Memeriksa gitlink/checkout/manifest dan menolak perubahan checkout yang tidak bersih pada mode strict. | Selesai |
+| Kapan `npm pack --dry-run` dijalankan? | Pada release candidate/public release gate, bukan sebagai pengganti lint/test/build setiap perubahan. | Selesai |
+| Kapan public smoke dijalankan? | Built artifact diperiksa lokal; public URL smoke dijalankan pascadeploy. | Selesai |
+| Manifest committed atau digenerate? | Release baseline committed; diagnosis dapat menggunakan mode read-only/generate tanpa mengubah baseline otomatis. | Selesai |
+| Gate Flutter digabung ke Node? | Flutter jobs terpisah di workflow orkestrasi; kegagalannya tetap terlaporkan terpisah dari dependency execution Node, tanpa menjadi runtime dependency package TS. | Selesai |
 
 ## 8. Risiko dan mitigasi
 

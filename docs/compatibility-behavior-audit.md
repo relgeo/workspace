@@ -1,7 +1,7 @@
 # Compatibility behavior audit
 
-**Status:** Audit inventory selesai; policy public-version, parser allowlist, dan negative conformance tests sudah diterapkan; enforcement release atomicity dan promotion capability masih terbuka
-**Tanggal:** 2026-09-15 (diperbarui 2026-09-16)  
+**Status:** inventory dan parser/version policy selesai. Release decision guard tersedia; npm publish tidak diklaim atomik. Promotion `boolean/intersection` disetujui tetapi implementasinya belum diterapkan pada fixture/matrix.
+**Tanggal:** 2026-09-15 (status direkonsiliasi 2026-10-08)
 **Scope:** `spec`, `core`, `renderer-svg`, `language-service`, `cli`, Markdown plugins, Playground, website, Flutter, matrix, fixtures, dan test suite
 
 ## Ringkasan
@@ -24,7 +24,7 @@ Inventory ini dapat diulang dengan `pnpm run compatibility:audit`. Command bersi
 | Playground examples | `playground/src/examples.ts` dan raw YAML | contoh historis `v0.2`/`v0.3` diberi label historical; nama file aktif sudah diselaraskan ke `v05_*` tanpa mengubah example key internal |
 | Intentional fallback | `playground/src/share-code.ts`, `playground/src/clipboard.ts`, UX audit | Base64 legacy dan clipboard fallback sudah diberi alasan serta test/contract coverage |
 | Dependency line | `scripts/check-compatibility.mjs` | dependency `@relgeo/*` tetap pada `^0.5.0`; checker lulus `256/256`, termasuk record non-Node Flutter |
-| Flutter consumer | `flutter/pubspec.yaml`, Flutter source/tests, shared fixture adapter | workbench non-publishable pada DSL `0.5`; active/runtime dan dua candidate memiliki semantic evidence lokal serta CI `Integration #106` |
+| Flutter consumer | `flutter/pubspec.yaml`, Flutter source/tests, shared fixture adapter | workbench non-publishable pada DSL `0.5`; evidence lokal/CI candidate bersifat historis, pointer terbaru menunggu CI refresh |
 
 ## Findings
 
@@ -96,13 +96,12 @@ Implementasi policy ini:
 3. fixture `17` dan `18` mengunci negative behavior pada core dan language-service;
 4. conformance terbaru lulus `253 passed, 0 failed across 20 fixtures`, termasuk boundary resolver/CLI `BOOLEAN_EMPTY_RESULT` dan `BOOLEAN_MULTIPART_RESULT`.
 
-Yang masih terbuka adalah keputusan release atomicity dan promotion capability pada tahap lain. Policy versi baseline dan penamaan contoh tidak lagi menjadi open item.
+Policy versi baseline dan penamaan contoh bukan open item. Tidak ada jaminan transaksi atomik untuk npm multi-package; release decision guard dan recovery planner read-only membantu operator mengelola partial release. Promotion `boolean/intersection` sudah diputuskan, tetapi implementasi promotion masih terbuka pada plan 07.
 
-## Boundary publik yang masih terbuka
+## Status boundary publik
 
-Perubahan policy parser dan schema sudah lulus pada source workspace, tetapi
-belum mengubah artefak yang terlanjur dipublish. Pemeriksaan registry pada
-2026-09-16 masih mengembalikan `@relgeo/core@0.5.0`; karena versi npm bersifat
-immutable, policy ini baru aktif bagi consumer instalasi publik setelah release
-patch core berikutnya dipublish dan diverifikasi. Publish tetap manual sesuai
-posture release saat ini.
+Perubahan policy parser dan schema kemudian dirilis sebagai `@relgeo/core@0.5.1`
+dan `@relgeo/language-service@0.5.1`; keduanya tercatat berhasil diverifikasi
+dari registry pada 2026-09-18. Catatan pemeriksaan 2026-09-16 yang masih melihat
+`core@0.5.0` adalah bukti historis sebelum publish patch, bukan status terkini.
+Publish tetap manual sesuai posture release yang disetujui.

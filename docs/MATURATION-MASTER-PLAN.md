@@ -1,7 +1,7 @@
 # RelGeo Maturation Master Plan
 
-**Status:** master plan aktif  
-**Tanggal baseline:** 2026-09-15  
+**Status:** master plan aktif — status direkonsiliasi 2026-10-08
+**Tanggal baseline:** 2026-10-08
 **Compatibility line saat ini:** RelGeo DSL 0.5.x  
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** seluruh repository publik RelGeo dan integrasinya sebagai satu ekosistem
@@ -42,15 +42,22 @@ Contoh:
 
 Sub-rencana menjelaskan pekerjaan operasional secara mendalam; dokumen ini tetap menjadi tempat urutan, keputusan, status, dan hubungan antar-tahap.
 
-### Sub-rencana aktif dan peta keputusan
+### Sub-rencana dan peta keputusan
 
+Daftar berikut adalah indeks lengkap. `Aktif` berarti masih ada pekerjaan implementasi atau verifikasi; bukan berarti seluruh keputusan masih terbuka.
+
+- [01 — Cross-Repo Integration Gate](./plans/01-cross-repo-integration-gate.md) — implementasi selesai; refresh CI setelah baseline terbaru masih menunggu.
+- [02 — Contract Versioning](./plans/02-contract-versioning.md) — policy/guard selesai; skenario partial-release tidak dijalankan sengaja.
 - [03 — Release dan npm Publishing Guard](./plans/03-npm-release-guard.md)
+- [04 — Shared Conformance Fixtures](./plans/04-shared-conformance-fixtures.md) — infrastruktur fixture selesai; promotion dilacak terpisah.
+- [05 — Public Docs dan Playground Hardening](./plans/05-public-docs-and-playground-hardening.md) — implementasi baseline selesai; accessibility runtime masih aktif.
+- [06 — Flutter Alignment](./plans/06-flutter-alignment.md) — parsial; promotion dan platform smoke terpisah.
 - [07 — Flutter Capability Promotion dan SVG Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md)
 - [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md)
 - [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
 - [10 — Desktop Runtime Smoke Checklist](./plans/10-desktop-runtime-smoke-checklist.md)
 - [11 — MCP Server dan Agent-Assisted RelGeo Authoring](./plans/11-mcp-agent-integration.md)
-- [Flutter 02 — Workbench Layout dan Panel System](./flutter/docs/plans/02-workbench-layout-and-panel-system.md)
+- [Flutter 02 — Workbench Layout dan Panel System](../flutter/docs/plans/02-workbench-layout-and-panel-system.md)
 
 ## 2. Keputusan dan prinsip yang tidak boleh berubah tanpa keputusan baru
 
@@ -125,6 +132,28 @@ di [09-open-work-recommendations.md](./decisions/09-open-work-recommendations.md
 Kedua dokumen itu menjadi rujukan sebelum sub-rencana implementasi berikutnya
 dibuat.
 
+## 2.7 Aturan membaca status
+
+Setiap pekerjaan dinilai pada tiga sumbu terpisah:
+
+| Sumbu | Status | Arti |
+| --- | --- | --- |
+| Implementasi | Selesai | deliverable/behavior yang diminta sudah diterapkan dan scope-nya terpenuhi |
+| Implementasi | Parsial / berjalan | sebagian diterapkan; ada item in-scope yang belum |
+| Implementasi | Belum mulai | belum ada implementasi yang dapat diverifikasi |
+| Verifikasi | Terverifikasi | evidence menyebut revision dan scope yang diuji |
+| Verifikasi | Menunggu evidence | implementasi mungkin ada, tetapi CI/perangkat/target belum diuji |
+| Keputusan | Disetujui / menunggu keputusan | arah produk/kontrak sudah diterima atau masih membutuhkan pilihan maintainer |
+| Prioritas | Ditunda sengaja | eksplisit di luar scope aktif; tidak memblokir exit gate dan tidak punya tanggal otomatis |
+| Riwayat | Superseded | pernyataan lama dipertahankan sebagai sejarah, bukan status/aturan aktif |
+
+`docs/integration-baseline.json` menunjuk revision yang akan dipakai sebagai
+target gate; mengubah pointer atau `capturedAt` bukan bukti bahwa gate pada
+revision itu sudah lulus. `Selesai` tidak berarti tidak akan pernah diuji lagi:
+smoke pasca-rilis dan perawatan baseline adalah aktivitas berulang. Tanda `[ ]`
+historis juga tidak otomatis berarti keputusan belum dibuat; beri label apakah
+item itu pekerjaan aktif, evidence tertunda, atau scope yang sengaja ditunda.
+
 ## 3. Gambaran ekosistem saat ini
 
 ### 3.1 Repository dan peran
@@ -141,7 +170,7 @@ dibuat.
 | CLI | cli | command-line surface | package @relgeo/cli@0.5.0 |
 | Product | playground | browser IDE publik | baseline publik, package private |
 | Product | relgeo.github.io | website, docs, spec presentation, Pages deployment | deployment Pages aktif |
-| Product | flutter | workbench Flutter | baseline awal, belum menjadi release gate TypeScript |
+| Product | flutter | workbench Flutter non-publishable | desktop/web scope aktif; Android/iOS sengaja ditunda |
 | Orchestration | workspace | submodule map, catatan, script lintas-repo | baseline publik aktif |
 
 ### 3.2 Dependency flow yang harus dijaga
@@ -193,8 +222,9 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [x] Keyboard sweep, AX tree lokal, reduced-motion CSS, layout overflow, production build, lint, dan test suite sudah memiliki bukti.
 - [x] CSS sudah memiliki token dan layer yang eksplisit.
 - [x] Screenshot baseline dan manifest tersimpan pada repository Playground.
-- [ ] Uji touch pada perangkat fisik.
-- [ ] Validasi screen reader nyata dengan VoiceOver atau TalkBack.
+- [x] Browser automation/emulation, responsive surface, dan accessibility-tree baseline telah diverifikasi pada CI yang tercatat.
+- [ ] Validasi keyboard dan VoiceOver pada macOS serta accessibility runtime pada web masih menunggu evidence.
+- [~] Android/iOS fisik, TalkBack, iOS VoiceOver, dan Safari touch sengaja ditunda tanpa tanggal; bukan blocker scope aktif.
 
 ### 4.4 Hal yang belum boleh dianggap selesai
 
@@ -202,11 +232,14 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [x] Release order dan bump policy menjadi satu kontrak operasional pada compatibility matrix dan divalidasi oleh release-record checker; partial publish tetap harus dihentikan dan dicatat.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
 - [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; evidence Flutter lokal untuk active/runtime/invalid serta dua candidate capability juga sudah lulus.
-- [x] Evidence CI terbaru yang sukses untuk Flutter, package, Playground, dan public-registry gate tersedia pada `Integration #138` untuk `workspace@fea73ef`; job `flutter`, `flutter-macos`, `verify`, dan `public` sukses, artifact report tersedia, release records valid, serta browser smoke/E2E deployment-aware tetap lulus. Capability parity tambahan Flutter masih terbuka.
+- [x] `Integration #151` adalah evidence lintas-repo terakhir yang dicatat sukses untuk package, Playground, website, public registry, dan Flutter pada pointer workspace saat itu.
+- [ ] Pointer Flutter pada workspace maju ke `edc9488952db7edc74dd2caa7fc2064f03ff62f9` setelah #151; CI untuk pointer terbaru belum dijalankan. Ini refresh evidence, bukan bukti implementasi gagal.
+- [x] npm `@relgeo/core@0.5.1` dan `@relgeo/language-service@0.5.1` dipublikasikan dan registry-verified pada 2026-09-18.
+- [~] Android/iOS mobile QA ditunda berdasarkan keputusan maintainer; tidak masuk acceptance gate aktif.
 
 ## 5. Prioritas utama yang disepakati
 
-### Prioritas 1 — Reproducible cross-repo integration gate — selesai
+### Prioritas 1 — Reproducible cross-repo integration gate — implementasi selesai; evidence refresh tertunda
 
 Prioritas ini sudah ditutup sebagai fondasi. Root sekarang memiliki strict baseline, local/public integration runner, fresh-checkout behavior, artifact assertion, browser E2E, dan CI evidence. Tahap ini tetap menjadi gate wajib setiap perubahan lintas-repo, tetapi bukan lagi pekerjaan berikutnya.
 
@@ -227,51 +260,48 @@ Gate harus menjawab:
 - apakah website dapat mengambil baseline Playground dan spec yang benar;
 - apakah artifact publik dan route utama tetap valid.
 
-### Prioritas 2 — Compatibility dan release contract — selesai untuk patch 0.5.1
+### Prioritas 2 — Compatibility dan release contract — policy/guard selesai
 
 Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-service schema enum, negative fixtures, dan checker. Patch `0.5.1` sudah dipublikasikan untuk `core` dan `language-service`, diverifikasi dari npm, dan lulus fresh public-registry integration.
 
-### Prioritas 3 — Release automation yang aman — jalur manual selesai, automation masih ditahan
+### Prioritas 3 — Release automation yang aman — jalur manual selesai; automation ditunda sengaja
 
-Dengan integration gate stabil, patch `0.5.1`, guard status-aware, snapshot matrix historis, verifikasi registry, dan recovery planner read-only sudah tersedia. Langkah berikutnya adalah memperkuat recovery transaction dan, bila diperlukan, merancang automated publishing; publish otomatis tetap ditahan sampai kontrak operasionalnya benar-benar dibutuhkan.
+Guard, verifikasi registry, dan recovery planner read-only tersedia. Otomasi publish/recovery tidak sedang dikerjakan: keputusan yang diterima meminta dua siklus manual tambahan setelah keputusan 2026-09-23, baru evaluasi OIDC dan environment approval. Hingga tanggal dokumen ini, belum ada evidence dua siklus pascakeputusan tersebut; ini penundaan berprasyarat, bukan kegagalan.
 
-### Prioritas 4 — Shared conformance fixtures — hampir selesai
+### Prioritas 4 — Shared conformance fixtures — infrastruktur selesai; promotion terpisah
 
-Fixture penting untuk parse, resolve, diagnostics, render, highlighting, Markdown, CLI, Playground, website, dan Flutter sudah tersedia. Sisa keputusan adalah apakah dua capability candidate Flutter dipromosikan menjadi active contract dan seberapa luas policy SVG presentation perlu dibuat.
+Fixture dan runner lintas-consumer sudah tersedia. Keputusan menerima `boolean/intersection` sebagai promotion pertama dan menunda `evaluator/unit` sudah dibuat; implementasi perubahan status fixture/matrix dan gate penuh masih belum selesai. Tidak ada keputusan untuk memperluas SVG presentation pada line 0.5.x; property tambahan sengaja tidak dimasukkan tanpa kebutuhan consumer.
 
-### Prioritas 5 — Public product hardening — implementation selesai, evidence eksternal terbuka
+### Prioritas 5 — Public product hardening — implementasi selesai; evidence desktop/accessibility tertunda
 
-Implementation dan browser emulation sudah kuat. Sisa wajib adalah validasi touch nyata, keyboard fisik, dan VoiceOver/TalkBack pada perangkat operator, lalu satu public smoke setelah temuan eksternal ditutup.
+Website/Playground implementation dan browser automation sudah kuat. Sisa aktifnya adalah keyboard/accessibility runtime pada macOS dan web serta smoke publik setelah perubahan yang berdampak. Android/iOS touch dan assistive technology sengaja ditunda tanpa tanggal, dan bukan blocker tahap ini.
 
-### Prioritas 6 — Flutter alignment dan feature expansion — berjalan terbatas
+### Prioritas 6 — Flutter alignment dan feature expansion — parsial; Flutter sementara dijeda
 
 Adapter, runner, CI, dan semantic projection sudah tersedia. Posture Flutter
-sebagai workbench non-publishable, baseline stable `3.41.9`, serta CI artifact
-build macOS/Linux/Windows sudah disetujui dan dibuktikan pada `Integration #151`.
-Baseline analyzer sudah dibersihkan pada child commit `89d2e95`: `0 WARNING` dan
-`47 INFO` deprecation-only tersisa.
-Sisa utamanya adalah smoke test pada mesin target, promotion capability satu per
-satu, dan parity SVG/presentation yang lebih luas. Feature expansion ditahan
-sampai acceptance contract capability jelas. Detail pengerjaan ada di
+sebagai workbench non-publishable, baseline stable `3.41.9`, serta target desktop
+macOS/Linux/Windows sudah disetujui. #151 membuktikan revision lama; pointer
+terbaru `edc9488` memiliki hasil lokal (analyze, 300 tests, web build, dan direct
+Xcode x86_64 Debug build), tetapi belum CI lintas-repo pada pointer itu. Native
+dock/floating QA, smoke Ubuntu/Windows 11, capability promotion, dan pemeriksaan
+aksesibilitas masih belum lengkap. Flutter implementation dijeda atas permintaan
+saat audit dokumen ini berlangsung. Android/iOS sengaja ditunda. Detail pengerjaan ada di
 [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md).
 
-### Urutan pengerjaan setelah batch ini
+### Urutan kerja yang masih relevan
 
-1. Publish dan verifikasi patch npm untuk source policy yang sudah berubah (`core` dan `language-service`), tanpa mengubah compatibility line `0.5`.
-2. Jalankan public-registry integration gate dan update release record/baseline hanya setelah registry benar-benar memuat artefak baru.
-3. Tambahkan enforcement decision-record pada release guard untuk setiap breaking-family release; tetap pertahankan manual publish.
-4. Lakukan touch/keyboard/screen-reader validation pada perangkat nyata bila perangkat tersedia.
-5. Bahas promosi candidate Flutter dan cakupan SVG presentation setelah evidence tersebut ditinjau.
+1. Jalankan ulang Integration gate pada workspace HEAD dan catat hasil untuk pointer Flutter terbaru; jangan mengubah klaim evidence #151 yang historis.
+2. Tutup status dokumen turunan dan lakukan public smoke hanya bila perubahan menyentuh website/Playground atau release.
+3. Saat Flutter dilanjutkan: implementasikan promosi `boolean/intersection` yang telah disetujui, kemudian gate dan smoke target desktop; jangan memperlakukan Android/iOS sebagai blocker.
+4. Lanjutkan keyboard/VoiceOver macOS dan web accessibility; catat limitation nyata. Mobile tetap ditunda tanpa tanggal.
+5. Tetap manual untuk npm; hitung dua rilis tambahan pasca-2026-09-23 sebelum mengevaluasi automation.
 
 ## 6. Tahapan pematangan
 
-Status menggunakan arti berikut:
-
-- Selesai — exit gate telah terpenuhi dan buktinya dicatat.
-- Berjalan — pekerjaan sudah dimulai tetapi exit gate belum lengkap.
-- Berikutnya — tahap paling tepat untuk diambil setelah tahap sebelumnya selesai.
-- Menunggu — sengaja ditahan karena bergantung pada tahap lain atau bukti eksternal.
-- Opsional — peningkatan bernilai, tetapi bukan syarat release baseline.
+Status per tahap memakai kosakata pada §2.7. “Menunggu” harus diikuti jenis
+ketergantungan: keputusan maintainer, evidence eksternal, atau prerequisite.
+“Ditunda sengaja” berarti tidak ada aksi aktif sampai keputusan baru; jangan
+menjadikannya checklist overdue.
 
 ### Tahap 0 — Baseline, ownership, dan measurement
 
@@ -292,7 +322,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status:** Selesai — local gate 36/36, public-registry gate 50/50, fresh-checkout gate 33/33, CI terbaru, public smoke 14/14 route, dan reproduksi failure CI sudah lulus.
+**Status implementasi:** Selesai. **Status verifikasi:** menunggu refresh CI untuk workspace HEAD `f35680a` / Flutter pointer `edc9488`; evidence terakhir sebelumnya Integration #151. Public smoke terakhir yang tercatat 14/14 route.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -321,7 +351,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
-**Status:** Berjalan — matriks, deklarasi compatibility, CI checker, checklist release, release decision record enforcement, dan patch `0.5.1` sudah tersedia/terverifikasi; atomic publish enforcement serta evidence partial-release nyata masih terbuka.
+**Status implementasi:** Selesai untuk policy, matrix, dan release-decision guard. **Status verifikasi:** evidence checker tercatat pada run sebelumnya; refresh lintas-repo menunggu CI workspace HEAD. Skenario partial release tidak dijalankan sengaja karena tidak perlu membuat release gagal demi membuktikan recovery policy. Publish automation terpisah dan sengaja ditunda di Tahap 3.
 
 **Tujuan:** membuat hubungan versi antara spec dan semua consumer menjadi eksplisit.
 
@@ -338,7 +368,7 @@ Status menggunakan arti berikut:
 
 - [x] ada satu matriks kompatibilitas yang menjadi referensi;
 - [x] setiap package/application yang relevan menyatakan compatibility line-nya;
-- [x] breaking change membutuhkan keputusan eksplisit yang divalidasi pada release record; blocking publish atomik masih terbuka;
+- [x] breaking change membutuhkan keputusan eksplisit yang divalidasi pada release record;
 - [x] release checklist memuat spec, package, consumer, docs, dan tag;
 - [x] CI mendeteksi mismatch versi atau peer dependency sebelum release.
 - [x] CI memvalidasi release decision record sebelum integration gate.
@@ -347,7 +377,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 3 — Release dan npm publishing guard
 
-**Status:** Berjalan — release checklist, read-only release preflight, tarball audit, post-publish verifier, record baseline `0.5.0`, completed record `0.5.1`, dan read-only recovery planner sudah tersedia/terverifikasi; automated publish dan recovery transaction masih terbuka.
+**Status implementasi:** jalur manual dan recovery planning selesai. **Status otomasi:** sengaja ditunda sampai dua siklus manual tambahan setelah keputusan 2026-09-23; jumlah yang memenuhi syarat saat ini 0/2. Tidak ada partial-release failure yang sengaja dibuat.
 
 **Tujuan:** membuat release publik aman, dapat diulang, dan dapat diverifikasi setelah package masuk registry.
 
@@ -370,13 +400,13 @@ Status menggunakan arti berikut:
 - [x] hasil post-publish dicatat untuk baseline `0.5.0`;
 - [x] release dapat dihentikan dengan aman di antara package tanpa membuat status membingungkan;
 - [x] release preflight read-only menggabungkan clean-tree check, strict baseline, compatibility check, release decision record, tarball audit, dan local integration gate;
-- [ ] automated publishing hanya diaktifkan setelah manual path terbukti stabil.
+- [~] automated publishing sengaja ditunda sampai dua siklus manual tambahan pascakeputusan; belum memenuhi prasyarat.
 
 **Deliverable sub-rencana:** [docs/plans/03-npm-release-guard.md](plans/03-npm-release-guard.md).
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/runtime-error/capability-candidate, workspace runner, exact consumer checks, version-policy parser dan negative fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, runner Flutter lokal/CI, dan checkout Flutter terisolasi sudah lulus; runner kini mendukung beberapa fixture `active` tanpa mengganti baseline relasional dan mengunci boundary `BOOLEAN_EMPTY_RESULT` serta `BOOLEAN_MULTIPART_RESULT`; evidence terbaru mencakup `253/253` fixture checks dan local integration `36/36`, dengan Integration #142 sebagai CI terbaru yang telah diverifikasi; promotion candidate dan parity capability tambahan masih terbuka.
+**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi:** 253/253 fixture checks dan Integration #151 menjadi evidence terakhir yang tersedia; baseline pointer terbaru menunggu CI refresh. **Pekerjaan terkait namun terpisah:** promosi capability yang disetujui ada di Tahap 6 / plan 07; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -417,7 +447,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 5 — Public docs, website, dan Playground hardening
 
-**Status:** Berjalan — sub-rencana formal sudah dibuat; baseline implementasi, browser QA, public smoke, dan CI #151 sudah kuat. Mobile Android/iOS sengaja ditunda tanpa tanggal; pekerjaan aktif bergeser ke validasi perangkat desktop dan assistive technology.
+**Status implementasi:** baseline website/Playground dan browser QA selesai. **Status verifikasi:** keyboard/VoiceOver macOS dan web accessibility runtime masih menunggu; public smoke adalah pemeriksaan berulang pasca-perubahan. Android/iOS mobile QA sengaja ditunda tanpa tanggal dan tidak memblokir exit gate.
 
 **Tujuan:** memastikan public surface mudah dipercaya dan tidak overclaim capability.
 
@@ -427,8 +457,8 @@ Status menggunakan arti berikut:
 - [x] build dan archive artifact Flutter pada macOS, Ubuntu/Linux, dan Windows CI;
 - [ ] uji artifact Flutter pada macOS, Ubuntu/Linux, dan Windows 11 nyata/VM;
 - [ ] catat OS, browser, desktop runtime, dan hasilnya pada audit Playground/Flutter;
-- [ ] mobile touch, TalkBack, VoiceOver iOS, dan Safari touch tetap ditunda tanpa tanggal;
-- [ ] jalankan smoke publik setelah setiap release yang memengaruhi website/playground;
+- [~] mobile touch, TalkBack, VoiceOver iOS, dan Safari touch sengaja ditunda tanpa tanggal;
+- [~] smoke publik setelah release yang memengaruhi website/Playground adalah maintenance berulang, bukan satu deliverable yang menunggu;
 - [ ] jaga agar docs dan capability status mengikuti package/spec baseline.
 
 **Peningkatan opsional:**
@@ -443,7 +473,7 @@ Status menggunakan arti berikut:
 
 ### Tahap 6 — Flutter alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary test, runner lokal/CI, widget smoke, release posture yang sudah disetujui, build/artifact CI macOS/Linux/Windows pada `Integration #151`, launch smoke macOS lokal, checkout Flutter terisolasi, dan cleanup analyzer warning/info pada child commit `89d2e95` selesai; active, runtime-diagnostic, candidate boolean/intersection, serta candidate evaluator/unit scene/SVG semantic evidence lokal dan CI sudah lulus; boundary contract candidate boolean/intersection dan policy multi-active fixture sudah dicatat, negative resolver boundary TypeScript/CLI sudah ditambahkan, sedangkan keyboard/accessibility QA, smoke Ubuntu/Windows 11 nyata, promotion candidate, negative fixtures lintas Flutter consumer, dan parity capability tambahan masih terbuka.
+**Status implementasi:** parsial. **Keputusan:** non-publishable, stable 3.41.9, desktop macOS/Linux/Windows disetujui; Android/iOS ditunda. **Verifikasi:** CI #151 berlaku untuk revision terdahulu; workspace HEAD menunjuk Flutter `edc9488`, tanpa CI lintas-repo pada pointer itu. Analyze, 300 test, web build, dan direct Xcode x86_64 Debug build lokal tercatat pada revision terbaru; itu tidak membuktikan universal/arm64 release build. Native dock/floating QA, target Ubuntu/Windows 11, accessibility, dan promotion boolean masih terbuka. Pekerjaan Flutter dijeda selama audit dokumen.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -458,15 +488,15 @@ Status menggunakan arti berikut:
 
 **Acceptance criteria:**
 
-- [x] Flutter menyatakan capability yang benar-benar didukung melalui README dan mapping machine-readable; status evidence parity tiap capability tetap terbuka;
+- [x] Flutter menyatakan capability yang benar-benar didukung melalui README dan mapping machine-readable; evidence parity tetap parsial dan promotion pertama sudah disetujui tetapi belum diterapkan;
 - [x] active/runtime/invalid fixture inti diverifikasi pada Flutter lokal; checkout terisolasi juga lulus dengan shared-fixture skip yang eksplisit, dan dua candidate capability lulus pada operasi/evaluator serta semantic projection ter-normalisasi; candidate belum menjadi active contract;
 - [x] active, runtime-diagnostic, dan candidate SVG Flutter dibandingkan dengan expected SVG TypeScript pada level object/primitive/path geometry; style, viewBox, dan full SVG policy belum menjadi acceptance;
 - [x] checkout Flutter terisolasi lokal dapat menjalankan dependency resolution, analyzer non-fatal, dan test tanpa parent workspace atau absolute path operator; fixture canonical tetap opt-in melalui `RELGEO_FIXTURE_ROOT`;
 - [x] analyzer Flutter tidak lagi memiliki warning atau style lint; `dart analyze` tersisa `47 INFO` deprecation-only yang tetap dicetak oleh gate CI;
-- [x] README Flutter menjelaskan batas integrasi dan status release; parity dan release policy Flutter tetap terbuka;
+- [x] README Flutter menjelaskan batas integrasi dan status release; posture release disetujui, sementara capability parity yang belum dipromosikan tetap parsial;
 - [x] workflow dan matrix tidak mengklaim parity final sebelum bukti capability tersedia.
 
-**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](plans/07-flutter-capability-promotion-and-svg-parity.md), [docs/plans/08-desktop-platform-delivery.md](plans/08-desktop-platform-delivery.md), [docs/plans/10-desktop-runtime-smoke-checklist.md](plans/10-desktop-runtime-smoke-checklist.md), dan [flutter/docs/plans/02-workbench-layout-and-panel-system.md](flutter/docs/plans/02-workbench-layout-and-panel-system.md).
+**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](plans/07-flutter-capability-promotion-and-svg-parity.md), [docs/plans/08-desktop-platform-delivery.md](plans/08-desktop-platform-delivery.md), [docs/plans/10-desktop-runtime-smoke-checklist.md](plans/10-desktop-runtime-smoke-checklist.md), dan [flutter/docs/plans/02-workbench-layout-and-panel-system.md](../flutter/docs/plans/02-workbench-layout-and-panel-system.md).
 
 ### Tahap 7 — Release maturity dan perluasan fitur
 
@@ -487,14 +517,14 @@ Status menggunakan arti berikut:
 
 Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Runner Flutter, checkout Flutter terisolasi, serta active/candidate scene dan SVG semantic projection sudah lulus lokal dan pada `Integration #91` tanpa menjadikannya dependency gate TypeScript; browser publik terbaru sudah diverifikasi, sementara capability parity tambahan tetap harus ditutup secara terpisah.
 
-Urutan kerja yang disarankan sekarang:
+Urutan kerja yang disarankan setelah audit dokumen ini:
 
 1. pelihara `docs/compatibility-matrix.json` bersama perubahan spec dan package;
 2. jalankan `pnpm run compatibility:check` sebelum integration gate;
 3. jalankan `pnpm run conformance:fixtures` setelah build package selesai;
-4. pertahankan public docs dan Playground melalui sub-rencana Tahap 5, lalu lengkapi validasi perangkat fisik dan assistive technology;
-5. pertahankan release manual sebagai jalur resmi; gunakan recovery planner read-only untuk partial record, dan hanya rancang automation/recovery transaction setelah kebutuhan operasional dan failure evidence nyata tersedia;
-6. jadikan hasil lokal dan CI Flutter `3.41.9`/Dart `3.11.5` sebagai evidence baseline; berikutnya putuskan promotion boundary untuk candidate boolean/intersection dan evaluator/unit, serta semantic SVG yang memang masuk active conformance.
+4. lengkapi keyboard/VoiceOver macOS dan browser accessibility; mobile tidak masuk scope sampai dibuka kembali;
+5. pertahankan release manual; evaluasi automation setelah dua siklus manual tambahan pascakeputusan;
+6. saat Flutter dilanjutkan, implementasikan promotion `boolean/intersection` yang sudah disetujui; evaluator/unit menunggu promotion itu dan SVG raw/presentation equality bukan target.
 
 ## 8. Definition of Done ekosistem
 
@@ -504,7 +534,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 - [x] integrasi penuh dapat diuji tanpa path atau file privat operator;
 - [x] spec, package, Playground, website, dan Flutter memiliki compatibility statement; parity evidence Flutter tetap terpisah dan belum selesai.
 - [x] release package memakai gate tarball dan post-publish verification;
-- [ ] fixtures penting dijalankan lintas consumer secara penuh, termasuk CI/standalone/browser/Flutter evidence;
+- [ ] fixtures penting dijalankan lintas consumer secara penuh, termasuk CI/standalone/browser/Flutter evidence pada revision workspace terbaru;
 - [x] website Pages dan public smoke test hijau;
 - [ ] Playground memiliki bukti browser, touch, dan assistive technology yang sesuai scope;
 - [ ] setiap repository memiliki README/development/release guidance yang tidak bertentangan;
@@ -518,6 +548,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | --- | --- | --- |
 | 2026-09-15 | Master plan dibuat dari hasil audit lintas-repo terbaru | baseline workspace, website, Playground, package metadata |
 | 2026-09-15 | Prioritas utama ditetapkan pada reproducible integration gate dan release contract | seluruh package 0.5.0, website Pages aktif, Playground audit sudah ditutup secara lokal |
+| 2026-10-08 | Status master dan sub-plan direkonsiliasi; implementasi, evidence, keputusan, dan penundaan dipisahkan | workspace `f35680a`, Flutter pointer `edc9488`; Integration #151 historis, CI refresh pointer terbaru belum ada |
 | 2026-09-15 | Mermaid ditetapkan sebagai format default diagram dokumentasi | dependency graph pada dokumen ini sudah dikonversi; pengecualian visual harus diberi alasan |
 | 2026-09-15 | Tahap 1 diturunkan menjadi sub-rencana operasional | Stage A dimulai dengan inventory command dan dependency |
 | 2026-09-15 | Stage A selesai secara read-only | command, lockfile, package manager, dependency, dan clean status sudah dicatat pada sub-rencana |

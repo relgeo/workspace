@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 3 — Release dan npm Publishing Guard
 
-**Status:** Berjalan — release manual `0.5.1` selesai dan seluruh evidence lintas registry/CI tercatat; automated publishing dan recovery transaction tetap belum diaktifkan
+**Status jalur manual:** selesai dan release `0.5.1` terverifikasi. **Status otomasi:** sengaja ditunda sampai dua siklus manual tambahan setelah keputusan 2026-09-23; saat dokumen ini direkonsiliasi, 0/2 siklus tersebut sudah tercatat. Recovery planner read-only tersedia; tidak ada partial release nyata yang sengaja dipicu.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -58,6 +58,8 @@ flowchart LR
 Urutan operasional lengkap, termasuk consumer, tersimpan di `docs/compatibility-matrix.json`.
 
 ## 3. Checklist release manual
+
+Checklist [ ] di bawah adalah runbook reusable untuk release berikutnya, bukan indikasi bahwa release `0.5.1` belum dilakukan. Evidence historis release ada di `docs/releases/0.5.1.md` dan record JSON pasangannya.
 
 ### 3.1 Persiapan
 

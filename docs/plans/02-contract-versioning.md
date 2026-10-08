@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 2 — Contract Versioning dan Compatibility Matrix
 
-**Status:** Berjalan — matriks, deklarasi, pemeriksaan CI, version acceptance policy, checklist release, release decision record validator, dan candidate patch plan sudah tersedia; atomic publish enforcement serta evidence partial-release nyata masih terbuka
+**Status implementasi:** selesai untuk matrix, acceptance policy, release checklist, dan decision-record guard. **Status verifikasi:** refresh CI pada workspace HEAD masih menunggu. Partial-release failure tidak dibuat secara sengaja; recovery policy diuji lewat planner/validator, sedangkan publish automation termasuk plan 03 dan sengaja ditunda.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -69,16 +69,16 @@ Diagram ini belum berarti publish otomatis. Ia menjadi urutan keputusan yang dip
 | --- | --- | ---: | ---: | --- |
 | Contract | `spec` | `0.5` | `0.5` | aktif, revision dipin pada baseline |
 | Runtime | `@relgeo/geometry` | `0.5.0` | `0.5` | npm published |
-| Runtime | `@relgeo/core` | `0.5.0` | `0.5` | npm published |
+| Runtime | `@relgeo/core` | `0.5.1` | `0.5` | npm published dan registry-verified |
 | Runtime | `@relgeo/renderer-svg` | `0.5.0` | `0.5` | npm published |
-| Language | `@relgeo/language-service` | `0.5.0` | `0.5` | npm published |
+| Language | `@relgeo/language-service` | `0.5.1` | `0.5` | npm published dan registry-verified |
 | Markdown | `@relgeo/remark-relgeo-hl` | `0.5.0` | `0.5` | npm published |
 | Markdown | `@relgeo/remark-relgeo` | `0.5.0` | `0.5` | npm published |
 | CLI | `@relgeo/cli` | `0.5.0` | `0.5` | npm published |
 | Product | `relgeo-playground` | `0.4.0` | `0.5` | private application, version independent |
 | Product | `relgeo-docs-site` | `0.5.0` | `0.5` | private deployment application, version independent |
 
-Audit metadata 2026-09-15 menemukan semua dependency internal aktif memakai `^0.5.0`; tidak ditemukan dependency internal pada line berbeda.
+Audit metadata 2026-09-15 menemukan semua dependency internal aktif memakai `^0.5.0`; tidak ditemukan dependency internal pada line berbeda. Patch package `core` dan `language-service` ke `0.5.1` selesai dipublikasikan dan diverifikasi pada 2026-09-18.
 
 ## 4. Deliverable yang sudah dibuat
 
@@ -108,11 +108,11 @@ pnpm run compatibility:check
 
 Command harus menghasilkan exit code non-zero ketika package mengubah compatibility line, internal range, README declaration, baseline package version, atau matrix release order tanpa memperbarui kontrak secara sengaja.
 
-## 5. Hal yang belum tertutup
+## 5. Status deliverable dan sisa yang disengaja
 
-- [x] release record kini diwajibkan menyatakan klasifikasi perubahan, rationale, approval status, dan policy partial-release sesuai matrix; pencegahan publish parsial secara atomik tetap terbuka.
+- [x] release record kini diwajibkan menyatakan klasifikasi perubahan, rationale, approval status, dan policy partial-release sesuai matrix; validator/guard mencegah record yang tidak memenuhi policy, tetapi npm multi-package bukan transaksi atomik.
 - [x] release record mendukung status `planned`, `partial`, dan `completed` sehingga rencana patch dapat ditinjau tanpa dianggap sebagai publikasi.
-- [x] candidate `0.5.1` mencatat propagasi policy parser/schema ke `core` dan `language-service`; verifikasi npm masih menunggu publish manual.
+- [x] candidate `0.5.1` mencatat propagasi policy parser/schema ke `core` dan `language-service`; publish manual dan verifikasi registry selesai pada 2026-09-18.
 - [x] partial-release record kini memiliki recovery fields yang dapat divalidasi terhadap release order dan compatibility line.
 - [x] release checklist operasional yang mencakup spec, package, consumer, docs, tag, dan post-publish evidence tersedia di sub-rencana Tahap 3.
 - [x] release decision record template dan validator menjaga package/consumer/order tetap lengkap pada baseline `0.5.0`.
@@ -120,19 +120,19 @@ Command harus menghasilkan exit code non-zero ketika package mengubah compatibil
 - [x] command read-only `pnpm run compatibility:audit` tersedia untuk mengulang inventory tersebut.
 - [x] public historical/future version policy dan negative conformance fixtures sudah ditetapkan serta dijaga parser.
 - [x] language-service JSON Schema kini membatasi nilai version pada compatibility history yang dideklarasikan; test schema lulus `66/66`.
-- [ ] belum ada automated release transaction atau rollback/forward-fix helper; publish masih manual sesuai keputusan sebelumnya.
+- [~] automated release transaction sengaja belum diaktifkan; publish manual adalah policy aktif. Recovery planner/record validator tersedia, tidak ada klaim bahwa npm multi-package dapat di-rollback atomik.
 - [x] Flutter sudah masuk matrix sebagai non-Node consumer berstatus `partial`; alignment CI dan release posture tetap dikelola pada Tahap 6.
-- [ ] metadata compatibility line belum ditambahkan sebagai field standar ke setiap `package.json`; untuk baseline ini deklarasi pusat plus README dan dependency ranges dipilih agar tidak memaksa sembilan repository anak melakukan commit tambahan.
+- [x] metadata compatibility line tidak diduplikasi ke setiap `package.json`; matrix pusat, README, dan dependency ranges menjadi pilihan yang disepakati.
 
 ## 6. Exit gate Tahap 2
 
 - [x] satu matriks kompatibilitas menjadi referensi;
 - [x] setiap package/application yang relevan menyatakan compatibility line pada README dan matrix;
 - [x] CI mendeteksi mismatch versi atau peer dependency sebelum integration gate;
-- [x] breaking family membutuhkan decision record eksplisit yang divalidasi sebelum release evidence dianggap lengkap; blocking publish atomik tetap terbuka.
+- [x] breaking family membutuhkan decision record eksplisit yang divalidasi sebelum release evidence dianggap lengkap; npm publish sendiri tidak bersifat atomik dan recovery mengikuti policy forward-fix.
 - [x] release checklist lengkap tersedia; pemakaian ulang pada release berikutnya tetap menjadi evidence pemeliharaan Tahap 3.
 
-Tahap 2 belum boleh ditandai selesai sampai dua checkbox terakhir dipindahkan ke release guard Tahap 3 atau mempunyai evidence operasional yang setara.
+Tahap 2 selesai untuk compatibility policy dan guard. Release automation dan siklus operasional berikutnya dipantau terpisah pada Tahap 3; keduanya bukan alasan untuk membiarkan status Tahap 2 tetap `Berjalan`.
 
 ## 7. Cara pemeliharaan
 
@@ -153,7 +153,7 @@ Jika hanya ada patch release, update package entry dan baseline yang relevan tan
 | 2026-09-15 | Audit metadata package dan consumer dilakukan | seluruh package publik `0.5.0`; Playground `0.4.0`; internal ranges `^0.5.0` |
 | 2026-09-15 | Matrix dan compatibility checker dibuat | `docs/compatibility-matrix.json`, `scripts/check-compatibility.mjs` |
 | 2026-09-15 | Checker dimasukkan ke workflow Integration | dijalankan sebelum local integration gate; CI berikutnya menjadi evidence runtime |
-| 2026-09-15 | Checklist release lintas contract/package/consumer diturunkan ke Tahap 3 | tersedia di `docs/plans/03-npm-release-guard.md`; atomic partial-publish enforcement masih terbuka |
+| 2026-09-15 | Checklist release lintas contract/package/consumer diturunkan ke Tahap 3 | tersedia di `docs/plans/03-npm-release-guard.md`; entri ini adalah catatan historis sebelum guard/recovery planner selesai |
 | 2026-09-15 | Release record baseline `0.5.0` ditambahkan | `docs/releases/0.5.0.{md,json}` dan `release:record:check` memvalidasi matrix/order/package/consumer/evidence |
 | 2026-09-15 | Audit compatibility behavior dilakukan | coverage historis, parser version handling, fallback, dan mismatch example version dicatat; explicit historical/future version policy masih terbuka |
 | 2026-09-15 | Compatibility behavior audit dimasukkan ke workflow Integration | command read-only lulus lokal dengan `7 passed, 9 warnings, 0 failed`; warning policy dan mismatch nama file tetap non-blocking sampai keputusan kontrak dibuat |

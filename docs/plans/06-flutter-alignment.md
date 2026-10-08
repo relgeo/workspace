@@ -1,10 +1,11 @@
 # Sub-rencana Tahap 6 — Flutter Contract Alignment
 
-**Status:** Berjalan — audit baseline, adapter fixture, semantic projection, boundary tests, runner lokal, checkout mandiri terisolasi, build macOS, gate CI Flutter, dan posture release sudah disetujui; promotion candidate dan parity lintas engine yang belum tercakup masih terbuka
+**Status implementasi:** parsial; fondasi alignment dan runner tersedia. **Status keputusan:** Flutter non-publishable, stable 3.41.9, dan target desktop macOS/Linux/Windows disetujui; mobile ditunda. **Status evidence:** Integration #151 mendahului Flutter pointer `edc9488`; pointer terbaru belum mendapat integration CI. Promotion boolean/intersection sudah disetujui tetapi belum diterapkan; pekerjaan Flutter sementara dijeda.
 
 Pekerjaan lanjutan untuk dua gap tersebut dipecah ke [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](07-flutter-capability-promotion-and-svg-parity.md).
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal mulai:** 2026-09-16  
+**Status note:** Detail historis di bagian bawah mencatat keadaan saat tanggalnya masing-masing. Ringkasan dan tindakan saat ini ada di bagian atas serta gap register; jangan membaca status “terbuka” pada log lama sebagai status terbaru tanpa memeriksa tanggal.
 **Owner koordinasi:** relgeo/workspace  
 **Pemilik implementasi:** relgeo/flutter  
 **Scope:** workbench/aplikasi Flutter yang mengonsumsi dan merender RelGeo DSL
@@ -79,11 +80,11 @@ Alternatif membuat package fixture Dart publik atau menyalin seluruh canonical f
 | Capability | TypeScript baseline | Flutter baseline | Status evidence |
 | --- | --- | --- | --- |
 | YAML/DSL input | `@relgeo/core` + YAML boundary consumer | `yaml` + resolver Dart | active shared fixture dan semantic projection lulus lokal; vocabulary diagnostic lintas consumer masih terbuka |
-| scalar/evaluator | core evaluator | `src/core/evaluator.dart` | candidate shared fixture dan semantic projection lulus lokal serta CI; belum active baseline |
+| scalar/evaluator | core evaluator | `src/core/evaluator.dart` | candidate memiliki evidence historis lokal/CI; masih candidate dan menunggu stabilisasi promotion boolean/intersection |
 | dependency graph | core resolver | `src/core/graph.dart` dan resolver | local test dan active shared fixture projection lulus; coverage lintas operation masih terbuka |
-| geometry/intersection | `@relgeo/geometry` | `src/geometry/*` | candidate shared fixture dan semantic projection lulus lokal serta CI; belum active baseline |
+| geometry/intersection | `@relgeo/geometry` | `src/geometry/*` | candidate memiliki evidence historis lokal/CI; promotion pertama telah disetujui tetapi fixture/matrix belum diubah |
 | boolean | geometry boolean engine | `clipper2` adapter | candidate shared fixture, operasi, dan semantic projection ter-normalisasi lulus lokal serta CI; belum menjadi active baseline |
-| SVG output | `@relgeo/renderer-svg` | `SvgExporter` | active, runtime-diagnostic, dan candidate SVG semantic projection lulus lokal; surface capability yang lebih luas dan policy presentation masih terbuka |
+| SVG output | `@relgeo/renderer-svg` | `SvgExporter` | active/runtime/candidate semantic projection memiliki evidence terdahulu; presentation property tambahan sengaja tidak masuk contract 0.5.x tanpa consumer |
 | Canvas presentation | bukan target package utama | `CanvasPainter` | Flutter-specific, divalidasi oleh golden/widget test |
 | diagnostics | core/runtime + language-service | `ConstraintViolation`/workbench diagnostics | runtime local ada; diagnostic code/message mapping belum distandarkan |
 | active contract | DSL `0.5` | compatibility matrix, pubspec, README, painter, exporter, dan workbench | statement aktif eksplisit; active/runtime semantic evidence lokal dan CI lulus, capability tambahan masih terbuka |
@@ -122,7 +123,7 @@ comparison dicatat di
 - [x] tambahkan runner `pnpm run flutter:conformance` untuk staging fixture sementara lalu menjalankan `flutter pub get --enforce-lockfile`, analyzer dengan baseline lint non-fatal yang terlihat jelas, dan `flutter test` dalam urutan deterministik;
 - [x] jalankan runner lokal lengkap melalui SDK Flutter yang tersedia; staging 18 fixture, dependency resolution, analyzer, dan 119 test Flutter berhasil;
 - [x] jalankan test Flutter dari checkout terisolasi tanpa parent workspace; 99 test lulus dan 7 shared-fixture test dilewati secara eksplisit karena fixture canonical memang dimiliki root workspace;
-- [x] catat proposal bahwa fixture v0.4 dipertahankan sebagai regression history, sedangkan active conformance ditargetkan ke v0.5; persetujuan maintainer tetap terbuka di [decision record](../decisions/06-flutter-release-posture.md).
+- [x] catat proposal bahwa fixture v0.4 dipertahankan sebagai regression history, sedangkan active conformance ditargetkan ke v0.5; arah ini diterima pada [decision records 07 dan 09](../decisions/09-open-work-recommendations.md). Proposal awal di decision 06 adalah catatan historis, bukan approval yang masih ditunggu.
 
 ### Stage C — Semantic conformance v0.5
 

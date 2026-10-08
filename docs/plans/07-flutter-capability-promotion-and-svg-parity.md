@@ -1,7 +1,8 @@
 # Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity
 
-**Status:** Berjalan  
+**Status keputusan:** boundary boolean/intersection disetujui sebagai promotion pertama; evaluator/unit menunggu. **Status implementasi:** parsial—fixture/matrix promotion belum diterapkan. **Status evidence:** candidate historis lulus; perlu gate pada baseline terbaru. Flutter development dijeda selama audit docs.
 **Tanggal mulai:** 2026-09-18  
+**Status terakhir diperiksa:** 2026-10-08
 **Owner:** relgeo/workspace + relgeo/flutter + relgeo/renderer-svg  
 **Parent:** [MATURATION-MASTER-PLAN.md](../MATURATION-MASTER-PLAN.md)  
 **Decision record:** [07-cross-repo-open-decisions.md](../decisions/07-cross-repo-open-decisions.md)
@@ -71,10 +72,9 @@ mengembalikan status ke `candidate` atau `partial`, bukan memaksa status
   candidate yang tersedia;
 - [x] decision record menerima promosi bertahap dan semantic parity berlapis;
 - [x] posture Flutter non-publishable dan baseline stable `3.41.9` diterima;
-- [x] draft acceptance contract untuk candidate boolean/intersection ditulis
-  sebagai decision record; persetujuan maintainer masih terbuka;
+- [x] acceptance contract untuk candidate boolean/intersection ditulis dan disetujui pada [Decision 09](../decisions/09-open-work-recommendations.md);
 - [x] inventaris property presentation SVG dan klasifikasi awalnya ditulis;
-- [ ] daftar property presentation SVG yang benar-benar diperlukan disetujui.
+- [x] untuk contract 0.5.x, tidak menambah property presentation SVG tanpa consumer yang membutuhkannya; inventaris tetap referensi, bukan backlog/utang.
 
 ## 5. Stage B — Promosi boolean/intersection
 

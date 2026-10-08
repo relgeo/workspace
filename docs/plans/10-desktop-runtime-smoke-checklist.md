@@ -1,6 +1,6 @@
 # Sub-Rencana 10 — Desktop Runtime Smoke Checklist
 
-**Status:** Checklist siap; eksekusi target OS masih terbuka  
+**Status:** Checklist siap; eksekusi target OS parsial/menunggu. Android/iOS berada di luar scope yang disetujui dan tidak menjadi item tertunda checklist ini.
 **Repository pemilik:** `relgeo/workspace`  
 **Implementasi:** `relgeo/flutter`  
 **Parent:** [08-desktop-platform-delivery.md](08-desktop-platform-delivery.md)  
@@ -70,7 +70,7 @@ flowchart TD
 - [ ] resize ke ukuran sempit tidak menghasilkan overflow atau panel hilang;
 - [ ] Tab berpindah melalui kontrol utama dengan urutan masuk akal;
 - [ ] Enter/Space mengaktifkan kontrol custom;
-- [ ] theme `System`, `Light`, dan `Dark` dapat dipilih tanpa restart.
+- [ ] light/dark toggle berpindah tanpa restart; sebelum pilihan eksplisit, default mengikuti system; reset pilihan kembali ke system.
 
 ## 5. Ubuntu/Linux
 
@@ -117,7 +117,7 @@ flowchart TD
 - [ ] open/import file bekerja;
 - [ ] save/export SVG bekerja;
 - [ ] Tab, Enter, Space, dan shortcut utama bekerja;
-- [ ] theme `System`, `Light`, dan `Dark` dapat dipilih;
+- [ ] light/dark toggle tersedia; default mengikuti system sebelum pilihan eksplisit dan reset mengembalikan system default.
 - [ ] font, encoding, dan karakter YAML tidak rusak.
 
 ## 7. Accessibility dan reduced motion

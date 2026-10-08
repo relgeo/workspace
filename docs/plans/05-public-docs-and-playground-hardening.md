@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 5 — Public Docs, Website, dan Playground Hardening
 
-**Status:** Berjalan — baseline implementasi, build, browser QA, accessibility tree, dan public smoke sudah kuat; validasi perangkat touch nyata, keyboard fisik, dan assistive technology masih terbuka
+**Status implementasi:** website/Playground baseline, build, browser QA, accessibility tree, dan smoke evidence selesai pada revision yang tercatat. **Evidence aktif tertunda:** keyboard/VoiceOver runtime macOS dan browser accessibility web. **Ditunda sengaja:** touch/perangkat Android/iOS, TalkBack, iOS VoiceOver, dan Safari mobile tanpa tanggal; bukan exit-gate blocker.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-16  
 **Owner koordinasi:** relgeo/workspace  

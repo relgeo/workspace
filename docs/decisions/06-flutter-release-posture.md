@@ -1,6 +1,6 @@
 # Decision Record 06 — Flutter Release Posture
 
-**Status:** Proposed — menunggu persetujuan maintainer
+**Status:** Superseded — proposal ini sudah diterima dan diperbarui pada [Decision 07](07-cross-repo-open-decisions.md) serta [Decision 09](09-open-work-recommendations.md). Simpan sebagai jejak proposal awal; jangan baca sebagai approval yang masih tertunda.
 **Tanggal:** 2026-09-16
 **Owner koordinasi:** relgeo/workspace
 **Scope:** `relgeo/flutter`, compatibility line RelGeo DSL `0.5`, dan hubungan Flutter dengan release TypeScript/npm

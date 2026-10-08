@@ -1,6 +1,6 @@
 # Sub-rencana Tahap 4 — Shared Conformance Fixtures dan Contract Tests
 
-**Status:** Berjalan — manifest, fixture aktif/legacy/invalid/runtime-diagnostic/runtime-error/capability-candidate, workspace runner, exact consumer checks, version policy parser, negative version fixtures, standalone validation package/consumer TypeScript, smoke runtime manual Playground publik, automated browser smoke workspace/public-registry, deployment-aware browser smoke untuk deployment publik, browser smoke deployment publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, serta active/runtime-diagnostic/candidate scene dan SVG semantic projection Flutter sudah lulus; keputusan promotion candidate dan policy SVG yang lebih luas masih terbuka
+**Status implementasi:** infrastruktur fixture dan runner selesai. **Status evidence:** 253/253 fixture checks serta Integration #151 tercatat; CI refresh workspace HEAD menunggu. **Pekerjaan terpisah:** keputusan promotion `boolean/intersection` sudah diterima, implementasinya dilacak pada plan 07. Perluasan SVG presentation sengaja tidak masuk contract 0.5.x tanpa kebutuhan consumer.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
@@ -59,7 +59,7 @@ Fixture dibagi menjadi enam status:
 - 2 fixture `capability` pada DSL `v0.5`: candidate boolean/intersection dan evaluator/unit dengan expected scene/SVG snapshot; operasi, unit/evaluator, dan semantic projection ter-normalisasi Flutter sudah lulus lokal, tetapi belum menjadi active semantic Flutter conformance fixture.
 - Repository anak masih dapat memiliki test inline dan test fixture lokal. Sebagian test renderer/consumer mengakses root `fixtures` saat dijalankan melalui workspace; public integration runner menyalin folder tersebut ke checkout temporary.
 
-Gap implementasi: checkout standalone repository anak tidak otomatis membawa `fixtures/`. Keputusan saat ini adalah canonical fixture tetap di root workspace, child repository tetap memakai test/fixture lokalnya sendiri, dan tidak dibuat package fixture publik baru. Validasi package/consumer TypeScript pada checkout temporary berbasis registry, browser smoke lokal dan publik terbaru, runner Flutter lokal/CI, checkout Flutter terisolasi, operasi/scene projection candidate Flutter, evaluator/unit projection, serta active/runtime-diagnostic/candidate SVG semantic projection sudah lulus; keputusan menjadikan candidate capability sebagai active contract masih diperlukan.
+Boundary ownership sudah ditutup: checkout standalone repository anak tidak otomatis membawa `fixtures/`; canonical fixture tetap di root workspace, child repository memakai test/fixture lokal, dan tidak dibuat package fixture publik baru. Validasi package/consumer TypeScript pada checkout temporary berbasis registry, browser smoke, runner Flutter lokal/CI, checkout Flutter terisolasi, operasi/scene projection candidate Flutter, evaluator/unit projection, serta active/runtime-diagnostic/candidate SVG semantic projection tercatat lulus pada evidence revision sebelumnya. Promotion candidate bukan keputusan terbuka lagi: `boolean/intersection` disetujui sebagai yang pertama, tetapi perubahan fixture/matrix dan gate pada revision terbaru belum dilakukan.
 
 ## 4. Implementasi tahap ini
 
@@ -150,7 +150,7 @@ Prioritas kerja:
 4. tambahkan minimal satu fixture error pada boundary baru jika consumer tersebut menjanjikan diagnostics;
 5. jalankan adapter Flutter yang sudah tersedia setelah keputusan binding/runtime Flutter jelas.
 
-## 6. Pekerjaan yang masih terbuka
+## 6. Status dan pekerjaan terkait
 
 - [x] runner CI terbaru menghasilkan evidence setelah perubahan ini dipush; `Integration #91` sukses pada job `flutter`, `verify`, dan `public`;
 - [x] active fixture memiliki exact output check untuk highlighting, Markdown preview pipeline, dan CLI selain snapshot resolved-scene/SVG; serialized highlighting output dijaga dengan SHA-256 digest;
@@ -191,7 +191,7 @@ Prioritas kerja:
 - [x] Flutter memiliki adapter, capability mapping, dan gap record yang terdokumentasi pada [`06-flutter-alignment.md`](06-flutter-alignment.md);
 - [x] Flutter memiliki fixture parity runtime/SVG yang diverifikasi pada CI `Integration #91`; candidate boolean/intersection dan evaluator/unit tetap belum menjadi active contract.
 
-Tahap 4 belum selesai. Implementasi sekarang menutup fondasi conformance di level workspace; gap berikutnya membutuhkan keputusan packaging/consumer dan bukti runtime yang belum boleh diasumsikan.
+Exit gate infrastruktur Tahap 4 selesai pada evidence yang tercatat. Checklist [x] di atas bukan bukti CI pada workspace pointer terbaru; refresh Integration CI masih menunggu. Promosi `boolean/intersection` yang disetujui adalah pekerjaan Tahap 6 / plan 07, bukan alasan untuk mempertahankan Tahap 4 sebagai `Berjalan`. Tidak ada keputusan packaging/consumer tambahan yang sedang menunggu.
 
 ## 8. Pemeliharaan fixture
 

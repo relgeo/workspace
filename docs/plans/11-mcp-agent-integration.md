@@ -1,6 +1,6 @@
 # Sub-Rencana 11 — MCP Server dan Agent-Assisted RelGeo Authoring
 
-**Status:** Draft arsitektur; implementasi belum dimulai
+**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** belum dimulai; contract/tool schema, package boundary, dan delivery plan masih perlu diturunkan sebelum coding. Belum ada sub-rencana teknis rinci atau kode MCP.
 **Repository pemilik:** `relgeo/workspace` sebagai orkestrator; implementasi utama direncanakan pada package/repository MCP Dart baru
 **Pemilik keputusan:** Agus Made
 **Compatibility line:** RelGeo DSL 0.5.x

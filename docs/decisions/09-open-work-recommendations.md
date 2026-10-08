@@ -11,10 +11,10 @@
 - [Release dan npm Publishing Guard](../plans/03-npm-release-guard.md)
 - [Maturation Master Plan](../MATURATION-MASTER-PLAN.md)
 
-Dokumen ini merangkum pekerjaan yang masih terbuka dan memberikan satu
-rekomendasi operasional untuk masing-masing. Tujuannya bukan mengaktifkan
-perubahan secara otomatis, melainkan menyediakan keputusan yang dapat disetujui
-sebelum sub-rencana implementasi berikutnya dibuat.
+Dokumen ini awalnya merangkum pekerjaan terbuka dan rekomendasi untuk keputusan
+maintainer. Rekomendasi utamanya kini telah disetujui; status di bawah
+membedakan keputusan yang sudah diterima dari implementasi/evidence yang masih
+harus dikerjakan. Sub-plan teknis menjadi pemilik detail eksekusi.
 
 ## 1. Status evidence saat ini
 
@@ -48,18 +48,18 @@ flowchart TD
   release --> nextRelease["Release berikutnya"]
 ```
 
-Urutan yang direkomendasikan adalah menyelesaikan keputusan acceptance terlebih
-dahulu, menjalankan evidence yang tersedia, baru kemudian mengotomasi release.
+Urutan yang direkomendasikan adalah menerapkan keputusan yang sudah diterima,
+menjalankan evidence yang tersedia, baru mengevaluasi automation release.
 
 ## 3. Ringkasan rekomendasi
 
 | Area | Rekomendasi terbaik | Status rekomendasi |
 | --- | --- | --- |
-| Promosi capability | Promosikan satu capability per keputusan; mulai dari `boolean/intersection`, lalu `evaluator/unit` | perlu persetujuan maintainer |
-| SVG parity | Gunakan semantic parity berlapis; geometry adalah contract inti, presentation hanya bila ada consumer nyata | arah teknis sudah disetujui; scope presentation terbuka |
+| Promosi capability | Promosikan satu capability per keputusan; mulai dari `boolean/intersection`, lalu `evaluator/unit` | keputusan disetujui; implementasi promotion pertama belum selesai |
+| SVG parity | Gunakan semantic parity berlapis; geometry adalah contract inti, presentation hanya bila ada consumer nyata | disetujui; tidak menambah property presentation pada 0.5.x tanpa kebutuhan consumer |
 | Flutter | Tetap workbench non-publishable; pin stable `3.41.9`; build macOS hanya CI confidence gate | sudah disetujui |
-| Platform dan QA | Tunda Android/iOS sampai waktu yang belum ditentukan; prioritaskan web/PWA, macOS Flutter, Linux Flutter, Windows Flutter, dan CLI | arah disetujui; desktop evidence dan Windows artifact masih terbuka |
-| npm publishing | Pertahankan manual publish untuk minimal dua release berikutnya; siapkan OIDC + environment approval setelah itu | perlu persetujuan timing |
+| Platform dan QA | Tunda Android/iOS tanpa tanggal; prioritaskan web/PWA, macOS, Linux, Windows, dan CLI | keputusan disetujui; desktop runtime evidence masih terbuka; artifact Windows CI tersedia |
+| npm publishing | Pertahankan manual publish untuk dua siklus tambahan setelah persetujuan 2026-09-23; evaluasi OIDC + environment approval sesudahnya | disetujui bersyarat; 0/2 siklus tambahan tercatat |
 | Recovery npm | Jangan rollback atau republish versi; gunakan partial record dan forward-fix patch | sudah menjadi policy |
 | SDK/toolchain | Pertahankan pin CI dan catat revision sebagai evidence bila perlu; jangan buka package pub.dev/desktop release | sudah disetujui |
 
@@ -283,8 +283,8 @@ sequenceDiagram
 
 Urutan praktis:
 
-1. Setujui candidate `boolean/intersection`.
-2. Promosikan fixture dan matrix secara eksplisit.
+1. [x] Setujui candidate `boolean/intersection`.
+2. [ ] Promosikan fixture dan matrix secara eksplisit.
 3. Jalankan full local dan CI gate.
 4. Tambahkan Windows CI artifact dan uji pada Windows 11; lanjutkan QA web/macOS/Linux.
 5. Tunda evaluator/unit sampai hasil tahap pertama stabil.
@@ -295,20 +295,21 @@ Urutan praktis:
 
 | Item | Mengapa belum selesai | Tindakan berikutnya |
 | --- | --- | --- |
-| Promosi boolean/intersection | menunggu persetujuan contract maintainer | setujui B lalu buat sub-rencana promosi |
+| Promosi boolean/intersection | keputusan sudah disetujui; implementasi belum dilakukan | ubah fixture/matrix, lalu jalankan full gate |
 | Promosi evaluator/unit | sengaja menunggu candidate pertama | jangan dikerjakan sebelum B stabil |
 | Presentation SVG | belum ada consumer yang memerlukan | pertahankan semantic-only untuk `0.5.x` |
-| Desktop/web QA | Windows artifact dan matrix Linux belum diverifikasi pada perangkat target | buat workflow Windows dan lakukan smoke test |
+| Desktop/web QA | Windows artifact CI ada; target runtime Ubuntu/Windows 11 dan desktop/web accessibility belum diverifikasi | smoke target yang tersedia dan catat limitation |
 | Android/iOS QA | sengaja ditunda tanpa tanggal | jangan jadikan blocker; buka kembali setelah scope utama matang |
-| Windows packaging | belum ada artifact/installer teruji | mulai dari ZIP, lalu evaluasi MSIX |
-| npm automation | jalur manual baru selesai satu patch release | tunggu dua release manual tambahan |
+| Windows packaging | ZIP CI ada, Windows 11 runtime belum diuji; belum ada installer formal | uji ZIP dahulu; evaluasi MSIX hanya bila perlu |
+| npm automation | jalur manual tersedia; dua siklus pascakeputusan belum tercatat | tetap manual sampai 2 siklus manual tambahan selesai |
 | Recovery transaction automation | belum ada partial-release run nyata | pertahankan planner/validator read-only |
 
 ## 12. Exit condition dokumen
 
-Checklist keputusan pada bagian 4, 5, 7, dan 8 telah diterima secara umum oleh
-maintainer. Yang masih terbuka hanya pekerjaan eksekusi: promosi capability,
-workflow Windows, smoke test Windows 11, dan keputusan kapan scope mobile dibuka
-kembali. Detail implementasi harus dipindahkan ke sub-rencana teknis yang
+Keputusan pada rekomendasi telah diterima. Yang masih terbuka terutama
+pekerjaan eksekusi/evidence: promosi capability, smoke target desktop dan
+accessibility, serta dua siklus release manual. Scope mobile sengaja ditunda
+tanpa tanggal; keputusan untuk membuka kembali mobile bukan pekerjaan aktif.
+Detail implementasi harus dipindahkan ke sub-rencana teknis yang
 relevan; dokumen ini tetap menjadi ringkasan induk, bukan tempat detail
 implementasi.

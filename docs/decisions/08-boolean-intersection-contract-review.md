@@ -1,6 +1,6 @@
 # Decision Record 08 — Boolean/Intersection Contract Review
 
-**Status:** Boundary disetujui secara prinsip; implementasi promosi menunggu penyelesaian model active-fixture
+**Status keputusan:** disetujui sebagai promotion pertama pada Decision 09. **Status implementasi:** belum dipromosikan ke fixture/matrix active; pekerjaan itu masih terbuka dan Flutter sementara dijeda.
 **Tanggal:** 2026-09-18  
 **Owner:** relgeo/workspace + relgeo/core + relgeo/geometry + relgeo/flutter  
 **Terkait:** [Sub-Rencana 07](../plans/07-flutter-capability-promotion-and-svg-parity.md)

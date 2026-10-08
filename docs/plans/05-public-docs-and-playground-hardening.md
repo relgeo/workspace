@@ -293,7 +293,7 @@ Aturan perubahan:
 | Local mobile-device E2E | `2/2` suite total; touchscreen tap Source/Preview lulus pada profil iPhone 13 Chromium |
 | Local integration | `35/35` lulus pada workspace commit `515bda4` dengan `PLAYWRIGHT_EXECUTABLE_PATH`; browser E2E tetap memakai Chrome lokal tanpa download Chromium tambahan |
 | Release preflight | snapshot baseline: `81/81`, `250/250`, `106/106`, `36/36`; compatibility terkini `256/256` |
-| CI evidence | `Integration #151` pada `workspace@21ee21b` sukses untuk job `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; artifact desktop serta browser smoke tersedia |
+| CI evidence | canonical run `37832260326` pada root `328c869` sukses untuk job `flutter`, `flutter-linux`, `flutter-macos`, `flutter-windows`, `verify`, dan `public`; `Integration #151` dipertahankan sebagai historical predecessor |
 | Public browser smoke | READY, preview, Errors diagnostic, route utama `200`, console bersih |
 | Fresh browser/accessibility checkpoint (2026-10-08) | Workspace `d3ec2b0430f12bd95f2be312fa7438b6d97757d6`; Playground `ecc1407a8ba0da3929042137ff43b8e69f50b556`; website `5c4576ec83ff7d4beebcbc1553c716711b91db68`; Flutter `edc9488952db7edc74dd2caa7fc2064f03ff62f9`; Node `22.23.2` (di bawah requirement `>=24`), pnpm `10.33.3`, Playwright `1.63.0`; macOS `14.5` arm64; build/lint/93 unit/audit lulus, fresh Playwright dan public fetch terbatas environment |
 

@@ -34,6 +34,16 @@ Chrome: local `35/35` dan public `50/50` lulus. Transcript tersebut juga mencata
 `flutter:conformance` lulus analyze dan 300 test. Ini evidence manual workspace,
 terpisah dari evidence CI canonical `Integration #151`.
 
+### 0.1 Canonical refresh — 2026-10-09
+
+Checkpoint executor di atas kemudian digantikan oleh GitHub Actions run
+[37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326)
+pada root `328c869` (Flutter `ea8e754`). Keenam job (`verify`, `public`,
+`flutter`, `flutter-macos`, `flutter-linux`, dan `flutter-windows`) lulus dan
+lima artifact tersedia. Run ini adalah evidence canonical aktif untuk baseline
+tersebut; `Integration #151` dan report lokal tetap dipertahankan sebagai
+historical/supporting evidence.
+
 ## 1. Tujuan
 
 Membuat satu gate yang dapat dijalankan dari checkout bersih untuk membuktikan bahwa repository-repository RelGeo bekerja sebagai satu dependency graph publik.
@@ -328,12 +338,13 @@ Acceptance:
 
 ### Stage E — CI integration job
 
-Workflow CI menjalankan runner setelah kontrak Stage A–D tersedia. Evidence CI
-terakhir yang dicatat pada rencana lintas-repo adalah `Integration #151`; job
-`flutter`, `flutter-macos`, `verify`, dan `public` sukses untuk pointer saat itu.
-Setelahnya pointer Flutter berubah menjadi `edc9488`; run itu belum menguji pointer
-terbaru. Baseline workflow juga membawa browser smoke Playground deployment-aware
-melalui `PLAYWRIGHT_BASE_URL` serta guard release-record sebelum integration gate.
+Workflow CI menjalankan runner setelah kontrak Stage A–D tersedia. Evidence
+canonical terbaru adalah run `37832260326` pada root `328c869`; job `flutter`,
+`flutter-macos`, `flutter-linux`, `flutter-windows`, `verify`, dan `public`
+sukses. `Integration #151` dan pointer `edc9488` tetap dicatat sebagai sejarah
+sebelumnya. Baseline workflow juga membawa browser smoke Playground
+deployment-aware melalui `PLAYWRIGHT_BASE_URL` serta guard release-record
+sebelum integration gate.
 
 Checklist:
 

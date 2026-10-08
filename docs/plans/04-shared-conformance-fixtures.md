@@ -191,7 +191,11 @@ Prioritas kerja:
 - [x] Flutter memiliki adapter, capability mapping, dan gap record yang terdokumentasi pada [`06-flutter-alignment.md`](06-flutter-alignment.md);
 - [x] Flutter memiliki fixture parity runtime/SVG; canonical run `37832260326` memverifikasi fixture 15 boolean/intersection sebagai active contract, sedangkan evaluator/unit tetap capability/candidate.
 
-Exit gate infrastruktur Tahap 4 selesai pada evidence yang tercatat. Checklist [x] di atas bukan bukti CI pada workspace pointer terbaru; refresh Integration CI masih menunggu. Promosi `boolean/intersection` yang disetujui adalah pekerjaan Tahap 6 / plan 07, bukan alasan untuk mempertahankan Tahap 4 sebagai `Berjalan`. Tidak ada keputusan packaging/consumer tambahan yang sedang menunggu.
+Exit gate infrastruktur Tahap 4 selesai pada evidence yang tercatat. Canonical
+refresh lintas-platform tersedia pada run `37832260326`; promotion
+`boolean/intersection` sudah ditutup oleh plan 07 dan fixture 15 kini active.
+Fixture 16 evaluator/unit tetap candidate. Tidak ada keputusan
+packaging/consumer tambahan yang sedang menunggu.
 
 ## 8. Pemeliharaan fixture
 

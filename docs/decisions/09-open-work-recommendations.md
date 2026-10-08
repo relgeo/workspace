@@ -20,17 +20,20 @@ active itu dari evaluator/unit dan pekerjaan platform yang masih terbuka.
 
 Baseline teknis sudah cukup kuat untuk masuk ke tahap keputusan:
 
-- conformance workspace: `253/253` pada 20 fixture;
+- conformance workspace: `253/253` pada pre-promotion checkpoint dan `260/260`
+  setelah fixture 15 dipromosikan;
 - compatibility matrix: `283/283`;
 - strict baseline: `81/81`;
-- local integration gate Node `24.21.0`: `36/36`;
-- GitHub Integration `#142`: `verify`, `flutter`, `flutter-macos`, dan `public`
-  semuanya sukses;
+- local integration gate Node `24.21.0`: `36/36` pada pre-promotion baseline;
+- GitHub Actions run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326)
+  pada root `328c869`: `verify`, `public`, `flutter`, `flutter-macos`,
+  `flutter-linux`, dan `flutter-windows` semuanya sukses;
 - release npm `0.5.1`: selesai secara manual;
 - workspace bersih dan tersinkron ke `origin/main`.
 
-Yang tersisa bukan kegagalan baseline, melainkan keputusan acceptance, evidence
-eksternal, atau otomasi berisiko.
+Yang tersisa bukan kegagalan baseline, melainkan evaluator/unit yang belum
+dipromosikan, runtime smoke/accessibility target yang sengaja dibatasi, dan
+otomasi release yang menunggu dua kandidat package nyata.
 
 ## 2. Peta keputusan
 
@@ -326,9 +329,11 @@ Urutan praktis:
 1. [x] Setujui candidate `boolean/intersection`.
 2. [x] Promosikan fixture 15 dan matrix secara eksplisit.
 3. [x] Jalankan full local dan CI gate melalui canonical run 37832260326.
-4. Tambahkan Windows CI artifact dan uji pada Windows 11; lanjutkan QA web/macOS/Linux.
-5. Tunda evaluator/unit sampai hasil tahap pertama stabil.
-6. Jalankan dua release npm berikutnya secara manual.
+4. Pertahankan artifact CI; jalankan runtime smoke Windows 11/Linux/macOS
+   hanya ketika host/runner target tersedia, tanpa menjadikannya blocker.
+5. Tunda evaluator/unit sampai boundary contract baru disetujui.
+6. Jalankan release npm berikutnya secara manual hanya jika ada perubahan
+   package nyata; jangan membuat no-op release.
 7. Setelah dua release tanpa recovery failure, buat sub-rencana automation OIDC.
 
 ## 11. Sisa terbuka setelah rekomendasi ini

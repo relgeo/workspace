@@ -1,6 +1,6 @@
 # Sub-Rencana 10 — Desktop Runtime Smoke Checklist
 
-**Status:** Checklist siap; artifact CI macOS/Ubuntu/Linux/Windows tersedia secara historis. Berdasarkan keputusan manusia 2026-10-08, host smoke Ubuntu/Linux dan Windows 11 di-defer tanpa klaim usable. macOS keyboard/VoiceOver juga belum terbukti. Android/iOS berada di luar scope yang disetujui dan tidak menjadi item tertunda checklist ini.
+**Status:** Checklist siap; canonical CI build/artifact evidence tersedia pada run `37832260326`, tetapi runtime smoke macOS/Ubuntu/Linux/Windows tetap dinilai terpisah. Berdasarkan keputusan manusia 2026-10-08, host smoke Ubuntu/Linux dan Windows 11 di-defer tanpa klaim usable. macOS keyboard/VoiceOver juga belum terbukti. Android/iOS berada di luar scope yang disetujui dan tidak menjadi item tertunda checklist ini.
 **Repository pemilik:** `relgeo/workspace`  
 **Implementasi:** `relgeo/flutter`  
 **Parent:** [08-desktop-platform-delivery.md](08-desktop-platform-delivery.md)  
@@ -26,7 +26,7 @@ Catat data berikut untuk setiap eksekusi:
 | Display/session | Retina, scaling, Wayland/X11, atau DPI |
 | Tester/date | `...` |
 
-### 1.2 Desktop artifact provenance matrix
+### 1.2 Desktop artifact provenance matrix (historical baseline)
 
 | Target | CI source and commits | Archive / contents assertion | Runtime status |
 | --- | --- | --- | --- |
@@ -37,6 +37,12 @@ Catat data berikut untuk setiap eksekusi:
 The current workspace pointer is `d3ec2b0430f12bd95f2be312fa7438b6d97757d6`
 with Flutter `edc9488952db7edc74dd2caa7fc2064f03ff62f9`. It is recorded
 separately from the historical CI artifacts and must not inherit their status.
+
+Build/artifact evidence for the current coordination baseline is instead
+canonical run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326)
+on root `328c869`; all Flutter and desktop jobs passed. The checklist remains
+open only for target runtime and accessibility interactions, not for the build
+assertions already covered by that run.
 
 ### 1.1 Evidence checkpoint workspace — 2026-10-08
 

@@ -1,6 +1,6 @@
 # Sub-Rencana 08 — Desktop Platform Delivery
 
-**Status implementasi:** fondasi dan source-level native window bridge tersedia; parsial. **Status evidence:** Integration #151 berlaku untuk revision sebelum Flutter pointer `edc9488`; fresh CI belum ada. Berdasarkan keputusan manusia 2026-10-08, Ubuntu/Linux dan Windows 11 runtime smoke di-defer sampai host/VM atau runner tersedia. Artifact CI tidak disebut usable tanpa smoke target; defer ini bukan blocker goal.
+**Status implementasi:** fondasi dan source-level native window bridge tersedia; parsial. **Status evidence:** canonical GitHub Actions run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) pada root `328c869` lulus build/assertion job Flutter, macOS, Linux, dan Windows. Runtime smoke Ubuntu/Linux dan Windows 11 tetap di-defer sampai host/VM atau runner target tersedia; artifact CI tidak disebut usable tanpa smoke target.
 **Tanggal:** 2026-09-23  
 **Owner koordinasi:** `relgeo/workspace`  
 **Implementasi utama:** `relgeo/flutter`  
@@ -41,9 +41,9 @@ desktop yang dapat dijalankan.
 
 | Surface | Build authority | Artifact awal | Verifikasi minimum | Status |
 | --- | --- | --- | --- | --- |
-| macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | CI + local launch hijau; keyboard QA pending |
-| Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | CI + archive evidence; runtime smoke deferred, artifact non-usable |
-| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | CI + ZIP assertion evidence; smoke deferred, ZIP non-usable |
+| macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | canonical CI build hijau; interactive keyboard/VoiceOver QA pending |
+| Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | canonical CI build/assertion hijau; runtime smoke deferred, artifact non-usable |
+| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | canonical CI build/assertion hijau; smoke deferred, ZIP non-usable |
 | Web/PWA | Linux CI / website workflow | static deployment | browser E2E dan public smoke | sudah berjalan |
 | CLI | Linux CI / Node matrix | npm package/binary surface | lint, test, install, command smoke | sudah berjalan |
 
@@ -51,7 +51,7 @@ Flutter menjelaskan bahwa target Windows, macOS, dan Linux membutuhkan setup
 platform pada OS masing-masing. Karena itu matrix ini memakai native runner,
 bukan asumsi cross-compilation dari Mac.
 
-### 3.1 Reconciled artifact provenance matrix — 2026-10-08
+### 3.1 Reconciled artifact provenance matrix — 2026-10-08 (historical)
 
 | Evidence source | Workspace commit | Flutter pointer | Toolchain | Target / artifact | Assertion and status |
 | --- | --- | --- | --- | --- | --- |
@@ -60,13 +60,19 @@ bukan asumsi cross-compilation dari Mac.
 | `Integration #147` — `flutter-windows` | `791ae33adffabaa509223a4f271b6d7babc740bd8` | `e46f1ad7eb8c8df85bada582e3c5066dc73f62a1` | Flutter stable `3.41.9`, Dart `3.11.5` | Windows runner x64; `relgeo-flutter-windows-x64-791ae33adffabaa509223a4f271b6d7babc740bd8.zip` | `relgeo_flutter.exe`, `flutter_windows.dll`, and `data` asserted before ZIP; Windows 11 smoke deferred, ZIP non-usable |
 | Current workspace static artifact | `d3ec2b0430f12bd95f2be312fa7438b6d97757d6` | `edc9488952db7edc74dd2caa7fc2064f03ff62f9` | Flutter baseline `3.41.9`, Dart `3.11.5` | macOS `14.5` arm64; local `RelGeo.app`, universal `arm64 + x86_64` | bundle metadata and executable architecture/hash verified locally; interactive window smoke limited by native-app approval |
 
-`Integration #151` remains the canonical cross-repo report for workspace
+`Integration #151` remains a historical cross-repo report for workspace
 `21ee21b2ea8965a8faad45ddd37485a0d55942f8` with Flutter pointer
 `7917d17cd269f24c431d035d3c0351e35cbb3c17`; it predates the current Flutter
 pointer `edc9488` and is not silently promoted to current-pointer evidence.
 The matrix distinguishes CI archive assertions from runtime usability: no
 Linux or Windows artifact is called usable while the human decision defers
 target smoke.
+
+For build and archive status, this historical matrix is superseded by canonical
+run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326)
+on root `328c869`, whose `flutter`, `flutter-macos`, `flutter-linux`, and
+`flutter-windows` jobs all passed. This does not close the separate runtime
+smoke/accessibility checklist.
 
 ## 4. Arsitektur pipeline
 

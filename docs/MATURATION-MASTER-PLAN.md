@@ -6,10 +6,12 @@
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** seluruh repository publik RelGeo dan integrasinya sebagai satu ekosistem
 
-## 0. Checkpoint evidence — 2026-10-08
+## 0. Checkpoint evidence — 2026-10-08 (historical, superseded)
 
 Checkpoint ini memisahkan hasil yang benar-benar dijalankan pada workspace HEAD dari
-evidence CI historis. Workspace HEAD adalah `d3ec2b0430f12bd95f2be312fa7438b6d97757d6`.
+evidence CI historis. Workspace HEAD pada saat checkpoint adalah
+`d3ec2b0430f12bd95f2be312fa7438b6d97757d6`. Bagian ini dipertahankan sebagai
+diagnostic history; status aktif ada pada bagian penutup di bawah.
 `docs/integration-baseline.json` sudah diregenerasi dari checkout aktual; seluruh 11
 gitlink dan checkout submodule bersih, termasuk `playground@ecc1407` dan
 `flutter@edc9488952db7edc74dd2caa7fc2064f03ff62f9`.
@@ -63,14 +65,32 @@ executor terbatas dihentikan. Supporting `.internal/tmp-test.txt` tetap dipakai
 untuk rekonsiliasi status manual, tanpa mengubah fixture 15 dari `capability`
 atau `boolean-geometry` dari `partial`.
 
-Checkpoint tersebut kini superseded oleh GitHub Actions run
+Checkpoint tersebut kemudian superseded oleh GitHub Actions run
 [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) pada
 root commit `328c869b2ffe023806c8a85a9e9ccffa8f523145`. Run berstatus `Success`
 dengan enam job lulus (`verify`, `public`, `flutter`, `flutter-macos`,
 `flutter-linux`, `flutter-windows`) dan lima artifact. Evidence ini menutup gate
-canonical lintas-platform untuk baseline tersebut. Fixture 15, capability matrix,
-README/docs, dan evidence record kini telah disinkronkan untuk scope
-boolean/intersection yang disetujui; evaluator/unit tetap candidate.
+canonical lintas-platform untuk baseline tersebut. Setelahnya, commit root
+`8fcd1db` menyelaraskan promotion fixture 15 dan dokumentasi terkait; commit
+tersebut adalah follow-up dokumentasi/promotion, bukan klaim bahwa run CI menguji
+revision root yang lebih baru. Evaluator/unit tetap candidate.
+
+### 0.1 Status aktif setelah audit — 2026-10-09
+
+- Canonical evidence terbaru tetap run `37832260326` pada root `328c869`
+  (Flutter `ea8e754`), dengan enam job sukses dan lima artifact.
+- Fixture 15 `boolean/intersection` kini `active` pada boundary contract yang
+  disetujui; conformance setelah promotion tercatat `260/260`.
+- Fixture 16 `evaluator/unit` tetap `capability`/candidate dan belum menjadi
+  active contract.
+- Current root follow-up adalah `8fcd1db`; pointer Flutter saat ini `a044c4d`.
+  Pointer ini tidak boleh dibaca sebagai revision yang diuji oleh run
+  `37832260326` tanpa run CI baru.
+- Desktop runtime smoke interaktif (macOS keyboard/VoiceOver, Ubuntu/Linux,
+  dan Windows 11) tetap deferred/terbatas; build dan artifact CI tidak sama
+  dengan usability runtime.
+- Goal release npm tetap sengaja ditunda sampai ada dua kandidat release dengan
+  perubahan package nyata. No-op release seperti `0.5.2` tidak diperbolehkan.
 
 ## 1. Tujuan dokumen
 
@@ -112,14 +132,14 @@ Sub-rencana menjelaskan pekerjaan operasional secara mendalam; dokumen ini tetap
 
 Daftar berikut adalah indeks lengkap. `Aktif` berarti masih ada pekerjaan implementasi atau verifikasi; bukan berarti seluruh keputusan masih terbuka.
 
-- [01 — Cross-Repo Integration Gate](./plans/01-cross-repo-integration-gate.md) — implementasi selesai; refresh CI setelah baseline terbaru masih menunggu.
+- [01 — Cross-Repo Integration Gate](./plans/01-cross-repo-integration-gate.md) — implementasi dan canonical refresh selesai pada run `37832260326`.
 - [02 — Contract Versioning](./plans/02-contract-versioning.md) — policy/guard selesai; skenario partial-release tidak dijalankan sengaja.
 - [03 — Release dan npm Publishing Guard](./plans/03-npm-release-guard.md)
-- [04 — Shared Conformance Fixtures](./plans/04-shared-conformance-fixtures.md) — infrastruktur fixture selesai; promotion dilacak terpisah.
-- [05 — Public Docs dan Playground Hardening](./plans/05-public-docs-and-playground-hardening.md) — implementasi baseline selesai; accessibility runtime masih aktif.
-- [06 — Flutter Alignment](./plans/06-flutter-alignment.md) — parsial; promotion dan platform smoke terpisah.
-- [07 — Flutter Capability Promotion dan SVG Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md)
-- [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md)
+- [04 — Shared Conformance Fixtures](./plans/04-shared-conformance-fixtures.md) — fixture 15 active; fixture 16 evaluator/unit tetap candidate.
+- [05 — Public Docs dan Playground Hardening](./plans/05-public-docs-and-playground-hardening.md) — baseline dan browser evidence selesai; native accessibility tetap limitation.
+- [06 — Flutter Alignment](./plans/06-flutter-alignment.md) — canonical desktop/build evidence selesai; evaluator dan runtime smoke tetap terpisah.
+- [07 — Flutter Capability Promotion dan SVG Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md) — promotion fixture 15 selesai pada boundary terbatas.
+- [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md) — build/artifact CI selesai; runtime smoke target tetap deferred.
 - [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
 - [10 — Desktop Runtime Smoke Checklist](./plans/10-desktop-runtime-smoke-checklist.md)
 - [11 — MCP Server dan Agent-Assisted RelGeo Authoring](./plans/11-mcp-agent-integration.md)
@@ -306,7 +326,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 
 ## 5. Prioritas utama yang disepakati
 
-### Prioritas 1 — Reproducible cross-repo integration gate — implementasi selesai; evidence refresh tertunda
+### Prioritas 1 — Reproducible cross-repo integration gate — selesai dan terverifikasi canonical
 
 Prioritas ini sudah ditutup sebagai fondasi. Root sekarang memiliki strict baseline, local/public integration runner, fresh-checkout behavior, artifact assertion, browser E2E, dan CI evidence. Tahap ini tetap menjadi gate wajib setiap perubahan lintas-repo, tetapi bukan lagi pekerjaan berikutnya.
 
@@ -392,7 +412,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 1 — Cross-repo integration gate
 
-**Status implementasi:** Selesai. **Status verifikasi:** checkpoint workspace HEAD `d3ec2b0` lulus strict baseline, compatibility, dan conformance; transcript manual terbaru mencatat local `35/35`, public `50/50`, dan Flutter conformance lulus. Artefak executor `33/36`, `6/35`, dan `2/11` tetap disimpan sebagai batas diagnostik environment. CI lintas-repo terakhir tetap Integration #151 dan mendahului pointer Flutter `edc9488`. Public smoke terakhir yang tercatat 14/14 route.
+**Status implementasi:** Selesai. **Status verifikasi:** canonical run `37832260326` pada root `328c869` lulus seluruh enam job (`verify`, `public`, `flutter`, `flutter-macos`, `flutter-linux`, `flutter-windows`) dengan lima artifact. Checkpoint executor dan transcript manual 2026-10-08 tetap disimpan sebagai historical/supporting evidence, bukan status aktif.
 
 **Tujuan:** membuktikan bahwa ekosistem bisa dibangun dan diuji dari fresh checkout dengan dependency publik yang deterministik.
 
@@ -421,7 +441,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
-**Status implementasi:** Selesai untuk policy, matrix, dan release-decision guard. **Status verifikasi:** compatibility checker checkpoint workspace HEAD lulus `283/283`; evidence CI lintas-repo terbaru tetap Integration #151. Skenario partial release tidak dijalankan sengaja karena tidak perlu membuat release gagal demi membuktikan recovery policy. Publish automation terpisah dan sengaja ditunda di Tahap 3.
+**Status implementasi:** Selesai untuk policy, matrix, dan release-decision guard. **Status verifikasi:** compatibility checker lulus `283/283`; canonical CI terbaru adalah run `37832260326`. Skenario partial release tidak dijalankan sengaja karena tidak perlu membuat release gagal demi membuktikan recovery policy. Publish automation terpisah dan sengaja ditunda di Tahap 3.
 
 **Tujuan:** membuat hubungan versi antara spec dan semua consumer menjadi eksplisit.
 
@@ -476,7 +496,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi:** checkpoint workspace HEAD menghasilkan `253/253` fixture checks; Integration #151 tetap menjadi evidence CI terakhir, sehingga status CI pada pointer terbaru masih menunggu refresh. **Pekerjaan terkait namun terpisah:** promosi capability yang disetujui ada di Tahap 6 / plan 07; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
+**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi:** pre-promotion checkpoint menghasilkan `253/253`, lalu fixture 15 dipromosikan dan conformance menjadi `260/260`; canonical run `37832260326` memverifikasi gate lintas-platform. **Pekerjaan terkait namun terpisah:** fixture 16 evaluator/unit tetap candidate; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -543,7 +563,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 6 — Flutter alignment
 
-**Status implementasi:** parsial. **Keputusan:** non-publishable, stable 3.41.9, desktop macOS/Linux/Windows disetujui; Android/iOS ditunda. **Verifikasi:** canonical run 37832260326 pada root `328c869` lulus job Flutter, macOS, Linux, dan Windows; fixture 15 boolean/intersection active pada scope contract terbatas, sementara evaluator/unit dan desktop presentation QA tetap terbuka. Native dock/floating QA, target Ubuntu/Windows 11 di luar run, accessibility, dan package release bukan bagian promotion ini.
+**Status implementasi:** parsial. **Keputusan:** non-publishable, stable 3.41.9, desktop macOS/Linux/Windows disetujui; Android/iOS ditunda. **Verifikasi:** canonical run `37832260326` pada root `328c869` lulus job Flutter, macOS, Linux, dan Windows; fixture 15 boolean/intersection active pada scope contract terbatas, sementara evaluator/unit, desktop runtime smoke, dan accessibility tetap terbuka/deferred. Build job tidak diperlakukan sebagai runtime usability evidence.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -558,8 +578,8 @@ menjadikannya checklist overdue.
 
 **Acceptance criteria:**
 
-- [x] Flutter menyatakan capability yang benar-benar didukung melalui README dan mapping machine-readable; evidence parity tetap parsial dan promotion pertama sudah disetujui tetapi belum diterapkan;
-- [x] active/runtime/invalid fixture inti diverifikasi pada Flutter lokal; checkout terisolasi juga lulus dengan shared-fixture skip yang eksplisit, dan dua candidate capability lulus pada operasi/evaluator serta semantic projection ter-normalisasi; candidate belum menjadi active contract;
+- [x] Flutter menyatakan capability yang benar-benar didukung melalui README dan mapping machine-readable; evidence parity tetap parsial dan promotion pertama sudah diterapkan pada boundary contract terbatas;
+- [x] active/runtime/invalid fixture inti diverifikasi pada Flutter lokal; fixture 15 `boolean/intersection` kini active pada boundary contract terbatas, sedangkan fixture 16 evaluator/unit tetap candidate;
 - [x] active, runtime-diagnostic, dan candidate SVG Flutter dibandingkan dengan expected SVG TypeScript pada level object/primitive/path geometry; style, viewBox, dan full SVG policy belum menjadi acceptance;
 - [x] checkout Flutter terisolasi lokal dapat menjalankan dependency resolution, analyzer non-fatal, dan test tanpa parent workspace atau absolute path operator; fixture canonical tetap opt-in melalui `RELGEO_FIXTURE_ROOT`;
 - [x] analyzer Flutter tidak lagi memiliki warning atau style lint; `dart analyze` tersisa `47 INFO` deprecation-only yang tetap dicetak oleh gate CI;
@@ -585,7 +605,7 @@ menjadikannya checklist overdue.
 
 ## 7. Rencana kerja berikutnya yang direkomendasikan
 
-Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Runner Flutter, checkout Flutter terisolasi, serta active/candidate scene dan SVG semantic projection sudah lulus lokal dan pada `Integration #91` tanpa menjadikannya dependency gate TypeScript; browser publik terbaru sudah diverifikasi, sementara capability parity tambahan tetap harus ditutup secara terpisah.
+Tahap 1 sudah selesai dengan evidence lokal, public-registry, fresh-checkout, CI, public smoke, dan reproduksi failure lama. Tahap 4 sudah memiliki fondasi fixture dan strategi ownership yang jelas. Canonical run `37832260326` menutup gate lintas-platform untuk baseline root `328c869`; fixture 15 dan semantic SVG projection aktif pada boundary contract terbatas, sementara evaluator/unit, runtime smoke interaktif, dan accessibility tetap ditangani terpisah tanpa menjadi dependency gate TypeScript.
 
 Urutan kerja yang disarankan setelah audit dokumen ini:
 
@@ -594,7 +614,7 @@ Urutan kerja yang disarankan setelah audit dokumen ini:
 3. jalankan `pnpm run conformance:fixtures` setelah build package selesai;
 4. lengkapi keyboard/VoiceOver macOS dan browser accessibility; mobile tidak masuk scope sampai dibuka kembali;
 5. pertahankan release manual; evaluasi automation setelah dua siklus manual tambahan pascakeputusan;
-6. saat Flutter dilanjutkan, implementasikan promotion `boolean/intersection` yang sudah disetujui; evaluator/unit menunggu promotion itu dan SVG raw/presentation equality bukan target.
+6. saat Flutter dilanjutkan, review evaluator/unit dan runtime smoke desktop secara terpisah; promotion `boolean/intersection` sudah selesai pada boundary yang disetujui dan SVG raw/presentation equality bukan target.
 
 ## 8. Definition of Done ekosistem
 
@@ -616,6 +636,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 
 | Tanggal | Perubahan | Bukti/status |
 | --- | --- | --- |
+| 2026-10-09 | Audit status pascapromotion | Canonical run `37832260326` ditetapkan sebagai evidence terbaru untuk baseline root `328c869`; fixture 15 `boolean/intersection` active dan conformance pascapromotion `260/260`; fixture 16 evaluator/unit, desktop runtime smoke interaktif, dan dua release npm nyata tetap terbuka/deferred; no-op release tidak diperbolehkan |
 | 2026-09-15 | Master plan dibuat dari hasil audit lintas-repo terbaru | baseline workspace, website, Playground, package metadata |
 | 2026-09-15 | Prioritas utama ditetapkan pada reproducible integration gate dan release contract | seluruh package 0.5.0, website Pages aktif, Playground audit sudah ditutup secara lokal |
 | 2026-10-08 | Status master dan sub-plan direkonsiliasi; implementasi, evidence, keputusan, dan penundaan dipisahkan | workspace `d3ec2b0`, Flutter pointer `edc9488`; Integration #151 historis, CI refresh pointer terbaru belum ada |

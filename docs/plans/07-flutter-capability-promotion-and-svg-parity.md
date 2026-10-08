@@ -15,9 +15,9 @@ promotion pertama. Ia mengunci line-line intersection pada fixture, rectangle
 error boundary tanpa mengaktifkan fixture atau memperluas claim ke `union`,
 `xor`, operand non-rectangle, atau degenerate input.
 
-## 0. Checkpoint gate promotion — 2026-10-08 (historical)
+## 0. Checkpoint gate promotion — 2026-10-08 (historical, superseded)
 
-Promotion belum dilakukan. Replay command wajib pada workspace HEAD
+Pada checkpoint ini promotion belum dilakukan. Replay command wajib pada workspace HEAD
 `d3ec2b0430f12bd95f2be312fa7438b6d97757d6` dengan Node `24.21.0` menghasilkan:
 
 - artefak `pnpm run integration:gate -- --local` pada Node `24.21.0` di
@@ -57,7 +57,7 @@ tetap candidate. Tidak ada perubahan status active sampai local, public-registry
 Flutter conformance, CLI/Playground, dan semantic SVG comparator lulus dari
 checkout bersih.
 
-### 0.1 Consumer verification rerun — 2026-10-08
+### 0.1 Consumer verification rerun — 2026-10-08 (historical, superseded)
 
 Setelah dependency workspace dipulihkan dari pnpm store offline, verification
 Node `24.21.0` menghasilkan evidence berikut:
@@ -98,7 +98,7 @@ Selama tiga gap tersebut belum ditutup oleh runner yang memiliki akses toolchain
 dan network yang diperlukan, fixture 15 tetap `capability`, capability
 `boolean-geometry` tetap `partial`, dan evaluator/unit tetap menunggu.
 
-### 0.3 Audit checkpoint — 2026-10-09 (sebelum run canonical)
+### 0.3 Audit checkpoint — 2026-10-09 (historical, superseded by §0.4)
 
 Audit read-only pada 2026-10-09 tidak menemukan canonical CI/public/Flutter
 evidence baru. Report terbaru tetap local `33/36`, local-current `6/35`, dan

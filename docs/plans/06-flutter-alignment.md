@@ -2,9 +2,9 @@
 
 **Status implementasi:** parsial; fondasi alignment dan runner tersedia. **Status keputusan:** Flutter non-publishable, stable 3.41.9, dan target desktop macOS/Linux/Windows disetujui; mobile ditunda. **Status evidence:** canonical GitHub Actions run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) pada root `328c869` lulus seluruh job Flutter dan desktop. Promotion boolean/intersection sudah diterapkan pada fixture 15 untuk boundary contract terbatas; evaluator/unit dan presentation expansion tetap terbuka.
 
-Pekerjaan lanjutan untuk dua gap tersebut dipecah ke [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](07-flutter-capability-promotion-and-svg-parity.md).
+Pekerjaan lanjutan untuk dua gap tersebut dipecah ke [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](07-flutter-capability-promotion-and-svg-parity.md). Detail checkpoint lama di bawah bersifat historical.
 
-## 0. Checkpoint evidence — 2026-10-08
+## 0. Checkpoint evidence — 2026-10-08 (historical, superseded)
 
 Gitlink workspace menunjuk tepat ke Flutter
 `edc9488952db7edc74dd2caa7fc2064f03ff62f9` (`edc9488`), checkout child bersih.
@@ -14,9 +14,10 @@ Evidence terbaru yang dapat ditelusuri pada revision itu berada di
 bersifat child-repo/local dan tidak membuktikan universal/arm64 release atau
 integration CI.
 
-`Integration #151` pada `workspace@21ee21b` tetap dipertahankan sebagai CI evidence lintas-repo historis
-terakhir. Tidak ada run CI baru yang menguji `edc9488`; gap ini dicatat eksplisit,
-bukan digantikan oleh hasil local TypeScript atau oleh perubahan pointer baseline.
+`Integration #151` pada `workspace@21ee21b` dipertahankan sebagai CI evidence
+lintas-repo historis. Checkpoint ini kemudian superseded oleh run canonical
+`37832260326` pada root `328c869` dengan Flutter `ea8e754`; gap ini tidak lagi
+menjadi status aktif, meskipun detail local evidence tetap berguna sebagai sejarah.
 Root checkpoint yang menyertainya lulus strict baseline `81/81`, compatibility
 `283/283`, dan conformance `253/253` pada Node `24.21.0`/pnpm `10.33.3`.
 Transcript manual `.internal/tmp-test.txt` pada pointer yang sama menambahkan
@@ -102,8 +103,8 @@ Alternatif membuat package fixture Dart publik atau menyalin seluruh canonical f
 | YAML/DSL input | `@relgeo/core` + YAML boundary consumer | `yaml` + resolver Dart | active shared fixture dan semantic projection lulus lokal; vocabulary diagnostic lintas consumer masih terbuka |
 | scalar/evaluator | core evaluator | `src/core/evaluator.dart` | candidate memiliki evidence historis lokal/CI; masih candidate dan menunggu stabilisasi promotion boolean/intersection |
 | dependency graph | core resolver | `src/core/graph.dart` dan resolver | local test dan active shared fixture projection lulus; coverage lintas operation masih terbuka |
-| geometry/intersection | `@relgeo/geometry` | `src/geometry/*` | candidate memiliki evidence historis lokal/CI; promotion pertama telah disetujui tetapi fixture/matrix belum diubah |
-| boolean | geometry boolean engine | `clipper2` adapter | candidate shared fixture, operasi, dan semantic projection ter-normalisasi lulus lokal serta CI; belum menjadi active baseline |
+| geometry/intersection | `@relgeo/geometry` | `src/geometry/*` | fixture 15 active pada boundary contract terbatas; circle/arc dan degenerate extensions tetap terbuka |
+| boolean | geometry boolean engine | `clipper2` adapter | fixture 15 dan boundary `boolean/intersection` active; semantic projection ter-normalisasi lulus pada run canonical; perluasan union/xor tetap terbuka |
 | SVG output | `@relgeo/renderer-svg` | `SvgExporter` | active/runtime/candidate semantic projection memiliki evidence terdahulu; presentation property tambahan sengaja tidak masuk contract 0.5.x tanpa consumer |
 | Canvas presentation | bukan target package utama | `CanvasPainter` | Flutter-specific, divalidasi oleh golden/widget test |
 | diagnostics | core/runtime + language-service | `ConstraintViolation`/workbench diagnostics | runtime local ada; diagnostic code/message mapping belum distandarkan |
@@ -152,7 +153,7 @@ Fixture minimum:
 - [x] test semantic projection dan conformance untuk `10-v05-relational-baseline.yaml` ditambahkan dan lulus pada runner Flutter lokal;
 - [x] test semantic projection dan conformance untuk `14-v05-runtime-align-violation.yaml` ditambahkan dan lulus pada runner Flutter lokal;
 - [x] boundary test untuk invalid YAML, object tanpa `type`, dan unknown reference ditambahkan dan lulus; exact diagnostic vocabulary lintas consumer masih terbuka;
-- [x] candidate fixture boolean/intersection v0.5 ditambahkan beserta expected snapshot pada workspace; coverage operasi dan semantic projection ter-normalisasi Flutter untuk candidate ini lulus lokal; candidate belum menjadi active conformance fixture;
+- [x] fixture boolean/intersection v0.5 memiliki expected snapshot, coverage operasi, dan semantic projection ter-normalisasi Flutter; fixture 15 kini active pada boundary contract terbatas berdasarkan canonical run `37832260326`;
 - [x] candidate fixture evaluator/unit v0.5 ditambahkan beserta expected scene/SVG snapshot; parameter, unit conversion, derived placement, semantic projection, dan SVG projection Flutter lulus lokal; candidate belum menjadi active conformance fixture;
 - [x] implementasi default point `align` diselaraskan dengan kontrak TypeScript dan regression test inline ditambahkan; eksekusi Flutter serta verifikasi fixture canonical lulus pada runner lokal;
 
@@ -229,7 +230,7 @@ tetapi tidak menjadi blocker pada baseline ini.
 ### Stage F — Release/readiness decision
 
 - [x] status tiap capability menjadi verified/partial/unsupported; matrix saat ini memakai `partial` karena active-contract boundary dan parity/presentation yang lebih luas masih terbuka meskipun evidence CI dasar sudah lulus;
-- [x] compatibility matrix menyebut Flutter secara jujur sebagai non-Node consumer berstatus `partial` berdasarkan evidence lokal dan `Integration #91`, dengan capability yang belum dipromosikan tetap terbuka;
+- [x] compatibility matrix menyebut Flutter secara jujur sebagai non-Node consumer berstatus `partial` berdasarkan evidence canonical run `37832260326`, dengan fixture 15 active dan capability lain tetap terbuka;
 - [x] README dan master plan tidak lagi menyiratkan parity hanya karena test lokal ada;
 - [x] release decision record menyatakan Flutter tetap workbench non-publishable; posture dan release policy final diterima melalui [decision record lintas-repo](../decisions/07-cross-repo-open-decisions.md), sedangkan record Flutter khusus tetap menjadi rationale teknis;
 - [x] gap yang tersisa memiliki owner, bukti, dan langkah forward-fix pada register berikut.
@@ -239,7 +240,7 @@ tetapi tidak menjadi blocker pada baseline ini.
 | Gap | Owner | Evidence saat ini | Forward-fix |
 | --- | --- | --- | --- |
 | Flutter runtime belum tersedia pada environment koordinasi | relgeo/workspace + relgeo/flutter | resolved locally: SDK Flutter `3.41.9` / Dart `3.11.5` dipakai melalui terminal VS Code dan runner lengkap lulus | ulangi dari CI/checkout bersih; pertahankan `RELGEO_FLUTTER_BIN` sebagai override portable |
-| Evidence CI untuk active fixture dan diagnostic | relgeo/flutter | `Integration #151` job `flutter` lulus untuk pointer historis; pointer `edc9488` belum memiliki integration CI baru | pertahankan evidence CI historis dan jalankan refresh resmi sebelum mengubah status capability |
+| Evidence CI untuk active fixture dan diagnostic | relgeo/flutter | canonical run `37832260326` job `flutter` dan desktop lulus pada baseline root `328c869`; `Integration #151` historical | pertahankan evidence canonical untuk fixture 15; jangan memperluas status ke evaluator/unit tanpa contract baru |
 | Standalone Flutter checkout tanpa parent workspace belum menjalankan seluruh fixture canonical | relgeo/flutter | checkout terisolasi lokal lulus analyzer non-fatal dan 99 test; 7 shared-fixture test skip dengan alasan eksplisit, sementara official workspace checkout pada `Integration #91` lulus | pertahankan fixture canonical sebagai input opt-in atau sediakan paket fixture resmi bila standalone parity kelak diwajibkan |
 | Semantic parity boolean/intersection | relgeo/workspace + relgeo/flutter | operation-level dan semantic projection ter-normalisasi fixture 15 lulus pada canonical run `37832260326`; expected JSON/SVG TypeScript dipertahankan | pertahankan scope active; jangan memperluas ke evaluator/unit atau presentation tanpa contract baru |
 | Semantic parity candidate evaluator/unit belum menjadi active contract | relgeo/workspace + relgeo/flutter | parameter, `in`/`mm`, derived placement, scene snapshot, dan SVG semantic projection candidate lulus lokal dan pada `Integration #91`; candidate belum masuk active baseline | sepakati promotion boundary bersama candidate boolean/intersection; pertahankan `cliUnit` eksplisit untuk snapshot non-default |
@@ -255,9 +256,9 @@ tetapi tidak menjadi blocker pada baseline ini.
 - [x] mode error memiliki regression test yang mempertahankan preview valid terakhir sambil menampilkan diagnostic; eksekusi Flutter lulus;
 - [x] diagnostic `align` Flutter memiliki projection canonical yang cocok pada type, message, deviation, path, dan involved objects pada hasil test Flutter lokal;
 - [x] invalid input memiliki boundary test untuk YAML syntax, struktur object, dan unknown reference; exact vocabulary lintas consumer masih merupakan gap terpisah;
-- [x] `flutter analyze` non-fatal dan `flutter test` lulus pada toolchain `3.41.9` dari checkout terisolasi lokal; job Flutter pada `Integration #151` juga lulus untuk pointer historis;
+- [x] `flutter analyze` non-fatal dan `flutter test` lulus pada toolchain `3.41.9` dari checkout terisolasi lokal; job Flutter dan desktop pada canonical run `37832260326` juga lulus;
 - [x] Flutter job berdiri sendiri dan tidak mengubah status gate TypeScript ketika Flutter belum tersedia; konfigurasi remote terbukti pada `Integration #94`;
-- [x] README, compatibility record, fixture manifest, dan master plan menyatakan status evidence lokal dan gap CI/standalone yang sama;
+- [x] README, compatibility record, fixture manifest, dan master plan menyatakan fixture 15 active, fixture 16 candidate, serta gap runtime/standalone yang sama;
 - [ ] tidak ada klaim parity final sebelum seluruh capability matrix memiliki evidence.
 
 ## 7. Risiko dan keputusan yang ditahan

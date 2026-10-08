@@ -15,7 +15,7 @@
     },
     {
       "path": "playground",
-      "revision": "ecc1407a8ba0da3929042137ff43b8e69f50b556",
+      "revision": "c0de7b0eec38a436f52893404fa420051e3d34e6",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"
@@ -83,7 +83,7 @@
     },
     {
       "path": "flutter",
-      "revision": "edc9488952db7edc74dd2caa7fc2064f03ff62f9"
+      "revision": "833a4fa1782b5eb2f7359fb3b2c951d5ede3621b"
     }
   ]
 }

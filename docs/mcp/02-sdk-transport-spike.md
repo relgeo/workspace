@@ -124,7 +124,7 @@ The current workspace baseline is:
 Dart SDK:       3.11.5 stable, macos_arm64
 Flutter config: 3.41.9 (existing package configuration)
 RelGeo SDK:     ^3.11.5
-MCP package:    local path dependency ../mcp
+MCP package:    workspace path dependency ../mcp; standalone Flutter CI checks out relgeo/mcp at the same sibling path
 ```
 
 The Flutter wrapper could not run its normal `pub get`/test preflight in this

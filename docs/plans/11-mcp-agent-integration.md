@@ -1,7 +1,7 @@
 # Sub-Rencana 11 — MCP Server dan Agent-Assisted RelGeo Authoring
 
 **Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security dan typed MVP tool/resource schema tersedia; adapter SDK/transport serta delivery integration masih perlu diturunkan sebelum implementasi penuh.
-**Repository pemilik:** `relgeo/workspace` sebagai orkestrator; package MCP ditetapkan sebagai `relgeo_mcp` pada target repository `relgeo/mcp` (saat ini staging di `mcp/`)
+**Repository pemilik:** `relgeo/workspace` sebagai orkestrator; package MCP berada sebagai submodule resmi pada repository `relgeo/mcp` dengan nama `relgeo_mcp`
 **Pemilik keputusan:** Agus Made
 **Compatibility line:** RelGeo DSL 0.5.x
 **Prasyarat:** `spec`, `core`, `language-service`, `cli`, dan RelGeo Desktop Flutter
@@ -535,7 +535,7 @@ dikunci; evidence dan command validation ada di
 | Menyalin seluruh spec ke prompt | Gunakan resource/rule/example retrieval yang terarah |
 | Dokumentasi remote berubah | Pin revision/version, bundle snapshot, cache internal, dan sediakan offline fallback |
 | Konflik spec vs website | `relgeo/spec` selalu menjadi sumber normatif |
-| Package/repository MCP | `relgeo_mcp` pada target repository `relgeo/mcp`; staging saat ini berada di `mcp/` dan private/non-publishable |
+| Package/repository MCP | `relgeo_mcp` pada submodule resmi `relgeo/mcp`; tetap private/non-publishable selama SDK dan transport conformance belum selesai |
 | Standalone executable | Tunda sampai kebutuhan non-Flutter nyata; gunakan package yang sama |
 
 ## 12. Definition of done

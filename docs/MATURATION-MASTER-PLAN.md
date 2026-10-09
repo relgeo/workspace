@@ -1,6 +1,6 @@
 # RelGeo Maturation Master Plan
 
-**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; status direkonsiliasi 2026-10-09
+**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; MCP sudah menjadi submodule resmi; status direkonsiliasi 2026-10-09
 **Tanggal baseline:** 2026-10-08
 **Compatibility line saat ini:** RelGeo DSL 0.5.x  
 **Pemilik keputusan:** Agus Made  
@@ -637,6 +637,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 | Tanggal | Perubahan | Bukti/status |
 | --- | --- | --- |
 | 2026-10-09 | Audit status pascapromotion | Canonical run `37832260326` ditetapkan sebagai evidence terbaru untuk baseline root `328c869`; fixture 15 `boolean/intersection` active dan conformance pascapromotion `260/260`; fixture 16 evaluator/unit, desktop runtime smoke interaktif, dan dua release npm nyata tetap terbuka/deferred; no-op release tidak diperbolehkan |
+| 2026-10-09 | Package MCP diekstrak dari root menjadi submodule resmi | `relgeo/mcp@6fd5cb2` dipasang pada root `workspace@5bf17ec`; package tetap pure-Dart, private/non-publishable, dan standalone Flutter CI diarahkan untuk checkout MCP sebagai sibling `../mcp`; canonical integration evidence untuk revision root terbaru masih perlu dijalankan |
 | 2026-09-15 | Master plan dibuat dari hasil audit lintas-repo terbaru | baseline workspace, website, Playground, package metadata |
 | 2026-09-15 | Prioritas utama ditetapkan pada reproducible integration gate dan release contract | seluruh package 0.5.0, website Pages aktif, Playground audit sudah ditutup secara lokal |
 | 2026-10-08 | Status master dan sub-plan direkonsiliasi; implementasi, evidence, keputusan, dan penundaan dipisahkan | workspace `d3ec2b0`, Flutter pointer `edc9488`; Integration #151 historis, CI refresh pointer terbaru belum ada |

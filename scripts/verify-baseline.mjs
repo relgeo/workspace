@@ -176,10 +176,11 @@ try {
     String(manifest.compatibilityLine),
   );
   const entries = manifest.submodules;
+  const registeredSubmoduleCount = readGitmodules().length;
   record(
     "manifest: submodule list",
-    Array.isArray(entries) && entries.length === 11,
-    String(entries?.length ?? 0),
+    Array.isArray(entries) && entries.length === registeredSubmoduleCount,
+    `${entries?.length ?? 0} manifest entries, ${registeredSubmoduleCount} registered submodules`,
   );
   for (const entry of entries ?? []) {
     verifySubmodule(entry);

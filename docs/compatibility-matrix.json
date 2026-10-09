@@ -58,7 +58,7 @@
   },
   "repositoryBoundaries": {
     "mcp": {
-      "stagingPath": "mcp",
+      "repositoryPath": "mcp",
       "targetRepository": "relgeo/mcp",
       "packageName": "relgeo_mcp",
       "owner": "Agus Made",

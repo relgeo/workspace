@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-10-08",
+  "capturedAt": "2026-10-09",
   "compatibilityLine": "0.5",
   "repository": "relgeo/workspace",
   "submodules": [
@@ -83,7 +83,11 @@
     },
     {
       "path": "flutter",
-      "revision": "ea8e754304657806def94e224a695b6225c17261"
+      "revision": "804afbac60fd16305405c66ce2ac36a219eac1a6"
+    },
+    {
+      "path": "mcp",
+      "revision": "48821c47f211fcce29013355803aa271e63a7b47"
     }
   ]
 }

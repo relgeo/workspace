@@ -42,3 +42,7 @@
 	path = flutter
 	url = https://github.com/relgeo/flutter.git
 	branch = main
+[submodule "mcp"]
+	path = mcp
+	url = https://github.com/relgeo/mcp.git
+	branch = main

@@ -111,7 +111,6 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24
-          cache: pnpm
 
       - name: Fetch and stage the validated Flutter gitlink
         id: stage

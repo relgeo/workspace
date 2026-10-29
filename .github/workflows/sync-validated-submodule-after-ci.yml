@@ -1,0 +1,261 @@
+name: Sync validated submodule baseline
+
+on:
+  repository_dispatch:
+    types: [submodule_ci_succeeded, flutter_ci_succeeded]
+  workflow_dispatch:
+    inputs:
+      submodule:
+        description: Submodule to synchronize
+        required: true
+        type: choice
+        options:
+          - flutter
+          - playground
+          - mcp
+      sha:
+        description: Full 40-character child repository commit SHA
+        required: true
+        type: string
+      run_id:
+        description: Successful child CI run ID for this SHA
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: >-
+    sync-submodule-${{
+      github.event.client_payload.submodule ||
+      (github.event.action == 'flutter_ci_succeeded' && 'flutter') ||
+      inputs.submodule || 'manual'
+    }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Validate and propose submodule pointer update
+    if: >-
+      ${{
+        (github.event_name == 'repository_dispatch' &&
+          (github.event.action == 'submodule_ci_succeeded' ||
+           github.event.action == 'flutter_ci_succeeded')) ||
+        github.event_name == 'workflow_dispatch'
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Read and validate dispatch metadata
+        id: metadata
+        uses: actions/github-script@v7
+        env:
+          EVENT_TYPE: ${{ github.event.action }}
+          PAYLOAD_SUBMODULE: ${{ github.event.client_payload.submodule }}
+          PAYLOAD_REPOSITORY: ${{ github.event.client_payload.repository }}
+          PAYLOAD_PATH: ${{ github.event.client_payload.path }}
+          PAYLOAD_SHA: ${{ github.event.client_payload.sha || github.event.client_payload.submodule_sha || github.event.client_payload.flutter_sha }}
+          PAYLOAD_RUN_ID: ${{ github.event.client_payload.run_id || github.event.client_payload.submodule_run_id || github.event.client_payload.flutter_run_id }}
+          PAYLOAD_WORKFLOW: ${{ github.event.client_payload.workflow || github.event.client_payload.submodule_workflow || github.event.client_payload.flutter_workflow }}
+          INPUT_SUBMODULE: ${{ inputs.submodule }}
+          INPUT_SHA: ${{ inputs.sha }}
+          INPUT_RUN_ID: ${{ inputs.run_id }}
+        with:
+          script: |
+            const specs = {
+              flutter: {
+                repository: 'flutter',
+                path: 'flutter',
+                workflow: '.github/workflows/flutter-ci.yml',
+              },
+              playground: {
+                repository: 'playground',
+                path: 'playground',
+                workflow: '.github/workflows/playground-ci.yml',
+              },
+              mcp: {
+                repository: 'mcp',
+                path: 'mcp',
+                workflow: '.github/workflows/mcp-ci.yml',
+              },
+            };
+
+            const legacyFlutter = process.env.EVENT_TYPE === 'flutter_ci_succeeded';
+            const submodule = (process.env.PAYLOAD_SUBMODULE || process.env.INPUT_SUBMODULE || (legacyFlutter ? 'flutter' : '')).trim().toLowerCase();
+            const spec = specs[submodule];
+            if (!spec) {
+              core.setFailed(`Unsupported submodule: ${submodule || '<empty>'}`);
+              return;
+            }
+
+            const sha = (process.env.PAYLOAD_SHA || process.env.INPUT_SHA || '').trim().toLowerCase();
+            const runId = (process.env.PAYLOAD_RUN_ID || process.env.INPUT_RUN_ID || '').trim();
+            const expectedRepository = `relgeo/${spec.repository}`;
+            const payloadRepository = (process.env.PAYLOAD_REPOSITORY || '').trim();
+            const payloadPath = (process.env.PAYLOAD_PATH || '').trim();
+            const payloadWorkflow = (process.env.PAYLOAD_WORKFLOW || '').trim();
+
+            if (!/^[0-9a-f]{40}$/.test(sha)) {
+              core.setFailed(`Invalid ${submodule} SHA: ${sha || '<empty>'}`);
+              return;
+            }
+            if (!/^\d+$/.test(runId)) {
+              core.setFailed(`Invalid ${submodule} run ID: ${runId || '<empty>'}`);
+              return;
+            }
+            if (payloadRepository && payloadRepository !== expectedRepository) {
+              core.setFailed(`Payload repository ${payloadRepository} does not match ${expectedRepository}`);
+              return;
+            }
+            if (payloadPath && payloadPath !== spec.path) {
+              core.setFailed(`Payload path ${payloadPath} does not match ${spec.path}`);
+              return;
+            }
+            const legacyWorkflowName = legacyFlutter && payloadWorkflow === 'Flutter CI';
+            if (payloadWorkflow && payloadWorkflow !== spec.workflow && !legacyWorkflowName) {
+              core.setFailed(`Payload workflow ${payloadWorkflow} does not match ${spec.workflow}`);
+              return;
+            }
+
+            const syncBranch = `automation/submodule-ci-${submodule}-${sha}`;
+            core.setOutput('submodule', submodule);
+            core.setOutput('repository', spec.repository);
+            core.setOutput('path', spec.path);
+            core.setOutput('workflow', spec.workflow);
+            core.setOutput('sha', sha);
+            core.setOutput('run_id', runId);
+            core.setOutput('sync_branch', syncBranch);
+
+      - name: Verify the successful child CI run
+        id: verify-run
+        uses: actions/github-script@v7
+        env:
+          SUBMODULE: ${{ steps.metadata.outputs.submodule }}
+          SOURCE_REPOSITORY: ${{ steps.metadata.outputs.repository }}
+          SOURCE_WORKFLOW: ${{ steps.metadata.outputs.workflow }}
+          SUBMODULE_SHA: ${{ steps.metadata.outputs.sha }}
+          SUBMODULE_RUN_ID: ${{ steps.metadata.outputs.run_id }}
+        with:
+          github-token: ${{ secrets.SUBMODULE_CI_VERIFY_TOKEN || secrets.FLUTTER_CI_VERIFY_TOKEN || github.token }}
+          script: |
+            const runId = Number(process.env.SUBMODULE_RUN_ID);
+            const { data: run } = await github.rest.actions.getWorkflowRun({
+              owner: 'relgeo',
+              repo: process.env.SOURCE_REPOSITORY,
+              run_id: runId,
+            });
+
+            const expectedSha = process.env.SUBMODULE_SHA;
+            const expectedWorkflow = process.env.SOURCE_WORKFLOW;
+            const failures = [];
+            if (run.head_sha !== expectedSha) {
+              failures.push(`head SHA ${run.head_sha} does not match ${expectedSha}`);
+            }
+            if (run.conclusion !== 'success') {
+              failures.push(`conclusion is ${run.conclusion || run.status}`);
+            }
+            if (run.event !== 'push' || run.head_branch !== 'main') {
+              failures.push(`run source is ${run.event}/${run.head_branch}, expected push/main`);
+            }
+            if (run.path !== expectedWorkflow) {
+              failures.push(`workflow path is ${run.path}, expected ${expectedWorkflow}`);
+            }
+            if (run.head_repository?.full_name !== `relgeo/${process.env.SOURCE_REPOSITORY}`) {
+              failures.push(`run repository is ${run.head_repository?.full_name || '<empty>'}`);
+            }
+            if (failures.length > 0) {
+              core.setFailed(`${process.env.SUBMODULE} CI validation failed: ${failures.join('; ')}`);
+              return;
+            }
+
+            core.setOutput('run_url', run.html_url);
+            core.info(`Validated ${process.env.SUBMODULE} ${expectedSha} from ${run.html_url}.`);
+
+      - name: Checkout workspace and submodules
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.33.3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Fetch and stage the validated submodule gitlink
+        id: stage
+        env:
+          SUBMODULE_PATH: ${{ steps.metadata.outputs.path }}
+          SUBMODULE_SHA: ${{ steps.metadata.outputs.sha }}
+        run: |
+          set -euo pipefail
+          current_sha="$(git ls-tree HEAD "$SUBMODULE_PATH" | awk '{print $3}')"
+          if [ "$current_sha" = "$SUBMODULE_SHA" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "workspace already points to $SUBMODULE_PATH@$SUBMODULE_SHA"
+            exit 0
+          fi
+
+          git -C "$SUBMODULE_PATH" fetch --no-tags origin "$SUBMODULE_SHA"
+          test "$(git -C "$SUBMODULE_PATH" rev-parse FETCH_HEAD)" = "$SUBMODULE_SHA"
+          git -C "$SUBMODULE_PATH" checkout --detach "$SUBMODULE_SHA"
+          git add "$SUBMODULE_PATH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Install workspace dependencies
+        if: steps.stage.outputs.changed == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Regenerate and validate the integration baseline
+        if: steps.stage.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          node scripts/verify-baseline.mjs --write
+          git add docs/integration-baseline.json
+          pnpm run verify:baseline:strict
+          pnpm run compatibility:check
+
+      - name: Open synchronization PR
+        if: steps.stage.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: ${{ steps.metadata.outputs.sync_branch }}
+          delete-branch: true
+          title: "chore: sync validated ${{ steps.metadata.outputs.submodule }} ${{ steps.metadata.outputs.sha }}"
+          commit-message: "chore: sync validated submodule baseline"
+          body: |
+            This PR was created from a successful validated child-repository CI run.
+
+            - Submodule: `${{ steps.metadata.outputs.submodule }}`
+            - Source repository: `relgeo/${{ steps.metadata.outputs.repository }}`
+            - SHA: `${{ steps.metadata.outputs.sha }}`
+            - Child CI run: [${{ steps.metadata.outputs.run_id }}](${{ steps.verify-run.outputs.run_url }})
+            - Source workflow: `${{ steps.metadata.outputs.workflow }}`
+
+            The root gitlink and integration baseline were regenerated only after
+            the exact SHA and successful `push`/`main` workflow run were verified.
+            The normal `Integration` workflow must pass on this PR before merge.
+
+      - name: Dispatch Integration for the synchronization PR
+        if: steps.stage.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        env:
+          SYNC_BRANCH: ${{ steps.metadata.outputs.sync_branch }}
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'relgeo',
+              repo: 'workspace',
+              workflow_id: 'integration.yml',
+              ref: process.env.SYNC_BRANCH,
+            });
+            core.info(`Dispatched Integration for ${process.env.SYNC_BRANCH}.`);

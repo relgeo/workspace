@@ -38,7 +38,8 @@ Compatibility policy:
    `0.1.0-dev.1` tetap private/non-publishable selama conformance SDK dan
    transport belum selesai;
 2. dependency Flutter adalah path dependency `../mcp`; checkout workspace
-   menyediakan sibling submodule tersebut, dan standalone Flutter CI
+   menyediakan sibling submodule tersebut, dan CI standalone child yang
+   tervalidasi untuk Flutter, Playground, dan MCP
    meng-checkout `relgeo/mcp` pada sibling path yang sama;
 3. package MCP bukan anggota release order npm. Perubahan normatif pada
    `spec/id` memerlukan pembaruan MCP snapshot/provenance sebelum release

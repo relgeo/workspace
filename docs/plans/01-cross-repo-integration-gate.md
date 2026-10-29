@@ -360,41 +360,53 @@ Checklist:
 - [x] checkout CI tidak menyimpan credential Git dan report artifact memiliki retensi terbatas;
 - [x] workflow terbaru menjalankan gate sampai selesai.
 
-### 5.6 Sinkronisasi Flutter lintas repository
+### 5.6 Sinkronisasi submodule tervalidasi lintas repository
 
-Workflow Flutter standalone mengirim `repository_dispatch` bertipe
-`flutter_ci_succeeded` hanya setelah job quality dan seluruh desktop matrix pada
-branch `main` berhasil. Workflow root
-`.github/workflows/sync-flutter-after-ci.yml` memverifikasi ulang run melalui
-GitHub API, mencocokkan `head_sha` dengan payload, mengambil commit Flutter
-yang persis sama, meregenerasi `docs/integration-baseline.json`, lalu membuka
-PR sinkronisasi. Root `main` tidak ditulis langsung oleh workflow ini; PR
-tersebut harus melewati workflow `Integration` biasa.
+Workflow CI standalone pada `relgeo/flutter`, `relgeo/playground`, dan
+`relgeo/mcp` mengirim `repository_dispatch` bertipe
+`submodule_ci_succeeded` hanya setelah quality gate repository tersebut lulus
+di branch `main`. Payload membawa nama submodule, repository, SHA, run ID, dan
+workflow path. Root
+`.github/workflows/sync-validated-submodule-after-ci.yml` memetakan payload ke
+allowlist path yang tetap (`flutter`, `playground`, `mcp`), memverifikasi ulang
+run melalui GitHub API, mencocokkan `head_sha`, repository, branch, conclusion,
+dan workflow path, lalu mengambil commit child yang persis sama.
+
+Setelah verifikasi, workflow root meregenerasi
+`docs/integration-baseline.json`, menjalankan strict baseline dan compatibility,
+lalu membuka satu PR sinkronisasi per submodule. Root `main` tidak ditulis
+langsung oleh workflow ini; PR tersebut harus melewati workflow `Integration`
+biasa. Event lama `flutter_ci_succeeded` masih diterima sebagai kompatibilitas
+transisi, tetapi workflow Flutter baru memakai payload generik yang sama dengan
+Playground dan MCP.
 
 Pengaturan yang tetap membutuhkan operator:
 
-1. buat secret `WORKSPACE_DISPATCH_TOKEN` pada `relgeo/flutter` dengan izin
-   minimum `Contents: write` hanya untuk `relgeo/workspace` (GitHub App token
-   lebih baik untuk jangka panjang; fine-grained PAT dapat dipakai sebagai
-   bootstrap);
+1. buat secret `WORKSPACE_DISPATCH_TOKEN` pada `relgeo/flutter`,
+   `relgeo/playground`, dan `relgeo/mcp`, masing-masing dengan izin minimum
+   `Contents: write` hanya untuk `relgeo/workspace` (GitHub App token lebih baik
+   untuk jangka panjang; fine-grained PAT dapat dipakai sebagai bootstrap);
 2. bila repository kelak private atau API lintas-repo tidak dapat dibaca oleh
-   token default, tambahkan `FLUTTER_CI_VERIFY_TOKEN` pada `relgeo/workspace`
-   dengan izin Actions read terhadap `relgeo/flutter`;
-3. gabungkan workflow root ini dan pastikan branch protection mewajibkan job
-   `Integration` pada PR otomatis. Workflow sinkronisasi juga mengirim
-   `workflow_dispatch` ke `Integration` pada branch PR secara eksplisit, karena
-   event yang berasal dari `GITHUB_TOKEN` dapat ditahan untuk mencegah loop.
+   token default, tambahkan `SUBMODULE_CI_VERIFY_TOKEN` pada `relgeo/workspace`
+   dengan izin Actions read terhadap repository child terkait;
+3. pastikan branch protection mewajibkan job `Integration` pada PR otomatis.
+   Workflow sinkronisasi juga mengirim `workflow_dispatch` ke `Integration`
+   pada branch PR secara eksplisit, karena event yang berasal dari
+   `GITHUB_TOKEN` dapat ditahan untuk mencegah loop.
 
 Dispatch atau workflow manual yang membawa SHA berbeda dari `head_sha`, run
-yang bukan `push` ke `main`, run yang belum `success`, atau workflow path
-yang salah akan ditolak. Ini menjaga manifest tetap menjadi snapshot
-reproducible, bukan pointer ke `flutter/main` yang bergerak.
+yang bukan `push` ke `main`, run yang belum `success`, repository/path yang
+tidak sesuai allowlist, atau workflow path yang salah akan ditolak. Ini menjaga
+manifest tetap menjadi snapshot reproducible, bukan pointer ke branch child yang
+bergerak.
 
 Acceptance:
 
 - [x] local dan CI menjalankan entrypoint yang sama atau perbedaan dijelaskan;
 - [x] failure CI tertentu dapat direproduksi secara lokal;
-- [x] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator.
+- [x] workflow tidak bergantung pada branch atau path yang hanya ada di mesin operator;
+- [x] Flutter, Playground, dan MCP menggunakan event dispatch generik dengan SHA tervalidasi;
+- [x] root hanya mengusulkan pointer/manifest melalui PR sinkronisasi.
 
 ## 7. Keputusan implementasi yang sudah ditutup
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-10-09",
+  "capturedAt": "2026-10-29",
   "compatibilityLine": "0.5",
   "repository": "relgeo/workspace",
   "submodules": [
@@ -15,7 +15,7 @@
     },
     {
       "path": "playground",
-      "revision": "c0de7b0eec38a436f52893404fa420051e3d34e6",
+      "revision": "59a42ae925cf0c21541bc19ccac39f5061b35439",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"
@@ -83,7 +83,7 @@
     },
     {
       "path": "flutter",
-      "revision": "f39a913708e28625125ee8b64ccb350250db1d5d"
+      "revision": "1f3cf2a2c08feba90d400d67211fa3a52bed4c3a"
     },
     {
       "path": "mcp",

@@ -1,0 +1,182 @@
+name: Sync validated Flutter baseline
+
+on:
+  repository_dispatch:
+    types: [flutter_ci_succeeded]
+  workflow_dispatch:
+    inputs:
+      flutter_sha:
+        description: Full 40-character Flutter commit SHA
+        required: true
+        type: string
+      flutter_run_id:
+        description: Successful Flutter CI run ID for this SHA
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: sync-flutter-${{ github.event.client_payload.flutter_sha || inputs.flutter_sha }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Validate and propose Flutter pointer update
+    if: >-
+      ${{
+        (github.event_name == 'repository_dispatch' && github.event.action == 'flutter_ci_succeeded') ||
+        github.event_name == 'workflow_dispatch'
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Read dispatch metadata
+        id: metadata
+        uses: actions/github-script@v7
+        env:
+          PAYLOAD_SHA: ${{ github.event.client_payload.flutter_sha }}
+          PAYLOAD_RUN_ID: ${{ github.event.client_payload.flutter_run_id }}
+          INPUT_SHA: ${{ inputs.flutter_sha }}
+          INPUT_RUN_ID: ${{ inputs.flutter_run_id }}
+        with:
+          script: |
+            const sha = (process.env.PAYLOAD_SHA || process.env.INPUT_SHA || '').trim().toLowerCase();
+            const runId = (process.env.PAYLOAD_RUN_ID || process.env.INPUT_RUN_ID || '').trim();
+
+            if (!/^[0-9a-f]{40}$/.test(sha)) {
+              core.setFailed(`Invalid Flutter SHA: ${sha || '<empty>'}`);
+              return;
+            }
+            if (!/^\d+$/.test(runId)) {
+              core.setFailed(`Invalid Flutter run ID: ${runId || '<empty>'}`);
+              return;
+            }
+
+            core.setOutput('flutter_sha', sha);
+            core.setOutput('flutter_run_id', runId);
+
+      - name: Verify the successful Flutter CI run
+        id: verify-run
+        uses: actions/github-script@v7
+        env:
+          FLUTTER_SHA: ${{ steps.metadata.outputs.flutter_sha }}
+          FLUTTER_RUN_ID: ${{ steps.metadata.outputs.flutter_run_id }}
+        with:
+          github-token: ${{ secrets.FLUTTER_CI_VERIFY_TOKEN || github.token }}
+          script: |
+            const runId = Number(process.env.FLUTTER_RUN_ID);
+            const { data: run } = await github.rest.actions.getWorkflowRun({
+              owner: 'relgeo',
+              repo: 'flutter',
+              run_id: runId
+            });
+
+            const expectedSha = process.env.FLUTTER_SHA;
+            const failures = [];
+            if (run.head_sha !== expectedSha) {
+              failures.push(`head SHA ${run.head_sha} does not match ${expectedSha}`);
+            }
+            if (run.conclusion !== 'success') {
+              failures.push(`conclusion is ${run.conclusion || run.status}`);
+            }
+            if (run.event !== 'push' || run.head_branch !== 'main') {
+              failures.push(`run source is ${run.event}/${run.head_branch}, expected push/main`);
+            }
+            if (run.path !== '.github/workflows/flutter-ci.yml') {
+              failures.push(`workflow path is ${run.path}, expected .github/workflows/flutter-ci.yml`);
+            }
+            if (failures.length > 0) {
+              core.setFailed(`Flutter CI validation failed: ${failures.join('; ')}`);
+              return;
+            }
+
+            core.setOutput('run_url', run.html_url);
+            core.info(`Validated Flutter ${expectedSha} from ${run.html_url}.`);
+
+      - name: Checkout workspace and submodules
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.33.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Fetch and stage the validated Flutter gitlink
+        id: stage
+        env:
+          FLUTTER_SHA: ${{ steps.metadata.outputs.flutter_sha }}
+        run: |
+          set -euo pipefail
+          current_sha="$(git ls-tree HEAD flutter | awk '{print $3}')"
+          if [ "$current_sha" = "$FLUTTER_SHA" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "workspace already points to $FLUTTER_SHA"
+            exit 0
+          fi
+
+          git -C flutter fetch --no-tags origin "$FLUTTER_SHA"
+          test "$(git -C flutter rev-parse FETCH_HEAD)" = "$FLUTTER_SHA"
+          git -C flutter checkout --detach "$FLUTTER_SHA"
+          git add flutter
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Install workspace dependencies
+        if: steps.stage.outputs.changed == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Regenerate and validate the integration baseline
+        if: steps.stage.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          node scripts/verify-baseline.mjs --write
+          git add docs/integration-baseline.json
+          pnpm run verify:baseline:strict
+          pnpm run compatibility:check
+
+      - name: Open synchronization PR
+        if: steps.stage.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: automation/flutter-ci-${{ steps.metadata.outputs.flutter_sha }}
+          delete-branch: true
+          title: "chore: sync validated Flutter ${{ steps.metadata.outputs.flutter_sha }}"
+          commit-message: "chore: sync validated Flutter baseline"
+          body: |
+            This PR was created from a successful `relgeo/flutter` CI run.
+
+            - Flutter SHA: `${{ steps.metadata.outputs.flutter_sha }}`
+            - Flutter CI run: [${{ steps.metadata.outputs.flutter_run_id }}](${{ steps.verify-run.outputs.run_url }})
+            - Source workflow: `relgeo/flutter/.github/workflows/flutter-ci.yml`
+
+            The root baseline and gitlink were regenerated only after the exact
+            Flutter SHA and successful `push`/`main` workflow run were verified.
+            The normal `Integration` workflow must pass on this PR before merge.
+
+      - name: Dispatch Integration for the synchronization PR
+        if: steps.stage.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        env:
+          SYNC_BRANCH: automation/flutter-ci-${{ steps.metadata.outputs.flutter_sha }}
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'relgeo',
+              repo: 'workspace',
+              workflow_id: 'integration.yml',
+              ref: process.env.SYNC_BRANCH
+            });
+            core.info(`Dispatched Integration for ${process.env.SYNC_BRANCH}.`);

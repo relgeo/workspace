@@ -360,6 +360,36 @@ Checklist:
 - [x] checkout CI tidak menyimpan credential Git dan report artifact memiliki retensi terbatas;
 - [x] workflow terbaru menjalankan gate sampai selesai.
 
+### 5.6 Sinkronisasi Flutter lintas repository
+
+Workflow Flutter standalone mengirim `repository_dispatch` bertipe
+`flutter_ci_succeeded` hanya setelah job quality dan seluruh desktop matrix pada
+branch `main` berhasil. Workflow root
+`.github/workflows/sync-flutter-after-ci.yml` memverifikasi ulang run melalui
+GitHub API, mencocokkan `head_sha` dengan payload, mengambil commit Flutter
+yang persis sama, meregenerasi `docs/integration-baseline.json`, lalu membuka
+PR sinkronisasi. Root `main` tidak ditulis langsung oleh workflow ini; PR
+tersebut harus melewati workflow `Integration` biasa.
+
+Pengaturan yang tetap membutuhkan operator:
+
+1. buat secret `WORKSPACE_DISPATCH_TOKEN` pada `relgeo/flutter` dengan izin
+   minimum `Contents: write` hanya untuk `relgeo/workspace` (GitHub App token
+   lebih baik untuk jangka panjang; fine-grained PAT dapat dipakai sebagai
+   bootstrap);
+2. bila repository kelak private atau API lintas-repo tidak dapat dibaca oleh
+   token default, tambahkan `FLUTTER_CI_VERIFY_TOKEN` pada `relgeo/workspace`
+   dengan izin Actions read terhadap `relgeo/flutter`;
+3. gabungkan workflow root ini dan pastikan branch protection mewajibkan job
+   `Integration` pada PR otomatis. Workflow sinkronisasi juga mengirim
+   `workflow_dispatch` ke `Integration` pada branch PR secara eksplisit, karena
+   event yang berasal dari `GITHUB_TOKEN` dapat ditahan untuk mencegah loop.
+
+Dispatch atau workflow manual yang membawa SHA berbeda dari `head_sha`, run
+yang bukan `push` ke `main`, run yang belum `success`, atau workflow path
+yang salah akan ditolak. Ini menjaga manifest tetap menjadi snapshot
+reproducible, bukan pointer ke `flutter/main` yang bergerak.
+
 Acceptance:
 
 - [x] local dan CI menjalankan entrypoint yang sama atau perbedaan dijelaskan;

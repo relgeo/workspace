@@ -29,4 +29,18 @@ Lihat [peta repository](./docs/REPOSITORY-MAP.md) untuk ownership dan boundary s
 
 Lihat [master plan pematangan](./docs/MATURATION-MASTER-PLAN.md) untuk urutan peningkatan lintas-repo, exit gate, dan cara menurunkan setiap tahap menjadi sub-rencana yang lebih detail.
 
+## MCP full-spec retrieval
+
+RelGeo MCP kini memiliki jalur retrieval spec penuh secara offline pada
+desktop: seluruh snapshot Markdown `spec/id/` dibundel ke Flutter, lalu
+`relgeo_search_spec` dan `relgeo_get_spec_section` mengembalikan section
+normatif dengan provenance, revision, dan digest. Package MCP tetap pure Dart;
+Flutter hanya menjadi asset/host bridge. Jalankan `pnpm run spec:snapshot:check`
+untuk memeriksa drift snapshot. Evidence deterministik dan batas yang belum
+terverifikasi (Inspector, Codex Desktop live smoke, dan loopback HTTP pada
+managed runner) dicatat di [MCP conformance runbook](./docs/mcp/03-sdk-conformance-runbook.md)
+dan [Plan 14](./docs/plans/14-mcp-full-spec-search.md). Workspace mencatat
+commit MCP dan Flutter yang menyediakan jalur tersebut; smoke test langsung
+tetap menjadi evidence follow-up.
+
 Release decision record dan snapshot evidence publik ada di [docs/releases](./docs/releases/); validasi baseline dapat dijalankan dengan `pnpm run release:record:check`.

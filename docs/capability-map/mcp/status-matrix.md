@@ -11,6 +11,15 @@ reconciliation, dan backlog tetap artefak terpisah. Row status tidak mengubah
 kode, source, atau implementasi; dokumentasi gap juga tidak dihitung sebagai
 implementation evidence.
 
+> **Current Plan 14 overlay (2026-10-30):** The historical 68-row counts below
+> were generated before full-spec retrieval was implemented. For the current
+> checkout, use the [implementation-audit handoff](./implementation-audit.md)
+> and [Plan 14 conformance evidence](../../../docs/mcp/03-sdk-conformance-runbook.md).
+> They record local supporting evidence for the snapshot, index, adapter,
+> Flutter loader, provenance, and deterministic query scenarios. Live
+> Inspector/Codex Desktop/loopback HTTP remains `not-verified`; no row here
+> promotes that local evidence to canonical CI/public evidence.
+
 ## 1. Legend dan coverage
 
 | Status | Makna |

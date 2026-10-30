@@ -84,6 +84,28 @@ pnpm run compatibility:audit
 
 Command ini bersifat read-only. Audit memisahkan active `v0.5`, supported legacy `v0.4`, regression-only `v0.1`–`v0.3`, dan future/unknown version yang ditolak parser. Warning hanya dipakai untuk behavior yang masih memerlukan keputusan terpisah.
 
+## Offline Flutter spec snapshot
+
+Snapshot desktop dibuat dari seluruh `spec/id/**/*.md` tanpa mengubah isi
+Markdown. Sync menulis asset ke submodule Flutter, mempertahankan relative path,
+dan menghasilkan manifest deterministik dengan source revision, per-file
+SHA-256, serta digest corpus:
+
+~~~text
+pnpm run spec:snapshot:sync
+pnpm run spec:snapshot:check
+pnpm run spec:snapshot:test
+~~~
+
+`spec:snapshot:check` bersifat read-only dan gagal bila ada file yang hilang,
+ekstra, berubah, atau manifest revision/digest tidak lagi cocok dengan
+`spec/id/`. `spec:snapshot:test` menguji semua kategori drift di temporary
+directory tanpa mengubah source atau asset checkout.
+Urutan manifest memakai urutan code-unit, tidak mengikuti locale host. Perintah
+`sync` menolak target di luar direktori versi langsung pada
+`flutter/assets/relgeo_spec/` dan menolak target berupa symbolic link karena
+target akan diganti secara rekursif.
+
 ## Shared conformance fixtures
 
 Jalankan fixture lintas surface dari root workspace:

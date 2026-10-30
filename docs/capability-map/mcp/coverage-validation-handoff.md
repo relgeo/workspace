@@ -2,8 +2,20 @@
 
 **Date:** 2026-10-30
 **Validation target:** MCP agent authoring and desktop-connected workflow
-**Validation status:** declared coverage joined; implementation remains
-incomplete and separately handed off
+**Validation status:** declared Plan 11 coverage remains joined; the Plan 14
+full-spec tranche is implemented with deterministic local evidence, while live
+Inspector/Codex Desktop/loopback HTTP remains environment-gated
+
+> **Current-checkout handoff (2026-10-30):** The 68-row register and category
+> counts below describe the broader Plan 11 audit snapshot. They are retained
+> for backlog continuity, but their pre-Plan-14 claims that no snapshot,
+> index, or embedded server exists are superseded. For current full-spec
+> evidence use the [MCP implementation-audit overlay](./implementation-audit.md)
+> and [Plan 14 runbook](../../mcp/03-sdk-conformance-runbook.md). The checked-in
+> Flutter asset bundle, pure-Dart section index/adapter, provenance behavior,
+> and deterministic query fixtures are local supporting evidence. They are not
+> canonical CI/public evidence because the root baseline still points to its
+> 2026-10-09 child revisions.
 
 ## 1. Validation conclusion
 
@@ -16,9 +28,10 @@ transports, host UI, SDK adapter, or desktop runtime are delivered.
 
 The strongest observed slices are the pure-Dart contract/session boundary, the
 typed local dispatcher/resource router, the Flutter active-document bridge,
-and the dependency-free protocol fixture. Semantic owner wiring, versioned resource snapshot, SDK adapter,
-embedded server lifecycle, MCP settings/status surface, and end-to-end
-consumer wiring remain implementation work.
+the bundled 34-file spec snapshot, the asset loader, and the dependency-free
+protocol fixture. Semantic validation/rendering, edit workflow, SDK adapter,
+live desktop/Inspector smoke, and end-to-end consumer wiring remain open or
+environment-gated work.
 
 ## 2. Required source-category coverage
 

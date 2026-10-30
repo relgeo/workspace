@@ -34,12 +34,12 @@ Primary evidence:
 - [`mcp_dart` getting-started transport example](https://github.com/leehack/mcp_dart/blob/main/doc/getting-started.md)
 
 Decision for this task: do not add `dart_mcp` or `mcp_dart` to
-`mcp/pubspec.yaml`. The package currently contains only RelGeo contracts and a
-wire fixture. The fixture has been exercised directly over stdio; SDK-adapter
-runs are intentionally recorded as pending rather than inferred from package
-documentation. A later conformance task can add one candidate in an isolated
-spike branch/package, compare the exact same fixture, and then pin the chosen
-version with evidence.
+`mcp/pubspec.yaml`. The package owns the pure-Dart RelGeo contracts,
+full-spec index/adapter boundary, and an independent wire fixture. The fixture
+has been exercised directly over stdio; SDK-adapter runs are intentionally
+recorded as pending rather than inferred from package documentation. A later
+conformance task can add one candidate in an isolated spike branch/package,
+compare the exact same fixture, and then pin the chosen version with evidence.
 
 ## Shared protocol fixture
 

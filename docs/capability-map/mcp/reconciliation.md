@@ -21,6 +21,15 @@ Tiga dimensi sengaja dipisahkan:
    `verified-defect`, `verified-scope`, atau `not-verified`).
 3. **Scope decision**: keputusan owner/boundary untuk expected capability.
 
+> **Reconciliation freshness note (2026-10-30):** This 68-row register is a
+> broader Plan 11 snapshot and predates the current Plan 14 full-spec work.
+> Current full-spec results are reconciled in the
+> [implementation-audit current overlay](./implementation-audit.md): local
+> tests prove the bundled 34-file snapshot, deterministic index/adapter,
+> provenance/normativity, and Flutter offline loading. The root baseline
+> manifest remains the 2026-10-09 canonical pointer set, so these uncommitted
+> child changes are supporting evidence rather than canonical CI/public proof.
+
 ### 1.1 Legend hasil rekonsiliasi
 
 | Result | Arti |

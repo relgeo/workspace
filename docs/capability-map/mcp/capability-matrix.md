@@ -14,6 +14,17 @@ local, absent, defective, deferred, or environment-limited the observation is.
 Contract, documentation, fixture, or host-boundary evidence is not promoted to
 production delivery evidence.
 
+> **Plan 14 freshness note (2026-10-30):** The generic 68-row matrix below
+> retains the broader Plan 11 backlog/status join and is not a replacement for
+> the current full-spec overlay in
+> [implementation-audit.md](./implementation-audit.md). Current local evidence
+> covers the bundled 34-file snapshot, deterministic section index and
+> adapter, offline Flutter loader, provenance/normativity, and retrieval
+> scenarios. The matrix's historical “no snapshot/index” wording must be read
+> as pre-implementation context. Live Inspector/Codex Desktop/loopback HTTP is
+> still `not-verified`, and the root baseline has not been advanced for these
+> uncommitted child changes.
+
 | Status | Meaning |
 | --- | --- |
 | `✔️` | The stated boundary is implemented with direct evidence. |

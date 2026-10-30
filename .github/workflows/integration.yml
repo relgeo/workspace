@@ -302,6 +302,12 @@ jobs:
       - name: Check contract compatibility matrix
         run: pnpm run compatibility:check
 
+      - name: Check offline Flutter spec snapshot
+        run: pnpm run spec:snapshot:check
+
+      - name: Test Flutter spec snapshot drift detection
+        run: pnpm run spec:snapshot:test
+
       - name: Audit compatibility behavior inventory
         run: pnpm run compatibility:audit
 

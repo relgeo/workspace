@@ -1,6 +1,6 @@
 # Sub-Rencana 11 — MCP Server dan Agent-Assisted RelGeo Authoring
 
-**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, dan desktop Streamable HTTP read-only preview tersedia. Retrieval seluruh spec, validasi/render mandiri, dan edit aktif masih belum diimplementasikan.
+**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, desktop Streamable HTTP read-only server, dan offline full-spec retrieval dari Flutter asset bundle tersedia. Validasi/render mandiri dan edit aktif masih belum diimplementasikan.
 **Repository pemilik:** `relgeo/workspace` sebagai orkestrator; package MCP berada sebagai submodule resmi pada repository `relgeo/mcp` dengan nama `relgeo_mcp`
 **Pemilik keputusan:** Agus Made
 **Compatibility line:** RelGeo DSL 0.5.x
@@ -212,10 +212,12 @@ dalam desktop-connected mode.
 Typed provenance support is now present in the pure-Dart contract package:
 `DocumentationResult` carries `source`, `sourceUrl`, `specVersion`, and
 `revision`; only `spec` is normative, while website material remains
-explanatory. The typed tool/resource catalog and canonical URI parser are now
-in `mcp/lib/src/contract/mcp_schema.dart`; the adapter/resource resolver and
-full tool execution still belong to the next MCP package task. See
-`docs/mcp/04-mvp-tool-resource-contract.md` for the contract and evidence map.
+explanatory. The full-spec tool/resource catalog, section index boundary, and
+JSON-RPC adapter are implemented in `mcp/`; Flutter loads the pinned asset
+snapshot and constructs the index at desktop-server startup. See
+`docs/mcp/04-mvp-tool-resource-contract.md`,
+`docs/mcp/06-full-spec-search-contract.md`, and
+`docs/mcp/03-sdk-conformance-runbook.md` for the contract and evidence map.
 
 ### 4.3 Dokumentasi GitHub dan website
 
@@ -438,15 +440,17 @@ log atau source code.
   diagnostics, dan active document;
 - [x] map contract ownership ke language-service, core, renderer, dan
   active-session bridge;
-- [ ] expose tools melalui adapter MCP dan hubungkan resources ke snapshot
+- [x] expose tools melalui adapter MCP dan hubungkan resources ke snapshot
   spec/examples yang versioned;
 - [ ] gunakan language-service untuk completion/diagnostics;
 - [ ] gunakan core untuk parse/resolve/validation;
-- [ ] expose resource spec dan dokumentasi website/GitHub dengan provenance;
-- [ ] bundle snapshot spec/docs versioned agar pengguna tidak perlu clone repo;
+- [x] expose versioned snapshot resources for spec with provenance;
+- [ ] expose website/GitHub documentation fallback with provenance;
+- [x] bundle snapshot spec/docs versioned agar pengguna tidak perlu clone repo;
 - [ ] dukung cache internal dan fallback offline;
-- [ ] uji melalui MCP Inspector dan fixture conformance;
-- [ ] pastikan desktop tidak membutuhkan Node.js/npm.
+- [x] uji fixture conformance dan deterministic offline retrieval;
+- [ ] uji melalui MCP Inspector pada desktop/CI yang mengizinkan socket;
+- [x] pastikan desktop tidak membutuhkan Node.js/npm.
 
 Catatan spike: fixture wire contract dan stdio round-trip lulus; loopback
 Streamable HTTP sudah memiliki server/harness dan remote host ditolak, tetapi
@@ -471,12 +475,12 @@ dikunci; evidence dan command validation ada di
 - [x] tampilkan endpoint, status, dan copy configuration;
 - [x] pastikan server berhenti saat aplikasi ditutup.
 
-Implementasi lokal pertama adalah read-only preview: katalog kemampuan,
-pencarian dan pengambilan normatif untuk aturan `rect` dari spec v0.5, contoh
-sekunder untuk persegi dan persegi panjang, tool untuk membaca dokumen aktif,
-serta resources untuk dokumen dan diagnostics aktif. Pencarian seluruh spec,
-validasi mandiri, rendering, dan edit belum diekspos. Cara menjalankan dan
-batas kemampuan preview dijelaskan di
+Implementasi desktop saat ini adalah read-only server yang memuat seluruh
+snapshot Markdown `spec/id/` dari Flutter asset bundle secara offline,
+mengekspos pencarian dan section retrieval normatif, contoh sekunder, serta
+tool/resources untuk dokumen aktif dan diagnostics. Validasi mandiri,
+rendering, dan edit belum diekspos. Cara menjalankan dan batas kemampuan
+dijelaskan di
 [`flutter/docs/mcp-local-testing.md`](../../flutter/docs/mcp-local-testing.md).
 
 ### Tahap 4 — Active document bridge dan direct edit

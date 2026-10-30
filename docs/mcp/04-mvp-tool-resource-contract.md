@@ -2,6 +2,13 @@
 
 Status: contract spike, protocol-agnostic
 
+The Plan 14 full-spec extension is frozen separately in
+[`06-full-spec-search-contract.md`](./06-full-spec-search-contract.md). This
+MVP document remains the boundary for the existing seven tools. When the host
+supplies a pinned `SpecSectionIndex`, the typed adapter additionally advertises
+the full-spec tools and resources; without that snapshot it reports retrieval
+as unavailable rather than falling back to preview-only rules.
+
 Dokumen ini menurunkan capability pada Plan 11 menjadi DTO typed yang dapat
 dipakai oleh adapter MCP mana pun. Implementasinya berada di
 `mcp/lib/src/contract/mcp_schema.dart`; file ini tidak mengimpor Flutter,

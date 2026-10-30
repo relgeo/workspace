@@ -1,6 +1,6 @@
 # Sub-Rencana 14 — Pencarian Penuh Spec melalui MCP
 
-**Status:** rencana implementasi; pencarian desktop saat ini masih terbatas pada aturan `rect`.  
+**Status:** retrieval full-spec offline tersedia dengan generator dan resource-template yang telah di-hardening; live Inspector/Codex Desktop smoke masih environment-gated.
 **Owner koordinasi:** `relgeo/workspace`  
 **Owner sumber normatif:** `relgeo/spec` (`spec/id/`)  
 **Owner implementasi MCP:** `relgeo/mcp` dan `relgeo/flutter` untuk packaging desktop  
@@ -22,6 +22,26 @@ Contoh permintaan yang harus terbantu:
 
 Pencarian adalah kemampuan baca saja. Rencana ini tidak menambahkan pembuatan
 atau pengeditan gambar.
+
+### 1.1 Batas scope dan non-goal release
+
+Completion Plan 14 tidak bergantung pada dan tidak mengklaim hal-hal berikut:
+
+- npm atau pub.dev publication untuk package MCP; package tetap pure Dart dan
+  private/non-publishable selama keputusan packaging standalone belum dibuat;
+- remote MCP, public HTTP endpoint, atau production deployment; desktop hanya
+  memakai host lokal/loopback yang dibatasi dan deployment/authentication
+  remote memerlukan threat-model serta keputusan terpisah;
+- pembuatan, rendering, atau pengeditan gambar sebagai efek retrieval; tool
+  full-spec hanya membaca Markdown normatif dan contoh diberi label
+  explanatory;
+- perubahan kontrak katalog JSON lintas Language Service/MCP pada Plan 13;
+  katalog tersebut ditunda dan bukan prerequisite untuk snapshot, indeks,
+  section retrieval, atau verifikasi offline Plan 14.
+
+SDK/Inspector, desktop artifact smoke, dan loopback HTTP live tetap merupakan
+evidence follow-up yang boleh dijalankan pada host yang sesuai, bukan alasan
+untuk memperluas scope menjadi release atau deployment production.
 
 ## 2. Keputusan pendekatan
 
@@ -58,6 +78,10 @@ Kontrak yang dituju:
 relgeo_search_spec(query, maxResults)
 relgeo_get_spec_section(sectionId)
 ```
+
+Kontrak typed yang dibekukan untuk kedua tool tersebut, termasuk ID section,
+snapshot provenance, bounds, no-result behavior, dan fixture query catalog,
+berada di [`docs/mcp/06-full-spec-search-contract.md`](../mcp/06-full-spec-search-contract.md).
 
 `relgeo_search_spec` mencari semua bab, bukan hanya syntax object. Hasilnya
 berisi section ID, judul, cuplikan relevan, status normatif, versi, serta path,
@@ -119,6 +143,9 @@ mencatat versi serta digest sumber. Ia tidak membuat ulang isi atau mengubah
 semantik Markdown. Perintah `check` harus gagal jika snapshot desktop tertinggal
 dari `spec/id/`. Snapshot hasil sinkronisasi boleh disimpan di repository
 Flutter agar `flutter run` dan binary rilis selalu membawa corpus yang sama.
+Perintah `sync` hanya boleh menulis ke direktori versi langsung di bawah
+`flutter/assets/relgeo_spec/`; urutan path memakai perbandingan code-unit agar
+manifest dan digest stabil di semua locale.
 
 MCP package tetap tidak bergantung pada Flutter API. Flutter memuat asset
 snapshot saat server dimulai lalu memasok dokumen ke indeks/pengelola resource
@@ -147,22 +174,24 @@ dokumen.
 
 ### Tahap 1 — Kontrak dan snapshot
 
-- [ ] kunci schema query, hasil, section ID, dan provenance;
-- [ ] inventarisasi seluruh Markdown dalam `spec/id/` beserta status dokumen;
-- [ ] implementasikan sinkronisasi/check snapshot untuk Flutter assets;
-- [ ] tampilkan versi dan revision/digest snapshot pada capabilities atau index.
+- [x] kunci schema query, hasil, section ID, dan provenance;
+- [x] inventarisasi seluruh Markdown dalam `spec/id/` beserta status dokumen;
+- [x] implementasikan sinkronisasi/check snapshot untuk Flutter assets;
+- [x] tampilkan versi dan revision/digest snapshot pada manifest asset.
 
 **Kriteria selesai:** desktop memiliki semua file Markdown aktif dan drift
 snapshot dapat dideteksi secara lokal/CI.
 
 ### Tahap 2 — Indeks dan retrieval
 
-- [ ] implementasikan pemecahan section berdasarkan heading Markdown;
-- [ ] pertahankan heading induk, status dokumen, path, anchor, dan URL sumber;
-- [ ] implementasikan ranking leksikal deterministik;
-- [ ] tambah pencarian dan pembacaan section pada server MCP;
-- [ ] ganti rule `rect` yang dikodekan manual dengan hasil corpus;
-- [ ] expose resource index/section tanpa memuat seluruh spec otomatis ke
+- [x] implementasikan pemecahan section berdasarkan heading Markdown;
+- [x] pertahankan heading induk, status dokumen, path, anchor, dan URL sumber;
+- [x] implementasikan ranking leksikal deterministik;
+- [x] tambah pencarian dan pembacaan section pada server MCP melalui typed
+  dispatcher yang menerima indeks dari host;
+- [x] ganti fallback rule `rect` yang dikodekan manual dengan hasil corpus atau
+  hasil kosong yang jujur ketika snapshot belum dipasok host;
+- [x] expose resource index/section tanpa memuat seluruh spec otomatis ke
   context agent.
 
 **Kriteria selesai:** setiap file dapat dicari dan section hasil dapat dibaca
@@ -170,14 +199,14 @@ utuh; hasil tidak bergantung pada koneksi jaringan.
 
 ### Tahap 3 — Agent routing dan desktop integration
 
-- [ ] deskripsikan tool agar model menggunakannya untuk pertanyaan natural
+- [x] deskripsikan tool agar model menggunakannya untuk pertanyaan natural
   language tentang seluruh RelGeo spec;
-- [ ] instruksikan agent mencari aturan normatif dulu dan memakai contoh hanya
+- [x] instruksikan agent mencari aturan normatif dulu dan memakai contoh hanya
   sebagai pelengkap;
-- [ ] pertahankan tool alias yang diperlukan untuk client MCP yang sudah
+- [x] pertahankan tool alias yang diperlukan untuk client MCP yang sudah
   terkonfigurasi;
-- [ ] pastikan capability report menyebut coverage snapshot yang sebenarnya;
-- [ ] verifikasi server desktop memuat asset yang terbundel dan tidak membaca
+- [x] pastikan capability report menyebut coverage snapshot yang sebenarnya;
+- [x] verifikasi server desktop memuat asset yang terbundel dan tidak membaca
   path repository host.
 
 **Kriteria selesai:** MCP client dapat menemukan dan membaca bagian relevan
@@ -185,16 +214,28 @@ berdasarkan permintaan pengguna melalui desktop lokal.
 
 ### Tahap 4 — Verifikasi kualitas retrieval
 
-- [ ] siapkan query intent Indonesia dan istilah DSL Inggris untuk setiap area
+- [x] siapkan query intent Indonesia dan istilah DSL Inggris untuk setiap area
   spec utama;
-- [ ] cek bahwa hasil teratas memuat bab/section normatif yang benar;
-- [ ] cek query ambigu menghasilkan beberapa section dengan provenance jelas;
-- [ ] cek query tanpa hasil menghasilkan respons kosong yang jujur;
-- [ ] cek contoh tidak disajikan sebagai aturan;
-- [ ] cek snapshot bekerja offline dan sinkron dengan versi spec yang dibundel.
+- [x] cek bahwa hasil teratas memuat bab/section normatif yang benar;
+- [x] cek query ambigu menghasilkan beberapa section dengan provenance jelas;
+- [x] cek query tanpa hasil menghasilkan respons kosong yang jujur;
+- [x] cek contoh tidak disajikan sebagai aturan;
+- [x] cek snapshot bekerja offline dan sinkron dengan versi spec yang dibundel.
 
-**Kriteria selesai:** skenario penerimaan di bawah terpenuhi di MCP Inspector
-dan Codex Desktop yang terhubung ke server lokal.
+Evidence deterministik tersedia di
+[`flutter/test/spec_snapshot_loader_test.dart`](../../flutter/test/spec_snapshot_loader_test.dart)
+dan adapter evidence di
+[`docs/mcp/03-sdk-conformance-runbook.md`](../mcp/03-sdk-conformance-runbook.md).
+Live Inspector/Codex Desktop dan loopback HTTP tetap dicatat sebagai
+environment-gated sampai dijalankan pada desktop/CI yang mengizinkan socket.
+
+**Kriteria offline:** fixture adapter dan Flutter membuktikan skenario retrieval,
+provenance, no-result, dan snapshot offline dengan data yang sama.
+
+**Kriteria end-to-end:** MCP Inspector dan Codex Desktop berhasil memakai server
+desktop lokal untuk skenario di bawah. Kriteria ini tetap tertunda sampai smoke
+test dijalankan pada desktop yang dapat membuka loopback; jangan tandai Plan 14
+selesai sebelum evidence tersebut dicatat.
 
 ## 6. Skenario penerimaan
 

@@ -9,6 +9,34 @@
 fixture, contract, documentation statement, or CI definition is not promoted
 to end-to-end MCP delivery without a directly matching runtime observation.
 
+> **Current-checkout handoff (2026-10-30):** The 68-row register below was
+> recorded against earlier workspace/MCP revisions. Its full-spec rows and
+> host-absence claims are historical context, not current runtime evidence.
+> The current Plan 14 implementation is recorded in the
+> [full-spec plan](../../plans/14-mcp-full-spec-search.md) and
+> [conformance runbook](../../mcp/03-sdk-conformance-runbook.md): the pure-Dart
+> index/adapter, checked-in Flutter asset bundle, desktop loader, and
+> deterministic retrieval tests are present. The live Inspector/Codex Desktop
+> and loopback HTTP rows remain environment-gated. The current implementation
+> is local supporting evidence only; `docs/integration-baseline.json` still
+> points at canonical child commits from its 2026-10-09 snapshot and must not
+> be silently rewritten to represent this uncommitted work.
+
+### Current Plan 14 overlay
+
+| Capability | Current implementation/evidence | Status boundary | Canonicality |
+| --- | --- | --- | --- |
+| Full snapshot and drift identity | `flutter/assets/relgeo_spec/v0.5/manifest.json`, 34 Markdown files, source revision `b96ba3b...`, corpus digest, and `spec:snapshot:check` | Verified locally | Supporting local; not in the pinned baseline commit |
+| Search and complete-section retrieval | `SpecSectionIndex`, `relgeo_search_spec`, `relgeo_get_spec_section`, bounded snippets, stable IDs, and resources | Verified locally | Supporting local; MCP package child commit is not refreshed in baseline |
+| Flutter offline host bridge | `RelGeoSpecSnapshotLoader` and `RelGeoMcpDesktopServer.start` load only the bundled AssetBundle | Verified by Flutter tests/analyzer | Supporting local; desktop artifact/CI smoke is not claimed |
+| Normativity and provenance | Spec sections carry source/path/anchor/version/revision/digest; examples remain `source: example` and non-normative | Verified by adapter and Flutter tests | Supporting local |
+| Retrieval quality scenarios | Indonesian/English intent, ambiguity, no-result, presentation, full-section, and offline fixtures pass | Deterministic local tests pass | Supporting local |
+| Inspector/Codex Desktop/loopback HTTP | No live managed-runner proof; runbook records socket/Inspector limits | Not verified / environment-gated | Not canonical evidence |
+
+The historical one-row-per-ID register remains useful for the broader Plan 11
+backlog, but it must not overwrite this Plan 14 overlay or claim that local
+supporting evidence is canonical CI/public evidence.
+
 The [expected capability catalog](./expected-capability-catalog.md) remains
 the expected baseline. The [reconciliation](./reconciliation.md) and [status
 matrix](./status-matrix.md) contain the one-row-per-ID result. The prior dated

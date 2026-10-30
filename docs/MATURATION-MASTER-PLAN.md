@@ -143,6 +143,8 @@ Daftar berikut adalah indeks lengkap. `Aktif` berarti masih ada pekerjaan implem
 - [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
 - [10 — Desktop Runtime Smoke Checklist](./plans/10-desktop-runtime-smoke-checklist.md)
 - [11 — MCP Server dan Agent-Assisted RelGeo Authoring](./plans/11-mcp-agent-integration.md)
+- [13 — Generated Language Spec Catalog](./plans/13-generated-language-spec-catalog.md) — ditunda; bukan prasyarat pencarian penuh spec melalui MCP.
+- [14 — Pencarian Penuh Spec melalui MCP](./plans/14-mcp-full-spec-search.md) — pencarian lokal atas snapshot Markdown lengkap, retrieval per section, provenance, dan integrasi agent.
 - [Language-Specification Expected Capability Catalog](./capability-map/language-specification/expected-capability-catalog.md) — expected language contract rows are defined from user journeys, target users, workflows/commands, roadmap, scope decisions, and `spec/id/` before implementation comparison; absent capabilities remain in the catalog.
 - [CLI Expected Capability Catalog](./capability-map/cli/expected-capability-catalog.md) — expected terminal user outcomes, commands, automation, package/release boundaries, and delegated scope are defined before implementation comparison; absent capabilities remain in the catalog.
 - [SVG Renderer Expected Capability Catalog](./capability-map/renderer-svg/expected-capability-catalog.md) — expected renderer rows are defined from user journeys, target users, consumer workflows/commands, roadmap, contracts, and scope decisions before implementation comparison; absent capabilities remain in the catalog.

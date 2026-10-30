@@ -1,10 +1,16 @@
 # Sub-Rencana 11 — MCP Server dan Agent-Assisted RelGeo Authoring
 
-**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security dan typed MVP tool/resource schema tersedia; adapter SDK/transport serta delivery integration masih perlu diturunkan sebelum implementasi penuh.
+**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, dan desktop Streamable HTTP read-only preview tersedia. Retrieval seluruh spec, validasi/render mandiri, dan edit aktif masih belum diimplementasikan.
 **Repository pemilik:** `relgeo/workspace` sebagai orkestrator; package MCP berada sebagai submodule resmi pada repository `relgeo/mcp` dengan nama `relgeo_mcp`
 **Pemilik keputusan:** Agus Made
 **Compatibility line:** RelGeo DSL 0.5.x
 **Prasyarat:** `spec`, `core`, `language-service`, `cli`, dan RelGeo Desktop Flutter
+
+Rincian implementasi untuk pencarian penuh seluruh snapshot spec melalui MCP
+desktop berada di [Sub-Rencana 14](./14-mcp-full-spec-search.md). Pencarian
+offline tersebut menjadi langkah berikut pada jalur syntax assistant; katalog
+JSON lintas Language Service dan MCP di [Sub-Rencana 13](./13-generated-language-spec-catalog.md)
+ditunda dan bukan prasyarat.
 
 ## 1. Tujuan
 
@@ -458,17 +464,25 @@ dikunci; evidence dan command validation ada di
 
 ### Tahap 3 — Flutter embedded server
 
-- [ ] embed package `relgeo_mcp` ke RelGeo Desktop;
-- [ ] buat UI Enable/Disable MCP Server;
-- [ ] jalankan Streamable HTTP pada `127.0.0.1`;
-- [ ] buat token/session lifecycle;
-- [ ] tampilkan endpoint, status, dan copy configuration;
-- [ ] pastikan server berhenti saat aplikasi ditutup.
+- [x] embed package `relgeo_mcp` ke RelGeo Desktop;
+- [x] buat UI Enable/Disable MCP Server;
+- [x] jalankan Streamable HTTP pada `127.0.0.1`;
+- [x] buat token/session lifecycle;
+- [x] tampilkan endpoint, status, dan copy configuration;
+- [x] pastikan server berhenti saat aplikasi ditutup.
+
+Implementasi lokal pertama adalah read-only preview: katalog kemampuan,
+pencarian dan pengambilan normatif untuk aturan `rect` dari spec v0.5, contoh
+sekunder untuk persegi dan persegi panjang, tool untuk membaca dokumen aktif,
+serta resources untuk dokumen dan diagnostics aktif. Pencarian seluruh spec,
+validasi mandiri, rendering, dan edit belum diekspos. Cara menjalankan dan
+batas kemampuan preview dijelaskan di
+[`flutter/docs/mcp-local-testing.md`](../../flutter/docs/mcp-local-testing.md).
 
 ### Tahap 4 — Active document bridge dan direct edit
 
-- [ ] expose active source, identity, revision, dirty state, dan diagnostics;
-- [ ] pastikan agent dapat membaca code yang sedang dibuka;
+- [x] expose active source, identity, revision, dirty state, dan diagnostics;
+- [x] pastikan agent dapat membaca code yang sedang dibuka;
 - [ ] cegah pembacaan dokumen yang bukan active session;
 - [ ] tambahkan test perubahan source saat agent sedang membaca.
 - [ ] expose `apply_document_edit` sebagai bounded patch, bukan overwrite bebas;

@@ -4,7 +4,7 @@ Folder ini menyimpan keputusan dan evidence release lintas repository. Record di
 
 ## Aturan penggunaan
 
-1. Salin [`TEMPLATE.md`](TEMPLATE.md) untuk setiap release candidate atau release yang selesai.
+1. Salin [`TEMPLATE.md`](./TEMPLATE.md) untuk setiap release candidate atau release yang selesai.
 2. Tetapkan compatibility line, revision `spec`, release order, package status, consumer status, evidence, dan recovery decision.
 3. Simpan snapshot machine-readable dengan nama versi, misalnya `0.5.0.json`.
 4. Jalankan `pnpm run release:record:check <version>` sebelum review. Validator membandingkan record dengan compatibility matrix dan memastikan tidak ada package/consumer yang hilang. Status `planned` dan `partial` boleh divalidasi sebagai rencana, sedangkan preflight final hanya menerima status `completed`.
@@ -15,9 +15,9 @@ Record tidak mengaktifkan publish otomatis. Ia menjadi bukti keputusan dan ledge
 
 ## Baseline yang sudah dicatat
 
-- [`0.5.0.md`](0.5.0.md) — baseline publik `0.5.0`, dipublish manual dan diverifikasi setelah publish.
-- [`0.5.0.json`](0.5.0.json) — snapshot machine-readable yang divalidasi oleh `release:record:check`.
-- [`0.5.1.json`](0.5.1.json) dan [`0.5.1.md`](0.5.1.md) — patch release selesai; `core` dan `language-service` tersedia sebagai `0.5.1`, seluruh gate registry/CI dicatat, dan snapshot matrix disimpan untuk audit historis.
+- [`0.5.0.md`](./0.5.0.md) — baseline publik `0.5.0`, dipublish manual dan diverifikasi setelah publish.
+- [`0.5.0.json`](./0.5.0.json) — snapshot machine-readable yang divalidasi oleh `release:record:check`.
+- [`0.5.1.json`](./0.5.1.json) dan [`0.5.1.md`](./0.5.1.md) — patch release selesai; `core` dan `language-service` tersedia sebagai `0.5.1`, seluruh gate registry/CI dicatat, dan snapshot matrix disimpan untuk audit historis.
 
 ## Evaluasi automation gate — 2026-10-08
 

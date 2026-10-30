@@ -19,7 +19,7 @@ present in the workspace dependency graph, so this task does not claim an SDK
 conformance pass based only on published documentation.
 
 The isolated execution steps and acceptance gate for the eventual SDK adapters
-are in [`03-sdk-conformance-runbook.md`](03-sdk-conformance-runbook.md).
+are in [`03-sdk-conformance-runbook.md`](./03-sdk-conformance-runbook.md).
 
 Provisional transport decision: keep `stdio` for a standalone child process and
 keep Streamable HTTP bound to `127.0.0.1` for a desktop-connected server. Do

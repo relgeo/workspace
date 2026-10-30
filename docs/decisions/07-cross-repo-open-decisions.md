@@ -20,7 +20,7 @@ keputusan sebelum sub-rencana implementasi dibuat.
 **Pembaruan keputusan 2026-09-23:** scope Android dan iOS ditunda tanpa tanggal
 sampai web/PWA, macOS Flutter, Linux/Ubuntu Flutter, Windows Flutter, dan CLI
 lebih komprehensif serta kokoh. Rekomendasi operasional terbaru dan strategi
-build Windows dicatat pada [09-open-work-recommendations.md](09-open-work-recommendations.md)
+build Windows dicatat pada [09-open-work-recommendations.md](./09-open-work-recommendations.md)
 dan menjadi rujukan utama untuk keputusan perangkat.
 
 **Status reconciliation 2026-10-08:** dokumen ini sekarang merupakan decision

@@ -16,14 +16,14 @@ keputusan yang hanya berupa penundaan tidak berubah menjadi backlog palsu.
 
 | Keputusan | Sub-rencana pemilik | Status | Tindakan berikutnya |
 | --- | --- | --- | --- |
-| Promosi capability satu per satu | [07-flutter-capability-promotion-and-svg-parity](07-flutter-capability-promotion-and-svg-parity.md) | fixture 15 `boolean/intersection` active pada boundary terbatas; evaluator/unit candidate | pertahankan boundary; review evaluator/unit hanya setelah contract baru disetujui |
-| SVG semantic parity berlapis | [07-flutter-capability-promotion-and-svg-parity](07-flutter-capability-promotion-and-svg-parity.md) | keputusan diterima | pertahankan semantic core; presentation tambahan tidak masuk 0.5.x tanpa consumer |
-| Flutter non-publishable, stable `3.41.9` | [08-desktop-platform-delivery](08-desktop-platform-delivery.md) | Diterima | gunakan baseline pada seluruh desktop runner |
-| Web/PWA, macOS, Linux, Windows, CLI sebagai scope utama | [08-desktop-platform-delivery](08-desktop-platform-delivery.md) | Diterima | canonical build/artifact run `37832260326` lulus; runtime smoke dan accessibility tetap terpisah/deferred |
+| Promosi capability satu per satu | [07-flutter-capability-promotion-and-svg-parity](./07-flutter-capability-promotion-and-svg-parity.md) | fixture 15 `boolean/intersection` active pada boundary terbatas; evaluator/unit candidate | pertahankan boundary; review evaluator/unit hanya setelah contract baru disetujui |
+| SVG semantic parity berlapis | [07-flutter-capability-promotion-and-svg-parity](./07-flutter-capability-promotion-and-svg-parity.md) | keputusan diterima | pertahankan semantic core; presentation tambahan tidak masuk 0.5.x tanpa consumer |
+| Flutter non-publishable, stable `3.41.9` | [08-desktop-platform-delivery](./08-desktop-platform-delivery.md) | Diterima | gunakan baseline pada seluruh desktop runner |
+| Web/PWA, macOS, Linux, Windows, CLI sebagai scope utama | [08-desktop-platform-delivery](./08-desktop-platform-delivery.md) | Diterima | canonical build/artifact run `37832260326` lulus; runtime smoke dan accessibility tetap terpisah/deferred |
 | Android/iOS ditunda tanpa tanggal | decision record 09 | Diterima | tidak ada implementasi mobile sampai scope dibuka kembali |
-| npm manual untuk dua release berikutnya | [03-npm-release-guard](03-npm-release-guard.md) | Diterima bersyarat; 0/2 siklus pascakeputusan tercatat; goal ditunda | tunggu kandidat dengan perubahan package nyata; jangan membuat no-op release |
-| OIDC + protected environment setelah jalur manual stabil | [03-npm-release-guard](03-npm-release-guard.md) | target masa depan, belum waktunya | evaluasi setelah dua rilis manual tambahan |
-| Forward-fix untuk partial release | [03-npm-release-guard](03-npm-release-guard.md) | Diterima | pertahankan planner/validator read-only |
+| npm manual untuk dua release berikutnya | [03-npm-release-guard](./03-npm-release-guard.md) | Diterima bersyarat; 0/2 siklus pascakeputusan tercatat; goal ditunda | tunggu kandidat dengan perubahan package nyata; jangan membuat no-op release |
+| OIDC + protected environment setelah jalur manual stabil | [03-npm-release-guard](./03-npm-release-guard.md) | target masa depan, belum waktunya | evaluasi setelah dua rilis manual tambahan |
+| Forward-fix untuk partial release | [03-npm-release-guard](./03-npm-release-guard.md) | Diterima | pertahankan planner/validator read-only |
 
 ## 3. Urutan orkestrasi
 
@@ -98,6 +98,6 @@ menjadi nyata.
 ## 7. Referensi
 
 - [Open Work Recommendation Record](../decisions/09-open-work-recommendations.md)
-- [Flutter Capability Promotion dan SVG Parity](07-flutter-capability-promotion-and-svg-parity.md)
-- [Desktop Platform Delivery](08-desktop-platform-delivery.md)
-- [npm Release Guard](03-npm-release-guard.md)
+- [Flutter Capability Promotion dan SVG Parity](./07-flutter-capability-promotion-and-svg-parity.md)
+- [Desktop Platform Delivery](./08-desktop-platform-delivery.md)
+- [npm Release Guard](./03-npm-release-guard.md)

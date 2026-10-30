@@ -3,7 +3,7 @@
 **Status:** Checklist siap; canonical CI build/artifact evidence tersedia pada run `37832260326`, tetapi runtime smoke macOS/Ubuntu/Linux/Windows tetap dinilai terpisah. Berdasarkan keputusan manusia 2026-10-08, host smoke Ubuntu/Linux dan Windows 11 di-defer tanpa klaim usable. macOS keyboard/VoiceOver juga belum terbukti. Android/iOS berada di luar scope yang disetujui dan tidak menjadi item tertunda checklist ini.
 **Repository pemilik:** `relgeo/workspace`  
 **Implementasi:** `relgeo/flutter`  
-**Parent:** [08-desktop-platform-delivery.md](08-desktop-platform-delivery.md)  
+**Parent:** [08-desktop-platform-delivery.md](./08-desktop-platform-delivery.md)  
 **Scope:** macOS, Ubuntu/Linux, Windows 11
 
 Dokumen ini memisahkan kesiapan prosedur dari hasil eksekusi. Checklist boleh

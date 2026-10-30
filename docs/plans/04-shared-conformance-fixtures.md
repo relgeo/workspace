@@ -165,7 +165,7 @@ Prioritas kerja:
 - [x] fixture invalid mencakup YAML syntax error dan unknown reference;
 - [x] fixture runtime-diagnostic diperluas ke semantic/runtime diagnostics yang tidak berhenti pada parser;
 - [x] compatibility behavior inventory diselesaikan dan disimpan sebagai audit terpisah;
-- [x] Flutter memiliki adapter fixture yang menerima root portable dan runner workspace yang menyiapkan staging sementara; audit dan desain adapter ada di [`06-flutter-alignment.md`](06-flutter-alignment.md);
+- [x] Flutter memiliki adapter fixture yang menerima root portable dan runner workspace yang menyiapkan staging sementara; audit dan desain adapter ada di [`06-flutter-alignment.md`](./06-flutter-alignment.md);
 - [x] Flutter menjalankan active/runtime/invalid fixture yang sama secara lokal dan CI, serta mencatat gap parity capability tambahan pada evidence matrix;
 - [x] parser/version policy eksplisit dan negative tests memastikan tidak ada compatibility behavior versi tersembunyi di luar manifest, spec, atau test yang terdokumentasi.
 
@@ -188,7 +188,7 @@ Prioritas kerja:
 - [x] browser smoke berbasis interaksi pada deployment publik terbaru lulus: `READY`, preview, tab `Errors` dengan diagnostic expected, enam route HTTP utama `200`, dan console browser bersih;
 - [x] inventory compatibility behavior dan mismatch example version sudah direkam;
 - [x] public historical-version policy, future-version handling, dan negative tests;
-- [x] Flutter memiliki adapter, capability mapping, dan gap record yang terdokumentasi pada [`06-flutter-alignment.md`](06-flutter-alignment.md);
+- [x] Flutter memiliki adapter, capability mapping, dan gap record yang terdokumentasi pada [`06-flutter-alignment.md`](./06-flutter-alignment.md);
 - [x] Flutter memiliki fixture parity runtime/SVG; canonical run `37832260326` memverifikasi fixture 15 boolean/intersection sebagai active contract, sedangkan evaluator/unit tetap capability/candidate.
 
 Exit gate infrastruktur Tahap 4 selesai pada evidence yang tercatat. Canonical

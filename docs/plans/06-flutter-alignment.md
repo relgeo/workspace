@@ -2,7 +2,7 @@
 
 **Status implementasi:** parsial; fondasi alignment dan runner tersedia. **Status keputusan:** Flutter non-publishable, stable 3.41.9, dan target desktop macOS/Linux/Windows disetujui; mobile ditunda. **Status evidence:** canonical GitHub Actions run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) pada root `328c869` lulus seluruh job Flutter dan desktop. Promotion boolean/intersection sudah diterapkan pada fixture 15 untuk boundary contract terbatas; evaluator/unit dan presentation expansion tetap terbuka.
 
-Pekerjaan lanjutan untuk dua gap tersebut dipecah ke [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](07-flutter-capability-promotion-and-svg-parity.md). Detail checkpoint lama di bawah bersifat historical.
+Pekerjaan lanjutan untuk dua gap tersebut dipecah ke [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](./07-flutter-capability-promotion-and-svg-parity.md). Detail checkpoint lama di bawah bersifat historical.
 
 ## 0. Checkpoint evidence — 2026-10-08 (historical, superseded)
 

@@ -143,6 +143,29 @@ Daftar berikut adalah indeks lengkap. `Aktif` berarti masih ada pekerjaan implem
 - [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
 - [10 — Desktop Runtime Smoke Checklist](./plans/10-desktop-runtime-smoke-checklist.md)
 - [11 — MCP Server dan Agent-Assisted RelGeo Authoring](./plans/11-mcp-agent-integration.md)
+- [Language-Specification Expected Capability Catalog](./capability-map/language-specification/expected-capability-catalog.md) — expected language contract rows are defined from user journeys, target users, workflows/commands, roadmap, scope decisions, and `spec/id/` before implementation comparison; absent capabilities remain in the catalog.
+- [CLI Expected Capability Catalog](./capability-map/cli/expected-capability-catalog.md) — expected terminal user outcomes, commands, automation, package/release boundaries, and delegated scope are defined before implementation comparison; absent capabilities remain in the catalog.
+- [SVG Renderer Expected Capability Catalog](./capability-map/renderer-svg/expected-capability-catalog.md) — expected renderer rows are defined from user journeys, target users, consumer workflows/commands, roadmap, contracts, and scope decisions before implementation comparison; absent capabilities remain in the catalog.
+- [SVG Renderer Implementation Audit](./capability-map/renderer-svg/implementation-audit.md) — source, tests, configuration, consumer commands/UI, fixture/conformance, security, packaging, documentation, and runtime evidence joined to every expected renderer ID; unavailable evidence remains explicitly unverified.
+- [SVG Renderer Expected-versus-Observed Reconciliation](./capability-map/renderer-svg/reconciliation.md) — one-to-one comparison of all 33 expected IDs with separate implementation result, evidence state, scope decision, and observed finding.
+- [SVG Renderer Capability Matrix](./capability-map/renderer-svg/capability-matrix.md) — human-readable actionable view with status, evidence, gap/risk, owner, dependency, and next action for each capability row.
+- [SVG Renderer Implementation-Gap Backlog](./capability-map/renderer-svg/implementation-gap-backlog.md) — nine candidate implementation tasks for the eight `🌗` and one `❌` rows, plus separate `⚠️` defect follow-ups; candidate documentation is not completion evidence.
+- [SVG Renderer Coverage Validation and Handoff](./capability-map/renderer-svg/coverage-validation-handoff.md) — source-category and six-category capability coverage proof, limitations, unresolved questions, and bounded implementation handoff.
+- [MCP expected capability catalog](./capability-map/mcp/expected-capability-catalog.md), [reconciliation](./capability-map/mcp/reconciliation.md), [actionable capability matrix](./capability-map/mcp/capability-matrix.md), [implementation gap backlog](./capability-map/mcp/implementation-gap-backlog.md), and [coverage validation handoff](./capability-map/mcp/coverage-validation-handoff.md) — MCP expected/observed baseline and separate implementation handoff.
+- [Markdown Plugins Expected Capability Catalog](./capability-map/markdown-surfaces/expected-capability-catalog.md) — expected preview/embed and source-highlighting capabilities are defined from user journeys, package contracts, workflows/commands, roadmap, compatibility policy, and scope decisions before implementation comparison; absent capabilities remain in the catalog.
+- [Playground Expected Capability Catalog](./capability-map/playground/expected-capability-catalog.md) — expected browser-IDE capabilities are defined from Playground journeys, target users, workflows/menus, roadmap, DSL and persistence contracts, and scope decisions before implementation comparison; unimplemented or deferred expectations remain in the catalog.
+- [12 — Flutter Workbench Expected Capability Catalog](./plans/12-flutter-workbench-capability-baseline.md) — expected catalog selesai; audit implementasi dilakukan sesudah review katalog.
+- [Flutter Workbench Implementation Gap Map](./capability-map/flutter-workbench/implementation-gap-map.md) — audit ID-by-ID pada checkout Flutter saat ini; native runtime dan host evidence tetap dipisahkan.
+- [Flutter Expected-versus-Observed Reconciliation](./capability-map/flutter-workbench/reconciliation.md) — one-to-one join seluruh expected ID dengan implementation, evidence, dan scope status.
+- [Flutter Workbench Status Matrix](./capability-map/flutter-workbench/status-matrix.md) — reporting view capability-first dengan status, evidence, gap, owner, dependency, risk, dan next action.
+- [Flutter Workbench Implementation Gap Backlog](./capability-map/flutter-workbench/implementation-gap-backlog.md) — kandidat goal/task untuk seluruh capability `❌`/`🌗`; tidak mengklaim gap sudah tertutup.
+- [Flutter Workbench Coverage Validation and Handoff](./capability-map/flutter-workbench/coverage-validation-handoff.md) — validasi ID, link/path, legend, evidence class, scope, limitation, unresolved questions, dan handoff implementasi terpisah.
+- [Cross-Repository Orchestration Expected Capability Catalog](./capability-map/cross-repository/expected-capability-catalog.md) — expected catalog untuk bootstrap, baseline, gates, CI dispatch, evidence reconciliation, release/recovery, blocker/retry, dan public artifact hygiene; audit implementation dilakukan sesudah review katalog.
+- [Cross-Repository Orchestration Implementation and Evidence Audit](./capability-map/cross-repository/implementation-audit.md) — audit 39 ID terhadap source, workflow, fixture, command, current observation, gap, dan limitation environment.
+- [Cross-Repository Orchestration Expected-versus-Observed Reconciliation](./capability-map/cross-repository/reconciliation.md) — one-to-one join seluruh 39 expected ID dengan implementation status, evidence status, scope decision, symbol, audit trace, dan next action.
+- [Cross-Repository Orchestration Capability Status Matrix](./capability-map/cross-repository/status-matrix.md) — reporting view capability-first untuk 39 ID dengan status `✔️`/`🌗`/`❌`, evidence, owner, dependency, risk, dan next action.
+- [Cross-Repository Orchestration Implementation Gap Backlog](./capability-map/cross-repository/implementation-gap-backlog.md) — 19 gap `❌`/`🌗` sebagai 8 kandidat goal/task dengan acceptance evidence; tidak mengklaim implementasi selesai.
+- [Cross-Repository Orchestration Coverage Validation and Handoff](./capability-map/cross-repository/coverage-validation-handoff.md) — validasi coverage/ID/link/legend/evidence/scope/limitation serta unresolved questions dan handoff implementasi terpisah; tidak mengklaim surface produk lengkap.
 - [Flutter 02 — Workbench Layout dan Panel System](../flutter/docs/plans/02-workbench-layout-and-panel-system.md)
 
 ## 2. Keputusan dan prinsip yang tidak boleh berubah tanpa keputusan baru
@@ -437,7 +460,7 @@ menjadikannya checklist overdue.
 - [x] hasil gate menyebut commit submodule, versi package, dan artifact yang diuji;
 - [x] CI dapat menjalankan gate dengan environment yang sama atau subset yang jelas.
 
-**Deliverable sub-rencana:** [docs/plans/01-cross-repo-integration-gate.md](plans/01-cross-repo-integration-gate.md).
+**Deliverable sub-rencana:** [docs/plans/01-cross-repo-integration-gate.md](./plans/01-cross-repo-integration-gate.md).
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
@@ -463,7 +486,7 @@ menjadikannya checklist overdue.
 - [x] CI mendeteksi mismatch versi atau peer dependency sebelum release.
 - [x] CI memvalidasi release decision record sebelum integration gate.
 
-**Deliverable sub-rencana:** [docs/plans/02-contract-versioning.md](plans/02-contract-versioning.md).
+**Deliverable sub-rencana:** [docs/plans/02-contract-versioning.md](./plans/02-contract-versioning.md).
 
 ### Tahap 3 — Release dan npm publishing guard
 
@@ -492,7 +515,7 @@ menjadikannya checklist overdue.
 - [x] release preflight read-only menggabungkan clean-tree check, strict baseline, compatibility check, release decision record, tarball audit, dan local integration gate;
 - [~] automated publishing sengaja ditunda sampai dua siklus manual tambahan pascakeputusan; belum memenuhi prasyarat.
 
-**Deliverable sub-rencana:** [docs/plans/03-npm-release-guard.md](plans/03-npm-release-guard.md).
+**Deliverable sub-rencana:** [docs/plans/03-npm-release-guard.md](./plans/03-npm-release-guard.md).
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
@@ -533,7 +556,7 @@ menjadikannya checklist overdue.
 - [x] runtime-error fixtures mengunci boundary boolean kosong dan multipart pada resolver dan CLI tanpa mengubah status capability candidate;
 - [ ] tidak ada consumer yang membuat kontrak diam-diam berbeda.
 
-**Deliverable sub-rencana:** [docs/plans/04-shared-conformance-fixtures.md](plans/04-shared-conformance-fixtures.md).
+**Deliverable sub-rencana:** [docs/plans/04-shared-conformance-fixtures.md](./plans/04-shared-conformance-fixtures.md).
 
 ### Tahap 5 — Public docs, website, dan Playground hardening
 
@@ -559,7 +582,7 @@ menjadikannya checklist overdue.
 
 **Exit gate:** tidak ada blocker aksesibilitas atau alur utama yang diketahui; sisa hanya limitation yang terdokumentasi.
 
-**Deliverable sub-rencana:** [docs/plans/05-public-docs-and-playground-hardening.md](plans/05-public-docs-and-playground-hardening.md).
+**Deliverable sub-rencana:** [docs/plans/05-public-docs-and-playground-hardening.md](./plans/05-public-docs-and-playground-hardening.md).
 
 ### Tahap 6 — Flutter alignment
 
@@ -586,7 +609,7 @@ menjadikannya checklist overdue.
 - [x] README Flutter menjelaskan batas integrasi dan status release; posture release disetujui, sementara capability parity yang belum dipromosikan tetap parsial;
 - [x] workflow dan matrix tidak mengklaim parity final sebelum bukti capability tersedia.
 
-**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](plans/07-flutter-capability-promotion-and-svg-parity.md), [docs/plans/08-desktop-platform-delivery.md](plans/08-desktop-platform-delivery.md), [docs/plans/10-desktop-runtime-smoke-checklist.md](plans/10-desktop-runtime-smoke-checklist.md), dan [flutter/docs/plans/02-workbench-layout-and-panel-system.md](../flutter/docs/plans/02-workbench-layout-and-panel-system.md).
+**Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](./plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](./plans/07-flutter-capability-promotion-and-svg-parity.md), [docs/plans/08-desktop-platform-delivery.md](./plans/08-desktop-platform-delivery.md), [docs/plans/10-desktop-runtime-smoke-checklist.md](./plans/10-desktop-runtime-smoke-checklist.md), dan [flutter/docs/plans/02-workbench-layout-and-panel-system.md](../flutter/docs/plans/02-workbench-layout-and-panel-system.md).
 
 ### Tahap 7 — Release maturity dan perluasan fitur
 

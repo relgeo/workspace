@@ -19,6 +19,93 @@ Peta ini menjelaskan boundary publik dan ownership pada root workspace.
 
 Root `docs/` dan `scripts/` bukan submodule. Keduanya menjadi bagian dari repository `relgeo/workspace`.
 
+## Capability inventory boundary
+
+`docs/capability-map/INVENTORY-PROTOCOL.md` menetapkan aturan discovery dan
+status untuk inventory capability. Matrix capability adalah reporting view
+berbasis evidence; ia tidak menggantikan source of truth child repository,
+normative spec, package contract, atau deployment workflow. Matrix lama,
+roadmap, dan public claim dipakai sebagai historical input, bukan sebagai daftar
+capability final.
+
+Inventory wajib mencakup `spec`, `geometry`, `core`, `renderer-svg`,
+`language-service`, `cli`, `remark-relgeo`/`remark-relgeo-hl`, `playground`,
+`relgeo.github.io`, `flutter`, `mcp`, dan cross-repository orchestration.
+Status implementation, evidence, parity, dan scope dilaporkan terpisah;
+evidence lokal, CI/canonical, dan public tidak dipromosikan satu sama lain.
+
+Expected Markdown Plugins capability catalog berada di
+[`docs/capability-map/markdown-surfaces/expected-capability-catalog.md`](./capability-map/markdown-surfaces/expected-capability-catalog.md).
+Katalog ini mendefinisikan target user, workflow integrasi/command package,
+preview/embed, source highlighting, website/Pages consumption, roadmap,
+kontrak package dan DSL, serta scope boundary sebelum implementation comparison;
+capability yang belum ada tetap dicatat sebagai expected-but-missing.
+
+Expected Playground capability catalog berada di
+[`docs/capability-map/playground/expected-capability-catalog.md`](./capability-map/playground/expected-capability-catalog.md).
+Katalog ini mendefinisikan target user, journey browser IDE, workflow/menu dan
+command surface, roadmap/maturation, kontrak DSL serta persistence/viewport,
+dan scope boundary sebelum implementation comparison; capability yang belum
+dibuat, ditunda, atau masih menunggu keputusan rinci tetap dicatat.
+
+Expected CLI capability catalog berada di
+[`docs/capability-map/cli/expected-capability-catalog.md`](./capability-map/cli/expected-capability-catalog.md).
+Katalog ini mendefinisikan user journey, target pengguna, command/workflow,
+roadmap, kontrak, dan scope boundary CLI sebelum audit implementation; capability
+yang belum ada tetap dicatat sebagai expected-but-missing.
+
+Expected catalog orchestration lintas-repository berada di
+[`docs/capability-map/cross-repository/expected-capability-catalog.md`](./capability-map/cross-repository/expected-capability-catalog.md).
+Katalog tersebut disusun dari requirement/workflow/scope decisions sebelum audit
+implementation; kode dan matrix lama hanya menjadi input audit downstream.
+Rekonsiliasi one-to-one expected-versus-observed berada di
+[`docs/capability-map/cross-repository/reconciliation.md`](./capability-map/cross-repository/reconciliation.md)
+dan mempertahankan implementation, evidence, serta scope sebagai status terpisah.
+Reporting matrix dan candidate backlog berada di
+[`docs/capability-map/cross-repository/status-matrix.md`](./capability-map/cross-repository/status-matrix.md)
+dan
+[`docs/capability-map/cross-repository/implementation-gap-backlog.md`](./capability-map/cross-repository/implementation-gap-backlog.md);
+backlog tersebut adalah rencana kandidat dan tidak menutup gap implementation.
+Coverage validation dan unresolved-question handoff berada di
+[`docs/capability-map/cross-repository/coverage-validation-handoff.md`](./capability-map/cross-repository/coverage-validation-handoff.md);
+coverage tersebut dibatasi pada enumerated orchestration surfaces dan bukan
+klaim kelengkapan seluruh surface produk atau runtime provider.
+
+Ledger discovery per surface berada di
+`docs/capability-map/SURFACE-DISCOVERY-LEDGER.md`. Ledger tersebut memetakan
+source/API, test/fixture, consumer/UI/command, platform/security,
+delivery/operations, dan ownership/documentation ke pasangan matrix/audit;
+ledger bukan source of truth implementation dan tidak mengubah status evidence.
+
+Expected catalog renderer SVG berada di
+[`docs/capability-map/renderer-svg/expected-capability-catalog.md`](./capability-map/renderer-svg/expected-capability-catalog.md).
+Katalog ini adalah daftar requirement renderer yang disusun sebelum audit
+implementasi, dengan `renderer-svg/` sebagai owner package dan `spec/id/` sebagai
+kontrak normatif scene. Command/menu milik CLI dan Playground tetap dicatat
+sebagai consumer workflow; renderer hanya memiliki boundary projection dan
+tidak mengambil alih parsing, command routing, atau UI state.
+Audit implementation per expected ID berada di
+[`docs/capability-map/renderer-svg/implementation-audit.md`](./capability-map/renderer-svg/implementation-audit.md);
+audit tersebut menyimpan path/evidence untuk setiap row dan memisahkan status
+implementation dari keterbatasan environment seperti Node version, browser,
+registry, CI, dan deployed runtime.
+Rekonsiliasi one-to-one expected-versus-observed berada di
+[`docs/capability-map/renderer-svg/reconciliation.md`](./capability-map/renderer-svg/reconciliation.md);
+hasilnya memakai legend capability terpisah dari status evidence dan scope.
+Reporting matrix yang dipakai untuk review manusia berada di
+[`docs/capability-map/renderer-svg/capability-matrix.md`](./capability-map/renderer-svg/capability-matrix.md);
+setiap row memuat capability user-facing, status, evidence, gap/risk, owner,
+dependency, dan next action.
+Backlog implementation kandidat berada di
+[`docs/capability-map/renderer-svg/implementation-gap-backlog.md`](./capability-map/renderer-svg/implementation-gap-backlog.md);
+backlog tersebut menurunkan gap `🌗`/`❌` satu-per-satu, memberi priority dan
+verification target, serta tidak mengklaim bahwa dokumentasi telah
+mengimplementasikan feature.
+Coverage validation dan handoff berada di
+[`docs/capability-map/renderer-svg/coverage-validation-handoff.md`](./capability-map/renderer-svg/coverage-validation-handoff.md);
+artefak tersebut membuktikan coverage pada kategori yang dideklarasikan dan
+menyimpan limitation/unresolved questions tanpa klaim completeness global.
+
 ## Boundary MCP dan Flutter
 
 `mcp/` adalah submodule resmi dari `relgeo/mcp`. Package Dart `relgeo_mcp`

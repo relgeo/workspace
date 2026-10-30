@@ -2,7 +2,7 @@
 
 This document is the implementation evidence for the session/security slice
 of [Plan 11](../plans/11-mcp-agent-integration.md). The pure-Dart contract is
-in [`mcp/`](../../mcp/); the desktop adapter is
+in [`mcp/`](../../mcp); the desktop adapter is
 [`WorkbenchAgentBridge`](../../flutter/lib/src/mcp/workbench_agent_bridge.dart).
 The adapter is a host boundary, not a widget and not an MCP transport.
 

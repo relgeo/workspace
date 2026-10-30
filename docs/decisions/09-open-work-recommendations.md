@@ -6,7 +6,7 @@
 **Ruang lingkup:** Flutter capability, SVG parity, QA perangkat, toolchain, dan release npm  
 **Dokumen terkait:**
 
-- [Cross-Repo Open Decisions](07-cross-repo-open-decisions.md)
+- [Cross-Repo Open Decisions](./07-cross-repo-open-decisions.md)
 - [Flutter Capability Promotion dan SVG Parity](../plans/07-flutter-capability-promotion-and-svg-parity.md)
 - [Release dan npm Publishing Guard](../plans/03-npm-release-guard.md)
 - [Maturation Master Plan](../MATURATION-MASTER-PLAN.md)
@@ -103,7 +103,7 @@ menjadi active adalah line-line intersection pada fixture, rectangle
 closure, semantic tolerance, serta error `INVALID_BOOLEAN_OPERATION`,
 `BOOLEAN_EMPTY_RESULT`, `BOOLEAN_MULTIPART_RESULT`, `NO_INTERSECTION`, dan
 `MULTIPLE_INTERSECTIONS` sebagaimana dirinci pada [Decision Record
-08](08-boolean-intersection-contract-review.md).
+08](./08-boolean-intersection-contract-review.md).
 
 Operand non-rectangle, `union`, `xor`, degenerate/self-intersecting input,
 unknown-reference error code, dan detail engine/ordering tetap di luar active

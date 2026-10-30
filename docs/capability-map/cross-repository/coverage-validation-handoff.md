@@ -1,0 +1,185 @@
+# Cross-Repository Orchestration — Coverage Validation and Handoff
+
+**Status:** coverage validation selesai dengan boundary dan limitation eksplisit
+
+**Tanggal:** 2026-10-30
+
+**Scope:** orkestrasi lintas-repository RelGeo pada 39 expected capability ID.
+
+**Expected catalog:** [Expected Cross-Repository Orchestration Capability Catalog](./expected-capability-catalog.md)
+
+**Implementation audit:** [Cross-Repository Orchestration Implementation and Evidence Audit](./implementation-audit.md)
+
+**Reconciliation:** [Expected-versus-Observed Reconciliation](./reconciliation.md)
+
+**Status matrix:** [Capability Status Matrix](./status-matrix.md)
+
+**Implementation-gap backlog:** [Implementation Gap Backlog](./implementation-gap-backlog.md)
+
+**Repository context:** [REPOSITORY-MAP.md](../../REPOSITORY-MAP.md) · [MATURATION-MASTER-PLAN.md](../../MATURATION-MASTER-PLAN.md)
+
+## 1. Hasil validasi
+
+Validation ini membuktikan konsistensi artefak pada boundary yang didefinisikan;
+validation ini **bukan** klaim bahwa seluruh runtime, provider, host, atau
+surface produk sudah lengkap.
+
+| Check | Result | Evidence / interpretation |
+| --- | --- | --- |
+| Expected catalog IDs | **39/39 unique** | Catalog adalah source expected set; tidak ada ID tambahan dari implementation. |
+| Implementation audit rows | **39 unique** | Satu row audit untuk setiap expected ID. |
+| Reconciliation rows | **39 unique** | One-to-one join; tidak ada missing, extra, atau duplicate ID. |
+| Status matrix rows | **39 unique** | Capability-first reporting view mencakup seluruh expected set. |
+| Gap backlog coverage | **19/19** | Seluruh `🌗`/`❌` matrix ID tercakup tepat sekali dalam 8 candidate tasks. |
+| Matrix status counts | **20 `✔️` · 18 `🌗` · 1 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`** | `ORCH-OPS-003` tetap absent/`❌`; evidence yang belum tersedia tidak dipromosikan menjadi absent. |
+| Audit implementation counts | **28 implemented · 10 partial · 1 absent** | 0 broken, 0 deferred, 0 not-applicable dari 39 expected IDs. |
+| Audit evidence counts | **6 verified-current · 19 verified-static · 8 partial-current · 6 unverified-runtime** | Evidence class tetap terpisah dari implementation status. |
+| Link/path checks | **Pass** | Artefak capability-map dan dua required context docs ada pada path yang dirujuk. |
+| Documentation hygiene | **Pass** | `git diff --check` lulus untuk perubahan task; tidak ada whitespace trailing pada dua artefak baru. |
+
+## 2. Discovery coverage report
+
+Audit memeriksa kategori berikut. `Covered` berarti source discovery category
+tersebut dibaca dan dipetakan ke audit; bukan berarti setiap runtime outcome di
+dalamnya sudah lulus.
+
+| Discovery category | Sources / surfaces | Coverage result | Open boundary |
+| --- | --- | --- | --- |
+| Requirement and ownership | `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, catalog, decisions | `Covered` | Ownership belum menjadi registry machine-readable untuk setiap stage. |
+| Integration and release contract | `docs/plans/01-cross-repo-integration-gate.md`, `02-contract-versioning.md`, `03-npm-release-guard.md`, `09-approved-decisions-execution-plan.md` | `Covered` | Current Node 24 integration and registry execution remain unverified. |
+| Repository boundary | `.gitmodules`, 12 child checkouts, manifests, package/lockfiles | `Covered` | Manifest revisions for `playground`, `flutter`, and `mcp` are stale versus current gitlinks. |
+| Baseline/compatibility/conformance | baseline, compatibility matrix, fixtures, root and Flutter runners | `Covered` | Flutter SDK cache permission blocks host probe; cross-platform evidence incomplete. |
+| Tests and failure-injection | Root baseline/release failure-injection scripts plus child package, Playground, Flutter, MCP, and E2E test directories listed in audit §2.1 | `Covered` | Root conformance and failure-injection checks are current; full child/runtime test execution remains bounded by the declared environment evidence. |
+| Root commands/scripts | `scripts/README.md` and listed baseline, compatibility, conformance, integration, release, recovery, and failure-injection runners | `Covered` | No bounded retry controller was found; this is the explicit `ORCH-OPS-003` gap. |
+| Root and child CI | root Integration/sync workflows; child Flutter/Playground/MCP workflows | `Covered` | No live dispatch, provider API revalidation, PR merge, or branch-protection observation. |
+| Consumer/UI/menu/shortcut/route | Package/consumer commands, Playground/website artifact and route hooks | `Covered at boundary` | Workspace has no own UI/menu/shortcut; downstream route smoke is runtime-unverified. |
+| Config/platform/service | Node/pnpm, npm registry, Flutter SDK, Playwright, GitHub Actions permissions/tokens, platform runners | `Covered as dependencies` | Current environment lacks supported Node/Flutter/registry/browser/provider proof for several stages. |
+| Public artifact hygiene | pack filters, release records, CI retention/permissions, report paths | `Covered statically` | Complete artifact-by-artifact secret scan and current uploaded-artifact query remain open. |
+
+### Coverage conclusion
+
+The requested discovery categories are represented in the audit inventory and
+each expected ID is mapped. This is **bounded coverage of the enumerated
+orchestration surfaces**, not an exhaustive claim about all RelGeo product
+surfaces or all possible provider/runtime states. Any new requirement or
+surface must first be added to the expected catalog before it can be assessed as
+implemented or absent.
+
+### 2.3 Capability-category coverage proof
+
+Every catalog category is represented in the audit, one-to-one reconciliation,
+and status matrix. The backlog column counts only non-green rows; it is not
+expected to contain implemented rows.
+
+| Capability category | Prefix | Catalog IDs | Audit IDs | Reconciliation IDs | Matrix IDs | Backlog gap IDs |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Fresh clone, bootstrap, repository boundary | `ORCH-BOOT-*` | 4 | 4 | 4 | 4 | 3 |
+| Baseline, compatibility, conformance | `ORCH-BASE-*` | 5 | 5 | 5 | 5 | 2 |
+| Dependency orchestration, integration gates | `ORCH-GATE-*` | 5 | 5 | 5 | 5 | 2 |
+| Cross-repository CI dispatch, baseline sync | `ORCH-CI-*` | 5 | 5 | 5 | 5 | 0 |
+| Evidence reconciliation, status truthfulness | `ORCH-EVID-*` | 5 | 5 | 5 | 5 | 3 |
+| Release, recovery, dependency publication | `ORCH-REL-*` | 6 | 6 | 6 | 6 | 3 |
+| Blocker, retry, operational control | `ORCH-OPS-*` | 5 | 5 | 5 | 5 | 5 |
+| Public artifact, credential hygiene | `ORCH-PUB-*` | 4 | 4 | 4 | 4 | 1 |
+| **Total** |  | **39** | **39** | **39** | **39** | **19** |
+
+## 3. Legend and evidence-class validation
+
+The status matrix exposes the complete reporting legend:
+
+| Symbol | Meaning in this handoff |
+| --- | --- |
+| `✔️` | Implementation observed at the declared boundary; evidence quality remains in its own column. |
+| `🌗` | Partial implementation or incomplete current/runtime evidence. |
+| `❌` | Absent/broken implementation on the audited boundary. |
+| `➖` | Explicitly not applicable scope; none of the 39 expected IDs uses it. |
+| `⏸️` | Explicitly deferred/held scope; none of the 39 expected IDs uses it. |
+| `⚠️` | Confirmed broken/mismatch; none of the 39 expected IDs uses it. |
+
+Audit evidence classes are preserved as separate claims:
+
+- `S` — static source/config/docs;
+- `F` — fixture/test;
+- `C` — current command observation;
+- `H` — historical/canonical evidence;
+- `E` — environment unavailable or not verified.
+
+Therefore `verified-static` is not canonical runtime proof, and
+`unverified-runtime` is not a target defect. The reconciliation and matrix keep
+these distinctions visible.
+
+## 4. Scope decisions and limitations
+
+### In scope
+
+Fresh clone/bootstrap, recursive submodules, baseline and compatibility,
+conformance, local/public integration gates, child-CI dispatch and exact-SHA
+sync, evidence reconciliation, release preflight/verification/recovery,
+blocker handling, retry policy, and public artifact hygiene.
+
+### In scope with boundary
+
+Flutter/desktop jobs are coordinated evidence surfaces rather than TypeScript
+runtime dependencies; public smoke is post-deploy evidence; release automation
+remains manual; recovery is forward-fix planning rather than rollback.
+
+### Explicitly out/deferred/not applicable
+
+Android/iOS reopening, raw SVG byte equality, automatic npm publish before the
+accepted prerequisite, atomic npm rollback, and a workspace-native UI/menu/
+shortcut surface are not additional expected IDs in this handoff. They are
+scope decisions, not silently omitted implementation rows.
+
+### Current limitations
+
+- Local Node is `22.23.2` while the repository declares Node `>=24`; local
+  integration and dependent release/public probes stop at the prerequisite.
+- Flutter conformance is blocked by SDK cache write permission outside the
+  workspace; this is environment-unavailable evidence.
+- Registry verification remained pending during the observation window; no
+  publish or package failure is inferred.
+- Three baseline manifest revisions are stale relative to current gitlinks and
+  must be reconciled through validated child CI, not a blind manifest write.
+- Live GitHub dispatch/API/PR behavior, branch protection, public deployment,
+  browser smoke, full secret scan, replay race, and uploaded-artifact query were
+  not observed in this local audit.
+
+## 5. Unresolved questions
+
+These questions are intentionally handed off rather than answered from
+repository evidence:
+
+1. Which supported Node 24 host and Flutter SDK cache policy will provide the
+   canonical current integration/conformance run?
+2. Which validated child CI runs should authorize synchronization of the three
+   stale manifest revisions, and who approves the resulting PRs?
+3. What exact provider credentials and environment are available for live
+   child-run revalidation, dispatch, PR, registry, and public-smoke evidence?
+4. What is the approved transient-failure classifier, retry budget, and backoff
+   for `ORCH-OPS-003`?
+5. What common JSON blocker schema should integration, release, and CI runners
+   emit for owner, dependency impact, remediation, and decision-required state?
+6. What artifact/provenance fields are mandatory for joining a public URL,
+   artifact, run, and exact baseline without promoting historical evidence?
+7. What static policy check is acceptable for enforcing sync-workflow
+   credential persistence and least-privilege permissions?
+
+## 6. Implementation handoff
+
+Implementation work remains separate from this validation. The following
+candidate goals/tasks are defined in the [gap backlog](./implementation-gap-backlog.md):
+
+| Candidate | Capability gaps | Handoff condition |
+| --- | --- | --- |
+| `GAP-ORCH-001` | Bootstrap and public boundary | Goal/task may start after supported toolchain and clean-clone boundary are agreed. |
+| `GAP-ORCH-002` | Baseline and cross-surface conformance | Depends on validated child CI and Flutter host availability. |
+| `GAP-ORCH-003` | Local/public integration gates | Depends on supported Node 24 and registry/public consumer environment. |
+| `GAP-ORCH-004` | Evidence/artifact/public-smoke reconciliation | Depends on refreshed baseline and current gate outputs. |
+| `GAP-ORCH-005` | Release preflight/registry/forward-fix evidence | Depends on clean release boundary and network-capable verification. |
+| `GAP-ORCH-006` | Blocker ownership and decision checkpoints | Can define schema independently; downstream enforcement depends on runner changes. |
+| `GAP-ORCH-007` | Bounded retry/rerun policy | Depends on blocker taxonomy and durable report retention; currently covers the sole `❌`. |
+| `GAP-ORCH-008` | Sync workflow credential/permission hygiene | Can be reviewed independently against workflow policy and provider behavior. |
+
+No candidate above is marked implemented by this handoff. Promotion requires
+the source/workflow change, the backlog acceptance test/evidence target, and a
+new audit/reconciliation update.

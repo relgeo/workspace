@@ -1,0 +1,70 @@
+# RelGeo spec capability matrix
+
+> **Coverage statement — 2026-10-29.** This matrix covers the normative
+> `spec/id/` tree and mapped non-MCP consumer boundaries, using spec chapters,
+> core/geometry/renderer/language-service/CLI sources, shared fixtures,
+> consumer docs, and cross-repository plans. It inventories contract families
+> and downstream realization, not every prose sentence or deployment. Current
+> CI/canonical, public, and fresh Flutter/Playground/website runtime checks
+> remain `not verified` where stated; a missing row is not evidence that the
+> capability does not exist.
+> See [inventory protocol](../../INVENTORY-PROTOCOL.md) for status axes and evidence tiers.
+
+Status dokumen: audit baseline, 2026-10-29  
+Scope: `spec/id/` dan status implementasi consumer non-MCP  
+Compatibility line: RelGeo DSL `0.5.x`  
+Source of truth: `spec/id/`  
+Evidence log: [cross-surface/archive/spec-implementation-audit-2026-10-29.md](./spec-implementation-audit-2026-10-29.md)
+
+## Status legend
+
+| Status | Arti audit | Tidak berarti |
+| --- | --- | --- |
+| `✔️` | Capability tersedia pada boundary yang dinilai dan memiliki evidence langsung. | Semua consumer atau semua variasi syntax sudah parity. |
+| `🌗` | Contract/source dan sebagian implementasi/evidence tersedia, tetapi ada gap penting. | Capability siap disebut selesai end-to-end. |
+| `❌` | Boundary sudah diperiksa dan capability yang diharapkan belum tersedia. | Area yang belum diperiksa adalah failure. |
+| `➖` | Capability sengaja tidak diperlukan atau eksplisit di luar scope kontrak. | Pekerjaan yang tertunda. |
+| `⏸️` | Capability ditahan oleh keputusan atau dependency yang diketahui. | Capability gagal. |
+| `⚠️` | Mismatch atau masalah terkonfirmasi pada boundary yang diperiksa. | Status `not verified`. |
+
+`not verified` adalah kualifikasi evidence, bukan simbol tambahan. Ia dipakai ketika runtime/deployment/consumer belum diperiksa pada boundary yang diklaim. Status matrix merangkum capability; kolom evidence tetap menyebut batas verifikasi.
+
+## Matrix kontrak dan downstream realization
+
+| Capability | Status | Evidence | Gap / limitation | Consumer | Dependency | Next action |
+| --- | --- | --- | --- | --- | --- | --- |
+| Active DSL line `0.5`, omitted-version default, supported legacy `0.4`, regression-only `0.1–0.3`, unsupported future/unknown rejection | `✔️` | `spec/id/README.md:1-18,120-180`; `core/src/parser.ts:5-33,161-173`; fixtures 17/18; conformance 260/260 | Version policy is duplicated in manifest, parser, and language-service schema | core, language-service, CLI, fixtures, plugins | synchronized version policy | Keep negative version fixture in every release gate; consider generated version metadata |
+| Root document sections and minimal document shape | `✔️` | `spec/id/core/02-document-structure.md:5-73`; parser `core/src/parser.ts:47-92,176-188`; active fixture 10 | Parser accepts a bounded section set, but no generated schema is derived from the spec | core, language-service, CLI | parser + validator | Add a machine-readable section contract or a drift check |
+| Parse and structural syntax: YAML, top-level/object fields, required `type`, object identity | `✔️` | `core/src/parser.ts:144-267`; invalid fixtures 11–13; core tests 427 passed | Editor mode is intentionally tolerant; compile mode is strict | core, Playground, language-service | js-yaml, validator | Keep editor-vs-compile mode distinction explicit in public docs |
+| Typed values, parameters, constants, derived values, profiles, expressions | `🌗` | `spec/id/syntax/07-12`; `core/src/evaluator.ts`, `core/src/resolver/values.ts`; conformance fixture 16 | Candidate evaluator/unit fixture passes locally but remains non-active; exhaustive expression-to-spec mapping is absent | core, language-service, CLI, Flutter | evaluator, units, schema/completions | Decide promotion criteria for evaluator/unit; add coverage map for every normative function |
+| Deterministic evaluation order and dependency graph | `✔️` | `spec/id/core/04-evaluation-order.md:5-49`; `core/src/resolver/index.ts:89-119`; `core/src/graph.ts`; circular-dependency tests | No standalone conformance row for every graph failure code | core, CLI, language-service | graph + resolver | Promote graph error cases into shared fixtures |
+| Semantic guarantees: stable identity, dependency ordering, explicit relations, no general solver | `🌗` | `spec/id/core/05-semantic-guarantees.md:5-52`; resolved snapshots in `fixtures/expected/` | Stable identity and deterministic snapshots are covered; the negative “no general solver” boundary is prose, not a dedicated test | core, renderer, CLI, Flutter | resolver semantics | Add one explicit non-solver/constraint immutability fixture |
+| Structured hard error model: code + document path + phase distinction | `✔️` | `spec/id/core/06-error-model.md:5-124`; `ValidationError`/`ParseError`; fixtures 11–13, 17–20 | Not every documented error code has a shared fixture or consumer parity row | core, language-service, CLI | parser, validator, resolver | Build an error-code coverage report against the normative table |
+| Post-resolve constraint diagnostics without geometry mutation | `✔️` | `spec/id/core/06-error-model.md:95-103`; `spec/id/geometry/21-constraints.md:84-93`; fixture 14 expected violation; conformance checks violation + SVG | Current shared runtime-diagnostic coverage centers on `align`; other constraint kinds are not equally covered | core, renderer, language-service, CLI | resolver constraints + renderer violation overlay | Add parallel/perpendicular/tangent runtime-diagnostic fixtures |
+| Primitive geometry objects and geometry queries | `✔️` | `spec/id/geometry/13-14,20`; `geometry` 66/66 tests; core evaluator tests; fixture 10 | Package tests are library-level and do not prove every DSL field/anchor combination | core, geometry, renderer, CLI | `@relgeo/geometry` + resolver | Maintain per-object/field coverage inventory |
+| Composition objects: group, clone, component, operation objects | `🌗` | `spec/id/geometry/15`; parser object fields `core/src/parser.ts:71-88`; core tests and legacy fixtures 04–09 | Component/export and all operation result surfaces are not represented equally in active `v0.5` snapshots | core, renderer, CLI, Markdown | resolver object dispatch + graph | Add active fixtures for component export and each operation result type |
+| Collections, repeat/divide/split, boolean/intersection | `🌗` | `spec/id/geometry/16,19`; fixture 15 active with resolved/SVG snapshots; fixtures 19/20 runtime errors | Boolean/intersection promotion is active, but multipart/empty result boundaries are intentionally errors; not all collection modes are active | core, renderer, CLI, Flutter | geometry polygon clipping, resolver collection rules | Keep fixture 15 active; separately decide remaining collection modes |
+| Placement, anchors, frames, path-like references | `🌗` | `spec/id/geometry/17-18`; validator anchor tables `core/src/validator.ts:5-78`; core placement/query tests | Spec vocabulary is broader than the small active fixture baseline | core, language-service, renderer | validator + resolver + geometry | Generate anchor/placement parity checks from a single vocabulary |
+| Presentation: dimension, annotation, drawing roles | `🌗` | `spec/id/presentation/22-24`; renderer primitives `renderer-svg/src/primitives.ts:273-537`; legacy fixtures 01–09 | Active v0.5 evidence is thinner than legacy v0.4 presentation coverage; browser visual parity not fresh-verified | renderer-svg, Markdown, Playground, website, Flutter | renderer and host-specific export | Add active v0.5 presentation fixtures or explicitly classify them legacy-only |
+| Views, sheets, metadata and non-geometric presentation semantics | `🌗` | `spec/id/presentation/25-26`; parser validator `core/src/validator.ts:1585-1665`; CLI `info` prints views/sheets; legacy fixtures | Implementation exists, but active contract coverage and all renderer/Flutter consumers are not verified in this turn | core, renderer, CLI, website, Flutter | view/sheet resolver and renderer | Add matrix rows per sheet/view feature and fresh Flutter/browser evidence |
+| SVG rendering and security boundary for resolved scenes | `✔️` | `renderer-svg/src/index.ts:14-20,87-88,352-358`; renderer 79/79; conformance checks no executable markup and snapshots | Source-to-SVG through every consumer is not one universal runtime | renderer-svg, CLI, Markdown, Playground, website, Flutter | resolved scene + XML escaping | Preserve snapshot and no-executable-markup checks |
+| Language-service diagnostics, completion, schema, semantic tokens | `✔️` | `language-service/src/service.ts:124-207,285-553`; `schema.ts`, `completions.ts`, `tokens.ts`; 66/66; conformance invalid/token/highlight checks | Catalog is consumer-maintained rather than generated from spec; parity for all normative chapters is not proven | Playground, Markdown highlighting, website/editor, future Flutter authoring | core parser/validator + language-service catalogs | Add spec-to-schema drift checker |
+| CLI compile/check/info and JSON/SVG/graph outputs | `✔️` | `cli/src/index.ts:1-6,113-243`; CLI 9/9; conformance CLI snapshots and runtime-error checks | No full registry-install or current release artifact audit in this task | CLI users, scripts, conformance runner | core + renderer-svg | Keep CLI output snapshots tied to fixture manifest |
+| Markdown preview plugin | `✔️` | `remark-relgeo/src/index.ts:76-140`; plugin 5/5; conformance exact preview SVG | Preview catches errors with placeholder behavior and is not a full diagnostics UI | docs sites, website | core + renderer-svg | Keep preview contract small and document unsupported editor features |
+| Markdown highlighting plugin | `✔️` | `remark-relgeo-hl/src/index.ts:21-55`; plugin 3/3; conformance exact highlight digest/snapshot | Highlighting reflects language-service tokens, not semantic resolve success | website/docs Markdown | language-service | Add explicit version-policy note to highlighting docs |
+| Playground interactive authoring surface | `🌗` | `fixtures/manifest.json` lists Playground for active fixture 10; `docs/plans/04-shared-conformance-fixtures.md` records historical browser/E2E evidence | Current browser run not verified in this audit; deployment and local runtime evidence are time-bound | Playground users | core, renderer, language-service, browser | Re-run local + public smoke against current build and record date/commit |
+| Website spec publication and docs presentation | `🌗` | `docs/REPOSITORY-MAP.md` states website consumes spec at `/docs/language-spec/`; historical plan/public route evidence | Website is presentation/deployment, not normative owner; current deployment not verified here | website readers, Playground users | spec source + Astro build + Pages | Freshly verify generated spec path and source revision |
+| Flutter non-Node consumer and SVG/semantic projection | `🌗` | `docs/flutter-capability-matrix.json`; `fixtures/manifest.json` surfaces Flutter for fixtures 15/16; historical CI evidence in plans | No fresh Flutter run in this audit; fixture 16 evaluator/unit remains `capability`, not active | Flutter workbench | core contract projection, renderer/exporter, Flutter SDK | Re-run Flutter conformance and make promotion decision for candidate 16 |
+| Cross-repository fixture ownership and conformance orchestration | `🌗` | `fixtures/manifest.json:1-26`; `scripts/run-conformance-fixtures.mjs:66-100`; local 260/260 | Local runner proves current built artifacts, not fresh child CI/remote repository synchronization | all package consumers | child repo pointers, build order, CI workflows | Verify current integration baseline and child CI SHAs before release claims |
+| Single generated machine-readable normative catalog | `❌` | No generated catalog was found under `spec/`, `docs/`, or package source; parser/schema/completion sets are separate | Drift risk between Markdown spec, parser field sets, validator anchors, and language-service schema | core, language-service, tooling | generator or explicit drift checker | Design and adopt a generated contract/catalog boundary |
+| General constraint solver / bidirectional equation engine | `➖` | `spec/id/core/01-overview.md:46-48`, `05-semantic-guarantees.md:48-52`, `geometry/21-constraints.md:5-7` explicitly exclude it | Not a gap for current RelGeo contract | no consumer required | explicit product boundary | Do not implement unless contract is intentionally revised |
+| Evaluator/unit promotion to active line | `⏸️` | `fixtures/manifest.json` marks fixture 16 `capability`; `docs/plans/04-shared-conformance-fixtures.md` says evaluator/unit remains candidate | Local snapshots pass, but cross-consumer parity/promotion decision is not closed | core, CLI, Flutter | Flutter parity and decision record | Keep candidate status until explicit promotion evidence exists |
+| Spec index status consistency | `⚠️` | `spec/id/core/README.md`, `syntax/README.md`, `geometry/README.md`, `presentation/README.md` say `Informative Index`; chapters and root say active `Normative` contract | Readers can misclassify an index as non-normative even though chapter links are the active source | all human/tool consumers | editorial policy | Normalize index labels and add a clear “index only; linked chapters normative” statement |
+
+## Priority order
+
+1. Fix the confirmed spec index labeling problem and make normative/informative boundaries unambiguous.
+2. Add a spec-to-consumer drift check for version, top-level sections, object types, anchors, expressions, and error codes.
+3. Keep active v0.5 fixture coverage distinct from legacy presentation fixtures; add missing active diagnostics/presentation cases.
+4. Re-verify Playground, website, Flutter, and cross-repository current evidence before making release or parity claims.
+5. Resolve the explicit evaluator/unit promotion decision; until then, preserve `⏸️`/`capability` rather than promoting from passing candidate snapshots alone.

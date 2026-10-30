@@ -39,7 +39,7 @@ implementation/consumer behavior, ID tersebut wajib dipertahankan dan diberi
 | [Implementation audit](./archive/implementation-audit-legacy.md) | Observed source, test, consumer, command/UI, runtime, fixture, dan docs evidence | Coverage ledger tersedia; 40/40 expected IDs diaudit; limitations eksplisit |
 | [Reconciliation](./reconciliation.md) | Join satu-ke-satu expected-versus-observed | 40/40 rows; no missing/extra/duplicate; implementation/evidence/scope terpisah |
 | [Status matrix](./status-matrix.md) | Reporting view capability-first | 40 rows; kolom status/evidence/gap/owner/dependency/risk/next action lengkap |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 30/30 `🌗` rows memiliki task; `VERIFY-GEO-SER-002` adalah follow-up evidence-only dan `FIX-GEO-PROVENANCE-001` adalah corrective documentation/code follow-up |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 30/30 `🌗` rows memiliki task; `VERIFY-GEO-SER-002` adalah follow-up evidence-only dan `FIX-GEO-PROVENANCE-001` memiliki local fix evidence |
 | [Historical geometry matrix](./capability-matrix.md) | Historical inventory dan evidence lama | Dipertahankan sebagai historical input, bukan source expected list |
 
 ## 3. Checklist coverage dan integrity
@@ -138,7 +138,7 @@ by changing a status symbol:
 | `Q-GEO-004` | Kapan union/xor/non-rectangle topology dianggap active contract, dan apa acceptance matrix single/multi/holes-nya? | `GEO-BOOLEAN-001`, `GEO-BOOLEAN-002`, promotion plan |
 | `Q-GEO-005` | Apakah high-level query tetap core-owned atau sebagian low-level query perlu diekstrak sebagai public geometry API? | `GEO-QUERY-001` through `GEO-QUERY-005`, owner boundary |
 | `Q-GEO-006` | Kapan current Node >=24, Flutter SDK, registry, CI, dan cross-platform replay dijalankan pada pointer workspace terbaru? | `GEO-DET-001`, `GEO-DET-002`, `GEO-PARITY-001/002`, evidence class |
-| `Q-GEO-007` | Wording/provenance/error vocabulary final apa yang harus dipakai setelah stale `v0.3` text diperbaiki? | confirmed `⚠️` finding, `GEO-NUM-003`, CLI/docs |
+| `Q-GEO-007` | Wording/provenance/error vocabulary final apa yang harus dipakai setelah stale `v0.3` text diperbaiki? | Resolved at the geometry package boundary by the 0.5 wording fix and regression test; consumer-specific vocabulary remains separate. |
 
 ## 6. Implementation handoff
 
@@ -149,7 +149,7 @@ backlog proposes, but does not start, these candidate workstreams:
 2. `G-02` promote dimensions, collections, queries, and constraint coverage;
 3. `G-03` harden boolean, numeric, deterministic, and serialization contracts;
 4. `G-04` close TypeScript/Flutter and semantic SVG parity evidence;
-5. `FIX-GEO-PROVENANCE-001` correct confirmed stale `v0.3` wording;
+5. `FIX-GEO-PROVENANCE-001` keep the locally resolved 0.5 provenance wording covered by regression evidence;
 6. `VERIFY-GEO-SER-002` establish the canonical serialization contract.
 
 Each candidate task remains blocked on its stated owner/dependency and must
@@ -181,9 +181,9 @@ environments passed.
 
 | Check | Result | Evidence qualification |
 | --- | --- | --- |
-| `pnpm --filter @relgeo/geometry test` | PASS — 66/66 | Local package test evidence |
-| `pnpm --filter @relgeo/core test` | PASS — 427/427 | Local core consumer evidence |
-| `pnpm --filter @relgeo/renderer-svg test` | PASS — 79/79 | Local renderer consumer evidence |
+| `pnpm --filter @relgeo/geometry test` | PASS — 75/75 | Fresh local package test evidence, including closed-shape normalization and stable error coverage |
+| `pnpm --filter @relgeo/core test` | PASS — 430/430 | Fresh local core consumer evidence in the current working tree; Node 22 qualified |
+| `pnpm --filter @relgeo/renderer-svg test` | PASS — 82/82 | Fresh local renderer consumer evidence in the current working tree; Node 22 qualified |
 | `pnpm --filter @relgeo/geometry lint` | PASS | Local static check |
 | `pnpm --filter @relgeo/geometry build` | PASS | Local TypeScript/tsup build evidence |
 | `pnpm conformance:fixtures` | PASS — 260/260 across 20 fixtures | Fixture conformance evidence |
@@ -193,3 +193,44 @@ environments passed.
 The direct checks above do not replace registry refresh, CI, native Flutter,
 cross-platform replay, or public-contract decisions. Those limitations remain
 open under `Q-GEO-002` and `Q-GEO-006`.
+
+## 9. Repository and commit boundary
+
+This handoff was produced from the shared workspace without staging or
+committing changes. The reproducible boundary is:
+
+| Repository | Observed HEAD | Working-tree boundary | Handoff interpretation |
+| --- | --- | --- | --- |
+| `relgeo-workspace/` | `1cfa865` (`docs: synchronize remaining project documentation`) | Root capability-map geometry docs and other pre-existing workspace changes are present; no root commit was created for this handoff. | Review the working tree and the listed evidence commands; do not infer a release artifact or clean-tree claim. |
+| `relgeo-workspace/geometry/` | `36469fa` (`docs: update post-publication package status`) | Geometry implementation/test changes are uncommitted in `README.md`, `src/error.ts`, `src/index.ts`, `src/intersection.ts`, `src/path-modifiers.ts`, `src/split.ts`, `src/boolean/normalizeClosedShape.ts`, `src/__tests__/intersection.test.ts`, plus new `src/tolerance.ts` and `src/__tests__/boolean.test.ts`. | Package evidence is from this local source boundary; no npm publication or registry refresh was used. |
+
+The handoff did not modify or commit the separately dirty `core/` and
+`renderer-svg/` repositories. Their consumer tests were run against the
+current shared workspace, and their repository state must be reviewed
+independently. No npm/pub.dev publication, production deployment, deferred
+Flutter host, or other external release step was used as a prerequisite for
+the local package, consumer, or fixture evidence.
+
+## 10. Remaining-gap handoff
+
+The next owner should start from
+[implementation-gap-backlog.md](./implementation-gap-backlog.md), preserving
+the following handoff order and boundaries:
+
+1. `GAP-GEO-QUERY-004`: geometry lead with core dependency; extend only the
+   supported pair/selector contract and keep broader sampled pairs partial.
+2. `GAP-GEO-NUM-001`: geometry plus spec review; decide which tolerance bounds
+   are public semantic policy rather than package implementation constants.
+3. `GAP-GEO-NUM-002`: geometry lead with core consumer; extend topology
+   evidence only through separately reviewed holes/union/xor/non-rectangle
+   fixtures.
+4. `GAP-GEO-NUM-003`: geometry plus core diagnostic consumer; complete the
+   cross-consumer error-code and document-path mapping.
+5. `GAP-GEO-SER-002`, `GAP-GEO-PARITY-*`, and `GAP-GEO-DET-*`: retain their
+   `🌗`/`not-verified` state until serializer, Flutter, Node-24, and
+   cross-runtime replay evidence is independently available.
+
+The `➖` UI/platform ownership findings and `⏸️` broader boolean promotion are
+not active implementation work. Each remaining candidate needs source changes
+and executable evidence before its status can change; documentation-only
+updates do not close a capability.

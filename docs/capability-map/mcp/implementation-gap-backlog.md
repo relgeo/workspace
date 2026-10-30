@@ -1,12 +1,13 @@
 # RelGeo MCP — Prioritized Implementation-Gap Backlog
 
-**Status:** candidate implementation backlog; no item is started or marked
-complete by this document.
+**Status:** candidate implementation backlog for unresolved rows; `ERR-01` is
+retained as a completed regression gate, while no remaining candidate task is
+marked complete by this document.
 
 This backlog converts the current MCP reconciliation into scoped candidate
 work. It is intentionally downstream of the [expected capability
 catalog](./expected-capability-catalog.md), [implementation
-audit](./archive/implementation-audit-legacy.md), [reconciliation
+audit](./implementation-audit.md), [reconciliation
 register](./reconciliation.md), and [actionable capability
 matrix](./capability-matrix.md). The audit covers `mcp/` plus integrated
 consumers in `spec/id/`, `core/`, `language-service/`, `renderer-svg/`,
@@ -55,8 +56,8 @@ task above; task dependencies do not change that assignment.
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| Active source gap rows | `56` | `40 🌗` partial + `15 ❌` absent + `1 ⚠️` broken from the reconciliation and matrix. |
-| Active gap rows assigned to a primary task | `56/56` | The 11 task groups above contain each active expected ID exactly once. |
+| Active source gap rows | `55` | `41 🌗` partial + `14 ❌` absent + `0 ⚠️` broken from the reconciliation and matrix. |
+| Active gap rows assigned to a primary task | `55/55` | The 11 task groups above contain each active expected ID exactly once; `ERR-01` is retained as a completed regression gate, not an active gap. |
 | Missing active IDs | `0` | Compare the task ID union with matrix rows whose status is `🌗`, `❌`, or `⚠️`. |
 | Duplicate primary assignments | `0` | No active expected ID appears in more than one `Expected IDs` cell. |
 | Documentation counted as implementation | `0` | Docs, plans, matrices, runbooks, and this backlog are explicitly evidence/planning only. |

@@ -4,7 +4,7 @@
 
 **Expected source:** [Expected Core Runtime Capability Catalog](./expected-capability-catalog.md)
 
-**Observed source:** [Core Runtime implementation audit evidence](./archive/implementation-audit-legacy.md)
+**Observed source:** [Current Core Runtime implementation audit](./implementation-audit.md); detailed historical traces remain in the [archived audit log](./archive/implementation-audit-legacy.md)
 
 **Policy sources:** [MATURATION-MASTER-PLAN](../../MATURATION-MASTER-PLAN.md),
 [REPOSITORY-MAP](../../REPOSITORY-MAP.md),
@@ -42,9 +42,9 @@ Tiga dimensi tetap terpisah:
 
 Aturan penting: `❌` berarti absence implementation pada expected boundary; ia
 berbeda dari `?` (evidence belum tersedia), `⏸️` (ditunda), dan `➖`
-(not-applicable). Pada join ini `CORE-DIAG-002` tetap `❌`, sedangkan
-`CORE-ERROR-003` `⚠️` karena behavior runtime ada tetapi public error contract
-drift.
+(not-applicable). Pada current join `CORE-DIAG-002` adalah `🌗` karena core
+memiliki bounded `collectDiagnostics` aggregation; `CORE-ERROR-003` tetap
+`⚠️` karena exhaustive emitted-code/type agreement belum terbukti.
 
 ## 2. Coverage dan hasil join
 
@@ -56,8 +56,8 @@ drift.
 | Extra observed-only IDs in join | 0 |
 | Duplicate reconciliation IDs | 0 |
 | `✔️ implemented` | 23 |
-| `🌗 partial` | 13 |
-| `❌ absent` | 1 |
+| `🌗 partial` | 14 |
+| `❌ absent` | 0 |
 | `⚠️ broken` | 1 |
 | `? unverified` as row result | 0; limitations remain in evidence columns and findings |
 | `⏸️ deferred` / `➖ not-applicable` as row result | 0; kept separate from expected implementation rows |
@@ -122,7 +122,7 @@ Required source boundary for this reconciliation:
 | `CORE-RESOLVE-002` | `✔️ implemented` | `implemented` | `verified-local` + placement/anchor tests | `IN`; placement and world/local semantics are core-owned | Audit §4D; `core/src/resolver/index.ts:50–87`, `primitives/utils.ts` |
 | `CORE-RESOLVE-003` | `🌗 partial` | `partial` | `partial-local` + bounded runtime fixtures | `IN WITH BOUNDARY`; repeat/boolean topology coverage remains bounded | Audit §4D; `core/src/resolver/primitives/{repeat,divide,operation,shapes}.ts` |
 | `CORE-RESOLVE-004` | `✔️ implemented` | `implemented` | `verified-local` + sheet/view/reference fixtures | `IN WITH BOUNDARY`; SVG styling stays renderer-owned | Audit §4D; `core/src/resolver/index.ts:174–327` |
-| `CORE-RESOLVE-005` | `🌗 partial` | `partial` | `partial-local`; no canonical serialization contract | `IN`; semantic projection is core-owned, serialization policy remains open | Audit §4D; `geometry/src/types.ts:352–366`, `core/src/resolver/index.ts:312–329` |
+| `CORE-RESOLVE-005` | `🌗 partial` | `partial` | `verified-local` for versioned projection; consumer migration remains open | `IN`; semantic projection is core-owned, renderer formatting remains separate | Audit §4D; `core/src/projection.ts`, `core/src/resolver/index.ts` |
 
 ### E. Constraints, diagnostics, and failure semantics
 
@@ -131,8 +131,8 @@ Required source boundary for this reconciliation:
 | `CORE-CONSTRAINT-001` | `✔️ implemented` | `implemented` | `verified-local` + constraint fixture | `IN WITH BOUNDARY`; post-resolve validation, not general solving | Audit §4E; `core/src/resolver/constraints.ts:43–186` |
 | `CORE-CONSTRAINT-002` | `🌗 partial` | `partial` | `partial-local`; violation shape lacks severity/origin | `IN`; structured violations remain distinct from exceptions | Audit §4E; `geometry/src/types.ts:311–323` |
 | `CORE-DIAG-001` | `🌗 partial` | `partial` | `partial-local` + language-service/fixture tests | `IN`; stable codes/paths are public contract | Audit §4E; `core/src/parser.ts`, `validator.ts`, `resolver/types.ts` |
-| `CORE-DIAG-002` | `❌ absent` | `absent` | `verified-absence` after core API/consumer audit | `IN`; core expected to own deterministic aggregation, but no API was found | Audit §4E; no aggregation API in `core/src`, consumers surface first failure |
-| `CORE-ERROR-003` | `⚠️ broken` | `broken` | `observed-defect` + runtime fixture | `IN`; distinct actionable error taxonomy is required | Audit §4E; `core/src/types.ts:596–643`, `resolver/primitives/shapes.ts:1947–1957` |
+| `CORE-DIAG-002` | `🌗 partial` | `partial` | `verified-local-bounded` + aggregation tests | `IN`; core owns deterministic aggregation; broader fault coverage remains | Audit §4E; `core/src/diagnostics.ts`, `core/src/__tests__/diagnostics.test.ts` |
+| `CORE-ERROR-003` | `⚠️ broken` | `partial-defect` | `observed-defect` + runtime fixture; bounded normalization added | `IN`; distinct actionable error taxonomy is required | Audit §4E; `core/src/types.ts`, `core/src/errors.ts`, evaluator/raw throw sites |
 
 ### F. Determinism, public API, compatibility, and integration
 
@@ -177,7 +177,8 @@ items, not extra expected IDs. Priority follow-up is:
 Primary evidence:
 
 - [Expected catalog](./expected-capability-catalog.md)
-- [Implementation audit evidence](./archive/implementation-audit-legacy.md)
+- [Current implementation audit evidence](./implementation-audit.md)
+- [Archived detailed audit log](./archive/implementation-audit-legacy.md)
 - [MATURATION-MASTER-PLAN](../../MATURATION-MASTER-PLAN.md)
 - [compatibility matrix](../../compatibility-matrix.json)
 - [contract-versioning plan](../../plans/02-contract-versioning.md)

@@ -9,7 +9,7 @@
 | Field | Value |
 | --- | --- |
 | Expected source | [Playground expected capability catalog](./expected-capability-catalog.md) |
-| Observed source | [Playground implementation audit](./archive/implementation-audit-legacy.md) |
+| Observed source | [Playground implementation audit](./implementation-audit.md) |
 | Policy and product sources | [Repository map](../../REPOSITORY-MAP.md); [Maturation master plan](../../MATURATION-MASTER-PLAN.md); [Playground hardening plan](../../plans/05-public-docs-and-playground-hardening.md); [inventory protocol](../INVENTORY-PROTOCOL.md) |
 | Surface owner | `relgeo/playground` owns browser IDE workflow and presentation; `spec/id/`, core, language-service, and renderer packages retain delegated semantics |
 | Join status | Complete; every expected ID has exactly one reconciliation row and one audit trace |
@@ -25,9 +25,9 @@
 
 Important distinctions:
 
-- `❌ absent` is an implementation result, not an evidence failure. It is used
-  below for `PG-THEME-001` because source, controls, and preference handling
-  were searched and no user-visible theme capability was found.
+- `❌ absent` is an implementation result, not an evidence failure. No selected
+  capability is currently absent at the Playground source boundary; browser and
+  device limitations remain in the evidence dimension below.
 - `environment-limited` and `deferred-device` qualify evidence only. They do
   not turn an implemented capability into `❌`, and they do not hide an absent
   capability.
@@ -47,12 +47,34 @@ Important distinctions:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 30 implemented, 6 partial, 1 absent, 0 broken, 0 deferred, 0 not applicable |
+| Result counts | 34 implemented, 3 partial, 0 absent, 0 broken, 0 deferred, 0 not applicable |
 | Implementation, evidence, and scope columns present | Yes, on every row |
 | Audit trace present | Yes, every row points to the matching audit ID and evidence section |
 | Required evidence sources represented | Yes: `playground` surface, `docs/REPOSITORY-MAP.md`, `docs/MATURATION-MASTER-PLAN.md`, and `docs/capability-map` |
 
-## 3. One-to-one reconciliation register
+## 3. Task-bound selection and accepted contracts
+
+The active implementation tranche selects six gaps from the expected catalog
+and this audit. The table is the explicit owner/source/acceptance boundary for
+the downstream implementation and verification tasks. All selected rows are
+owned at the browser-IDE boundary by `relgeo/playground`; DSL, core, language-
+service, and renderer packages remain semantic owners where referenced.
+
+| ID | Owner | Source paths | Acceptance behavior |
+| --- | --- | --- | --- |
+| `PG-THEME-001` | `relgeo/playground` UI/product owner | `playground/src/styles/tokens.css`; `playground/src/index.css`; `playground/src/App.tsx`; `playground/src/__tests__/` | Initial mode is `system` following browser/OS `prefers-color-scheme`; explicit `light` and `dark` overrides work; browser-local persistence is used where available; all Playground surfaces remain readable. |
+| `PG-LIFE-002` | `relgeo/playground` lifecycle owner | `playground/src/App.tsx`; `playground/src/playground-status.ts`; `playground/src/indexeddb-persistence.ts`; `playground/e2e/playground.spec.ts` | Bootstrap, restore, resolving, ready, and failure states are visibly distinct and do not lose source or focus. |
+| `PG-CANVAS-005` | `relgeo/playground` Preview/App owner | `playground/src/App.tsx`; `playground/src/components/Preview.tsx`; `playground/src/view-state.ts`; `playground/src/preview-toolbar.ts`; `playground/src/__tests__/` | A dedicated viewport reset changes camera state only and leaves source, file identity, dirty state, selection, and persisted content unchanged. |
+| `PG-KEY-001` | `relgeo/playground` UI/accessibility owner | `playground/src/App.tsx`; `playground/src/components/Navbar.tsx`; `playground/src/components/FileWorkspacePicker.tsx`; `playground/src/components/Editor.tsx`; `playground/e2e/playground.spec.ts` | Primary file, surface, viewport, diagnostics, drawer/panel, and confirmation actions have documented keyboard access with editable-field and browser-key safety. |
+| `PG-A11Y-001` | `relgeo/playground` UI/accessibility owner | `playground/scripts/audit-ux-contract.mjs`; `playground/src/App.tsx`; `playground/src/components/Navbar.tsx`; `playground/src/components/Inspector.tsx`; `playground/src/components/Sidebar.tsx`; `playground/src/components/Editor.tsx` | Supported-browser DOM/ARIA and keyboard checks cover landmarks, names, states, announcements, focus return/traps, and source/preview navigation; native AT evidence stays separately labeled. |
+| `PG-A11Y-002` | `relgeo/playground` UI/accessibility owner | `playground/src/styles/tokens.css`; `playground/src/index.css`; `playground/src/preview-toolbar.ts`; `playground/scripts/audit-ux-contract.mjs`; `playground/e2e/mobile-playground.spec.ts` | Contrast/focus, target size, reduced motion, and non-gesture alternatives pass at supported browser breakpoints; physical-device evidence is deferred or verified explicitly. |
+
+`PG-DELIVERY-001` is excluded from this tranche because hosted `/playground/`
+parity is a delivery verification follow-up, not a prerequisite for local
+capability work. The theme contract above is accepted task data; it does not
+open a separate human decision.
+
+## 4. One-to-one reconciliation register
 
 | ID | Expected capability / user outcome | Result | Implementation status | Evidence status | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -80,31 +102,28 @@ Important distinctions:
 | `PG-CANVAS-002` | Zoom the screen viewport with understandable bounded controls | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; screen camera, not model mutation | Audit §3 `PG-CANVAS-002`; toolbar, clamped state, Ctrl/Meta+wheel |
 | `PG-CANVAS-003` | Pan with pointer/touch and have a non-gesture alternative | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; physical touch evidence deferred by scope decision | Audit §3 `PG-CANVAS-003`; pointer/pinch handlers and gesture tests |
 | `PG-CANVAS-004` | Fit or recenter the scene after resolve, resize, or sheet change | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; camera contract | Audit §3 `PG-CANVAS-004`; fit/recenter and `ResizeObserver` |
-| `PG-CANVAS-005` | Reset camera/zoom deterministically without changing source or file | `🌗 partial` | `partial` | `partial-local` | `in scope`; dedicated viewport action remains a gap | Audit §3 `PG-CANVAS-005`; Reset source also resets camera, no camera-only command |
+| `PG-CANVAS-005` | Reset camera/zoom deterministically without changing source or file | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; dedicated viewport action is implemented, browser preservation proof pending | Audit §3 `PG-CANVAS-005`; camera-only reset, unit coverage, and toolbar binding |
 | `PG-CANVAS-006` | Select sheet/view and switch Both, Source, Preview, Model, or Physical surfaces | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no print-workbench parity claim | Audit §3 `PG-CANVAS-006`; sheet, surface, and layout controls |
 | `PG-SELECT-001` | Select object/anchor and keep related context focused | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; stable DSL identity delegated to spec | Audit §3 `PG-SELECT-001`; Preview anchors, Inspector selection, related navigation |
 | `PG-INSPECT-001` | Inspect geometry, metadata, parameters, layers, values, and BOM | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; contextual inspector | Audit §3 `PG-INSPECT-001`; Resolved, Values, BOM and filters |
 | `PG-INSPECT-002` | Filter, focus, select, and navigate the dependency graph | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; graph zoom/minimap optional, not expected baseline | Audit §3 `PG-INSPECT-002`; GraphViewer focus/filter/roving navigation |
-| `PG-THEME-001` | Use a readable user-visible theme across editor, canvas, controls, and diagnostics | `❌ absent` | `absent` | `verified-absence` | `expected-but-missing`; Playground owns theme control and preference | Audit §3 `PG-THEME-001`; static tokens only, no theme control or preference |
+| `PG-THEME-001` | Use a readable user-visible theme across editor, canvas, controls, and diagnostics | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; Playground owns theme control and preference | Audit §3 `PG-THEME-001`; system/light/dark mode, local persistence, tokens, and unit/E2E definitions |
 | `PG-RESP-001` | Use the layout on desktop, tablet, and handset without inaccessible overflow | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; physical handset validation deferred | Audit §3 `PG-RESP-001`; breakpoints, drawer, surface switcher, split modes |
-| `PG-KEY-001` | Run primary actions through keyboard and documented command surface | `🌗 partial` | `partial` | `partial-local` | `in scope`; shortcut map is incomplete | Audit §3 `PG-KEY-001`; native controls, Escape, graph/resizer keys, no file shortcut map |
-| `PG-A11Y-001` | Expose landmarks, names, states, focus management, announcements, and navigation to AT | `🌗 partial` | `partial` | `deferred-device` | `in scope`; native AT evidence deferred/follow-up | Audit §3 `PG-A11Y-001`; ARIA, live status, traps, skip links; no native session |
-| `PG-A11Y-002` | Provide reduced motion, focus/contrast tolerance, target usability, and non-gesture actions | `🌗 partial` | `partial` | `deferred-device` | `in scope`; device/visual verification remains follow-up | Audit §3 `PG-A11Y-002`; reduced motion, focus and keyboard alternatives |
+| `PG-KEY-001` | Run primary actions through keyboard and documented command surface | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; documented command map is implemented, browser focus proof pending | Audit §3 `PG-KEY-001`; Mod+Alt dispatcher, documentation, unit tests, and E2E definition |
+| `PG-A11Y-001` | Expose landmarks, names, states, focus management, announcements, and navigation to AT | `🌗 partial` | `partial` | `partial-local` | `in scope`; local web semantics are implemented, browser/native AT evidence pending | Audit §3 `PG-A11Y-001`; ARIA, live status, traps, skip links, and static UX audit |
+| `PG-A11Y-002` | Provide reduced motion, focus/contrast tolerance, target usability, and non-gesture actions | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; source/static UX contract is implemented, physical evidence pending | Audit §3 `PG-A11Y-002`; reduced motion, forced-colors fallback, targets, and non-gesture alternatives |
 | `PG-SHARE-001` | Share source through URL/hash with feedback, clipboard fallback, and size guard | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no account/cloud collaboration | Audit §3 `PG-SHARE-001`; Base64URL, length guard, history and clipboard |
 | `PG-SHARE-002` | Keep shared source transient until explicit Save as, with distinct recovery states | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no silent local overwrite | Audit §3 `PG-SHARE-002`; Shared draft, Save as, invalid/oversized hash paths |
 | `PG-DELIVERY-001` | Serve the tested build consistently at hosted `/playground/` | `🌗 partial` | `partial` | `environment-limited` | `in scope`; delivery guardrail spans Playground and Pages | Audit §3 `PG-DELIVERY-001`; local Vite build/base pass, public parity unverified |
 
-## 4. Findings and handoff
+## 5. Findings and handoff
 
-### Implementation gaps retained as explicit `❌` or `🌗`
+### Implementation gaps retained as explicit `🌗`
 
 | Result | IDs | Finding |
 | --- | --- | --- |
-| `❌ absent` | `PG-THEME-001` | No theme control, mode preference, dark/system selector, or theme persistence was found. |
-| `🌗 partial` | `PG-KEY-001` | Keyboard navigation exists, but no explicit app-wide shortcut map covers primary file actions and viewport reset. |
-| `🌗 partial` | `PG-CANVAS-005` | Reset source resets camera as a side effect; a dedicated camera-only reset is absent. |
 | `🌗 partial` | `PG-LIFE-002` | Startup loading is represented by fallback/status paths, not one complete explicit bootstrap state. |
-| `🌗 partial` | `PG-A11Y-001`, `PG-A11Y-002` | Web semantics and tolerance mechanisms exist, but native AT/device and current browser evidence remain incomplete. |
+| `🌗 partial` | `PG-A11Y-001` | Web semantics and tolerance mechanisms exist, but native AT and current browser traversal evidence remain incomplete. |
 | `🌗 partial` | `PG-DELIVERY-001` | Local artifact is verified; hosted Pages parity and smoke are not current-verified. |
 
 ### Evidence and scope limitations

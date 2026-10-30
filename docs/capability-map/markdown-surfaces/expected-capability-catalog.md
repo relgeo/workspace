@@ -21,6 +21,21 @@ sudah memiliki dasar yang dapat ditelusuri. Source, test, consumer, dan runtime
 evidence boleh dipakai pada audit downstream, tetapi tidak boleh menghapus atau
 menyusutkan expected set pada dokumen ini.
 
+### Downstream reconciliation snapshot
+
+The 38 expected IDs are now joined to the implementation audit, reconciliation,
+status matrix, and gap backlog. The current observed snapshot is **16
+implemented**, **18 partial**, **1 absent**, **1 not applicable**, and **2
+unverified**; no implementation row is currently broken or deferred. This
+catalog remains the normative expected baseline: row-level observed status,
+evidence, remaining gaps, owners, dependencies, and next actions are maintained
+in the linked downstream records rather than replacing the requirement rows
+here.
+
+See [implementation audit](./implementation-audit.md),
+[reconciliation](./reconciliation.md), [status matrix](./status-matrix.md),
+and [implementation-gap backlog](./implementation-gap-backlog.md).
+
 ## Sumber enumerasi awal
 
 Daftar capability di bawah diturunkan dari sumber berikut, **bukan dari kode,

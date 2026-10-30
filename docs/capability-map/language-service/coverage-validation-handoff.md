@@ -132,7 +132,8 @@ implementation symbols above; verification availability is reported separately.
 - LS-CONS-003 and LS-CONS-004 are ⏸️ because MCP/desktop adapter delivery is
   held by the stated roadmap boundary.
 - LS-RANGE-002, LS-INCR-001, and LS-VERS-002 remain ❌ implementation gaps.
-- LS-CONS-005 remains ⚠️ because README/API/version provenance is inconsistent.
+- LS-CONS-005 is ✔️ at the local source boundary after README/API/version repair;
+  packed/registry/public delivery remains an evidence limitation.
 - Browser, registry, current CI, and native evidence limitations are ? evidence
   findings, not scope decisions.
 

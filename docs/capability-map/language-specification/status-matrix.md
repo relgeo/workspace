@@ -24,7 +24,7 @@ adalah dimensi terpisah.
 | `⏸️` | Sengaja deferred/ditahan oleh keputusan scope atau promotion. Tidak ada whole-capability row saat ini. |
 | `⚠️` | Broken/mismatch terkonfirmasi pada boundary yang diaudit. |
 
-Current count: **16 `✔️` · 35 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` · 2 `⚠️`**.
+Current count: **16 `✔️` · 36 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` · 1 `⚠️`**.
 Evidence `not verified` tetap ditulis di kolom evidence dan tidak otomatis
 menjadi `❌` atau `➖`.
 
@@ -62,7 +62,7 @@ it does not remove an expected capability from the matrix.
 | `LANG-002` | Relational/deterministic semantics | `🌗` | spec core; graph/resolver tests | Negative no-solver boundary dan full syntax map belum terpusat | `relgeo/spec` + `core` | graph, validator | False parity claim | Tambah contract/drift fixture |
 | `DOC-001` | Root document sections | `✔️` | parser/validator; fixture 10 | Generated section schema absent | `relgeo/spec` | core parser | Section drift | Tambah section contract check |
 | `DOC-002` | Scene/unit/viewport configuration | `✔️` | scene/unit tests | Combination coverage terbatas | `relgeo/spec` + `core` | units, renderer | Viewport mismatch | Tambah scene conformance cases |
-| `DOC-003` | Editorial vocabulary/readability | `🌗` | spec/editorial guide/examples | Index normative/informative labeling inconsistent | `relgeo/spec` | website/docs | Author confusion | Reconcile labels and add docs check |
+| `DOC-003` | Editorial vocabulary/readability | `🌗` | spec/editorial guide/examples; `language-spec:check` | Current document status labels pass; broader editorial/example vocabulary is not generated | `relgeo/spec` | website/docs | Author confusion | Extend the docs vocabulary check beyond status labels |
 | `DECL-001` | Typed parameters/defaults/structured params | `🌗` | evaluator; structured parameter tests; fixture 16 | Candidate unit/evaluator not active | `relgeo/core` | evaluator, CLI, Flutter | Unpromoted input semantics | Define promotion gate and active fixture |
 | `DECL-002` | Immutable constants | `✔️` | values resolver/tests | Shared override-negative fixture limited | `relgeo/spec` + `core` | graph/evaluator | Silent mutation regression | Add immutable/profile negative fixture |
 | `DECL-003` | Read-only derived values/scopes | `✔️` | evaluator; derived access tests | Full cycle/error inventory absent | `relgeo/core` | graph, queries | Hidden dependency errors | Add derived error fixture set |
@@ -106,7 +106,7 @@ it does not remove an expected capability from the matrix.
 | `DIAG-002` | Stable error code/path/payload | `⚠️` | raw `Error` paths; error-model spec | Structured model violated by raw throws | `relgeo/core` | DIAG-001, ERR-001 | Broken consumer contract | Normalize all resolver errors |
 | `ERR-001` | Error phase/fail-safe modes | `🌗` | tolerant/validation tests; runtime fixtures | Cross-consumer fail-safe coverage incomplete | `relgeo/core` | diagnostics, Playground | Stale/invalid preview confusion | Add mode/last-valid-preview tests |
 | `SER-001` | Canonical resolved-scene JSON | `🌗` | CLI JSON; expected JSON snapshots | Shape/order/number/error contract not normative | `relgeo/core` + `cli` | ERR-001, VER-002 | Unstable diffs/API | Decide and lock JSON schema |
-| `SER-002` | Safe semantic SVG serialization | `⚠️` | renderer snapshots/security checks | Dimension/annotation escaping defect remains | `relgeo/renderer-svg` | PRES-001/002, META-001 | Unsafe or non-portable output | Fix escaping; add security regressions |
+| `SER-002` | Safe semantic SVG serialization | `🌗` | renderer security tests; v0.5 presentation-escaping fixture; conformance 260/260 | Selected dimension/annotation text and presentation attributes are escaped; broader consumer/host evidence remains incomplete | `relgeo/renderer-svg` | PRES-001/002, META-001 | Unsafe or non-portable output | Extend CLI/Markdown/Playground escaping snapshots |
 | `VER-001` | Explicit/omitted version | `✔️` | parser/schema/fixtures 17/18 | Policy duplicated | `relgeo/spec` + `core` | LS, manifest | Version drift | Keep negative fixtures |
 | `VER-002` | Active/legacy/future compatibility | `✔️` | manifest/parser/checker | Consumer declarations duplicated | `relgeo/workspace` | all consumers | Silent downgrade | Add generated compatibility metadata |
 | `VER-003` | Backward aliases/fallbacks | `🌗` | styles/metaPresets resolver/schema | Provenance not centralized | `relgeo/spec` + `core` | META-002 | Legacy semantic drift | Inventory aliases and fixtures |

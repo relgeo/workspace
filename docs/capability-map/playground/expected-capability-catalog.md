@@ -40,8 +40,8 @@ public artifact dilakukan pada task audit setelah katalog ini disepakati.
 
 Katalog tetap memuat kewajiban yang belum dibuat, ditunda, atau masih menunggu
 keputusan rinci. Contohnya adalah workspace backup/restore (`PG-PERSIST-003`),
-mode/default/persistensi theme (`PG-THEME-001`), key map shortcut (`PG-KEY-001`),
-dan evidence native assistive technology (`PG-A11Y-001`). Row tersebut tidak
+key map shortcut (`PG-KEY-001`), dan evidence native assistive technology
+(`PG-A11Y-001`). Row tersebut tidak
 boleh dihapus hanya karena implementation audit berikutnya belum menemukan
 symbol, test, atau runtime evidence.
 
@@ -108,7 +108,7 @@ Journey produk yang menjadi kerangka katalog:
 | Export meaning | **In scope:** export/download source DSL (`.yaml`). Raw SVG/print-workbench export bukan baseline Playground dan membutuhkan keputusan terpisah bila ingin dipromosikan. |
 | Share meaning | **In scope:** URL/hash share sebagai transient source sampai pengguna memilih save; tidak boleh diam-diam menimpa active local file. |
 | Viewport meaning | **In scope:** model-preview viewport untuk authoring/inspection. Sheet/view preview boleh ada sebagai surface baca, tetapi Playground bukan print workbench penuh. |
-| Theme | **In scope sebagai capability user-visible**. Mode tepat (mis. light/dark/system), default, dan persistensi preference perlu ditetapkan sebelum implementation audit ditutup. |
+| Theme | **In scope sebagai capability user-visible**. Kontrak yang diterima: mode awal `system` mengikuti browser/OS `prefers-color-scheme`; pengguna dapat memilih override eksplisit `light` atau `dark`; preference boleh dipersist secara browser-local bila storage tersedia. Tidak ada keputusan manusia tambahan yang dibuka untuk kontrak ini. |
 | Keyboard | **In scope sebagai command surface.** Exact shortcut bindings belum ditentukan oleh source requirement; aksi utama tetap harus tersedia lewat keyboard dan menu/accessible controls. |
 | Responsive/mobile | Responsive browser layout dan surface switch/drawer termasuk scope aktif. Physical Android/iOS touch, TalkBack, iOS VoiceOver, dan Safari mobile tetap deferred tanpa tanggal sesuai S8. |
 | Accessibility | Keyboard/DOM/AX semantics, focus, state announcement, reduced motion, dan target control termasuk expected baseline. Native screen-reader/device evidence adalah verification follow-up, bukan alasan menghapus row. |
@@ -151,7 +151,7 @@ status` sengaja sama untuk semua row sampai implementation audit dimulai.
 | PG-SELECT-001 | Authoring and UX | **Selection:** memilih object/anchor pada preview atau context surface memperbarui selected state dan hubungan yang relevan tanpa kehilangan single-selection focus. | S3, S6, S9 | In scope; selection identity mengikuti stable DSL object identity dari spec. | Owner: Playground UI; source: `spec/id/core/05-semantic-guarantees.md`, S3/S6 selection contract. | `not verified — expected-only` |
 | PG-INSPECT-001 | Authoring and UX | **Inspector:** pengguna membaca geometry/object metadata, parameters, layers, values, dan BOM/context yang relevan terhadap selection. | S3, S4, S6, S9 | In scope sebagai optional context; bukan layar utama pengganti editor/preview. | Owner: `relgeo/playground`; source: S3/S4/S6 inspector expectations. | `not verified — expected-only` |
 | PG-INSPECT-002 | Authoring and UX | **Graph/dependency navigation:** pengguna mencari, memfilter, memfokuskan, dan memilih dependency graph lalu kembali ke object/source/preview. | S3, S4, S6, S9 | In scope untuk graph navigation; graph zoom/minimap ditahan sebagai optional enhancement. | Owner: `relgeo/playground`; source: S3 workstream D, S6 U08/U10/U21. | `not verified — expected-only` |
-| PG-THEME-001 | Platform and accessibility | **Theme:** pengguna dapat memakai theme yang menjaga keterbacaan editor, canvas, controls, diagnostics, focus, dan status. | S3 visual/accessibility principles, S6 visual system, S9 explicit scope | In scope; exact modes/default/preference persistence pending product decision. | Owner: `relgeo/playground`; source: S3/S6 visual rules; decision detail required. | `not verified — expected-only` |
+| PG-THEME-001 | Platform and accessibility | **Theme:** pengguna dapat memakai theme yang menjaga keterbacaan editor, canvas, controls, diagnostics, focus, dan status. Mode awal `system` mengikuti browser/OS `prefers-color-scheme`; explicit `light`/`dark` override tersedia dan dapat dipersist secara browser-local bila didukung. | S3 visual/accessibility principles, S6 visual system, S9 explicit scope | In scope; accepted mode contract is fixed for implementation and verification. | Owner: `relgeo/playground`; source: `playground/src/styles/tokens.css`, `playground/src/index.css`, `playground/src/App.tsx`, and focused theme tests. | `not verified — expected-only` |
 | PG-RESP-001 | Platform and accessibility | **Responsive layout:** layout tetap usable pada desktop/tablet/handset; Source, Preview, sidebar/context, sheet, dan error state tetap reachable tanpa page-level overflow. | S3, S6, S8, S9 | In scope untuk browser responsive; physical handset validation deferred, bukan dihapus dari expectation. | Owner: `relgeo/playground`; source: S3 breakpoint matrix, S6 viewport contract, S8 decision. | `not verified — expected-only` |
 | PG-KEY-001 | Platform and accessibility | **Keyboard command surface:** aksi utama—open/new/save/save as/import/export, surface switch, selection, fit/reset, diagnostics, drawer/panel, dan confirmation—dapat dijalankan via keyboard; shortcut bindings terdokumentasi bila ditetapkan. | S3, S5, S6, S9 | In scope; exact key map pending decision, tetapi mouse-only primary workflow out of scope. | Owner: `relgeo/playground`; source: S3 keyboard sweep, S5 keyboard file actions, S6 accessibility contract. | `not verified — expected-only` |
 | PG-A11Y-001 | Platform and accessibility | **Accessibility semantics:** landmarks, names, roles, focus-visible, selected/expanded/pressed/value state, focus trap/return, error announcement, and source/preview navigation are exposed to assistive technology. | S3, S6, S8, S9 | In scope for web semantics; native VoiceOver/TalkBack evidence deferred/verification follow-up. | Owner: `relgeo/playground`; source: S3 Workstream E, S6 acceptance, S8 QA decision. | `not verified — expected-only` |
@@ -204,4 +204,7 @@ audit ID-by-ID, tetapi harus mempertahankan tiga hal berikut:
 
 Implementation audit berikutnya harus menggunakan katalog ini sebagai daftar
 join satu-ke-satu dan boleh menambahkan evidence path, limitation, gap, serta
-next action tanpa mengubah expectation secara diam-diam.
+next action tanpa mengubah expectation secara diam-diam. Untuk tranche aktif,
+join yang dipilih adalah `PG-THEME-001`, `PG-LIFE-002`, `PG-CANVAS-005`,
+`PG-KEY-001`, `PG-A11Y-001`, dan `PG-A11Y-002`; `PG-DELIVERY-001` tetap
+verification follow-up di luar dependency implementasi lokal.

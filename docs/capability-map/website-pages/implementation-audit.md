@@ -84,7 +84,7 @@ Verification states are kept separate from implementation status:
 | --- | --- | --- | --- |
 | `WEB-PAGE-001` | Static route families exist for gateway `/`, localized `/id/` and `/en/`, localized product pages, docs, language-spec pages, legacy routes, sitemap, assets, and Playground handoff. The local build emitted 138 pages. | `implemented` | `verified-local` for generation and selected built routes via `pnpm test`; `unverified-public` for reachability. Full route/link crawl is not implemented as a dedicated checker. |
 | `WEB-PAGE-002` | Shared layout provides global nav, active route state, language switcher, docs index groups/reading path, docs leaf sidebar/next reading, spec sidebar/current section, article index, and CTA links. | `implemented` | `verified-local` for selected active-navigation/localization assertions; broader keyboard traversal and all-link behavior remain `observed-local`. |
-| `WEB-PAGE-003` | Docs/spec indexes and sidebars provide deterministic wayfinding, but no search input, query handling, search index, or empty/no-result behavior was found in `src`, `public`, or scripts. | `partial` | Query search is absent; deterministic index/links are present. The expected capability is therefore not fully satisfied. |
+| `WEB-PAGE-003` | Docs/spec indexes now expose a deterministic, localized topic search surface with indexed titles, summaries, route links, live result counts, and an explicit no-result state; query search remains intentionally out of scope for this local baseline. | `partial` | `verified-local` for generated search markup and filtering assertions; a full browser interaction sweep and any product decision requiring server/query search remain open. |
 | `WEB-PAGE-004` | `id` and `en` route shells, localized copy, `hreflang`, language switcher, and parallel editorial content exist. The language-spec loader defaults to `../spec/id`, and Pages explicitly uses `.ci/spec/id` for both language routes; `spec/en/README.md` is only a placeholder. | `partial` | `verified-local` for localized route shell; English normative-content parity is absent. Built English spec contains Indonesian markers such as `Tujuan` and `Cara Membaca`, and the English placeholder itself is not rendered as the source. |
 | `WEB-PAGE-005` | Onboarding, current capabilities, use cases, CLI, Playground, desktop boundary, Markdown surfaces, language status, docs index, and active spec index/leaf routes are implemented. | `partial` | `verified-local` for 138-page generation and docs assertions. The English language-spec presentation is materially incomplete, so the full bilingual reference outcome is partial. |
 | `WEB-PAGE-006` | Website content contains onboarding, CLI, Playground, Markdown `rg`/`relgeo`, capability, and status examples. Built-output assertions verify both Markdown surfaces and Getting Started markers. | `implemented` | `verified-local` with `pnpm test`; semantic correctness of every prose example is not independently validated by the website package. |
@@ -121,7 +121,55 @@ Verification states are kept separate from implementation status:
 | `pnpm run test:pages-artifact` after standalone website build | FAIL at missing `dist/playground/index.html` | Confirms the website build alone is not the complete Pages artifact. This is an assembly boundary, not a broken assertion. |
 | `playground: pnpm build`, copy `playground/dist` into `relgeo.github.io/dist/playground`, then `pnpm run test:pages-artifact` | PASS; 3 Playground assets checked | Local combined artifact satisfies Pages assertion at root Playground `59a42ae`. |
 | Direct `curl` probes for the 13 routes in `smoke-public-site.mjs` | All `HTTP 000`, curl exit 6, DNS resolution failure | Current public runtime is `unverified / environment unavailable`; not a product defect verdict. |
-| **Fresh 2026-10-30:** source/output spot checks against `relgeo.github.io/src/` and `dist/en/docs/language-spec/index.html` | No search input/index/no-result implementation found; built English spec contains `Tujuan` and `Cara Membaca` headings | Preserves `WEB-PAGE-003`’s missing query-search sub-capability and `WEB-PAGE-004`’s incomplete English normative-content parity as implementation gaps, not environment failures. |
+| **Fresh 2026-10-30:** source/output spot checks against `relgeo.github.io/src/` and `dist/en/docs/language-spec/index.html` | Docs indexes contain localized search markup with indexed topics and no-result affordances; built English spec contains `Tujuan` and `Cara Membaca` headings plus the mirror disclosure | Preserves `WEB-PAGE-003` as partial because query search is not claimed, and `WEB-PAGE-004` as partial because English normative-content parity remains incomplete; these are implementation boundaries, not environment failures. |
+
+### Fresh audit checkpoint — 2026-10-30
+
+The following checks were rerun against the current working tree, including the
+existing local changes in `relgeo.github.io/astro.config.mjs` and
+`relgeo.github.io/scripts/assert-built-output.mjs`. Those changes were not
+discarded or treated as committed release evidence.
+
+| Check | Current result | Audit interpretation |
+| --- | --- | --- |
+| `RELGEO_DOCS_SITE_URL=https://relgeo.github.io RELGEO_DOCS_BASE=/ pnpm build` | PASS; 138 pages | Local route/content generation is working for the declared website surface. |
+| `pnpm check` | PASS; 0 errors, 0 warnings, 0 hints | Current Astro/content/type diagnostics are clean. |
+| `pnpm test` | PASS; built-output assertions passed | Current generated output satisfies the existing metadata, localized navigation, Markdown, accessibility-shell, stylesheet, and preview-error gates. |
+| `playground: pnpm build` and `playground: pnpm test` | PASS; current root `playground@59a42ae`; 16 test files and 99 tests passed | The current local child artifact builds and its unit suite passes; this is child-runtime evidence, not a hosted/public pass. |
+| `pnpm run test:pages-artifact` after the standalone website build | FAIL; `dist/playground/index.html` is absent | Expected assembly boundary: the website build alone is not the complete Pages artifact; this is not classified as a broken website assertion. |
+| Copy current `playground/dist` into `relgeo.github.io/dist/playground`, then `pnpm run test:pages-artifact` | PASS; 3 Playground assets checked | The current local combined artifact satisfies the Pages assertion; workflow-pin/baseline parity and deployment remain unverified. |
+| Generated-output spot check | 138 HTML files, 84 sitemap URLs; English language-spec index contains `Tujuan` and `Cara Membaca` | Route generation and sitemap exist; English normative-content parity remains incomplete and the output is not claimed as translated. |
+| Catalog/status coverage check | PASS; 15 unique `WEB-PAGE-*` IDs in catalog, audit, and status matrix | The one-to-one audit join remains intact; status symbols are not inferred from the build pass. |
+| `pnpm provenance:report` | PASS; report written to `dist/relgeo-provenance.json`, with three declared Playground revision mismatches | The checker makes local provenance drift explicit without claiming an approved revision set; strict parity remains a separate failing gate until the owner selects a revision. |
+| `RELGEO_DOCS_REQUIRE_PUBLIC_URL=1 RELGEO_DOCS_SITE_URL=https://example.com pnpm build` | Expected FAIL at the deployment URL gate | The Pages build contract rejects the placeholder host when the release workflow enables the required public-site assertion. |
+
+### Focused verification checkpoint — 2026-10-30
+
+This checkpoint records the focused-test task against the current working tree.
+Passing local checks are evidence for the named boundary only; the public probe
+and strict provenance result remain explicit limitations.
+
+| Check | Current result | Audit interpretation |
+| --- | --- | --- |
+| `relgeo.github.io: pnpm check` | PASS; 25 Astro files, 0 errors, 0 warnings, 0 hints | Website type/content diagnostics are clean. |
+| `relgeo.github.io: RELGEO_DOCS_SITE_URL=https://relgeo.github.io RELGEO_DOCS_BASE=/ pnpm build` | PASS; 138 pages | The deployment-configured static site builds locally. |
+| `relgeo.github.io: pnpm test` | PASS; built-output assertions passed | Search/filtering/no-result markup and handler markers, English mirror disclosure, metadata, navigation, accessibility shell, Markdown, and preview-error assertions pass. |
+| `playground: pnpm build` | PASS; TypeScript and Vite build completed; Vite emitted a non-failing >500 kB chunk warning | The current local Playground consumer artifact builds; the size warning remains visible and is not treated as a website failure. |
+| `playground: pnpm test` | PASS; 16 test files and 99 tests | The current child consumer/runtime suite passes locally. |
+| `relgeo.github.io: pnpm provenance:report` | PASS; report generated with `synchronized: false` and 3 Playground revision mismatches | Provenance drift is reported deterministically without selecting an unapproved revision. |
+| `relgeo.github.io: pnpm provenance:check` | Expected FAIL; strict parity rejects the same 3 mismatches | The strict gate is functioning; revision synchronization remains an owner decision, not a failed target implementation. |
+| Reassembled `dist/playground` plus `pnpm run test:pages-artifact` | PASS; 3 Playground assets checked | The local combined Pages artifact is structurally valid for the current root Playground build. |
+| `curl --connect-timeout 5 --max-time 10 https://relgeo.github.io/` | FAIL; curl exit 6, `Could not resolve host` | Public reachability is environment-unavailable here; no public defect is inferred. |
+| `node scripts/run-integration-gate.mjs --local` | Not run past the preflight; the gate requires Node 24+, while this environment has Node 22.23.2 | The broader root integration gate is not verified in this environment; focused website/Playground checks and the combined artifact gate remain independent evidence. |
+
+The six-row bounded intake is recorded in the [website bounded in-scope
+selection](./in-scope-selection.md): six `🌗` rows (`WEB-PAGE-003`, `004`,
+`005`, `010`, `011`, `012`) after the deterministic search baseline and
+deployment-aware checks were implemented locally. No `➖` or `⏸️` row is active.
+The public smoke, Pages deployment run, current pinned-revision parity,
+responsive runtime matrix, browser AX/keyboard sweep, and physical
+assistive-technology evidence remain separately labeled `unverified`,
+`environment-unavailable`, or `deferred-external` as applicable.
 
 Historical evidence in Plan 05 and the Master Plan is retained as historical
 context only. It does not replace the current public probe, current pinned
@@ -129,6 +177,12 @@ revision parity, or current CI result.
 
 ## 6. Revision and ownership observations
 
+- Evidence was collected from the current uncommitted worktree: root workspace
+  HEAD `1cfa86553d7adb18179c6b3e1a33618a179b1414`, website child HEAD
+  `5c4576ec83ff7d4beebcbc1553c716711b91db68`, Playground child HEAD
+  `59a42ae925cf0c21541bc19ccac39f5061b35439`, and spec child HEAD
+  `b96ba3b23de202227eade06614635ef6717df516`. No commit was created by this
+  handoff; existing unrelated dirty worktree changes were preserved.
 - Website child HEAD is `5c4576ec83ff7d4beebcbc1553c716711b91db68`, matching the
   website entry in `docs/integration-baseline.json`.
 - Root `playground` gitlink is `59a42ae925cf0c21541bc19ccac39f5061b35439`.
@@ -176,3 +230,4 @@ workflow.
 - [Website/Pages status matrix](./status-matrix.md)
 - [Website/Pages implementation-gap backlog](./implementation-gap-backlog.md)
 - [Website/Pages coverage validation and handoff](./coverage-validation-handoff.md)
+- [Website bounded in-scope selection](./in-scope-selection.md)

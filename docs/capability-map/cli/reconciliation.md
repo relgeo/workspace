@@ -14,6 +14,7 @@
 | Policy sources | [Maturation master plan](../../MATURATION-MASTER-PLAN.md); [compatibility matrix](../../compatibility-matrix.json); [inventory protocol](../INVENTORY-PROTOCOL.md) |
 | Surface owner | `relgeo/cli` for command/I/O/automation/package boundary; `spec/`, `@relgeo/core`, and `@relgeo/renderer-svg` retain delegated semantics |
 | Status | Join complete; every expected ID has exactly one reconciliation row |
+| Bounded selection | [CLI bounded in-scope selection](./in-scope-selection.md); selection is separate from reconciliation status and evidence |
 
 ## 1. Reconciliation rules
 
@@ -47,10 +48,10 @@ Important distinction:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 17 implemented, 9 partial, 2 broken, 6 absent, 1 deferred |
+| Result counts | 21 implemented, 9 partial, 0 broken, 4 absent, 1 deferred |
 | Implementation/evidence/scope columns present on every row | Yes |
 | Audit trace present on every row | Yes; each trace points to the corresponding audit ID and evidence section |
-| Current evidence refresh | Yes; audit §6 records the 2026-10-30 CLI smoke revalidation (9/9) and direct negative probes; Node 24/CI/registry/cross-OS evidence remains separate and unverified |
+| Current evidence refresh | Yes; audit §6 records the 2026-10-30 CLI revalidation (23/23), build, conformance, compatibility, and direct boundary probes; Node 24/CI/registry/cross-OS evidence remains separate and unverified |
 
 ## 3. One-to-one reconciliation register
 
@@ -64,7 +65,7 @@ Important distinction:
 | `CLI-INIT-001` | `❌ absent` | `absent` | `verified-absence` | `expected-but-missing`; CLI owns starter workflow | Audit §3/§5 `CLI-INIT-001`; no `init` command/template found; negative probe |
 | `CLI-OPEN-001` | `🌗 partial` | `partial` | `partial-local` | `in scope`; named open workflow remains a CLI gap | Audit §3/§5 `CLI-OPEN-001`; path arguments exist, no `open` command |
 | `CLI-IN-001` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI filesystem input | Audit §5 `CLI-IN-001`; `cli/src/index.ts:33-39,125-131,198-204`; file tests |
-| `CLI-IN-002` | `❌ absent` | `absent` | `verified-absence` | `expected-but-missing`; CLI owns stdin protocol | Audit §3/§5 `CLI-IN-002`; `compile -` returns file-not-found |
+| `CLI-IN-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI owns stdin protocol | Audit §3/§5 `CLI-IN-002`; stdin, precedence, and empty-input tests |
 | `CLI-IN-003` | `🌗 partial` | `partial` | `partial-local` | `in scope`; input precedence/encoding contract incomplete | Audit §5 `CLI-IN-003`; UTF-8/path source exists, stdin/empty precedence absent |
 | `CLI-INSPECT-001` | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; CLI delegates document semantics to core/spec | Audit §3/§5 `CLI-INSPECT-001`; `info` source/tests; editor-mode limitation |
 
@@ -76,22 +77,22 @@ Important distinction:
 | `CLI-VALID-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; alias compatibility owned by CLI | Audit §3/§5 `CLI-VALID-002`; Commander alias and `validate --help` |
 | `CLI-RENDER-001` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; core/renderer remain semantic owners | Audit §5 `CLI-RENDER-001`; compile pipeline; conformance 260/260 |
 | `CLI-RENDER-002` | `🌗 partial` | `partial` | `partial-local` | `in scope`; option breadth and negative cases incomplete | Audit §5 `CLI-RENDER-002`; profile/param/unit options; limited tests/fixture |
-| `CLI-RENDER-003` | `🌗 partial` | `partial` | `partial-local` | `in scope`; sheet/view mapping bounded to renderer path | Audit §5 `CLI-RENDER-003`; `--sheet`; no direct invalid-selector test |
+| `CLI-RENDER-003` | `🌗 partial` | `partial` | `partial-local` | `in scope`; sheet/view mapping bounded to renderer path | Audit §5 `CLI-RENDER-003`; `--sheet`; missing-sheet smoke regression; valid/selector matrix remains incomplete |
 | `CLI-OUT-001` | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; core scene semantics, CLI serialization boundary | Audit §5 `CLI-OUT-001`; JSON test; no separate CLI schema |
 | `CLI-OUT-002` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; renderer owns SVG semantics | Audit §5 `CLI-OUT-002`; SVG test and exact fixture comparisons |
 | `CLI-OUT-003` | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; core owns graph semantics | Audit §5 `CLI-OUT-003`; graph test; no separately versioned graph schema |
-| `CLI-OUT-004` | `🌗 partial` | `partial` | `partial-local` | `in scope`; CLI owns stdout/file behavior | Audit §5 `CLI-OUT-004`; `fs.outputFile` source; no failure/overwrite tests |
+| `CLI-OUT-004` | `🌗 partial` | `partial` | `partial-local` | `in scope`; CLI owns stdout/file behavior | Audit §5 `CLI-OUT-004`; nested output, success-stream, and write-failure tests; matrix remains incomplete |
 
 ### C. Diagnostics, exits, and errors
 
 | ID | Reconciliation result | Implementation status | Evidence status | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
-| `CLI-DIAG-001` | `🌗 partial` | `partial` | `local-conformance` | `boundary only`; codes/semantics come from spec/core, CLI transport is incomplete | Audit §5 `CLI-DIAG-001`; core error codes reach CLI, no phase/severity envelope |
+| `CLI-DIAG-001` | `🌗 partial` | `partial` | `local-conformance` | `boundary only`; codes/semantics come from spec/core, CLI transport is bounded | Audit §5 `CLI-DIAG-001`; core fields and CLI phase/severity JSON envelope tests |
 | `CLI-DIAG-002` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; CLI owns human presentation | Audit §5 `CLI-DIAG-002`; stderr headings/codes/object/path; runtime fixtures |
-| `CLI-DIAG-003` | `❌ absent` | `absent` | `verified-absence` | `expected-but-missing`; CLI machine diagnostics contract | Audit §5 `CLI-DIAG-003`; no JSON diagnostics mode/envelope found |
-| `CLI-EXIT-001` | `🌗 partial` | `partial` | `partial-local` | `in scope`; CLI exit taxonomy incomplete | Audit §5 `CLI-EXIT-001`; common `0`/`1` behavior only, no documented classes |
-| `CLI-ERR-001` | `⚠️ broken` | `broken` | `mismatch-confirmed` | `in scope`; error boundary must reject unsupported formats | Audit §3/§5 `CLI-ERR-001`; unknown format emits JSON and exits `0` |
-| `CLI-ERR-002` | `⚠️ broken` | `broken` | `mismatch-confirmed` | `in scope`; CLI option/format/parameter validation | Audit §3/§5 `CLI-ERR-002`; malformed param ignored, unknown format accepted |
+| `CLI-DIAG-003` | `🌗 partial` | `partial` | `verified-local` | `in scope`; CLI machine diagnostics contract | Audit §5 `CLI-DIAG-003`; JSON stderr envelope tests for missing-file/runtime failures |
+| `CLI-EXIT-001` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI owns numeric exit taxonomy | Audit §5 `CLI-EXIT-001`; usage/input/validation/output category tests |
+| `CLI-ERR-001` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; error boundary must reject unsupported formats | Audit §3/§5 `CLI-ERR-001`; unknown format exits `2` without fallback |
+| `CLI-ERR-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI option/format/parameter validation | Audit §3/§5 `CLI-ERR-002`; strict format/param/profile/unit tests |
 
 ### D. Configuration, automation, and scripting
 
@@ -101,7 +102,7 @@ Important distinction:
 | `CLI-CONFIG-002` | `❌ absent` | `absent` | `verified-absence` | `expected-but-missing`; CLI automation environment contract | Audit §5 `CLI-CONFIG-002`; no documented color/prompt/CI config switches |
 | `CLI-AUTO-001` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; root scripts consume noninteractive CLI | Audit §5 `CLI-AUTO-001`; conformance/integration usage; Node24/CI limited |
 | `CLI-AUTO-002` | `❌ absent` | `absent` | `verified-absence` | `expected-but-missing`; CLI document watch lifecycle | Audit §3/§5 `CLI-AUTO-002`; no watch command/watcher/debounce found |
-| `CLI-AUTO-003` | `🌗 partial` | `partial` | `partial-local` | `in scope`; stream separation exists only on compile path | Audit §5 `CLI-AUTO-003`; progress stderr/data stdout; no explicit no-color/machine mode |
+| `CLI-AUTO-003` | `🌗 partial` | `partial` | `partial-local` | `in scope`; stream separation and no-color are implemented, broader host coverage remains | Audit §5 `CLI-AUTO-003`; stderr/stdout and explicit no-color tests |
 | `CLI-AUTO-004` | `⏸️ deferred` | `deferred` | `scope-held` | `held`; future daemon/JSON-RPC requires a separate protocol decision | Audit §4/§5 `CLI-AUTO-004`; no approved protocol or implementation |
 
 ### E. Packaging, compatibility, and cross-surface delivery

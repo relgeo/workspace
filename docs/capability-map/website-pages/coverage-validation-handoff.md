@@ -7,7 +7,7 @@
 ## 1. Hasil validasi
 
 Artefak website/Pages siap untuk review manusia sebagai baseline, evidence map,
-dan implementation handoff. Validasi ini **tidak** menyatakan website,
+selected local implementation evidence, dan implementation handoff. Validasi ini **tidak** menyatakan website,
 Playground handoff, Pages deployment, public runtime, responsive behavior,
 accessibility, atau English reference surface lengkap.
 
@@ -19,15 +19,19 @@ Klaim yang aman:
   evidence pada boundary yang diperiksa;
 - reconciliation dan status matrix memiliki **15/15 row** tanpa missing,
   extra, atau duplicate ID;
-- status matrix mempertahankan **4 `✔️`, 10 `🌗`, 1 `❌`, 0 `➖`, 0 `⏸️`,
+- status matrix mempertahankan **4 `✔️`, 11 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`,
   dan 0 `⚠️`**;
-- backlog memiliki **11 candidate task** untuk tepat seluruh 1 `❌` dan 10
+- backlog memiliki **11 candidate task** untuk tepat seluruh 0 `❌` dan 11
   `🌗` row, dengan owner/dependency, acceptance test atau evidence target, dan
   next action;
 - audit §5 memiliki fresh local checkpoint pada 2026-10-30: website build
-  menghasilkan 138 halaman, `pnpm check` bersih, dan `pnpm test` lulus;
-- dokumentasi ini, matrix, dan backlog tidak menutup gap implementasi atau
-  mempromosikan local evidence menjadi current CI, public, atau device evidence.
+  menghasilkan 138 halaman, `pnpm check` bersih, `pnpm test` lulus, Playground
+  build/test lulus (16 file, 99 test), dan combined Pages artifact assertion
+  lulus;
+- documentation and matrix updates do not close a gap by themselves; selected
+  source/config changes are only credited where the audit records focused
+  local evidence, and local evidence is not promoted to current CI, public, or
+  device evidence.
 
 ## 2. Rantai artefak
 
@@ -36,8 +40,9 @@ Klaim yang aman:
 | [Expected catalog](./expected-capability-catalog.md) | Daftar expected dari user journey, target pengguna, workflow, DSL/source-of-truth, roadmap, dan scope decision sebelum audit | 15 unique IDs; seluruh row memiliki outcome, requirement basis, scope, owner/source of truth, dan verification status awal |
 | [Implementation audit](./implementation-audit.md) | Observed source/content/route/UI/command/config/runtime/fixture/docs evidence | Discovery coverage tercatat; 15/15 expected IDs dibandingkan; public and device limits explicit |
 | [Reconciliation](./reconciliation.md) | One-to-one expected-versus-observed join dengan implementation/evidence/scope terpisah | 15/15 rows; missing/extra/duplicate = 0 |
-| [Status matrix](./status-matrix.md) | Capability-first compact view dengan status, evidence, gap, owner, dependency, risk, dan next action | 15 rows; full status legend; 4 `✔️`, 10 `🌗`, 1 `❌` |
+| [Status matrix](./status-matrix.md) | Capability-first compact view dengan status, evidence, gap, owner, dependency, risk, dan next action | 15 rows; full status legend; 4 `✔️`, 11 `🌗`, 0 `❌` |
 | [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate goals/tasks untuk gap implementasi, decision, provenance, dan verification | 11 tasks cover exactly all `❌`/`🌗` IDs; no task is marked complete |
+| [Website bounded in-scope selection](./in-scope-selection.md) | Bounded intake for the next implementation tranche | 6 selected rows with owner, source path, contract boundary, and acceptance behavior; no `➖` or `⏸️` row selected |
 | [Historical website matrix](./capability-matrix.md) | Prior inventory retained as historical evidence | Tidak digunakan sebagai source expected set; status matrix baru adalah downstream view dari catalog/audit/reconciliation |
 
 ## 3. Checklist coverage dan integrity
@@ -68,7 +73,7 @@ implementation-audit observation.
 | Declared capability category | Expected IDs | Audit coverage |
 | --- | --- | --- |
 | Route/content discovery and navigation/location | `WEB-PAGE-001`, `WEB-PAGE-002` | Audit §2–§4: route templates, localized paths, layout navigation, active state, sidebars, and handoff links |
-| Search and reference wayfinding | `WEB-PAGE-003` | Audit §4: indexes/sidebars observed; query search, index, and no-result behavior explicitly recorded as absent/incomplete |
+| Search and reference wayfinding | `WEB-PAGE-003` | Audit §4/§5: deterministic localized topic index, filtering, live status, and no-result behavior implemented locally; query/server search and browser interaction remain unverified/not claimed |
 | Localization and documentation/reference surfaces | `WEB-PAGE-004`, `WEB-PAGE-005` | Audit §2 and §4: `id`/`en` content, language-spec loader, docs collections, and English placeholder/parity boundary |
 | Examples and learning proof | `WEB-PAGE-006` | Audit §2–§5: Getting Started, CLI, Playground, Markdown examples and built-output assertions |
 | Playground/Markdown handoff and surface/command orientation | `WEB-PAGE-007`, `WEB-PAGE-008` | Audit §2–§4: CTA links, Markdown fences, docs groups, CLI orientation, and child-owner boundary |
@@ -133,12 +138,55 @@ backlog proposes, but does not start or complete, these workstreams:
 4. **`G-WEB-04`** close responsive, browser accessibility, and SEO evidence
    (`WEB-PAGE-009`, `010`, `011`).
 
-The 11 candidate tasks in the backlog must produce source/config/content
-changes or named executable verification evidence before a capability can move
-from `❌`/`🌗`. This handoff does not create, start, or mark any implementation
-goal complete, and it does not claim the website/Pages surface is complete.
+The selected tranche has produced source/config changes and named executable
+local evidence for `WEB-PAGE-003`, `004`, `005`, `010`, `011`, and `012`.
+The 11 candidate tasks remain visible because partial rows still require the
+follow-up evidence or decisions named by their acceptance boundaries. No task
+is promoted to complete, and this handoff does not claim the website/Pages
+surface is complete.
 
-## 7. Required evidence index
+## 7. Evidence boundary and remaining-gap handoff
+
+### Changed repository boundary
+
+Evidence was recorded from the current uncommitted worktree. The root
+workspace is at `1cfa86553d7adb18179c6b3e1a33618a179b1414`; the website child is
+at `5c4576ec83ff7d4beebcbc1553c716711b91db68`; the Playground child is at
+`59a42ae925cf0c21541bc19ccac39f5061b35439`; and the spec child is at
+`b96ba3b23de202227eade06614635ef6717df516`. No commit was created for this
+handoff, and unrelated pre-existing worktree changes were preserved.
+
+### Reproducible evidence boundary
+
+- Website: `pnpm check`, deployment-configured `pnpm build`, `pnpm test`, and
+  `pnpm run test:pages-artifact` after assembling the current Playground
+  `dist/`.
+- Playground: `pnpm build` and `pnpm test` (16 test files, 99 tests).
+- Provenance: `pnpm provenance:report` records the three Playground revision
+  mismatches; `pnpm provenance:check` intentionally fails until an approved
+  revision set is selected.
+- Root integration: `node scripts/run-integration-gate.mjs --local` was
+  environment-unavailable at its Node 24 preflight because the environment has
+  Node 22.23.2.
+
+### Explicit non-prerequisites
+
+No npm or pub.dev publication, production Pages deployment, GitHub Actions run,
+public host availability, custom/deferred platform host, or physical
+assistive-technology session was used as a prerequisite for the local evidence.
+The DNS failure, revision drift, Node-version preflight, browser runtime gaps,
+and physical AT deferral remain visible in the audit and backlog.
+
+### Handoff order
+
+1. Choose the approved Playground revision and synchronize the root pointer,
+   integration baseline, and Pages workflow pin.
+2. Resolve the English translation-versus-mirror decision and complete any
+   required reference content.
+3. Run the browser viewport/AX/keyboard checks, then rerun the configured Pages
+   workflow and 13-route public smoke when the host is reachable.
+
+## 8. Required evidence index
 
 - [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md)
 - [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)

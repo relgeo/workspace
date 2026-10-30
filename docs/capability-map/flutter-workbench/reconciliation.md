@@ -1,13 +1,13 @@
 # Flutter Workbench — Expected-versus-Observed Reconciliation
 
 > **Coverage statement — 2026-10-30.** Dokumen ini adalah join satu-per-satu
-> antara seluruh 61 ID pada [expected capability catalog](../../plans/12-flutter-workbench-capability-baseline.md)
+> antara seluruh 61 ID pada [expected capability catalog](./expected-capability-catalog.md)
 > dan baris observed pada [Flutter implementation audit](./implementation-gap-map.md).
 > Ia tidak menambah capability, tidak menghapus expected row, dan tidak
 > mengubah capability absent menjadi `➖` hanya karena evidence runtime belum
 > tersedia.
 
-**Expected catalog:** [`12-flutter-workbench-capability-baseline.md`](../../plans/12-flutter-workbench-capability-baseline.md)  
+**Expected catalog:** [`expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Implementation audit:** [`flutter-workbench/implementation-gap-map.md`](./implementation-gap-map.md)  
 **Status matrix:** [`flutter-workbench/status-matrix.md`](./status-matrix.md)  
 **Gap backlog:** [`flutter-workbench/implementation-gap-backlog.md`](./implementation-gap-backlog.md)
@@ -63,7 +63,7 @@ Makna penting:
 | DOC-05 | `✔️` | implemented | source-plus-local | in scope; Flutter recent store | [Audit §3.1 DOC-05](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-06 | `✔️` | implemented | source-plus-local | in scope; Flutter document session | [Audit §3.1 DOC-06](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-07 | `✔️` | implemented | source-plus-local; native not verified | in scope; Flutter/host lifecycle boundary | [Audit §3.1 DOC-07](./implementation-gap-map.md#31-document-file-dan-recovery) |
-| DOC-08 | `❌` | absent | source negative evidence | in scope; `relgeo/flutter` owner | [Audit §3.1 DOC-08](./implementation-gap-map.md#31-document-file-dan-recovery) |
+| DOC-08 | `🌗` | partial | recovery store and focused local tests; forced-exit/native storage not verified | in scope; `relgeo/flutter` owner | [Audit §3.1 DOC-08](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-09 | `✔️` | implemented | source-plus-local | in scope; Flutter document identity/file service | [Audit §3.1 DOC-09](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | IO-01 | `🌗` | partial | source-plus-local; native not verified | in scope; Flutter adapter, OS picker evidence pending | [Audit §3.1 IO-01](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | IO-02 | `🌗` | partial | bounded-contract | in scope; bounded RelGeo/YAML import | [Audit §3.1 IO-02](./implementation-gap-map.md#31-document-file-dan-recovery) |
@@ -92,13 +92,13 @@ Makna penting:
 | CANVAS-02 | `✔️` | implemented | source-plus-local | in scope for model/sheet view | [Audit §3.3 CANVAS-02](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-03 | `🌗` | partial | source-plus-local | in scope; inspector surface parity incomplete | [Audit §3.3 CANVAS-03](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-04 | `🌗` | partial | source-plus-local | in scope conditional; parameter policy remains bounded | [Audit §3.3 CANVAS-04](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
-| CANVAS-05 | `❌` | absent | source negative evidence | in scope; user-facing graph belongs to Flutter workbench | [Audit §3.3 CANVAS-05](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
+| CANVAS-05 | `✔️` | implemented at Flutter boundary | graph model/panel and focused tests; native AT/runtime not verified | in scope; user-facing graph belongs to Flutter workbench | [Audit §3.3 CANVAS-05](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-06 | `✔️` | implemented | source-plus-local; native AT not verified | in scope; Flutter overlay/role controls | [Audit §3.3 CANVAS-06](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | VIEW-01 | `✔️` | implemented | source-plus-local | in scope; Flutter viewport | [Audit §3.3 VIEW-01](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | VIEW-02 | `✔️` | implemented | source-plus-local; gesture runtime not verified | in scope; Flutter viewport | [Audit §3.3 VIEW-02](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | VIEW-03 | `✔️` | implemented | source-plus-local | in scope; Flutter viewport | [Audit §3.3 VIEW-03](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | VIEW-04 | `✔️` | implemented | source-plus-local | in scope; Flutter viewport | [Audit §3.3 VIEW-04](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
-| VIEW-05 | `❌` | absent | source/test negative evidence | in scope; object selection belongs to Flutter workbench | [Audit §3.3 VIEW-05](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
+| VIEW-05 | `✔️` | implemented at Flutter boundary | selection controller, canvas/inspector wiring, and focused tests; physical pointer not verified | in scope; object selection belongs to Flutter workbench | [Audit §3.3 VIEW-05](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 
 ### 4. Layout, theme, preferences, persistence
 
@@ -152,12 +152,14 @@ Makna penting:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 42 `✔️` implemented, 16 `🌗` partial, 3 `❌` absent, 0 `⚠️` broken |
+| Result counts | 44 `✔️` implemented, 17 `🌗` partial, 0 `❌` absent, 0 `⚠️` broken |
 | Implementation/evidence/scope columns present | Yes |
 | Audit trace present on every row | Yes |
 
-The absent rows remain explicit: DOC-08 session recovery, CANVAS-05 user-facing
-graph, and VIEW-05 object selection. They are not changed to `➖` merely because
+DOC-08 remains explicitly partial because forced-exit/relaunch and native
+storage behavior are not verified. CANVAS-05 and VIEW-05 are implemented at the
+Flutter boundary, with native accessibility/pointer and richer contract work
+still visible in the audit and backlog. No row is changed to `➖` merely because
 some adjacent source/test/runtime evidence is unavailable.
 
 ## Scope findings kept separate from capability results

@@ -14,11 +14,11 @@ dasarnya:
 | Artifact / source | Validation role | Result |
 | --- | --- | --- |
 | [Expected catalog](./expected-capability-catalog.md) | Expected key set and user/requirement/scope/owner provenance | PASS — 38 unique expected IDs |
-| [Implementation audit evidence](./archive/implementation-audit-legacy.md) | Discovery report, source/test/consumer evidence, status vocabulary, limitations | PASS — all 38 expected IDs present; 7 `CORE-GAP-*` records are separate gap IDs |
+| [Current implementation audit evidence](./implementation-audit.md) and [archived detailed log](./archive/implementation-audit-legacy.md) | Discovery report, current source/test/consumer evidence, status vocabulary, limitations | PASS — all 38 expected IDs present; 7 `CORE-GAP-*` records are separate gap IDs |
 | [Expected-versus-observed reconciliation](./reconciliation.md) | One-to-one join and separated implementation/evidence/scope dimensions | PASS — 38 rows, no missing/extra/duplicate |
 | [Status matrix](./status-matrix.md) | Capability-first downstream status and action view | PASS — 38 rows, required decision columns present |
 | [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate work handoff for non-complete capabilities | PASS — 15 tasks for 15 non-complete expected IDs |
-| [`core/` source and tests](../../../core) plus the audit's local execution record | Implementation, tests, public exports, and runtime evidence | PASS — source/test/consumer evidence is linked in audit §§3.2–3.3; current local run limits are retained |
+| [`core/` source and tests](../../../core) plus the audit's local execution record | Implementation, tests, public exports, and runtime evidence | PASS — current audit records 47 test files/436 tests, rebuilt Core output, and current local run limits |
 | [Repository map](../../REPOSITORY-MAP.md) | Ownership and repository boundary | PASS — `core/` is mapped to `relgeo/core`; consumers remain separate |
 | [Capability inventory protocol](../INVENTORY-PROTOCOL.md) | Discovery categories, status/evidence axes, and expected-but-missing policy | PASS — applied to catalog, audit, reconciliation, matrix, and backlog |
 | [Maturation master plan](../../MATURATION-MASTER-PLAN.md) | Roadmap, fixture, canonical-evidence, and scope context | PASS — current claims are qualified against historical/canonical freshness |
@@ -36,7 +36,7 @@ dasarnya:
 | Backlog source IDs | 15/15 non-complete IDs | Every `🌗`, `❌`, and `⚠️` expected row has one candidate task. |
 | Missing/extra/duplicate IDs | 0 / 0 / 0 | Across catalog → reconciliation → matrix; backlog has no missing or extra source ID. |
 | Required source/doc paths | 21/21 exist | Core source, tests, consumer call sites, fixture manifest, repository map, master plan, compatibility, and plan paths checked. |
-| Local Markdown links | 125 checked across six core artifacts | Missing local targets: 0. |
+| Local Markdown links | 138 checked across seven core artifacts | Missing local targets: 0. |
 | `git diff --check` | PASS | No whitespace errors in the changed documentation. |
 
 The audit's count of 45 unique `CORE-*` identifiers is therefore not a
@@ -74,7 +74,7 @@ The reconciliation and status matrix define all required result symbols:
 | `⚠️` | Confirmed defect or contract drift. |
 | `?` | Evidence not verified; not an absence claim. |
 
-Matrix row result counts are 23 `✔️`, 13 `🌗`, 1 `❌`, and 1 `⚠️`. `➖`,
+Matrix row result counts are 23 `✔️`, 14 `🌗`, 0 `❌`, and 1 `⚠️`. `➖`,
 `⏸️`, and `?` are retained in explicit scope/evidence findings, so they do not
 erase an expected implementation row.
 
@@ -85,12 +85,15 @@ The audit defines the following evidence classes:
 | Class | Meaning | Current use |
 | --- | --- | --- |
 | `E1` | Source/static inspection | Core source, types, exports, package metadata, consumer call sites. |
-| `E2` | Local unit or fixture test | Core 44-file/427-test suite and shared fixture assertions. |
+| `E2` | Local unit or fixture test | Current Core 47-file/436-test suite and shared fixture assertions. |
 | `E3` | Local cross-surface/integration test | CLI, language-service, renderer, conformance, compatibility checks. |
 | `E4` | Named CI/canonical evidence | Historical/current canonical records are referenced only with revision/date qualification. |
 | `E5` | Public/registry evidence | Not inferred from local build; must be tied to a named artifact/run. |
 
-This validation confirms that the current audit produced `E1`–`E3` evidence.
+This validation confirms that the current audit produced `E1`–`E3` evidence,
+including direct local language-service (66 tests), renderer-svg (82 tests plus
+distribution-boundary), and CLI (9 tests) checks with consumer lint/build
+passes.
 `E4`/`E5` are not promoted merely because the local commands passed. The
 master plan records older canonical and registry evidence, including a named
 canonical run and published package verification; those records remain
@@ -119,7 +122,7 @@ Limitations that remain open:
    verification were not rerun in this validation turn.
 3. Current browser E2E and Flutter host verification are not substituted by
    TypeScript local tests.
-4. 20 shared fixtures and 427 core tests are declared-surface evidence, not
+4. 20 shared fixtures and 436 core tests are declared-surface evidence, not
    exhaustive coverage of every DSL combination, error path, tolerance, or
    consumer.
 5. A passing documentation/coverage check does not close any implementation
@@ -130,9 +133,9 @@ Limitations that remain open:
 | Question | Affected IDs | Why it remains unresolved | Required decision/evidence |
 | --- | --- | --- | --- |
 | Does core own a public AST/source-range model, or only a semantic document model? | `CORE-INPUT-002`, `CORE-MODEL-002` | Parser and language-service currently divide syntax/source-location responsibility. | Choose ownership and specify public type/path contract. |
-| Does deterministic multi-diagnostic aggregation belong in core or language-service? | `CORE-DIAG-002` | No core aggregation API was found; consumers can surface first failure. | Choose owner, ordering, truncation, and primary-failure rules; add executable test. |
+| Does deterministic multi-diagnostic aggregation belong in core or language-service? | `CORE-DIAG-002` | Core ownership and a bounded ordering/truncation policy are now recorded in `collectDiagnostics`; broader fault coverage remains open. | Keep the core contract stable and expand executable coverage before promotion. |
 | What are severity and origin semantics for constraint violations? | `CORE-CONSTRAINT-002`, `CORE-DIAG-001` | Current violation shape lacks stable severity/origin fields. | Approve schema and consumer rendering contract. |
-| What is the canonical resolved-scene serialization/versioning contract? | `CORE-RESOLVE-005`, `CORE-DET-002`, `CORE-API-002` | Consumers use `ResolvedScene`, but canonical field/order/numeric rules are not formalized. | Approve semantic projection schema and snapshot comparator. |
+| What is the canonical resolved-scene serialization/versioning contract? | `CORE-RESOLVE-005`, `CORE-DET-002`, `CORE-API-002` | Core now exposes a versioned projection and serializer; downstream consumer migration/comparator evidence remains open. | Review the projection contract and add consumer comparator evidence. |
 | Should fixture 16 become active cross-consumer contract? | `CORE-EVAL-002`, `CORE-UNIT-001`, `CORE-INT-004` | Local core/CLI evidence exists, but manifest and Flutter posture remain candidate/partial. | Human promotion decision plus shared consumer snapshots. |
 | Which current checkout/revision should be the canonical release evidence target? | `CORE-DET-001`, `CORE-COMPAT-003`, `CORE-INT-003` | Master plan contains named historical canonical/registry evidence; this turn did not rerun it. | Select target revision and run Node `>=24`, registry, CI, browser, and Flutter evidence. |
 
@@ -147,11 +150,11 @@ contains 15 candidate tasks:
 - `G-CORE-03`: deterministic semantic projection and consumer parity.
 
 Priority examples are `CORE-TASK-003`–`CORE-TASK-005` for error/diagnostic
-contract closure, `CORE-TASK-004` for the explicit `❌` aggregation absence,
-and `CORE-TASK-012`–`CORE-TASK-015` for serialization/replay/consumer
-evidence. Assigning or completing those tasks requires implementation changes,
-tests, and a fresh audit; editing this handoff, matrix, or backlog is not
-implementation evidence.
+contract closure and `CORE-TASK-012`–`CORE-TASK-015` for
+serialization/replay/consumer evidence. Selected implementation changes and
+focused tests now exist; remaining status promotion still requires the next
+matrix re-audit and broader consumer/source-range evidence. Editing this
+handoff, matrix, or backlog alone is not implementation evidence.
 
 ## 7. Final validation statement
 
@@ -167,7 +170,8 @@ Primary references:
 - [Repository map](../../REPOSITORY-MAP.md)
 - [Maturation master plan](../../MATURATION-MASTER-PLAN.md)
 - [Expected catalog](./expected-capability-catalog.md)
-- [Implementation audit](./archive/implementation-audit-legacy.md)
+- [Current implementation audit](./implementation-audit.md)
+- [Archived detailed audit log](./archive/implementation-audit-legacy.md)
 - [Reconciliation](./reconciliation.md)
 - [Status matrix](./status-matrix.md)
 - [Gap backlog](./implementation-gap-backlog.md)

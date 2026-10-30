@@ -52,7 +52,7 @@ Kolom dibedakan sebagai berikut:
 | Duplicate expected IDs in reconciliation | 0 |
 | Observed audit trace available | 53/53 |
 | Current `❌` rows | 0 — semua 53 ID memiliki sebagian source/runtime realization; absence structural dicatat di §4 |
-| Current `⚠️` rows | 2 — `DIAG-002`, `SER-002` |
+| Current `⚠️` rows | 1 — `DIAG-002` |
 | Current `⏸️` rows | 0 as whole capability; deferred sub-boundaries remain in `EVAL-002`, `COLL-003`, and consumer evidence |
 
 Tidak adanya `❌` pada join ini bukan klaim bahwa seluruh capability selesai.
@@ -71,7 +71,7 @@ disamarkan sebagai row capability atau dipakai untuk menghilangkan expected ID.
 | `LANG-002` | `🌗` | `partial` | `direct-local` | IN: deterministic relation-first; no solver/control flow | `LANG-002` — runtime deterministic; full negative/non-solver map incomplete |
 | `DOC-001` | `✔️` | `implemented` | `direct-local` | IN: root sections | `DOC-001` — parser/validator and fixture 10 |
 | `DOC-002` | `✔️` | `implemented` | `direct-local` | IN: 2D scene/unit configuration | `DOC-002` — scene, units, viewport tests |
-| `DOC-003` | `🌗` | `partial` | `source+tests` | IN: readable/editorial vocabulary | `DOC-003` — guidance exists; normative/index labels inconsistent |
+| `DOC-003` | `🌗` | `partial` | `direct-local` | IN: readable/editorial vocabulary | `DOC-003` — guidance exists and current document status labels pass the vocabulary check; broader editorial/example vocabulary is not generated |
 
 ### B. Declarations, types, expressions, dan evaluation
 
@@ -140,7 +140,7 @@ disamarkan sebagai row capability atau dipakai untuk menghilangkan expected ID.
 | `DIAG-002` | `⚠️` | `broken` | `direct-local` | IN: stable code/path/payload | `DIAG-002` — raw `Error` paths conflict with structured model |
 | `ERR-001` | `🌗` | `partial` | `direct-local` | IN: phase ordering/fail-safe modes | `ERR-001` — tolerant/compile modes and runtime errors; cross-consumer coverage incomplete |
 | `SER-001` | `🌗` | `partial` | `direct-local` | IN expected; canonical JSON contract unresolved | `SER-001` — JSON output/snapshots exist; no normative generated shape |
-| `SER-002` | `⚠️` | `broken` | `direct-local` | IN layered SVG contract; raw bytes OUT | `SER-002` — renderer works but dimension/annotation escaping defect remains |
+| `SER-002` | `🌗` | `partial` | `direct-local` | IN layered SVG contract; raw bytes OUT | `SER-002` — selected dimension/annotation escaping paths are fixed and locally regression-tested; broader consumer evidence remains incomplete |
 | `VER-001` | `✔️` | `implemented` | `direct-local` | IN: explicit/omitted version | `VER-001` — parser/schema/negative fixtures |
 | `VER-002` | `✔️` | `implemented` | `direct-local` | IN: active/legacy/regression/future policy | `VER-002` — manifest/parser/compatibility checker |
 | `VER-003` | `🌗` | `partial` | `source+tests` | IN limited: documented aliases/fallbacks only | `VER-003` — styles/metaPresets alias exists; provenance not centralized |

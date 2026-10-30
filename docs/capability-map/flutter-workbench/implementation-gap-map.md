@@ -1,7 +1,7 @@
 # Flutter Workbench — Implementation Audit and Gap Map
 
 > **Coverage statement — 2026-10-30.** Audit ini membandingkan seluruh 61 ID
-> capability pada [expected catalog](../../plans/12-flutter-workbench-capability-baseline.md);
+> capability pada [expected catalog](./expected-capability-catalog.md);
 > lima `SCOPE-*` rows di katalog diperlakukan sebagai keputusan scope terpisah,
 > bukan capability implementation row. Audit dilakukan terhadap checkout
 > `flutter` saat ini. Discovery mencakup source/UI, feature
@@ -13,7 +13,7 @@
 > dari environment ini. Missing implementation dibedakan dari evidence yang
 > belum dapat dijalankan.
 
-**Expected catalog:** [`12-flutter-workbench-capability-baseline.md`](../../plans/12-flutter-workbench-capability-baseline.md)  
+**Expected catalog:** [`expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Reconciliation:** [`flutter-workbench/reconciliation.md`](./reconciliation.md)  
 **Status matrix:** [`flutter-workbench/status-matrix.md`](./status-matrix.md)  
 **Gap backlog:** [`flutter-workbench/implementation-gap-backlog.md`](./implementation-gap-backlog.md)
@@ -26,9 +26,9 @@
 | Audited checkout | `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` (`staging-2026-09-11-114-gb21eceb`) |
 | Host | macOS `14.5`, `arm64` |
 | Flutter/Dart | Flutter stable `3.41.9` / Dart `3.11.5` dari SDK lokal |
-| Current rerun (2026-10-30) | `flutter analyze --no-pub` — **PASS, No issues found**; `flutter test --no-pub --reporter compact` — **PASS, 302 tests passed**. Golden suites emit a configuration warning because the `golden` tag is not declared in `dart_test.yaml`; this did not fail the run. |
+| Current rerun (2026-10-30) | `flutter analyze --no-pub` — **PASS, No issues found**; `flutter test --no-pub --reporter compact` — **PASS, 307 tests passed**. Golden suites emit a configuration warning because the `golden` tag is not declared in `dart_test.yaml`; this did not fail the run. |
 | Fresh analyzer | `flutter analyze --no-pub` — **No issues found**; current rerun above is the controlling local evidence. |
-| Fresh Flutter tests | `flutter test --no-pub --reporter compact` — **302 tests passed**; current rerun above is the controlling local evidence. |
+| Fresh Flutter tests | `flutter test --no-pub --reporter compact` — **307 tests passed**; current rerun above is the controlling local evidence. |
 | Fresh web build | **Not verified / environment unavailable**: `flutter build web --no-pub` stopped at `/Users/agusmade/development/flutter/bin/internal/update_engine_version.sh:64` because the SDK could not write `/Users/agusmade/development/flutter/bin/cache/engine.stamp` (`Operation not permitted`). This is not classified as a source/build defect. |
 | Fresh macOS build | **Not verified** karena blocker SDK yang sama; tidak diklaim sebagai build failure source |
 | Historical/canonical CI | Run `37832260326`, root `328c869`, Flutter `ea8e754`; historical, bukan pointer yang sedang diaudit |
@@ -72,7 +72,7 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | Inspector/diagnostics | `inspector_panel.dart`, `workbench_inspector_feature.dart`, `constraints.dart`, status badge, diagnostics tabs | Objects/values/errors/BOM and bounded constraint display tercakup; complete diagnostic vocabulary remains partial. |
 | Persistence/preferences | `workbench_preferences.dart`, preferences controller, `workbench_layout_persistence.dart`, layout model/profiles/docking tree | SharedPreferences theme/profile/overlay/recent and versioned layout/dock-tree persistence tercakup. Document crash recovery tidak tercakup. |
 | Platform/config | `pubspec.yaml`, `analysis_options.yaml`, `flutter/.github/workflows/flutter-ci.yml`, `macos/`, `linux/`, `windows/`, `workbench_window_policy.dart`, method-channel host | Non-publishable posture, dependency boundary, CI matrix, window policy, native bridge, runner files tercakup. Current artifact build blocked by SDK write boundary. |
-| Test/golden/fixture | seluruh `flutter/test/`, `test/goldens/`, support semantic/SVG projection, shared fixture loader | 302 test current lulus; golden suite lulus dengan warning tag `golden` belum dideklarasikan di `dart_test.yaml`; fixture/conformance support tercakup. |
+| Test/golden/fixture | seluruh `flutter/test/`, `test/goldens/`, support semantic/SVG projection, shared fixture loader | 307 test current lulus; golden suite lulus dengan warning tag `golden` belum dideklarasikan di `dart_test.yaml`; fixture/conformance support tercakup. |
 | Runtime/accessibility | `docs/plans/10-desktop-runtime-smoke-checklist.md`, `flutter/.local/verification/macos-arm64-build-and-debug.md`, native bridge tests, semantics/focus tests | Checklist dan boundary tests tercakup; native window, VoiceOver/screen-reader, Linux/Windows runtime masih `not verified`. The local note is historical/supporting evidence and is not promoted to current-pointer E5. |
 | Product/contract docs | `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, `docs/capability-map/INVENTORY-PROTOCOL.md`, plans 06/07/10, W01/W02/W03, decisions 09, expected catalog, existing capability-map audit/matrix | Requirement, repository ownership, inventory boundary, contract, promotion, desktop scope, and prior audit claims diperiksa dan dipisahkan dari current evidence. |
 
@@ -92,7 +92,7 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | DOC-05 | implemented | E1/E2 | `WorkbenchRecentDocumentsStore` memakai SharedPreferences, dedup/max list, missing removal; Recent widget tests lulus. | Path validity/permission host belum E5 diverifikasi. |
 | DOC-06 | implemented | E1/E2 | `WorkbenchDocumentSession.isDirty`, navbar marker, and session updates ada; dirty tests lulus. | Tidak ada gap implementation; native window visibility belum E5. |
 | DOC-07 | implemented | E1/E2 | New/Open/Close/Quit melewati discard callback/guard; destructive-action tests lulus. | Native window-manager close event belum E5 diverifikasi. |
-| DOC-08 | absent | E1 | Tidak ditemukan crash marker, draft store, document autosave, atau restart recovery; layout persistence hanya menyimpan layout. | Gap P0/P1 produk: tetapkan retention/consent/recovery UX lalu implementasikan dan uji forced-exit recovery. |
+| DOC-08 | partial | E1/E2 | `WorkbenchDocumentRecoveryStore` menyimpan draft source/identity secara best-effort; `cad_workbench.dart` menyimpan dirty edits, menawarkan RESTORE/DISCARD saat startup, dan membersihkan draft setelah lifecycle sukses; focused recovery tests lulus. | Forced-exit/native storage behavior and a real relaunch smoke remain unverified; retain as an active partial gap. |
 | DOC-09 | implemented | E1/E2 | `WorkbenchDocumentFile`, path/name, UTF-8 read/write, document session identity tersedia; file-service tests lulus. | Format/encoding error UX lintas OS belum E5. |
 | IO-01 | partial | E1/E2; native not verified | `file_picker` adapter dipasang sebagai default untuk Open/Save As dan tests memakai injected boundary. | Native picker appearance/cancel/permission pada macOS/Linux/Windows belum diverifikasi. |
 | IO-02 | partial | E1/E2/E3 | Open reads `.yaml`, `.yml`, `.relgeo`; YAML resolver and shared fixture/conformance tests lulus. | Tidak ada archive/project import terpisah; extension/filter and error vocabulary masih open. |
@@ -109,8 +109,8 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | EDIT-06 | implemented | E1/E2 | `re_editor` history, Edit → Undo, controller/widget tests. | Shortcut mapping native per OS belum E5. |
 | EDIT-07 | implemented | E1/E2 | `re_editor` redo, Edit → Redo, controller/widget tests. | Shortcut mapping native per OS belum E5. |
 | EDIT-08 | implemented | E1/E2 | Copy source command and context menu use shared registry; context-menu/widget tests lulus. | Clipboard permission/behavior native belum E5. |
-| CONTRACT-01 | partial | E2/E3/E4 historical | `pubspec.yaml`/README state DSL 0.5; resolver, YAML, shared fixture adapter, and current 302 tests pass. | Full DSL parser/diagnostic contract parity bukan seluruhnya proven; baseline child pointer differs from canonical docs. |
-| CONTRACT-02 | partial | E2/E3/E4 historical | Resolver/graph/geometry/boolean implementations and semantic projection exist; fixture 15 active only on bounded contract. | Evaluator/unit fixture 16 remains candidate; union/xor/non-rectangle/degenerate surfaces remain outside active contract. |
+| CONTRACT-01 | partial | E2/E3/E4 historical | `pubspec.yaml`/README state DSL 0.5; resolver, YAML, shared fixture adapter, and current 307 tests pass. | Full DSL parser/diagnostic contract parity bukan seluruhnya proven; baseline child pointer differs from canonical docs. |
+| CONTRACT-02 | partial | E2/E3/E4 historical | Resolver/graph/geometry/boolean implementations and semantic projection exist; fixture 15 active only on bounded contract; current 307 tests pass. | Evaluator/unit fixture 16 remains candidate; union/xor/non-rectangle/degenerate surfaces remain outside active contract. |
 | CONTRACT-03 | partial | E2/E3/E4 historical | `SvgExporter`, SVG contract tests, semantic SVG projection, fixture snapshots exist. | Semantic core is bounded; raw bytes/style/viewBox/text/metadata/overlay presentation are deliberately not contract. |
 
 ### 3.3 Canvas, preview, inspection, dan navigation
@@ -121,13 +121,13 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | CANVAS-02 | implemented | E1/E2 | `WorkbenchPreviewTarget` supports model/sheet; widget tests switch sheet and back to model. | Component target is declared but renderer support is not active; not part of current expected model/sheet outcome. |
 | CANVAS-03 | partial | E1/E2 | `InspectorPanel` tabs Objects/Values/Errors/BOM and inspector tests cover geometry/semantics. | Exhaustive object/property/constraint inspection parity belum established. |
 | CANVAS-04 | partial | E1/E2 | `ParametersPanel` is conditional and parameter override/reset tests exist. | Full parameter/evaluator policy remains candidate/partial; no empty-panel regression beyond current covered paths. |
-| CANVAS-05 | absent | E1 | Core `graph.dart` provides resolver ordering, but no user-facing graph screen/widget/command was found in `flutter/lib/src/features` or UI registry. | Gap: implement or explicitly re-scope a dependency graph view; do not count core graph as user-visible graph capability. |
+| CANVAS-05 | implemented at Flutter boundary | E1/E2 | `WorkbenchSceneGraph` projects resolved relationships; `WorkbenchSceneGraphPanel` renders selectable nodes; View → Panels → Dependency graph exposes it; focused graph model/panel tests and the full 307-test suite pass. | Native/runtime accessibility and richer relationship semantics remain open; do not promote beyond the Flutter boundary without that evidence. |
 | CANVAS-06 | implemented | E1/E2 | Overlay toolbar, role filter, anchors/labels/bounds controls, and widget semantics tests exist. | Native pointer/accessibility announcement remains E5 unverified. |
 | VIEW-01 | implemented | E1/E2 | View command, `WorkbenchViewportController.zoomIn/zoomOut`, toolbar, controller/widget tests. | Native keyboard/trackpad behavior not E5 verified. |
 | VIEW-02 | implemented | E1/E2 | `InteractiveViewer` uses viewport `TransformationController`; transform/controller tests pass. | Gesture/trackpad pan on target desktop remains E5 unverified. |
 | VIEW-03 | implemented | E1/E2 | `fit`, fit scale transform, toolbar command, transform/widget tests pass. | Real window content/resize fit behavior not E5 verified. |
 | VIEW-04 | implemented | E1/E2 | `reset`, View command, toolbar, transform tests and current widget suite pass. | Native runtime interaction not E5 verified. |
-| VIEW-05 | absent | E1/E2 negative evidence | Selection color/token and selected sheet/autocomplete states exist, but no canvas object hit-test, selection controller, or object-selection command was found. | Gap: add object selection contract and synchronize canvas/inspector/overlay; current selected-sheet state is not equivalent. |
+| VIEW-05 | implemented at Flutter boundary | E1/E2 | `WorkbenchSelectionController` hit-tests visible resolved bounds; viewport tap, canvas highlight, graph selection, and inspector selection share the selected object id; focused selection tests and the full 307-test suite pass. | Physical pointer/gesture behavior and richer geometric hit-testing remain unverified. |
 
 ### 3.4 Layout, theme, preferences, persistence
 
@@ -207,7 +207,7 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 - Refresh `docs/integration-baseline.json` to the child revision actually being
   claimed, or run canonical CI for the current pointer before promotion.
 - Declare the `golden` test tag in `dart_test.yaml` or remove the tag so the
-  current 302-test run has no configuration warning.
+  current 307-test run has no configuration warning.
 - Keep historical run `37832260326` and current local evidence separate; do not
   use the historical Flutter `ea8e754` result as proof for `b21eceb...`.
 

@@ -24,7 +24,7 @@ tidak boleh menghapus row expected dari katalog.
 dan owner/source of truth. Ini bukan klaim bahwa kemampuan sudah dibuat,
 terhubung ke adapter, lulus conformance, atau usable pada host desktop.
 
-Downstream artifacts are kept separate: [implementation audit](./archive/implementation-audit-legacy.md), [expected-versus-observed reconciliation](./reconciliation.md), [status matrix](./status-matrix.md), and [implementation gap backlog](./implementation-gap-backlog.md).
+Downstream artifacts are kept separate: [implementation audit](./implementation-audit.md), [expected-versus-observed reconciliation](./reconciliation.md), [status matrix](./status-matrix.md), and [implementation gap backlog](./implementation-gap-backlog.md). The dated legacy log remains linked from the current audit as historical evidence.
 
 ### 1.1 Target pengguna dan journey
 

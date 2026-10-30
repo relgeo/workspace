@@ -24,8 +24,9 @@ Namun implementasi belum dapat disebut parity penuh terhadap expected catalog:
   metadata, serta cross-consumer parity. Source ada, tetapi coverage active
   fixture atau consumer tidak seluas kontrak spec.
 - **Broken:** structured diagnostic contract belum konsisten karena sebagian
-  jalur resolver masih melempar raw `Error`; SVG escaping untuk bidang
-  dimension/annotation masih tercatat sebagai defect pada renderer boundary.
+  jalur evaluator masih melempar raw `Error`; the selected dimension/annotation
+  SVG escaping defect has been patched locally but remains partial pending
+  broader consumer evidence.
 - **Absent:** machine-readable normative catalog tunggal yang dihasilkan dari
   spec tidak ditemukan. Ini menyebabkan parser, validator, language-service,
   dan renderer menyimpan vocabulary terpisah.
@@ -39,6 +40,45 @@ Status implementation di bawah tidak sama dengan status verification. `partial`
 berarti source/runtime ada tetapi expected surface belum lengkap atau belum
 dipromosikan. `unverified` berarti evidence tidak cukup; bukan bukti bahwa
 implementasi gagal.
+
+## 1.1 Audit refresh for the bounded active selection
+
+The current checkout was rechecked against the four selected backlog rows:
+`GAP-001`, `GAP-009`, `GAP-011`, and `GAP-013`. The checks were run locally on
+Node `22.23.2` with pnpm `10.33.3`; the repository declares Node `>=24`, so the
+results below are direct local evidence only and are not a Node-24 or canonical
+CI claim.
+
+| Check | Result | Evidence interpretation |
+| --- | --- | --- |
+| Renderer package test invocation | `82 passed` across `6` files | Dimension/annotation rendering, the v0.5 escaping fixture, and SVG security coverage execute locally. |
+| Core package test invocation | `430 passed` across `45` files | Resolver, validation-mode, tolerant-mode, dimension/annotation, structured-error, and constraint diagnostics suites execute locally. Exported evaluator raw-error paths remain. |
+| Language-service package test invocation | `66 passed` in `1` file | Schema, completions, tokens, and diagnostics behavior execute locally; vocabulary is still maintained separately from `spec/id/`. |
+| CLI package test/build | `9 passed`; build passed | CLI compile/render/error paths execute and build locally; this does not establish a published-package or external-host claim. |
+| Markdown consumer tests | `5 passed` for `remark-relgeo`; `3 passed` for `remark-relgeo-hl`; both builds passed | Markdown preview and syntax-highlighting consumers execute locally, including safe fallback behavior; current browser/site host evidence remains separate. |
+| Local package builds | Core, renderer, language-service, CLI, and Markdown consumers passed | TypeScript/tsup artifacts build from the modified sources locally; Node `24` CI remains unverified in this environment. |
+| Root conformance runner | `260 passed, 0 failed across 20 fixtures` | Manifest, active/legacy/invalid/runtime/capability fixture policy, core/renderer/CLI/language-service/Markdown integration all pass locally. Fixture 16 remains `capability`, not promoted. |
+| CI workflow inspection | Node `24` and pnpm-based compatibility/integration jobs are declared | `.github/workflows/integration.yml` and `sync-validated-submodule-after-ci.yml` provide available CI definitions, but no remote CI run was executed or independently verified in this audit. |
+
+The evidence does not change the honest capability statuses:
+
+- `GAP-001` remains `🌗`: the new deterministic check covers spec sections,
+  scalar/structured types, aliases, and document status labels; broader object
+  and renderer field vocabulary is still duplicated across consumers.
+- `GAP-009` remains `🌗`: dimension and annotation implementations plus local
+  tests exist, and direct CLI/Markdown consumer checks pass, but active v0.5
+  coverage and consumer/security coverage are not exhaustive.
+- `GAP-011` remains mixed `🌗`/`⚠️`: the public fixture and mode behavior pass,
+  but raw `Error` construction remains in validator/evaluator/`eval-context`
+  and resolver operation paths.
+- `GAP-013` is now `🌗`: `escapeXml` protects dimension/annotation text,
+  `fontFamily`, and `fill` values; the new v0.5 fixture and renderer security
+  tests pass, and local CLI/Markdown consumers build and test successfully.
+  Broader Playground/host evidence is still not exhaustive, so this is not a
+  completion claim.
+
+No npm/pub.dev publishing, production deployment, public host, or deferred
+native/mobile platform was used as an audit prerequisite.
 
 ## 2. Taxonomy status
 
@@ -127,7 +167,7 @@ menjelaskan perbedaan antara expected capability dan realization yang diaudit.
 | `LANG-002` | `partial` | `direct-local` | `spec/id/core/04–05`; `core/src/graph.ts`, `resolver/index.ts`; core tests | Relation-first/deterministic runtime ada, tetapi full normative syntax dan negative no-solver boundary tidak punya satu conformance map. |
 | `DOC-001` | `implemented` | `direct-local` | `spec/id/core/02-document-structure.md`; parser/validator; fixture 10 | Root sections dan minimal document diterima pada bounded parser contract; no generated section schema. |
 | `DOC-002` | `implemented` | `direct-local` | `spec/id/core/03-scene.md`; `core/src/units.ts`; `unit_system.test.ts`, `sheet_view.test.ts` | Scene/unit/origin/orientation/autosize/padding tersedia; combinations viewport belum exhaustive. |
-| `DOC-003` | `partial` | `source+tests` | `spec/id/editorial-guide.md`, spec READMEs, example fixtures | Readability/editorial guidance ada, tetapi index informative/normative labeling tidak konsisten. |
+| `DOC-003` | `partial` | `direct-local` | `spec/id/editorial-guide.md`, spec READMEs, example fixtures, `scripts/check-language-spec-vocabulary.mjs` | Readability/editorial guidance ada and all current document status labels pass the check; broader editorial/example vocabulary is not generated. |
 
 ### B. Declarations, types, expressions, dan evaluation
 
@@ -181,8 +221,8 @@ menjelaskan perbedaan antara expected capability dan realization yang diaudit.
 
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
-| `PRES-001` | `partial` | `historical/local` | dimension spec; `resolver/primitives/dimension.ts`, `dimension_annotation.test.ts`, legacy fixtures | Dimension kinds exist, mostly exercised by v0.4 fixtures; active v0.5 presentation coverage is thin. |
-| `PRES-002` | `partial` | `historical/local` | annotation spec; `resolver/primitives/annotation.ts`, dimension/annotation tests, renderer primitives | Annotation/leader exists; active cross-consumer and escaping coverage is incomplete. |
+| `PRES-001` | `partial` | `direct-local` | dimension spec; `resolver/primitives/dimension.ts`, `dimension_annotation.test.ts`, renderer tests, conformance runner | Dimension kinds exist and local suites pass; active v0.5 presentation coverage and dynamic style-attribute escaping remain incomplete. |
+| `PRES-002` | `partial` | `direct-local` | annotation spec; `resolver/primitives/annotation.ts`, dimension/annotation tests, renderer security/tests, conformance runner | Annotation/leader exists and text is escaped; active cross-consumer coverage and escaping of all presentation attributes remain incomplete. |
 | `PRES-003` | `partial` | `source+tests` | roles spec; renderer primitives and role tests/fixtures | Role semantics/defaults exist; browser/Flutter presentation parity and all role combinations are not current evidence. |
 | `PRES-004` | `partial` | `source+tests` | views/sheets spec; `sheet_view.test.ts`, validator, CLI `--sheet`, legacy fixtures | Views/sheets resolve/render; active v0.5 and current host evidence are incomplete. |
 | `META-001` | `partial` | `direct-local` | metadata spec; resolver object metadata, renderer, fixture 10/legacy presentation fixtures | Metadata exists and is intended non-geometric; complete field/consumer behavior and security boundary are not uniform. |
@@ -193,10 +233,10 @@ menjelaskan perbedaan antara expected capability dan realization yang diaudit.
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
 | `DIAG-001` | `partial` | `direct-local` | error-model spec; parser/validator/resolver errors; fixtures 11–14, 17–20 | Main parse/validation/runtime diagnostics exist; not every normative phase/code has fixture and consumer parity. |
-| `DIAG-002` | `broken` | `direct-local` | `core/src/resolver/eval-context.ts`, `resolver/objects.ts`, `primitives/divide.ts`, error-model spec | Several paths still throw raw `Error` while expected model requires structured code/path/phase; confirmed contract inconsistency. |
+| `DIAG-002` | `broken` | `direct-local` | `core/src/resolver/eval-context.ts`, `core/src/validator.ts`, `core/src/evaluator.ts`, `resolver/objects.ts`, `primitives/divide.ts`, error-model spec; core suite 430 passed | Resolver and validator entry points now normalize uncategorized failures, but exported evaluator paths and some internal helpers still throw raw `Error` while the expected model requires structured code/path/phase. |
 | `ERR-001` | `partial` | `direct-local` | evaluation/error-model specs; tolerant/validation mode tests; fixture 14/19/20 | Error phases and tolerant vs compile modes exist; full fail-safe and code coverage across consumers is incomplete. |
 | `SER-001` | `partial` | `direct-local` | CLI `compile` JSON path; expected JSON snapshots; `run-conformance-fixtures.mjs` | JSON serialization exists and snapshots are reviewable, but canonical field ordering/number/error serialization is not a normative generated contract. |
-| `SER-002` | `broken` | `direct-local` | renderer `index.ts`/`primitives.ts`, SVG snapshots/security checks, legacy sheet XML fixture | SVG output exists and no-executable-markup checks pass for declared fixtures; dimension/annotation escaping defect remains recorded, so full safe serialization contract is broken. |
+| `SER-002` | `partial` | `direct-local` | renderer `index.ts`/`primitives.ts`, `escape.ts`, v0.5 presentation-escaping fixture, SVG snapshots/security checks, conformance runner; renderer suite 82 passed | Dimension/annotation text and dynamic presentation attributes are escaped and locally regression-tested; full cross-consumer and current-host evidence remains incomplete. |
 | `VER-001` | `implemented` | `direct-local` | parser version constants/handling; language-service schema; fixtures 17/18; manifest | Explicit version, omitted default, and unsupported version rejection are implemented and conformance-tested. |
 | `VER-002` | `implemented` | `direct-local` | `fixtures/manifest.json`, parser tests, compatibility checker, fixtures 01–09/17–18 | Active 0.5, legacy 0.4, regression-only 0.1–0.3, future rejection are represented; policy is duplicated across consumers. |
 | `VER-003` | `partial` | `source+tests` | `metaPresets`/`styles` in parser/resolver/schema/completions and metadata spec | Backward alias/fallback exists; provenance and semantic parity of every alias are not centrally checked. |
@@ -208,7 +248,7 @@ menjelaskan perbedaan antara expected capability dan realization yang diaudit.
 | --- | --- | --- |
 | `absent` | Single generated machine-readable normative language catalog | No generated catalog found in `spec/`, `docs/`, or package source; parser/schema/completion sets remain separate. |
 | `broken` | Structured error payload parity | Raw `Error` paths remain in resolver/evaluator context despite normative structured error model. |
-| `broken` | Full SVG safe serialization boundary | Existing renderer audit records dimension/annotation escaping gap; current fixture checks do not cover every presentation field. |
+| `partial` | Full SVG safe serialization boundary | Selected dimension/annotation escaping paths are fixed and regression-tested locally; current fixture checks do not cover every presentation field or consumer host. |
 | `deferred` | Evaluator/unit active contract promotion | Fixture 16 is `capability`; passing snapshot/conformance does not promote it. |
 | `deferred` | Flutter mobile delivery and native runtime/accessibility evidence | Decision 07 explicitly defers Android/iOS; desktop runtime smoke and AT remain separate evidence. |
 | `unverified` | Current canonical CI, registry, public Pages, current browser/Flutter/MCP runtime | Local evidence is not promoted to external/canonical evidence. |
@@ -233,12 +273,14 @@ of truth:
 
 1. Keep the 53-row expected catalog immutable while creating downstream audit
    views; do not let current implementation shrink expected scope.
-2. Add a generated or checked vocabulary boundary from `spec/id/` to parser,
-   validator, language-service schema/completions, and renderer field sets.
+2. Extend the checked vocabulary boundary from `spec/id/` beyond sections,
+   types, aliases, and document status labels to parser, validator,
+   language-service schema/completions, and renderer field sets.
 3. Normalize raw resolver/evaluator errors into the structured error model and
    add shared fixtures per normative error-code table.
-4. Fix and regression-test dimension/annotation escaping before claiming safe
-   SVG serialization parity.
+4. Extend the new dimension/annotation escaping regression through the remaining
+   CLI/Markdown/Playground consumer snapshots before claiming safe SVG
+   serialization parity.
 5. Decide whether `SER-001` JSON shape and `SER-002` SVG semantic fields are
    normative language contracts or consumer output contracts; record the
    decision before changing `PENDING-AUDIT`/partial status.

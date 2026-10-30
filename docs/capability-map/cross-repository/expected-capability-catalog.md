@@ -16,6 +16,8 @@
 
 **Implementation-gap backlog:** [Cross-Repository Orchestration Implementation Gap Backlog](./implementation-gap-backlog.md)
 
+**Bounded selection:** [Cross-Repository Orchestration bounded in-scope selection](./in-scope-selection.md)
+
 **Boundary:** bootstrap, baseline, dependency orchestration, integration gates,
 cross-repository CI synchronization, evidence reconciliation, release/recovery,
 blocker/retry handling, dan public artifact hygiene untuk ekosistem RelGeo.
@@ -134,6 +136,28 @@ flowchart LR
   Implementation status, evidence status, parity status, environment
   availability, and decision status must be added by a later audit without
   deleting or rewriting expected IDs.
+
+## 4.1 Current audit join for the selected tranche
+
+The catalog remains normative: the table below is a non-normative pointer to
+the current audit/reconciliation for the seven selected capability boundaries.
+It records the verified implementation status, evidence class, owner/source
+boundary, dependency, and next action without changing the expected rows.
+
+| ID | Current status | Evidence | Owner / source boundary | Dependency | Remaining gap / next action |
+| --- | --- | --- | --- | --- | --- |
+| `ORCH-BASE-002` | `🌗` / `partial-current` | Strict baseline and failure injection pass; current report shows 3 stale manifest revisions and 11 dirty child checkouts | `relgeo/workspace`; [`scripts/verify-baseline.mjs`](../../../scripts/verify-baseline.mjs), [`docs/integration-baseline.json`](../../integration-baseline.json) | Validated child CI, clean child checkouts | Reconcile exact child SHAs through the sync PR, then rerun strict baseline and integration. |
+| `ORCH-EVID-002` | `🌗` / `partial-current` | Shared evidence envelope separates local/public/manual classes; current baseline remains stale | `relgeo/workspace`; [`scripts/orchestration-contract.mjs`](../../../scripts/orchestration-contract.mjs) and gate/preflight reports | Refreshed baseline and Node 24 integration host | Produce a current canonical run and retain class/limitation labels. |
+| `ORCH-EVID-003` | `🌗` / `partial-current` | Reports bind root revision, baseline, compatibility line, toolchain, limitations, and child baseline entries | `relgeo/workspace` + child CI; integration/release report scripts | Validated child CI, artifact/report retention | Join current child revisions to one canonical evidence record. |
+| `ORCH-OPS-001` | `✔️` / `verified-static` | Owner/remediation/dependency fields and focused contract test pass | `relgeo/workspace` + stage owners; integration, release-preflight, and baseline scripts | Node 24 for full stage execution | Rerun the report contract with a supported integration stage. |
+| `ORCH-OPS-002` | `✔️` / `verified-static` | Shared blocker taxonomy and dependency status distinguish blocked environment evidence from target defects | `relgeo/workspace`; [`scripts/orchestration-contract.mjs`](../../../scripts/orchestration-contract.mjs) | Live provider/child-run propagation | Exercise provider-backed propagation when available. |
+| `ORCH-OPS-003` | `✔️` / `verified-static` | Bounded transient retry/backoff, deterministic non-retry, and attempt retention pass focused tests | `relgeo/workspace` + CI; integration and release-preflight runners | Supported CI transient failure and durable report retention | Verify a live transient attempt history in CI. |
+| `ORCH-PUB-003` | `✔️` / `verified-static` | Sync checkout explicitly disables credential persistence; permission policy assertion passes | `relgeo/workspace` CI; `.github/workflows/sync-validated-submodule-after-ci.yml` | GitHub Actions PR/dispatch provider | Review one live exact-SHA sync PR/dispatch. |
+
+All other expected capabilities retain their status and evidence in the
+[status matrix](./status-matrix.md), [implementation audit](./implementation-audit.md),
+and [reconciliation](./reconciliation.md). `➖` and `⏸️` scope boundaries remain
+excluded from active implementation.
 
 ## 5. Expected capability catalog
 

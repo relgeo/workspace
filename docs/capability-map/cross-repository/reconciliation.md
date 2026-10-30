@@ -38,7 +38,7 @@ Kolom sengaja dipisahkan:
 | --- | --- |
 | `✔️` | Implementasi terobservasi sebagai `implemented` dan evidence tersedia pada boundary yang dinyatakan audit (`verified-current` atau `verified-static`). |
 | `🌗` | Implementasi `partial`, atau implementation ada tetapi evidence saat ini `partial-current`/`unverified-runtime`. |
-| `❌` | Implementasi `absent` atau `broken`. Untuk katalog ini, `ORCH-OPS-003` adalah absent dan tetap explicit. |
+| `❌` | Implementasi `absent` atau `broken`. Tidak ada selected row yang masih absent after the focused contract evidence. |
 | `➖` | Hanya untuk capability yang secara eksplisit `deferred` atau `not-applicable` oleh scope. Tidak ada dari 39 expected ID yang mendapat `➖`. |
 
 `verified-static` tetap dicatat terpisah dari `✔️`: simbol tersebut berarti
@@ -50,9 +50,9 @@ terverifikasi bukan klaim bahwa target implementation rusak.
 
 | Reconciliation | Count | Meaning |
 | --- | ---: | --- |
-| `✔️` | 20 | Implemented dengan evidence current atau static yang tersedia. |
-| `🌗` | 18 | Partial implementation atau evidence runtime/current belum lengkap. |
-| `❌` | 1 | Expected capability belum diimplementasikan atau broken. |
+| `✔️` | 24 | Implemented dengan evidence current atau static yang tersedia. |
+| `🌗` | 15 | Partial implementation atau evidence runtime/current belum lengkap. |
+| `❌` | 0 | Tidak ada expected capability yang absent/broken pada boundary audit saat ini. |
 | `➖` | 0 | Tidak ada expected ID yang dikeluarkan dari scope. |
 | **Total** | **39** | Sama dengan jumlah unique ID pada katalog expected. |
 
@@ -60,9 +60,9 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 
 | Implementation status | Count | Evidence status | Count |
 | --- | ---: | --- | ---: |
-| `implemented` | 28 | `verified-current` | 6 |
-| `partial` | 10 | `verified-static` | 19 |
-| `absent` | 1 | `partial-current` | 8 |
+| `implemented` | 33 | `verified-current` | 5 |
+| `partial` | 6 | `verified-static` | 21 |
+| `absent` | 0 | `partial-current` | 7 |
 | `broken` | 0 | `unverified-runtime` | 6 |
 | `deferred` | 0 | `deferred-scope` | 0 |
 | `not-applicable` | 0 | **Total** | **39** |
@@ -73,7 +73,7 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `ORCH-BOOT-001` | Fresh clone bootstrap entrypoint | `IN` | `partial` | `partial-current` | `🌗` | [Audit §4 — ORCH-BOOT-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | No single root bootstrap executable; document and execute fresh-clone probe on Node 24. |
 | `ORCH-BOOT-002` | Pinned toolchain and dependency bootstrap | `IN` | `partial` | `partial-current` | `🌗` | [Audit §4 — ORCH-BOOT-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Current host is Node 22 while declared requirement is Node 24; verify deterministic bootstrap on supported toolchain. |
-| `ORCH-BOOT-003` | Recursive submodule initialization and synchronization | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-BOOT-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Keep child pointer synchronization under the validated CI sync flow. |
+| `ORCH-BOOT-003` | Recursive submodule initialization and synchronization | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-BOOT-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Recursive checkout and gitlink alignment are present; current dirty child worktrees prevent current clean-baseline evidence. Keep child pointer synchronization under the validated CI sync flow. |
 | `ORCH-BOOT-004` | Public workspace boundary hygiene | `IN` | `partial` | `verified-static` | `🌗` | [Audit §4 — ORCH-BOOT-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Run a complete current secret/private-path scan across generated artifacts and logs. |
 | `ORCH-BASE-001` | Versioned integration baseline manifest | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-BASE-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Manifest exists; reconcile its three stale child revisions only after validated child CI. |
 | `ORCH-BASE-002` | Strict gitlink/checkout/manifest verification | `IN` | `implemented` | `partial-current` | `🌗` | [Audit §4 — ORCH-BASE-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Strict verifier and failure injection work, but current baseline is not green for three child revisions. |
@@ -92,23 +92,23 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 | `ORCH-CI-005` | Reviewable synchronization PR and integration dispatch | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-CI-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Branch protection and PR merge remain provider-side evidence not observed locally. |
 | `ORCH-EVID-001` | Machine-readable gate report | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-EVID-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Current integration report generation needs Node 24 gate completion. |
 | `ORCH-EVID-002` | Evidence class separation | `IN` | `implemented` | `partial-current` | `🌗` | [Audit §4 — ORCH-EVID-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Refresh canonical evidence after current baseline pointer sync. |
-| `ORCH-EVID-003` | Revision-to-evidence traceability | `IN` | `partial` | `partial-current` | `🌗` | [Audit §4 — ORCH-EVID-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Current baseline drift breaks complete traceability; regenerate from validated child CI. |
+| `ORCH-EVID-003` | Revision-to-evidence traceability | `IN` | `implemented` | `partial-current` | `🌗` | [Audit §4 — ORCH-EVID-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared evidence envelope is implemented; current baseline drift still requires validated child CI and regeneration. |
 | `ORCH-EVID-004` | Canonical artifact and public-smoke reconciliation | `IN WITH BOUNDARY` | `partial` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-EVID-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Join a fresh artifact, deployment URL, and exact source baseline in one evidence record. |
-| `ORCH-EVID-005` | Honest environment-unavailable handling | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-EVID-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Standardize blocker fields across scripts; current examples correctly remain unverified/blocker evidence. |
+| `ORCH-EVID-005` | Honest environment-unavailable handling | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-EVID-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared blocker/evidence fields now preserve environment-unavailable evidence; extend to refreshed provider/Flutter reports later. |
 | `ORCH-REL-001` | Release preflight composition | `IN` | `implemented` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-REL-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Dirty workspace and Node 22 prevented a valid current preflight probe. |
 | `ORCH-REL-002` | Public tarball and metadata hygiene gate | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-REL-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Keep constrained-host npm cache isolation documented; no publish was performed. |
 | `ORCH-REL-003` | Manual ordered publish with operator stop | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-REL-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Live publish was intentionally not performed; automation remains future scope. |
 | `ORCH-REL-004` | Post-publish registry and consumer verification | `IN` | `implemented` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-REL-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Repeat on a network-available Node 24 host; interrupted probe is not a package failure. |
 | `ORCH-REL-005` | Partial-release forward-fix recovery | `IN` | `implemented` | `partial-current` | `🌗` | [Audit §4 — ORCH-REL-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Recovery injection passed, but no real partial release was created for runtime evidence. |
 | `ORCH-REL-006` | Release decision record and no-op guard | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-REL-006](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Two post-decision manual releases remain an automation prerequisite, not a record defect. |
-| `ORCH-OPS-001` | Actionable failure ownership | `IN` | `partial` | `partial-current` | `🌗` | [Audit §4 — ORCH-OPS-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Add shared structured failure-owner and remediation fields to reports. |
-| `ORCH-OPS-002` | Blocker classification and dependency propagation | `IN` | `partial` | `verified-static` | `🌗` | [Audit §4 — ORCH-OPS-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Unified taxonomy and machine-readable downstream propagation are not implemented. |
-| `ORCH-OPS-003` | Bounded retry and rerun policy | `IN` | `absent` | `verified-static` | `❌` | [Audit §4 — ORCH-OPS-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Define bounded attempts, transient classification, backoff, and evidence-preserving rerun behavior. |
+| `ORCH-OPS-001` | Actionable failure ownership | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared report fields and focused fixture are present; rerun full stages on Node 24. |
+| `ORCH-OPS-002` | Blocker classification and dependency propagation | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared taxonomy and dependency-impact fields are present; live provider propagation remains follow-up evidence. |
+| `ORCH-OPS-003` | Bounded retry and rerun policy | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Bounded transient retry and attempt retention fixture pass; verify a live transient CI case later. |
 | `ORCH-OPS-004` | Cancellation, concurrency, and idempotent replay | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Add duplicate-dispatch and cancellation-race fixture or document provider-level limits. |
 | `ORCH-OPS-005` | Human decision boundary | `IN` | `partial` | `verified-static` | `🌗` | [Audit §4 — ORCH-OPS-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Policy is documented but not enforced by a central decision gate/tool. |
 | `ORCH-PUB-001` | Secret and private-path exclusion | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Run a complete artifact-by-artifact secret scan as follow-up evidence. |
 | `ORCH-PUB-002` | No sibling-source leakage in public consumers | `IN` | `implemented` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-PUB-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Public gate remains unavailable until Node 24/network/browser prerequisites exist. |
-| `ORCH-PUB-003` | Least-privilege CI and credential-free checkout | `IN` | `partial` | `verified-static` | `🌗` | [Audit §4 — ORCH-PUB-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Set explicit credential persistence policy on sync checkout and review action permissions. |
+| `ORCH-PUB-003` | Least-privilege CI and credential-free checkout | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Sync checkout policy and permission assertions pass; provider-side PR/dispatch remains follow-up evidence. |
 | `ORCH-PUB-004` | Safe report/artifact retention and provenance | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Query current uploaded artifact availability; provenance and bounded retention are present. |
 
 ## 4. Scope exclusions and `➖` boundaries

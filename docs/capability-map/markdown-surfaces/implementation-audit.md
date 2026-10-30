@@ -88,11 +88,11 @@ Environment-unavailable evidence is not converted into a package failure.
 | --- | --- | --- |
 | Source/API | `remark-relgeo/src/index.ts`; `remark-relgeo-hl/src/index.ts`; `remark-relgeo-hl/src/render.ts` | Complete for both plugin entrypoints and exported rendering helper. |
 | Package config/build | Both `package.json`, `tsconfig.json`, README, LICENSE, DEVELOPMENT-PLAN, generated `dist/` | Complete for metadata, exports, dependencies, scripts, and documented boundaries. |
-| Unit/package tests | `remark-relgeo/test/remark-relgeo.test.mjs`; `remark-relgeo-hl/src/__tests__/remark_relgeo_hl.test.ts` | Both suites inspected and run; preview 5 tests, highlighter 3 tests. Coverage is not a full expected-ID suite. |
+| Unit/package tests | `remark-relgeo/test/remark-relgeo.test.mjs`; `remark-relgeo-hl/src/__tests__/remark_relgeo_hl.test.ts` | Both suites inspected and run; preview 7 tests, highlighter 5 tests. Coverage is not a full expected-ID suite. |
 | Shared fixtures | `fixtures/manifest.json`; `fixtures/expected/`; `scripts/run-conformance-fixtures.mjs` | Active, invalid, runtime-diagnostic, and candidate fixture paths inspected; runner exercises both plugins for selected fixtures. No dedicated Markdown fixture for every error/options/accessibility branch. |
-| Remark/rehype integration | `relgeo.github.io/astro.config.mjs`; Astro Markdown config; `unwrapCustomCodeBlocks()` | Real Astro consumer inspected and built. Preview wrapper is not unwrapped by the current rehype helper. |
+| Remark/rehype integration | `relgeo.github.io/astro.config.mjs`; Astro Markdown config; `unwrapCustomCodeBlocks()` | Real Astro consumer inspected and built. The rehype helper unwraps the generated preview wrapper and built-output assertions cover the resulting structure. |
 | Website content/routes | `src/content/docs/{en,id}/markdown-surfaces.md`, getting-started/current-capabilities/CLI links; generated `/en/` and `/id/` Markdown routes | Both public language surfaces and route links inspected; static build and built-output assertions pass. |
-| Website styling/accessibility | `relgeo.github.io/src/styles/site.css`, `src/styles/accessibility.css`, built HTML | CSS tokens and focus/reduced-motion rules inspected; generated preview has `alt`, but no SVG title/desc and is nested under `pre`. Physical screen-reader verification is deferred. |
+| Website styling/accessibility | `relgeo.github.io/src/styles/site.css`, `src/styles/accessibility.css`, built HTML | CSS tokens and focus/reduced-motion rules inspected; generated preview has `alt` and is not nested under `pre`, but has no SVG title/desc. Physical screen-reader verification is deferred. |
 | Artifact/delivery | `.github/workflows/pages.yml`; `assert-built-output.mjs`; `assert-pages-artifact.mjs`; `smoke-public-site.mjs` | Website build/assertions and assembled Pages artifact verified locally; fresh deployed public smoke was not run in this audit. |
 | UI/menu/command/shortcut | Plugin source and package scripts; website routes | No plugin-owned UI, menu, shortcut, or command exists; package commands are build/lint/test. Website owns navigation and route surface. This category is `not applicable` to plugin internals. |
 | Config/platform/service | plugin options, Astro env `RELGEO_DOCS_SITE_URL`/`RELGEO_DOCS_BASE`, language-service peer, core/renderer runtime calls | Node/static build path verified; generic SSR hosts and clean registry service resolution remain unverified. |
@@ -117,17 +117,17 @@ of either plugin:
 | --- | --- | --- |
 | `npm run lint` in `remark-relgeo` | PASS | TypeScript source/type boundary. |
 | `npm run build` in `remark-relgeo` | PASS | ESM/CJS plus declaration output generated. |
-| `npm test` in `remark-relgeo` | PASS, 5/5 | Preview success, metadata, custom hook, fallback, and non-`relgeo` isolation. |
+| `npm test` in `remark-relgeo` | PASS, 7/7 | Preview success, metadata, custom hook, tolerant/strict failure policy, unsafe-output rejection, and non-`relgeo` isolation. |
 | `npm run lint` in `remark-relgeo-hl` | PASS | TypeScript source/type boundary. |
 | `npm run build` in `remark-relgeo-hl` | PASS | ESM/CJS plus declaration output generated. |
-| `npm test` in `remark-relgeo-hl` | PASS, 3/3 | Semantic token output, non-`rg` isolation, and exported HTML helper. |
+| `npm test` in `remark-relgeo-hl` | PASS, 5/5 | Semantic token output, non-`rg` isolation, exported HTML helper, and tolerant/strict service-failure policy. |
 | `node scripts/run-conformance-fixtures.mjs` | PASS, 260/260 across 20 fixtures | Shared active/invalid/runtime-error/candidate checks; exact highlight digest and preview SVG for selected fixtures. |
 | `npm run check` in `relgeo.github.io` | PASS, 0 errors/warnings/hints | Astro/content/type check. |
 | `npm run build` in `relgeo.github.io` | PASS, 138 pages | Static Markdown consumer build. |
 | `npm test` in `relgeo.github.io` | PASS | Built-output assertions for localized Markdown surfaces, highlight/preview markers, accessibility shell, and no preview error in built pages. |
 | `npm run build` in `playground` + official artifact copy + `npm run test:pages-artifact` | PASS; 3 Playground assets checked | Pages assembly path from `.github/workflows/pages.yml`; verifies assembled artifact, not only website `dist`. |
-| Synthetic preview invalid-version probe | PASS as fallback observation | `relgeo` produces `preview-error` placeholder and visible error text for DSL `0.6`; no structured code/severity/location. |
-| Synthetic highlighter service-failure probe | CONFIRMED failure | Injected `getSemanticTokens()` throw aborts transform; no source-only fallback. |
+| Synthetic preview invalid-version probe | PASS as fallback observation | `relgeo` produces a `preview-error` placeholder, visible error text, and serialized diagnostic location for DSL `0.6`; version-specific categorization remains a separate gap. |
+| Synthetic highlighter service-failure probe | PASS as tolerant fallback | Injected `getSemanticTokens()` failure preserves source in `pre > code` with a serialized diagnostic; strict mode remains an explicit typed throw. |
 | Clean registry install/pack/publish smoke | NOT RUN | Registry parity and fresh external consumer remain `unverified`. |
 | Fresh deployed public smoke and physical AT | NOT RUN / deferred | `smoke-public-site.mjs` requires an external URL; physical mobile and VoiceOver/TalkBack are accepted deferred scope. |
 
@@ -141,37 +141,37 @@ of either plugin:
 | `MD-PREVIEW-001` | `implemented` | `remark-relgeo` compiles with `@relgeo/core`, renders with `@relgeo/renderer-svg`, emits a preview marker/image, and passes package, conformance, and website assertions. | Only current mdast/HTML consumer path is directly exercised. |
 | `MD-PREVIEW-002` | `partial` | Default output is lightweight model preview; `sheet`, `profile`, and `unit` metadata reach runtime and `sheetId` is tested. | No explicit view selection; print/sheet semantics are only partially exposed and no full option contract exists. |
 | `MD-PREVIEW-003` | `implemented` | Source delegates to `compileRelGeo` and `renderToSVG`; conformance compares preview image SVG exactly to the preview pipeline snapshot. | Cross-version/registry parity is not independently verified. |
-| `MD-PREVIEW-004` | `partial` | Transform mutates only matching code nodes; website content around the examples builds. | Astro output is `<pre><div class="relgeo-preview__canvas">…</div></pre>` because `unwrapCustomCodeBlocks()` only unwraps a `pre` child with class `relgeo-preview`/`relgeo-hl`; surrounding semantics are therefore not fully clean. |
+| `MD-PREVIEW-004` | `implemented` | Transform mutates only matching code nodes; the website rehype helper now replaces the generated outer `pre` with the preview wrapper and built-output assertions pass. | Generic non-Astro host structure remains a separate unverified boundary. |
 | `MD-HL-001` | `implemented` | `remark-relgeo-hl` produces `pre > code`, line wrappers, semantic token spans, and stable classes; tests and site output assert token kinds. | Token completeness follows language-service coverage rather than a separately versioned Markdown taxonomy. |
-| `MD-HL-002` | `broken` | Invalid-looking source remains visible when language service returns tokens; text fragments are AST text nodes. | A synthetic language-service throw propagates from line 31 and aborts the transform despite README/development-plan fallback promise. |
+| `MD-HL-002` | `implemented` | Invalid-looking source remains visible when language service returns tokens, and injected service failure now returns source-preserving `pre > code` fallback with a structured diagnostic. | Strict policy deliberately throws; the tolerant fallback is covered by focused package tests. |
 | `MD-HL-003` | `implemented` | `rg-line`, `data-line`, `data-token-kind`, class prefix, whitespace text nodes, and escaped helper output are implemented; CSS consumes the classes. | No snapshot/compatibility policy for class/token renames; raw helper has limited direct tests. |
-| `MD-HL-004` | `partial` | Highlighter calls language-service tokenization and does not import renderer; invalid source can still be tokenized. | Peer runtime failure is not isolated, and language-service itself is coupled to core semantics; no independent bounded/fallback mode. |
-| `MD-DIAG-001` | `absent` | Preview catches exceptions and highlighter consumes token spans, but neither plugin emits a structured diagnostic envelope. | No severity, stable error code, source range, or block-scoped diagnostic node is produced. |
-| `MD-DIAG-002` | `partial` | Preview error creates visible `Preview unavailable.` plus exception message; source/highlighter remains readable on its normal path. | Error is plain text, not structured/actionable; highlighter service failure aborts instead of rendering fallback. |
+| `MD-HL-004` | `partial` | Highlighter calls language-service tokenization and does not import renderer; invalid source can still be tokenized, and peer service failure now has a bounded source-preserving fallback. | Language-service remains coupled to core semantics and no independent lexical fallback mode exists. |
+| `MD-DIAG-001` | `implemented` | Both plugins emit `data-relgeo-diagnostic` with stable code, severity, message, phase, and fenced-block/source location. | Semantic vocabulary remains delegated to core/spec; plugin fallback codes cover adapter failures. |
+| `MD-DIAG-002` | `implemented` | Preview errors retain visible fallback text and the structured payload; highlighter service failures retain readable source and expose the same diagnostic shape. | Website owns final visual presentation; non-fatal runtime diagnostics remain a separate capability. |
 | `MD-DIAG-003` | `absent` | Core/renderer may support runtime diagnostics and shared runner verifies them elsewhere. | Preview plugin only receives a compiled scene or thrown error; no non-fatal diagnostic path preserves preview plus diagnostic. |
-| `MD-DIAG-004` | `absent` | Current behavior is implicitly tolerant for preview exceptions. | No strict/tolerant option or documented policy switch; invalid meta is silently ignored. |
+| `MD-DIAG-004` | `implemented` | Both plugin APIs document `failurePolicy: 'tolerant' | 'strict'`, defaulting to tolerant; focused tests cover fallback and typed strict errors. | This policy applies to plugin failures; it does not implement non-fatal runtime diagnostics. |
 | `MD-OPT-001` | `partial` | TypeScript interfaces expose `classPrefix`, `fence`, render hook, and language service; preview parses `padding`, `profile`, `sheet`, `unit`. | Defaults exist in code/README, but invalid values/unknown keys are not diagnosed and options are not tested exhaustively. |
 | `MD-OPT-002` | `partial` | `profile`, `sheet`, and `unit` pass through; source version is handled by core. | No plugin option for version or view selection; future version becomes a generic placeholder error. |
-| `MD-OPT-003` | `partial` | `classPrefix`, custom preview hook, and highlighter class prefix are configurable. | No configurable asset strategy/base URL; custom hook accepts arbitrary SVG string without validation. |
-| `MD-OPT-004` | `absent` | Preview always catches and substitutes a placeholder. | No caller-selected fallback/diagnostic policy and no strict build failure mode. |
+| `MD-OPT-003` | `partial` | `classPrefix`, custom preview hook, and highlighter class prefix are configurable; unsafe custom SVG patterns are rejected. | No configurable asset strategy/base URL; the bounded hook check is not a general sanitizer. |
+| `MD-OPT-004` | `implemented` | `failurePolicy` exposes documented tolerant fallback versus strict failure behavior and is covered by focused preview tests. | This option covers adapter failures; non-fatal runtime diagnostic preservation remains `MD-DIAG-003`. |
 | `MD-SSR-001` | `partial` | Package source uses Node-compatible compile/render and no browser globals; Astro static build succeeds. | Generic SSR/other unified hosts were not run; data URI and runtime dependencies are only verified in Astro/local Node. |
 | `MD-SSR-002` | `implemented` | Exact preview SVG and highlight digest checks pass for selected shared fixtures; repeated static build is deterministic in the inspected run. | Determinism is not proven for all options, custom hooks, or arbitrary hosts. |
 | `MD-SSR-003` | `unverified` | Astro config successfully orders `remarkRelgeoHl`, `remarkRelgeo`, then `rehype` unwrap; website build passes. | No standalone remark-parse → remark-rehype → rehype-stringify integration fixture or documented ordering matrix outside Astro. |
 | `MD-SSR-004` | `partial` | Both packages build ESM/CJS/types, expose `dist`, and have public package metadata. | No fresh `npm pack`/registry install/temporary consumer proof; local site uses workspace-linked resolution in the inspected checkout. |
 | `MD-ASSET-001` | `partial` | Preview uses deterministic `data:image/svg+xml;charset=utf-8` URI and Pages artifact carries it. | Asset mode is fixed, not configurable; no external/relative asset-base policy for large previews or alternate hosts. |
 | `MD-ASSET-002` | `implemented` | Plugin source performs no filesystem or network access; inputs are source/meta and caller hook only. | A caller-supplied custom render hook remains an explicit trust boundary. |
-| `MD-ASSET-003` | `partial` | Source text is represented as AST text and helper escapes HTML text/block IDs; renderer conformance checks no executable markup. | Custom raw SVG hook is trusted; no plugin-level sanitization or URL policy is defined. |
-| `MD-A11Y-001` | `partial` | Preview image has `alt="Rendered RelGeo preview"`; site has accessible shell and CSS. | No SVG `title`/`desc`, figure/caption semantics, or source-derived label; current Astro wrapper nests `div` under `pre`. |
+| `MD-ASSET-003` | `partial` | Source text is represented as AST text, helper output escapes HTML text/block IDs, and custom SVG is rejected for executable tags, handlers, and unsafe URL forms. | This bounded rejection policy is covered by focused tests, but it is not a general SVG sanitizer or complete URL policy. |
+| `MD-A11Y-001` | `partial` | Preview image has `alt="Rendered RelGeo preview"`; the website unwraps the generated wrapper so it is not nested under `pre`; site has accessible shell and CSS. | No SVG `title`/`desc`, figure/caption semantics, or source-derived label. |
 | `MD-A11Y-002` | `partial` | Source is text-selectable, errors are visible, and image has alt; website focus/reduced-motion assertions pass. | No explicit non-color token semantics/ARIA contract and no physical screen-reader verification. |
 | `MD-A11Y-003` | `not applicable` | Current plugin output has no interactive controls, focus management, or embed keyboard UI. | Any future controls belong to a separately scoped host/consumer capability. |
-| `MD-ERR-001` | `partial` | Preview catches compile/render exceptions; non-matching fences are untouched; tests cover a safe placeholder. | Highlighter has no service-failure catch; option syntax errors and block location context are not reported. |
+| `MD-ERR-001` | `implemented` | Preview and highlighter catch adapter failures per matching fenced block, attach context, and preserve neighboring nodes in tolerant mode; strict mode is explicit. | Option syntax validation and other unrelated backlog rows remain outside this tranche. |
 | `MD-ERR-002` | `partial` | Core produces an unsupported-version message and preview converts it to a placeholder; compatibility matrix declares active/legacy/future policy. | Plugin does not expose stable diagnostic code/category or preserve a structured version classification. |
-| `MD-ERR-003` | `partial` | Preview fallback avoids partial HTML from failed compile/render; conformance verifies safe SVG for successful fixtures. | Error output is untyped, custom SVG hook is trusted, and non-fatal runtime diagnostic mapping is absent. |
+| `MD-ERR-003` | `partial` | Preview fallback avoids partial HTML, carries a typed `RemarkRelgeoError` in strict mode, and rejects bounded unsafe custom-SVG patterns; conformance verifies safe SVG for successful fixtures. | The typed adapter mapping is not a complete core error taxonomy, the hook check is not a general sanitizer, and non-fatal runtime diagnostic mapping is absent. |
 | `MD-WEB-001` | `implemented` | English/Indonesian docs intentionally use `rg` for source and `relgeo` for rendered artifact; Astro registers both and disables built-in syntax highlighting. | Current consumer is the official site; generic MDX/Next/other host examples are not verified. |
 | `MD-WEB-002` | `implemented` | Static website build, built-output assertions, Playground assembly, and Pages artifact assertions pass locally. | Fresh deployed smoke was not run in this audit; local artifact uses current workspace build. |
-| `MD-WEB-003` | `partial` | Site content identifies Markdown as non-normative; spec content is loaded separately; package/matrix line is 0.5.x. | Site lockfile and local linked dependencies need clean registry parity evidence; plugin output exposes no provenance field. |
+| `MD-WEB-003` | `implemented` | Plugin output exposes DSL version, package line, and plugin provenance; the website assertion reads the compatibility matrix and verifies those markers in localized built output. | Registry-only parity remains unverified and is not required for this local implementation. |
 | `MD-WEB-004` | `partial` | EN/ID routes build, localized navigation and technical CSS assertions pass, and `/docs/markdown-surfaces/` is linked from docs. | Public deployment and physical/mobile readability are not current evidence; mobile/VoiceOver work is explicitly deferred. |
-| `MD-REL-001` | `partial` | Both packages have README, examples, license, repository metadata, exports, types, and build/test scripts. | `remark-relgeo-hl` has only 3 unit tests and no clean external consumer/pack smoke; package docs do not fully specify error/options contracts. |
+| `MD-REL-001` | `partial` | Both packages have README, examples, license, repository metadata, exports, types, and build/test scripts. | `remark-relgeo-hl` has 5 focused unit tests but no clean external consumer/pack smoke; package docs do not fully specify error/options contracts. |
 | `MD-REL-002` | `unverified` | Manifests and compatibility matrix declare both packages at `0.5.0` on line `0.5`, and release order places highlighter before preview. | Registry publication/install parity and version synchronization with core/language-service are not verified in this audit. |
 
 ### Fresh local verification — 2026-10-30
@@ -182,29 +182,75 @@ registry, CI, deployed-site, or physical assistive-technology status.
 
 | Command | Result | Evidence boundary |
 |---|---|---|
-| `npm test` in `remark-relgeo/` | PASS, 5/5 | Preview success, metadata/options, custom hook, safe compile fallback, and non-`relgeo` isolation. |
+| `npm test` in `remark-relgeo/` | PASS, 7/7 | Preview success, metadata/options, custom hook, tolerant/strict failure policy, unsafe-output rejection, and non-`relgeo` isolation. |
 | `npm run lint` and `npm run build` in `remark-relgeo/` | PASS | TypeScript check plus ESM/CJS/declaration output. |
-| `npm test` in `remark-relgeo-hl/` | PASS, 3/3 | Semantic token output, non-`rg` isolation, and exported HTML helper. |
+| `npm test` in `remark-relgeo-hl/` | PASS, 5/5 | Semantic token output, non-`rg` isolation, exported HTML helper, and tolerant/strict service-failure policy. |
 | `npm run lint` and `npm run build` in `remark-relgeo-hl/` | PASS | TypeScript check plus ESM/CJS/declaration output. |
 | `npm run conformance:fixtures` at workspace root | PASS, 260/260 across 20 fixtures | Shared active, invalid, runtime-diagnostic, runtime-error, and candidate checks; includes exact Markdown preview/highlight projections for selected fixtures. |
 | `npm run check` in `relgeo.github.io/` | PASS, 0 errors/warnings/hints | Astro/content/type boundary for the official consumer. |
 | `npm run build` in `relgeo.github.io/` | PASS, 138 pages | Static EN/ID docs consumer and route generation. |
 | `npm test` in `relgeo.github.io/` | PASS | `scripts/assert-built-output.mjs` validates localized Markdown surfaces, token markup, preview image markup, and preview source non-exposure. |
 | Synthetic unsupported-version preview probe | PASS as fallback observation | `remark-relgeo` emits `data-relgeo-kind="preview-error"` and visible fallback text for `version: 0.6`. |
-| Synthetic language-service failure probe | CONFIRMED defect | Injected `getSemanticTokens()` failure propagates from `remark-relgeo-hl`; no source-only fallback is emitted. |
+| Synthetic language-service failure probe | PASS as tolerant fallback | Injected `getSemanticTokens()` failure preserves source in `pre > code` with a serialized diagnostic; strict mode remains an explicit typed throw. |
 
 The shell emitted a locale warning (`LC_ALL=C.UTF-8` unavailable) for these
 commands, but every command completed with exit code 0. No implementation
 source or child-repository working tree changes were introduced by the checks.
 
+### Audit execution refresh — 2026-10-30
+
+This task reran the local evidence against the bounded selection in
+[`in-scope-selection.md`](./in-scope-selection.md). The results confirm the
+existing implementation statuses; they do not promote any partial, absent, or
+broken capability.
+
+| Command or probe | Result | Evidence boundary |
+|---|---|---|
+| `npm test`, `npm run lint`, and `npm run build` in `remark-relgeo/` | PASS; 7/7 tests, type check, ESM/CJS/declaration build | Preview package source, fallback, metadata, policy, unsafe-output rejection, and non-target fence behavior. |
+| `npm test`, `npm run lint`, and `npm run build` in `remark-relgeo-hl/` | PASS; 5 tests, type check, ESM/CJS/declaration build | Highlighter token projection, service-failure fallback/strict policy, and exported HTML helper. |
+| `npm run conformance:fixtures` at workspace root | PASS; 260/260 across 20 fixtures | Shared active, invalid, runtime-diagnostic, runtime-error, and candidate fixture evidence, including preview/highlight projections. |
+| `npm run check` in `relgeo.github.io/` | PASS; 0 errors, warnings, or hints | Official Astro/content/type consumer boundary. |
+| `npm run build` and `npm test` in `relgeo.github.io/` | PASS; 138 pages and built-output assertions | Local EN/ID Markdown routes, preview/highlight markers, and no preview-source exposure. |
+| `npm run build` in `playground/`, documented artifact assembly, then `npm run test:pages-artifact` | PASS; 3 Playground assets checked | Local Pages artifact assembly path. A direct assertion before assembly reported the expected missing `dist/playground/index.html`; after building and copying `playground/dist`, the artifact assertion passed. |
+| Synthetic injected `getSemanticTokens()` failure | PASS as tolerant fallback | Reproduces the bounded `MD-HL-002` fallback; strict mode throws the typed `RemarkRelgeoHlError`. |
+
+The shell again emitted the locale warning (`LC_ALL=C.UTF-8` unavailable). The
+checkout reports Node `v22.23.2`, while the documented full integration gate
+requires Node `24.21.0`; the full gate remains environment-unavailable/not
+verified here. This does not change target package or website conclusions from
+the passing local checks. Registry install, publication, deployed-site smoke,
+and physical assistive-technology evidence remain outside this local audit.
+
+### Implementation refresh — 2026-10-30
+
+The bounded implementation tranche added focused package and consumer evidence
+for the selected rows. The changes remain at the owning Markdown/website
+boundaries and do not require publication or deployment.
+
+| Selected capability | Implementation evidence | Current status |
+|---|---|---|
+| `MD-PREVIEW-004` / `MD-DIAG-002` / `MD-ERR-001` | Preview output now carries structured diagnostics and tolerant/strict policy; Astro unwraps the generated preview wrapper; package tests cover fallback, strict failure, unsafe output, and neighboring-block isolation. | `implemented` |
+| `MD-HL-002` / `MD-DIAG-001` / `MD-ERR-001` | Highlighter catches token-service failures, preserves source in `pre > code`, emits block/source diagnostics, and exposes strict failure; 5 focused tests pass. | `implemented` |
+| `MD-DIAG-004` | `failurePolicy` is documented and tested for tolerant default versus strict typed errors. | `implemented` |
+| `MD-ASSET-003` | Custom SVG is rejected for executable tags, event handlers, and unsafe URL forms; ordinary AST/text paths remain escaped. | `partial` — bounded rejection is verified, but a general sanitizer/URL policy remains open. |
+| `MD-WEB-003` | Website built-output assertions compare `0.5` DSL and `0.5.x` package-line/plugin provenance markers with `docs/compatibility-matrix.json` for localized Markdown pages. | `implemented` |
+
+The focused verification set is: `remark-relgeo` 7/7 tests plus lint/build,
+`remark-relgeo-hl` 5/5 tests plus lint/build, root conformance 260/260 across
+20 fixtures after updating the expected highlight digest for the intentional
+provenance attributes, website check/build/output assertions, Playground build,
+and Pages artifact assertions for 3 assets. The remaining absent row
+(`MD-DIAG-003`) and all unrelated backlog rows remain visible and are not
+promoted by this implementation.
+
 ### Status summary
 
 | Status | Count |
 | --- | ---: |
-| `implemented` | 8 |
-| `partial` | 22 |
-| `broken` | 1 |
-| `absent` | 4 |
+| `implemented` | 16 |
+| `partial` | 18 |
+| `broken` | 0 |
+| `absent` | 1 |
 | `not applicable` | 1 |
 | `unverified` | 2 |
 | `deferred` | 0 implementation rows; physical/mobile AT evidence is deferred in the discovery report |
@@ -212,16 +258,16 @@ source or child-repository working tree changes were introduced by the checks.
 
 ### Audit conclusion and handoff
 
-The preview path is the stronger implementation: it delegates semantics to the
-canonical core/renderer, has direct tests, shared-fixture exact output evidence,
-and a safe compile/render placeholder. Its main current integration defect is
-the website's invalid/undesirable `pre > div` wrapper and its lack of structured
-diagnostics/options policy.
+The preview path delegates semantics to the canonical core/renderer, now emits
+structured tolerant/strict failures, and is consumed by a clean website wrapper
+with provenance assertions. The highlighter preserves source when its semantic
+token service fails and exposes the same block-scoped diagnostic boundary.
 
-The highlighter has a real semantic-token path and stable output classes, but is
-`broken` for its documented service-failure fallback: one thrown language-service
-error aborts the Markdown transform. It also lacks a broad package-level test
-matrix even though the current three tests pass.
+The selected implementation leaves `MD-ASSET-003` partial because the bounded
+SVG rejection policy is not a general sanitizer, and leaves
+`MD-DIAG-003` plus unrelated backlog rows visible. The Pages,
+registry, deployed-site, generic-host, and physical accessibility limits remain
+evidence boundaries rather than release prerequisites.
 
 The next reconciliation task should join all 38 IDs to this audit without
 deleting absent capabilities. It should keep implementation, verification, and

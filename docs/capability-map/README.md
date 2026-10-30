@@ -50,7 +50,7 @@ sama.
 | Markdown plugins | [matrix](./markdown-surfaces/capability-matrix.md) | `✔️` bounded transforms / `🌗` fallback | Preview/highlight tersedia; fallback language-service dan registry evidence terbatas. |
 | Playground | [capability matrix](./playground/capability-matrix.md) | `🌗` browser IDE / delivery evidence | Editor, preview, persistence, inspector, file operations, viewport, accessibility, dan lifecycle dicatat sebagai expected rows, diaudit, dijoin satu-ke-satu, lalu diturunkan ke status, kandidat gap task, dan validation handoff. |
 | Website/Pages | [matrix](./website-pages/capability-matrix.md) | `✔️` static artifact / `🌗` public | Astro/spec/Markdown/SEO shell tersedia; pin, public smoke, dan AT checks belum current. |
-| Flutter | [status matrix](./flutter-workbench/status-matrix.md) | `42 ✔️ / 16 🌗 / 3 ❌` pada declared workbench boundary | Expected catalog berada di plan 12; host OS, native AT, current-pointer delivery, signing, dan distribution tetap terpisah/not verified. |
+| Flutter | [status matrix](./flutter-workbench/status-matrix.md) | `44 ✔️ / 17 🌗 / 0 ❌` pada declared 61-ID workbench boundary | Expected catalog tersedia di [entry point lokal](./flutter-workbench/expected-capability-catalog.md) dan didefinisikan normatif oleh plan 12; host OS, native AT, current-pointer delivery, signing, dan distribution tetap terpisah/not verified. |
 | MCP | [capability matrix](./mcp/capability-matrix.md) | `🌗` contract/adapter boundary | Each expected tool/resource/session/security/transport/host/delivery row is retained; implementation status, evidence status, scope, limitation, and unresolved questions remain separate. |
 | Cross-repository | [status matrix](./cross-repository/status-matrix.md) | `✔️` gates / `⚠️` baseline provenance | Pointers, fixtures, workflows tersedia; current child revisions dan external gates belum sinkron. |
 
@@ -114,7 +114,7 @@ the legend `✔️ 🌗 ❌ ➖ ⏸️ ⚠️`.
 | Markdown surfaces | `markdown-surfaces/expected-capability-catalog.md` | `markdown-surfaces/implementation-audit.md` | `markdown-surfaces/status-matrix.md` | `markdown-surfaces/capability-matrix.md` is retained as historical baseline. |
 | Playground | `playground/expected-capability-catalog.md` | `playground/implementation-audit.md` | `playground/capability-matrix.md` | `playground/status-matrix.md` is retained as provenance for the earlier view. |
 | Website/Pages | `website-pages/expected-capability-catalog.md` | `website-pages/implementation-audit.md` | `website-pages/status-matrix.md` | `website-pages/capability-matrix.md` is retained as historical baseline. |
-| Flutter workbench | `../plans/12-flutter-workbench-capability-baseline.md` | `flutter-workbench/implementation-gap-map.md` | `flutter-workbench/status-matrix.md` | `implementation-audit.md` is a historical evidence summary; expected catalog remains a plan because it is shared with the Flutter delivery plan. |
+| Flutter workbench | `flutter-workbench/expected-capability-catalog.md` | `flutter-workbench/implementation-gap-map.md` | `flutter-workbench/status-matrix.md` | `implementation-audit.md` is a companion evidence summary; the local expected-catalog entry point delegates normative rows to plan 12. |
 | MCP | `mcp/expected-capability-catalog.md` | `mcp/implementation-audit.md` | `mcp/capability-matrix.md` | `mcp/status-matrix.md` is a compact secondary status report, not a competing catalog. |
 | Cross-repository | `cross-repository/expected-capability-catalog.md` | `cross-repository/implementation-audit.md` | `cross-repository/status-matrix.md` | No root-level capability matrix is duplicated. |
 
@@ -259,9 +259,9 @@ are explicitly labeled so they cannot be mistaken for current evidence.
 - [Flutter implementation audit](./flutter-workbench/implementation-audit.md) — source,
   test, fixture, local-platform, historical-CI evidence, and current-pointer
   verification limits.
-- [Flutter Workbench expected capability catalog](../plans/12-flutter-workbench-capability-baseline.md)
-  — expected desktop authoring outcomes and scope decisions, written before
-  implementation audit.
+- [Flutter Workbench expected capability catalog](./flutter-workbench/expected-capability-catalog.md)
+  — local entry point for the 61-ID expected catalog; normative rows and scope
+  decisions remain defined by plan 12 before implementation audit.
 - [Flutter Workbench implementation audit](./flutter-workbench/implementation-gap-map.md)
   — current ID-by-ID source, test, platform, runtime, and evidence audit.
 - [Flutter Workbench expected-versus-observed reconciliation](./flutter-workbench/reconciliation.md)

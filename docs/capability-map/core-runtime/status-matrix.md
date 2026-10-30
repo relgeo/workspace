@@ -4,7 +4,7 @@
 **Boundary:** expected core runtime catalog versus implementation audit evidence  
 **Status dokumen:** published downstream view; this document does not implement a gap
 
-Matrix ini adalah view capability-first dari [expected catalog](./expected-capability-catalog.md), [implementation audit](./archive/implementation-audit-legacy.md), dan [expected-versus-observed reconciliation](./reconciliation.md). Keempat artefak tetap terpisah: katalog menetapkan expected set, audit mencatat discovery/evidence, reconciliation melakukan join, dan matrix ini merangkum keputusan tindak lanjut.
+Matrix ini adalah view capability-first dari [expected catalog](./expected-capability-catalog.md), [current implementation audit](./implementation-audit.md), [historical audit log](./archive/implementation-audit-legacy.md), dan [expected-versus-observed reconciliation](./reconciliation.md). Keempat artefak tetap terpisah: katalog menetapkan expected set, audit mencatat discovery/evidence, reconciliation melakukan join, dan matrix ini merangkum keputusan tindak lanjut.
 
 Boundary dan ownership mengikuti [docs/REPOSITORY-MAP.md](../../REPOSITORY-MAP.md)
 (`core/` adalah `relgeo/core`; UI, CLI, renderer, language-service, Flutter,
@@ -30,7 +30,7 @@ implementasi.
 | `?` | Evidence belum dapat diverifikasi; bukan bukti absence. |
 
 Current reconciliation: **38 expected IDs, 38 matrix rows, 0 missing,
-0 duplicate, 0 extra; 23 `✔️`, 13 `🌗`, 1 `❌`, 1 `⚠️`.** `➖`, `⏸️`, dan
+0 duplicate, 0 extra; 23 `✔️`, 14 `🌗`, 0 `❌`, 1 `⚠️`.** `➖`, `⏸️`, dan
 `?` tetap ditampilkan pada findings scope/evidence agar tidak disamakan dengan
 absence implementation.
 
@@ -59,12 +59,12 @@ absence implementation.
 | `CORE-RESOLVE-002` | Placement, anchors, transforms, scope, world/local semantics | `✔️` | Audit §4D; placement/anchor/transform tests | All combinations not cross-consumer tested | core | anchors, transforms, graph | H | Add transform/anchor parity fixtures |
 | `CORE-RESOLVE-003` | Repeat/divide/split/boolean collections and result modes | `🌗` | Audit §4D; runtime-error/boolean/repeat fixtures | Topology and mode coverage remains bounded | core + geometry | collection identity, boolean engine | H | Add collection/result-mode acceptance matrix |
 | `CORE-RESOLVE-004` | Views, sheets, roles, metadata composition | `✔️` | Audit §4D; sheet/view/reference fixtures | Renderer styling remains outside core | core + renderer | scene projection, view policy | M | Preserve semantic view fixtures |
-| `CORE-RESOLVE-005` | Typed resolved scene and consumer-safe semantic projection | `🌗` | Audit §4D; consumers/snapshots; no canonical serializer | Output is usable but not formally versioned | core + spec | geometry types, serializer | H | Define canonical resolved-scene schema |
+| `CORE-RESOLVE-005` | Typed resolved scene and consumer-safe semantic projection | `🌗` | Audit §4D; `core/src/projection.ts` and projection tests; conformance/consumers | Versioned core projection exists; consumer migration remains open | core + spec | geometry types, serializer | H | Add consumer comparator/migration evidence |
 | `CORE-CONSTRAINT-001` | Post-resolve equality/alignment/parallel/perpendicular/tangent checks | `✔️` | Audit §4E; constraint tests/fixture | Coverage of every relation kind is narrow | core + spec | resolved geometry, tolerance | H | Add valid/invalid fixture per constraint kind |
 | `CORE-CONSTRAINT-002` | Structured violations with path, objects, expected/actual, severity | `🌗` | Audit §4E; `ConstraintViolation` tests; no severity/origin | Violation contract lacks stable severity and phase | core + geometry | diagnostic schema, consumer UX | H | Extend violation contract and snapshots |
-| `CORE-DIAG-001` | Machine-readable diagnostics with code/path/context/phase | `🌗` | Audit §4E; language-service/fixture tests | Raw errors and non-exhaustive codes reduce stability | core | error catalog, source paths | P0 | Close error catalog and normalization first |
-| `CORE-DIAG-002` | Deterministic multi-diagnostic aggregation | `❌` | Audit §4E; core API/consumer search found no aggregation API | Strict paths commonly stop at first failure | core | error model, ordering policy | P1 | Decide core versus language-service ownership; add ordered multi-error test |
-| `CORE-ERROR-003` | Distinct actionable runtime error taxonomy | `⚠️` | Audit §4E; runtime fixture works but public code union omits `BOOLEAN_EMPTY_RESULT` | Emitted codes and public `RelGeoErrorCode` drift | core | error catalog, all throw sites | P0 | Add missing codes and normalize emitted errors |
+| `CORE-DIAG-001` | Machine-readable diagnostics with code/path/context/phase | `🌗` | Audit §4E; `core/src/diagnostics.ts`, structured-error/diagnostic tests, language-service/fixture tests | Source mapping and complete raw-error coverage remain bounded | core | error catalog, source paths | P0 | Expand source-range mapping and error catalog checks |
+| `CORE-DIAG-002` | Deterministic multi-diagnostic aggregation | `🌗` | Audit §4E; `collectDiagnostics` tests and strict resolver regression | Core aggregation covers parse and independent local validation faults; broader coverage remains | core | error model, ordering policy | P1 | Expand aggregation coverage without changing strict behavior |
+| `CORE-ERROR-003` | Distinct actionable runtime error taxonomy | `⚠️` | Audit §4E; `BOOLEAN_EMPTY_RESULT` is now represented and normalized, but evaluator/raw throw-site catalog remains incomplete | Public fallback normalization prevents boundary loss, while exhaustive emitted-code/type agreement is not yet proven | core | error catalog, all throw sites | P0 | Generate/maintain emitted-code catalog and add raw-throw normalization regressions |
 | `CORE-DET-001` | Platform/order/time-independent parse-to-resolve behavior | `✔️` | Audit §4F; local graph/resolver/snapshot tests | Node 24/cross-platform proof unverified | core + parity | canonical toolchain, snapshots | H | Run canonical repeated-process gate |
 | `CORE-DET-002` | Stable IDs, dependency/collection order, tolerance, diagnostic paths | `🌗` | Audit §4F; local snapshots/cycle tests | Numeric and diagnostic ordering lack one contract | core + spec | serializer, graph, diagnostics | H | Publish replay/order/tolerance rules |
 | `CORE-API-001` | Documented public parse/validate/resolve/query/result API | `✔️` | Audit §4F; exports/build/consumer imports | API docs are not generated/contract-tested | core | package exports, types | M | Add public-export contract test |
@@ -91,7 +91,8 @@ absence; they are not additional expected IDs.
 ## Evidence and handoff links
 
 - [Expected core runtime catalog](./expected-capability-catalog.md)
-- [Implementation audit evidence](./archive/implementation-audit-legacy.md)
+- [Current implementation audit evidence](./implementation-audit.md)
+- [Archived detailed audit log](./archive/implementation-audit-legacy.md)
 - [Expected-versus-observed reconciliation](./reconciliation.md)
 - [Core runtime implementation-gap backlog](./implementation-gap-backlog.md)
 - [Maturation master plan](../../MATURATION-MASTER-PLAN.md)

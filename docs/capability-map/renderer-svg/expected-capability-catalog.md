@@ -1,7 +1,8 @@
 # Expected SVG Renderer Capability Catalog
 
-**Status:** expected catalog selesai; implementation audit tersedia sebagai
-dokumen terpisah dan mempertahankan seluruh expected ID
+**Status:** expected catalog synchronized with the current audit checkpoint;
+row-level implementation status remains assigned by the downstream audit,
+reconciliation, matrix, and backlog artifacts
 
 **Tanggal katalog:** 2026-10-30<br>
 **Compatibility line:** RelGeo DSL `0.5.x`<br>
@@ -9,6 +10,14 @@ dokumen terpisah dan mempertahankan seluruh expected ID
 **Owner implementasi:** `relgeo/renderer-svg`<br>
 **Runtime boundary:** resolved RelGeo scene → SVG string/markup untuk Node,
 browser, CLI, Playground, dokumentasi, dan export ringan
+
+**Current reconciliation:** 33 expected IDs; 26 `✔️`, 7 `🌗`, 0 `❌`, and 0
+`⚠️`. The `➖` non-goals, `⏸️` deferred boolean expansion, and `?` environment
+findings remain outside the expected implementation-row count. Current
+row-level evidence, remaining gaps, owners, dependencies, and next actions are
+maintained in the [implementation audit](./implementation-audit.md),
+[reconciliation](./reconciliation.md), [capability matrix](./capability-matrix.md),
+and [implementation-gap backlog](./implementation-gap-backlog.md).
 
 ## 1. Tujuan dan aturan baca
 
@@ -27,9 +36,12 @@ Katalog ini adalah prerequisite untuk audit. Setiap row memiliki:
 - owner/source of truth; dan
 - status verifikasi katalog.
 
-`PENDING-AUDIT` berarti row belum dibandingkan dengan source implementation,
-test, atau matrix/audit lama. Nilai tersebut bukan klaim bahwa capability sudah
-tersedia maupun tidak tersedia.
+`PENDING-AUDIT` pada kolom terakhir adalah provenance marker dari expected-set,
+bukan row-level implementation status. The downstream audit has now compared
+all 33 IDs with source, tests, fixtures, consumers, and environment evidence;
+the resulting status symbols, evidence, remaining gaps, owners, dependencies,
+and next actions live in the linked downstream artifacts. This catalog keeps
+the expected IDs and does not delete unresolved, deferred, or unverified scope.
 
 Aturan pemisahan sumber:
 
@@ -156,9 +168,10 @@ the downstream audit rather than being silently omitted.
 
 ## 5. Expected capability catalog
 
-All rows below intentionally start at `PENDING-AUDIT`. The downstream audit must
-preserve these IDs and add implementation evidence, parity, and gap status
-instead of rewriting the expected set.
+All rows below retain `PENDING-AUDIT` by design as the catalog's expected-set
+marker. The current audit preserves these IDs and adds implementation evidence,
+parity, and gap status in downstream artifacts rather than rewriting the
+expected set.
 
 ### A. Public boundary and scene root
 

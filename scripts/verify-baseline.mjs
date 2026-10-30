@@ -5,6 +5,7 @@ import path from "node:path";
 import process from "node:process";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { classifyFailure, createEvidenceEnvelope } from "./orchestration-contract.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, "..");
@@ -19,6 +20,10 @@ const requireMain = process.argv.includes("--require-main");
 
 const failures = [];
 const checks = [];
+let workspaceRevision = "unknown";
+let baselineName = "unknown";
+let compatibilityLine = "unknown";
+let packageManager = null;
 
 function record(label, ok, detail) {
   checks.push({ label, ok, detail });
@@ -161,8 +166,10 @@ function verifyPackage(entry, compatibilityLine) {
 }
 
 try {
-  const workspaceHead = runGit(["rev-parse", "HEAD"]);
-  record("workspace: Git repository", Boolean(workspaceHead), workspaceHead);
+  workspaceRevision = runGit(["rev-parse", "HEAD"]);
+  record("workspace: Git repository", Boolean(workspaceRevision), workspaceRevision);
+  const rootPackage = readJson(path.join(root, "package.json"));
+  packageManager = rootPackage.packageManager ?? null;
   const manifest = writeManifest
     ? buildManifest(fs.existsSync(manifestPath) ? readJson(manifestPath) : {})
     : readJson(manifestPath);
@@ -175,6 +182,8 @@ try {
     manifest.compatibilityLine === "0.5",
     String(manifest.compatibilityLine),
   );
+  baselineName = manifest.baselineName ?? "unknown";
+  compatibilityLine = manifest.compatibilityLine ?? "unknown";
   const entries = manifest.submodules;
   const registeredSubmoduleCount = readGitmodules().length;
   record(
@@ -191,7 +200,45 @@ try {
 }
 
 if (jsonOutput) {
-  process.stdout.write(JSON.stringify({ ok: failures.length === 0, strict, checks, failures }, null, 2) + "\n");
+  const structuredFailures = failures.map((failure) => {
+    const classification = classifyFailure({
+      error: failure.detail,
+      output: failure.label,
+    });
+    return {
+      ...failure,
+      ...classification,
+      owner: "relgeo/workspace",
+      repository: "relgeo/workspace",
+      surface: failure.label.split(":")[0],
+      dependencyImpact: "Dependent stages remain untrusted until this check passes.",
+      dependencyStatus: "blocked",
+    };
+  });
+  const report = {
+    schemaVersion: 1,
+    contract: "baseline-verification-v1",
+    ok: failures.length === 0,
+    strict,
+    evidence: createEvidenceEnvelope({
+      evidenceClass: "local-workspace",
+      workspaceRevision,
+      baselineName,
+      compatibilityLine,
+      toolchain: { node: process.version, pnpm: packageManager },
+      limitations: Number(process.versions.node.split(".")[0]) < 24
+        ? ["declared Node.js minimum is 24"]
+        : [],
+    }),
+    summary: {
+      total: checks.length,
+      passed: checks.length - failures.length,
+      failed: failures.length,
+    },
+    checks,
+    failures: structuredFailures,
+  };
+  process.stdout.write(JSON.stringify(report, null, 2) + "\n");
 } else {
   console.log("RelGeo baseline verification" + (strict ? " (strict)" : ""));
   for (const check of checks) {

@@ -1,6 +1,6 @@
 # Flutter capability matrix
 
-> **Coverage statement — 2026-10-29.** This matrix covers Flutter document
+> **Coverage statement — 2026-10-30.** This historical aggregate matrix covers Flutter document
 > lifecycle, editor/workbench, semantic runtime, geometry/SVG projection,
 > persistence, platform, accessibility, and delivery boundaries using
 > `flutter/lib/`, `flutter/test/`, fixtures, capability JSON, bridge/workflow
@@ -19,6 +19,12 @@
 | Source of truth | `flutter/lib/`, `flutter/test/`, `flutter/pubspec.yaml`, `flutter/.github/workflows/`, `flutter/README.md`, `docs/flutter-capability-matrix.json`, active fixtures, and plans 06/07/10 |
 | Audit date | 2026-10-29 |
 | Evidence freshness | Historical local/CI evidence exists; current Flutter execution is not verified because the SDK cache write was denied. Current gitlink is `b21eceb`; baseline JSON is `f39a913`; plan CI evidence is root `328c869`. |
+
+This aggregate matrix is retained as historical context. The capability-first
+status authority is [`status-matrix.md`](./status-matrix.md), joined to the
+expected IDs by [`reconciliation.md`](./reconciliation.md); the current local
+tranche adds document recovery, dependency graph, and object-selection evidence
+there without deleting the aggregate rows or their host/runtime qualifiers.
 
 ## Status legend
 
@@ -62,7 +68,7 @@ host run is not native-runtime proof.
 | Save As and document identity | ✔️ | `source + UI + test`: `cad_workbench.dart:204-253,261-309`; `widget_test.dart:193-237,552-611`; `workbench_file_service_test.dart:23-39` | Save As picker and typed host result are covered through injected boundaries; native picker acceptance is not verified | Workbench authors | file picker, session path/name | Re-run Save As and title/recent update on current hosts |
 | Recent documents | ✔️ | `source + UI + test`: `workbench_recent_documents.dart:6-92`; `cad_workbench.dart:166-184,298-307,629`; `workbench_recent_documents_test.dart:69-168` | Shared Preferences persistence is best effort; missing paths are removed, read errors are preserved; native path validity is not verified | Workbench authors | `shared_preferences`, recent file service | Verify path/permission behavior on each desktop host |
 | Dirty state and discard guard | ✔️ | `source + UI + test`: `workbench_document_session.dart:8-102`; `cad_workbench.dart:678-713`; `widget_test.dart:239-282,363-421,502-550` | Guard covers New/Open/Close/Quit; native app close/window-manager termination is outside this Flutter widget evidence | Workbench authors and host lifecycle | document session, host confirmation callback | Add native window-close dirty-flow evidence |
-| Error handling and recovery | ✔️ | `source + UI + test`: `cad_workbench.dart:254-259,726-777`; `widget_test.dart:423-478,822-852`; invalid fixture tests | Failed Open/Save preserves source/dirty state; invalid compile keeps last valid canvas while showing diagnostics; crash/restart recovery is not implemented or verified | Authors and support | YAML parser, resolver, diagnostics surface | Define and test restart/autosave recovery if required |
+| Error handling and recovery | 🌗 | `source + UI + test`: `cad_workbench.dart:194-212,652-688,780-795`; `workbench_document_recovery.dart`; recovery and invalid fixture tests | Failed Open/Save preserves source/dirty state; invalid compile keeps last valid canvas; best-effort dirty-draft restore/discard is wired and locally tested, while forced-exit/native storage remains unverified | Authors and support | YAML parser, resolver, diagnostics surface, persistence policy | Add forced-exit/relaunch and stale/corrupt-draft integration evidence |
 | Editor/source authoring | ✔️ | `source + UI + test`: `features/editor/`, `workbench_editor_controller.dart`; `workbench_feature_surface_test.dart`; `editor_autocomplete_test.dart`; widget smoke | Editor is a real workbench feature with injected controller; full editing behavior depends on `re_editor` and native text input | Authors | `re_editor`, command context menu | Add current native text-input/IME evidence if supported |
 | Undo/redo history | ✔️ | `source + UI + test`: `workbench_editor_controller.dart:1-52`; command registry `cad_workbench.dart:1181-1209`; `workbench_editor_controller_test.dart`; `widget_test.dart:284-317` | History is delegated to `re_editor`; document replacement clears history and agent replacement preserves one edit boundary | Authors | `re_editor`, Edit menu/shortcuts | Verify native keyboard history on each target host |
 | Viewport/canvas navigation | ✔️ | `source + UI + test`: `workbench_viewport_controller.dart`; `canvas_painter.dart`; `workbench_viewport_controller_test.dart`; `workbench_viewport_transform_test.dart`; golden/widget tests | Fit/reset/zoom and canvas rendering are tested; physical GPU/gesture/resize behavior is not current-host verified | Authors | Flutter Canvas, `InteractiveViewer`, scene bbox | Run desktop gesture/resize smoke with current artifact |

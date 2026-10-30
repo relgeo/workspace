@@ -2,7 +2,7 @@
 
 > **Coverage statement — 2026-10-30.** This is the capability-first status
 > view for all 37 rows in the Playground expected catalog. It is derived from
-> the [implementation audit](./archive/implementation-audit-legacy.md) and
+> the [implementation audit](./implementation-audit.md) and
 > [expected-versus-observed reconciliation](./reconciliation.md);
 > it is not a replacement catalog and does not turn documentation into
 > implementation.
@@ -60,16 +60,16 @@ is therefore not represented as `⚠️`.
 | `PG-CANVAS-002` | Zoom viewport | `✔️` | Toolbar, clamped zoom, Ctrl/Meta+wheel | Browser control/gesture unverified | Playground Preview | Pointer/wheel events and camera state | Zoom can become inaccessible or mutate model | Add browser zoom boundary assertions |
 | `PG-CANVAS-003` | Pan viewport | `✔️` | Pointer capture, pinch/pan handlers, gesture tests | Physical touch evidence deferred | Playground Preview | Pointer events and touch contract | Device gesture behavior may differ | Keep device validation as separate held follow-up |
 | `PG-CANVAS-004` | Fit/recenter | `✔️` | Camera computation and `ResizeObserver` | Resize sequence unverified in browser | Playground Preview | SVG bounds, container resize | Scene can remain off-screen after layout change | Add resize/fit browser assertion |
-| `PG-CANVAS-005` | Dedicated reset viewport | `🌗` | Reset source also resets camera | No camera-only reset command | Playground Preview/App | Camera state and command decision | Reset may alter source when user wants camera only | Define and implement camera-only reset, or record explicit disposition |
+| `PG-CANVAS-005` | Dedicated reset viewport | `✔️` | Camera-only reset source, unit coverage, and toolbar binding | Browser proof of source/file/selection preservation unavailable | Playground Preview/App | Camera state and command map | Camera behavior can regress without browser assertion | Re-run camera-only reset browser assertion when the server can bind |
 | `PG-CANVAS-006` | Sheet/view/surface selection | `✔️` | Sheet, Model/Physical, Both/Source/Preview and layout controls | Print-workbench parity intentionally excluded | Playground | View state and Preview | Surface semantics can be confused | Keep model/physical labels explicit |
 | `PG-SELECT-001` | Object/anchor selection | `✔️` | Preview anchors, Inspector selection, related navigation | Pointer/keyboard browser flow unverified | Playground UI | Stable DSL object identity | Context can lose selection after resolve | Add selection/re-resolve smoke |
 | `PG-INSPECT-001` | Inspector | `✔️` | Resolved, Values, BOM, filters and source jump | Completeness depends on resolved payload | Playground Inspector | Resolved scene and editor | Rare object types may lack context | Expand representative inspector fixtures |
 | `PG-INSPECT-002` | Dependency graph navigation | `✔️` | Filter/focus, selectable nodes, roving keyboard navigation | Graph zoom/minimap optional, not a gap | Playground GraphViewer | Dependency graph payload | Large graphs can be hard to navigate | Keep focused graph fixtures and keyboard tests |
-| `PG-THEME-001` | User-visible theme | `❌` | Static token source only; no control or preference | Theme mode, persistence, and contrast contract absent | Playground product/UI owner | Product decision, design tokens, preference storage | Readability and accessibility gap | Decide light/dark/system scope, then implement and test |
+| `PG-THEME-001` | User-visible theme | `✔️` | `theme.ts`, theme selector, token variants, and unit tests | Browser selector/system preference/reload assertion unavailable | Playground product/UI owner | CSS tokens and browser-local storage | Browser-specific preference behavior remains unobserved | Re-run theme browser assertions when the server can bind |
 | `PG-RESP-001` | Responsive layout | `✔️` | Breakpoints, drawer, surface switcher, split modes | Current browser emulation and handset unverified | Playground UI | CSS, Sidebar, Preview | Narrow layouts can hide primary actions | Run desktop/tablet/handset browser matrix |
-| `PG-KEY-001` | Keyboard command surface | `🌗` | Native controls, Escape, graph/resizer keys, dialog trap | No app-wide file/action shortcut map | Playground UI owner | Browser keyboard contract and command decision | Mouse-only primary workflows and conflicts | Define documented bindings and add keyboard E2E |
-| `PG-A11Y-001` | Accessibility semantics | `🌗` | ARIA, landmarks, live status, focus traps, skip links | Native AT/AX-tree and current browser traversal unverified | Playground UI + accessibility owner | DOM semantics and device/browser AT | Users may encounter inaccessible state changes | Run AX/manual AT checks and fix findings |
-| `PG-A11Y-002` | Accessibility preferences/input tolerance | `🌗` | Reduced motion, focus styles, keyboard alternatives | Contrast, target size, and device tolerance incomplete | Playground UI + accessibility owner | Design tokens, CSS media, device QA | Gesture/focus/contrast barriers remain | Add contrast/target review and device evidence |
+| `PG-KEY-001` | Keyboard command surface | `✔️` | Centralized Mod+Alt command map, documentation, and unit tests | Browser focus/conflict behavior unavailable | Playground UI owner | CodeMirror/browser focus and dialog semantics | Reserved-key conflicts remain unobserved | Re-run shortcut and focus browser assertions when the server can bind |
+| `PG-A11Y-001` | Accessibility semantics | `🌗` | ARIA, landmarks, live status, focus traps, skip links, static UX audit | Browser traversal and native AT/AX-tree unverified | Playground UI + accessibility owner | DOM semantics and device/browser AT | Users may encounter inaccessible state changes | Run AX/manual AT checks and fix findings |
+| `PG-A11Y-002` | Accessibility preferences/input tolerance | `✔️` | Reduced motion, forced-colors focus fallback, target sizing, keyboard alternatives, UX audit | Physical handset/touch evidence deferred | Playground UI + accessibility owner | Design tokens, CSS media, device QA | Device-specific tolerance remains unobserved | Record supported-browser contrast/target review and device result when available |
 | `PG-SHARE-001` | URL/share source | `✔️` | Base64URL, 180000 guard, history, clipboard fallback | Public URL/permission behavior unverified | Playground | URL hash and clipboard APIs | Share may be too large or fail silently | Run deployed share-link smoke |
 | `PG-SHARE-002` | Transient-share safety | `✔️` | Shared draft, explicit Save as, invalid/oversized hash feedback | Browser reload/share flow unverified | Playground | Hash parser and file model | Shared source could overwrite local work | Add browser reload and no-overwrite assertions |
 | `PG-DELIVERY-001` | Public artifact consistency | `🌗` | Local Vite artifact and `/playground/` base build pass | Hosted Pages parity and smoke unverified | Playground + Pages delivery owner | Pages workflow and current child pointer | Public artifact can differ from audited source | Rebuild hosted artifact and archive current smoke evidence |
@@ -78,9 +78,9 @@ is therefore not represented as `⚠️`.
 
 | Status | Count | Interpretation |
 | --- | ---: | --- |
-| `✔️ implemented` | 30 | Bounded implementation exists; evidence qualifications remain in-row. |
-| `🌗 partial` | 6 | Loading, viewport reset, keyboard, accessibility, and hosted delivery have explicit gaps. |
-| `❌ absent` | 1 | `PG-THEME-001` is an explicit missing implementation. |
+| `✔️ implemented` | 34 | Bounded implementation exists; evidence qualifications remain in-row. |
+| `🌗 partial` | 3 | Startup, native/browser accessibility evidence, and hosted delivery remain incomplete. |
+| `❌ absent` | 0 | No selected Playground capability is currently absent at the source boundary. |
 | `⚠️ broken` | 0 | No confirmed broken Playground behavior in this audit. |
 | `⏸️ deferred` | 0 | Physical/native follow-ups are evidence/scope limitations, not silently treated as implementation rows. |
 | `➖ not applicable` | 0 expected rows | Cloud collaboration, folders, print-workbench parity, and graph zoom/minimap remain outside this expected boundary. |
@@ -92,7 +92,7 @@ the capability boundary or evidence changes.
 Linked artifacts:
 
 - [Expected catalog](./expected-capability-catalog.md)
-- [Implementation audit](./archive/implementation-audit-legacy.md)
+- [Implementation audit](./implementation-audit.md)
 - [Expected-versus-observed reconciliation](./reconciliation.md)
 - [Implementation-gap backlog](./implementation-gap-backlog.md)
 - [Maturation master plan](../../MATURATION-MASTER-PLAN.md)

@@ -112,7 +112,7 @@
         "label": "text"
       },
       "expectedHighlightSnapshotPath": "expected/10-v05-relational-baseline.highlight.txt",
-      "expectedHighlightSha256": "d094f19533ee50bbf40eff7540cfb7da3a11fa1ec38d82c426f0e5f77d272e8c",
+      "expectedHighlightSha256": "48e1412329a176badc4d608d06ff9e1ab3a34ba385ad3c9c55722a917fd5d22e",
       "expectedOutputPath": "expected/10-v05-relational-baseline.svg",
       "expectedResolvedPath": "expected/10-v05-relational-baseline.json"
     },

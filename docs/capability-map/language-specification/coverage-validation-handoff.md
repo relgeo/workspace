@@ -12,7 +12,8 @@ ini **tidak** menyatakan surface implementasi lengkap. Klaim yang aman adalah:
 - expected catalog memiliki 53 capability ID;
 - audit membandingkan 53/53 ID terhadap observed source/test/fixture/consumer
   evidence;
-- status matrix mempertahankan 16 `✔️`, 35 `🌗`, dan 2 `⚠️`;
+- status matrix now records 16 `✔️`, 36 `🌗`, and 1 `⚠️` after the selected SVG
+  escaping fix; this is partial local evidence, not a complete parity claim;
 - tidak ada current `❌` karena audit menemukan sebagian realization untuk semua
   expected ID, tetapi ketiadaan generated machine-readable normative catalog
   tetap dicatat sebagai structural absence;
@@ -24,9 +25,10 @@ ini **tidak** menyatakan surface implementasi lengkap. Klaim yang aman adalah:
   environment-unavailable because Dart package resolution and host writes are
   blocked.
 
-Implementation work belum dimulai oleh handoff ini. Candidate backlog harus
-menjadi goal/task implementasi terpisah dan hanya boleh dipromosikan setelah
-source change, test, fixture/conformance, dan evidence target-nya lulus.
+The bounded implementation tranche has started for `GAP-001`, `GAP-009`,
+`GAP-011`, and `GAP-013`. The remaining candidate backlog is still not active
+work, and no row is promoted to complete without source change, focused test,
+fixture/conformance, and evidence-target review.
 
 ## 2. Artefact chain
 
@@ -164,3 +166,63 @@ Implementation candidates are owned by the separate backlog, in dependency order
 The handoff is complete only as a documentation/validation deliverable. It does
 not create or start these implementation goals, does not change any capability
 status, and does not convert local evidence into release evidence.
+
+## 8. Reproducible execution and remaining-gap handoff
+
+### 8.1 Changed repository boundary
+
+The evidence below describes the current uncommitted working tree, not a new
+commit or release artifact:
+
+| Boundary | Revision / state | Changed scope |
+| --- | --- | --- |
+| Workspace root | `HEAD 1cfa865`; worktree dirty; no commit created by this task | Capability-map docs, root `package.json`, and `scripts/check-language-spec-vocabulary.mjs` |
+| `core` child repository | `HEAD 070defe`; worktree dirty | Parser/resolver/validator structured-error normalization, `src/errors.ts`, and focused structured-error tests |
+| `renderer-svg` child repository | `HEAD 3b66780`; worktree dirty | Dimension/annotation escaping, renderer security tests, and v0.5 escaping fixture |
+
+No unrelated repository or external host was used as an implementation boundary.
+Generated package `dist` output is local build output and is not treated as
+source evidence or a release artifact.
+
+### 8.2 Reproducible local evidence
+
+Run from `/Users/agusmade/projects/relgeo-workspace` with Node `22.23.2` and
+pnpm `10.33.3`:
+
+| Command | Result |
+| --- | --- |
+| `pnpm --filter @relgeo/core test` | 430/430 tests passed across 45 files |
+| `pnpm --filter @relgeo/renderer-svg test` | 82/82 tests passed across 6 files |
+| `pnpm --filter @relgeo/language-service test` | 66/66 tests passed |
+| `pnpm --filter @relgeo/cli test` | 9/9 tests passed |
+| `pnpm --filter @relgeo/remark-relgeo test` | 5/5 tests passed |
+| `pnpm --filter @relgeo/remark-relgeo-hl test` | 3/3 tests passed |
+| Core, renderer, language-service, CLI, remark, and highlighting `build` commands | All passed locally |
+| `pnpm language-spec:check` | Passed; 34 spec documents checked |
+| `pnpm conformance:fixtures` | 260 passed, 0 failed across 20 fixtures |
+| `git diff --check` | Passed |
+
+The repository declares Node `>=24`; therefore these are direct local results,
+not a Node-24 or canonical-CI claim. The conformance runner exercises local
+CLI, renderer, language-service, highlighting, preview, and Markdown paths,
+including safe SVG/no-executable-markup assertions.
+
+### 8.3 Remaining-gap handoff
+
+The next owner actions are intentionally bounded and do not promote statuses:
+
+1. `GAP-001` / `DOC-003`: extend the passing vocabulary check from sections,
+   types, aliases, and document status labels to object and renderer field sets.
+2. `GAP-011` / `DIAG-002`: inventory and normalize remaining exported evaluator
+   and internal raw-error paths, then add shared phase/path/message fixtures and
+   language-service/CLI mapping checks.
+3. `GAP-009` / `GAP-013`: expand dimension-kind and remaining
+   Playground/current-host consumer snapshots; retain `🌗` until that broader
+   evidence exists.
+4. Keep `GAP-002`–`GAP-008`, `GAP-010`, and `GAP-012` as visible backlog work;
+   preserve fixture 16 promotion, mobile/native delivery, canonical CI, public
+   host, browser, Flutter, and MCP transport as deferred or unverified scope.
+
+No npm/pub.dev publication, production deployment, public host, registry
+access, or deferred platform host was used or required. The remaining limits
+are evidence/contract gaps, not silently converted completion claims.

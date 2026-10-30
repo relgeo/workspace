@@ -1,7 +1,9 @@
 # Markdown Surfaces Implementation-Gap Backlog
 
 **Date:** 2026-10-30
-**Status:** candidate goal/task register; no row here counts as implementation
+**Status:** candidate goal/task register; selected rows may record `✔️` only
+after focused implementation and fresh audit evidence; the register itself is
+not completion evidence
 **Sources:** [status matrix](./status-matrix.md) and [expected-versus-observed reconciliation](./reconciliation.md)
 
 This backlog turns every expected capability with an implementation gap into
@@ -25,9 +27,10 @@ external evidence only are verification follow-ups, not implementation gaps.
 | --- | ---: |
 | Expected implementation-gap rows | 27 |
 | Candidate implementation tasks | 27 |
-| `🌗` tasks | 22 |
-| `❌` tasks | 4 |
-| `⚠️` tasks | 1 |
+| `✔️` tasks with fresh local evidence | 8 |
+| `🌗` tasks | 18 |
+| `❌` tasks | 1 |
+| `⚠️` tasks | 0 |
 | Missing source IDs | 0 |
 | Duplicate source IDs | 0 |
 
@@ -76,26 +79,26 @@ dependency, acceptance evidence, risk, and next action for the same task ID.
 | `MD-TASK-002` source/metadata preservation fixtures | `MD-FENCE-002` | 🌗 | both plugin owners | unified mdast/hast contract | Real remark/rehype fixtures preserve info, whitespace, source fallback, and adjacent nodes | P1 source loss/copy regression | Add pipeline fixture suite |
 | `MD-TASK-003` mixed-block determinism | `MD-FENCE-003` | 🌗 | both plugin owners | visitor isolation; deterministic build | Repeated mixed RelGeo/non-RelGeo blocks preserve order and isolated output across two builds | P1 cross-block contamination | Add multi-block conformance fixture |
 | `MD-TASK-004` preview presentation option contract | `MD-PREVIEW-002` | 🌗 | remark-relgeo + renderer owner | views/sheets/profile spec | Tests prove default model output and explicit supported sheet/view/profile behavior | P1 author selects a view that is ignored | Define option schema and fixtures |
-| `MD-TASK-005` clean preview wrapper integration | `MD-PREVIEW-004` | 🌗 | remark-relgeo + website | rehype unwrap helper | Built HTML has the intended wrapper without `pre > div`; surrounding Markdown assertions pass | P1 structural/a11y defect | Align output class and unwrap rule |
-| `MD-TASK-006` highlighter service-failure fallback | `MD-HL-002` | ⚠️ | remark-relgeo-hl + language-service | token service error boundary | Injected token-service failure returns original source/safe code block and transform succeeds | P0 docs build crash | Add catch and failure-injection test |
-| `MD-TASK-007` lexical fallback isolation | `MD-HL-004` | 🌗 | remark-relgeo-hl + language-service | lexical token contract | Invalid/incomplete source remains readable without renderer/core resolution; service failure has bounded fallback | P1 highlighter depends on semantic service availability | Define fallback mode and fixture |
-| `MD-TASK-008` structured Markdown diagnostic DTO | `MD-DIAG-001` | ❌ | both plugins + spec/core | error model; block location | Output exposes stable code, severity, message, and source/block location with serialization tests | P1 failures not traceable | Draft DTO and owner mapping |
-| `MD-TASK-009` actionable diagnostic fallback | `MD-DIAG-002` | 🌗 | remark-relgeo + website | diagnostic DTO; host UI | Invalid preview produces structured payload plus readable source/fallback and website assertion | P1 reader cannot recover | Implement projection and host fixture |
+| `MD-TASK-005` clean preview wrapper integration | `MD-PREVIEW-004` | ✔️ | remark-relgeo + website | rehype unwrap helper | Built HTML has the intended wrapper without `pre > div`; surrounding Markdown assertions pass | P1 structural/a11y defect | Closed with Astro unwrap fix and built-output assertion |
+| `MD-TASK-006` highlighter service-failure fallback | `MD-HL-002` | ✔️ | remark-relgeo-hl + language-service | token service error boundary | Injected token-service failure returns original source/safe code block and transform succeeds | P0 docs build crash | Closed with fallback and failure-injection test |
+| `MD-TASK-007` lexical fallback isolation | `MD-HL-004` | 🌗 | remark-relgeo-hl + language-service | lexical token contract | Invalid/incomplete source remains readable without renderer/core resolution; service failure has bounded fallback | P1 highlighter depends on semantic service availability | Define an independent lexical fallback mode and fixture; retain the verified service-failure fallback |
+| `MD-TASK-008` structured Markdown diagnostic DTO | `MD-DIAG-001` | ✔️ | both plugins + spec/core | error model; block location | Output exposes stable code, severity, message, and source/block location with serialization tests | P1 failures not traceable | Closed with plugin diagnostic payload tests |
+| `MD-TASK-009` actionable diagnostic fallback | `MD-DIAG-002` | ✔️ | remark-relgeo + website | diagnostic DTO; host UI | Invalid preview produces structured payload plus readable source/fallback and website assertion | P1 reader cannot recover | Closed with fallback projection and host assertions |
 | `MD-TASK-010` non-fatal preview diagnostics | `MD-DIAG-003` | ❌ | remark-relgeo + core | runtime diagnostics API | Runtime warning fixture returns valid preview plus diagnostic without dropping output | P1 useful preview disappears | Define tolerant result shape |
-| `MD-TASK-011` strict/tolerant policy option | `MD-DIAG-004` | ❌ | remark-relgeo + build owner | error policy; build gate | Strict mode fails deterministically; tolerant mode emits fallback/diagnostic; defaults documented | P1 implicit build behavior | Implement policy option and tests |
+| `MD-TASK-011` strict/tolerant policy option | `MD-DIAG-004` | ✔️ | remark-relgeo + build owner | error policy; build gate | Strict mode fails deterministically; tolerant mode emits fallback/diagnostic; defaults documented | P1 implicit build behavior | Closed with `failurePolicy` option and tests |
 | `MD-TASK-012` option schema and invalid-value validation | `MD-OPT-001` | 🌗 | both package owners | public API docs; compatibility policy | README/types/defaults match runtime; unknown and invalid options have tested behavior | P1 undocumented integration drift | Publish option table and tests |
 | `MD-TASK-013` version/view/profile pass-through | `MD-OPT-002` | 🌗 | remark-relgeo + spec/core | version/presentation APIs | Supported version/profile/view/sheet combinations are explicit; future version has stable error projection | P1 wrong preset/migration messaging | Decide supported option surface |
-| `MD-TASK-014` safe output and asset configuration | `MD-OPT-003` | 🌗 | both package owners + website | asset policy; sanitizer boundary | Class/output customization is bounded, asset/base strategy is explicit, and custom hook safety is tested | P0 unsafe/non-portable output | Define trusted hook or sanitize |
-| `MD-TASK-015` caller-selected fallback policy | `MD-OPT-004` | ❌ | remark-relgeo | diagnostic policy; build owner | Caller can select fallback/warning or hard failure and tests prove both paths | P1 CI policy cannot be chosen | Add explicit option and docs |
+| `MD-TASK-014` safe output and asset configuration | `MD-OPT-003` | 🌗 | both package owners + website | asset policy; sanitizer boundary | Class/output customization is bounded, asset/base strategy is explicit, and custom hook safety is tested | P0 unsafe/non-portable output | Extend the bounded custom-hook rejection into the agreed sanitizer/asset policy |
+| `MD-TASK-015` caller-selected fallback policy | `MD-OPT-004` | ✔️ | remark-relgeo | diagnostic policy; build owner | `failurePolicy` selects tolerant fallback or strict failure and focused tests prove both paths | P1 CI policy cannot be chosen | Closed by the shared `MD-TASK-011` policy implementation; keep regression coverage |
 | `MD-TASK-016` standalone SSR pipeline | `MD-SSR-001` | 🌗 | both package owners | Node runtime; unified ordering | Generic non-Astro unified/SSR fixture runs without browser globals and records output | P1 alternate host failure | Add standalone pipeline test |
 | `MD-TASK-017` configurable asset URL mode | `MD-ASSET-001` | 🌗 | remark-relgeo + website | Pages/base policy | Inline/default and any selected alternate asset mode produce correct local and Pages output | P1 large/alternate-host preview issue | Decide asset strategy and test |
-| `MD-TASK-018` generated-output sanitization policy | `MD-ASSET-003` | 🌗 | both plugins + renderer/host | SVG sanitizer; URL policy | Malicious source/meta/custom output cannot escape the chosen HTML/SVG boundary; security fixtures pass | P0 executable markup injection | Define trust boundary and tests |
+| `MD-TASK-018` generated-output sanitization policy | `MD-ASSET-003` | 🌗 | both plugins + renderer/host | SVG sanitizer; URL policy | Malicious source/meta/custom output cannot escape the chosen HTML/SVG boundary; security fixtures pass | P0 executable markup injection | Extend the verified rejection fixtures into a general SVG sanitizer and URL policy |
 | `MD-TASK-019` accessible preview semantics | `MD-A11Y-001` | 🌗 | remark-relgeo + website | renderer metadata; HTML contract | Generated preview has agreed role/name/description/wrapper semantics and no invalid nesting | P1 AT lacks preview context | Define semantics and assert HTML |
 | `MD-TASK-020` accessible source/error semantics | `MD-A11Y-002` | 🌗 | both plugins + website | token semantics; AT plan | Source, tokens, errors, and fallback retain non-color meaning and semantic labels; automated assertions pass | P1 color-only/unclear errors | Add ARIA/semantic markup tests; schedule AT |
-| `MD-TASK-021` contextual error boundary | `MD-ERR-001` | 🌗 | both plugins | error model; source locations | One bad block yields contextual safe output while other blocks remain usable; highlighter service failure is contained | P0 whole docs build failure | Implement shared failure boundary |
+| `MD-TASK-021` contextual error boundary | `MD-ERR-001` | ✔️ | both plugins | error model; source locations | One bad block yields contextual safe output while other blocks remain usable; highlighter service failure is contained | P0 whole docs build failure | Closed with per-block fallback and isolation tests |
 | `MD-TASK-022` stable version error projection | `MD-ERR-002` | 🌗 | remark-relgeo + spec/core | compatibility matrix; error codes | Active/legacy/future cases expose stable category/code and preserve source context | P1 migration messaging drift | Add projection tests |
-| `MD-TASK-023` typed runtime/render failure mapping | `MD-ERR-003` | 🌗 | remark-relgeo + core/renderer | runtime diagnostics; sanitizer | Render failure has typed safe fallback, no partial unsafe markup, and actionable evidence | P1 opaque failure/debugging | Add typed failure projection |
-| `MD-TASK-024` website provenance/version assertions | `MD-WEB-003` | 🌗 | website + spec/package owners | compatibility metadata; release process | Build fails or reports when site provenance/version line disagrees with package/matrix | P1 site overclaims capability | Add content/build assertion |
+| `MD-TASK-023` typed runtime/render failure mapping | `MD-ERR-003` | 🌗 | remark-relgeo + core/renderer | runtime diagnostics; sanitizer | Render failure has typed safe fallback, no partial unsafe markup, and actionable evidence | P1 opaque failure/debugging | Extend typed adapter projection to the core error taxonomy and non-fatal runtime diagnostics |
+| `MD-TASK-024` website provenance/version assertions | `MD-WEB-003` | ✔️ | website + spec/package owners | compatibility metadata; release process | Build fails or reports when site provenance/version line disagrees with package/matrix | P1 site overclaims capability | Closed with plugin markers and localized build assertions |
 | `MD-TASK-025` public route/readability evidence | `MD-WEB-004` | 🌗 | website owner | route/base; accessibility QA | EN/ID routes, public smoke, responsive technical surface, and scheduled AT checks are recorded | P1 public readers see regressions | Run public smoke; schedule mobile/AT |
 | `MD-TASK-026` independent package documentation and smoke | `MD-REL-001` | 🌗 | each package owner | release docs; clean consumer | Fresh consumer follows README ordering/options/errors; package smoke and docs checks pass | P1 adopters use incomplete API | Complete docs and temporary consumer |
 | `MD-TASK-027` reproducible package export surface | `MD-SSR-004` | 🌗 | both package owners | pack/install; release metadata | Fresh consumer resolves ESM/CJS/types and follows documented exports without workspace-relative dependencies | P0 published consumer cannot install/use API | Run clean pack/install temporary consumer and add regression |
@@ -114,7 +117,9 @@ unless the observed implementation also changes.
 ## Handoff rules
 
 1. Candidate tasks become implementation work only after owner, dependency,
-   scope, and acceptance evidence are approved.
+   scope, and acceptance evidence are approved. A `✔️` row records a locally
+   evidenced implementation closure, while the row remains in this register
+   for traceability until the next backlog reconciliation.
 2. Source changes and tests are required before a task can be marked complete;
    changing this backlog or matrix is not implementation evidence.
 3. If implementation changes a boundary, update the expected catalog and

@@ -44,14 +44,14 @@ capability, not a missing one; no whole expected row is deferred.
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
 | `✔️` complete at local boundary | 4 |
-| `🌗` partial or evidence-boundary result | 10 |
-| `❌` expected outcome absent in full | 1 |
+| `🌗` partial or evidence-boundary result | 11 |
+| `❌` expected outcome absent in full | 0 |
 | `➖` not applicable | 0 |
 
-The one `❌` row is `WEB-PAGE-003`: deterministic indexes and links are
-observed, but the expected search/wayfinding outcome including query or useful
-no-result behavior is not implemented as a complete capability. The adjacent
-links are retained in the trace and do not erase the gap.
+`WEB-PAGE-003` is now `🌗`: the selected local baseline implements a
+deterministic localized topic index, client-side filtering, live result status,
+and an explicit no-result affordance. Query/server search and browser
+interaction evidence remain outside the local closure claim.
 
 ### Status assignment coverage
 
@@ -62,15 +62,16 @@ does not change the symbol.
 | Status symbol | Count | Assigned IDs |
 | --- | ---: | --- |
 | `✔️` | 4 | `WEB-PAGE-001`, `002`, `006`, `008` |
-| `🌗` | 10 | `WEB-PAGE-004`, `005`, `007`, `009`, `010`, `011`, `012`, `013`, `014`, `015` |
-| `❌` | 1 | `WEB-PAGE-003` |
+| `🌗` | 11 | `WEB-PAGE-003`, `004`, `005`, `007`, `009`, `010`, `011`, `012`, `013`, `014`, `015` |
+| `❌` | 0 | None |
 | `➖` | 0 | None; every catalog row is in scope |
 | `⏸️` | 0 | None; deferred physical evidence is not a whole-capability deferral |
 | `⚠️` | 0 | None; no scoped defect was demonstrated by the audit |
 
-The fresh local checkpoint recorded in audit §5 (build, `pnpm check`, and
-`pnpm test` on 2026-10-30) supports the evidence column only. It does not
-change public, CI, deployment, or device evidence states.
+The fresh local checkpoints recorded in audit §5 (website build/check/test,
+Playground build/test, provenance reporting, and combined artifact assertions
+on 2026-10-30) support the evidence column only. They do not change public,
+CI, deployment, or device evidence states.
 
 ## 3. One-to-one reconciliation register
 
@@ -78,7 +79,7 @@ change public, CI, deployment, or device evidence states.
 | --- | --- | --- | --- | --- | --- |
 | `WEB-PAGE-001` | `✔️` implemented at local route-generation boundary | `implemented` | `verified-local` for generation; `unverified-public` for reachability | In scope; website owns route/content presentation and public route contract | Local build emitted 138 pages for gateway, localized, docs, spec, legacy, and Playground-handoff surfaces. Public probes were blocked by DNS. Audit §4 row `WEB-PAGE-001`; §5 build/test; `relgeo.github.io/src/pages/`. |
 | `WEB-PAGE-002` | `✔️` implemented at local navigation boundary | `implemented` | `verified-local` for selected assertions; broader traversal `observed-local` | In scope; website owns global/contextual navigation and location state | Shared layout, active route state, language switcher, docs groups, spec sidebar, and return/CTA links are present. Audit §4 row `WEB-PAGE-002`; `DocsLayout.astro`; localized docs/spec templates. |
-| `WEB-PAGE-003` | `❌` expected search/wayfinding outcome absent in full | `partial` | `observed-local` | In scope; website must decide whether query search or a complete deterministic index is the baseline | Docs/spec indexes and sidebars exist, but no search input, query handling, search index, or no-result behavior was found. Audit §4 row `WEB-PAGE-003`; source/public/scripts search inspection. |
+| `WEB-PAGE-003` | `🌗` deterministic local baseline implemented; query/server search not claimed | `partial` | `verified-local` | In scope; website owns the deterministic discovery surface, while any query-search expansion remains a product decision | Localized docs indexes expose topic context, route links, client-side filtering, live result status, and no-result behavior. Audit §4/§5 row `WEB-PAGE-003`; `docs/index.astro`; built-output assertions. |
 | `WEB-PAGE-004` | `🌗` localization shell exists, language-spec parity incomplete | `partial` | `verified-local` for route shell; content parity incomplete | In scope; website owns localized presentation, `spec/id` remains semantic authority | `id`/`en` routes, switcher, and metadata exist, but Pages loads `spec/id` for both and `spec/en/README.md` is a placeholder. Audit §4 row `WEB-PAGE-004`; `src/content.config.ts`; Pages workflow; `spec/en/README.md`. |
 | `WEB-PAGE-005` | `🌗` documentation/reference surface is present but bilingual completeness is partial | `partial` | `verified-local` for generated docs; `observed-local` for content boundary | In scope; website presents docs, `spec` owns normative meaning | Onboarding, capability, use-case, CLI, Playground, Markdown, status, docs, and spec routes exist; English language-spec presentation is incomplete. Audit §4 row `WEB-PAGE-005`; site/docs/spec collections and build assertions. |
 | `WEB-PAGE-006` | `✔️` implemented at local learning-example boundary | `implemented` | `verified-local` | In scope; website owns editorial examples; child surfaces own runtime semantics | Getting Started, CLI, Playground, Markdown, capability, and status examples are present and selected rendered markers pass. Audit §4 row `WEB-PAGE-006`; `pnpm test`; site content. |
@@ -103,16 +104,17 @@ non-applicable result or to treat unavailable evidence as a product pass:
 | Physical screen-reader, mobile assistive-technology, and handset evidence was not run | The evidence is `deferred-external` under the documented scope decision; the browser accessibility capability remains in scope. |
 | Website does not own CLI, Playground, plugin, or normative spec execution | This is an ownership boundary. The website capability remains reconciled against its routing, presentation, and handoff obligations. |
 | Root Playground pointer, integration baseline, and Pages workflow pin differ | This is a provenance/revision-parity gap affecting artifact and deployment confidence, not proof that one child revision is broken. |
-| `WEB-PAGE-003` has indexes and links but no query/no-result behavior | The observed partial implementation is retained, while the expected capability is explicitly `❌` because the full expected search/wayfinding outcome is not present. |
+| `WEB-PAGE-003` has a deterministic index/filter/no-result baseline but no query/server search | The implementation status remains partial: local discovery behavior is evidenced, but the broader query-search outcome and browser interaction evidence are not claimed. |
 
 ## 5. Handoff conclusion
 
 The join is complete: all 15 expected catalog IDs have exactly one
 reconciliation row, with zero missing, extra, or duplicate IDs. Four expected
-outcomes are implemented at the local audited boundary, ten are partial or
-blocked by a material evidence/provenance boundary, and one (`WEB-PAGE-003`)
-is explicitly `❌` because the expected search/wayfinding outcome is not
-implemented in full.
+outcomes are implemented at the local audited boundary, and eleven are partial
+or blocked by a material evidence/provenance boundary. `WEB-PAGE-003` is now
+one of those partial rows because its deterministic local baseline is
+implemented while query/server search and browser interaction evidence remain
+open.
 
 No `➖` result is used: all 15 expected capabilities are in scope. Public DNS,
 current Pages execution, revision parity, and physical assistive-technology

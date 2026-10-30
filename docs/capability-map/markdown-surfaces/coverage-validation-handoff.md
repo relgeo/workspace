@@ -49,7 +49,7 @@ The current audit records these discovery categories and their boundaries:
 | --- | --- | --- |
 | Source/API | `remark-relgeo/src/index.ts`; `remark-relgeo-hl/src/index.ts`; `remark-relgeo-hl/src/render.ts`; package exports/types | Entrypoints, options, AST transforms, preview rendering, token rendering, and exported helper are inspected. |
 | Package config/build | `remark-relgeo/package.json`, `remark-relgeo-hl/package.json`, `tsconfig.json`, README, development plans, generated `dist/` | Scripts, exports, dependencies, package metadata, and build boundary are inspected. |
-| Unit/package tests | `remark-relgeo/test/remark-relgeo.test.mjs`; `remark-relgeo-hl/src/__tests__/remark_relgeo_hl.test.ts` | Preview 5/5 and highlighter 3/3 local tests pass; test count is not treated as full expected-ID coverage. |
+| Unit/package tests | `remark-relgeo/test/remark-relgeo.test.mjs`; `remark-relgeo-hl/src/__tests__/remark_relgeo_hl.test.ts` | Preview 7/7 and highlighter 5/5 local tests pass; test count is not treated as full expected-ID coverage. |
 | Shared fixtures | `fixtures/manifest.json`, `fixtures/expected/`, `scripts/run-conformance-fixtures.mjs` | Active, invalid, runtime-diagnostic, and candidate fixture paths are inspected; 260/260 selected conformance checks pass. |
 | Remark/rehype integration | `relgeo.github.io/astro.config.mjs`; Markdown config; `unwrapCustomCodeBlocks()` | Official Astro ordering and static build are inspected; generic non-Astro pipeline remains unverified. |
 | Website content/routes | `relgeo.github.io/src/content/docs/{en,id}/markdown-surfaces.md`, related docs links/routes, built-output assertions | English/Indonesian examples, route links, and local generated output are covered. |
@@ -70,13 +70,13 @@ the status matrix then carries the same rows into the actionable handoff.
 | --- | --- | ---: | --- | --- |
 | Fence discovery and Markdown block handling | `MD-FENCE-001`–`003` | 3 | Plugin AST visitors, package tests, and reconciliation rows | Reviewed; mixed-block and shared-alias gaps remain explicit. |
 | Preview/embed projection | `MD-PREVIEW-001`–`004` | 4 | `remark-relgeo` source/tests, core/renderer delegation, Astro output | Reviewed; wrapper/presentation contract is partial. |
-| Source highlighting | `MD-HL-001`–`004` | 4 | `remark-relgeo-hl` source/tests/render helper, language-service, site assertions | Reviewed; service-failure fallback is confirmed broken. |
-| Diagnostics and failure policy | `MD-DIAG-001`–`004` | 4 | Preview fallback probe, error-model/spec inputs, audit dispositions | Reviewed; structured diagnostics and policy rows remain absent/partial. |
+| Source highlighting | `MD-HL-001`–`004` | 4 | `remark-relgeo-hl` source/tests/render helper, language-service, site assertions | Reviewed; tolerant service-failure fallback is implemented, while independent lexical fallback remains partial. |
+| Diagnostics and failure policy | `MD-DIAG-001`–`004` | 4 | Preview/highlighter fallback probes, error-model/spec inputs, audit dispositions | Reviewed; structured diagnostics and tolerant/strict policy are implemented, while non-fatal runtime diagnostics remain absent. |
 | Options and pass-through | `MD-OPT-001`–`004` | 4 | Package option interfaces/meta parser, READMEs, compatibility/presentation docs | Reviewed; validation and caller policy gaps remain. |
 | SSR, determinism, and package exports | `MD-SSR-001`–`004` | 4 | Package lint/build, shared fixtures, Astro build, external-boundary dispositions | Reviewed; generic-host and fresh-consumer evidence remain unverified. |
 | Assets and output safety | `MD-ASSET-001`–`003` | 3 | Data-URI output, AST escaping/helper, artifact assertions, trust-boundary audit | Reviewed; configurable assets and raw-hook safety remain partial. |
 | Accessibility and static interaction boundary | `MD-A11Y-001`–`003` | 3 | Generated alt text, site CSS/shell, route assertions, deferred physical AT record | Reviewed; `MD-A11Y-003` is boundary-only, not a hidden gap. |
-| Error/version projection | `MD-ERR-001`–`003` | 3 | Invalid/version fixtures, preview fallback probe, spec/compatibility policy | Reviewed; typed/contextual projection remains partial. |
+| Error/version projection | `MD-ERR-001`–`003` | 3 | Invalid/version fixtures, preview/highlighter fallback probes, spec/compatibility policy | Reviewed; typed adapter/contextual projection is bounded, while version taxonomy and non-fatal runtime mapping remain partial/absent. |
 | Website/Pages consumption | `MD-WEB-001`–`004` | 4 | Astro config/content/routes, 138-page build, built-output assertions, artifact handoff | Reviewed; deployed/public and physical readability evidence remain limited. |
 | Public package and release readiness | `MD-REL-001`–`002` | 2 | Package manifests/README, repository map, compatibility matrix, release follow-up | Reviewed; registry parity remains unverified. |
 | **Total** | **All expected IDs** | **38** | **Catalog → audit → reconciliation → matrix trace** | **Coverage is bounded; completeness is not claimed.** |
@@ -91,9 +91,12 @@ Implementation, evidence, and scope are separate axes across all linked docs:
 - implementation status is observed in the audit, reconciliation, and matrix;
 - evidence status is qualified independently and does not promote local Node or
   Astro output into canonical Node, registry, public, or native evidence;
-- `❌` remains explicit for `MD-DIAG-001`, `MD-DIAG-003`, `MD-DIAG-004`, and
-  `MD-OPT-004`;
-- `⚠️` remains explicit for the confirmed `MD-HL-002` service-failure fallback;
+- `❌` remains explicit for `MD-DIAG-003`, the non-fatal runtime-diagnostic path
+  that was outside this implementation tranche;
+- `🌗` remains explicit for `MD-ASSET-003`, where bounded unsafe-output
+  rejection is verified but a general sanitizer/URL policy is still open;
+- no current selected row is `⚠️`; the former highlighter service-failure
+  defect is covered by the tolerant fallback and strict typed-error paths;
 - `➖` is reserved for the current non-interactive-control boundary;
 - `⏸️` is available in the legend but no expected row is currently deferred by
   a product scope decision;
@@ -108,10 +111,10 @@ Implementation, evidence, and scope are separate axes across all linked docs:
 | Clean npm pack/install/registry consumer | unverified | Local package exports are not a public release or registry parity claim. |
 | Deployed public-site smoke | unverified | Local Pages artifact assertions do not prove the deployed URL. |
 | Physical mobile, VoiceOver, TalkBack, and Safari touch validation | deferred | CSS/HTML assertions do not replace physical assistive-technology evidence. |
-| Highlighter service failure | confirmed broken | `getSemanticTokens()` throw aborts the transform; fallback implementation is still required. |
-| Preview website wrapper | confirmed partial | Current output can remain `pre > div` because the rehype unwrap class contract differs. |
-| Structured diagnostics and strict/tolerant policy | absent | No plugin-owned code/severity/location envelope or caller-selected failure policy exists. |
-| Custom raw SVG hook trust boundary | partial | Normal AST/text path is escaped, but caller-supplied raw SVG has no plugin sanitizer policy. |
+| Highlighter service failure | bounded fallback implemented | Tolerant mode preserves source in `pre > code` with a diagnostic; strict mode remains an explicit typed failure. Independent lexical fallback is still partial. |
+| Preview website wrapper | implemented locally | The rehype helper unwraps the generated preview wrapper, and built-output assertions reject `pre > div` for the audited consumer. |
+| Structured diagnostics and strict/tolerant policy | implemented locally | Both plugins expose serialized code/severity/phase/location diagnostics and documented tolerant defaults with strict typed errors. Non-fatal runtime diagnostics remain absent. |
+| Custom SVG hook trust boundary | partial | Normal AST/text paths are escaped and bounded unsafe tags/handlers/URLs are rejected; a general sanitizer and URL policy remain open. |
 
 These limitations are not converted into `❌` unless a target implementation
 observation supports absence; conversely, confirmed `❌` and `⚠️` findings stay
@@ -159,6 +162,59 @@ Current conclusion: the declared Markdown discovery boundary and all expected
 capability rows are mapped and traceable, but the Markdown surface is **not
 complete**, **not fully externally verified**, and **not closed for
 implementation**.
+
+## 8. Reproducible evidence and changed boundary
+
+### Verification commands and results
+
+These commands were rerun against the current working tree on 2026-10-30:
+
+| Command | Result | Boundary proven |
+| --- | --- | --- |
+| `npm run lint && npm run build && npm test` in `remark-relgeo/` | PASS; 7/7 tests | Preview transform, typed tolerant/strict failures, unsafe-output rejection, package types, and ESM/CJS output. |
+| `npm run lint && npm run build && npm test` in `remark-relgeo-hl/` | PASS; 5/5 tests | Token output, source-preserving service-failure fallback, strict typed failure, package types, and ESM/CJS output. |
+| `npm run conformance:fixtures` at workspace root | PASS; 260/260 across 20 fixtures | Shared parser/core/renderer/language-service and Markdown preview/highlight projections. |
+| `npm run check && npm run build && npm test` in `relgeo.github.io/` | PASS; 0 diagnostics, 138 pages, built-output assertions pass | Official Astro Markdown consumer, wrapper structure, provenance markers, localized routes, and preview source non-exposure. |
+| `npm run build` in `playground/` | PASS; Vite production build | Playground asset assembly input; Vite emitted a non-blocking large-chunk warning. |
+| `rsync -az playground/dist/ relgeo.github.io/dist/playground/` then `npm run test:pages-artifact` in `relgeo.github.io/` | PASS; 3 assets checked | Local Pages artifact assembly and Playground asset presence. |
+| `git diff --check` at root and in each changed child repository | PASS | No whitespace errors in the inspected changes. |
+
+The shell emitted the known non-blocking `LC_ALL=C.UTF-8` locale warning. The
+workspace uses Node `v22.23.2`; the documented full integration gate targets
+Node `24.21.0`, so that gate remains environment-unverified rather than a target
+failure.
+
+### Changed repository and commit boundary
+
+This handoff describes an **uncommitted working-tree change**, not a release or
+commit. No files were staged, no commit was created, and no push was performed.
+The relevant implementation/evidence boundary is:
+
+| Repository boundary | Changed paths in this tranche | Ownership |
+| --- | --- | --- |
+| `remark-relgeo/` | `src/index.ts`, `test/remark-relgeo.test.mjs`, `README.md` | Preview/embed transform, diagnostics, policy, and output-safety adapter. |
+| `remark-relgeo-hl/` | `src/index.ts`, `src/__tests__/remark_relgeo_hl.test.ts`, `README.md` | Source highlighting, service-failure fallback, diagnostics, and policy adapter. |
+| `relgeo.github.io/` | `astro.config.mjs`, `scripts/assert-built-output.mjs` | Official Astro wrapper assembly and provenance/consumer assertions. |
+| Workspace/docs | `fixtures/manifest.json`, `docs/capability-map/markdown-surfaces/` | Shared digest evidence and catalog/audit/reconciliation/backlog/handoff records. |
+
+The root checkout also contains unrelated pre-existing changes in other
+capability-map surfaces and child repositories. They were preserved and are
+not part of this Markdown handoff. The child repository status is intentionally
+reported separately because the root records those repositories as gitlinks.
+
+## 9. Remaining-gap handoff
+
+| Gap | Current status | Owner/source boundary | Next action | Evidence prerequisite |
+| --- | --- | --- | --- | --- |
+| Non-fatal runtime diagnostics preserving a valid preview (`MD-DIAG-003`) | `❌ absent` | `remark-relgeo` adapter plus `core` runtime-diagnostic API; `MD-TASK-010` | Define a tolerant result shape that carries preview and runtime diagnostics, then add a shared fixture and host assertion. | Target implementation and focused runtime-diagnostic fixture; no release required. |
+| General generated-output sanitizer/URL policy (`MD-ASSET-003`) | `🌗 partial` | Both plugin output boundaries plus renderer/host policy; `MD-TASK-018` | Extend the current rejection fixtures into an explicit sanitizer and URL allow/deny policy; retain the bounded tests as regressions. | Security-focused local tests and consumer output assertions. |
+| Independent lexical fallback (`MD-HL-004`) | `🌗 partial` | `remark-relgeo-hl` plus language-service lexical contract; `MD-TASK-007` | Add a language-service-independent lexical fallback and fixture; keep the current service-failure fallback. | Package tests and a source-only fixture. |
+| Option validation/asset strategy/accessibility semantics | `🌗 partial` | Package owners and official website; `MD-TASK-012`, `014`, `017`, `019`, `020` | Define the public option and semantic contracts before implementation; do not infer them from current output alone. | Maintainer/product decision followed by focused tests. |
+| Generic host, registry, deployment, and physical AT evidence | `unverified`/`deferred` | Website/release/accessibility owners; `MD-VERIFY-001`, `MD-VERIFY-002`, `MD-TASK-025`–`027` | Run only when the external host, registry, Node 24 gate, or physical device scope is explicitly available. | External access or accepted physical-validation scope; not required for this goal. |
+
+No npm/pub.dev publication, production deployment, registry install, external
+service, or deferred platform host was used as a prerequisite for the local
+implementation or verification result.
 
 ## Source links
 

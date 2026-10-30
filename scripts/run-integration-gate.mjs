@@ -6,6 +6,11 @@ import path from "node:path";
 import process from "node:process";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  classifyFailure,
+  createEvidenceEnvelope,
+  runWithBoundedAttemptsSync,
+} from "./orchestration-contract.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, "..");
@@ -20,14 +25,6 @@ const reportPath = reportArgument
 if (localMode === publicMode) {
   console.error("Usage: node scripts/run-integration-gate.mjs --local|--public [--report=PATH]");
   console.error("Choose exactly one mode.");
-  process.exit(2);
-}
-
-const nodeMajor = Number(process.versions.node.split(".")[0]);
-if (nodeMajor < minimumNodeMajor) {
-  console.error(
-    `RelGeo integration gate requires Node.js ${minimumNodeMajor}+; found ${process.versions.node}.`,
-  );
   process.exit(2);
 }
 
@@ -52,25 +49,158 @@ function workspaceRevision() {
   }).trim();
 }
 
+function packageManagerVersion() {
+  const result = spawnSync("pnpm", ["--version"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  return result.status === 0 ? result.stdout.trim() : null;
+}
+
+function evidenceEnvelope() {
+  return createEvidenceEnvelope({
+    evidenceClass: localMode ? "local-workspace" : "public-registry",
+    workspaceRevision: workspaceRevision(),
+    baselineName: baselineManifest.baselineName,
+    compatibilityLine: baselineManifest.compatibilityLine,
+    toolchain: {
+      node: process.version,
+      pnpm: packageManagerVersion(),
+    },
+    limitations: [],
+  });
+}
+
+function writeReport(report) {
+  if (!reportPath) return;
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n");
+  console.log("\nReport: " + reportPath);
+}
+
+function stageFailureMetadata({ passed, error = "", output = "" }) {
+  if (passed) {
+    return {
+      blockerClass: null,
+      remediation: null,
+      decisionRequired: false,
+      dependencyImpact: "none",
+      dependencyStatus: "ready",
+    };
+  }
+  const failure = classifyFailure({ error, output });
+  return {
+    ...failure,
+    dependencyImpact: "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+    dependencyStatus: "blocked",
+  };
+}
+
+const nodeMajor = Number(process.versions.node.split(".")[0]);
+if (nodeMajor < minimumNodeMajor) {
+  const message = "RelGeo integration gate requires Node.js " + minimumNodeMajor + "+; found " + process.versions.node + ".";
+  const blocker = classifyFailure({ prerequisite: true, error: message });
+  const report = {
+    schemaVersion: 1,
+    contract: "integration-gate-v1",
+    mode: localMode ? "local-workspace" : "public-registry",
+    generatedAt: new Date().toISOString(),
+    passed: false,
+    evidence: {
+      ...evidenceEnvelope(),
+      limitations: ["declared Node.js minimum is 24"],
+    },
+    blocker: {
+      ...blocker,
+      owner: "relgeo/workspace",
+      repository: "relgeo/workspace",
+      surface: "integration-gate",
+      command: process.argv.join(" "),
+      dependencyImpact: "All integration stages remain blocked until the declared Node.js runtime is available.",
+      dependencyStatus: "blocked",
+    },
+    summary: { total: 1, passed: 0, failed: 1, blocked: 1 },
+    results: [{
+      label: "toolchain: Node.js prerequisite",
+      command: process.execPath,
+      args: [],
+      passed: false,
+      exitCode: 2,
+      owner: "relgeo/workspace",
+      repository: "relgeo/workspace",
+      surface: "toolchain",
+      blockerClass: blocker.blockerClass,
+      remediation: blocker.remediation,
+      decisionRequired: blocker.decisionRequired,
+      dependencyImpact: "All integration stages remain blocked until the declared Node.js runtime is available.",
+      dependencyStatus: "blocked",
+      attempts: [{
+        attempt: 1,
+        passed: false,
+        exitCode: 2,
+        blockerClass: blocker.blockerClass,
+        retryable: false,
+      }],
+      error: message,
+    }],
+  };
+  writeReport(report);
+  console.error(message);
+  process.exit(2);
+}
+
 function runStage(label, command, args, cwd = root, environment = process.env) {
   const startedAt = Date.now();
   console.log("\n==> " + label);
   console.log("$ " + [command, ...args].join(" "));
-  const result = spawnSync(command, args, {
-    cwd,
-    env: environment,
-    stdio: "inherit",
+  const execution = runWithBoundedAttemptsSync((attempt) => {
+    const result = spawnSync(command, args, {
+      cwd,
+      env: environment,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    if (result.stdout) process.stdout.write(result.stdout);
+    if (result.stderr) process.stderr.write(result.stderr);
+    return {
+      passed: result.status === 0,
+      exitCode: result.status ?? 1,
+      error: result.error?.message,
+      output: (result.stdout ?? "") + "\n" + (result.stderr ?? ""),
+      durationMs: Date.now() - startedAt,
+      attempt,
+    };
   });
-  const passed = result.status === 0;
+  const finalAttempt = execution.finalAttempt;
+  const passed = execution.passed;
+  const failure = passed ? null : finalAttempt;
   const entry = {
     label,
     command,
     args,
     passed,
-    exitCode: result.status ?? 1,
+    exitCode: finalAttempt.exitCode ?? 1,
     durationMs: Date.now() - startedAt,
+    owner: "relgeo/workspace",
+    repository: "relgeo/workspace",
+    surface: label.split(":")[0],
+    blockerClass: failure?.blockerClass ?? null,
+    remediation: failure?.remediation ?? null,
+    decisionRequired: failure?.decisionRequired ?? false,
+    dependencyImpact: failure
+      ? "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable."
+      : "none",
+    dependencyStatus: failure ? "blocked" : "ready",
+    attempts: execution.attempts.map((attemptResult) => ({
+      attempt: attemptResult.attempt,
+      passed: attemptResult.passed,
+      exitCode: attemptResult.exitCode ?? 1,
+      durationMs: attemptResult.durationMs ?? null,
+      blockerClass: attemptResult.blockerClass ?? null,
+      retryable: attemptResult.retryable ?? false,
+    })),
   };
-  if (result.error) entry.error = result.error.message;
+  if (finalAttempt.error) entry.error = finalAttempt.error;
   results.push(entry);
   console.log((passed ? "[PASS] " : "[FAIL] ") + label + " (" + entry.durationMs + " ms)");
   return passed;
@@ -137,6 +267,14 @@ function runPackBoundaryStage(packageName, cwd) {
     passed,
     exitCode: result.status ?? 1,
     durationMs: Date.now() - startedAt,
+    owner: "relgeo/workspace",
+    repository: "relgeo/workspace",
+    surface: label.split(":")[0],
+    ...stageFailureMetadata({
+      passed,
+      error,
+      output: (result.stderr ?? "") + "\n" + (result.stdout ?? ""),
+    }),
     ...(error ? { error } : {}),
   };
   results.push(entry);
@@ -163,6 +301,10 @@ function copyPlaygroundArtifact(label, source, destination) {
     passed,
     exitCode: passed ? 0 : 1,
     durationMs: Date.now() - startedAt,
+    owner: "relgeo/workspace",
+    repository: "relgeo/workspace",
+    surface: label.split(":")[0],
+    ...stageFailureMetadata({ passed, error }),
     ...(error ? { error } : {}),
   });
   console.log((passed ? "[PASS] " : "[FAIL] ") + label);
@@ -401,9 +543,12 @@ if (localMode) {
 
 const failed = results.filter((result) => !result.passed);
 const report = {
+  schemaVersion: 1,
+  contract: "integration-gate-v1",
   mode: localMode ? "local-workspace" : "public-registry",
   generatedAt: new Date().toISOString(),
   passed: failed.length === 0,
+  evidence: evidenceEnvelope(),
   baseline: {
     workspaceRevision: workspaceRevision(),
     name: baselineManifest.baselineName,
@@ -418,15 +563,12 @@ const report = {
     total: results.length,
     passed: results.length - failed.length,
     failed: failed.length,
+    blocked: results.filter((result) => result.blockerClass && result.blockerClass !== "target-defect").length,
   },
   results,
 };
 
-if (reportPath) {
-  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
-  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n");
-  console.log("\nReport: " + reportPath);
-}
+writeReport(report);
 
 console.log(
   "\nIntegration gate summary: " +

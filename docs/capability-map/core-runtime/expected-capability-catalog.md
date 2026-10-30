@@ -1,7 +1,8 @@
 # Expected Core Runtime Capability Catalog
 
-**Status:** expected catalog baseline; implementation status is assigned only by
-the downstream audit and reconciliation artifacts
+**Status:** expected catalog baseline synchronized with the current audit
+checkpoint; row-level implementation status remains assigned by the downstream
+audit, reconciliation, and status-matrix artifacts
 
 **Tanggal katalog:** 2026-10-30
 
@@ -12,6 +13,13 @@ the downstream audit and reconciliation artifacts
 **Runtime boundary:** `core` sebagai mesin parse, semantic model, validate,
 dependency graph, evaluate, resolve, diagnostics, dan semantic execution.
 
+**Current reconciliation:** 38 expected IDs; 23 `✔️`, 14 `🌗`, 0 `❌`, and 1
+`⚠️`. The `➖` non-goal, `⏸️` deferred fixture promotion, and `?` environment
+findings remain outside the expected implementation-row count. The current
+row-level evidence, remaining gaps, owners, dependencies, and next actions are
+maintained in the [implementation audit](./implementation-audit.md),
+[status matrix](./status-matrix.md), and [implementation-gap backlog](./implementation-gap-backlog.md).
+
 ## 1. Tujuan dan aturan baca
 
 Dokumen ini menetapkan capability yang **seharusnya tersedia** untuk core
@@ -19,7 +27,7 @@ runtime berdasarkan journey pengguna, workflow produk, command surface, roadmap,
 kontrak DSL, compatibility policy, dan keputusan scope. Capability tetap dicatat
 meskipun belum pernah diimplementasikan atau belum memiliki evidence.
 
-Katalog ini adalah input sebelum audit. Setiap row memiliki:
+Katalog ini adalah expected-set input untuk audit. Setiap row memiliki:
 
 - ID stabil;
 - user outcome;
@@ -28,9 +36,11 @@ Katalog ini adalah input sebelum audit. Setiap row memiliki:
 - owner/source of truth; dan
 - status verifikasi katalog.
 
-`PENDING-AUDIT` berarti row belum dibandingkan dengan source implementation,
-test, atau matrix lama. Nilai itu bukan klaim bahwa capability sudah tersedia
-atau tidak tersedia.
+`PENDING-AUDIT` pada kolom terakhir adalah provenance marker dari expected-set,
+bukan row-level implementation status. Setelah audit, status simbol, evidence,
+remaining gap, owner, dependency, dan next action berada pada downstream
+artifacts yang ditautkan di atas; tidak ada unresolved atau deferred row yang
+dihapus dari katalog.
 
 Aturan pemisahan sumber:
 
@@ -116,9 +126,10 @@ Scope decisions for this catalog:
 
 ## 4. Expected capability catalog
 
-All rows below have `PENDING-AUDIT` by design. The later audit must preserve
-these IDs and add implementation evidence, parity, and gap status rather than
-rewriting the expected set.
+All rows below retain `PENDING-AUDIT` by design as the catalog's expected-set
+marker. The current audit preserves these IDs and adds implementation evidence,
+parity, and gap status in downstream artifacts rather than rewriting the
+expected set.
 
 This deliberately includes capabilities that may be absent at the `core`
 boundary. For example, deterministic multi-diagnostic aggregation,

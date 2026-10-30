@@ -56,13 +56,13 @@ Evidence log: [geometry/archive/implementation-audit-legacy.md](./archive/implem
 | Constraint evaluation and `ConstraintViolation` production | `➖` | `geometry/src/types.ts:311-323` defines data shape; core validator/resolver evaluates constraints | Geometry package is not the constraint solver/diagnostic owner | core, renderer overlays | core resolver constraint processing | Keep geometry as type carrier; audit behavior under core |
 | High-level DSL queries: area, perimeter, closestPoint, project, reflect, frameAt, etc. | `❌` | No corresponding high-level query exports in `geometry/src/index.ts`; core evaluator implements DSL query behavior | Expected geometry package capability is absent at this boundary, while product behavior exists in core | core evaluator, language-service | core expression evaluator and resolved object model | Decide whether to extract reusable query primitives or document core ownership |
 | Unsupported/degenerated input policy and numeric error bounds | `🌗` | local error tests cover several invalid operations; `GeometryError` exists; no single policy catalog found | No complete public numeric/error contract for all degeneracy, sampling, or non-finite inputs | core, renderer, CLI | error mapping and spec error model | Add geometry error catalog and cross-consumer negative fixtures |
-| Geometry provenance/version wording | `⚠️` | `geometry/src/intersection.ts:1-6` says RelGeo v0.3; unsupported message at `:747` also says v0.3; package/compatibility line is 0.5 | Stale provenance/error text can mislead diagnostics and audit readers | core, CLI, docs | package version policy | Update wording to neutral/current contract and add regression assertion |
+| Geometry provenance/version wording | `✔️` | `geometry/src/intersection.ts`; `geometry/src/__tests__/intersection.test.ts`; package/compatibility line is 0.5 | Package-local provenance and unsupported-operation wording now match the active line; consumer-specific message snapshots remain separate | core, CLI, docs | package version policy | Keep the regression assertion and refresh consumer snapshots only when their contracts require it |
 | Geometry package lint/build and registry artifact verification | `🌗` | package scripts provide `lint`, `build`, `test`; local test passes | This audit did not run fresh build/registry install; dist is consumed by conformance | npm consumers | Node/pnpm toolchain | Run under Node >=24 and include package boundary in release gate |
 
 ## Priority order
 
-1. Fix the confirmed v0.3 provenance/error wording drift in `geometry/src/intersection.ts`.
-2. Preserve the narrow active boolean/intersection contract and separate future `union`/`xor`/operand expansions from implementation availability.
+1. Preserve the narrow active boolean/intersection contract and separate future `union`/`xor`/operand expansions from implementation availability.
+2. Keep the resolved 0.5 provenance/error wording covered by regression tests.
 3. Define an explicit supported-pair and numeric-precision policy for sampled path intersections.
 4. Decide whether high-level query primitives remain core-owned or should be extracted into geometry; document the ownership boundary either way.
 5. Add cross-surface fixtures for split, curve/path intersections, boolean holes, bbox/transforms, and degeneracy errors before promotion claims.

@@ -21,15 +21,33 @@ roadmap/scope decision, dan kontrak normatif `spec/` sebelum membandingkannya
 dengan kode atau matrix capability lama.
 
 Katalog ini bukan laporan bahwa capability telah diimplementasikan. Kolom
-`Status verifikasi` sengaja bernilai `PENDING-AUDIT` pada fase ini. Audit
-implementasi harus membuat laporan terpisah dan tidak boleh menghapus capability
-yang belum ada dari katalog expected.
+`Status verifikasi` tetap sengaja bernilai `PENDING-AUDIT` sebagai penanda bahwa
+expected catalog bukan observed-status matrix, termasuk setelah audit berjalan.
+Status implementation/evidence yang sudah diamati dicatat terpisah dalam audit,
+reconciliation, status matrix, dan backlog; audit tidak boleh menghapus
+capability yang belum ada dari katalog expected.
 
 Setiap row memiliki ID stabil dan enam atribut yang diperlukan untuk audit:
 outcome pengguna, dasar requirement, keputusan scope, owner/source of truth, dan
 status verifikasi.
 
-### 1.1 Evidence boundary sebelum audit implementasi
+### Audit handoff saat ini
+
+Audit terhadap seluruh 53 ID telah dilakukan dan join satu-ke-satu tersedia di
+[`reconciliation.md`](./reconciliation.md). Expected rows tetap `PENDING-AUDIT`
+secara sengaja; observed status saat ini berada di
+[`status-matrix.md`](./status-matrix.md): **16 `✔️` · 36 `🌗` · 0 `❌` · 0
+`➖` · 0 `⏸️` · 1 `⚠️`**.
+
+Bounded implementation tranche yang aktif hanya mencakup `GAP-001`, `GAP-009`,
+`GAP-011`, dan `GAP-013`. Local verification untuk tranche tersebut tercatat di
+[`implementation-audit.md`](./implementation-audit.md), termasuk package tests,
+consumer tests/builds, vocabulary check, dan conformance `260/260`. Ini tidak
+mengubah expected ownership: `spec/id/` tetap normative source of truth, dan
+Node 24 CI, public/browser/native-host evidence, publishing, serta deployment
+tetap bukan prerequisite.
+
+### 1.1 Evidence boundary used to build the expected catalog
 
 Katalog ini sengaja dibangun dari expectation sources berikut. `spec/id/` adalah
 source of truth semantik; dokumen workspace menetapkan boundary, roadmap, dan
@@ -61,10 +79,10 @@ does not reassign semantic ownership to those consumers.
 
 ### 1.3 Expected-but-not-yet-observed capabilities are retained
 
-`PENDING-AUDIT` means “expected catalog row awaiting the later implementation
-audit”; it does not mean implemented, absent, or approved by a consumer. This
-keeps capabilities that are not currently proven or may be absent from code in
-the expected baseline. Examples deliberately retained here are:
+`PENDING-AUDIT` means “expected catalog row whose observed implementation status
+is reported downstream”; it does not mean implemented, absent, or approved by a
+consumer. This keeps capabilities that are not currently proven or may be absent
+from code in the expected baseline. Examples deliberately retained here are:
 
 - `SER-001` canonical resolved-scene JSON policy, whose field/number/identity
   contract is still an explicit contract gap;
@@ -239,17 +257,18 @@ bukan untuk menciptakan daftar expected:
 | `11–13`, `17–18` (`invalid`) | required field, YAML parse, unknown reference, unsupported future version |
 | `19–20` (`runtime-error`) | boolean empty/multipart resolution error boundaries |
 
-## 7. Gate sebelum audit implementasi
+## 7. Invariants setelah audit handoff
 
-Katalog ini siap menjadi input audit jika:
+Katalog dan downstream audit tetap konsisten jika:
 
-1. maintainer menyetujui ID, scope exclusions, dan unresolved contract gaps;
-2. audit membuat matrix per capability dengan status implementasi, evidence,
+1. ID, scope exclusions, dan unresolved contract gaps tetap dipertahankan;
+2. audit/reconciliation mempertahankan matrix per capability dengan status implementasi, evidence,
    parity, dan verification terpisah;
 3. audit tidak mengubah owner/source of truth dari `relgeo/spec` hanya karena
    implementasi consumer saat ini berbeda;
 4. serialization contract (`SER-001`, `SER-002`) mendapat keputusan eksplisit
-   sebelum status `PENDING-AUDIT` diubah menjadi verified/partial/not verified.
+   sebelum downstream observed status dipromosikan menjadi verified/partial/not
+   verified; expected rows tetap `PENDING-AUDIT`.
 
 ### Source register wajib
 

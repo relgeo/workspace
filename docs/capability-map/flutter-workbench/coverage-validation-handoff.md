@@ -21,10 +21,11 @@ Klaim yang aman:
   build, runtime/accessibility, dan docs/roadmap/contract;
 - reconciliation dan status matrix masing-masing memiliki **61/61 row**,
   tanpa missing, extra, atau duplicate ID;
-- status matrix mempertahankan **42 `✔️`, 16 `🌗`, 3 `❌`, 0 `➖`, 0 `⏸️`,
+- status matrix now records **44 `✔️`, 17 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`,
   dan 0 `⚠️`**; legend tetap menjelaskan semua enam status;
-- seluruh **19 row `❌`/`🌗`** tercakup backlog melalui enam candidate
-  goal/task, masing-masing dengan owner, dependency, acceptance test/evidence
+- seluruh **17 active `🌗` rows** remain represented in the backlog; the two
+  implemented boundary rows are retained as follow-up evidence within the same
+  six candidate goal/tasks, each with owner, dependency, acceptance test/evidence
   target, risk, dan next action;
 - documentation, reconciliation, atau backlog tidak menutup gap, tidak
   mempromosikan historical/native evidence secara diam-diam, dan tidak
@@ -34,7 +35,7 @@ Klaim yang aman:
 
 | Artefak | Fungsi | Hasil validasi |
 | --- | --- | --- |
-| [Expected catalog](../../plans/12-flutter-workbench-capability-baseline.md) | Daftar expected capability dengan user outcome, requirement basis, scope decision, owner/source of truth, dan status verifikasi awal | 61 unique capability IDs; 5 `SCOPE-*` decisions tetap terpisah |
+| [Expected catalog](./expected-capability-catalog.md) | Daftar expected capability dengan user outcome, requirement basis, scope decision, owner/source of truth, dan status verifikasi awal | 61 unique capability IDs; 5 `SCOPE-*` decisions tetap terpisah |
 | [Implementation audit](./implementation-gap-map.md) | Observed source, test, UI/command, service/platform, fixture, build/runtime, dan docs evidence | Discovery coverage report tersedia; 61/61 ID memiliki audit section |
 | [Reconciliation](./reconciliation.md) | Join expected-versus-observed satu-banding-satu | 61/61 rows; missing/extra/duplicate = 0; implementation/evidence/scope terpisah |
 | [Status matrix](./status-matrix.md) | Reporting view capability-first | 61 rows; status, evidence, gap, owner, dependency, risk, next action tersedia |
@@ -71,7 +72,7 @@ coverage proof for the Flutter boundary:
 | --- | --- | --- |
 | Contract and normative intent | `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, `docs/plans/06-flutter-alignment.md`, `docs/plans/07-flutter-capability-promotion-and-svg-parity.md`, expected catalog | Reviewed; active DSL/SVG boundaries and non-goals are preserved. |
 | Implementation/source and public API | `flutter/lib/main.dart`, `flutter/lib/src/ui/`, `flutter/lib/src/features/`, `flutter/lib/src/core/`, `flutter/pubspec.yaml` | Reviewed at `flutter@b21eceb`; symbols and user-facing boundaries are recorded in audit §2/§3. |
-| Tests, fixtures, snapshots, and negative cases | `flutter/test/`, `flutter/test/support/`, shared fixtures, golden files; current `flutter test --no-pub --reporter compact` | Reviewed; 302 tests passed locally, with undeclared `golden` tag warning recorded as hygiene only. |
+| Tests, fixtures, snapshots, and negative cases | `flutter/test/`, `flutter/test/support/`, shared fixtures, golden files; current `flutter test --no-pub --reporter compact` | Reviewed; 307 tests passed locally, with undeclared `golden` tag warning recorded as hygiene only. |
 | UI, command, worker, host, or consumer wiring | `flutter/lib/src/ui/cad_workbench.dart`, composition shell, feature panels, command/menu/context-menu files, `flutter/lib/src/mcp/` | Reviewed; routes, menus, shortcuts, bridges, and the single-surface `MaterialApp` boundary are explicit. |
 | Platform, persistence, accessibility, security, and runtime boundaries | `flutter/macos/`, `flutter/linux/`, `flutter/windows/`, file/preferences/layout services, method-channel host, `docs/plans/10-desktop-runtime-smoke-checklist.md` | Reviewed; native picker/AT/host runtime remains `not verified` where unavailable. |
 | Build, CI/canonical, package, release, deployment, and public artifact evidence | `flutter/.github/workflows/`, `flutter/pubspec.yaml`, platform runners, historical run `37832260326`, current `flutter build web --no-pub` blocker | Reviewed; historical evidence is labeled historical and current build/runtime/public claims remain unverified. |
@@ -90,9 +91,9 @@ intentionally outside this capability count.
 
 | Catalog capability category | Expected IDs / count | Audit and reconciliation coverage |
 | --- | --- | --- |
-| Document, file, and recovery lifecycle | `DOC-01..09`, `IO-01..02` / **11** | Audit §3.1; reconciliation §1; includes DOC-08 absent and IO native-evidence limitation. |
+| Document, file, and recovery lifecycle | `DOC-01..09`, `IO-01..02` / **11** | Audit §3.1; reconciliation §1; includes DOC-08 partial recovery and IO native-evidence limitation. |
 | Authoring, compile, diagnostics, and contract | `EDIT-01..08`, `CONTRACT-01..03` / **11** | Audit §3.2; reconciliation §2; bounded diagnostics and contract rows remain partial where applicable. |
-| Canvas, preview, inspection, and navigation | `CANVAS-01..06`, `VIEW-01..05` / **11** | Audit §3.3; reconciliation §3; CANVAS-05 and VIEW-05 remain explicit absent gaps. |
+| Canvas, preview, inspection, and navigation | `CANVAS-01..06`, `VIEW-01..05` / **11** | Audit §3.3; reconciliation §3; CANVAS-05 and VIEW-05 are implemented at the Flutter boundary with host/runtime qualifiers. |
 | Layout, theme, preferences, and persistence | `LAYOUT-01..07`, `THEME-01..04`, `PREF-01..02` / **13** | Audit §3.4; reconciliation §4; local persistence evidence is separated from native restart evidence. |
 | Commands, keyboard, accessibility, and window lifecycle | `CMD-01..03`, `A11Y-01..03`, `WINDOW-01..03` / **9** | Audit §3.5; reconciliation §5; native shortcut/AT/lifecycle limits remain qualified. |
 | Export and platform delivery | `EXPORT-01..02`, `PLAT-01..04` / **6** | Audit §3.6; reconciliation §6; historical/current artifact evidence is kept separate. |

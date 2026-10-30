@@ -36,11 +36,17 @@ simbol status.
 
 Current reconciliation: **40 expected IDs, 40 matrix rows, 0 missing, 0
 duplicate, 0 extra; 10 `✔️`, 30 `🌗`, 0 `❌`, 0 row `➖/⏸️/⚠️`.**
-`➖`, `⏸️`, dan `⚠️` tetap tercatat pada findings scope/defect di bawah agar
-status tidak hilang hanya karena bukan row hasil join. Jika audit berikutnya
+`➖` dan `⏸️` tetap tercatat pada findings scope/defect di bawah agar status
+scope tidak hilang hanya karena bukan row hasil join. Jika audit berikutnya
 menemukan expected capability tanpa implementation/consumer behavior, gunakan ID
 yang sama dan tambahkan row `❌` ke matrix serta backlog; jangan ubah menjadi
 `➖`.
+
+The active bounded selection for task
+`select-and-bound-in-scope-capability-debt--1180446927` is recorded in the
+[implementation-gap backlog](./implementation-gap-backlog.md#active-bounded-selection--task-select-and-bound-in-scope-capability-debt--1180446927).
+That selection does not change the status counts above: it identifies the
+next package-boundary work and keeps `➖`/`⏸️` findings outside implementation.
 
 ## Capability matrix
 
@@ -71,15 +77,15 @@ yang sama dan tambahkan row `❌` ke matrix serta backlog; jangan ubah menjadi
 | `GEO-QUERY-001` | Measurement queries: distance, length, perimeter, area, bbox, extents | `🌗` | Audit §3E; `core/src/evaluator.ts`; fixture-pass | High-level query service is core-owned; geometry low-level evidence is bounded | core + spec | resolved objects, numeric policy | M | Add query coverage for every supported primitive |
 | `GEO-QUERY-002` | Midpoint, polar, angleBetween, pointAt, tangentAt, normalAt | `🌗` | Audit §3E; evaluator/frame tests; local-pass | Query branches exist, but broad path/tolerance coverage is incomplete | core + geometry | path sampling, frame semantics | H | Add curve/path query fixture with endpoint policy |
 | `GEO-QUERY-003` | closestPoint, project, reflect, toWorld, toLocal | `✔️` | Audit §3E; evaluator tests; local-pass | v0.5 overload boundary is tested; broader overloads remain out of scope | core + spec | coordinate spaces, typed targets | M | Preserve overload negative tests |
-| `GEO-QUERY-004` | Intersection query selectors and single/multi result context | `🌗` | Audit §3E; fixture 15; local-pass + fixture-pass | Line-line and bounded fixture active; broader pairs are partial | geometry + core | intersection algorithms, selectors, boolean contract | H | Publish supported-pair table and add pair fixtures |
+| `GEO-QUERY-004` | Intersection query selectors and single/multi result context | `🌗` | Current audit; `geometry/src/intersection.ts`; `geometry/src/__tests__/intersection.test.ts`; fixture 15; local-pass + fixture-pass | Supported pair/selector contract is explicit; sampled broader pairs remain partial | geometry + core | intersection algorithms, selectors, boolean contract | H | Extend pair fixtures only within an approved active boundary |
 | `GEO-QUERY-005` | `frameAt` and `tAtLength` | `✔️` | Audit §3E; `frame_placement.test.ts`; local-pass | No bounded implementation gap; shared use by repeat remains partial | core + geometry | path traversal, placement | M | Reuse frame fixture in repeat-along tests |
 | `GEO-CONSTRAINT-001` | Equal, parallel, perpendicular, tangent validation | `🌗` | Audit §3F; `core/src/resolver/constraints.ts`; fixture-pass | Constraint evaluation exists, but coverage of all relation types is incomplete | core + spec | resolved geometry, tolerance | H | Add one valid/invalid fixture per constraint kind |
 | `GEO-CONSTRAINT-002` | Post-resolve structured violations and no-general-solver policy | `✔️` | Audit §3F; fixture 14; fixture-pass | Post-resolve behavior active; no general solver is intentional scope | core + spec | diagnostic policy, caller severity | M | Keep violation path/code snapshots |
 | `GEO-BOOLEAN-001` | ClosedShape union, subtract, intersect, xor | `🌗` | Audit §3G; `geometry/src/boolean/`; fixture 15 | Engine exposes four ops, but active evidence is rectangle intersect/subtract | geometry + core | polygon clipping, result mode | H | Add separately reviewed union/xor and non-rectangle fixtures |
 | `GEO-BOOLEAN-002` | Single/multi result mode, holes/topology, empty/multipart behavior | `🌗` | Audit §3G; fixtures 15/19/20; fixture-pass | Empty/multipart errors active; broader topology remains deferred/candidate | core + geometry | normalization, mode policy, diagnostics | H | Add holes/multipart topology acceptance matrix |
-| `GEO-NUM-001` | Consistent epsilon/tolerance policy | `🌗` | Audit §3H; intersection/path tests; local-pass | Tolerance exists as implementation behavior without complete public error bound | geometry + spec | numeric contract, all geometry operations | H | Define supported tolerance/error-bound policy |
-| `GEO-NUM-002` | Winding-independent normalization, holes, even-odd semantics | `🌗` | Audit §3H; `normalizeClosedShape.ts`; local-pass | Normalization exists for supported shapes; edge coverage incomplete | geometry + core | polygon normalization, boolean engine | H | Add clockwise/counter-clockwise and holes fixtures |
-| `GEO-NUM-003` | Degenerate/invalid input detection and stable error codes | `🌗` | Audit §3H; error tests; fixtures 19/20; fixture-pass | Several invalid boundaries are explicit; complete error catalog is missing | core + geometry | error model, renderer/CLI propagation | H | Publish negative-case catalog and cross-consumer assertions |
+| `GEO-NUM-001` | Consistent epsilon/tolerance policy | `🌗` | Current audit; `geometry/src/tolerance.ts`; intersection/split/path-modifier tests; local-pass | Package tolerance constants are centralized; no complete public DSL error bound | geometry + spec | numeric contract, all geometry operations | H | Review which bounds, if any, become public semantic policy |
+| `GEO-NUM-002` | Winding-independent normalization, holes, even-odd semantics | `🌗` | Current audit; `normalizeClosedShape.ts`; `boolean.test.ts`; local-pass | Supported rings are canonicalized and holes preserved; broader topology remains incomplete | geometry + core | polygon normalization, boolean engine | H | Add only separately reviewed topology fixtures |
+| `GEO-NUM-003` | Degenerate/invalid input detection and stable error codes | `🌗` | Current audit; `error.ts`; intersection/boolean/path/split tests; local-pass + fixture-pass | Package error codes are stable; cross-consumer diagnostic mapping remains incomplete | core + geometry | error model, renderer/CLI propagation | H | Publish the cross-consumer negative-case catalog |
 | `GEO-DET-001` | Platform/order/time-independent deterministic resolution | `🌗` | Audit §3H; conformance snapshots; local-pass + fixture-pass | Local determinism observed; Node 24, Flutter, and cross-platform replay unverified | core + parity | canonical toolchain, serializer, fixtures | H | Run repeated-process and cross-runtime snapshot gate |
 | `GEO-DET-002` | Stable IDs, ordering, anchors, collection order, error paths | `🌗` | Audit §3H; graph/identity/order evidence; fixture-pass | Stable paths appear in tested cases; universal replay absent | core + spec | graph, collections, diagnostics | H | Add canonical replay comparison for IDs/order/paths |
 | `GEO-SER-001` | Deterministic resolved-scene serialization | `🌗` | Audit §3I; expected scene snapshots; fixture-pass | Snapshots consumed by CLI/Flutter; all-object canonical contract incomplete | core + parity | serializer, semantic comparator | H | Define canonical field/order contract and snapshot it |
@@ -93,7 +99,7 @@ These are not extra expected IDs and therefore do not change the 40-row join.
 
 | Finding | Status | Evidence | Handling |
 | --- | --- | --- | --- |
-| Stale `v0.3` provenance/error wording | `⚠️` | Audit §4; `geometry/src/intersection.ts` lines 2 and 747; package/compatibility line is 0.5 | Create a defect task in the gap backlog; do not relabel unrelated capability rows. |
+| Stale `v0.3` provenance/error wording | `✔️` resolved locally | Current audit; `geometry/src/intersection.ts`; regression coverage in `geometry/src/__tests__/intersection.test.ts`; package/compatibility line is 0.5 | Keep the regression assertion; consumer-specific wording remains outside the geometry package row join. |
 | Broader boolean union/xor/non-rectangle topology | `⏸️` | Audit §4; decision 08 and fixture boundary | Keep `GEO-BOOLEAN-001/002` as `🌗`; deferred expansion is not `➖` or implementation. |
 | Geometry-owned UI routes, shortcuts, platform file service | `➖` | Audit §4; ownership boundary | Track under consumer/platform matrices, not as geometry absence. |
 

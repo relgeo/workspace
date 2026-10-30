@@ -30,10 +30,10 @@ surface produk sudah lengkap.
 | Implementation audit rows | **39 unique** | Satu row audit untuk setiap expected ID. |
 | Reconciliation rows | **39 unique** | One-to-one join; tidak ada missing, extra, atau duplicate ID. |
 | Status matrix rows | **39 unique** | Capability-first reporting view mencakup seluruh expected set. |
-| Gap backlog coverage | **19/19** | Seluruh `🌗`/`❌` matrix ID tercakup tepat sekali dalam 8 candidate tasks. |
-| Matrix status counts | **20 `✔️` · 18 `🌗` · 1 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`** | `ORCH-OPS-003` tetap absent/`❌`; evidence yang belum tersedia tidak dipromosikan menjadi absent. |
-| Audit implementation counts | **28 implemented · 10 partial · 1 absent** | 0 broken, 0 deferred, 0 not-applicable dari 39 expected IDs. |
-| Audit evidence counts | **6 verified-current · 19 verified-static · 8 partial-current · 6 unverified-runtime** | Evidence class tetap terpisah dari implementation status. |
+| Gap backlog coverage | **15/15 unresolved** | Seluruh current `🌗` matrix ID tercakup dalam 8 candidate tasks; 4 selected `✔️` IDs remain as explicit closure traceability. |
+| Matrix status counts | **24 `✔️` · 15 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`** | Selected blocker/report/retry/sync boundaries now have focused source/fixture evidence; evidence not current remains `🌗`, not `❌`. |
+| Audit implementation counts | **33 implemented · 6 partial · 0 absent** | 0 broken, 0 deferred, 0 not-applicable dari 39 expected IDs. |
+| Audit evidence counts | **5 verified-current · 21 verified-static · 7 partial-current · 6 unverified-runtime** | Evidence class tetap terpisah dari implementation status; current dirty child worktrees and Node 22 are not promoted to clean current evidence. |
 | Link/path checks | **Pass** | Artefak capability-map dan dua required context docs ada pada path yang dirujuk. |
 | Documentation hygiene | **Pass** | `git diff --check` lulus untuk perubahan task; tidak ada whitespace trailing pada dua artefak baru. |
 
@@ -50,7 +50,7 @@ dalamnya sudah lulus.
 | Repository boundary | `.gitmodules`, 12 child checkouts, manifests, package/lockfiles | `Covered` | Manifest revisions for `playground`, `flutter`, and `mcp` are stale versus current gitlinks. |
 | Baseline/compatibility/conformance | baseline, compatibility matrix, fixtures, root and Flutter runners | `Covered` | Flutter SDK cache permission blocks host probe; cross-platform evidence incomplete. |
 | Tests and failure-injection | Root baseline/release failure-injection scripts plus child package, Playground, Flutter, MCP, and E2E test directories listed in audit §2.1 | `Covered` | Root conformance and failure-injection checks are current; full child/runtime test execution remains bounded by the declared environment evidence. |
-| Root commands/scripts | `scripts/README.md` and listed baseline, compatibility, conformance, integration, release, recovery, and failure-injection runners | `Covered` | No bounded retry controller was found; this is the explicit `ORCH-OPS-003` gap. |
+| Root commands/scripts | `scripts/README.md` and listed baseline, compatibility, conformance, integration, release, recovery, and failure-injection runners | `Covered` | Shared evidence/blocker contract and bounded retry are fixture-verified; full integration runtime remains Node 24-gated. |
 | Root and child CI | root Integration/sync workflows; child Flutter/Playground/MCP workflows | `Covered` | No live dispatch, provider API revalidation, PR merge, or branch-protection observation. |
 | Consumer/UI/menu/shortcut/route | Package/consumer commands, Playground/website artifact and route hooks | `Covered at boundary` | Workspace has no own UI/menu/shortcut; downstream route smoke is runtime-unverified. |
 | Config/platform/service | Node/pnpm, npm registry, Flutter SDK, Playwright, GitHub Actions permissions/tokens, platform runners | `Covered as dependencies` | Current environment lacks supported Node/Flutter/registry/browser/provider proof for several stages. |
@@ -65,13 +65,48 @@ surfaces or all possible provider/runtime states. Any new requirement or
 surface must first be added to the expected catalog before it can be assessed as
 implemented or absent.
 
-### 2.3 Capability-category coverage proof
+### 2.3 Reproducible evidence and changed boundary
+
+The evidence below was collected from root workspace revision
+`1cfa86553d7adb18179c6b3e1a33618a179b1414` on 2026-10-30. No commit was
+created by this tranche; the changes remain an uncommitted root working-tree
+boundary for review. The selected implementation changed root orchestration
+scripts, the sync workflow policy, the root package test entrypoint, and the
+cross-repository capability documents. No child-repository source or gitlink
+was changed by this tranche.
+
+| Command / check | Result | Evidence class and limitation |
+| --- | --- | --- |
+| `pnpm run orchestration:contract:test` | Passed | Local fixture evidence for blocker taxonomy, dependency status, evidence envelope, bounded retry, and sync checkout policy. |
+| `pnpm run compatibility:check -- --json` | `283/283` passed | Current local compatibility evidence; pnpm warns that Node `22.23.2` is below the declared `>=24`. |
+| `pnpm run conformance:fixtures` | `260/260` passed across 20 fixtures | Current root TypeScript/CLI/consumer fixture evidence; not Flutter runtime evidence. |
+| `node scripts/test-baseline-failure.mjs` | Passed | Local failure-injection evidence for targeted baseline mismatch diagnostics. |
+| `pnpm run release:record:check -- --json` | `35/35` passed | Release-record schema/policy evidence; no publish was performed. |
+| `pnpm run release:record:failure` | Passed | Local recovery/failure-injection evidence; no partial release was created. |
+| `node scripts/run-integration-gate.mjs --local --report=/private/tmp/relgeo-focused-integration.json` | Exit `2` before stages | `environment-unavailable`: host Node `22.23.2`; the runner requires Node `24+` and emits a structured blocked report. |
+| `node scripts/run-flutter-conformance.mjs --exclude-tags=golden` | Exit `2` with `[BLOCKED]` | `environment-unavailable`: Flutter SDK cache `engine.stamp` write is not permitted outside the workspace. |
+| `git diff --check -- docs/capability-map/cross-repository scripts .github/workflows/sync-validated-submodule-after-ci.yml` | Passed | Root documentation/script/workflow hygiene check. |
+
+The root baseline remains intentionally visible as not current: the manifest
+revisions for `playground`, `flutter`, and `mcp` differ from their current
+gitlinks, while all 12 checkouts still match their root gitlinks and eleven
+child worktrees are dirty. The next baseline action is validated child-CI
+authorization and reviewable exact-SHA synchronization, not a blind manifest
+write.
+
+No npm or pub.dev publication, production deployment, or deferred external
+platform host was used or made a prerequisite. Registry/public-smoke,
+provider-dispatch, Node 24 integration, and writable Flutter-host evidence are
+handoff items only; their absence does not downgrade the local contract,
+compatibility, fixture, or failure-injection results above.
+
+### 2.4 Capability-category coverage proof
 
 Every catalog category is represented in the audit, one-to-one reconciliation,
-and status matrix. The backlog column counts only non-green rows; it is not
-expected to contain implemented rows.
+and status matrix. The backlog column counts unresolved rows plus selected
+closure-trace references; it is not itself implementation evidence.
 
-| Capability category | Prefix | Catalog IDs | Audit IDs | Reconciliation IDs | Matrix IDs | Backlog gap IDs |
+| Capability category | Prefix | Catalog IDs | Audit IDs | Reconciliation IDs | Matrix IDs | Backlog references |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | Fresh clone, bootstrap, repository boundary | `ORCH-BOOT-*` | 4 | 4 | 4 | 4 | 3 |
 | Baseline, compatibility, conformance | `ORCH-BASE-*` | 5 | 5 | 5 | 5 | 2 |
@@ -166,8 +201,10 @@ repository evidence:
 
 ## 6. Implementation handoff
 
-Implementation work remains separate from this validation. The following
-candidate goals/tasks are defined in the [gap backlog](./implementation-gap-backlog.md):
+The following candidate goals/tasks remain in the [gap backlog](./implementation-gap-backlog.md).
+Selected source and focused-test evidence is now recorded in the implementation
+audit/reconciliation; grouped goals remain open when another capability in the
+group is unresolved:
 
 | Candidate | Capability gaps | Handoff condition |
 | --- | --- | --- |
@@ -176,10 +213,10 @@ candidate goals/tasks are defined in the [gap backlog](./implementation-gap-back
 | `GAP-ORCH-003` | Local/public integration gates | Depends on supported Node 24 and registry/public consumer environment. |
 | `GAP-ORCH-004` | Evidence/artifact/public-smoke reconciliation | Depends on refreshed baseline and current gate outputs. |
 | `GAP-ORCH-005` | Release preflight/registry/forward-fix evidence | Depends on clean release boundary and network-capable verification. |
-| `GAP-ORCH-006` | Blocker ownership and decision checkpoints | Can define schema independently; downstream enforcement depends on runner changes. |
-| `GAP-ORCH-007` | Bounded retry/rerun policy | Depends on blocker taxonomy and durable report retention; currently covers the sole `❌`. |
-| `GAP-ORCH-008` | Sync workflow credential/permission hygiene | Can be reviewed independently against workflow policy and provider behavior. |
+| `GAP-ORCH-006` | Blocker ownership and decision checkpoints | Shared report/taxonomy schema is implemented; central human-decision enforcement and live provider propagation remain open. |
+| `GAP-ORCH-007` | Bounded retry/rerun policy | Source and focused fixture are verified-static; live transient CI attempt retention remains open. |
+| `GAP-ORCH-008` | Sync workflow credential/permission hygiene | Static workflow policy is verified; provider-side sync PR/dispatch review remains open. |
 
-No candidate above is marked implemented by this handoff. Promotion requires
-the source/workflow change, the backlog acceptance test/evidence target, and a
-new audit/reconciliation update.
+No grouped candidate above is fully closed by this handoff. Promotion of an
+individual capability requires the source/workflow change, its acceptance
+test/evidence target, and the matching audit/reconciliation update.

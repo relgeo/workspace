@@ -181,7 +181,7 @@ were implementation absence:
 
 | Finding | Scope/evidence status | Reconciliation handling |
 | --- | --- | --- |
-| Stale `v0.3` provenance/error wording | `⚠️ broken` finding in audit | Keep capability rows tied to observed behavior; surface wording drift in downstream gap backlog. |
+| Stale `v0.3` provenance/error wording | `✔️ resolved locally` | The package wording and unsupported-pair message now use the DSL `0.5` boundary; regression coverage remains in the geometry test suite. |
 | Broader boolean union/xor/non-rectangle topology | `⏸️ deferred` | Keep `GEO-BOOLEAN-001/002` as `🌗 partial`; do not turn deferred expansion into `➖` or remove it. |
 | Geometry-owned UI routes, shortcuts, platform file service | `➖ not-applicable` to geometry package | Keep UI/product behavior in consumer audit; do not mark product capability absent. |
 | Current Flutter probe and Node 24/canonical registry | `not-verified` evidence | Keep parity/determinism evidence qualified; do not downgrade implementation to absent solely from unavailable environment. |
@@ -194,8 +194,9 @@ Published downstream views:
    ID and keeps implementation, evidence, scope, owner, dependency, risk, and
    next action visible;
 2. [Geometry implementation-gap backlog](./implementation-gap-backlog.md)
-   derives every current `🌗` row into a candidate task and keeps confirmed
-   `⚠️`, deferred `⏸️`, ownership `➖`, and `not-verified` evidence follow-ups separate;
+   derives every current `🌗` row into a candidate task and keeps resolved
+   corrective work, deferred `⏸️`, ownership `➖`, and `not-verified` evidence
+   follow-ups separate;
 3. any future `❌ absent` row must remain explicit in both views;
 4. `docs/compatibility-matrix.json` remains compatibility/release policy, not
    a replacement for this ID-level join.

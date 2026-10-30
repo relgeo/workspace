@@ -3,7 +3,7 @@
 **Tanggal:** 2026-10-30  
 **Baseline:** Flutter desktop authoring workbench; RelGeo DSL `0.5.x` boundary
 
-**Expected catalog:** [`12-flutter-workbench-capability-baseline.md`](../../plans/12-flutter-workbench-capability-baseline.md)  
+**Expected catalog:** [`expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Implementation audit:** [`flutter-workbench/implementation-gap-map.md`](./implementation-gap-map.md)  
 **Expected-versus-observed join:** [`flutter-workbench/reconciliation.md`](./reconciliation.md)  
 **Implementation-gap backlog:** [`flutter-workbench/implementation-gap-backlog.md`](./implementation-gap-backlog.md)
@@ -38,7 +38,7 @@ implementasi. `Status`, `Evidence`, dan `Scope` adalah dimensi yang berbeda.
 | `⏸️` | Sengaja deferred/ditahan oleh keputusan scope atau promotion. |
 | `⚠️` | Broken/mismatch terkonfirmasi pada boundary yang diaudit. |
 
-Current count: **42 `✔️` · 16 `🌗` · 3 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`**.
+Current count: **44 `✔️` · 17 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`**.
 Runtime/native evidence yang belum tersedia tetap ditulis pada kolom Evidence;
 hal itu tidak otomatis menjadi `❌`.
 
@@ -53,7 +53,7 @@ hal itu tidak otomatis menjadi `❌`.
 | [`DOC-05`](./reconciliation.md) | Recent documents | `✔️` | source + local tests | No known source gap | `relgeo/flutter` | preferences | Stale recent entry | Keep bounded persistence test |
 | [`DOC-06`](./reconciliation.md) | Dirty state and close guard | `✔️` | source + local tests | Native close event not verified | `relgeo/flutter` | window lifecycle | Unsaved work lost | Exercise native close guard |
 | [`DOC-07`](./reconciliation.md) | Recovery decision on close | `✔️` | source + local tests; host lifecycle unverified | Native prompt/quit evidence pending | `relgeo/flutter` | DOC-06, WINDOW-01 | Quit path diverges | Add native quit transcript |
-| [`DOC-08`](./reconciliation.md) | Session/crash recovery | `❌` | source negative evidence | No document recovery store/autosave/session restore | `relgeo/flutter` | document serialization, persistence policy | Crash loses authoring state | Define recovery model, then implement and test restore/crash boundary |
+| [`DOC-08`](./reconciliation.md) | Session/crash recovery | `🌗` | recovery store + focused local tests; forced-exit/native storage unverified | Best-effort dirty-draft persistence and startup RESTORE/DISCARD are wired; forced-exit/relaunch host proof remains | `relgeo/flutter` | document serialization, persistence policy | Crash loses authoring state | Add forced-exit/relaunch smoke and stale/corrupt-draft integration coverage |
 | [`DOC-09`](./reconciliation.md) | Document identity/path state | `✔️` | source + local tests | No known source gap | `relgeo/flutter` | file service | Save targets wrong identity | Preserve identity regression cases |
 | [`IO-01`](./reconciliation.md) | Native file picker | `🌗` | adapter source + local tests; native runtime unverified | OS open/save dialogs not proven on target desktop hosts | `relgeo/flutter` | DOC-02..04, platform runners | File workflow unusable in packaged app | Run macOS/Linux/Windows picker smoke |
 | [`IO-02`](./reconciliation.md) | RelGeo/YAML import boundary | `🌗` | bounded contract + source | Import vocabulary/invalid-boundary coverage is bounded | `relgeo/flutter` + `relgeo/core` | CONTRACT-01/02, fixtures | Unsupported input gives misleading preview | Expand active import fixtures and diagnostic assertions |
@@ -72,13 +72,13 @@ hal itu tidak otomatis menjadi `❌`.
 | [`CANVAS-02`](./reconciliation.md) | Model/sheet view | `✔️` | source + local tests | No known source gap | `relgeo/flutter` | renderer, document model | Wrong active view | Keep view-switch regression |
 | [`CANVAS-03`](./reconciliation.md) | Inspector surface | `🌗` | source + local tests | Inspector coverage/surface parity incomplete | `relgeo/flutter` | CANVAS-02, EDIT-02 | Users cannot inspect/edit all fields | Inventory expected inspector fields and add fixtures |
 | [`CANVAS-04`](./reconciliation.md) | Parameters/values inspection | `🌗` | source + local tests | Parameter policy is bounded; full value/profile parity pending | `relgeo/flutter` + `relgeo/core` | CONTRACT-01, CANVAS-03 | Values differ from compile result | Add parameter/profile conformance cases |
-| [`CANVAS-05`](./reconciliation.md) | User-facing graph | `❌` | source negative evidence | Core graph exists, but no user-facing graph panel/widget/command | `relgeo/flutter` | graph projection, layout, selection | Users cannot understand dependencies | Define graph UX contract and implement panel/command tests |
+| [`CANVAS-05`](./reconciliation.md) | User-facing graph | `✔️` | graph model/panel + focused local tests; native AT/runtime unverified | Resolved-scene dependency graph is available through View → Panels → Dependency graph; richer relationship semantics and host accessibility remain | `relgeo/flutter` | graph projection, layout, selection | Users cannot understand dependencies | Keep graph identity/semantics tests; add native accessibility smoke when a host is available |
 | [`CANVAS-06`](./reconciliation.md) | Canvas overlays/roles | `✔️` | source + local tests; native AT unverified | Native semantics and pointer evidence pending | `relgeo/flutter` | CANVAS-01, A11Y-02 | Overlay state unclear | Add overlay semantics/desktop smoke |
 | [`VIEW-01`](./reconciliation.md) | Zoom | `✔️` | source + local tests | Native gesture evidence pending | `relgeo/flutter` | viewport controller | Content inaccessible at scale | Add trackpad/mouse smoke |
 | [`VIEW-02`](./reconciliation.md) | Pan | `✔️` | source + local tests; gesture runtime unverified | Host gesture evidence pending | `relgeo/flutter` | viewport controller | Navigation fails on desktop | Add pan gesture smoke |
 | [`VIEW-03`](./reconciliation.md) | Fit viewport | `✔️` | source + local tests | No known source gap | `relgeo/flutter` | canvas bounds | Content clipped | Keep bounds regression |
 | [`VIEW-04`](./reconciliation.md) | Reset viewport | `✔️` | source + local tests | Native shortcut/menu trigger unverified | `relgeo/flutter` | command registry | User cannot recover view | Add reset command smoke |
-| [`VIEW-05`](./reconciliation.md) | Object selection/hit-testing | `❌` | source/test negative evidence | No object selection model or hit-test controller | `relgeo/flutter` | canvas scene graph, viewport | Inspector/commands cannot target objects | Define selection contract and implement hit-test/keyboard tests |
+| [`VIEW-05`](./reconciliation.md) | Object selection/hit-testing | `✔️` | selection controller, viewport/canvas/inspector wiring + focused local tests; physical pointer unverified | Visible-object bounds hit-testing and shared selected-object state are implemented; richer geometric and physical pointer behavior remain | `relgeo/flutter` | canvas scene graph, viewport | Inspector/commands cannot target objects | Add keyboard-selection and physical pointer smoke coverage |
 | [`LAYOUT-01`](./reconciliation.md) | Panel lifecycle | `✔️` | source + local tests | Native resize/focus evidence pending | `relgeo/flutter` | responsive layout | Panels disappear or trap focus | Add resize/focus smoke |
 | [`LAYOUT-02`](./reconciliation.md) | Docking/resizable layout | `✔️` | source + local tests; native pointer unverified | Host pointer behavior pending | `relgeo/flutter` | panel lifecycle | Layout unusable on host | Add pointer resize smoke |
 | [`LAYOUT-03`](./reconciliation.md) | Floating panels | `✔️` | source + local tests; native pointer unverified | Host drag/resize evidence pending | `relgeo/flutter` | LAYOUT-02 | Context hidden | Add floating-panel smoke |
@@ -115,7 +115,7 @@ five `SCOPE-*` rows in the catalog are scope decisions, not capabilities, and
 are therefore reported in the reconciliation scope findings rather than as
 additional matrix rows.
 
-The 19 rows marked `❌` or `🌗` are all represented in the
+The 17 rows marked `🌗` are all represented in the
 [implementation-gap backlog](./implementation-gap-backlog.md).
 The backlog is a candidate plan only: it does not close, promote, or otherwise
 change any implementation status in this matrix.

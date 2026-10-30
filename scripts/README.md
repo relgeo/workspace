@@ -44,7 +44,25 @@ Mode public menambahkan override sementara di checkout temporary agar seluruh de
 
 Sebelum assertion Pages website, runner menyalin `playground/dist` hasil build ke `relgeo.github.io/dist/playground`. Ini meniru perakitan artifact pada workflow Pages dan menjaga agar `test:pages-artifact` tidak lulus atau gagal karena state `dist` lama.
 
-JSON report integration memuat mode, workspace revision, baseline revision setiap submodule, compatibility line, metadata package, serta hasil tiap command. Report ini aman diunggah sebagai artifact CI karena tidak menyimpan absolute path temporary atau environment privat.
+JSON report integration memuat mode, workspace revision, baseline revision setiap submodule, compatibility line, metadata package, evidence class, toolchain, limitation, owner/surface, blocker classification, dependency impact/status, dan bounded attempt history. Jika prerequisite Node gagal sebelum stage berjalan, report blocked tetap ditulis saat `--report` dipakai. Report ini aman diunggah sebagai artifact CI karena tidak menyimpan absolute path temporary atau environment privat.
+
+Kontrak operasional bersama berada di `scripts/orchestration-contract.mjs`.
+Failure dibedakan sebagai `target-defect`, `transient`,
+`dependency-unavailable`, `environment-unavailable`, atau
+`pending-human-decision`. Hanya failure `transient` yang dapat diulang, paling
+banyak dua attempt dengan backoff bounded; attempt pertama dan terakhir tetap
+disimpan di report. Uji kontrak lokal dijalankan dengan:
+
+~~~text
+pnpm run orchestration:contract:test
+~~~
+
+Baseline JSON report dan release preflight memakai envelope evidence yang sama:
+revision workspace, nama/compatibility baseline, toolchain, evidence class,
+dan limitation. Field owner, repository/surface, remediation, dependency
+impact, dan dependency status (`ready`, `blocked`, `not-run`, atau `none`)
+menjaga blocker tidak berubah menjadi klaim parity atau status target secara
+diam-diam.
 
 ## Compatibility matrix
 

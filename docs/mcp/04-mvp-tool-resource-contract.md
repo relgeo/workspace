@@ -108,10 +108,14 @@ Mapping implementasi:
 
 ## 4. Tool catalog typed
 
-`relGeoMvpToolContracts` mengekspor tujuh contract dengan `name`, description,
-access scope, DTO input/output, dan JSON Schema input. Semua tool MVP bersifat
-`readOnly`. `apply_document_edit` sengaja bukan bagian dari catalog ini karena
-memerlukan desktop session bridge, token read-write, dan revision guard.
+`relGeoMvpToolContracts` mengekspor tujuh contract standalone dengan `name`,
+description, access scope, DTO input/output, dan JSON Schema input. Semua tool
+standalone bersifat `readOnly`. Desktop router menambahkan
+`relgeo_apply_document_edit` hanya bila pengguna mengaktifkan izin edit pada
+dialog Flutter. Tool itu memakai `DocumentEditProposal` dengan document ID,
+base revision, bounded ranges, serta satu undoable transaction; token
+read-only ditolak oleh HTTP host sebelum pemanggilan tool. Ia tidak menulis
+filesystem dan tidak melakukan autosave.
 
 Output typed yang tersedia:
 

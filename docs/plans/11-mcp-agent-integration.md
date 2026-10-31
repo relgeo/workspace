@@ -1,6 +1,6 @@
 # Sub-Rencana 11 — MCP Server dan Agent-Assisted RelGeo Authoring
 
-**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, desktop Streamable HTTP read-only server, dan offline full-spec retrieval dari Flutter asset bundle tersedia. Validasi/render mandiri dan edit aktif masih belum diimplementasikan.
+**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, desktop Streamable HTTP server, offline full-spec retrieval, dan edit dokumen aktif berbasis izin tersedia. Izin edit mati secara default; sesi read-write menerapkan patch bounded dengan revision guard sebagai satu transaksi undoable. Validasi/render mandiri masih belum diimplementasikan.
 **Repository pemilik:** `relgeo/workspace` sebagai orkestrator; package MCP berada sebagai submodule resmi pada repository `relgeo/mcp` dengan nama `relgeo_mcp`
 **Pemilik keputusan:** Agus Made
 **Compatibility line:** RelGeo DSL 0.5.x
@@ -475,28 +475,30 @@ dikunci; evidence dan command validation ada di
 - [x] tampilkan endpoint, status, dan copy configuration;
 - [x] pastikan server berhenti saat aplikasi ditutup.
 
-Implementasi desktop saat ini adalah read-only server yang memuat seluruh
-snapshot Markdown `spec/id/` dari Flutter asset bundle secara offline,
-mengekspos pencarian dan section retrieval normatif, contoh sekunder, serta
-tool/resources untuk dokumen aktif dan diagnostics. Validasi mandiri,
-rendering, dan edit belum diekspos. Cara menjalankan dan batas kemampuan
-dijelaskan di
+Implementasi desktop memuat seluruh snapshot Markdown `spec/id/` dari Flutter
+asset bundle secara offline dan mengekspos pencarian, section retrieval
+normatif, contoh sekunder, dokumen aktif, dan diagnostics. Server dimulai
+read-only; pengguna dapat memilih izin edit saat mengaktifkan MCP. Sesi
+read-write hanya mengekspos `relgeo_apply_document_edit`, yang dibatasi oleh
+ukuran, active document ID, dan revision; perubahan menjadi satu transaksi
+undoable dan tidak autosave. Validasi mandiri dan rendering belum diekspos.
+Cara menjalankan dan batas kemampuan dijelaskan di
 [`flutter/docs/mcp-local-testing.md`](../../flutter/docs/mcp-local-testing.md).
 
 ### Tahap 4 — Active document bridge dan direct edit
 
 - [x] expose active source, identity, revision, dirty state, dan diagnostics;
 - [x] pastikan agent dapat membaca code yang sedang dibuka;
-- [ ] cegah pembacaan dokumen yang bukan active session;
+- [x] cegah pembacaan dokumen yang bukan active session;
 - [ ] tambahkan test perubahan source saat agent sedang membaca.
-- [ ] expose `apply_document_edit` sebagai bounded patch, bukan overwrite bebas;
-- [ ] terapkan edit langsung ke active document;
-- [ ] jadikan setiap tool call edit satu undoable transaction;
-- [ ] gunakan base revision guard;
-- [ ] hubungkan apply dengan undo/redo dan dirty state;
+- [x] expose `relgeo_apply_document_edit` sebagai bounded patch, bukan overwrite bebas;
+- [x] terapkan edit langsung ke active document;
+- [x] jadikan setiap tool call edit satu undoable transaction;
+- [x] gunakan base revision guard;
+- [x] hubungkan apply dengan undo/redo dan dirty state;
 - [ ] tampilkan status perubahan dan affordance Undo pada Flutter;
-- [ ] pastikan apply tidak melakukan autosave;
-- [ ] pertahankan Save/Save As sebagai aksi eksplisit yang terpisah.
+- [x] pastikan apply tidak melakukan autosave;
+- [x] pertahankan Save/Save As sebagai aksi eksplisit yang terpisah.
 
 ### Tahap 5 — Standalone Dart executable dan CLI bridge
 
@@ -517,23 +519,23 @@ dijelaskan di
 
 ## 10. Acceptance criteria
 
-- [ ] agent dapat menemukan syntax RelGeo berdasarkan pertanyaan intent;
-- [ ] agent dapat mengambil examples dan rules dari source spec versioned;
+- [x] agent dapat menemukan syntax RelGeo berdasarkan pertanyaan intent;
+- [x] agent dapat mengambil examples dan rules dari source spec versioned;
 - [ ] agent dapat membaca dokumentasi spec dari GitHub atau website RelGeo;
-- [ ] setiap hasil dokumentasi menyertakan source URL dan revision/version;
+- [x] setiap hasil dokumentasi menyertakan source URL dan revision/version;
 - [ ] website tidak pernah mengalahkan rule normatif dari spec;
 - [ ] source proposal selalu dapat divalidasi oleh core;
 - [ ] diagnostics dikembalikan terstruktur dengan source range;
-- [ ] Flutter dapat menghidupkan server lokal melalui UI;
-- [ ] desktop tidak membutuhkan Node.js, npm, atau runtime kedua;
-- [ ] agent dapat membaca dokumen aktif;
-- [ ] agent dapat menerapkan edit langsung ke dokumen aktif;
-- [ ] setiap edit Agent menjadi satu transaksi undoable;
-- [ ] pengguna langsung melihat perubahan dan dapat membatalkannya dengan Undo;
-- [ ] patch stale ditolak dengan aman;
-- [ ] direct apply tidak melakukan autosave atau menulis arbitrary filesystem;
-- [ ] Save dan export tetap mengikuti document lifecycle sebagai aksi terpisah;
-- [ ] localhost server tidak membuka arbitrary remote access;
+- [x] Flutter dapat menghidupkan server lokal melalui UI;
+- [x] desktop tidak membutuhkan Node.js, npm, atau runtime kedua;
+- [x] agent dapat membaca dokumen aktif;
+- [x] agent dapat menerapkan edit langsung ke dokumen aktif;
+- [x] setiap edit Agent menjadi satu transaksi undoable;
+- [x] pengguna langsung melihat perubahan dan dapat membatalkannya dengan Undo;
+- [x] patch stale ditolak dengan aman;
+- [x] direct apply tidak melakukan autosave atau menulis arbitrary filesystem;
+- [x] Save dan export tetap mengikuti document lifecycle sebagai aksi terpisah;
+- [x] localhost server tidak membuka arbitrary remote access;
 - [ ] executable standalone Dart, jika dibuat, dapat dijalankan melalui stdio;
 - [ ] CLI, MCP Server, core, language-service, dan Flutter memiliki evidence
   compatibility yang dapat ditelusuri.

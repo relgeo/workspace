@@ -1,6 +1,6 @@
 # RelGeo Maturation Master Plan
 
-**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; MCP sudah menjadi submodule resmi; status direkonsiliasi 2026-10-09
+**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; MCP sudah menjadi submodule resmi; desktop v1.0.1 tersedia sebagai draft lintas-platform; status diperbarui 2026-10-31
 **Tanggal baseline:** 2026-10-08
 **Compatibility line saat ini:** RelGeo DSL 0.5.x  
 **Pemilik keputusan:** Agus Made  
@@ -75,20 +75,27 @@ canonical lintas-platform untuk baseline tersebut. Setelahnya, commit root
 tersebut adalah follow-up dokumentasi/promotion, bukan klaim bahwa run CI menguji
 revision root yang lebih baru. Evaluator/unit tetap candidate.
 
-### 0.1 Status aktif setelah audit — 2026-10-09
+### 0.1 Status aktif — 2026-10-31
 
-- Canonical evidence terbaru tetap run `37832260326` pada root `328c869`
-  (Flutter `ea8e754`), dengan enam job sukses dan lima artifact.
+- Untuk integrasi lintas-repository, canonical evidence tetap run `37832260326`
+  pada root `328c869` (Flutter `ea8e754`), dengan enam job sukses dan lima
+  artifact. Run itu tetap menjadi bukti bagi revision tersebut.
+- Flutter `60ec760` telah lulus native CI run `41184291670` pada macOS, Ubuntu,
+  dan Windows. Release workflow `41184693233` membuat draft v1.0.1 dengan
+  artifact ketiga platform, checksum, dan manifest; arsip diunduh dan checksum
+  diverifikasi. Draft belum dipublikasikan.
+- Launch smoke dari paket v1.0.1 pada macOS, Ubuntu/Linux, dan Windows 11 masih
+  menunggu. CI membuktikan build dan struktur/integritas arsip, bukan usability
+  runtime.
 - Fixture 15 `boolean/intersection` kini `active` pada boundary contract yang
   disetujui; conformance setelah promotion tercatat `260/260`.
 - Fixture 16 `evaluator/unit` tetap `capability`/candidate dan belum menjadi
   active contract.
-- Current root follow-up adalah `8fcd1db`; pointer Flutter saat ini `a044c4d`.
-  Pointer ini tidak boleh dibaca sebagai revision yang diuji oleh run
-  `37832260326` tanpa run CI baru.
-- Desktop runtime smoke interaktif (macOS keyboard/VoiceOver, Ubuntu/Linux,
-  dan Windows 11) tetap deferred/terbatas; build dan artifact CI tidak sama
-  dengan usability runtime.
+- Flutter pointer saat ini `60ec760`; Flutter CI dan draft v1.0.1 di atas
+  memvalidasi pointer tersebut. Jangan menganggap run lintas-repo historis
+  `37832260326` menguji revision ini.
+- Keyboard/VoiceOver macOS dan review aksesibilitas tetap terpisah dari launch
+  smoke lintas-OS.
 - Goal release npm tetap sengaja ditunda sampai ada dua kandidat release dengan
   perubahan package nyata. No-op release seperti `0.5.2` tidak diperbolehkan.
 
@@ -139,7 +146,7 @@ Daftar berikut adalah indeks lengkap. `Aktif` berarti masih ada pekerjaan implem
 - [05 — Public Docs dan Playground Hardening](./plans/05-public-docs-and-playground-hardening.md) — baseline dan browser evidence selesai; native accessibility tetap limitation.
 - [06 — Flutter Alignment](./plans/06-flutter-alignment.md) — canonical desktop/build evidence selesai; evaluator dan runtime smoke tetap terpisah.
 - [07 — Flutter Capability Promotion dan SVG Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md) — promotion fixture 15 selesai pada boundary terbatas.
-- [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md) — build/artifact CI selesai; runtime smoke target tetap deferred.
+- [08 — Desktop Platform Delivery](./plans/08-desktop-platform-delivery.md) — draft v1.0.1 dengan artifact macOS/Linux/Windows dan checksum sudah diverifikasi; runtime smoke target tetap deferred.
 - [09 — Approved Decisions Execution Map](./plans/09-approved-decisions-execution-plan.md)
 - [10 — Desktop Runtime Smoke Checklist](./plans/10-desktop-runtime-smoke-checklist.md)
 - [11 — MCP Server dan Agent-Assisted RelGeo Authoring](./plans/11-mcp-agent-integration.md)
@@ -588,7 +595,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 6 — Flutter alignment
 
-**Status implementasi:** parsial. **Keputusan:** non-publishable, stable 3.41.9, desktop macOS/Linux/Windows disetujui; Android/iOS ditunda. **Verifikasi:** canonical run `37832260326` pada root `328c869` lulus job Flutter, macOS, Linux, dan Windows; fixture 15 boolean/intersection active pada scope contract terbatas, sementara evaluator/unit, desktop runtime smoke, dan accessibility tetap terbuka/deferred. Build job tidak diperlakukan sebagai runtime usability evidence.
+**Status implementasi:** parsial. **Keputusan:** non-publishable, stable 3.41.9, desktop macOS/Linux/Windows disetujui; Android/iOS ditunda. **Verifikasi:** canonical cross-repo run `37832260326` pada root `328c869` tetap menjadi bukti untuk revision itu. Flutter `60ec760` kemudian lulus CI native `41184291670`; release workflow `41184693233` menghasilkan draft v1.0.1 untuk ketiga OS dan checksum arsip telah diverifikasi. Draft belum dipublikasikan; launch smoke target, evaluator/unit, dan accessibility tetap terpisah/terbuka. Build job tidak diperlakukan sebagai runtime usability evidence.
 
 **Tujuan:** menjadikan Flutter consumer yang dapat dibandingkan dengan surface TypeScript, bukan jalur implementasi terpisah tanpa bukti kontrak.
 
@@ -661,6 +668,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 
 | Tanggal | Perubahan | Bukti/status |
 | --- | --- | --- |
+| 2026-10-31 | Status delivery Flutter desktop diselaraskan dengan workflow release terbaru | Flutter `60ec760`; CI `41184291670` dan release workflow `41184693233` sukses; draft v1.0.1 memuat macOS universal, Linux x64, Windows x64, checksum, dan manifest; launch smoke lintas-OS serta publikasi draft masih terbuka |
 | 2026-10-09 | Audit status pascapromotion | Canonical run `37832260326` ditetapkan sebagai evidence terbaru untuk baseline root `328c869`; fixture 15 `boolean/intersection` active dan conformance pascapromotion `260/260`; fixture 16 evaluator/unit, desktop runtime smoke interaktif, dan dua release npm nyata tetap terbuka/deferred; no-op release tidak diperbolehkan |
 | 2026-10-09 | Package MCP diekstrak dari root menjadi submodule resmi | `relgeo/mcp@6fd5cb2` dipasang pada root `workspace@5bf17ec`; package tetap pure-Dart, private/non-publishable, dan standalone Flutter CI diarahkan untuk checkout MCP sebagai sibling `../mcp`; canonical integration evidence untuk revision root terbaru masih perlu dijalankan |
 | 2026-10-29 | Sinkronisasi submodule tervalidasi digeneralisasi | Flutter, Playground, dan MCP kini menyiapkan dispatch generik setelah CI `main` sukses; root memverifikasi SHA/run/workflow melalui allowlist lalu membuat PR sinkronisasi gitlink dan `docs/integration-baseline.json`; secret dispatch child sudah disiapkan oleh operator |

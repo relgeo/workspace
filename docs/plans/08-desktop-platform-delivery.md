@@ -1,7 +1,8 @@
 # Sub-Rencana 08 — Desktop Platform Delivery
 
-**Status implementasi:** fondasi dan source-level native window bridge tersedia; parsial. **Status evidence:** canonical GitHub Actions run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) pada root `328c869` lulus build/assertion job Flutter, macOS, Linux, dan Windows. Runtime smoke Ubuntu/Linux dan Windows 11 tetap di-defer sampai host/VM atau runner target tersedia; artifact CI tidak disebut usable tanpa smoke target.
-**Tanggal:** 2026-09-23  
+**Status implementasi:** paket desktop lintas OS tersedia sebagai GitHub Release draft v1.0.1. Build, struktur bundle, dan checksum terverifikasi; runtime smoke macOS v1.0.1, Ubuntu/Linux, dan Windows 11 masih menunggu uji di target masing-masing. Draft belum dipublikasikan dan binary unsigned belum disebut siap pakai.
+**Evidence terbaru:** Flutter CI [41184291670](https://github.com/relgeo/flutter/actions/runs/41184291670) dan Desktop Release [41184693233](https://github.com/relgeo/flutter/actions/runs/41184693233), source `relgeo/flutter` commit `60ec76042b369659e4d048b2a53ea3a66a384de3`, tag `desktop-v1.0.1`.
+**Tanggal pembaruan:** 2026-10-31
 **Owner koordinasi:** `relgeo/workspace`  
 **Implementasi utama:** `relgeo/flutter`  
 **Parent:** [MATURATION-MASTER-PLAN.md](../MATURATION-MASTER-PLAN.md)  
@@ -41,9 +42,9 @@ desktop yang dapat dijalankan.
 
 | Surface | Build authority | Artifact awal | Verifikasi minimum | Status |
 | --- | --- | --- | --- | --- |
-| macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | canonical CI build hijau; interactive keyboard/VoiceOver QA pending |
-| Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | canonical CI build/assertion hijau; runtime smoke deferred, artifact non-usable |
-| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | canonical CI build/assertion hijau; smoke deferred, ZIP non-usable |
+| macOS Flutter | `macos-latest` atau Mac lokal | `.app` / archive | build release, launch smoke, keyboard | v1.0.1 universal dibangun dan checksum lulus; launch smoke/keyboard/VoiceOver QA pending |
+| Ubuntu/Linux Flutter | `ubuntu-latest` atau Ubuntu lokal | folder release / `.tar.gz` | build release, launch smoke, file access | v1.0.1 dibangun, struktur bundle dan checksum lulus; runtime smoke Ubuntu belum dilakukan |
+| Windows Flutter | `windows-latest` | ZIP folder Release | build release, Windows 11 smoke | v1.0.1 dibangun; `relgeo.exe`, DLL, `data`, dan checksum lulus; runtime smoke Windows 11 belum dilakukan |
 | Web/PWA | Linux CI / website workflow | static deployment | browser E2E dan public smoke | sudah berjalan |
 | CLI | Linux CI / Node matrix | npm package/binary surface | lint, test, install, command smoke | sudah berjalan |
 
@@ -92,8 +93,29 @@ flowchart TD
   winSmoke --> evidence
 ```
 
-Build artifact tidak otomatis menjadi release publik. Artifact hanya menjadi
-release candidate setelah assertion dan smoke test pada target OS lulus.
+Build artifact tidak otomatis menjadi release publik. Workflow dapat membuat
+GitHub Release sebagai draft setelah assertion lulus; smoke test target OS,
+review aset, dan keputusan signing harus ditutup sebelum draft dipublikasikan.
+
+### Current release evidence — v1.0.1 (2026-10-31)
+
+Workflow native CI `41184291670` lulus format, analyzer, test, serta build
+macOS, Ubuntu/Linux, dan Windows. Workflow `41184693233` kemudian membangun
+dan mengemas setiap target, memeriksa struktur bundle, membuat checksum
+SHA-256 dan provenance, lalu membuat draft
+[`RelGeo Desktop v1.0.1`](https://github.com/relgeo/flutter/releases). Draft
+memuat:
+
+- `RelGeo-macos-universal-v1.0.1.zip` — `.app` universal `arm64`/`x86_64`;
+- `RelGeo-linux-x64-v1.0.1.tar.gz` — bundle lengkap dengan executable `relgeo`;
+- `RelGeo-windows-x64-v1.0.1.zip` — bundle lengkap dengan `relgeo.exe`,
+  `flutter_windows.dll`, dan `data/`;
+- `SHA256SUMS.txt`, `release-manifest.json`, dan metadata build tiap target.
+
+Ketiga arsip telah diunduh dari draft dan cocok dengan checksum SHA-256.
+Executable macOS di dalam arsip terverifikasi universal. Ini membuktikan
+integritas dan struktur paket; launch smoke macOS v1.0.1, Ubuntu/Linux, dan
+Windows 11 belum dilakukan. Draft masih unsigned dan belum dipublikasikan.
 
 ## 5. Stage A — Baseline Flutter desktop
 
@@ -107,8 +129,9 @@ release candidate setelah assertion dan smoke test pada target OS lulus.
 - [x] definisikan smoke scenario bersama: launch, load fixture, render scene,
   edit/save bila relevan, resize window, keyboard navigation, dan clean exit.
 
-Baseline yang dikunci saat ini adalah Flutter `3.41.9`, Dart `3.11.5`,
-application version `1.0.0+1`, dan binary `relgeo_flutter`. `flutter test`
+Baseline rilis saat ini adalah Flutter `3.41.9`, Dart `3.11.5`,
+application version `1.0.1+1`, dan executable native `relgeo` (Linux) /
+`relgeo.exe` (Windows). Package Dart tetap bernama `relgeo_flutter`. `flutter test`
 lulus dengan 119 test. Cleanup analyzer pada child commit `7917d17` menghapus
 semua warning runtime-relevan. Cleanup lanjutan pada `89d2e95` menurunkan
 baseline menjadi `0 WARNING` dan `47 INFO`; seluruh info tersisa kini berupa
@@ -307,10 +330,10 @@ integration run pada runner GitHub.
 
 Sub-rencana ini selesai untuk tahap artifact ketika:
 
-- [x] macOS release build dan launch smoke lulus;
+- [~] macOS v1.0.1 release build lulus; launch smoke untuk bundle rilis ini masih perlu dicatat;
 - [~] Ubuntu/Linux release build dan smoke lulus — runtime smoke di-defer, build/archive evidence tetap tersimpan;
 - [x] Windows CI build lulus pada `windows-latest`;
-- [x] Windows ZIP memuat executable, DLL, dan `data` lengkap;
+- [x] Windows ZIP v1.0.1 memuat `relgeo.exe`, DLL, dan `data` lengkap;
 - [~] ZIP berhasil dijalankan pada Windows 11 — di-defer sampai host/VM tersedia;
 - [x] evidence tersimpan dan dapat ditelusuri;
 - [x] web/PWA dan CLI tetap lulus gate tanpa bergantung pada desktop build.
@@ -334,14 +357,14 @@ perlu diselesaikan untuk menyatakan artifact desktop awal berhasil.
 1. ~~Audit `relgeo/flutter` untuk status Linux/Windows project dan dependency.~~
 2. ~~Tambahkan workflow Windows build artifact.~~
 3. ~~Jalankan CI dan periksa isi ZIP.~~
-4. Jalankan fresh integration run setelah native window bridge terbaru dan
-   simpan evidence hasilnya.
-5. Uji ZIP pada Windows 11.
+4. ~~Jalankan fresh native CI dan desktop release build untuk v1.0.1.~~
+5. Uji draft v1.0.1 pada macOS, Ubuntu/Linux, dan Windows 11; simpan evidence
+   launch, open/save, resize, dan clean exit.
 6. ~~Tambahkan Linux artifact.~~
 7. ~~Rapikan macOS artifact assertion.~~
 8. Baru evaluasi MSIX/installer.
 
 Keputusan 2026-10-08: langkah runtime Ubuntu/Linux dan Windows 11 sengaja
-di-defer karena host/VM target belum tersedia. Jangan mengganti langkah ini
-dengan Docker Compose atau mengubah status artifact menjadi usable. Buka kembali
-ketika runner/host yang sesuai tersedia.
+di-defer karena host/VM target belum tersedia. Keputusan itu tetap berlaku
+untuk v1.0.1 sampai smoke test target dicatat. Jangan mengubah status paket
+menjadi siap pakai hanya dari bukti build atau checksum.

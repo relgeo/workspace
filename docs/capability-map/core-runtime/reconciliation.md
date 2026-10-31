@@ -1,6 +1,6 @@
 # Core Runtime Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-10-30
+**Tanggal:** 2026-10-31
 
 **Expected source:** [Expected Core Runtime Capability Catalog](./expected-capability-catalog.md)
 
@@ -109,7 +109,7 @@ Required source boundary for this reconciliation:
 | --- | --- | --- | --- | --- | --- |
 | `CORE-GRAPH-001` | `✔️ implemented` | `implemented` | `verified-local` + dependency tests | `IN`; all geometry-affecting relations must be discoverable | Audit §4C; `core/src/graph.ts:15–220,650–730` |
 | `CORE-GRAPH-002` | `✔️ implemented` | `implemented` | `verified-local` + cycle/conformance tests | `IN`; cycles are structured errors, never auto-broken | Audit §4C; `core/src/graph.ts:802–975` |
-| `CORE-EVAL-001` | `✔️ implemented` | `implemented` | `verified-local` + evaluator suite | `IN`; evaluator is pure relative to document context | Audit §4C; `core/src/evaluator.ts:42–394` |
+| `CORE-EVAL-001` | `✔️ implemented` | `implemented` | verified by focused regression at `31347e4`; current-pointer rerun not independently available | `IN`; syntax-only expression evaluation uses a non-zero placeholder, while actual evaluated division errors retain their meaning | Audit §4C; `core/src/evaluator.ts:42–394` |
 | `CORE-EVAL-002` | `✔️ implemented` | `implemented` | `verified-local` + derived/fixture tests | `IN`; phase order and component-local scope are preserved | Audit §4C; `core/src/resolver/values.ts`, `core/src/resolver/index.ts:89–114` |
 | `CORE-EVAL-003` | `✔️ implemented` | `implemented` | `verified-local` + query/frame tests | `IN`; ambiguous results require selector or structured failure | Audit §4C; `core/src/evaluator.ts:540–765,900–1555` |
 | `CORE-UNIT-001` | `✔️ implemented` | `implemented` | `verified-local` + unit tests/conformance | `IN WITH BOUNDARY`; fixture 16 promotion remains deferred | Audit §4C; `core/src/units.ts`, fixture `v05-evaluator-units-candidate` |

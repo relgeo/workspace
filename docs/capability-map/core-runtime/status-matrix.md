@@ -1,7 +1,7 @@
 # Core Runtime Capability Status Matrix
 
-**Tanggal:** 2026-10-30  
-**Boundary:** expected core runtime catalog versus implementation audit evidence  
+**Tanggal:** 2026-10-31
+**Boundary:** expected core runtime catalog versus implementation audit evidence
 **Status dokumen:** published downstream view; this document does not implement a gap
 
 Matrix ini adalah view capability-first dari [expected catalog](./expected-capability-catalog.md), [current implementation audit](./implementation-audit.md), [historical audit log](./archive/implementation-audit-legacy.md), dan [expected-versus-observed reconciliation](./reconciliation.md). Keempat artefak tetap terpisah: katalog menetapkan expected set, audit mencatat discovery/evidence, reconciliation melakukan join, dan matrix ini merangkum keputusan tindak lanjut.
@@ -51,7 +51,7 @@ absence implementation.
 | `CORE-ERROR-002` | Strict compile/check with phase-distinct failures | `🌗` | Audit §4B; CLI/invalid fixtures/conformance | Raw evaluator/resolver errors remain | core + CLI | public diagnostic taxonomy | H | Normalize strict-mode exceptions |
 | `CORE-GRAPH-001` | Dependency extraction across semantic relations | `✔️` | Audit §4C; graph/dependency tests | Expression scanning needs broader quoted/namespace negatives | core | expression deps, object graph | M | Add dependency extraction negatives |
 | `CORE-GRAPH-002` | Topological ordering and circular dependency errors | `✔️` | Audit §4C; cycle/conformance tests | Cross-platform canonical ordering unverified | core | graph, diagnostics | M | Add repeated-process ordering proof |
-| `CORE-EVAL-001` | Typed expression evaluation and deterministic functions | `✔️` | Audit §4C; evaluator suite | Failure paths still use raw errors | core | type system, diagnostic normalizer | M | Route evaluator failures through public errors |
+| `CORE-EVAL-001` | Typed expression evaluation and deterministic functions | `✔️` | Audit §4C; regression fix `31347e4` returns a non-zero placeholder during syntax-only evaluation and has a focused regression case | Failure paths still use raw errors | core | type system, diagnostic normalizer | M | Keep syntax-only evaluation behavior distinct from actual arithmetic errors |
 | `CORE-EVAL-002` | Defaults, profiles, constants, derived and local scope phases | `✔️` | Audit §4C; derived/fixture tests | Fixture 16 is candidate for cross-consumer promotion | core + spec | graph, profiles, units | H | Decide fixture 16 promotion boundary |
 | `CORE-EVAL-003` | Geometry queries, anchors, intersections, frames, conversions | `✔️` | Audit §4C; query/frame/intersection tests | Overload/error combinations are not exhaustive | core + geometry | query selectors, geometry ops | M | Add query overload matrix |
 | `CORE-UNIT-001` | Unit normalization and conversion for lengths/angles | `✔️` | Audit §4C; unit tests; conformance | Cross-consumer promotion of fixture 16 deferred | core + spec | scene unit policy, consumer parity | H | Promote only after shared semantic snapshots |

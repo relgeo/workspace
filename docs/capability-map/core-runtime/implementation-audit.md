@@ -1,6 +1,8 @@
 # Core Runtime implementation audit
 
-**Audit checkpoint:** 2026-10-30
+> **Current package/evaluator checkpoint — 2026-10-31:** Current root gitlink is core `690278e02746c6c3470166cf233e1ec8b4a9eb11`, with the evaluator division-by-zero syntax-only fix in `31347e4`. That fix returns a non-zero placeholder when evaluation is only serving syntax validation; it avoids reporting division-by-zero for an expression that has not actually been evaluated and has a focused regression case. The operator reports that `@relgeo/core@0.5.2` was successfully published to npm. This Codex shell cannot find Node/pnpm, so I have not independently run the current core suite or a fresh registry install. The Node 22 results below are dated historical evidence, not current-pointer verification.
+
+**Audit checkpoint:** 2026-10-31
 **Status:** current local implementation/evidence audit; not a release, registry,
 CI, browser, or Flutter-host claim
 **Owner package:** `relgeo/core`

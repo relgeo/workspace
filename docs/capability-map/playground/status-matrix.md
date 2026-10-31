@@ -1,6 +1,6 @@
 # Playground status matrix
 
-> **Coverage statement — 2026-10-30.** This is the capability-first status
+> **Coverage statement — 2026-10-31.** This is the capability-first status
 > view for all 37 rows in the Playground expected catalog. It is derived from
 > the [implementation audit](./implementation-audit.md) and
 > [expected-versus-observed reconciliation](./reconciliation.md);
@@ -14,8 +14,8 @@
 | Surface | `relgeo/playground` browser IDE and `/playground/` delivery artifact |
 | Matrix owner | Playground product owner; delegated DSL semantics remain with `spec/id/`, core, language-service, and renderer packages |
 | Source of truth | Expected catalog → implementation audit → reconciliation; required plans remain requirement and scope sources |
-| Audit date | 2026-10-30 |
-| Evidence freshness | Local source, tests, UX audit, and build are current for the inspected checkout; browser E2E/public/native device evidence is environment-limited or deferred as marked |
+| Audit date | 2026-10-31 |
+| Evidence freshness | Current source includes compact desktop toolbar/status UX reviewed by the user; hosted Pages parity, fresh automated viewport E2E, and native device evidence remain separately unverified |
 
 ## Status and evidence legend
 
@@ -38,7 +38,7 @@ is therefore not represented as `⚠️`.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `PG-LIFE-001` | Open usable Playground session | `✔️` | Local `index.html`, Vite base, build | Hosted route/smoke unverified | Playground + Pages delivery | Vite base and hosted artifact | Public entry can diverge from tested build | Run current hosted smoke and compare artifact revision |
 | `PG-LIFE-002` | Loading/startup state | `🌗` | Suspense, resolve status, persistence feedback | No complete explicit bootstrap state for every phase | Playground | React bootstrap, IndexedDB, examples | Empty-looking first load can be misread as ready | Verify first-load timing and add explicit state if needed |
-| `PG-LIFE-003` | Product lifecycle state | `✔️` | Status helper, resolving/ready/error, save feedback | Export is action feedback, not a separately named state | Playground | Worker, persistence, view state | Transition meaning can be inferred inconsistently | Keep lifecycle assertions in browser smoke |
+| `PG-LIFE-003` | Product lifecycle state | `✔️` | Stable fixed-width status dot; ready/error text is available as tooltip without shifting toolbar controls | Export is action feedback, not a separately named state | Playground | Worker, persistence, view state | Transition meaning can be inferred inconsistently | Keep lifecycle assertions in browser smoke |
 | `PG-LIFE-004` | Failure and recovery state | `✔️` | Worker/storage/share/clipboard paths and recovery controls | Native/platform presentation unverified | Playground | Worker, IndexedDB, URL, clipboard | Users may not recover consistently across browsers | Run browser failure-path evidence |
 | `PG-EDIT-001` | RelGeo source editor | `✔️` | CodeMirror, YAML, linter, completion, hover; local tests/build | Fresh browser cursor/selection proof unavailable | Playground editor | CodeMirror and language-service | Authoring confidence may exceed current browser evidence | Retain browser editor smoke |
 | `PG-DSL-001` | Resolve against DSL v0.5 | `✔️` | Worker parser/resolver/graph/renderer wiring and worker tests | Full semantic parity is delegated and not re-audited here | Playground consumer | `spec/id/`, core, renderer, language-service | Consumer can drift from normative DSL | Maintain cross-package conformance fixtures |
@@ -66,13 +66,13 @@ is therefore not represented as `⚠️`.
 | `PG-INSPECT-001` | Inspector | `✔️` | Resolved, Values, BOM, filters and source jump | Completeness depends on resolved payload | Playground Inspector | Resolved scene and editor | Rare object types may lack context | Expand representative inspector fixtures |
 | `PG-INSPECT-002` | Dependency graph navigation | `✔️` | Filter/focus, selectable nodes, roving keyboard navigation | Graph zoom/minimap optional, not a gap | Playground GraphViewer | Dependency graph payload | Large graphs can be hard to navigate | Keep focused graph fixtures and keyboard tests |
 | `PG-THEME-001` | User-visible theme | `✔️` | `theme.ts`, theme selector, token variants, and unit tests | Browser selector/system preference/reload assertion unavailable | Playground product/UI owner | CSS tokens and browser-local storage | Browser-specific preference behavior remains unobserved | Re-run theme browser assertions when the server can bind |
-| `PG-RESP-001` | Responsive layout | `✔️` | Breakpoints, drawer, surface switcher, split modes | Current browser emulation and handset unverified | Playground UI | CSS, Sidebar, Preview | Narrow layouts can hide primary actions | Run desktop/tablet/handset browser matrix |
+| `PG-RESP-001` | Responsive layout | `✔️` | `f5418e6` responsive desktop layout; `8d669f4` file-actions Menu; `e497d63` one-row toolbar; `c7cec4b` stable dot-only preview status and tooltip; user-reviewed desktop screenshot | The current view was reviewed at desktop width; automated viewport matrix, hosted parity, and handset are not verified | Playground UI | CSS, Navbar, Sidebar, Preview | Narrow layouts can hide primary actions | Keep desktop toolbar on one row at supported widths; verify hosted/browser and handset separately |
 | `PG-KEY-001` | Keyboard command surface | `✔️` | Centralized Mod+Alt command map, documentation, and unit tests | Browser focus/conflict behavior unavailable | Playground UI owner | CodeMirror/browser focus and dialog semantics | Reserved-key conflicts remain unobserved | Re-run shortcut and focus browser assertions when the server can bind |
 | `PG-A11Y-001` | Accessibility semantics | `🌗` | ARIA, landmarks, live status, focus traps, skip links, static UX audit | Browser traversal and native AT/AX-tree unverified | Playground UI + accessibility owner | DOM semantics and device/browser AT | Users may encounter inaccessible state changes | Run AX/manual AT checks and fix findings |
 | `PG-A11Y-002` | Accessibility preferences/input tolerance | `✔️` | Reduced motion, forced-colors focus fallback, target sizing, keyboard alternatives, UX audit | Physical handset/touch evidence deferred | Playground UI + accessibility owner | Design tokens, CSS media, device QA | Device-specific tolerance remains unobserved | Record supported-browser contrast/target review and device result when available |
 | `PG-SHARE-001` | URL/share source | `✔️` | Base64URL, 180000 guard, history, clipboard fallback | Public URL/permission behavior unverified | Playground | URL hash and clipboard APIs | Share may be too large or fail silently | Run deployed share-link smoke |
 | `PG-SHARE-002` | Transient-share safety | `✔️` | Shared draft, explicit Save as, invalid/oversized hash feedback | Browser reload/share flow unverified | Playground | Hash parser and file model | Shared source could overwrite local work | Add browser reload and no-overwrite assertions |
-| `PG-DELIVERY-001` | Public artifact consistency | `🌗` | Local Vite artifact and `/playground/` base build pass | Hosted Pages parity and smoke unverified | Playground + Pages delivery owner | Pages workflow and current child pointer | Public artifact can differ from audited source | Rebuild hosted artifact and archive current smoke evidence |
+| `PG-DELIVERY-001` | Public artifact consistency | `🌗` | Current Playground source pointer `c7cec4b`; root Pages pointer `6eb2e24` | Current deployed route/revision has not been smoke-checked against compact-toolbar changes | Playground + Pages delivery owner | Pages workflow and current child pointer | Public artifact can differ from audited source | Build/deploy current Playground pointer, then archive hosted `/playground/` smoke evidence |
 
 ## Summary and handoff
 

@@ -1,8 +1,10 @@
 # Cross-Repository Orchestration — Coverage Validation and Handoff
 
+> **Current checkout handoff — 2026-10-31:** Current child worktrees are clean and match all 12 root gitlinks, but 11 of 12 root manifest child pins are stale against the 2026-10-09 snapshot. The root Node/pnpm integration gate was not run because those commands are unavailable in this Codex shell. Earlier Node 22 and dirty-child records below are historical observations from 2026-10-30. Flutter CI `41184291670` passed and release run `41184693233` produced draft v1.0.1 bundles; the operator reports `@relgeo/core@0.5.2` publish success. Neither replaces a current root integration run.
+
 **Status:** coverage validation selesai dengan boundary dan limitation eksplisit
 
-**Tanggal:** 2026-10-30
+**Tanggal:** 2026-10-31
 
 **Scope:** orkestrasi lintas-repository RelGeo pada 39 expected capability ID.
 
@@ -33,7 +35,7 @@ surface produk sudah lengkap.
 | Gap backlog coverage | **15/15 unresolved** | Seluruh current `🌗` matrix ID tercakup dalam 8 candidate tasks; 4 selected `✔️` IDs remain as explicit closure traceability. |
 | Matrix status counts | **24 `✔️` · 15 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`** | Selected blocker/report/retry/sync boundaries now have focused source/fixture evidence; evidence not current remains `🌗`, not `❌`. |
 | Audit implementation counts | **33 implemented · 6 partial · 0 absent** | 0 broken, 0 deferred, 0 not-applicable dari 39 expected IDs. |
-| Audit evidence counts | **5 verified-current · 21 verified-static · 7 partial-current · 6 unverified-runtime** | Evidence class tetap terpisah dari implementation status; current dirty child worktrees and Node 22 are not promoted to clean current evidence. |
+| Historical audit evidence counts (2026-10-30) | **5 verified-current · 21 verified-static · 7 partial-current · 6 unverified-runtime** | These counts belong to the earlier root snapshot; do not read them as a 2026-10-31 verification run. |
 | Link/path checks | **Pass** | Artefak capability-map dan dua required context docs ada pada path yang dirujuk. |
 | Documentation hygiene | **Pass** | `git diff --check` lulus untuk perubahan task; tidak ada whitespace trailing pada dua artefak baru. |
 
@@ -47,7 +49,7 @@ dalamnya sudah lulus.
 | --- | --- | --- | --- |
 | Requirement and ownership | `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, catalog, decisions | `Covered` | Ownership belum menjadi registry machine-readable untuk setiap stage. |
 | Integration and release contract | `docs/plans/01-cross-repo-integration-gate.md`, `02-contract-versioning.md`, `03-npm-release-guard.md`, `09-approved-decisions-execution-plan.md` | `Covered` | Current Node 24 integration and registry execution remain unverified. |
-| Repository boundary | `.gitmodules`, 12 child checkouts, manifests, package/lockfiles | `Covered` | Manifest revisions for `playground`, `flutter`, and `mcp` are stale versus current gitlinks. |
+| Repository boundary | `.gitmodules`, 12 child checkouts, manifests, package/lockfiles | `Covered` | 11 of 12 manifest revisions are stale versus current gitlinks (`spec` matches). |
 | Baseline/compatibility/conformance | baseline, compatibility matrix, fixtures, root and Flutter runners | `Covered` | Flutter SDK cache permission blocks host probe; cross-platform evidence incomplete. |
 | Tests and failure-injection | Root baseline/release failure-injection scripts plus child package, Playground, Flutter, MCP, and E2E test directories listed in audit §2.1 | `Covered` | Root conformance and failure-injection checks are current; full child/runtime test execution remains bounded by the declared environment evidence. |
 | Root commands/scripts | `scripts/README.md` and listed baseline, compatibility, conformance, integration, release, recovery, and failure-injection runners | `Covered` | Shared evidence/blocker contract and bounded retry are fixture-verified; full integration runtime remains Node 24-gated. |
@@ -68,7 +70,7 @@ implemented or absent.
 ### 2.3 Reproducible evidence and changed boundary
 
 The evidence below was collected from root workspace revision
-`1cfa86553d7adb18179c6b3e1a33618a179b1414` on 2026-10-30. No commit was
+`1cfa86553d7adb18179c6b3e1a33618a179b1414` on 2026-10-30 (historical snapshot). No commit was
 created by this tranche; the changes remain an uncommitted root working-tree
 boundary for review. The selected implementation changed root orchestration
 scripts, the sync workflow policy, the root package test entrypoint, and the
@@ -78,8 +80,8 @@ was changed by this tranche.
 | Command / check | Result | Evidence class and limitation |
 | --- | --- | --- |
 | `pnpm run orchestration:contract:test` | Passed | Local fixture evidence for blocker taxonomy, dependency status, evidence envelope, bounded retry, and sync checkout policy. |
-| `pnpm run compatibility:check -- --json` | `283/283` passed | Current local compatibility evidence; pnpm warns that Node `22.23.2` is below the declared `>=24`. |
-| `pnpm run conformance:fixtures` | `260/260` passed across 20 fixtures | Current root TypeScript/CLI/consumer fixture evidence; not Flutter runtime evidence. |
+| `pnpm run compatibility:check -- --json` | `283/283` passed | Historical local evidence from 2026-10-30 under Node `22.23.2` (below declared `>=24`); current root gate was not rerun in this shell. |
+| `pnpm run conformance:fixtures` | `260/260` passed across 20 fixtures | Historical 2026-10-30 root TypeScript/CLI/consumer fixture evidence; not Flutter runtime evidence. |
 | `node scripts/test-baseline-failure.mjs` | Passed | Local failure-injection evidence for targeted baseline mismatch diagnostics. |
 | `pnpm run release:record:check -- --json` | `35/35` passed | Release-record schema/policy evidence; no publish was performed. |
 | `pnpm run release:record:failure` | Passed | Local recovery/failure-injection evidence; no partial release was created. |
@@ -87,15 +89,11 @@ was changed by this tranche.
 | `node scripts/run-flutter-conformance.mjs --exclude-tags=golden` | Exit `2` with `[BLOCKED]` | `environment-unavailable`: Flutter SDK cache `engine.stamp` write is not permitted outside the workspace. |
 | `git diff --check -- docs/capability-map/cross-repository scripts .github/workflows/sync-validated-submodule-after-ci.yml` | Passed | Root documentation/script/workflow hygiene check. |
 
-The root baseline remains intentionally visible as not current: the manifest
-revisions for `playground`, `flutter`, and `mcp` differ from their current
-gitlinks, while all 12 checkouts still match their root gitlinks and eleven
-child worktrees are dirty. The next baseline action is validated child-CI
-authorization and reviewable exact-SHA synchronization, not a blind manifest
-write.
+The root baseline remains stale: 11 of 12 manifest pins differ from current gitlinks (`spec` matches). Current child checkouts are clean and match root gitlinks. Because Node/pnpm are unavailable in this shell, strict verification must be rerun on a supported environment before using the validated child-CI synchronization flow.
 
-No npm or pub.dev publication, production deployment, or deferred external
-platform host was used or made a prerequisite. Registry/public-smoke,
+This audit session did not perform an npm/pub.dev publication, production
+deployment, or provider dispatch. The operator separately reports publishing
+`@relgeo/core@0.5.2`; that report is recorded in the current overlay above. Registry/public-smoke,
 provider-dispatch, Node 24 integration, and writable Flutter-host evidence are
 handoff items only; their absence does not downgrade the local contract,
 compatibility, fixture, or failure-injection results above.
@@ -186,7 +184,7 @@ repository evidence:
 
 1. Which supported Node 24 host and Flutter SDK cache policy will provide the
    canonical current integration/conformance run?
-2. Which validated child CI runs should authorize synchronization of the three
+2. Which validated child CI runs should authorize synchronization of stale
    stale manifest revisions, and who approves the resulting PRs?
 3. What exact provider credentials and environment are available for live
    child-run revalidation, dispatch, PR, registry, and public-smoke evidence?

@@ -53,8 +53,11 @@ browser/public, or native-host delivery evidence.
 - `LS-RANGE-002`, `LS-INCR-001`, and `LS-VERS-002` remain explicit `❌` rows
   from the source audit; unavailable browser/registry/CI evidence does not
   downgrade implementation absence to `?`.
-- `LS-CONS-003` and `LS-CONS-004` remain `⏸️`; no executable MCP/desktop
-  adapter is inferred from contract-only documentation.
+- **Current integration update — 2026-10-31:** `LS-CONS-003` and
+  `LS-CONS-004` are `🌗`, not deferred: MCP spec lookup/resources and the
+  Flutter-hosted active-document read/guarded edit are implemented. This
+  language-service audit does not establish semantic validation/completion
+  integration or ChatGPT Desktop write interoperability.
 - `LS-DOC-003` and `LS-REC-002` remain `➖` because the catalog assigns them to
   host/consumer ownership, not to the language-service implementation.
 

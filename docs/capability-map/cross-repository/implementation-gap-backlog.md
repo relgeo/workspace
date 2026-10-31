@@ -1,5 +1,7 @@
 # Cross-Repository Orchestration — Implementation Gap Backlog
 
+> Current evidence checkpoint (2026-10-31): candidate tasks below retain the implementation gaps, while the dated 2026-10-30 root-gate evidence is historical. Current child checkouts are clean and match root gitlinks; 11 of 12 integration-manifest pins are stale and the supported Node/pnpm gate was not available in this shell.
+
 **Status:** candidate backlog; selected implementation outcomes are recorded here,
 but this document does not substitute for source/tests/audit evidence
 

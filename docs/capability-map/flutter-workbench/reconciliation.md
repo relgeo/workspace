@@ -16,7 +16,8 @@
 
 | Evidence source | Role in this reconciliation |
 | --- | --- |
-| `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` | Audited implementation boundary, including `flutter/lib/`, `flutter/test/`, platform runners, configuration, and the current local analyzer/test result. |
+| `flutter@60ec76042b369659e4d048b2a53ea3a66a384de3` | Current root gitlink; Flutter CI and desktop release workflow evidence are in the checkpointed audit. |
+| `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` | Detailed 2026-10-30 source/test/platform audit; historical local analyzer/test result, not current pointer. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, active desktop/platform gates, compatibility line, and historical-versus-current evidence rules. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Repository ownership and Flutter surface boundary. |
 | [`docs/capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) and the capability-map artifacts | Discovery categories, status/evidence separation, expected-but-missing rule, and one-to-one coverage checks. |
@@ -138,10 +139,10 @@ Makna penting:
 | --- | --- | --- | --- | --- | --- |
 | EXPORT-01 | `✔️` | implemented | source-plus-local; native write not verified | in scope; Flutter SVG export boundary | [Audit §3.6 EXPORT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 | EXPORT-02 | `✔️` | implemented | source-plus-local; native write not verified | in scope; Flutter model/sheet export | [Audit §3.6 EXPORT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-01 | `🌗` | partial | historical-only; current build/runtime not verified | in scope; macOS target | [Audit §3.6 PLAT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-02 | `🌗` | partial | historical-only; Linux runtime not verified | in scope; Ubuntu/Linux target | [Audit §3.6 PLAT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-03 | `🌗` | partial | historical-only; Windows runtime not verified | in scope; Windows 11 target | [Audit §3.6 PLAT-03](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-04 | `🌗` | partial | source-plus-historical; current pointer mismatch | in scope; workspace evidence owner | [Audit §3.6 PLAT-04](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-01 | `🌗` | partial | current CI build and v1.0.1 draft archive/checksum verified; target launch not verified | in scope; macOS target | [Audit §3.6 PLAT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-02 | `🌗` | partial | current CI build and v1.0.1 draft archive/checksum verified; target Linux runtime not verified | in scope; Ubuntu/Linux target | [Audit §3.6 PLAT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-03 | `🌗` | partial | current CI build and v1.0.1 draft archive/checksum verified; Windows runtime not verified | in scope; Windows 11 target | [Audit §3.6 PLAT-03](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-04 | `🌗` | partial | release artifacts carry source/workflow/platform/checksum metadata; root baseline is stale | in scope; workspace evidence owner | [Audit §3.6 PLAT-04](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 
 ## Coverage validation
 

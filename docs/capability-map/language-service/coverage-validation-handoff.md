@@ -1,5 +1,7 @@
 # Language-Service Coverage Validation and Handoff
 
+> **Current integration overlay — 2026-10-31:** MCP is no longer contract-only: local spec/resource tools and the Flutter-hosted active-document read/guarded edit path are implemented and tested. Language-service semantic validation/completion/diagnostic/render integration and live ChatGPT Desktop write interoperability remain unverified. The older validation counts and runtime deferral notes below describe their original dated snapshot.
+
 **Tanggal validasi:** 2026-10-30  
 **Boundary:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
 **Validation status:** structurally validated with explicit implementation, scope, and evidence limitations  
@@ -32,16 +34,15 @@ matrix lama sebagai sumber enumerasi expected:
 | Audit expected-ID coverage | 33/33 | Every expected ID has an observed row; source/test/consumer limits remain in audit |
 | Reconciliation rows | 33/33 | Exactly one result per expected ID |
 | Status matrix rows | 33/33 | Exactly one capability-first row per expected ID |
-| Backlog source IDs | 21/21 gap IDs | Every 🌗, ❌, and ⚠️ row has one candidate task; ➖ and ⏸️ are excluded by scope/roadmap rule |
+| Backlog source IDs | 23/23 tracked IDs | All 19 🌗 and 3 ❌ current gap IDs have candidate tasks; one closed local row is retained; ➖ rows remain out of scope |
 | Missing/extra/duplicate IDs | 0 / 0 / 0 | Catalog, audit, reconciliation, matrix, and backlog source sets are consistent |
 | Audit trace links | 33/33 | Every reconciliation row links to its current audit ID |
 | Required artifact links | PASS | Catalog, audit, reconciliation, current matrix, backlog, repository map, master plan, and compatibility matrix are linked |
 
-The counts are deliberately not a completeness claim. The current matrix
-contains 8 implemented, 17 partial, 3 absent, 2 not-applicable, 2 deferred,
-and 1 broken results. The implementation-gap backlog contains 21 candidate
-tasks; creating or editing those tasks does not change the implementation
-status.
+The counts are deliberately not a completeness claim. The 2026-10-31 overlay updates the matrix to 9 implemented, 19 partial,
+3 absent, 2 not-applicable, 0 deferred, and 0 broken. The backlog tracks 23
+rows (22 open tasks and one locally closed row retained for evidence); creating
+or editing those tasks does not change implementation status.
 
 ## 3. Discovery and evidence validation
 
@@ -99,7 +100,7 @@ is applied consistently:
 | --- | --- | --- |
 | verified-local | Direct source plus local test/build/fixture evidence in the current checkout | Service, schema, token, completion, version, and selected consumer rows |
 | local consumer evidence | Consumer source/tests pass locally, but host/public delivery is not proven | Playground and Markdown rows |
-| contract-only | Typed/documented contract exists without executable adapter/runtime proof | MCP standalone and desktop integration rows |
+| contract-only (historical classification) | Typed/documented contract existed without executable adapter/runtime proof at the original audit snapshot | Historical MCP standalone and desktop integration findings; current integration delta is in the overlay above |
 | mismatch-confirmed | Source/package/docs disagreement reproduced locally | Package/docs compatibility row |
 | not verified | Required environment or delivery surface was not run | Node 24, registry, current CI, browser/public, and native host checks |
 
@@ -129,8 +130,9 @@ implementation symbols above; verification availability is reported separately.
 
 - LS-DOC-003 and LS-REC-002 are ➖ only because active-document/session state
   and last-valid-preview retention are host-owned in the expected catalog.
-- LS-CONS-003 and LS-CONS-004 are ⏸️ because MCP/desktop adapter delivery is
-  held by the stated roadmap boundary.
+- LS-CONS-003 and LS-CONS-004 are now 🌗: local MCP spec/document tools and
+  desktop bridge exist; semantic service integration and live-client write
+  verification remain open.
 - LS-RANGE-002, LS-INCR-001, and LS-VERS-002 remain ❌ implementation gaps.
 - LS-CONS-005 is ✔️ at the local source boundary after README/API/version repair;
   packed/registry/public delivery remains an evidence limitation.
@@ -145,8 +147,10 @@ implementation symbols above; verification availability is reported separately.
    native accessibility/host checks were not rerun in this validation.
 3. Playground and Markdown local tests verify source/unit paths, not every
    browser bundle, public route, or failure-injection path.
-4. MCP and desktop evidence is contract-only/deferred; the language-service
-   package does not own transport, storage, or active-document session state.
+4. MCP local runtime and desktop bridge are implemented at the host/protocol
+   boundary; the language-service package does not own transport, storage, or
+   active-document session state. Semantic adapter and live-client evidence
+   remain open.
 5. Shared fixtures and local tests are bounded evidence, not exhaustive
    coverage of every DSL vocabulary, editor context, or error combination.
 6. A passing coverage or documentation check does not close an implementation
@@ -161,17 +165,18 @@ implementation symbols above; verification availability is reported separately.
 | Which bounded incremental strategy is required? | LS-INCR-001, LS-DOC-002 | Service is stateless and reparses/scans each call; performance target is not selected | Choose cache, edit-range, incremental parser, or measured bounded fallback |
 | Who owns schema/completion vocabulary generation and drift checks? | LS-SCHEMA-002, LS-COMP-002 | Current catalogs are maintained/tested but no generated spec/core parity check exists | Assign source-of-truth workflow and add drift evidence |
 | Should README be corrected to RELGEO_SCHEMA or should getSchema be added? | LS-CONS-005, LS-SCHEMA-001 | Public docs and observed exports disagree; package version text is also stale | Choose API change or docs correction, then run API/version regression test |
-| When should MCP standalone and desktop integration leave deferred scope? | LS-CONS-003, LS-CONS-004, LS-PROTO-002 | Contract exists but executable adapter/runtime is not verified | Approve scope and require adapter, session, and stale-result evidence |
+| Which semantic language-service tools should MCP expose next? | LS-CONS-003, LS-CONS-004, LS-PROTO-002 | Local MCP discovery and desktop document paths exist; semantic validation/completion and live write interoperability remain open | Define a bounded semantic DTO contract and verify client edit/revision/undo behavior |
 
 ## 7. Implementation handoff
 
 Implementation remains a separate goal/task concern. The
 [implementation-gap backlog](./implementation-gap-backlog.md)
-proposes 21 candidate tasks:
+proposes 23 tracked tasks (22 open, one locally closed):
 
 - diagnostics, validation, schema, completion, hover, ranges, document
   lifecycle, incremental behavior, versioning, protocol, and recovery tasks;
-- Playground and Markdown consumer integration tasks; and
+- Playground and Markdown consumer integration tasks;
+- MCP semantic-tool and desktop interoperability follow-up; and
 - the confirmed package/docs compatibility repair.
 
 The highest-risk handoff items are LS-TASK-012 for semantic navigation,

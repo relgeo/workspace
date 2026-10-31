@@ -74,11 +74,13 @@ only when a source/test prerequisite is demonstrated.
 | `LS-TOKEN-001` context-preserving tokenization | `✔️` | The matrix and audit record a working local token surface; token vocabulary synchronization remains verification/maintenance, not selected debt. |
 | `LS-DIAG-001`, `LS-DIAG-003`, `LS-VAL-001`, `LS-SCHEMA-001`, `LS-COMP-001`, `LS-DOC-001`, `LS-VERS-001` | `✔️` | These are not actionable gap rows for this tranche; their remaining limitations stay visible in the matrix. |
 | `LS-DOC-003`, `LS-REC-002` | `➖` | Host-owned document/session identity and last-valid-preview retention are not language-service implementation work. |
-| `LS-CONS-003`, `LS-CONS-004` | `⏸️` | MCP standalone and desktop-connected adapters are held by an explicit deferred scope decision; no service implementation is inferred from that hold. |
+| `LS-CONS-003`, `LS-CONS-004` | `🌗` current; historical selection was `⏸️` | Local MCP discovery and desktop active-document paths now exist; semantic service integration and ChatGPT Desktop write round-trip remain open. |
 | All other `🌗`, `❌`, or `⚠️` backlog rows | current symbol in matrix | Visible candidate work, but outside this bounded tranche; they are not silently promoted or reclassified. |
 | Node 24, registry, current CI, browser/public runtime, and native-host checks | `?` unverified | Evidence follow-ups only; unavailable environment evidence is not converted into implementation failure or a release prerequisite. |
 
-No `➖` or `⏸️` item is treated as active implementation work.
+No `➖` item is treated as active implementation work. The two MCP/desktop rows
+were excluded from the 2026-10-30 selection baseline; current partial work and
+remaining evidence are captured in the backlog and status matrix.
 
 ## Status accounting
 

@@ -1,3 +1,5 @@
+> **Compact desktop UI checkpoint — 2026-10-31:** Current Playground pointer `c7cec4b505f290beccac911ef97786c8f6b0a534` includes the compact file-actions Menu (`8d669f4`), one-row toolbar (`e497d63`), and dot-only preview status with tooltip (`c7cec4b`), following the width/breakpoint work in `f5418e6`. The user reviewed the desktop-width rendering and confirmed the latest layout is good. The 1280 px screenshot and this review support the desktop presentation; hosted Pages parity, a fresh Playwright viewport matrix, and physical handset/AT evidence remain separate and are not claimed here.
+
 # Playground implementation audit
 
 This is the canonical audit entry point for the Playground surface.

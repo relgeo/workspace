@@ -1,6 +1,6 @@
 # Language-Service Implementation-Gap Backlog
 
-**Tanggal:** 2026-10-30  
+**Tanggal:** 2026-10-31
 **Status:** candidate goal/task register; no row here counts as implementation  
 **Source:** [language-service status matrix](./status-matrix.md) and
 [expected-versus-observed reconciliation](./reconciliation.md)
@@ -37,11 +37,11 @@ alone does not count as implementation evidence.
 
 | Check | Result |
 | --- | --- |
-| Tracked rows | 21 |
-| Open candidate tasks | 20 |
+| Tracked rows | 23 |
+| Open candidate tasks | 22 |
 | Locally closed rows retained for evidence | 1 (`LS-TASK-022`) |
-| Open-task priority | P1: 20 |
-| Open 🌗 tasks | 17 |
+| Open-task priority | P1: 22 |
+| Open 🌗 tasks | 19 |
 | Open ❌ tasks | 3 |
 | Open ⚠️ tasks | 0 |
 | Missing source IDs | 0 |
@@ -72,6 +72,8 @@ alone does not count as implementation evidence.
 | LS-TASK-020 cross-boundary error origins | LS-REC-003 | 🌗 | P1 | canonical parser, validation, runtime, and storage error-origin mapping | spec/core + consumer owners | parser/validation/runtime/storage origin vocabulary | Same scenario is classified consistently across service, worker, storage, share, and runtime paths; host-owned errors stay distinguishable | P1 user chooses wrong recovery action | Map existing codes/messages to canonical origin classes |
 | LS-TASK-021 Markdown failure fallback | LS-CONS-002 | 🌗 | P1 | remark plugin source-preserving failure fallback | remark-relgeo-hl + language-service | token service error handling; source-preserving renderer | Injected language-service failure returns original fenced source or safe fallback and does not fail the Markdown transform; test passes | P1 docs build breaks on malformed/service failure input | Add try/catch fallback and failure-injection test |
 | LS-TASK-022 package/docs API and version repair | LS-CONS-005 | ✔️ | P0 | public API/version contract repair with source or documentation regression test | language-service owner | API decision for getSchema; release metadata policy | README matches `0.5.1`, `getSchema()` is implemented, and the API/version regression test passes locally | Public consumers still need packed/registry verification | Retain as closed local evidence; verify packed/public artifact in the release environment |
+| LS-TASK-023 MCP semantic analysis integration | LS-CONS-003 | 🌗 | P1 | core-backed validation/diagnostic mapping; MCP owns tool/transport semantics | MCP + language-service + core | typed semantic result/provenance DTOs; current MCP tool contract | Core-backed validation and diagnostic mapping have representative MCP/core fixtures; completion/render are either separately scoped or explicitly deferred | Agents cannot validate or explain a proposal against current RelGeo semantics | Define the minimal read-only semantic DTO and add adapter fixtures |
+| LS-TASK-024 Desktop active-document write interoperability | LS-CONS-004 | 🌗 | P1 | verify existing Flutter-hosted bounded edit end to end; host/session/undo ownership stays in MCP/Flutter | MCP + Flutter + language-service | ChatGPT Desktop client; draft package on supported desktop hosts | Desktop edit round-trip proves revision guard, dirty state, and undo; packaged MCP startup and shutdown are smoke-tested per target OS | Users may trust an edit that did not apply to the intended active revision | Verify the live client round-trip and packaged-server smoke, prioritizing Windows |
 
 ## Scope and evidence follow-ups
 
@@ -81,7 +83,7 @@ These rows are intentionally not implementation tasks:
 | --- | --- | --- | --- | --- |
 | Active document identity, dirty state, and session storage | ➖ not-applicable | Playground/MCP/Flutter | Host DTO and lifecycle tests cover identity/dirty/revision without moving storage into language-service | Keep linked to host matrix; do not add service state by assumption |
 | Last valid preview retention | ➖ not-applicable | Playground/host | Invalid update keeps last successful preview while Errors is shown | Maintain consumer acceptance test separately |
-| MCP standalone adapter and desktop bridge | ⏸️ deferred | MCP/Flutter + language-service | Human scope decision plus runtime adapter evidence | Resolve held Plan 11 scope before creating implementation goal |
+| MCP semantic analysis adapter and desktop verification | 🌗 partial | MCP/Flutter + language-service + core | Existing local MCP runtime and host bridge; semantic DTO contract and live desktop client | Define and test core-backed validation/diagnostics/completion integration; verify guarded edit round-trip separately |
 | Node 24, registry, current CI, browser/public, native AT | ? unverified | workspace and consumer owners | Fresh canonical environment evidence | Schedule verification independently from gap implementation |
 
 ## Evidence handoff
@@ -90,11 +92,10 @@ The current implementation and verification handoff is recorded in the
 [current implementation audit](./implementation-audit.md#reproducible-evidence-and-handoff--2026-10-30).
 Local evidence is reproducible at the package and workspace boundaries and is
 not contingent on npm/pub.dev publication, production deployment, registry
-installation, or the deferred MCP/Flutter host. The backlog remains the
+installation, or the MCP/Flutter host; local MCP host paths are now implemented while semantic integration remains open. The backlog remains the
 authoritative handoff for residual work: selected rows with bounded local
 evidence retain their residual `🌗` status, `LS-CONS-005` is retained as closed
-local evidence, and unresolved `❌`, host-owned `➖`, and deferred `⏸️` rows are
-not silently removed.
+local evidence, and unresolved `❌`, host-owned `➖`, and any historically deferred selection is visibly tracked as partial where current implementation evidence now exists.
 
 The checkout anchors at handoff are workspace root
 `1cfa86553d7adb18179c6b3e1a33618a179b1414`, language-service

@@ -294,8 +294,11 @@ Coverage against the required discovery dimensions is explicit:
   filesystem writes, Save/Save As bypass, and prompt/mutation sequencing, are
   explicit in §2.
 
-Rows intentionally retained as expected-but-not-yet-delivered include the
-production adapter, active-resource resolver, prompt layer, loopback runtime,
-desktop MCP settings surface, cancellation semantics, bundled snapshots/cache,
-and delivery gates. Their absence is part of the expected baseline and is not
-silently converted into scope exclusion.
+These rows remain part of the expected capability baseline whether delivered
+or not. The original pre-implementation snapshot called out the production
+adapter, active-resource resolver, prompt layer, loopback runtime, desktop MCP
+settings surface, cancellation semantics, bundled snapshots/cache, and delivery
+gates as gaps at that time. Several have since been implemented; consult the
+current [status matrix](./status-matrix.md) and [implementation audit](./implementation-audit.md)
+for present status. Expected requirements remain in the catalog after delivery
+and are not silently converted into scope exclusions.

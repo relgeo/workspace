@@ -1,18 +1,22 @@
 # Flutter Workbench — Capability Status Matrix
 
-**Tanggal:** 2026-10-30  
+**Tanggal:** 2026-10-31
 **Baseline:** Flutter desktop authoring workbench; RelGeo DSL `0.5.x` boundary
 
 **Expected catalog:** [`expected-capability-catalog.md`](./expected-capability-catalog.md)
-**Implementation audit:** [`flutter-workbench/implementation-gap-map.md`](./implementation-gap-map.md)  
-**Expected-versus-observed join:** [`flutter-workbench/reconciliation.md`](./reconciliation.md)  
+**Implementation audit:** [`flutter-workbench/implementation-gap-map.md`](./implementation-gap-map.md)
+**Expected-versus-observed join:** [`flutter-workbench/reconciliation.md`](./reconciliation.md)
 **Implementation-gap backlog:** [`flutter-workbench/implementation-gap-backlog.md`](./implementation-gap-backlog.md)
+
+## Current release checkpoint — 2026-10-31
+
+Flutter CI [`41184291670`](https://github.com/relgeo/flutter/actions/runs/41184291670) passed at `60ec760`; release run [`41184693233`](https://github.com/relgeo/flutter/actions/runs/41184693233) produced macOS universal, Linux x64, and Windows x64 bundles/checksums as an unpublished v1.0.1 draft. Runtime launch/MCP smoke, signing, and user installation remain unverified.
 
 ## Evidence boundary
 
 | Source | Matrix use |
 | --- | --- |
-| `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` | Implementation owner boundary and source/test/platform evidence summarized by each capability row. |
+| `flutter@60ec76042b369659e4d048b2a53ea3a66a384de3` | Current root gitlink and release-workflow source pointer. Detailed 2026-10-30 source/test inventory is separately labeled historical in the audit. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, compatibility, desktop delivery, and evidence provenance context. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Ownership and Flutter workbench surface boundary. |
 | [`docs/capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) and related capability-map artifacts | Capability-first row rules, evidence separation, scope handling, and coverage expectations. |
@@ -103,10 +107,10 @@ hal itu tidak otomatis menjadi `❌`.
 | [`WINDOW-03`](./reconciliation.md) | Native title bar/controls | `✔️` | source boundary; native runtime unverified | Custom chrome is deferred; native behavior needs smoke | `relgeo/flutter` | platform runners | Window controls inconsistent | Keep native title-bar decision and smoke |
 | [`EXPORT-01`](./reconciliation.md) | Export SVG model | `✔️` | source + local tests; native write unverified | Packaged destination write pending | `relgeo/flutter` | CONTRACT-03, IO-01 | Export appears successful but file missing | Add native export smoke |
 | [`EXPORT-02`](./reconciliation.md) | Export SVG sheet/view | `✔️` | source + local tests; native write unverified | Active-target host write proof pending | `relgeo/flutter` | CANVAS-02, IO-01 | Wrong view exported | Add model/sheet destination smoke |
-| [`PLAT-01`](./reconciliation.md) | macOS delivery | `🌗` | historical CI/source; current build/runtime not verified | Current-pointer build and runtime evidence stale/unavailable | `relgeo/flutter` + CI | current checkout, macOS runner | Release claim based on stale artifact | Run current macOS arm64/universal build and launch smoke |
-| [`PLAT-02`](./reconciliation.md) | Ubuntu/Linux delivery | `🌗` | historical CI/source; runtime not verified | Target Wayland/X11 session evidence missing | `relgeo/flutter` + CI | Linux runner, native picker | Linux package unusable | Build and run on target Linux sessions |
-| [`PLAT-03`](./reconciliation.md) | Windows 11 delivery | `🌗` | historical CI/source; runtime not verified | Current Windows artifact/launch evidence missing | `relgeo/flutter` + CI | Windows runner, native picker | Windows package fails to launch | Build ZIP and run Windows 11 smoke |
-| [`PLAT-04`](./reconciliation.md) | Reproducible artifact provenance | `🌗` | source + historical evidence; pointer mismatch | Current workspace/Flutter/SDK provenance not refreshed | `relgeo/workspace` + CI | PLAT-01..03, release evidence | Cannot trust artifact identity | Generate current provenance report and attach artifacts |
+| [`PLAT-01`](./reconciliation.md) | macOS delivery | `🌗` | Flutter CI `41184291670` built; v1.0.1 universal archive/checksum in draft `41184693233` | Target macOS launch and MCP client smoke not verified | `relgeo/flutter` + CI | macOS host/runtime | Build success may be mistaken for app usability | Launch the draft artifact and exercise MCP read/write modes |
+| [`PLAT-02`](./reconciliation.md) | Ubuntu/Linux delivery | `🌗` | Flutter CI `41184291670` built; Linux x64 archive/checksum in draft `41184693233` | Target Wayland/X11 launch and native picker remain unverified | `relgeo/flutter` + CI | Ubuntu/Linux host/runtime | Build success may be mistaken for app usability | Install/extract and smoke on target Ubuntu/Linux sessions |
+| [`PLAT-03`](./reconciliation.md) | Windows 11 delivery | `🌗` | Flutter CI `41184291670` built; Windows x64 archive/checksum in draft `41184693233` | Windows 11 extraction/launch, DLL, SmartScreen, and MCP smoke remain unverified | `relgeo/flutter` + CI | Windows 11 host/runtime | Build success may be mistaken for app usability | Extract and launch on Windows 11; check dependencies and MCP connection |
+| [`PLAT-04`](./reconciliation.md) | Reproducible artifact provenance | `🌗` | Release draft records Flutter source, OS/architecture, workflow and SHA-256 checksums | Root baseline manifest still has the 2026-10-09 snapshot; SDK lockstep/current integration provenance not refreshed | `relgeo/workspace` + CI | PLAT-01..03, baseline manifest | Cannot join release artifact to current root baseline | Refresh integration baseline and retain release provenance with the published tag |
 
 ## Coverage and handoff
 

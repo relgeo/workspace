@@ -1,3 +1,5 @@
+> **Current delivery overlay — 2026-10-31:** Flutter `60ec76042b369659e4d048b2a53ea3a66a384de3` includes the embedded MCP server and desktop release workflow. CI run [`41184291670`](https://github.com/relgeo/flutter/actions/runs/41184291670) passed at this pointer; release run [`41184693233`](https://github.com/relgeo/flutter/actions/runs/41184693233) generated macOS universal, Linux x64, and Windows x64 bundles with checksums/provenance as a v1.0.1 draft. MCP local/Flutter integration tests cover loopback, tools/resources, auth, bounded edits, dirty state, and undo. The draft has not been published; target-OS launch, ChatGPT Desktop write round-trip, native picker/AT, signing/notarization, and user-install experience remain unverified. The 2026-10-30 source test totals below are historical for their recorded checkout and are not the evidence for this release pointer.
+
 # Flutter implementation audit — evidence summary
 
 The detailed current audit and gap map is
@@ -15,12 +17,12 @@ current ID-by-ID audit.
 
 ## Fresh local verification refresh — 2026-10-30
 
-The current checkout was verified at `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf`:
+The 2026-10-30 local checkout was verified at `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` (historical; current delivery evidence is in the overlay above):
 
 | Command | Result | Interpretation |
 |---|---|---|
 | `flutter analyze --no-pub` | **PASS — No issues found** | Current Flutter source/analyzer evidence. |
-| `flutter test --no-pub --reporter compact` | **PASS — 307 tests passed** | Current unit, widget, golden, fixture, semantics, command, lifecycle, and platform-boundary evidence. |
+| `flutter test --no-pub --reporter compact` | **PASS — 307 tests passed** | Historical unit, widget, golden, fixture, semantics, command, lifecycle, and platform-boundary evidence for `b21eceb`. |
 | Focused recovery/graph/selection + consumer/conformance suite | **PASS — 54 tests passed** | `workbench_document_recovery_test.dart`, scene graph tests, file-service tests, invalid/reference fixtures, shared v0.5 conformance, and SVG exporter contract tests. |
 | `flutter build web --no-pub` | **Not verified — environment unavailable** | Flutter SDK bootstrap could not write `/Users/agusmade/development/flutter/bin/cache/engine.stamp` (`Operation not permitted`); this is not classified as a target source/build defect. |
 
@@ -70,7 +72,7 @@ separate:
 2. apakah capability sudah masuk contract aktif atau masih candidate;
 3. apakah evidence tersebut masih dapat dihubungkan ke pointer yang sedang diaudit.
 
-The current root gitlink is `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf`
+The 2026-10-30 audit recorded root gitlink `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf`
 (`git submodule status flutter`, 2026-10-30). The checked-in integration baseline
 still records `f39a913708e28625125ee8b64ccb350250db1d5d`, while the promotion plan
 uses canonical run `37832260326` on root `328c869`. This is a provenance mismatch;
@@ -83,8 +85,8 @@ calling the historical CI result a current-pointer verification.
 |---|---|---|
 | [`docs/capability-map/flutter-workbench/expected-capability-catalog.md`](./expected-capability-catalog.md) | Stable expected IDs, owners, source-of-truth paths, and scope decisions | Entry point verified; canonical 61-row baseline remains `docs/plans/12-flutter-workbench-capability-baseline.md`. |
 | `flutter/lib/` | Product runtime, UI, commands, services, platform boundary, and composition wiring | Inspected in the current checkout; source presence is not native-host verification. |
-| `flutter/test/` | Unit, widget, golden, fixture, semantics, command, lifecycle, and platform-boundary evidence | Inspected and executed locally; 307 tests passed, with only the undeclared `golden` tag warning. |
-| `flutter/pubspec.yaml` | SDK/dependency and publish/distribution boundary | `publish_to: none`, app version `1.0.0+1`, and Flutter/Dart dependency boundary recorded. |
+| `flutter/test/` | Unit, widget, golden, fixture, semantics, command, lifecycle, and platform-boundary evidence | Historical 2026-10-30 run: 307 tests passed, with only the undeclared `golden` tag warning. Current release pointer CI is linked in the overlay above. |
+| `flutter/pubspec.yaml` | SDK/dependency and publish/distribution boundary | `publish_to: none`, app version `1.0.1+1`, and Flutter/Dart dependency boundary recorded. |
 | `flutter/.github/workflows/` | Canonical quality/build matrix and MCP sibling checkout | Workflow inspected; historical run claims remain historical unless tied to current pointer. |
 | `flutter/.local/verification/macos-arm64-build-and-debug.md` | Machine-local macOS ARM64, web, build, signing, and interactive limitations | Supporting local evidence only; ignored machine-local instructions were not executed. |
 | `docs/flutter-capability-matrix.json` | Machine-readable capability/evidence policy and candidate/active distinction | Historical/canonical metadata inspected; flags are not promoted to current evidence. |
@@ -133,7 +135,7 @@ or host evidence.
 | SVG semantic export | `flutter/lib/src/ui/svg_exporter.dart` renders primitives, paths, boolean geometry, metadata, sheets, dimensions, and diagnostic presentation. `flutter/test/support/svg_semantic_projection.dart` parses geometry-bearing SVG and ignores non-contract presentation. | `flutter/test/svg_exporter_contract_test.dart`, `flutter/test/reference_fixtures_test.dart`, shared conformance tests. | Geometry-bearing SVG projection is covered for declared fixtures. Raw bytes, attribute order, styles, viewBox, text metrics, metadata, and overlay parity are intentionally separate/non-goal unless a consumer contract is added. |
 | Canvas/workbench | `flutter/lib/src/ui/canvas_painter.dart`, `cad_workbench.dart`, document/editor/viewport/layout/preferences/file-service components. `flutter/lib/main.dart` starts the app. | `flutter/test/canvas_painter_test.dart`, widget/workbench tests, `flutter/test/goldens/`, local verification note. | Flutter-specific presentation and desktop workbench exist. They are not a TypeScript parity target. Golden files demonstrate intended UI states, not cross-platform runtime behavior. |
 | Runtime diagnostics | `flutter/lib/src/core/constraints.dart` produces `ConstraintViolation`; semantic projection includes type/message/deviation/path/involved objects and optional visual helper. | `flutter/test/constraints_diagnostics_test.dart`, fixture 14, plan 06 history of `align` correction. | Default point-align projection is bounded and tested. Cross-consumer error vocabulary and all constraint types remain partial. |
-| Platform/build surface | `flutter/pubspec.yaml` is `publish_to: none`; app version `1.0.0+1` is separate from DSL 0.5. macOS/web build commands are documented in the local verification note. | `flutter/.local/verification/macos-arm64-build-and-debug.md`; current 307-test source evidence; historical macOS debug/release and web-build notes; plan 06/07 CI history. | Historical macOS ARM64/universal and web build evidence exists. Current web build, Linux/Windows runtime, mobile physical validation, signing, notarization, and distribution are not verified here. |
+| Platform/build surface | `flutter/pubspec.yaml` is `publish_to: none`; app version `1.0.1+1` is separate from DSL 0.5. macOS/web build commands are documented in the local verification note. | Current CI `41184291670` and v1.0.1 draft `41184693233`; historical 2026-10-30 test evidence and platform notes. | Current macOS/Linux/Windows bundles are built in CI; target runtime, current web build, mobile physical validation, signing, notarization, and user installation remain unverified. |
 
 ## Evidence boundary and suspicious/stale data handling
 
@@ -189,5 +191,5 @@ from native artifact/runtime claims.
 | `IO-01`/`IO-02` file/import completion | `relgeo/flutter` + `relgeo/core` | `🌗`: injected picker/import and invalid-boundary tests pass; native picker and broader diagnostic vocabulary remain open | macOS/Linux/Windows picker smoke plus expanded supported/unsupported import fixtures. |
 | `CANVAS-03`/`CANVAS-04` inspector and parameters | `relgeo/flutter` + `relgeo/core` | `🌗`: current surfaces work locally; exhaustive property/parameter parity is not established | Field inventory and parameter/profile conformance fixtures. |
 | `CMD-03`/`A11Y-01`/`A11Y-02`/`WINDOW-01` | `relgeo/flutter` + native host runners | `🌗`: Flutter command/focus/semantics/window boundaries are tested; native event/AT/lifecycle is unverified | Per-OS shortcut, keyboard traversal, AT-tree, and close/quit smoke. |
-| `PLAT-01..04` | `relgeo/flutter` + `relgeo/workspace` + CI | `🌗`: historical/pointer-scoped evidence only; current web build is blocked by SDK write permissions | Current-pointer platform artifacts and provenance manifest when suitable hosts/CI are available. |
+| `PLAT-01..04` | `relgeo/flutter` + `relgeo/workspace` + CI | `🌗`: current release artifacts/checksums are in a v1.0.1 draft; target launch and root-baseline provenance remain unverified | Smoke the draft bundles on target operating systems and refresh the integration baseline. |
 | Deferred/out-of-scope boundaries | Maintainers/product decision | `➖`/`⏸️` rows remain separate from active implementation | No action in this task; revisit only with an explicit scope/contract decision. |

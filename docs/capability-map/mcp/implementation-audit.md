@@ -1,6 +1,6 @@
 # RelGeo MCP — current implementation and evidence audit
 
-**Audit date:** 2026-10-30
+**Audit date:** 2026-10-31
 
 **Compatibility line:** RelGeo DSL `0.5.x`
 
@@ -9,29 +9,29 @@
 fixture, contract, documentation statement, or CI definition is not promoted
 to end-to-end MCP delivery without a directly matching runtime observation.
 
-> **Current-checkout handoff (2026-10-30):** The 68-row register below was
-> recorded against earlier workspace/MCP revisions. Its full-spec rows and
-> host-absence claims are historical context, not current runtime evidence.
-> The current Plan 14 implementation is recorded in the
-> [full-spec plan](../../plans/14-mcp-full-spec-search.md) and
-> [conformance runbook](../../mcp/03-sdk-conformance-runbook.md): the pure-Dart
-> index/adapter, checked-in Flutter asset bundle, desktop loader, and
-> deterministic retrieval tests are present. The live Inspector/Codex Desktop
-> and loopback HTTP rows remain environment-gated. The current implementation
-> is local supporting evidence only; `docs/integration-baseline.json` still
-> points at canonical child commits from its 2026-10-09 snapshot and must not
-> be silently rewritten to represent this uncommitted work.
+> **Current implementation overlay (2026-10-31):** The original 68-row audit
+> below predates the desktop HTTP server, packaged full-spec search, and
+> permission-gated edit tool. Those rows are reconciled in the current status
+> matrix and reconciliation; do not use the old absence statements below as
+> current facts. Current child commits are MCP `b4561c0` and Flutter `60ec760`.
+> The Flutter CI run `41184291670` passed the desktop test/build matrix and the
+> release workflow `41184693233` produced draft v1.0.1 artifacts. Local MCP
+> Dart tests and Flutter integration tests cover tools/resources, loopback
+> Streamable HTTP, auth scopes, stale edits, undo, and offline spec retrieval.
+> ChatGPT Desktop live edit round-trip and packaged desktop MCP smoke remain
+> unverified. The root integration manifest remains captured at 2026-10-09 and
+> does not track these newer child revisions.
 
 ### Current Plan 14 overlay
 
 | Capability | Current implementation/evidence | Status boundary | Canonicality |
 | --- | --- | --- | --- |
-| Full snapshot and drift identity | `flutter/assets/relgeo_spec/v0.5/manifest.json`, 34 Markdown files, source revision `b96ba3b...`, corpus digest, and `spec:snapshot:check` | Verified locally | Supporting local; not in the pinned baseline commit |
+| Full snapshot and drift identity | `flutter/assets/relgeo_spec/v0.5/manifest.json`, 34 Markdown files, source revision `b96ba3b...`, corpus digest, and `spec:snapshot:check` | Verified locally | Snapshot is in current Flutter child commit; root integration manifest still pins an older Flutter revision |
 | Search and complete-section retrieval | `SpecSectionIndex`, `relgeo_search_spec`, `relgeo_get_spec_section`, bounded snippets, stable IDs, and resources | Verified locally | Supporting local; MCP package child commit is not refreshed in baseline |
 | Flutter offline host bridge | `RelGeoSpecSnapshotLoader` and `RelGeoMcpDesktopServer.start` load only the bundled AssetBundle | Verified by Flutter tests/analyzer | Supporting local; desktop artifact/CI smoke is not claimed |
 | Normativity and provenance | Spec sections carry source/path/anchor/version/revision/digest; examples remain `source: example` and non-normative | Verified by adapter and Flutter tests | Supporting local |
 | Retrieval quality scenarios | Indonesian/English intent, ambiguity, no-result, presentation, full-section, and offline fixtures pass | Deterministic local tests pass | Supporting local |
-| Inspector/Codex Desktop/loopback HTTP | No live managed-runner proof; runbook records socket/Inspector limits | Not verified / environment-gated | Not canonical evidence |
+| Inspector/Codex Desktop/loopback HTTP | Local Flutter IO tests exercise loopback HTTP; user has observed ChatGPT Desktop read-only spec/document calls; write round-trip and Inspector compatibility remain unverified | Read-only client behavior user-observed; current write flow not verified | Local integration and user observation, not canonical cross-host evidence |
 
 The historical one-row-per-ID register remains useful for the broader Plan 11
 backlog, but it must not overwrite this Plan 14 overlay or claim that local
@@ -72,36 +72,33 @@ failures.
 
 | Observation | Result | Evidence |
 | --- | --- | --- |
-| Workspace root revision | `1cfa86553d7adb18179c6b3e1a33618a179b1414` | `git rev-parse HEAD` during this audit |
-| MCP checkout | `e225919e8d35f88f968c7ac75c748055447c2c38` | `git -C mcp rev-parse HEAD` |
-| Flutter checkout | `b21eceb258070133f32fd822b6fd23a4f21b0bbf` | `git -C flutter rev-parse HEAD` |
+| Workspace root revision at previous audit | `1cfa86553d7adb18179c6b3e1a33618a179b1414` | Historical 2026-10-30 audit snapshot |
+| Current workspace root revision | `7d02e4c` | Documentation-only follow-up; baseline manifest remains older |
+| Current MCP checkout | `b4561c08f7b41fd5630c76138a26ce6717ae9b33` | Child commit includes guarded document edit tool |
+| Current Flutter checkout | `60ec76042b369659e4d048b2a53ea3a66a384de3` | Child commit includes desktop MCP editing and release workflow |
 | Expected catalog → reconciliation | `68/68` | [reconciliation](./reconciliation.md) coverage |
 | Expected catalog → status matrix | `68/68` | [status matrix](./status-matrix.md) rows |
-| Current capability status | `11 ✔️`, `41 🌗`, `14 ❌`, `0 ⚠️`, `2 ⏸️`, `0 ➖` | status matrix count; evidence state remains separate |
-| Rows with not-verified evidence | `VAL-03`, `CXL-02`, `DEL-03` | status matrix evidence column; all remain `🌗` |
-| Environment-unavailable evidence | `TRAN-04` local HTTP bind | status matrix/reconciliation; loopback socket permission is unavailable here |
+| Current capability status | `32 ✔️`, `24 🌗`, `10 ❌`, `0 ⚠️`, `2 ⏸️`, `0 ➖` | Updated status matrix count; evidence state remains separate |
+| Rows with not-verified evidence | `VAL-03`, `CXL-02`, `DEL-03` | Current matrix; no live cross-host or Inspector proof is claimed |
+| Environment-unavailable evidence | None in current source/test audit | Earlier sandbox bind failure is historical; Flutter IO integration tests now bind loopback |
 
 The bounded active tranche is recorded in the [MCP in-scope selection](./in-scope-selection.md).
 It selects 20 rows; the remaining active backlog rows stay visible and are not
 implicitly promoted, removed, or treated as completed.
 
-## 3. Observed implementation boundaries
+## 3. Current implementation boundaries — 2026-10-31
 
-| Boundary | Directly observed | Honest result and limitation |
+| Boundary | Current implementation and direct evidence | Remaining boundary |
 | --- | --- | --- |
-| Pure-Dart package | [`mcp/pubspec.yaml`](../../../mcp/pubspec.yaml) is private/non-publishable and has no MCP SDK, HTTP, JSON-RPC, Flutter, or filesystem dependency. [`relgeo_mcp.dart`](../../../mcp/lib/relgeo_mcp.dart) exports the contract, session, typed dispatcher, resource store, and JSON-RPC router. | `HOST-01` is `✔️` at the package boundary. The reusable adapter is now implemented without claiming a production MCP server, executable, or release artifact. |
-| Typed tool contract | [`mcp_schema.dart`](../../../mcp/lib/src/contract/mcp_schema.dart) defines seven read-only tool DTOs, bounded inputs, structured results, diagnostics, completion proposals, provenance, and `relGeoMvpToolContracts`. [`local_dispatch.dart`](../../../mcp/lib/src/adapter/local_dispatch.dart) validates raw arguments and invokes typed owner callbacks. | The wire dispatch boundary is present; semantic owner callbacks are injected and still need `spec/id`, `core`, `language-service`, and renderer composition. `DISC-*`, `VAL-01`, `DIAG-01`, and semantic rows remain `🌗`. |
-| Resource URI contract | `RelGeoResourceUri` accepts the declared spec, examples, diagnostics, and active-document forms, rejects unsupported schemes/path-like forms, and never resolves a filesystem path. `RelGeoMcpResourceStore` lists canonical templates and reads caller-pinned static resources or the active bridge. | Resolver boundary is implemented and tested by focused source, but no packaged snapshot/catalog is present; `REF-01`/`RES-01`/`DOC-02` remain `🌗`, `RES-02`/`RES-03` remain `❌`, and active-document delivery still needs host/session authorization wiring. |
-| Session/edit/security contract | [`session_bridge.dart`](../../../mcp/lib/src/contract/session_bridge.dart) contains active snapshots, diagnostics, bounded non-overlapping edits, identity/revision guards, result states, in-memory token scope/expiry/revocation, loopback policy, and no-filesystem-write/no-autosave defaults. `McpServerSession` now owns explicit start/stop and token authorization at the pure-Dart boundary. | Session lifecycle and scope enforcement are locally modeled, but the JSON-RPC router is not yet coupled to a token-bearing host supervisor; host lifecycle, per-request auth, and mutation routes remain incomplete. |
-| Protocol adapter and fixture | [`local_dispatch.dart`](../../../mcp/lib/src/adapter/local_dispatch.dart) implements transport-independent initialize/initialized, tools/list/call, resources/list/read, typed errors, and seven-tool discovery. [`protocol_fixture.dart`](../../../mcp/tool/protocol_fixture.dart) and [`mcp_fixture_server.dart`](../../../mcp/tool/mcp_fixture_server.dart) remain dependency-free stdio/loopback harnesses. | The reusable router proves the selected wire contract at source level; the fixture still exposes `relgeo_fixture_echo` and one provenance resource, and no production socket/stdio host or semantic owner wiring is claimed. |
-| Transport conformance harness | [`run_transport_conformance.dart`](../../../mcp/tool/run_transport_conformance.dart) drives stdio and loopback HTTP; the fixture rejects non-loopback hosts and checks protocol/origin headers. | `TRAN-01`/`TRAN-02`/`TRAN-03`/`TRAN-05` remain `🌗`. HTTP bind and SDK/Inspector evidence are not verified in this environment; no candidate SDK is pinned. |
-| Flutter bridge | [`workbench_agent_bridge.dart`](../../../flutter/lib/src/mcp/workbench_agent_bridge.dart) reads the active snapshot/diagnostics, validates stale/rejected edits, calls the editor setter once, preserves revision/dirty behavior, and returns failed on divergence. | `DOC-01`, `DOC-03`, `DOC-04`, `EDIT-03`, `EDIT-04`, and `HOST-04` are verified at the host/bridge boundary. No MCP transport-to-bridge dispatch was found. |
-| Flutter document lifecycle | [`workbench_document_session.dart`](../../../flutter/lib/src/ui/workbench_document_session.dart) owns identity, source, saved baseline, dirty state, revision, load, save, and guarded source updates. | Host lifecycle is real, but no MCP server start/stop supervisor, active-resource route, status/config UI, or token lifecycle integration was found; `DOC-02`, `DOC-05`, and `HOST-02` remain incomplete. |
-| Save/file boundary | [`workbench_file_service.dart`](../../../flutter/lib/src/ui/workbench_file_service.dart) owns Save/Save As; the bridge applies in-memory source through the editor and does not call the file service. | Save isolation is implemented at the host boundary (`DOC-06`/`SEC-07` evidence), but a protocol-level negative test is still required before full MCP exposure is claimed. |
-| Consumer semantics | `core`, `language-service`, `renderer-svg`, and `spec/id` contain real parser/validation/completion/render/normative-source capabilities at their own boundaries. | These consumers do not prove MCP exposure. No adapter path was found that maps their results into callable MCP tools/resources. |
-| CI and delivery | [`mcp-ci.yml`](../../../mcp/.github/workflows/mcp-ci.yml) defines Dart dependency install, format, analyze, unit tests, and protocol conformance; workspace CI runs Flutter conformance and desktop artifact jobs. | CI configuration is present, but no current MCP-specific run/Inspector result or embedded server artifact/runtime smoke evidence is available locally. `DEL-03` is `🌗`/`not-verified`; `DEL-04`/`DEL-05` remain partial. |
+| Full normative spec retrieval | MCP `b4561c0` indexes the bundled v0.5 Markdown snapshot; `relgeo_search_spec`, `relgeo_get_spec_section`, `relgeo_get_syntax_rule`, and spec resources return bounded results with section provenance. Flutter loads the checked-in 34-file bundle offline. | Search is lexical and limited to the pinned DSL 0.5 corpus. This is not semantic validation, completion, or rendering. |
+| Active document read | Desktop router exposes active source/identity/revision/dirty state and diagnostics through the authenticated bridge; Flutter HTTP tests cover tools and resources. | Direct interoperability with current ChatGPT Desktop and packaged release smoke remain unverified. |
+| Embedded transport/lifecycle | Flutter `60ec760` owns `RelGeoMcpDesktopServer`, binds ephemeral IPv4 loopback, validates host/origin, authenticates an in-memory eight-hour bearer token, and closes/revokes on stop. Workbench dialog is opt-in and exposes running state, endpoint, permission, temporary token, copy-config, Enable, and Disable. | Connected-client count/status is not exposed. Packaged-app behavior on each OS is not verified. |
+| Permission-gated edit | Read-only mode omits/rejects `relgeo_apply_document_edit`; read-write is an explicit dialog choice. The tool applies bounded patches only to the active document with identity/revision checks and one undoable editor transaction. HTTP integration covers denied, stale, applied, dirty, and undo behavior. | A live ChatGPT Desktop edit round-trip and packaged app smoke remain pending. `EDIT-01`, `EDIT-05`, and cancellation/race coverage remain partial. |
+| Save/file boundary | Apply changes the in-memory editor; Save, Save As, export, and autosave are separate host actions. | Manual packaged-app persistence/close/reopen smoke remains pending. |
+| Tool composition boundary | Full-spec retrieval and active-document tools are available. The MCP server does not yet compose the core parser/resolver, language-service completion/diagnostics, or SVG renderer into a complete author/validate/render workflow. | `VAL-*`, `COMP-*`, `DIAG-*`, `RENDER-*`, and `WF-01` remain unresolved except where directly represented in the matrix. |
+| Release/delivery | Flutter CI `41184291670` and release workflow `41184693233` passed; draft v1.0.1 has macOS universal, Linux x64, and Windows x64 bundles with checksums/provenance. | Draft is unpublished; no MCP-specific packaged runtime/client smoke or live Inspector proof is recorded. Root baseline manifest remains captured 2026-10-09. |
 
-## 4. Contract defect closure evidence
+## 4. Historical contract defect closure evidence (2026-10-30)
 
 The selected `ERR-01` repair is now present in the exported schemas and typed
 dispatcher. The earlier observed mismatches were:
@@ -119,40 +116,30 @@ suite pass locally, so `ERR-01` is now `✔️`/`verified-local` at the contract
 and adapter boundary. This remains separate from semantic domain mappings or
 production socket/host delivery.
 
-## 5. Direct validation evidence
+## 5. Current validation and delivery evidence
 
-| Command or inspection | Result | What it proves / does not prove |
+| Evidence | Result | What it proves / does not prove |
 | --- | --- | --- |
-| `flutter test test/workbench_agent_bridge_test.dart` from `flutter/` | **PASS — 2 tests** | Host bridge revision guard, one-setter edit behavior, and document identity reset pass. It does not prove MCP transport or server delivery. |
-| `dart format --output=none --set-exit-if-changed lib test tool` with analytics suppressed | **PASS — 12 files, 0 changed** | MCP source and test formatting are clean. |
-| `dart analyze` with analytics suppressed | **PASS — No issues found!** | Contract, session, adapter, tool, and fixture sources analyze cleanly. |
-| `dart test` with analytics suppressed | **PASS — 18 tests** | Schema, dispatcher, JSON-RPC router, resources, session/security, and protocol fixture tests pass locally. |
-| `dart run tool/run_transport_conformance.dart` with analytics suppressed | **STDIO PASS; HTTP NOT VERIFIED** | Stdio fixture conformance passed. Loopback HTTP could not bind `127.0.0.1` because the managed environment denied socket creation; the wrapper required interruption after reporting that limitation. |
-| Source/fixture/CI inspection | **PASS as bounded inspection** | Confirms the contract, fixture, host bridge, CI definitions, and explicit absence of production adapter paths at the inspected boundaries. It is not runtime proof. |
-
-The current run confirms dependency-free stdio fixture success and records the
-loopback HTTP sandbox denial. Remote-bind rejection remains covered by the
-fixture/policy tests; no live SDK/Inspector run is claimed.
+| MCP package tests at `mcp@b4561c0` | **PASS — 32 Dart tests** | Schema, spec index/retrieval, router, resource, session/security, and edit contracts; does not prove a client session against a packaged app. |
+| Flutter CI `41184291670` at `flutter@60ec760` | **PASS** | Format, analyzer, Flutter tests, and macOS/Linux/Windows build jobs for this revision. |
+| Flutter IO integration tests | **PASS** | Loopback HTTP, initialization, tool/resource calls, read-only denial, write opt-in, stale guard, applied edit, dirty state, and undo. |
+| Release workflow `41184693233` | **PASS; draft v1.0.1** | Three desktop archives and SHA-256 checksums verified; draft is not published and runtime usability is not established. |
+| ChatGPT Desktop live mutation | **Not verified** | Read-only MCP/spec and document calls have prior user-observed success; the new edit-permission path still needs an explicit end-to-end smoke. |
+| Root integration baseline | **Stale** | `docs/integration-baseline.json` still records 2026-10-09 child revisions and does not claim current full-workspace CI. |
 
 ## 6. Capability conclusions and handoff
 
-1. The strongest current implementation is the pure-Dart contract/session
-   slice, the dependency-free protocol fixture, and the Flutter active-document
-   bridge.
-2. The decisive missing boundary is semantic owner wiring and a runtime
-   entrypoint that connect the typed MCP adapter to `spec/id`, `core`,
-   `language-service`, `renderer-svg`, and the Flutter bridge.
-3. `✔️` rows are limited to the boundary actually tested; they do not imply
-   end-to-end MCP usability. `🌗` rows retain partial contract/fixture/host
-   evidence, and `❌` rows retain verified-absence findings from the owner map.
-4. `WF-02` and `DEL-01` remain `⏸️`; Android/iOS, remote deployment, and
-   arbitrary host command invocation remain `➖` scope findings. Neither is
-   active implementation work.
-5. The remaining implementation tasks are the selected partial/absent rows in
-   the [in-scope selection](./in-scope-selection.md), sequenced with the
-   [implementation-gap backlog](./implementation-gap-backlog.md). `ERR-01` is
-   complete only at the verified contract/adapter boundary; all other open
-   rows retain their owners, dependencies, and next actions. Re-run this audit
-   after source changes and preserve `not-verified` and
-   `environment-unavailable` evidence until the missing runtime boundary is
-   directly exercised.
+1. Full-spec retrieval, active-document reads, the embedded desktop loopback
+   server, and explicitly authorized bounded edits are now implemented and
+   locally tested at their declared boundaries.
+2. These changes do not provide semantic parse/resolve validation, completion,
+   diagnostics explanation, SVG rendering, or the complete authoring workflow.
+3. The current joined status is `32 ✔️`, `24 🌗`, `10 ❌`, `0 ⚠️`, and `2 ⏸️`.
+   The expected catalog remains 68 rows; no expected capability was deleted.
+4. `VAL-03`, `CXL-02`, and `DEL-03` retain `not-verified` evidence. Client-level
+   write interoperability, packaged-app MCP smoke, and current root baseline
+   synchronization remain open.
+5. Follow-up implementation work is defined by the current
+   [status matrix](./status-matrix.md), [reconciliation](./reconciliation.md),
+   and [gap backlog](./implementation-gap-backlog.md). Expected capabilities
+   remain unchanged in the catalog.

@@ -1,13 +1,23 @@
 # RelGeo MCP — bounded in-scope capability selection
 
-**Date:** 2026-10-30  
-**Task:** `select-and-bound-in-scope-capability-debt--1184640051`  
+**Date:** 2026-10-30 (selection baseline)
+**Task:** `select-and-bound-in-scope-capability-debt--1184640051`
 **Status:** bounded active selection; this record is not implementation or
-completion evidence  
+completion evidence
 **Owner boundary:** `relgeo_mcp` owns the typed MCP contract, adapter
 dispatch, resource URI boundary, and transport-facing error mapping. `spec/`,
 `core/`, `language-service/`, `renderer-svg/`, and Flutter remain semantic or
 host owners where explicitly named below.
+
+## Current implementation overlay — 2026-10-31
+
+This 20-row selection is a dated work-selection record, not the current
+implementation ledger. Full-spec lookup, version checks, loopback HTTP, active
+document reads, app lifecycle, permission-gated edits, and related security
+rows have since been implemented at the boundaries shown in the current
+[status matrix](./status-matrix.md). Their acceptance evidence is recorded in
+the current [implementation audit](./implementation-audit.md). The selection
+below is retained to show what was chosen; use the matrix for current status.
 
 ## Decision
 
@@ -48,7 +58,7 @@ source-of-truth path, an observed implementation/test path, a contract
 boundary, and explicit acceptance behavior. Dependencies are sequencing
 constraints, not additional scope.
 
-| Selected backlog task / expected ID | Current status | Owner | Source of truth | Observed implementation / test paths | Contract boundary | Explicit acceptance behavior |
+| Selected backlog task / expected ID | Status at selection baseline (2026-10-30) | Owner | Source of truth | Observed implementation / test paths | Contract boundary | Explicit acceptance behavior |
 | --- | --- | --- | --- | --- | --- | --- |
 | `MCP-T01` — `ERR-01` typed input/bounds/URI errors | `✔️` | `relgeo_mcp` contract + adapter | [`expected-capability-catalog.md`](./expected-capability-catalog.md) `ERR-01`; [`reconciliation.md`](./reconciliation.md) `ERR-01`; backlog `MCP-T01` | [`mcp_schema.dart`](../../../mcp/lib/src/contract/mcp_schema.dart); [`local_dispatch.dart`](../../../mcp/lib/src/adapter/local_dispatch.dart); [`mcp_schema_test.dart`](../../../mcp/test/mcp_schema_test.dart); [`local_dispatch_test.dart`](../../../mcp/test/local_dispatch_test.dart); [current audit](./implementation-audit.md) §4 | Protocol validation owns schema, required fields, enum/range bounds, unknown tool, and invalid canonical URI handling before domain dispatch. | Repaired schemas and typed dispatcher reject malformed, missing, out-of-bounds, unknown-tool, and invalid-URI calls without process crash or domain invocation; the full local MCP test suite passes. |
 | `MCP-T01` — `DISC-02` version-aware discovery | `🌗` | `relgeo_mcp` adapter + `spec/id` | Catalog `DISC-02`; reconciliation `DISC-02`; backlog `MCP-T01` | `FindSyntaxInput`, `GetSyntaxRuleInput`, and `GetExamplesInput` in [`mcp_schema.dart`](../../../mcp/lib/src/contract/mcp_schema.dart); schema tests | The requested `specVersion` is an identity/filter at the adapter boundary; normative content remains owned by `spec/id`. | A mismatched or unsupported version is rejected deterministically, and a successful result carries only the requested version in its provenance. |

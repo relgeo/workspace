@@ -1,7 +1,7 @@
 # Flutter Workbench — Implementation Gap Backlog
 
 **Status:** candidate backlog; no implementation gap is closed by this document  
-**Date:** 2026-10-30
+**Date:** 2026-10-31
 
 **Expected source:** [`expected-capability-catalog.md`](./expected-capability-catalog.md) (canonical baseline: [`12-flutter-workbench-capability-baseline.md`](../../plans/12-flutter-workbench-capability-baseline.md))
 **Audit source:** [`flutter-workbench/implementation-gap-map.md`](./implementation-gap-map.md)  
@@ -9,11 +9,14 @@
 **Join source:** [`flutter-workbench/reconciliation.md`](./reconciliation.md)  
 **Scope context:** [`06-flutter-alignment.md`](../../plans/06-flutter-alignment.md)
 
+> **Current delivery checkpoint — 2026-10-31:** Flutter `60ec76042b369659e4d048b2a53ea3a66a384de3` passed CI run `41184291670`; release run `41184693233` produced unpublished v1.0.1 macOS universal, Linux x64, and Windows x64 bundles with checksums/provenance. These artifacts close the build/upload portion of the platform work, not target-host launch, native picker/export, MCP packaged smoke, signing/notarization, or installation evidence. The source/test details below are from the 2026-10-30 `b21eceb` audit and remain historical unless explicitly linked to the current CI/release run.
+
 ## Evidence and scope boundary
 
 | Source | Backlog use |
 | --- | --- |
-| `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` | Current implementation boundary and source/test/platform findings from which the gaps are derived. |
+| `flutter@60ec76042b369659e4d048b2a53ea3a66a384de3` | Current root gitlink/release-workflow pointer; current CI and draft artifact evidence is summarized above. |
+| `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` | Historical detailed source/test/platform audit dated 2026-10-30; not the current release pointer. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, compatibility line, desktop delivery gates, and evidence provenance rules. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Ownership boundary for `relgeo/flutter` and `relgeo/workspace`. |
 | [`docs/capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) and related capability-map artifacts | Expected-but-missing rule, evidence separation, scope handling, and coverage validation. |
@@ -43,8 +46,8 @@ The Flutter boundary now contains a focused implementation for `DOC-08`,
   `canvas_painter.dart`, and inspector wiring, covered by the graph/selection
   tests.
 
-The local verification result is `flutter analyze --no-pub` passing with no
-issues and `flutter test --no-pub --reporter compact` passing all 307 tests.
+The historical local verification result is `flutter analyze --no-pub` passing with no
+issues; the 2026-10-30 `flutter test --no-pub --reporter compact` run passed 307 tests.
 This evidence is boundary-scoped: native restart, pointer, accessibility, and
 window-host behavior remain unverified. The grouped goals below stay visible
 until their remaining acceptance behavior is satisfied; this section does not
@@ -72,7 +75,7 @@ coverage.
 | `GAP-FW-003` | `P1` | Complete inspector and parameter/value parity | `CANVAS-03`, `CANVAS-04` | In-scope inspector and conditional parameter surfaces; does not promote the full evaluator/profile surface | `relgeo/flutter` + `relgeo/core` | Active document model; parameter/profile contract; selection model decision | Inspector field inventory maps expected model fields; editing a parameter updates compile/preview consistently; profile/default/derived-value fixtures pass in Flutter and core | Users see or edit values that do not match compiled output | Inventory missing inspector fields and choose the minimum active parameter fixture set |
 | `GAP-FW-004` | `P0` | Harden user-facing graph and object selection/hit-testing | `CANVAS-05`, `VIEW-05` | In-scope user-facing dependency graph and object targeting; core graph ordering alone is not completion evidence | `relgeo/flutter` | Scene graph projection; viewport transform; inspector/command targeting | Graph panel renders dependencies for an active document; pointer and keyboard hit-testing select the same object; selection updates inspector/overlays and has semantics labels; no selection on empty canvas | Core graph/selection boundary is implemented locally; host pointer/keyboard/AT and richer relationship cases remain | Keep local graph/selection regressions; add keyboard, empty-canvas, physical pointer, and native semantics smoke |
 | `GAP-FW-005` | `P1` | Close desktop keyboard, accessibility, and window lifecycle evidence | `CMD-03`, `A11Y-01`, `A11Y-02`, `WINDOW-01` | In-scope desktop keyboard/AT/lifecycle behavior; native host verification is required and cannot be inferred from widget tests | `relgeo/flutter` + native host runners | Shared command registry; native menu/window bridge; target desktop hosts | Per-OS shortcut matrix has no conflicts; keyboard traversal reaches and activates required controls; VoiceOver/screen-reader tree exposes role/label/state; close/quit dirty guard and clean exit pass on desktop | Keyboard-only, AT, or quit workflows fail despite Flutter unit tests passing | Turn the existing command/focus/window contracts into macOS/Linux/Windows smoke scripts |
-| `GAP-FW-006` | `P1` | Refresh platform delivery and reproducible artifact evidence | `PLAT-01`, `PLAT-02`, `PLAT-03`, `PLAT-04` | In-scope desktop build/artifact/provenance delivery; signed distribution and store publishing remain out of scope | `relgeo/flutter` + `relgeo/workspace` + CI | Current Flutter pointer; macOS/Linux/Windows runners; artifact provenance format | Current-pointer macOS arm64/universal, Linux, and Windows artifacts build and launch; native file/export smoke is recorded where supported; each report names workspace/Flutter commit, SDK, OS, architecture, run, and date | Historical artifacts are mistaken for current delivery confidence | Run the three current platform jobs and generate one provenance manifest per artifact |
+| `GAP-FW-006` | `P1` | Verify target-host operation of the generated desktop releases | `PLAT-01`, `PLAT-02`, `PLAT-03`, `PLAT-04` | In-scope desktop artifact provenance and install/runtime evidence; signed distribution and store publishing remain out of scope | `relgeo/flutter` + `relgeo/workspace` + macOS/Linux/Windows hosts | Draft artifacts from release run `41184693233`; target OS hosts; native file/export smoke | Install and launch each current artifact; record OS/architecture, workflow run, checksum, launch result, native picker/export smoke, and MCP packaged-server smoke where available; retain current root baseline provenance | Build success is mistaken for a working end-user installation | Download and smoke-test draft v1.0.1 on target hosts, prioritizing Windows; record results before publishing |
 
 ## Coverage check
 
@@ -94,7 +97,7 @@ capability and must not change any matrix status.
 | ID | Priority | Hygiene item | Evidence target | Capability effect |
 | --- | --- | --- | --- |
 | `HYGIENE-FW-001` | `P2` | Refresh `docs/integration-baseline.json` or run canonical CI for the current Flutter pointer | Baseline revision equals the claimed child checkout, or a named current CI run is attached | None; does not close `PLAT-*` by itself |
-| `HYGIENE-FW-002` | `P2` | Declare the `golden` tag in `dart_test.yaml` or remove the tag | Current 307-test run has no undeclared-tag warning | None; test configuration hygiene only |
+| `HYGIENE-FW-002` | `P2` | Declare the `golden` tag in `dart_test.yaml` or remove the tag | A future current-pointer test run has no undeclared-tag warning; historical 2026-10-30 run emitted this non-failing warning | None; test configuration hygiene only |
 | `HYGIENE-FW-003` | `P2` | Keep historical and current evidence provenance separate | Future reports name exact workspace/Flutter pointers and environment | None; provenance clarity only |
 
 `DOC-08` remains a `🌗` partial capability because forced-exit/native storage
@@ -105,11 +108,16 @@ not erase remaining `🌗`, deferred, or environment-unavailable work.
 
 ## Evidence handoff and reproducibility
 
-The implementation/evidence snapshot was taken with workspace `HEAD`
+The historical local implementation/evidence snapshot was taken with workspace `HEAD`
 `1cfa86553d7adb18179c6b3e1a33618a179b1414` and Flutter child `HEAD`
-`b21eceb258070133f32fd822b6fd23a4f21b0bbf`. Both worktrees are intentionally
-dirty because the task changes are uncommitted; these hashes identify the
-baseline under test, not a commit containing the changes.
+`b21eceb258070133f32fd822b6fd23a4f21b0bbf`. The current source/release pointer
+is `60ec76042b369659e4d048b2a53ea3a66a384de3`; current CI and release evidence
+are linked in the checkpoint above. The local commands listed below describe
+the historical checkout only.
+
+> The root documentation workspace has since advanced to `7d02e4c`; its current
+> submodule checkout cleanliness is recorded in the cross-repository audit.
+> Do not interpret the old dirty-worktree note below as current state.
 
 From `flutter/`, the reproducible results are:
 

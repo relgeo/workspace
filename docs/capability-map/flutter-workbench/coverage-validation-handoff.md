@@ -1,6 +1,8 @@
 # Flutter Workbench — Coverage Validation and Handoff
 
-**Tanggal validasi:** 2026-10-30  
+> **Release checkpoint — 2026-10-31:** Current Flutter `60ec760` passed CI run `41184291670`; release run `41184693233` created an unpublished v1.0.1 draft with macOS universal, Linux x64, and Windows x64 archives/checksums. These are build/artifact facts, not target-host launch proof. The 307-test suite below is historical evidence from the 2026-10-30 pointer. Native picker, MCP packaged smoke, AT, signing, notarization, and install workflow remain open.
+
+**Tanggal validasi:** 2026-10-31
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
 **Required context:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)
 
@@ -39,7 +41,7 @@ Klaim yang aman:
 | [Implementation audit](./implementation-gap-map.md) | Observed source, test, UI/command, service/platform, fixture, build/runtime, dan docs evidence | Discovery coverage report tersedia; 61/61 ID memiliki audit section |
 | [Reconciliation](./reconciliation.md) | Join expected-versus-observed satu-banding-satu | 61/61 rows; missing/extra/duplicate = 0; implementation/evidence/scope terpisah |
 | [Status matrix](./status-matrix.md) | Reporting view capability-first | 61 rows; status, evidence, gap, owner, dependency, risk, next action tersedia |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 19/19 `❌`/`🌗` IDs tercakup dalam 6 candidate tasks; tidak mengklaim implementasi |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 17 unresolved `🌗` IDs are covered, with `CANVAS-05` and `VIEW-05` retained as boundary follow-up rows; the backlog does not claim implementation work complete |
 | [Capability-map README](../README.md) | Index dan inventory protocol untuk surface maps | Flutter workbench artifacts terdaftar; matrix lama tetap historical input |
 
 ## 3. Checklist coverage dan integrity
@@ -51,12 +53,12 @@ Klaim yang aman:
 | Expected capability IDs represented | PASS | Catalog = 61 capability IDs; `SCOPE-01..05` dikeluarkan dari capability row secara eksplisit. |
 | Reconciliation ID coverage | PASS | Expected = 61, reconciliation = 61, missing = 0, extra = 0, duplicate = 0. |
 | Status matrix ID coverage | PASS | Expected = 61, matrix = 61, missing = 0, extra = 0, duplicate = 0. |
-| Backlog gap coverage | PASS | Matrix `❌`/`🌗` = 19, backlog IDs = 19, missing = 0, extra = 0. |
+| Backlog gap coverage | PASS | Matrix unresolved `🌗` IDs = 17; backlog covers all 17 and retains two implemented boundary IDs (`CANVAS-05`, `VIEW-05`) as follow-up. Missing active IDs = 0. |
 | Matrix capability-first | PASS | Row key adalah expected capability ID, bukan source module/test file. |
 | Full status legend | PASS | Matrix menjelaskan `✔️`, `🌗`, `❌`, `➖`, `⏸️`, dan `⚠️`; absence, deferral, scope, dan broken dipisahkan. |
 | Evidence class separated | PASS | Reconciliation memisahkan implementation status dari evidence status; class yang dipakai meliputi source-plus-local, bounded-contract, historical-only, source-only, dan source-negative evidence dengan qualifier native/runtime. |
 | Scope decisions preserved | PASS | Catalog `SCOPE-01..05` dan reconciliation scope findings memisahkan mobile, custom title bar, raw SVG parity, publishing/signing, dan full DSL promotion dari implementation gap. |
-| Limitation stated | PASS | Current Flutter pointer mismatch, SDK write-boundary blocker untuk fresh build, native host/runtime/AT limits, historical CI, dan desktop target replay limits tercatat. |
+| Limitation stated | PASS | Current Flutter CI and draft release evidence are recorded separately from target-host launch/runtime, native picker/AT, and install evidence; historical SDK write-boundary and baseline blockers are labeled by date. |
 | Unresolved questions recorded | PASS | §5 mencatat recovery policy, import/diagnostic contract, promotion/current-pointer parity, graph/selection UX, native AT/lifecycle, dan current platform provenance. |
 | Implementation handoff separated | PASS | §6 menunjuk `GAP-FW-001..006` sebagai candidate workstream; source changes, tests, dan target evidence tetap required. |
 | Required paths resolve | PASS | `docs/capability-map/`, `docs/REPOSITORY-MAP.md`, dan `docs/MATURATION-MASTER-PLAN.md` tersedia dan saling menautkan artifact Flutter. |
@@ -72,10 +74,10 @@ coverage proof for the Flutter boundary:
 | --- | --- | --- |
 | Contract and normative intent | `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, `docs/plans/06-flutter-alignment.md`, `docs/plans/07-flutter-capability-promotion-and-svg-parity.md`, expected catalog | Reviewed; active DSL/SVG boundaries and non-goals are preserved. |
 | Implementation/source and public API | `flutter/lib/main.dart`, `flutter/lib/src/ui/`, `flutter/lib/src/features/`, `flutter/lib/src/core/`, `flutter/pubspec.yaml` | Reviewed at `flutter@b21eceb`; symbols and user-facing boundaries are recorded in audit §2/§3. |
-| Tests, fixtures, snapshots, and negative cases | `flutter/test/`, `flutter/test/support/`, shared fixtures, golden files; current `flutter test --no-pub --reporter compact` | Reviewed; 307 tests passed locally, with undeclared `golden` tag warning recorded as hygiene only. |
+| Tests, fixtures, snapshots, and negative cases | `flutter/test/`, `flutter/test/support/`, shared fixtures, golden files; current `flutter test --no-pub --reporter compact` | Historical 2026-10-30 run: 307 tests passed locally; current source pointer is covered by Flutter CI `41184291670`. |
 | UI, command, worker, host, or consumer wiring | `flutter/lib/src/ui/cad_workbench.dart`, composition shell, feature panels, command/menu/context-menu files, `flutter/lib/src/mcp/` | Reviewed; routes, menus, shortcuts, bridges, and the single-surface `MaterialApp` boundary are explicit. |
 | Platform, persistence, accessibility, security, and runtime boundaries | `flutter/macos/`, `flutter/linux/`, `flutter/windows/`, file/preferences/layout services, method-channel host, `docs/plans/10-desktop-runtime-smoke-checklist.md` | Reviewed; native picker/AT/host runtime remains `not verified` where unavailable. |
-| Build, CI/canonical, package, release, deployment, and public artifact evidence | `flutter/.github/workflows/`, `flutter/pubspec.yaml`, platform runners, historical run `37832260326`, current `flutter build web --no-pub` blocker | Reviewed; historical evidence is labeled historical and current build/runtime/public claims remain unverified. |
+| Build, CI/canonical, package, release, deployment, and public artifact evidence | `flutter/.github/workflows/`, `flutter/pubspec.yaml`, platform runners, current runs `41184291670` and `41184693233`, historical run `37832260326` | Current CI passed and an unpublished v1.0.1 draft contains macOS universal/Linux x64/Windows x64 bundles; target-host runtime, signing, install, and public release remain unverified. |
 | Provenance, ownership, synchronization, and cross-repository orchestration | `docs/REPOSITORY-MAP.md`, `docs/integration-baseline.json`, `docs/capability-map/INVENTORY-PROTOCOL.md`, current child pointer | Reviewed; pointer mismatch and provenance refresh are recorded as limitations, not silently reconciled. |
 
 No category above is promoted from documentation to implementation evidence. A
@@ -134,7 +136,7 @@ artifact channel, or consumer combination has been executed.
 | `Q-FW-003` | DSL 0.5.x active fixture promotion dan semantic SVG comparator belum dibuktikan pada current pointer; raw/presentation parity tetap scope non-goal. | `CONTRACT-01..03`, `GAP-FW-002` |
 | `Q-FW-004` | Graph UX, stable object identity, selection semantics, hit-testing tolerance, dan keyboard selection behavior belum didefinisikan. | `CANVAS-05`, `VIEW-05`, `GAP-FW-004` |
 | `Q-FW-005` | Shortcut map per OS, native accessibility tree/VoiceOver/screen reader, dan native close/quit lifecycle belum memiliki current runtime evidence. | `CMD-03`, `A11Y-01/02`, `WINDOW-01`, `GAP-FW-005` |
-| `Q-FW-006` | Current checkout `b21eceb...` berbeda dari workspace baseline/historical CI pointers; fresh build juga terhalang SDK write boundary, sehingga build/runtime claim harus tetap `not verified`. | `PLAT-01..04`, audit §1, `GAP-FW-006` |
+| `Q-FW-006` | Current pointer `60ec760` has CI builds and v1.0.1 draft artifacts; launch/MCP smoke remains unverified. Root manifest is stale and needs a supported-toolchain integration rerun. | `PLAT-01..04`, audit §1, `GAP-FW-006` |
 | `Q-FW-007` | Android/iOS, custom title bar, raw SVG byte equality, signed distribution, dan full DSL promotion adalah deferred/not applicable scope decisions, bukan untracked desktop gaps. | `SCOPE-01..05`, reconciliation scope findings |
 
 Fresh local analyzer/test success is retained as local evidence only; it does

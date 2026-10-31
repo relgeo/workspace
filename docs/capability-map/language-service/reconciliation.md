@@ -84,14 +84,14 @@ Makna penting:
 | LS-VERS-001 | ✔️ implemented | implemented | verified-local | In scope; active/legacy/future acceptance vocabulary is locally tested. | [audit LS-VERS-001](./archive/implementation-audit-legacy.md#ls-vers-001) |
 | LS-VERS-002 | ❌ absent | absent | verified-local | In scope; service results do not carry spec version, revision, source URL, or provenance. | [audit LS-VERS-002](./archive/implementation-audit-legacy.md#ls-vers-002) |
 | LS-PROTO-001 | 🌗 partial | partial | verified-local | In scope as typed library protocol; no unified DTO or official LSP server/transport. | [audit LS-PROTO-001](./archive/implementation-audit-legacy.md#ls-proto-001) |
-| LS-PROTO-002 | 🌗 partial | partial | verified-local + contract-only MCP | Boundary-only safety contract is documented; executable adapter/runtime remains unverified. | [audit LS-PROTO-002](./archive/implementation-audit-legacy.md#ls-proto-002) |
+| LS-PROTO-002 | 🌗 partial | partial | verified-local + MCP local runtime | MCP local transport and permission boundary are implemented; semantic DTO round-trip and packaged/cross-host evidence remain open. | [audit LS-PROTO-002](./archive/implementation-audit-legacy.md#ls-proto-002) |
 | LS-REC-001 | 🌗 partial | partial | verified-local | In scope for actionable analysis results; host recovery state/action is incomplete. | [audit LS-REC-001](./archive/implementation-audit-legacy.md#ls-rec-001) |
 | LS-REC-002 | ➖ not-applicable | not applicable | verified-local at consumer boundary | Boundary-only; retaining last valid preview is a Playground/host responsibility. | [audit LS-REC-002](./archive/implementation-audit-legacy.md#ls-rec-002) |
 | LS-REC-003 | 🌗 partial | partial | verified-local | Boundary integration; language and storage/share/runtime error origins are not one canonical taxonomy. | [audit LS-REC-003](./archive/implementation-audit-legacy.md#ls-rec-003) |
 | LS-CONS-001 | 🌗 partial | partial | local source/unit verified; browser not verified | In scope as consumer delivery; Playground source/unit path exists, fresh browser/public path is unverified. | [audit LS-CONS-001](./archive/implementation-audit-legacy.md#ls-cons-001) |
 | LS-CONS-002 | 🌗 partial | partial | local verified; public/registry not verified | In scope as Markdown consumer; normal path works, failure-preserving fallback is incomplete. | [audit LS-CONS-002](./archive/implementation-audit-legacy.md#ls-cons-002) |
-| LS-CONS-003 | ⏸️ deferred | deferred | contract-only; runtime not verified | Held by Plan 11; MCP tools/resources are specified but adapter execution is deferred. | [audit LS-CONS-003](./archive/implementation-audit-legacy.md#ls-cons-003) |
-| LS-CONS-004 | ⏸️ deferred | deferred | contract-only; desktop runtime not verified | Held by desktop/MCP integration scope; service session API is not claimed. | [audit LS-CONS-004](./archive/implementation-audit-legacy.md#ls-cons-004) |
+| LS-CONS-003 | 🌗 partial | partial | MCP local runtime; semantic integration incomplete | Full-spec lookup/resources are callable; core-backed validation, completion, diagnostics mapping, and rendering are not integrated. | [current audit](./implementation-audit.md#selected-capability-findings) |
+| LS-CONS-004 | 🌗 partial | partial | local Flutter/MCP integration; live client not verified | Active source/revision/dirty state and guarded edit are supported; ChatGPT Desktop write round-trip and language-service session API remain open. | [current audit](./implementation-audit.md#selected-capability-findings) |
 | LS-CONS-005 | ✔️ implemented | implemented | verified-local; registry/current CI not verified | In scope; README/package/API compatibility is repaired locally, with public artifact delivery still unverified. | [current audit](./implementation-audit.md#selected-capability-findings) |
 
 ## Coverage validation
@@ -103,7 +103,7 @@ Makna penting:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 9 implemented, 17 partial, 3 absent, 0 broken, 2 deferred, 2 not-applicable |
+| Result counts | 9 implemented, 19 partial, 3 absent, 0 broken, 0 deferred, 2 not-applicable |
 | Evidence/scope columns present on every row | Yes |
 | Audit trace present on every row | Yes |
 
@@ -122,7 +122,7 @@ scope decision assigns ownership to the host/consumer boundary.
 | Finding | Dimension affected | Reconciliation treatment |
 | --- | --- | --- |
 | Node 22 was used while the root engine asks for Node 24 or newer; registry, current CI, public Playground, and native accessibility were not run. | Evidence | Limitation on evidence only; it does not convert a locally observed ❌ into ?, and it does not prove delivery parity. |
-| Active-document identity, dirty state, last-valid preview retention, and MCP/desktop bridge are host-owned or roadmap-held. | Scope | ➖ for LS-DOC-003 and LS-REC-002; ⏸️ for LS-CONS-003 and LS-CONS-004. |
+| Active-document identity, dirty state, and last-valid preview retention are host-owned; MCP/desktop integration is now partial while semantic-service/client evidence remains open. | Scope | ➖ for LS-DOC-003 and LS-REC-002; `🌗` for LS-CONS-003 and LS-CONS-004. |
 | Runtime post-resolve diagnostics are available on core/Playground paths but are not part of getDiagnostics. | Implementation versus contract decision | LS-DIAG-004 stays 🌗 partial; adding or keeping a separate runtime-diagnostic API is a maintainer decision. |
 | Markdown normal highlighting passes, but service-failure source-preserving fallback is not implemented. | Consumer implementation | LS-CONS-002 stays 🌗 partial; normal-path tests do not close the failure-path gap. |
 | README/package/API compatibility was repaired locally: README is `0.5.1`, `getSchema()` is implemented, and the regression test passes. | Contract/documentation integrity | LS-CONS-005 is ✔️ at the local source boundary; packed/registry/public delivery remains not verified. |

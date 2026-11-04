@@ -17,6 +17,15 @@ const strict = process.argv.includes("--strict");
 const jsonOutput = process.argv.includes("--json");
 const writeManifest = process.argv.includes("--write");
 const requireMain = process.argv.includes("--require-main");
+const reportCommand = [
+  "node",
+  "scripts/verify-baseline.mjs",
+  ...(manifestArgument ? ["--manifest=<provided>"] : []),
+  ...(strict ? ["--strict"] : []),
+  ...(jsonOutput ? ["--json"] : []),
+  ...(writeManifest ? ["--write"] : []),
+  ...(requireMain ? ["--require-main"] : []),
+].join(" ");
 
 const failures = [];
 const checks = [];
@@ -24,6 +33,8 @@ let workspaceRevision = "unknown";
 let baselineName = "unknown";
 let compatibilityLine = "unknown";
 let packageManager = null;
+let baselineCapturedAt = null;
+let childRevisions = {};
 
 function record(label, ok, detail) {
   checks.push({ label, ok, detail });
@@ -61,6 +72,11 @@ function readGitmodules() {
 }
 
 function buildManifest(previous = {}) {
+  const rootRevision = runGit(["rev-parse", "HEAD"]);
+  const toolchain = {
+    node: ">=24",
+    pnpm: "10.33.3",
+  };
   const submodules = readGitmodules().map(({ path: submodulePath }) => {
     const entry = {
       path: submodulePath,
@@ -75,10 +91,20 @@ function buildManifest(previous = {}) {
   });
   return {
     schemaVersion: 1,
+    contract: "integration-baseline-v1",
+    baselineId: previous.baselineId ?? "relgeo-public-0.5-staging",
     baselineName: previous.baselineName ?? "relgeo-public-0.5-staging",
     capturedAt: new Date().toISOString().slice(0, 10),
+    rootRevision,
     compatibilityLine: previous.compatibilityLine ?? "0.5",
+    toolchain,
     repository: "relgeo/workspace",
+    evidence: {
+      evidenceClass: "baseline-snapshot",
+      evidenceState: "current",
+      currentRule: "Only exact root gitlink and child checkout revisions captured together may support a current claim.",
+      historicalRule: "A prior snapshot remains historical when root or any child revision changes.",
+    },
     submodules,
   };
 }
@@ -175,7 +201,7 @@ try {
     : readJson(manifestPath);
   if (writeManifest) {
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
-    record("manifest: regenerated", true, manifestPath);
+    record("manifest: regenerated", true, "snapshot updated");
   }
   record(
     "manifest: compatibility line",
@@ -184,6 +210,10 @@ try {
   );
   baselineName = manifest.baselineName ?? "unknown";
   compatibilityLine = manifest.compatibilityLine ?? "unknown";
+  baselineCapturedAt = manifest.capturedAt ?? null;
+  childRevisions = Object.fromEntries(
+    (manifest.submodules ?? []).map((entry) => [entry.path, entry.revision]),
+  );
   const entries = manifest.submodules;
   const registeredSubmoduleCount = readGitmodules().length;
   record(
@@ -208,11 +238,45 @@ if (jsonOutput) {
     return {
       ...failure,
       ...classification,
+      decisionNeeded: classification.decisionNeeded ?? classification.decisionRequired ?? false,
       owner: "relgeo/workspace",
       repository: "relgeo/workspace",
       surface: failure.label.split(":")[0],
       dependencyImpact: "Dependent stages remain untrusted until this check passes.",
+      downstreamImpact: "Dependent stages remain untrusted until this check passes.",
       dependencyStatus: "blocked",
+      retryPolicy: { maxAttempts: 1, backoffMs: 0, attemptsUsed: 1, exhausted: true },
+      attempts: [{
+        attempt: 1,
+        attemptId: "attempt-1",
+        previousAttemptId: null,
+        passed: false,
+        blockerClass: classification.blockerClass,
+        retryable: classification.retryable,
+        remediation: classification.remediation,
+        decisionRequired: classification.decisionRequired,
+        decisionNeeded: classification.decisionNeeded ?? classification.decisionRequired,
+      }],
+      attemptLinks: [{
+        attemptId: "attempt-1",
+        attempt: 1,
+        previousAttemptId: null,
+        linkedToFirstFailure: "attempt-1",
+      }],
+      firstFailure: {
+        attempt: 1,
+        attemptId: "attempt-1",
+        previousAttemptId: null,
+        passed: false,
+        blockerClass: classification.blockerClass,
+        retryable: classification.retryable,
+        remediation: classification.remediation,
+        decisionRequired: classification.decisionRequired,
+        decisionNeeded: classification.decisionNeeded ?? classification.decisionRequired,
+        owner: "relgeo/workspace",
+        repository: "relgeo/workspace",
+        surface: failure.label.split(":")[0],
+      },
     };
   });
   const report = {
@@ -222,10 +286,15 @@ if (jsonOutput) {
     strict,
     evidence: createEvidenceEnvelope({
       evidenceClass: "local-workspace",
+      evidenceState: "current",
+      capturedAt: new Date().toISOString(),
       workspaceRevision,
       baselineName,
+      baselineCapturedAt,
       compatibilityLine,
       toolchain: { node: process.version, pnpm: packageManager },
+      childRevisions,
+      command: reportCommand,
       limitations: Number(process.versions.node.split(".")[0]) < 24
         ? ["declared Node.js minimum is 24"]
         : [],

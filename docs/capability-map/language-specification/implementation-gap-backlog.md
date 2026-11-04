@@ -43,7 +43,7 @@ using the status symbols below rather than being promoted by selection.
 
 | ID | Priority | Candidate goal/task | Capability IDs | Scope / work type | Owner | Dependency | Acceptance test / evidence target | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `GAP-001` | `P1` | Create spec-to-consumer vocabulary/drift contract | `LANG-002`, `DOC-003`, `TYPE-001`, `TYPE-002`, `VER-003` | Contract/tooling + drift tests; not documentation closure | `relgeo/spec` + `relgeo/workspace` | Expected catalog and parser/schema ownership | Deterministic check covers sections, scalar/structured types, aliases, and normative/informative labels; current check passes, while broader object/renderer vocabulary remains to be extended | Consumer catalogs diverge silently | Maintain the check and extend it to remaining object/renderer field vocabulary before promoting the row |
+| `GAP-001` | `P1` | Create spec-to-consumer vocabulary/drift contract | `LANG-002`, `DOC-003`, `TYPE-001`, `TYPE-002`, `VER-003` | Contract/tooling + drift tests; not documentation closure | `relgeo/spec` + `relgeo/workspace` | Expected catalog and parser/schema ownership | `normative-vocabulary-catalog.json` is the active checked projection; `pnpm run language-spec:check` deterministically checks root sections/order, scalar/structured types, aliases, consumer coverage, and document status labels | Consumer catalogs diverge silently | Maintain this contract; extend to object/renderer field vocabulary only through an explicit future catalog revision |
 | `GAP-002` | `P1` | Promote and conformance-test declarations, profiles, evaluator, and units | `DECL-001`, `DECL-004`, `EVAL-002` | Runtime semantics + shared fixtures | `relgeo/core` + `cli` | GAP-001; decision for fixture 16 | Active fixture covers defaults, structured params, profile override, derived placement, unit conversion; core/CLI/LS/Flutter evidence recorded | Numeric semantics differ by consumer | Write promotion decision and active fixture acceptance |
 | `GAP-003` | `P1` | Expand geometry primitive and topology conformance | `GEO-001`, `GEO-002`, `GEO-003`, `GEO-004`, `GEO-005` | Geometry runtime + conformance fixtures | `relgeo/geometry` + `core` | GAP-001; renderer semantic comparator | Per-object mode/field/anchor/degenerate/topology fixtures with resolved JSON and semantic SVG snapshots | Geometry edge cases regress downstream | Inventory fields and add focused fixtures |
 | `GAP-004` | `P2` | Close composition/component/clone parity | `COMP-001`, `COMP-002`, `COMP-003` | Runtime resolution + graph/snapshot tests | `relgeo/core` | GAP-003; graph/anchor contract | Active fixtures for group transform, clone identity/metadata, nested component params/local derived/exports; graph and snapshot checks | Scope leakage or wrong world coordinates | Select minimal active component fixture set |
@@ -71,6 +71,34 @@ is the current matrix status: selection is not completion.
 | `GAP-011` structured diagnostics | `🌗` + `⚠️` (`DIAG-001`/`ERR-001` partial; `DIAG-002` broken) | `DIAG-001`, `DIAG-002`, `ERR-001` | `relgeo/core` + `language-service` + `cli` | [`spec/id/core/04-evaluation-order.md`](../../../spec/id/core/04-evaluation-order.md); [`spec/id/core/05-semantic-guarantees.md`](../../../spec/id/core/05-semantic-guarantees.md); [`spec/id/core/06-error-model.md`](../../../spec/id/core/06-error-model.md) | Validator/resolver public results and their CLI/language-service mappings, including tolerant versus compile behavior. Constraint diagnostics remain post-resolve and must not mutate geometry. | No raw `Error` crosses a public boundary; documented error codes have stable phase/path/message payload fixtures; CLI and language-service mappings agree; tolerant and compile modes preserve the specified behavior. |
 | `GAP-009` dimension/annotation coverage and escaping | `🌗` | `PRES-001`, `PRES-002` | `relgeo/renderer-svg` + `relgeo/core` | [`spec/id/presentation/22-dimension.md`](../../../spec/id/presentation/22-dimension.md); [`spec/id/presentation/23-annotation.md`](../../../spec/id/presentation/23-annotation.md); [`spec/id/presentation/26-metadata.md`](../../../spec/id/presentation/26-metadata.md) | Resolved presentation objects → SVG renderer, with CLI and Markdown snapshot consumers. This is presentation/serialization behavior, not a new geometry owner. | Focused v0.5 hostile-input fixture covers dimension/annotation text and dynamic attributes; renderer/security tests plus local CLI/Markdown consumer checks pass, while all dimension kinds and hosts remain incomplete. |
 | `GAP-013` safe semantic SVG serialization | `🌗` | `SER-002` | `relgeo/renderer-svg` | [`spec/id/presentation/22-dimension.md`](../../../spec/id/presentation/22-dimension.md); [`spec/id/presentation/23-annotation.md`](../../../spec/id/presentation/23-annotation.md); [`spec/id/presentation/24-drawing-roles.md`](../../../spec/id/presentation/24-drawing-roles.md); [`spec/id/presentation/26-metadata.md`](../../../spec/id/presentation/26-metadata.md) | SVG output boundary consumed by CLI, Markdown, and Playground. Semantic geometry/roles are in scope; byte-for-byte SVG equality is not. | Dimension/annotation content cannot create executable markup, semantic geometry and role output remain unchanged, and focused renderer/security plus consumer snapshots pass. `GAP-009` is the focused fixture prerequisite; broader `GAP-010` presentation/metadata promotion is not active. Local focused evidence now passes; broader consumer evidence remains required. |
+
+### GAP-001 deterministic contract
+
+`GAP-001` freezes one active vocabulary boundary. The normative source is the
+chapter content under `spec/id`; the checked projection is
+[`normative-vocabulary-catalog.json`](./normative-vocabulary-catalog.json); the
+consumer projections are the core parser/types and language-service
+schema/completions. `spec/id/README.md` and `spec/id/editorial-guide.md` are
+informative governance documents: their status labels and editorial rules are
+checked, but they cannot introduce a DSL field or type.
+
+The contract is intentionally narrower than the full object/renderer
+vocabulary. `GAP-001` checks only the active root fields, scalar/structured
+parameter types, the two documented compatibility aliases, and the three
+document-status labels. All other expected vocabulary remains visible in the
+expected catalog and is out of this drift gate until a later catalog revision.
+
+### Downstream handoff boundary
+
+The checked contracts are available to downstream owners from the current
+checkout: vocabulary through `normative-vocabulary-catalog.json` and
+`pnpm run language-spec:check`; diagnostics through core chapters 04–06; and
+presentation/safe semantic SVG through presentation chapters 22–24 and 26.
+This handoff does not promote any row. npm/pub.dev publication, registry
+release, and production deployment are explicitly not prerequisites. The
+remaining producer normalization, full consumer parity, canonical fixture,
+transport/runtime, and public/native evidence gates stay visible in the rows
+above and in [`reconciliation.md`](./reconciliation.md).
 
 ### Explicit exclusions from the active tranche
 

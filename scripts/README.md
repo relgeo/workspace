@@ -14,6 +14,40 @@ Integration gate membutuhkan Node.js 24 atau lebih baru dan pnpm 10.33.3; workfl
 
 Script deployment detail menjadi ownership repository tujuan masing-masing.
 
+## Fresh-clone bootstrap contract
+
+Jalankan dari root checkout baru dengan toolchain yang dipin:
+
+~~~text
+node scripts/bootstrap.mjs --report=.local/bootstrap-report.json
+~~~
+
+Runner ini memeriksa Node `>=24` dan pnpm `10.33.3`, menginisialisasi
+submodule secara recursive, memasang dependency dengan lockfile frozen, lalu
+menjalankan strict baseline report. Report machine-readable selalu memuat
+status setiap langkah dan status setiap submodule; command, revision, dan
+limitation yang dicatat tidak memuat absolute path, credential, environment
+variable, atau isi `.local/`/`private/`. Node/pnpm yang tidak tersedia atau
+berbeda menghasilkan `blocked`/`environment-unavailable` dengan exit code `2`,
+bukan klaim parity.
+
+### Evidence schema and freshness rules
+
+Semua report memakai `schemaVersion: 1` pada envelope evidence dan field wajib
+berikut: `evidenceClass`, `evidenceState`, `capturedAt`, `workspaceRevision`,
+`baseline.name`, `baseline.capturedAt`, `baseline.compatibilityLine`,
+`testedRevisions.root`, `testedRevisions.children`, `toolchain`, `run.id`,
+`artifact`, `command`, dan `limitations`.
+
+`evidenceClass` memisahkan `local-workspace`, `public-registry`, `ci-canonical`,
+`manual`, dan `public-deployment`. `evidenceState=current` hanya berarti
+observasi terhadap checkout yang disebutkan; klaim current wajib mencocokkan
+root revision, nama baseline, dan setiap child revision yang dibandingkan.
+`historical` adalah immutable context dan tidak boleh dipromosikan menjadi
+current hanya karena pointer baru terlihat serupa. `unverified`/limitation
+harus tetap terlihat dan tidak boleh dibaca sebagai parity pass. Baseline
+snapshot menyimpan aturan yang sama di `docs/integration-baseline.json`.
+
 ## Verifikasi baseline dan integration gate
 
 Baseline submodule dan metadata package dapat diverifikasi dari root workspace dengan:
@@ -44,14 +78,38 @@ Mode public menambahkan override sementara di checkout temporary agar seluruh de
 
 Sebelum assertion Pages website, runner menyalin `playground/dist` hasil build ke `relgeo.github.io/dist/playground`. Ini meniru perakitan artifact pada workflow Pages dan menjaga agar `test:pages-artifact` tidak lulus atau gagal karena state `dist` lama.
 
-JSON report integration memuat mode, workspace revision, baseline revision setiap submodule, compatibility line, metadata package, evidence class, toolchain, limitation, owner/surface, blocker classification, dependency impact/status, dan bounded attempt history. Jika prerequisite Node gagal sebelum stage berjalan, report blocked tetap ditulis saat `--report` dipakai. Report ini aman diunggah sebagai artifact CI karena tidak menyimpan absolute path temporary atau environment privat.
+Build Playground juga menulis `dist/playground-provenance.json`, berisi revision
+child dan SHA-256 seluruh file output. Untuk membuktikan bahwa handoff website
+memakai file yang sama, jalankan setelah build dan assembly:
+
+~~~text
+pnpm run playground:artifact:check
+~~~
+
+Checker ini sengaja gagal bila `relgeo.github.io/dist/playground` masih berisi
+entrypoint atau chunk dari build sebelumnya.
+
+Integration local menjalankan `relgeo-docs-site: provenance:check` sebelum build
+untuk mencocokkan website/Playground/spec dengan `docs/integration-baseline.json`
+dan Pages pins, lalu menjalankan `relgeo-docs-site: provenance:pages` setelah
+assembly. Pages mode tidak memilih revision secara implisit: ia membandingkan
+checkout child dengan pin immutable di workflow dan menulis
+`dist/relgeo-provenance.json`; `test:pages-artifact` menggagalkan artifact bila
+report tidak synchronized, digest Playground berubah, atau metadata
+canonical/hreflang/sitemap tidak deployment-aware.
+
+JSON report integration memuat mode, workspace revision, baseline revision setiap submodule, compatibility line, metadata package, evidence class, toolchain, limitation, owner/surface, blocker classification, dependency impact/status, dan bounded attempt history. Setiap stage juga memuat `retryPolicy`, `attempts`, `attemptLinks`, dan `firstFailure`; link memakai ID stabil (`attempt-1`, `attempt-2`) sehingga rerun tidak menimpa bukti kegagalan pertama. `decisionRequired` dan alias `decisionNeeded` wajib eksplisit, termasuk `false`. Jika prerequisite Node gagal sebelum stage berjalan, report blocked tetap ditulis saat `--report` dipakai. Report ini aman diunggah sebagai artifact CI karena tidak menyimpan absolute path temporary atau environment privat.
 
 Kontrak operasional bersama berada di `scripts/orchestration-contract.mjs`.
 Failure dibedakan sebagai `target-defect`, `transient`,
 `dependency-unavailable`, `environment-unavailable`, atau
 `pending-human-decision`. Hanya failure `transient` yang dapat diulang, paling
-banyak dua attempt dengan backoff bounded; attempt pertama dan terakhir tetap
-disimpan di report. Uji kontrak lokal dijalankan dengan:
+banyak dua attempt dengan backoff bounded. `firstFailure` dipertahankan secara
+immutable bersama seluruh `attempts`, `attemptLinks`, dan budget efektif
+(`maxAttempts`, `backoffMs`, `attemptsUsed`, `exhausted`); deterministic,
+environment, dan dependency failures tidak diulang. `downstreamImpact` dan
+`dependencyStatus` membedakan pekerjaan yang blocked dari yang ready. Uji
+kontrak lokal dijalankan dengan:
 
 ~~~text
 pnpm run orchestration:contract:test

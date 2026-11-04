@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 
 import { readdir, readFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
+const catalogPath = join(
+  root,
+  "docs/capability-map/language-specification/normative-vocabulary-catalog.json",
+);
 const failures = [];
 
 function check(condition, message) {
@@ -21,7 +25,14 @@ function quotedValues(source) {
 }
 
 function setDifference(expected, observed) {
-  return [...expected].filter((value) => !observed.has(value));
+  return [...new Set(expected)].filter((value) => !observed.has(value));
+}
+
+function sequenceDifference(expected, observed) {
+  if (expected.length === observed.length && expected.every((value, index) => value === observed[index])) {
+    return "";
+  }
+  return `expected [${expected.join(", ")}] but observed [${observed.join(", ")}]`;
 }
 
 function extractSet(source, startMarker, endMarker = "]);", offset = 0) {
@@ -31,68 +42,91 @@ function extractSet(source, startMarker, endMarker = "]);", offset = 0) {
   return new Set(quotedValues(source.slice(start, end < 0 ? source.length : end)));
 }
 
-const [documentStructure, typeSystem, metadata, parser, types, schema, completions] = await Promise.all([
-  readFile(join(root, "spec/id/core/02-document-structure.md"), "utf8"),
-  readFile(join(root, "spec/id/syntax/07-type-system.md"), "utf8"),
-  readFile(join(root, "spec/id/presentation/26-metadata.md"), "utf8"),
-  readFile(join(root, "core/src/parser.ts"), "utf8"),
-  readFile(join(root, "core/src/types.ts"), "utf8"),
-  readFile(join(root, "language-service/src/schema.ts"), "utf8"),
-  readFile(join(root, "language-service/src/completions.ts"), "utf8"),
-]);
+function expectedStatus(path) {
+  const normalized = relative(join(root, "spec/id"), path);
+  if (normalized === "README.md") return "Informative Index";
+  if (normalized === "editorial-guide.md") return "Informative";
+  if (normalized.endsWith("/README.md")) return "Informative Index";
+  if (normalized === "appendix/27-summary.md") return "Informative";
+  return "Normative";
+}
+
+const [catalogSource, documentStructure, typeSystem, metadata, parser, types, schema, completions, expectedCatalog, backlog] =
+  await Promise.all([
+    readFile(catalogPath, "utf8"),
+    readFile(join(root, "spec/id/core/02-document-structure.md"), "utf8"),
+    readFile(join(root, "spec/id/syntax/07-type-system.md"), "utf8"),
+    readFile(join(root, "spec/id/presentation/26-metadata.md"), "utf8"),
+    readFile(join(root, "core/src/parser.ts"), "utf8"),
+    readFile(join(root, "core/src/types.ts"), "utf8"),
+    readFile(join(root, "language-service/src/schema.ts"), "utf8"),
+    readFile(join(root, "language-service/src/completions.ts"), "utf8"),
+    readFile(join(root, "docs/capability-map/language-specification/expected-capability-catalog.md"), "utf8"),
+    readFile(join(root, "docs/capability-map/language-specification/implementation-gap-backlog.md"), "utf8"),
+  ]);
+const catalog = JSON.parse(catalogSource);
+
+check(catalog.catalogId === "relgeo-language-vocabulary-v0.5", "active v0.5 vocabulary catalog has a stable ID");
+check(catalog.sourceOfTruth === "spec/id", "catalog names spec/id as the semantic source of truth");
+check(catalog.catalogKind === "checked-projection", "catalog is explicitly a checked projection, not a second normative source");
+check(expectedCatalog.includes(catalog.catalogId), "expected capability catalog references the active vocabulary catalog");
+check(backlog.includes("pnpm run language-spec:check"), "implementation-gap backlog records the deterministic drift-check command");
 
 const rootCodeBlock = documentStructure.match(/```rg\n([\s\S]*?)```/)?.[1] ?? "";
-const normativeRootFields = new Set(
-  [...rootCodeBlock.matchAll(/^([A-Za-z][A-Za-z0-9]*):\s*$/gm)].map((match) => match[1]),
-);
-// `styles`/`style` are the documented backward-compatibility aliases.
-normativeRootFields.add("styles");
-
-const parserRootFields = extractSet(parser, "const TOP_LEVEL_FIELDS = new Set([");
+const observedRootFields = [...rootCodeBlock.matchAll(/^([A-Za-z][A-Za-z0-9]*):(?:\s.*)?$/gm)].map((match) => match[1]);
+const normativeRootFields = new Set(catalog.rootFields);
+const observedParserRootFields = extractSet(parser, "const TOP_LEVEL_FIELDS = new Set([");
 const schemaRootStart = schema.indexOf('"properties": {');
 const schemaRootEnd = schema.indexOf('\n  "definitions": {', schemaRootStart);
-const schemaRootFields = new Set(
+const observedSchemaRootFields = new Set(
   [...schema.slice(schemaRootStart, schemaRootEnd).matchAll(/^    "([^"\n]+)":\s*\{/gm)].map((match) => match[1]),
 );
 
 check(
-  setDifference(normativeRootFields, parserRootFields).length === 0,
-  `core parser covers normative root sections${setDifference(normativeRootFields, parserRootFields).length ? `; missing: ${setDifference(normativeRootFields, parserRootFields).join(", ")}` : ""}`,
+  !sequenceDifference(catalog.rootFields, observedRootFields),
+  `normative root sections match spec/id/core/02-document-structure.md${sequenceDifference(catalog.rootFields, observedRootFields) ? `; ${sequenceDifference(catalog.rootFields, observedRootFields)}` : ""}`,
 );
-check(
-  setDifference(normativeRootFields, schemaRootFields).length === 0,
-  `language-service schema covers normative root sections${setDifference(normativeRootFields, schemaRootFields).length ? `; missing: ${setDifference(normativeRootFields, schemaRootFields).join(", ")}` : ""}`,
-);
-
-const typeSystemBody = typeSystem.slice(typeSystem.indexOf("## 7.1"), typeSystem.indexOf("## 7.3"));
-const normativeParameterTypes = new Set(
-  [...typeSystemBody.matchAll(/^### ([A-Za-z][A-Za-z0-9-]*)\s*$/gm)]
-    .map((match) => match[1])
-    .filter((value) => value !== "ClosedShape"),
-);
-const parameterTypeBody = types.slice(types.indexOf("export type ParameterType ="), types.indexOf("export interface ParameterDef"));
-const coreParameterTypes = new Set(quotedValues(parameterTypeBody));
-const schemaParameterTypes = new Set(quotedValues(schema.match(/"type": \{ "enum": \[([^\]]+)\] \}/)?.[1] ?? ""));
-
-check(
-  setDifference(normativeParameterTypes, coreParameterTypes).length === 0,
-  `core parameter types cover spec scalar/structured types${setDifference(normativeParameterTypes, coreParameterTypes).length ? `; missing: ${setDifference(normativeParameterTypes, coreParameterTypes).join(", ")}` : ""}`,
-);
-check(
-  setDifference(normativeParameterTypes, schemaParameterTypes).length === 0,
-  `language-service parameter schema covers spec scalar/structured types${setDifference(normativeParameterTypes, schemaParameterTypes).length ? `; missing: ${setDifference(normativeParameterTypes, schemaParameterTypes).join(", ")}` : ""}`,
-);
-
-const requiredAliases = ["metaPresets", "metaPreset", "styles", "style"];
-for (const alias of requiredAliases) {
-  check(parser.includes(`"${alias}"`), `core parser contains metadata alias ${alias}`);
-  check(schema.includes(`"${alias}"`), `language-service schema contains metadata alias ${alias}`);
-  check(completions.includes(`label: '${alias}'`), `language-service completions contain metadata alias ${alias}`);
+for (const [observed, label] of [
+  [observedParserRootFields, "core parser"],
+  [observedSchemaRootFields, "language-service schema"],
+]) {
+  const missing = setDifference([...normativeRootFields, ...catalog.rootAliases], observed);
+  check(missing.length === 0, `${label} covers catalog root fields${missing.length ? `; missing: ${missing.join(", ")}` : ""}`);
+}
+for (const field of [...catalog.rootFields, ...catalog.rootAliases]) {
+  check(completions.includes(`label: '${field}'`), `language-service completions contain root vocabulary ${field}`);
 }
 
+const typeSystemBody = typeSystem.slice(typeSystem.indexOf("## 7.1"), typeSystem.indexOf("## 7.3"));
+const observedTypes = [...typeSystemBody.matchAll(/^### ([A-Za-z][A-Za-z0-9-]*)\s*$/gm)]
+  .map((match) => match[1])
+  .filter((value) => value !== "ClosedShape");
+const normativeTypes = [...catalog.scalarTypes, ...catalog.structuredTypes];
+const parameterTypeBody = types.slice(types.indexOf("export type ParameterType ="), types.indexOf("export interface ParameterDef"));
+const observedCoreTypes = new Set(quotedValues(parameterTypeBody));
+const observedSchemaTypes = new Set(quotedValues(schema.match(/"type": \{ "enum": \[([^\]]+)\] \}/)?.[1] ?? ""));
+
+check(
+  !sequenceDifference(normativeTypes, observedTypes),
+  `scalar and structured type headings match spec/id/syntax/07-type-system.md${sequenceDifference(normativeTypes, observedTypes) ? `; ${sequenceDifference(normativeTypes, observedTypes)}` : ""}`,
+);
+check(
+  setDifference(normativeTypes, observedCoreTypes).length === 0,
+  `core parameter types cover the catalog${setDifference(normativeTypes, observedCoreTypes).length ? `; missing: ${setDifference(normativeTypes, observedCoreTypes).join(", ")}` : ""}`,
+);
+check(
+  setDifference(normativeTypes, observedSchemaTypes).length === 0,
+  `language-service parameter schema covers the catalog${setDifference(normativeTypes, observedSchemaTypes).length ? `; missing: ${setDifference(normativeTypes, observedSchemaTypes).join(", ")}` : ""}`,
+);
+
+for (const { alias, canonical } of catalog.aliases) {
+  check(parser.includes(`"${alias}"`), `core parser contains compatibility alias ${alias} for ${canonical}`);
+  check(schema.includes(`"${alias}"`), `language-service schema contains compatibility alias ${alias} for ${canonical}`);
+  check(completions.includes(`label: '${alias}'`), `language-service completions contain compatibility alias ${alias}`);
+}
 check(
   metadata.includes("`styles` / `style` boleh tetap diterima sebagai alias backward compatibility"),
-  "normative metadata spec documents styles/style compatibility aliases",
+  "normative metadata spec documents the styles/style compatibility aliases",
 );
 
 const specRoot = join(root, "spec/id");
@@ -103,11 +137,12 @@ for (const section of ["core", "syntax", "geometry", "presentation", "appendix"]
   }
 }
 documents.push(join(specRoot, "README.md"), join(specRoot, "editorial-guide.md"));
-const statuses = new Set(["Normative", "Informative", "Informative Index"]);
-for (const path of documents) {
+const allowedStatuses = new Set([...catalog.statusLabels.normative, ...catalog.statusLabels.informative]);
+for (const path of documents.sort()) {
   const source = await readFile(path, "utf8");
   const status = source.match(/^Status dokumen:\s*`([^`]+)`/m)?.[1];
-  check(statuses.has(status), `${path.replace(`${root}/`, "")} declares a recognized normative/informative status`);
+  check(allowedStatuses.has(status), `${relative(root, path)} declares a recognized status`);
+  check(status === expectedStatus(path), `${relative(root, path)} uses the catalog status classification (${expectedStatus(path)})`);
 }
 
 if (failures.length > 0) {

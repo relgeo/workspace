@@ -1,11 +1,11 @@
 # Cross-Repository Orchestration — Implementation Gap Backlog
 
-> Current evidence checkpoint (2026-10-31): candidate tasks below retain the implementation gaps, while the dated 2026-10-30 root-gate evidence is historical. Current child checkouts are clean and match root gitlinks; 11 of 12 integration-manifest pins are stale and the supported Node/pnpm gate was not available in this shell.
+> Current evidence checkpoint (2026-11-03): candidate tasks below retain the implementation gaps, while the dated 2026-10-30 root-gate evidence is historical. Current child gitlinks are observable but child worktrees contain local modifications; 11 of 12 integration-manifest pins are stale. This host has pnpm 10.33.3 but Node 22.23.2, below the declared Node 24+ gate, so runtime claims remain environment-unavailable.
 
 **Status:** candidate backlog; selected implementation outcomes are recorded here,
 but this document does not substitute for source/tests/audit evidence
 
-**Tanggal:** 2026-10-30
+**Tanggal:** 2026-11-03
 
 **Expected source:** [Expected Cross-Repository Orchestration Capability Catalog](./expected-capability-catalog.md)
 
@@ -45,6 +45,60 @@ Priority is urgency and risk, not execution order: `P0` blocks trustworthy
 bootstrap/baseline/gate evidence; `P1` closes high-risk evidence, release,
 security, and operational-control gaps. Dependencies still determine the safe
 execution order.
+
+## Frozen schema for the active bootstrap/baseline/evidence tranche
+
+The following fields are the review contract for `ORCH-BOOT-001`,
+`ORCH-BOOT-002`, `ORCH-BOOT-004`, `ORCH-BASE-002`, `ORCH-BASE-004`, and
+`ORCH-EVID-002`/`003`/`004`:
+
+| Record | Required fields | Rule |
+| --- | --- | --- |
+| Bootstrap report | `contract`, `outcome`, `requiredToolchain`, `observedToolchain`, `evidence`, `submodules[]`, `steps[]`, `limitations[]` | A fresh clone runs the declared Node/pnpm check, recursive submodule bootstrap, frozen install, and strict baseline report. Submodule state is reported by public relative path and revision only. |
+| Baseline snapshot | `schemaVersion`, `contract`, `baselineId`, `baselineName`, `capturedAt`, `rootRevision`, `compatibilityLine`, `toolchain`, `repository`, `evidence`, `submodules[]` | The snapshot is current only when root gitlink and every checked-out child revision were captured together. A changed pointer or checkout makes the older snapshot historical. |
+| Evidence envelope | `schemaVersion`, `evidenceClass`, `evidenceState`, `capturedAt`, `workspaceRevision`, `baseline`, `testedRevisions`, `toolchain`, `run`, `artifact`, `command`, `limitations` | `evidenceClass` is never inferred or promoted. A current claim must match exact root/baseline/child revisions; `historical` and `unverified` records remain visible but cannot satisfy a current claim. |
+
+The allowed evidence classes are `local-workspace`, `public-registry`,
+`ci-canonical`, `manual`, `public-deployment`, and `baseline-snapshot`.
+`evidenceState=current` records the checkout observed at `capturedAt`; it does
+not override an environment limitation. Missing Node/pnpm, SDK, network, or
+browser capability is `environment-unavailable`/`unverified`, not a target
+parity failure. Reports must not contain private paths, credentials, or
+machine-specific artifacts.
+
+The implementation surface is [`scripts/bootstrap.mjs`](../../../scripts/bootstrap.mjs),
+[`scripts/orchestration-contract.mjs`](../../../scripts/orchestration-contract.mjs),
+[`scripts/verify-baseline.mjs`](../../../scripts/verify-baseline.mjs), and
+[`docs/integration-baseline.json`](../../integration-baseline.json). This
+section freezes the field semantics; it does not claim that the current dirty
+checkout or unsupported host has passed the runtime gate.
+
+### Failure ownership and bounded retry fields
+
+All stage failures use the same public-safe diagnostic fields: `owner`,
+`repository`, `surface`, `blockerClass`, `remediation`,
+`decisionRequired`/`decisionNeeded`, `dependencyImpact`,
+`downstreamImpact`, and `dependencyStatus`. A retrying stage additionally
+emits `retryPolicy` (`maxAttempts`, `backoffMs`, `attemptsUsed`, `exhausted`),
+sanitized `attempts`, stable `attemptLinks`, and immutable `firstFailure`.
+Only `transient` failures are retryable; deterministic, dependency,
+environment, and pending-human-decision blockers stop immediately. The first
+failure remains linked when a later attempt passes, and a new rerun must write
+a new evidence/artifact identity rather than overwrite earlier evidence.
+
+These records are diagnostic and cannot promote a failed or environment-
+limited gate to a current success claim. Attempt records contain no absolute
+temporary path, credential, machine-specific environment dump, or raw process
+output.
+
+Integration evidence is joined by
+[`scripts/join-integration-evidence.mjs`](../../../scripts/join-integration-evidence.mjs).
+The local and public runners record stage command, toolchain, execution
+boundary, artifact kind/identity, blocker/limitation, and dependency status;
+the joiner adds run and artifact identity and computes
+`claim.currentObservationEligible`/`currentClaimEligible`. Historical evidence
+is preserved but cannot pass that current-claim check, and revision mismatches
+are reported as freshness reasons rather than silently promoted.
 
 ## Selected implementation outcomes
 

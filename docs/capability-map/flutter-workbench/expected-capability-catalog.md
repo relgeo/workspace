@@ -11,7 +11,7 @@ implementation status is synchronized in the audit/reconciliation artifacts
 below and is summarized here so the expected catalog cannot be mistaken for a
 completion claim.
 
-## Current synchronized status — 2026-10-30
+## Current synchronized status — 2026-11-03
 
 | Status | Count | Reconciliation meaning |
 |---|---:|---|
@@ -40,3 +40,20 @@ For this task, the selected IDs are joined against the baseline catalog and
 the current audited status symbols in the reconciliation. `✔️` rows are not
 active debt; `➖` and `⏸️` rows are scope decisions and are not implementation
 work.
+
+## Frozen desktop authoring boundary
+
+The implementation-gap backlog contains the frozen behavior contract for
+`GAP-FW-001` through `GAP-FW-006`. It defines the observable semantics for
+New/Open/Save/Save As, dirty-state guarding, best-effort autosave/recovery,
+native picker delegation, bounded active-import diagnostics,
+selection/inspector ownership, keyboard/accessibility/window lifecycle, and
+artifact provenance. The expected catalog remains normative for capability
+identity; freezing the contract does not promote any `🌗` row to `✔️` by
+itself.
+
+The boundary rule is: Flutter source and widget/unit tests can verify the
+host-neutral contract, while native picker, forced relaunch, OS shortcut,
+assistive technology, window-manager, Ubuntu/Windows runtime, signing, and
+distribution claims require their own host evidence. Unavailable hosts are
+reported as `not verified`, never as an inferred pass or a target defect.

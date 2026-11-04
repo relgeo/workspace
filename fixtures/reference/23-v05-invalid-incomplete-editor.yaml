@@ -1,0 +1,12 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Incomplete Editor Recovery Boundary
+  description: Two incomplete rectangles remain editable in editor mode but fail strict validation.
+
+objects:
+  panel:
+    type: rect
+
+  secondary:
+    type: rect

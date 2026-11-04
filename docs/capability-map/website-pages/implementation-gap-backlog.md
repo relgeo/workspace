@@ -1,6 +1,6 @@
 # Website and Pages implementation-gap backlog
 
-**Tanggal:** 2026-10-30  
+**Tanggal:** 2026-11-03
 **Boundary:** candidate implementation, provenance, decision, and verification work for website/Pages gaps  
 **Status dokumen:** candidate follow-up handoff; local implementation evidence is recorded, but creating or updating this backlog does not close any implementation gap
 
@@ -34,12 +34,12 @@ rows have no implementation-gap task. No task is marked complete.
 minimum complete wayfinding outcome without making the site a runtime/CLI
 owner.  
 **Owner:** website/docs information architecture  
-**Dependency:** product decision on deterministic index versus query search  
+**Dependency:** frozen claim/locale/provenance contract; query/server search remains a separate product decision
 **Risk:** high; reference readers may fail to locate contract topics
 
 | Candidate task | Expected ID | Priority | Work type | Acceptance test / evidence target | Next action |
 | --- | --- | --- | --- | --- | --- |
-| `GAP-WEB-003-SEARCH-001` define and implement the baseline search/wayfinding contract | `WEB-PAGE-003` | P1 | decision + implementation | The selected local baseline is a deterministic localized topic index with client-side filtering, route links, live result status, and an explicit no-result state; built-output assertions pass. Query/server search remains a separately visible product decision, so the matrix is `🌗`, not `✔️`. | Re-audit the deterministic index in a browser; expand to query/server search only if the approved product contract requires it. |
+| `GAP-WEB-003-SEARCH-001` define and implement the baseline search/wayfinding contract | `WEB-PAGE-003` | P1 | decision + implementation | The frozen baseline is a deterministic localized topic index with client-side filtering, direct route links, live result status, and an explicit no-result state; built-output assertions pass. It does not claim query/server search or public search reliability. | Re-audit the deterministic index in a browser; open a separate product change only if query/server search is later required. |
 
 ## Candidate goal G-WEB-02 — Close language, reference, and claim consistency
 
@@ -47,14 +47,14 @@ owner.
 version/provenance claims; does not rewrite the normative DSL contract owned by
 `spec/id`.  
 **Owner:** website editorial owner + spec owner  
-**Dependency:** approved `spec/en` translation/mirror policy and active contract revision  
+**Dependency:** frozen `spec/en` editorial-mirror policy and active contract revision
 **Risk:** high; English readers can mistake Indonesian normative content for a translated contract
 
 | Candidate task | Expected ID | Priority | Work type | Acceptance test / evidence target | Next action |
 | --- | --- | --- | --- | --- | --- |
-| `GAP-WEB-004-LOCALE-001` align English language-spec behavior with declared policy | `WEB-PAGE-004` | P1 | decision + content/loader implementation | The current local presentation is honestly disclosed: `/en` presents the Indonesian normative source as an editorial mirror and links to the Indonesian language spec; built-output assertions pass. Full English translation/parity remains open and must not be implied. | Obtain the translation-versus-mirror decision; if translation is required, author/review `spec/en` and preserve the disclosure until parity is proven. |
-| `GAP-WEB-005-REFERENCE-001` complete bilingual docs/reference parity for the declared surface | `WEB-PAGE-005` | P1 | content + verification | Generated English docs/spec routes have usable content or an explicit status affordance; the current mirror disclosure and localized docs indexes pass built-output assertions. Full bilingual normative reference parity remains partial. | Inventory and review missing English reference content, then add locale-coverage/internal-link checks before changing the `🌗` status. |
-| `GAP-WEB-015-STATUS-001` enforce capability/version/provenance consistency in public claims | `WEB-PAGE-015` | P1/P2 | provenance + test | The local provenance report identifies website/spec/Playground revisions and exposes three Playground mismatches; public status copy remains explicit. A synchronized canonical version set is still required before this row can close. | Define canonical version fields and select the approved Playground revision, then extend the checker to the public claim fields. |
+| `GAP-WEB-004-LOCALE-001` align English language-spec behavior with declared policy | `WEB-PAGE-004` | P1 | decision + content/loader implementation | The current local presentation must say that `/en` is an editorial mirror of `spec/id`, not a translated normative contract, link to the Indonesian language spec, and avoid any full-parity implication; built-output assertions pass. | Preserve the frozen disclosure; only replace it after a separately reviewed `spec/en` translation proves parity for the declared surface. |
+| `GAP-WEB-005-REFERENCE-001` complete bilingual docs/reference parity for the declared surface | `WEB-PAGE-005` | P1 | content + verification | Generated English docs/spec routes have usable content or an explicit status affordance, while the authoritative `spec/id` source and English editorial mirror remain distinguishable. Full bilingual normative reference parity remains partial. | Inventory and review missing English reference content, then add locale-coverage/internal-link checks before changing the `🌗` status. |
+| `GAP-WEB-015-STATUS-001` enforce capability/version/provenance consistency in public claims | `WEB-PAGE-015` | P1/P2 | provenance + test | Public claims use separate DSL/package/application/source/deployment fields and the frozen tuple `website=6eb2e241…`, `spec=b96ba3b2…`, `playground=c7cec4b5…`. The root baseline, Pages pins, and assembled-artifact gate now synchronize this tuple locally. | Retain the gate and update claims only when the corresponding CI, deployment, or public evidence is available; do not collapse those evidence boundaries into the local pass. |
 
 ## Candidate goal G-WEB-03 — Close Playground artifact and Pages provenance
 
@@ -68,9 +68,9 @@ their repositories.
 | Candidate task | Expected ID | Priority | Work type | Acceptance test / evidence target | Next action |
 | --- | --- | --- | --- | --- | --- |
 | `GAP-WEB-007-HANDOFF-001` verify hosted Playground link/embed handoff for the reviewed artifact | `WEB-PAGE-007` | P1 | integration + runtime verification | Docs/CTA links resolve at the configured base path; Playground entry loads, and a browser smoke covers edit → resolve → preview → inspect or the documented handoff boundary; Markdown source/preview assertions remain green. | Build the selected Playground revision with the website, run artifact assertions, then execute hosted browser smoke. |
-| `GAP-WEB-012-ARTIFACT-001` synchronize generated artifact provenance | `WEB-PAGE-012` | P0 | provenance + build gate | The local 138-page build, provenance report, and combined artifact assertion pass; the report explicitly shows root Playground `59a42ae`, baseline `c0de7b0`, and Pages pin `09ac1cb` differ. The strict gate correctly fails until one approved revision set is selected. | Select the approved Playground revision and regenerate the baseline/workflow pin before publishing; do not infer parity from the local artifact pass. |
+| `GAP-WEB-012-ARTIFACT-001` synchronize generated artifact provenance | `WEB-PAGE-012` | P0 | provenance + build gate | The local 138-page build, provenance report, and combined artifact assertion pass for the synchronized website/spec/Playground tuple; the strict gate fails closed if the root baseline, child checkout, workflow pin, or assembled artifact drifts. | Retain the synchronized tuple in CI and archive the Pages run before publishing; do not infer public deployment parity from the local artifact pass. |
 | `GAP-WEB-013-PAGES-001` prove canonical Pages deployment for synchronized inputs | `WEB-PAGE-013` | P0 | deployment verification | Canonical Pages workflow completes build, artifact upload, deploy, and post-deploy smoke for the same website/spec/Playground revisions; run URL and artifact revision are archived. | Trigger or observe the canonical workflow after pin synchronization and retain its run evidence. |
-| `GAP-WEB-014-SMOKE-001` establish current public reliability evidence | `WEB-PAGE-014` | P1 | runtime verification | All declared route/asset probes return expected statuses and content markers; artifact assertions and public smoke reference the same deployment revision, with DNS/network failures recorded separately. | Rerun the 13-route smoke when `relgeo.github.io` resolves and attach the result to the release evidence. |
+| `GAP-WEB-014-SMOKE-001` establish current public reliability evidence | `WEB-PAGE-014` | P1 | runtime verification | All declared route/asset probes return expected statuses and content markers; artifact assertions and public smoke reference the same deployment revision, with DNS/network failures recorded separately. The 2026-11-03 attempt stopped at `/` after `fetch failed`, and direct curl recorded DNS resolution failure, so no public defect is inferred. | Rerun the 13-route smoke when `relgeo.github.io` resolves and attach the result to the release evidence. |
 
 ## Candidate goal G-WEB-04 — Close responsive, accessibility, and SEO evidence
 
@@ -83,8 +83,8 @@ validation remain separately deferred by scope decision.
 
 | Candidate task | Expected ID | Priority | Work type | Acceptance test / evidence target | Next action |
 | --- | --- | --- | --- | --- | --- |
-| `GAP-WEB-009-RESPONSIVE-001` verify responsive behavior across the declared browser matrix | `WEB-PAGE-009` | P1 | runtime verification | At 640, 899, and 900px plus the agreed narrow/wide cases, navigation, code/spec reading, links, and Playground handoff remain usable; no unexpected page horizontal overflow or clipped focus is observed. | Run the browser viewport matrix against the assembled site and archive screenshots/measurements. |
-| `GAP-WEB-010-A11Y-001` execute current browser accessibility and keyboard evidence | `WEB-PAGE-010` | P1 | accessibility verification | Static accessibility shell, focus/reduced-motion styles, landmarks, names, and localized active state pass built-output assertions. Browser AX/keyboard traversal and physical AT are not claimed. | Run the named browser AX/keyboard sweep and record failures by route/component; keep physical AT separately deferred. |
+| `GAP-WEB-009-RESPONSIVE-001` verify responsive behavior across the declared browser matrix | `WEB-PAGE-009` | P1 | runtime verification | The built-output gate now asserts 640/899/900px breakpoint CSS, shrinkable article columns, scrollable narrow navigation, focus styles, and all generated route shells. A native Chrome local smoke rendered the docs route; the complete 640/899/900 viewport matrix remains unverified because the headless browser aborted on this host. | Run the exact browser viewport matrix against the assembled site when a stable browser runner is available and archive screenshots/measurements. |
+| `GAP-WEB-010-A11Y-001` execute current browser accessibility and keyboard evidence | `WEB-PAGE-010` | P1 | accessibility verification | Built-output assertions cover landmarks, labels, active locale, focus treatment, reduced motion, and localized search states. Native Chrome AX smoke verified the English/Indonesian docs landmarks, skip-link focus, and no-result/filtered states; physical AT remains separate. | Extend the browser AX/keyboard sweep across the full route matrix when the browser runner is stable; keep physical AT separately deferred. |
 | `GAP-WEB-011-SEO-001` make deployment-aware SEO metadata and crawlability release-gated | `WEB-PAGE-011` | P1 | build + runtime verification | Deployment builds reject `https://example.com` when the public-site gate is enabled; configured local output emits canonical/hreflang/sitemap URLs and crawlable HTML. External crawler/public verification remains open. | Verify deployed metadata and sitemap after Pages publish, then run a route/content crawler against the reachable artifact. |
 
 ## Candidate ordering and explicit non-closure

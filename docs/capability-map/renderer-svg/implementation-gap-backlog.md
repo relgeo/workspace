@@ -16,6 +16,31 @@ menjadi satu candidate task terpisah. Candidate task belum menjadi goal aktif
 SuClos sampai owner, scope, dependency, dan execution plan disetujui.
 Dokumentasi gap tidak menutup gap implementasi.
 
+## Boundary freeze — owner dan fixture map (2026-11-03)
+
+Bagian ini membekukan boundary yang dipakai task lanjutan. `Fixture anchor`
+adalah sumber fixture atau regression test yang menjadi oracle semantik; ia
+tidak otomatis berarti capability sudah terverifikasi pada semua host.
+
+| ID | Owner boundary | Fixture anchor stabil | Assertion semantik dan safety | Batas klaim |
+| --- | --- | --- | --- | --- |
+| `SVG-SCENE-003` | `renderer-svg` memiliki root width/height, viewBox, `preserveAspectRatio`, dan `physicalMode`; `core` memiliki unit/bbox; CLI/Playground hanya memilih context | `fixtures/reference/10-v05-relational-baseline.yaml`; `renderer-svg/src/__tests__/renderer.test.ts` physical-mode/origin cases | Model context default, physical mm, dan scene transform mempertahankan object identity/geometry; SVG tidak memuat executable markup | Layout browser/print final tetap milik host |
+| `SVG-STYLE-002` | `renderer-svg` memiliki fallback typography/arrow dan XML serialization; `spec/id/presentation` memiliki field meaning | `renderer-svg/src/__tests__/fixtures/v05-presentation-escaping.yaml`; `renderer-svg/src/__tests__/security.test.ts` | Fallback font/size/baseline stabil; text dan dynamic style attributes ter-escape; tidak ada `<script>` atau event-handler attribute | Exact font metrics dan cross-runtime wrapping bukan parity contract |
+| `SVG-DIM-001` | `renderer-svg` memproyeksikan dimension geometry; `core` memasok resolved points; `spec/id/presentation/22-dimension.md` normatif | `fixtures/reference/02-mixed-presentational-sheet.yaml`; presentation-escaping fixture; `renderer-svg/src/__tests__/renderer.test.ts` dimension cases | Linear/radius/diameter/angular kind, label, extension/leader, dan fallback placement dibandingkan secara semantik; hostile label/style tetap text/attribute | Tidak mengubah geometry resolver atau menjanjikan pixel equality |
+| `SVG-ANNOT-001` | `renderer-svg` memproyeksikan target/leader/place/multiline; `core` memasok resolved target; Playground hanya menampilkan | `fixtures/reference/02-mixed-presentational-sheet.yaml`; presentation-escaping fixture; renderer annotation cases | Leader/target, multiline order, fallback placement, dan escaped text/style stabil; output bebas executable markup | Exact text metrics tetap renderer-local |
+| `SVG-SHEET-001` | `renderer-svg` merender page/placement/scale/title block; `core` memiliki views/sheets; CLI memiliki `--sheet/--view` selection | `fixtures/reference/02-mixed-presentational-sheet.yaml`, `03-sheet-title-block.yaml`, `09-multi-sheet-title-block.yaml`; `reference_fixtures.test.ts` | Selected sheet menghasilkan page border, view transform, title block, dan size yang stabil tanpa mutasi model geometry | Legacy fixture evidence tidak dipromosikan menjadi active support tanpa audit |
+| `SVG-DET-001` | `renderer-svg`/workspace memiliki semantic projection; `core` memiliki canonical scene serialization/replay comparator | `renderer-svg/src/__tests__/semantic_projection.test.ts`; `fixtures/manifest.json` `semanticSerialization`; active fixture 10 JSON | Bandingkan schema/version, bbox, object order, IDs, kind, topology, endpoints, dan normalized numbers; raw SVG bytes bukan oracle | Cross-host typography/whitespace/attribute order tidak dibandingkan |
+| `SVG-INTEG-002` | Playground `worker.ts` menghubungkan resolve → render; `Preview.tsx` memiliki DOM host/inspection; renderer hanya menyediakan safe SVG | `fixtures/reference/10-v05-relational-baseline.yaml`, `14-v05-runtime-align-violation.yaml`; `playground/src/worker.ts`; `playground/src/components/Preview.tsx` | Valid, runtime-diagnostic, dan selection context mempertahankan semantic projection; DOM boundary menolak executable markup | Browser E2E/public runtime adalah evidence terpisah dan boleh `not verified` |
+| `GAP-009` | Shared language-spec gap; implementation owner `renderer-svg` + `core`, consumer checks di CLI/Markdown/Playground | `renderer-svg/src/__tests__/fixtures/v05-presentation-escaping.yaml`; link ke language-spec backlog `GAP-009` | Dimension/annotation text serta dynamic attributes ter-escape dan semantic placement tetap; semua dimension kind/host belum diklaim exhaustive | Row sumber tetap `🌗`; cross-surface map tidak menutup gap sendiri |
+| `GAP-013` | `renderer-svg` memiliki safe semantic SVG serialization; Markdown/Playground hanya consumer safety boundaries | presentation-escaping fixture; `security.test.ts`; shared no-executable-markup assertions | No `<script>`, event-handler attributes, atau unescaped dynamic XML; semantic projection tetap dapat dibandingkan | Raw byte equality dan deployment bukan prasyarat |
+| `MD-DIAG-003` | `remark-relgeo` memiliki tolerant AST diagnostic transport; `core` memiliki runtime diagnostic; renderer hanya menghasilkan preview; website memiliki presentation | Target fixture `fixtures/reference/14-v05-runtime-align-violation.yaml` + expected SVG/scene; Markdown preview AST fixture pada follow-up task | Tolerant output mempertahankan preview valid dan menambahkan structured warning/location; strict mode tetap explicit; tidak ada partial unsafe markup | Saat freeze ini row masih `❌`; target fixture bukan bukti implementasi |
+
+Shared safety invariant untuk seluruh anchor di atas: setiap output SVG yang
+diterima consumer harus valid sebagai satu dokumen `<svg>...</svg>`, semua
+source-controlled/user-controlled text masuk melalui XML escaping, dan
+`/<script\\b/i` serta `/\\son[a-z]+\\s*=/i` tidak boleh menemukan executable
+markup. Semantic fixtures membandingkan projection terstruktur, bukan raw SVG.
+
 ## Aturan backlog
 
 - `Candidate goal` mengelompokkan pekerjaan menurut dependency dan owner; bukan

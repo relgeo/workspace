@@ -1,6 +1,6 @@
 # Markdown Surfaces Expected-versus-Observed Reconciliation
 
-**Reconciliation date:** 2026-10-30
+**Reconciliation date:** 2026-11-03
 **Expected source:** [`markdown-surfaces/expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Observed source:** [`markdown-surfaces/implementation-audit.md`](./implementation-audit.md)
 **Policy/context sources:** [`MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), [`compatibility-matrix.json`](../../compatibility-matrix.json), and [`05-public-docs-and-playground-hardening.md`](../../plans/05-public-docs-and-playground-hardening.md)
@@ -46,10 +46,10 @@ The dimensions below are intentionally independent:
 | Missing expected IDs | 0 |
 | Duplicate reconciliation IDs | 0 |
 | Observed-only IDs | 0 |
-| `✅ implemented` | 16 |
+| `✅ implemented` | 17 |
 | `🌗 partial` | 20 |
 | `⚠️ broken` | 0 |
-| `❌ absent` | 1 |
+| `❌ absent` | 0 |
 | `➖ not applicable` | 1 |
 The two external-boundary rows are `🌗 partial` implementation results because
 the local Astro/workspace slice is observed while the required external
@@ -80,7 +80,7 @@ capabilities.
 | `MD-HL-004` | Keep highlighting isolated from semantic resolution and preview success. | `🌗 partial` | `partial` | `partial-local` | boundary only — lexical contract follows language-service | The plugin uses language-service tokenization and no renderer; peer service failure now has a bounded source-preserving fallback, but no independent lexical fallback mode exists. |
 | `MD-DIAG-001` | Emit structured diagnostic code, severity, message, and location. | `✅ implemented` | `implemented` | `verified-local` | boundary only — vocabulary from spec/core | Both plugins serialize stable code, severity, message, phase, and fenced-block/source location in `data-relgeo-diagnostic`; focused tests cover preview and highlighter failures. |
 | `MD-DIAG-002` | Render actionable source/build diagnostics while retaining readable fallback. | `✅ implemented` | `implemented` | `verified-local` | in scope — host owns visual presentation | Preview errors retain visible fallback text and structured payload; highlighter failures preserve readable source, and the website consumer asserts successful output remains source-free. |
-| `MD-DIAG-003` | Preserve a valid preview when a runtime diagnostic is non-fatal. | `❌ absent` | `absent` | `verified-local` | in scope | Preview receives a compiled scene or thrown error; no non-fatal diagnostic path preserves preview plus diagnostic. |
+| `MD-DIAG-003` | Preserve a valid preview when a runtime diagnostic is non-fatal. | `✅ implemented` | `implemented` | `verified-local` | in scope | Fixture 14 produces a stable `RUNTIME_CONSTRAINT_VIOLATION` warning while tolerant output retains the valid preview image; strict mode throws explicitly. |
 | `MD-DIAG-004` | Offer an explicit tolerant versus strict failure policy. | `✅ implemented` | `implemented` | `verified-local` | in scope | Both plugin boundaries document a tolerant default and strict policy; focused tests prove fallback versus deterministic `RemarkRelgeoError`/`RemarkRelgeoHlError` behavior. |
 | `MD-OPT-001` | Document option schema, defaults, and safe instance reuse. | `🌗 partial` | `partial` | `partial-local` | in scope | Interfaces and README expose options, but invalid values, unknown keys, and exhaustive defaults are not diagnosed or tested. |
 | `MD-OPT-002` | Pass through DSL version, profile, view, and sheet selection. | `🌗 partial` | `partial` | `partial-local` | in scope | Profile/sheet/unit pass through and core handles version; no plugin version/view option, and future version becomes a generic placeholder. |
@@ -115,10 +115,15 @@ The join makes the current gap map explicit:
   fallback diagnostic; strict mode remains an explicit caller choice.
 - `MD-PREVIEW-004` is now implemented at the official website boundary: the
   rehype helper replaces the generated outer `pre` with the preview wrapper.
-- `MD-DIAG-001`, `MD-DIAG-002`, `MD-DIAG-004`, `MD-ERR-001`, and `MD-WEB-003`
-  have focused package/consumer evidence and are promoted to `✅ implemented`.
-  `MD-DIAG-003` remains the explicit `❌` row outside this implementation
-  tranche; non-fatal runtime-diagnostic preservation was not implemented.
+- `MD-DIAG-001`, `MD-DIAG-002`, `MD-DIAG-003`, `MD-DIAG-004`, `MD-ERR-001`,
+  and `MD-WEB-003` have focused package/consumer evidence and are promoted to
+  `✅ implemented`. `MD-DIAG-003` uses core's retained-scene constraint
+  violation as a warning payload; the preview image is not dropped in tolerant
+  mode and strict mode remains an explicit caller policy.
+- The local package evidence is remark-relgeo 9/9 tests plus build/lint and
+  remark-relgeo-hl 6/6 tests plus build/lint. The browser/host boundary remains
+  `not-verified` where a standalone unified host or public registry consumer
+  was not run.
 - `MD-A11Y-003` is the only `➖` row because the current plugin boundary owns no
   interactive controls. It is not a substitute for any missing accessibility
   output capability.

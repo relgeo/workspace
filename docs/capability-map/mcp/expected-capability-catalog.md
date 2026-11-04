@@ -265,6 +265,30 @@ Perubahan terhadap daftar expected hanya boleh dilakukan melalui keputusan scope
 baru dan versi katalog berikutnya. Matrix lama, implementasi saat ini, atau
 hasil audit tidak boleh mengubah katalog secara diam-diam.
 
+### 4.1 Frozen post-full-spec contract edges
+
+The full-spec snapshot/retrieval foundation is now the explicit baseline for
+the remaining MCP work. It supplies versioned, offline `spec/id` sections and
+provenance for discovery/reference; it does not own semantic validation,
+examples, diagnostics, rendering, transport, host lifecycle, or document
+mutation. Those owners remain separate:
+
+| Contract edge | Owner of meaning | MCP responsibility | Required guard |
+| --- | --- | --- | --- |
+| Schema/version | `relgeo_mcp` DTOs plus normative `spec/id` versioning | Validate typed inputs, expose bounds, reject unsupported versions | No silent coercion or second semantic engine |
+| Examples | Versioned examples owner | Bound lookup and preserve explanatory provenance | Examples never become normative rules |
+| Validation/diagnostics | `core` and `language-service` | Adapt structured producer output | Preserve phase/code/severity/path/message/range/origin; never expose raw `Error` |
+| Rendering | `core` and `renderer-svg` | Adapt in-memory semantic SVG result | No `outputPath`, Save, export, or fabricated success on failure |
+| Resources/cache | MCP resource layer plus snapshot/catalog owners | Preserve version/revision/digest and explicit fallback identity | No mixed-version or unbounded remote fallback |
+| Proposal/edit | Flutter bridge/editor plus MCP DTOs | Carry bounded proposal and explicit outcome | Read-only calls cannot mutate; apply is guarded and undoable |
+| Workflow/provenance | MCP composition plus all producer owners | Preserve `basedOn[]`, source kind, and identity | Prompt text cannot replace normative source or implicit apply |
+
+The edge table is a scope contract, not implementation evidence. Audit rows must
+still distinguish `verified-local`, `not-verified`, and `environment-unavailable`
+for each owner and transport. Pure-Dart package boundaries remain intact;
+Flutter may provide lifecycle/bridge services but does not redefine MCP DTO or
+normative DSL meaning.
+
 ## 5. Catalog completeness proof
 
 The catalog contains **68 expected capability rows** across 18 stable prefixes:

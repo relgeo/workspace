@@ -1,6 +1,6 @@
 # Geometry coverage validation and handoff
 
-**Tanggal validasi:** 2026-10-30  
+**Tanggal validasi:** 2026-11-03
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
 **Required context:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)
 
@@ -18,10 +18,10 @@ Klaim yang aman:
   evidence pada boundary yang diperiksa;
 - reconciliation, status matrix, dan catalog masing-masing memiliki **40 row**
   tanpa missing, extra, atau duplicate ID;
-- matrix mempertahankan **10 `✔️`, 30 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`, dan 0 `⚠️`**;
+- matrix memuat **17 `✔️`, 23 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`, dan 0 `⚠️`**;
   evidence qualifier `not-verified` tetap dipisahkan dari implementation
   status dan tidak menjadi row status tersendiri;
-- setiap 30 row `🌗` memiliki satu candidate task di backlog dengan owner,
+- setiap 23 row `🌗` memiliki satu candidate task di backlog dengan owner,
   dependency, acceptance test/evidence target, dan next action;
 - dokumentasi ini dan backlog tidak menutup gap implementasi atau mempromosikan
   local evidence menjadi canonical/public/native-host evidence.
@@ -39,7 +39,7 @@ implementation/consumer behavior, ID tersebut wajib dipertahankan dan diberi
 | [Implementation audit](./archive/implementation-audit-legacy.md) | Observed source, test, consumer, command/UI, runtime, fixture, dan docs evidence | Coverage ledger tersedia; 40/40 expected IDs diaudit; limitations eksplisit |
 | [Reconciliation](./reconciliation.md) | Join satu-ke-satu expected-versus-observed | 40/40 rows; no missing/extra/duplicate; implementation/evidence/scope terpisah |
 | [Status matrix](./status-matrix.md) | Reporting view capability-first | 40 rows; kolom status/evidence/gap/owner/dependency/risk/next action lengkap |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 30/30 `🌗` rows memiliki task; `VERIFY-GEO-SER-002` adalah follow-up evidence-only dan `FIX-GEO-PROVENANCE-001` memiliki local fix evidence |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 23/23 remaining `🌗` rows memiliki task; bounded serialization/replay evidence dan `FIX-GEO-PROVENANCE-001` memiliki local fix evidence |
 | [Historical geometry matrix](./capability-matrix.md) | Historical inventory dan evidence lama | Dipertahankan sebagai historical input, bukan source expected list |
 
 ## 3. Checklist coverage dan integrity
@@ -142,21 +142,21 @@ by changing a status symbol:
 
 ## 6. Implementation handoff
 
-Implementation work remains a separate goal/task concern. The published
-backlog proposes, but does not start, these candidate workstreams:
+Remaining implementation work remains a separate goal/task concern. The
+published backlog records the bounded selected work as locally implemented and
+keeps these candidate workstreams open:
 
 1. `G-01` close object, primitive, transform, placement, and anchor semantics;
 2. `G-02` promote dimensions, collections, queries, and constraint coverage;
 3. `G-03` harden boolean, numeric, deterministic, and serialization contracts;
 4. `G-04` close TypeScript/Flutter and semantic SVG parity evidence;
-5. `FIX-GEO-PROVENANCE-001` keep the locally resolved 0.5 provenance wording covered by regression evidence;
-6. `VERIFY-GEO-SER-002` establish the canonical serialization contract.
+5. `GAP-GEO-DET-001` and `GAP-GEO-PARITY-*` close host/cross-runtime evidence;
+6. deferred boolean union/xor/non-rectangle promotion remains held by decision.
 
-Each candidate task remains blocked on its stated owner/dependency and must
-produce source changes plus executable tests/fixtures/evidence before its
-capability can move from `🌗` or `❌`; an evidence-only `not-verified` finding
-must also be resolved before the affected evidence claim is promoted. This
-handoff does not create, start,
+Each remaining candidate task remains gated by its stated owner/dependency and
+must produce source changes plus executable tests/fixtures/evidence before its
+capability can move from `🌗` or `❌`; host evidence stays `not-verified` until
+the required environment is available. This handoff does not create, start,
 or mark any implementation goal complete.
 
 ## 7. Required evidence index
@@ -181,13 +181,13 @@ environments passed.
 
 | Check | Result | Evidence qualification |
 | --- | --- | --- |
-| `pnpm --filter @relgeo/geometry test` | PASS — 75/75 | Fresh local package test evidence, including closed-shape normalization and stable error coverage |
-| `pnpm --filter @relgeo/core test` | PASS — 430/430 | Fresh local core consumer evidence in the current working tree; Node 22 qualified |
-| `pnpm --filter @relgeo/renderer-svg test` | PASS — 82/82 | Fresh local renderer consumer evidence in the current working tree; Node 22 qualified |
-| `pnpm --filter @relgeo/geometry lint` | PASS | Local static check |
-| `pnpm --filter @relgeo/geometry build` | PASS | Local TypeScript/tsup build evidence |
-| `pnpm conformance:fixtures` | PASS — 260/260 across 20 fixtures | Fixture conformance evidence |
-| `pnpm flutter:conformance` | NOT VERIFIED — exit 2 | Flutter runner was unavailable because `update_engine_version.sh` could not write `cache/engine.stamp` (`Operation not permitted`) |
+| `pnpm lint` from `geometry/` | PASS | Local TypeScript static check |
+| `pnpm test` from `geometry/` | PASS — 88/88 across 5 files | Fresh local package behavior, including normalization, selectors, tolerance, and stable errors |
+| `pnpm build` from `geometry/` | PASS | Local TypeScript/tsup build evidence |
+| `pnpm test` from `core/` | PASS — 452/452 across 48 files | Fresh local core consumer/projection/replay evidence; Node 22 qualified |
+| `pnpm test` from `cli/` | PASS — 24/24 | CLI canonical JSON/repeated-process evidence; Node 22 qualified |
+| `node scripts/run-conformance-fixtures.mjs` | PASS — 298/298 across 23 fixtures | Fixture conformance evidence including updated canonical fixture 15 and manifest replay checks |
+| Flutter probe | NOT VERIFIED | Flutter runner was unavailable because `update_engine_version.sh` could not write `cache/engine.stamp` (`Operation not permitted`) |
 | Workspace runtime version | QUALIFIED — Node `v22.23.2` | Root package requires Node `>=24`; current local run is not canonical Node-24 evidence |
 
 The direct checks above do not replace registry refresh, CI, native Flutter,
@@ -217,18 +217,13 @@ The next owner should start from
 [implementation-gap-backlog.md](./implementation-gap-backlog.md), preserving
 the following handoff order and boundaries:
 
-1. `GAP-GEO-QUERY-004`: geometry lead with core dependency; extend only the
-   supported pair/selector contract and keep broader sampled pairs partial.
-2. `GAP-GEO-NUM-001`: geometry plus spec review; decide which tolerance bounds
-   are public semantic policy rather than package implementation constants.
-3. `GAP-GEO-NUM-002`: geometry lead with core consumer; extend topology
-   evidence only through separately reviewed holes/union/xor/non-rectangle
-   fixtures.
-4. `GAP-GEO-NUM-003`: geometry plus core diagnostic consumer; complete the
-   cross-consumer error-code and document-path mapping.
-5. `GAP-GEO-SER-002`, `GAP-GEO-PARITY-*`, and `GAP-GEO-DET-*`: retain their
-   `🌗`/`not-verified` state until serializer, Flutter, Node-24, and
-   cross-runtime replay evidence is independently available.
+1. `GAP-GEO-DET-001` and `GAP-GEO-PARITY-*`: restore Node-24/Flutter/host
+   evidence before making cross-runtime claims.
+2. `GAP-GEO-BOOLEAN-001/002`: preserve deferred union/xor/non-rectangle scope
+   until a separate promotion decision and fixture set exist.
+3. Remaining `🌗` rows in the backlog: follow owner/dependency order without
+   reopening the completed bounded query, numeric, error, replay, or
+   serialization contracts.
 
 The `➖` UI/platform ownership findings and `⏸️` broader boolean promotion are
 not active implementation work. Each remaining candidate needs source changes

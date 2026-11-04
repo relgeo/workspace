@@ -77,7 +77,48 @@ does not reassign semantic ownership to those consumers.
 | Playground / Flutter workbench | Edit, preview, inspect, graph, diagnose, persist/share/export, and agent-assisted authoring workflows | Consumer boundary; UI/platform delivery is not required to define the language catalog |
 | MCP / agent integration | Rule-aware read/modify workflows over document/session contracts | Separate protocol/host boundary; it must consume the language contract |
 
-### 1.3 Expected-but-not-yet-observed capabilities are retained
+### 1.3 Active vocabulary catalog and drift boundary
+
+Untuk `LANG-002`, `DOC-003`, `TYPE-001`, `TYPE-002`, dan `VER-003`, katalog
+aktif yang dapat dibaca mesin adalah
+[`normative-vocabulary-catalog.json`](./normative-vocabulary-catalog.json).
+Katalog itu adalah **checked projection**, bukan source of truth kedua: `spec/id`
+tetap menentukan makna dan urutan vocabulary. File JSON mengunci daftar dan
+urutan berikut agar drift dapat dideteksi secara deterministik:
+
+Catalog ID: `relgeo-language-vocabulary-v0.5` (version `1`).
+
+| Vocabulary surface | Isi katalog aktif | Status kontrak |
+| --- | --- | --- |
+| Root fields | `version`, `scene`, `parameters`, `constants`, `derived`, `profiles`, `metaPresets`, `components`, `objects`, `constraints`, `views`, `sheets`, `meta` | Normative; urutan mengikuti root example pada `spec/id/core/02-document-structure.md` |
+| Scalar types | `length`, `number`, `angle`, `percent`, `boolean`, `string` | Normative; heading `7.1` pada `spec/id/syntax/07-type-system.md` |
+| Structured types | `point`, `vector`, `array`, `object`, `frame2d`, `bbox2d`, `collection`, `path-ref` | Normative; heading `7.2` pada `spec/id/syntax/07-type-system.md` |
+| Compatibility aliases | `styles` → `metaPresets`, `style` → `metaPreset` | Terbatas pada compatibility; provenance wajib berasal dari `spec/id/presentation/26-metadata.md` |
+| Document labels | `Normative`, `Informative`, `Informative Index` | Normative editorial classification; label lain bukan status aktif |
+
+Klasifikasi artefaknya sengaja dipisahkan:
+
+1. **Normative**: chapter DSL di `spec/id/core/`, `syntax/`, `geometry/`, dan
+   `presentation/` dengan label `Status dokumen: \`Normative\``.
+2. **Informative**: index, editorial guide, appendix, expected catalog, dan
+   backlog; dokumen ini menjelaskan atau mengaudit kontrak dan tidak boleh
+   menambah vocabulary baru.
+3. **Generated**: tidak ada generated artifact yang menjadi source of truth
+   pada scope ini. Parser, core types, schema, dan completions adalah projection
+   yang dimiliki owner implementasi dan wajib mengikuti katalog.
+4. **Checked**: JSON catalog serta
+   [`scripts/check-language-spec-vocabulary.mjs`](../../../scripts/check-language-spec-vocabulary.mjs)
+   diperiksa oleh `pnpm run language-spec:check`. Missing normative entry,
+   missing consumer entry, alias tanpa provenance, dan status mismatch adalah
+   failure; extra consumer vocabulary hanya report-only sampai ada keputusan
+   semantik.
+
+Perubahan pada vocabulary harus dilakukan di `spec/id` terlebih dahulu, lalu
+katalog checked projection dan consumer projections diperbarui dalam perubahan
+yang sama. Expected rows di bawah tetap `PENDING-AUDIT`; kelulusan drift check
+tidak sama dengan klaim implementasi atau parity lintas consumer.
+
+### 1.4 Expected-but-not-yet-observed capabilities are retained
 
 `PENDING-AUDIT` means “expected catalog row whose observed implementation status
 is reported downstream”; it does not mean implemented, absent, or approved by a

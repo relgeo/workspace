@@ -1,12 +1,12 @@
 # Geometry Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-10-30
+**Tanggal:** 2026-11-03
 
 **Expected source:** [Expected Geometry Capability Catalog](./expected-capability-catalog.md)
 
 **Observed source:** [Geometry implementation audit evidence](./archive/implementation-audit-legacy.md)
 
-**Status:** join selesai; published status matrix dan gap backlog tersedia
+**Status:** join selesai; local bounded geometry evidence direkonsiliasi; host parity tetap qualified
 
 ## 1. Tujuan dan aturan join
 
@@ -51,7 +51,8 @@ memuat `not-verified` atau `source-only` sesuai temuan.
 implementation atau consumer boundary pada audit. Jadi jumlah row `❌ absent`
 saat ini adalah **0**. Ini bukan klaim parity penuh: 30 row `🌗 partial`
 memuat behavior, boundary, contract, atau evidence yang belum lengkap; satu di
-antaranya (`GEO-SER-002`) juga memiliki evidence `not-verified`.
+Host-owned rows tetap memiliki evidence `not-verified`; ini tidak menurunkan
+bounded local implementation yang sudah memiliki test/fixture pass.
 
 `⏸️ deferred` dan `➖ not-applicable` muncul pada findings scope/ownership,
 bukan sebagai penghapus expected capability. Jika audit berikutnya menemukan
@@ -67,17 +68,16 @@ hasilnya diubah menjadi `❌ absent`, bukan `➖`.
 | Missing expected IDs | 0 |
 | Extra observed-only IDs | 0 |
 | Duplicate reconciliation IDs | 0 |
-| `✔️ implemented` | 10 |
-| `🌗 partial` | 30 |
+| `✔️ implemented` | 17 |
+| `🌗 partial` | 23 |
 | `❌ absent` | 0 |
 | `⚠️ broken`, `⏸️ deferred`, `➖ not-applicable` as row result | 0; recorded as separate audit findings where applicable |
 
-Normalization note: the current audit labels `GEO-SER-002` as unverified
-because no standalone canonical numeric/order contract or replay proof was
-available. The reconciliation result is nevertheless `🌗 partial`, not a new
-`?` result: snapshots/comparator behavior exists, while the missing proof is
-preserved in the separate `source-only + fixture-pass + not-verified` evidence
-state.
+Normalization note: `GEO-QUERY-004`, `GEO-NUM-001/002/003`,
+`GEO-DET-002`, dan `GEO-SER-001/002` kini `✔️ implemented` pada bounded local
+boundary karena source, tests, fixture snapshots, dan replay/conformance
+evidence tersedia. Cross-runtime Node 24, Flutter, registry, dan host replay
+tetap dipisahkan sebagai `not-verified` evidence pada rows parity/determinism.
 
 Evidence authority yang dipakai untuk join adalah audit current, dengan source
 register di catalog/audit, `docs/MATURATION-MASTER-PLAN.md`,
@@ -138,7 +138,7 @@ tidak menambah atau menghapus expected ID.
 | `GEO-QUERY-001` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN; high-level query service is core-owned, geometry provides low-level utilities | Audit §3E `GEO-QUERY-001`; `core/src/evaluator.ts` |
 | `GEO-QUERY-002` | `🌗 partial` | `partial` | `local-pass` | IN; queries exist, but broad path/tolerance coverage is incomplete | Audit §3E `GEO-QUERY-002`; evaluator/frame tests |
 | `GEO-QUERY-003` | `✔️ implemented` | `implemented` | `local-pass` | IN WITH BOUNDARY; v0.5 overload boundaries are tested | Audit §3E `GEO-QUERY-003`; evaluator tests |
-| `GEO-QUERY-004` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; line-line and fixture 15 active, sampled broader pairs partial | Audit §3E `GEO-QUERY-004`; fixture 15 |
+| `GEO-QUERY-004` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; supported pair/selector matrix, deterministic ordering, and invalid/empty/multiple errors are frozen; sampled broader pairs remain outside promotion | Audit §3E `GEO-QUERY-004`; geometry contract fixture/intersection tests; conformance 298/298 |
 | `GEO-QUERY-005` | `✔️ implemented` | `implemented` | `local-pass` | IN; core frame/length parameter queries directly tested | Audit §3E `GEO-QUERY-005`; `frame_placement.test.ts` |
 
 ### F. Constraints
@@ -159,18 +159,18 @@ tidak menambah atau menghapus expected ID.
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
-| `GEO-NUM-001` | `🌗 partial` | `partial` | `local-pass` | IN; tolerance exists as implementation behavior, no complete public error bound | Audit §3H `GEO-NUM-001`; intersection/path tests |
-| `GEO-NUM-002` | `🌗 partial` | `partial` | `local-pass` | IN; normalization/holes exist for supported shapes, edge coverage incomplete | Audit §3H `GEO-NUM-002`; `normalizeClosedShape.ts` |
-| `GEO-NUM-003` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN; several invalid boundaries explicit, full error catalog incomplete | Audit §3H `GEO-NUM-003`; error tests and fixtures 19/20 |
+| `GEO-NUM-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; low-level tolerance policy and boundary tests are frozen; no universal DSL epsilon claim | Audit §3H `GEO-NUM-001`; intersection/path/split tests; geometry lint/test/build |
+| `GEO-NUM-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; supported rings normalize winding/holes; broader boolean topology remains deferred | Audit §3H `GEO-NUM-002`; `normalizeClosedShape.ts`; boolean tests; fixture 15 |
+| `GEO-NUM-003` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; selected low-level invalid branches expose stable package codes; core maps public paths | Audit §3H `GEO-NUM-003`; error tests; fixtures 19/20 |
 | `GEO-DET-001` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN; deterministic behavior observed locally, Node 24/Flutter/cross-platform unverified | Audit §3H `GEO-DET-001`; conformance snapshots |
-| `GEO-DET-002` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN; stable IDs/order appear in tested paths, universal replay absent | Audit §3H `GEO-DET-002`; graph/identity/order evidence |
+| `GEO-DET-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; stable local identity/order/path replay comparator is active; cross-runtime replay remains separate | Audit §3H `GEO-DET-002`; `core/src/projection.ts`; core/CLI tests; conformance 298/298 |
 
 ### I. Serialization dan semantic parity
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
-| `GEO-SER-001` | `🌗 partial` | `partial` | `fixture-pass` | IN; snapshots consumed by CLI/Flutter, all-object canonical contract incomplete | Audit §3I `GEO-SER-001`; expected scene snapshots |
-| `GEO-SER-002` | `🌗 partial` | `partial` | `source-only` + `fixture-pass` + `not-verified` | IN; snapshots/comparator exist, but no standalone canonical numeric/order contract or cross-version replay evidence was verified | Audit §3I `GEO-SER-002`; semantic comparator/snapshots |
+| `GEO-SER-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; versioned canonical projection is consumed by core/CLI; Flutter parity remains unverified | Audit §3I `GEO-SER-001`; `core/src/projection.ts`; `cli/src/index.ts`; CLI tests |
+| `GEO-SER-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; numeric/order/undefined rules and replay comparator are executable locally; cross-version/host proof remains unverified | Audit §3I `GEO-SER-002`; manifest; projection/CLI tests; conformance 298/298 |
 | `GEO-PARITY-001` | `🌗 partial` | `partial` | `fixture-pass` + `not-verified` | IN WITH BOUNDARY; fixture 15 bounded active, fixture 16 candidate, current Flutter blocked | Audit §3I `GEO-PARITY-001`; Flutter shared conformance |
 | `GEO-PARITY-002` | `🌗 partial` | `partial` | `source-only` + `not-verified` | IN WITH BOUNDARY; semantic SVG only, not raw bytes/style/viewBox | Audit §3I `GEO-PARITY-002`; Flutter SVG projection |
 
@@ -185,6 +185,17 @@ were implementation absence:
 | Broader boolean union/xor/non-rectangle topology | `⏸️ deferred` | Keep `GEO-BOOLEAN-001/002` as `🌗 partial`; do not turn deferred expansion into `➖` or remove it. |
 | Geometry-owned UI routes, shortcuts, platform file service | `➖ not-applicable` to geometry package | Keep UI/product behavior in consumer audit; do not mark product capability absent. |
 | Current Flutter probe and Node 24/canonical registry | `not-verified` evidence | Keep parity/determinism evidence qualified; do not downgrade implementation to absent solely from unavailable environment. |
+
+### 4.1 Evidence refresh — 2026-11-03
+
+| Check | Result | Boundary / limitation |
+| --- | --- | --- |
+| `geometry`: `pnpm lint`, `pnpm test`, `pnpm build` | local-pass; 5 files/88 tests | Detected Node `v22.23.2`; root Node >=24 remains not verified |
+| `core`: `pnpm test` | local-pass; 48 files/452 tests | Same local runtime boundary |
+| `cli`: `pnpm test` | local-pass; 1 file/24 tests | Repeated-process canonical JSON output covered |
+| `node scripts/run-conformance-fixtures.mjs` | fixture-pass; 298/298 across 23 fixtures | Shared Node workspace runner, not Flutter/host parity |
+| Flutter probe | not-verified | SDK command blocked by permission on `.../flutter/bin/cache/engine.stamp` |
+| Registry/public release install | not-verified | No fresh registry artifact check was run in this evidence refresh |
 
 ## 5. Downstream handoff
 

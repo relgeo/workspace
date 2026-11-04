@@ -1,6 +1,6 @@
 # RelGeo MCP — Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-10-31
+**Tanggal:** 2026-11-03
 **Expected source:** [Expected MCP capability catalog](./expected-capability-catalog.md)
 **Observed source:** [current MCP implementation audit](./implementation-audit.md)
 **Compatibility line:** RelGeo DSL `0.5.x`
@@ -21,12 +21,14 @@ Tiga dimensi sengaja dipisahkan:
    `verified-defect`, `verified-scope`, atau `not-verified`).
 3. **Scope decision**: keputusan owner/boundary untuk expected capability.
 
-> **Freshness note (2026-10-31):** This 68-row register now includes full-spec
-> retrieval, desktop loopback HTTP, active-document resources, and the
-> permission-gated edit tool in MCP `b4561c0` and Flutter `60ec760`. Local
-> MCP/Flutter tests and Flutter CI run `41184291670` support those rows. The
-> root integration manifest remains captured at 2026-10-09; desktop v1.0.1 is
-> still a draft and client write interoperability is not verified.
+> **Freshness note (2026-11-03):** This 68-row register includes the post-
+> full-spec adapter delivery: bounded owner callbacks for examples, completion,
+> validation, diagnostics, explanation, and render; versioned diagnostic
+> resources/cache identity; workflow fixtures; and guarded review/cancellation
+> outcomes. Local MCP evidence is contract/adapter evidence and does not claim
+> that `core`, `language-service`, or `renderer-svg` are already composed into
+> a production semantic engine. Packaged runtime and live external-client
+> evidence remain separate limitations.
 
 ### 1.1 Legend hasil rekonsiliasi
 
@@ -48,12 +50,12 @@ Tiga dimensi sengaja dipisahkan:
 | Missing expected IDs | 0 |
 | Duplicate reconciliation IDs | 0 |
 | Observed-only IDs added | 0 |
-| `✔️ implemented` | 32 |
-| `🌗 partial` | 24 |
+| `✔️ implemented` | 43 |
+| `🌗 partial` | 19 |
 | `⚠️ broken` | 0 |
-| `❌ absent` | 10 |
+| `❌ absent` | 4 |
 | `⏸️ deferred` | 2 |
-| `not-verified evidence rows` | 3 |
+| `not-verified evidence rows` | 4 |
 | `➖ not-applicable` expected rows | 0 |
 
 `❌` tetap eksplisit untuk capability yang belum ada, termasuk semantic
@@ -75,37 +77,37 @@ package lain.
 | `DISC-02` | Agent menerima discovery dari `specVersion` yang benar. | `✔️` | `implemented` | `verified-local` | Search and section calls validate `specVersion`; the bundled snapshot is pinned to DSL 0.5 and rejects unsupported 0.6. | Current audit §3, `DISC-02` |
 | `REF-01` | U1/U2 menelusuri index dan rule lengkap berdasarkan `ruleId`. | `✔️` | `implemented` | `verified-local` | Search result section IDs resolve to complete normative Markdown sections; spec index/section resources are exposed. | Current audit §3, `REF-01` |
 | `REF-02` | Agent meminta satu syntax rule terarah. | `✔️` | `implemented` | `verified-local` | `relgeo_get_syntax_rule` resolves a requested rule ID from the full spec index with provenance. | Current audit §3, `REF-02` |
-| `EX-01` | U1 menemukan example minimal yang relevan. | `🌗` | `partial` | `partial-local` | In scope; examples bundle/resolver belum ada. | Current audit §3, `EX-01` |
+| `EX-01` | U1 menemukan example minimal yang relevan. | `✔️` | `implemented` | `verified-local` | Typed bounded example owner callback and provenance-preserving fixtures are available; the catalog is intentionally small and illustrative. | Current audit §3 addendum, `EX-01` |
 | `EX-02` | Agent menerima example kecil yang valid dan bounded. | `❌` | `absent` | `verified-absence` | In scope; retrieval/ranking policy belum diimplementasikan. | Current audit §3, `EX-02` |
 | `COMP-01` | U1/U2 mendapat completion pada source dan position. | `🌗` | `partial` | `partial-local` | In scope; language-service adapter belum ada. | Current audit §3, `COMP-01` |
 | `COMP-02` | Agent membedakan proposal completion dari applied edit. | `🌗` | `partial` | `partial-local` | In scope; DTO ada, runtime proposal belum ada. | Current audit §3, `COMP-02` |
-| `VAL-01` | U1/U2 memperoleh structural/schema validation terstruktur. | `🌗` | `partial` | `partial-local` | In scope; core validation belum dipanggil MCP. | Current audit §3, `VAL-01` |
+| `VAL-01` | U1/U2 memperoleh structural/schema validation terstruktur. | `✔️` | `implemented` | `verified-local` | Dispatcher validates bounded source/sourceKind/specVersion/includeInfo and guards the typed owner result. | Current audit §3 addendum, `VAL-01` |
 | `VAL-02` | Agent memastikan proposal diparse, di-resolve, dan semantic-valid. | `❌` | `absent` | `verified-absence` | In scope; core parse/validate/resolve adapter belum ada. | Current audit §3, `VAL-02` |
 | `VAL-03` | Input sama menghasilkan verdict/diagnostics deterministik lintas host. | `🌗` | `partial` | `not-verified` | In scope; determinism contract ada, cross-host MCP evidence belum ada. | Current audit §3, `VAL-03` |
-| `DIAG-01` | U1/U2 menerima code, severity, message, range, origin, provenance. | `🌗` | `partial` | `partial-local` | In scope; mapping core/language-service belum ada. | Current audit §3, `DIAG-01` |
-| `DIAG-02` | U2 meminta explanation berdasarkan diagnostic code. | `❌` | `absent` | `verified-absence` | In scope; explanation resolver/catalog belum ada. | Current audit §3, `DIAG-02` |
-| `DIAG-03` | Agent membedakan input, proposal, dan active document. | `🌗` | `partial` | `partial-local` | In scope; DTO ada, enforcement runtime belum ada. | Current audit §3, `DIAG-03` |
-| `WF-01` | Agent menjalankan discovery→example→completion→validation→render. | `❌` | `absent` | `verified-absence` | In scope; workflow composition belum callable. | Current audit §3, `WF-01` |
+| `DIAG-01` | U1/U2 menerima code, severity, message, range, origin, provenance. | `✔️` | `implemented` | `verified-local` | Structured diagnostic DTOs, provenance, count/message bounds, and owner-failure mapping are covered at the adapter boundary. | Current audit §3 addendum, `DIAG-01` |
+| `DIAG-02` | U2 meminta explanation berdasarkan diagnostic code. | `🌗` | `partial` | `partial-local` | Typed explanation callback and catalog resource are available; production producer-code resolver remains an owner integration gap. | Current audit §3 addendum, `DIAG-02` |
+| `DIAG-03` | Agent membedakan input, proposal, dan active document. | `✔️` | `implemented` | `verified-local` | `sourceKind` and editor identity are preserved; active-document resources remain a separate bridge path. | Current audit §3 addendum, `DIAG-03` |
+| `WF-01` | Agent menjalankan discovery→example→completion→validation→render. | `✔️` | `implemented` | `verified-local` | Local fixture runs all six typed read-only calls, checks provenance, and has no document mutation. | Current audit §3 addendum, `WF-01` |
 | `WF-02` | Agent memakai prompt author/debug/explain/review setelah tools stabil. | `⏸️` | `deferred` | `verified-scope` | Roadmap-gated setelah tools/resources stabil. | Current audit §3, `WF-02` |
 | `RENDER-01` | U1/U2 melihat SVG in-memory dari source/proposal. | `🌗` | `partial` | `partial-local` | In scope; core→renderer adapter belum ada. | Current audit §3, `RENDER-01` |
 | `RENDER-02` | U2 memilih `sheetId`/view secara eksplisit. | `🌗` | `partial` | `partial-local` | In scope; sheet/view resolver belum terhubung. | Current audit §3, `RENDER-02` |
-| `RENDER-03` | Render failure menjadi diagnostics/error terstruktur. | `❌` | `absent` | `verified-absence` | In scope; failure mapping belum ada. | Current audit §3, `RENDER-03` |
+| `RENDER-03` | Render failure menjadi diagnostics/error terstruktur. | `🌗` | `partial` | `partial-local` | Owner failures are typed and successful SVG is bounded; renderer-specific diagnostic mapping is still absent. | Current audit §3 addendum, `RENDER-03` |
 | `DOC-01` | U3 membaca active snapshot dengan identity, revision, dirty, diagnostics. | `✔️` | `implemented` | `verified-local` | Authenticated desktop tools/resources expose the active bridge snapshot and diagnostics. | Current audit §3, `DOC-01` |
 | `DOC-02` | Agent membaca resource active document dengan session guard. | `✔️` | `implemented` | `verified-local` | Active-document and diagnostics resources route through the authenticated desktop server and bridge. | Current audit §3, `DOC-02` |
 | `DOC-03` | Revision naik saat source berubah dan identity reset saat load. | `✔️` | `implemented` | `verified-local` | Router reads current identity/revision and stale edit requests are rejected. | Current audit §3, `DOC-03` |
 | `DOC-04` | U3 melihat direct apply sebagai dirty in-memory document. | `✔️` | `implemented` | `verified-local` | HTTP integration confirms applied source is dirty and undoable. | Current audit §3, `DOC-04` |
 | `DOC-05` | U5 memulai/menghentikan session dan revoke access setelah stop. | `✔️` | `implemented` | `verified-local` | Server start/stop revokes access at the session boundary; desktop host owns server lifetime. | Current audit §3, `DOC-05` |
 | `DOC-06` | Save/Save As tetap aksi dokumen terpisah dari agent apply. | `✔️` | `implemented` | `verified-local` | Save boundary owned by desktop host, outside direct apply. | Current audit §3, `DOC-06` |
-| `EDIT-01` | U3 meninjau bounded proposal sebelum apply. | `🌗` | `partial` | `partial-local` | Session contract ada; review surface/protocol call belum ada. | Current audit §3, `EDIT-01` |
+| `EDIT-01` | U3 meninjau bounded proposal sebelum apply. | `✔️` | `implemented` | `verified-local` | Read-only `relgeo_review_proposed_patch` returns the proposal and snapshot without invoking an editor setter. | Current audit §3 addendum, `EDIT-01` |
 | `EDIT-02` | U3 menerapkan proposal ke active document melalui bridge. | `✔️` | `implemented` | `verified-local` | Explicit read-write opt-in exposes bounded `relgeo_apply_document_edit`; app/client smoke remains separate. | Current audit §3, `EDIT-02` |
 | `EDIT-03` | Stale identity/revision ditolak tanpa partial mutation. | `✔️` | `implemented` | `verified-local` | Host bridge/session contract owns guard. | Current audit §3, `EDIT-03` |
 | `EDIT-04` | Accepted patch menjadi satu undoable transaction. | `✔️` | `implemented` | `verified-local` | Flutter editor/session boundary implemented. | Current audit §3, `EDIT-04` |
 | `EDIT-05` | Caller membedakan applied, stale, rejected, dan failed. | `🌗` | `partial` | `partial-local` | DTO states ada; protocol serialization/coverage belum lengkap. | Current audit §3, `EDIT-05` |
 | `RES-01` | Agent melakukan list/read pada canonical resource URI. | `✔️` | `implemented` | `verified-local` | Bundled spec index/section and active-document resources are served; diagnostic catalog/cache remain separate gaps. | Current audit §3, `RES-01` |
-| `RES-02` | U2 membaca diagnostics catalog versioned. | `❌` | `absent` | `verified-absence` | In scope; catalog content/resolver belum ada. | Current audit §3, `RES-02` |
+| `RES-02` | U2 membaca diagnostics catalog versioned. | `✔️` | `implemented` | `verified-local` | `relgeo://diagnostics/catalog` returns owner-supplied entries with version, revision, digest, source URL, and provenance. | Current audit §3 addendum, `RES-02` |
 | `RES-03` | U1/U4 memakai bundled snapshot saat offline. | `✔️` | `implemented` | `verified-local` | Full normative Markdown snapshot is bundled and loaded offline by Flutter. | Current audit §3, `RES-03` |
-| `RES-04` | U2 mendapat cache/fallback dengan identity revision/TTL jelas. | `❌` | `absent` | `verified-absence` | In scope; cache/fallback layer belum ada. | Current audit §3, `RES-04` |
-| `PROV-01` | Setiap documentation result membawa source, URL, version, revision, fetchedAt. | `🌗` | `partial` | `partial-local` | In scope; DTO ada, result-producing adapter belum ada. | Current audit §3, `PROV-01` |
+| `RES-04` | U2 mendapat cache/fallback dengan identity revision/TTL jelas. | `✔️` | `implemented` | `verified-local` | Cache reads require matching version/revision/digest, TTL is bounded, expiry evicts, and fallback/bundled state is explicit. | Current audit §3 addendum, `RES-04` |
+| `PROV-01` | Setiap documentation result membawa source, URL, version, revision, fetchedAt. | `✔️` | `implemented` | `verified-local` | Tool/resource results preserve owner provenance; cache resources add fetchedAt/expiresAt identity. | Current audit §3 addendum, `PROV-01` |
 | `PROV-02` | U2 dapat membedakan spec normative dari website/examples explanatory. | `✔️` | `implemented` | `verified-local` | Normative precedence owned by provenance contract. | Current audit §3, `PROV-02` |
 | `PROV-03` | Proposal membawa chain rule/example/source melalui `basedOn[]`. | `🌗` | `partial` | `partial-local` | In scope; proposal producer belum ada. | Current audit §3, `PROV-03` |
 | `TRAN-01` | Client menyelesaikan initialize/initialized lifecycle dan negotiation. | `✔️` | `implemented` | `verified-local` | Desktop HTTP integration covers initialize/initialized and protocol negotiation; external client smoke remains pending. | Current audit §3, `TRAN-01` |
@@ -122,8 +124,8 @@ package lain.
 | `ERR-01` | Client mendapat typed errors untuk schema, bounds, unknown tool, invalid URI. | `✔️` | `implemented` | `verified-local` | Schema/DTO parity and typed pre-dispatch errors are implemented and covered by the passing MCP test suite. | Current audit §4, `ERR-01` |
 | `ERR-02` | Domain failures mempertahankan code/message/range/origin. | `❌` | `absent` | `verified-absence` | In scope; core/language-service error mapping belum ada. | Current audit §3, `ERR-02` |
 | `ERR-03` | Caller membedakan auth, forbidden, no-session, stale, rejected, failed, stopped. | `🌗` | `partial` | `partial-local` | Session contract exists; protocol mapping belum ada. | Current audit §3, `ERR-03` |
-| `ERR-04` | Failed read/render/mutation tidak mengubah active document dan tidak dilaporkan applied. | `🌗` | `partial` | `partial-local` | Bridge atomicity ada; transport/error path belum ada. | Current audit §3, `ERR-04` |
-| `CXL-01` | Client/host membatalkan request tanpa stale result atau mutation. | `❌` | `absent` | `verified-absence` | In scope; request registry/abort semantics belum ada. | Current audit §3, `CXL-01` |
+| `ERR-04` | Failed read/render/mutation tidak mengubah active document dan tidak dilaporkan applied. | `✔️` | `implemented` | `verified-local` | Typed owner failure and guarded bridge/cancellation tests prove no commit after failure or abort boundary. | Current audit §3 addendum, `ERR-04` |
+| `CXL-01` | Client/host membatalkan request tanpa stale result atau mutation. | `✔️` | `implemented` | `verified-local` | Request registry and `notifications/cancelled` produce `-32800`; cancellation and stop fixtures assert no commit. | Current audit §3 addendum, `CXL-01` |
 | `CXL-02` | Stop/revoke/disconnect membatalkan pending work dan mutation commit. | `🌗` | `partial` | `not-verified` | In scope; revoke contract ada, real server lifecycle belum ada. | Current audit §3, `CXL-02` |
 | `SEC-01` | Endpoint desktop disabled sampai user mengaktifkannya. | `✔️` | `implemented` | `verified-local` | Server is started only after explicit user action in the desktop MCP dialog. | Current audit §3, `SEC-01` |
 | `SEC-02` | Hanya client local yang dapat mencapai desktop server. | `✔️` | `implemented` | `verified-local` | Server binds only to IPv4 loopback and rejects non-loopback Host/Origin values. | Current audit §3, `SEC-02` |
@@ -144,17 +146,23 @@ package lain.
 
 1. Expected catalog dan audit memiliki join 68/68; tidak ada expected row yang
    dihapus atau diganti menjadi `➖` karena implementation belum ditemukan.
-2. Strongest observed implementation adalah pure-Dart contract/session slice,
-   Flutter active-document bridge, dan dependency-free protocol fixture. Itu
-   belum sama dengan production MCP server/tool/resource delivery.
-3. `ERR-01` schema/DTO parity repair and typed pre-dispatch validation are
-   present; focused test execution remains pending the unavailable package
-   dependency, so the row stays `🌗` rather than becoming `✔️`.
-4. `TRAN-04` memiliki evidence environment-unavailable untuk local socket bind;
-   hasil itu tidak mengubah status menjadi product failure.
-5. `DOC-01`, `DOC-03`, `DOC-04`, `DOC-06`, `EDIT-03`, `EDIT-04`, `HOST-01`,
-   `HOST-04`, `PROV-02`, dan `SEC-06` adalah implementation yang terverifikasi
-   pada boundary yang dinilai, bukan klaim end-to-end MCP exposure.
+2. T02–T04 sekarang memiliki owner-backed, bounded adapter paths untuk
+   examples, structural validation, diagnostics, explanation, render, catalog,
+   cache identity, dan provenance. Status `✔️` berarti boundary pure-Dart yang
+   diuji; bukan klaim bahwa parser/resolver, language-service, atau renderer
+   production telah di-compose ke host.
+3. T07–T09 sekarang memiliki review-only proposal, explicit result states,
+   cooperative cancellation, stop/disconnect hooks, and a six-call read-only
+   workflow fixture. `EDIT-05` dan `CXL-02` tetap partial/not-verified where a
+   live packaged transport/client race is still absent.
+4. `VAL-02`, `HOST-05`, `ERR-02`, dan `EX-02` tetap `❌`: semantic
+   parse/resolve, shared consumer composition, producer error-field mapping,
+   and a ranked/minimal-example policy are not invented by the MCP adapter.
+5. `TRAN-03`, `TRAN-06`, `VAL-03`, `DEL-03`, `DEL-04`, `HOST-03`, `SEC-08`,
+   and `CXL-02` retain explicit partial or not-verified limits for standalone
+   packaging, external clients/Inspector, packaged UX, and cross-host/runtime
+   evidence. A managed runner's inability to bind a socket is not treated as a
+   target implementation failure.
 
 Implementation work berikutnya harus memakai [MCP implementation gap
 backlog](./implementation-gap-backlog.md), sedangkan perubahan capability

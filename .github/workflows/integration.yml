@@ -317,6 +317,19 @@ jobs:
       - name: Run local-workspace integration gate
         run: pnpm run integration:gate -- --local --report=.local/integration-gate.json
 
+      - name: Join current local integration evidence
+        if: always()
+        run: |
+          node scripts/join-integration-evidence.mjs \
+            --report=.local/integration-gate.json \
+            --output=.local/integration-gate-joined-evidence.json \
+            --evidence-class=ci-canonical \
+            --evidence-state=current \
+            --run-id="$GITHUB_RUN_ID" \
+            --run-url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --artifact-id=relgeo-integration-gate-report \
+            --artifact-path=.local/integration-gate.json
+
       - name: Audit npm release boundaries
         run: pnpm run release:audit
 
@@ -325,7 +338,9 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: relgeo-integration-gate-report
-          path: .local/integration-gate.json
+          path: |
+            .local/integration-gate.json
+            .local/integration-gate-joined-evidence.json
           if-no-files-found: warn
           retention-days: 7
 
@@ -364,12 +379,27 @@ jobs:
       - name: Run public-registry integration gate
         run: pnpm run integration:public -- --report=.local/integration-public.json
 
+      - name: Join current public integration evidence
+        if: always()
+        run: |
+          node scripts/join-integration-evidence.mjs \
+            --report=.local/integration-public.json \
+            --output=.local/integration-public-joined-evidence.json \
+            --evidence-class=ci-canonical \
+            --evidence-state=current \
+            --run-id="$GITHUB_RUN_ID" \
+            --run-url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --artifact-id=relgeo-public-integration-report \
+            --artifact-path=.local/integration-public.json
+
       - name: Upload public integration report
         if: always()
         uses: actions/upload-artifact@v6
         with:
           name: relgeo-public-integration-report
-          path: .local/integration-public.json
+          path: |
+            .local/integration-public.json
+            .local/integration-public-joined-evidence.json
           if-no-files-found: warn
           retention-days: 7
 

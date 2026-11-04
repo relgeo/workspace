@@ -1,10 +1,10 @@
 # Cross-Repository Orchestration Implementation and Evidence Audit
 
-> **Current checkout overlay — 2026-10-31:** All 12 initialized child worktrees match their current root gitlinks and are clean. The root workspace has this documentation review in progress. However, 11 of 12 current child gitlinks differ from the 12-repository revision snapshot captured in `docs/integration-baseline.json` on 2026-10-09, so the strict current baseline is stale. The Codex shell used for this review has no `node`/`pnpm` command available; the root integration verifier and Node-based compatibility/conformance gate were not rerun here. Preserve the Node 22 / 11-dirty-child observations in §5 as the dated 2026-10-30 run, not as current checkout facts. Current Flutter CI `41184291670` passed and desktop release run `41184693233` produced draft v1.0.1 artifacts; the operator reports npm publish success for `@relgeo/core@0.5.2`. These package/child facts do not substitute for a refreshed root integration manifest/run.
+> **Current checkout overlay — 2026-11-03:** Current child gitlinks are observable, but child worktrees contain local modifications, so no clean-baseline claim is made. Eleven of 12 current child gitlinks differ from the revision snapshot captured in `docs/integration-baseline.json` on 2026-10-09, so the strict current baseline is stale. This host has Node `22.23.2` and pnpm `10.33.3`; the Node 24+ prerequisite blocks the root integration verifier and Node-based compatibility/conformance gate. Preserve the Node 22 / 11-dirty-child observations in §5 as dated supporting evidence, not as a current success claim. Current Flutter CI `41184291670` passed and desktop release run `41184693233` produced draft v1.0.1 artifacts; the operator reports npm publish success for `@relgeo/core@0.5.2`. These package/child facts do not substitute for a refreshed root integration manifest/run.
 
 **Status:** audit evidence diterbitkan; gap map per `ORCH-*` tersedia
 
-**Tanggal audit:** 2026-10-31
+**Tanggal audit:** 2026-11-03
 
 **Expected catalog:** [Cross-Repository Orchestration Expected Capability Catalog](./expected-capability-catalog.md)
 
@@ -137,8 +137,8 @@ Evidence shorthand: `S` = static source/config/docs, `F` = fixture/test,
 
 | ID | Implementation status | Verification status | Source / test / command / runtime evidence | Gap, limitation, or next action |
 | --- | --- | --- | --- | --- |
-| `ORCH-BOOT-001` | `partial` | `unverified-environment` | `S`: `scripts/README.md`, Integration Plan §10, root package scripts describe prerequisites and gate entrypoints. `H`: prior Node 22 run was 2026-10-30; Node/pnpm are unavailable in this shell. | No single root bootstrap executable initializes toolchain + submodules; document/execute a fresh-clone probe on Node 24. |
-| `ORCH-BOOT-002` | `partial` | `unverified-environment` | `S`: root `package.json` pins Node `>=24`, pnpm `10.33.3`; workflows pin Node 24/pnpm. `H`: 2026-10-30 host was Node 22.23.2; current Node/pnpm are unavailable here. | The prior host did not meet declared toolchain; current Node/pnpm are unavailable here. Verify deterministic bootstrap on Node 24. |
+| `ORCH-BOOT-001` | `implemented` | `unverified-environment` | `S`: `scripts/bootstrap.mjs`, `scripts/test-bootstrap-and-evidence-contract.mjs`, `scripts/README.md`, Integration Plan §10, and root package scripts define the bootstrap contract. `H`: this host reports Node 22.23.2; the Node 24 prerequisite blocks the runtime probe. | Execute a fresh-clone probe on Node 24. |
+| `ORCH-BOOT-002` | `implemented` | `unverified-environment` | `S`: root `package.json` pins Node `>=24`, pnpm `10.33.3`; workflows pin Node 24/pnpm. `H`: this host reports Node 22.23.2/pnpm 10.33.3, so the declared toolchain is not fully available. | Verify deterministic bootstrap on Node 24. |
 | `ORCH-BOOT-003` | `implemented` | `verified-current` | `S`: `.gitmodules` registers 12 paths; root workflow uses recursive checkout. `C`: current checkouts are initialized, clean, and match all 12 root gitlinks; the dirty-checkout observation in `OBS-01` is historical (2026-10-30). | Recursive checkout/synchronization behavior is present; child-pointer and stale-manifest reconciliation remain separate checks. |
 | `ORCH-BOOT-004` | `partial` | `verified-static` | `S`: Master Plan public-surface rule; integration public copy excludes `.git`, `node_modules`, build/cache/private directories; reports avoid private paths. | No complete current secret scan of every artifact/log was performed. Keep public tree scan as audit follow-up. |
 | `ORCH-BASE-001` | `implemented` | `verified-static` | `S`: `docs/integration-baseline.json` has 12 entries, compatibility `0.5`, package metadata and revisions; `verify-baseline.mjs` reads it. | Manifest is structurally present but stale for 11 of 12 current pointers (`spec` matches); reconcile after validating the corresponding child CI. |
@@ -181,8 +181,8 @@ Evidence shorthand: `S` = static source/config/docs, `F` = fixture/test,
 
 | Implementation status | Count | Main interpretation |
 | --- | ---: | --- |
-| `implemented` | 33 | Static orchestration, validation, report, release guard, hygiene, blocker taxonomy, bounded retry, and evidence-envelope behavior exists. |
-| `partial` | 6 | Current baseline drift, missing cross-surface runtime evidence, policy-only handling, or security/config gap. |
+| `implemented` | 35 | Static orchestration, validation, report, release guard, hygiene, blocker taxonomy, bounded retry, and evidence-envelope behavior exists. |
+| `partial` | 4 | Current baseline drift, missing cross-surface runtime evidence, policy-only handling, or security/config gap. |
 | `absent` | 0 | All selected implementation boundaries now have source/test evidence; current or provider runtime gaps remain separate evidence statuses. |
 | `broken` | 0 | No target behavior was marked broken solely from environment failures. |
 | `deferred` | 0 | Deferred scope items are outside the 39 IDs and listed in §7. |

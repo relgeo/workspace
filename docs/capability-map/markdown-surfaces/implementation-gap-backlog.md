@@ -13,6 +13,31 @@ descriptions are not active SuClos goals until owner, scope, dependency, and
 acceptance evidence are approved. The two `🌗` rows whose remaining issue is
 external evidence only are verification follow-ups, not implementation gaps.
 
+## Boundary freeze — cross-surface owner dan fixture map (2026-11-03)
+
+This map freezes which package owns each boundary and which fixture is the
+semantic handoff. Markdown does not reimplement scene resolution or SVG
+serialization. `MD-DIAG-003` is closed by the tolerant runtime-warning fixture
+and package regression tests recorded below.
+
+| ID | Owner boundary | Fixture anchor | Stable acceptance assertion |
+| --- | --- | --- | --- |
+| `SVG-SCENE-003` | `renderer-svg` owns sizing/context; `remark-relgeo` only passes documented options | `fixtures/reference/10-v05-relational-baseline.yaml` and renderer context tests | Markdown preview may change presentation context, never semantic object geometry; output remains safe SVG |
+| `SVG-STYLE-002` | `renderer-svg` owns typography fallback/XML escaping; Markdown/website own wrapper/asset presentation | renderer presentation-escaping fixture and `security.test.ts` | Font/fill/text values are escaped before data URI/HTML transport; no executable markup |
+| `SVG-DIM-001` | renderer projects dimensions; core/spec own meaning; Markdown reuses canonical render | shared fixture 02 and renderer dimension tests | Dimension label/leader semantics survive Markdown embedding; semantic projection, not byte snapshot, is compared |
+| `SVG-ANNOT-001` | renderer projects annotations; Markdown/website do not parse or redraw leaders | shared fixture 02 and renderer annotation tests | Annotation target/leader/multiline output remains safe and semantically stable |
+| `SVG-SHEET-001` | renderer/core own sheet/view composition; Markdown option parsing only selects supported sheet/view | shared fixtures 02/03/09 and CLI selection tests | Supported selection is explicit; missing sheet/view is a typed contextual failure, not silent model fallback |
+| `SVG-DET-001` | workspace/core own canonical replay comparison; Markdown must be deterministic for same source/options | active fixture 10 JSON + manifest semantic serialization | Repeated Markdown transforms preserve semantic IDs/order/numbers; raw SVG byte equality is out of scope |
+| `SVG-INTEG-002` | Playground owns worker-to-DOM; Markdown owns SSR/AST host integration; renderer owns safe SVG | fixture 10 and runtime fixture 14; worker/Preview sources | Consumer boundaries stay separate: browser E2E is not inferred from static Markdown success |
+| `GAP-009` | renderer-svg + core implement presentation safety; Markdown verifies transport | presentation-escaping fixture; language-spec backlog `GAP-009` | Escaped dimension/annotation content survives Markdown serialization without changing semantic placement |
+| `GAP-013` | renderer-svg owns safe semantic SVG serialization; Markdown/website own host sanitization policy | presentation-escaping fixture and renderer security tests | `<script>`, event-handler attributes, unsafe partial SVG, and unsafe URL forms never reach rendered host output |
+| `MD-DIAG-003` | `remark-relgeo` owns tolerant node/diagnostic transport; core owns runtime warning; website owns visual presentation | `fixtures/reference/14-v05-runtime-align-violation.yaml` + `remark-relgeo/test/remark-relgeo.test.mjs` | Valid preview remains present with structured warning/severity/location; strict mode is explicit; closed by the runtime-warning regression |
+
+Cross-surface safety invariant: a Markdown transform may carry SVG as a data
+URI or host-approved wrapper only after the renderer output passes the safe-SVG
+boundary. Diagnostics are data, not executable HTML, and source/fallback text
+must remain readable when preview rendering is unavailable.
+
 ## Coverage rules
 
 - One implementation candidate maps to one expected capability ID.
@@ -27,9 +52,9 @@ external evidence only are verification follow-ups, not implementation gaps.
 | --- | ---: |
 | Expected implementation-gap rows | 27 |
 | Candidate implementation tasks | 27 |
-| `✔️` tasks with fresh local evidence | 8 |
+| `✔️` tasks with fresh local evidence | 9 |
 | `🌗` tasks | 18 |
-| `❌` tasks | 1 |
+| `❌` tasks | 0 |
 | `⚠️` tasks | 0 |
 | Missing source IDs | 0 |
 | Duplicate source IDs | 0 |
@@ -84,7 +109,7 @@ dependency, acceptance evidence, risk, and next action for the same task ID.
 | `MD-TASK-007` lexical fallback isolation | `MD-HL-004` | 🌗 | remark-relgeo-hl + language-service | lexical token contract | Invalid/incomplete source remains readable without renderer/core resolution; service failure has bounded fallback | P1 highlighter depends on semantic service availability | Define an independent lexical fallback mode and fixture; retain the verified service-failure fallback |
 | `MD-TASK-008` structured Markdown diagnostic DTO | `MD-DIAG-001` | ✔️ | both plugins + spec/core | error model; block location | Output exposes stable code, severity, message, and source/block location with serialization tests | P1 failures not traceable | Closed with plugin diagnostic payload tests |
 | `MD-TASK-009` actionable diagnostic fallback | `MD-DIAG-002` | ✔️ | remark-relgeo + website | diagnostic DTO; host UI | Invalid preview produces structured payload plus readable source/fallback and website assertion | P1 reader cannot recover | Closed with fallback projection and host assertions |
-| `MD-TASK-010` non-fatal preview diagnostics | `MD-DIAG-003` | ❌ | remark-relgeo + core | runtime diagnostics API | Runtime warning fixture returns valid preview plus diagnostic without dropping output | P1 useful preview disappears | Define tolerant result shape |
+| `MD-TASK-010` non-fatal preview diagnostics | `MD-DIAG-003` | ✔️ | remark-relgeo + core | runtime diagnostics API | Runtime warning fixture returns valid preview plus diagnostic without dropping output | P1 useful preview disappears | Closed with `RUNTIME_CONSTRAINT_VIOLATION`, retained preview image, and strict/tolerant regression tests |
 | `MD-TASK-011` strict/tolerant policy option | `MD-DIAG-004` | ✔️ | remark-relgeo + build owner | error policy; build gate | Strict mode fails deterministically; tolerant mode emits fallback/diagnostic; defaults documented | P1 implicit build behavior | Closed with `failurePolicy` option and tests |
 | `MD-TASK-012` option schema and invalid-value validation | `MD-OPT-001` | 🌗 | both package owners | public API docs; compatibility policy | README/types/defaults match runtime; unknown and invalid options have tested behavior | P1 undocumented integration drift | Publish option table and tests |
 | `MD-TASK-013` version/view/profile pass-through | `MD-OPT-002` | 🌗 | remark-relgeo + spec/core | version/presentation APIs | Supported version/profile/view/sheet combinations are explicit; future version has stable error projection | P1 wrong preset/migration messaging | Decide supported option surface |

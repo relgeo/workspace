@@ -114,6 +114,22 @@ Journey produk yang menjadi kerangka katalog:
 | Accessibility | Keyboard/DOM/AX semantics, focus, state announcement, reduced motion, dan target control termasuk expected baseline. Native screen-reader/device evidence adalah verification follow-up, bukan alasan menghapus row. |
 | Delivery | Hosted `/playground/` dan consistency antara artifact yang diuji dan yang dipublikasikan adalah delivery guardrail; bukan pengganti capability runtime. |
 
+### 3.1 Active task evidence contract
+
+The active tranche freezes the three partial capabilities below. The required
+states and evidence are intentionally explicit so later implementation audits
+cannot collapse lifecycle, accessibility, or delivery into one generic pass.
+
+| ID | Required behavior/state | Evidence required | Boundary preserved |
+| --- | --- | --- | --- |
+| `PG-LIFE-002` | `loading` while bootstrap is pending; `empty` when no local files exist; `ready` once the workspace/example is usable; `error` when bootstrap storage cannot be opened. Interaction is gated during `loading`. | Source state model, unit coverage for all four states, and delayed browser startup trace. | Resolver `resolving` and parser/storage failures remain distinct states. |
+| `PG-A11Y-001` | Landmarks, names, roles, selected/expanded/pressed/value, focus return/trap, live error announcements, and source/preview navigation. | Static contract audit, DOM/keyboard browser evidence, and separately labeled native AT evidence. | Web semantics are in scope; VoiceOver/TalkBack/device proof is not inferred. |
+| `PG-DELIVERY-001` | Hosted `/playground/` serves the tested build from one traceable child revision. | Revision/build fingerprint, route/title/asset comparison, hosted smoke/share run, and limitation record. | Local build success does not equal public parity. |
+
+The accepted theme contract remains unchanged: `system` follows
+`prefers-color-scheme`, explicit `light`/`dark` overrides remain available,
+and no new decision task is created for theme behavior.
+
 ## 4. Expected capability catalog
 
 Kolom `Requirement basis` merujuk ke sumber S1–S9 di §1. `Owner / source of
@@ -205,6 +221,8 @@ audit ID-by-ID, tetapi harus mempertahankan tiga hal berikut:
 Implementation audit berikutnya harus menggunakan katalog ini sebagai daftar
 join satu-ke-satu dan boleh menambahkan evidence path, limitation, gap, serta
 next action tanpa mengubah expectation secara diam-diam. Untuk tranche aktif,
-join yang dipilih adalah `PG-THEME-001`, `PG-LIFE-002`, `PG-CANVAS-005`,
-`PG-KEY-001`, `PG-A11Y-001`, dan `PG-A11Y-002`; `PG-DELIVERY-001` tetap
-verification follow-up di luar dependency implementasi lokal.
+Join implementation yang dipilih adalah `PG-THEME-001`, `PG-LIFE-002`,
+`PG-CANVAS-005`, `PG-KEY-001`, `PG-A11Y-001`, dan `PG-A11Y-002`. Active
+evidence freeze menambahkan `PG-DELIVERY-001` bersama `PG-LIFE-002` dan
+`PG-A11Y-001` sebagai tiga row yang harus dibuktikan secara terpisah;
+`PG-DELIVERY-001` tetap berada di luar dependency implementasi lokal.

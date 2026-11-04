@@ -1,6 +1,6 @@
 # RelGeo renderer-svg capability matrix
 
-> **Coverage statement — 2026-10-30.** Capability-first view for the 33 IDs in
+> **Coverage statement — 2026-11-03.** Capability-first view for the 33 IDs in
 > the expected catalog, joined to the implementation audit and reconciliation.
 > Local evidence is separate from browser, Node >=24, registry, public, and
 > native-platform verification. Documentation never counts as implementation.
@@ -58,17 +58,17 @@ register. An unavailable consumer or environment must not turn `❌` into `➖`.
 | `SVG-STYLE-002` | Text/font/arrow/multiline/annotation fallback. | `🌗` | `verified-local`: presentation-security tests | Safe dynamic presentation serialization is covered; exact typography metrics vary by surface. | renderer-svg | Text metrics; dim/annotation | P1 typography | Complete bounded typography/placement coverage without claiming cross-runtime font parity. |
 | `SVG-META-001` | Inspection-safe projection of selected metadata. | `✔️` | `verified-local`: data attributes/tests | Cross-consumer promotion boundary-only. | renderer-svg + hosts | Metadata contract | P1 parity | Promote fields with explicit tests. |
 | `SVG-META-002` | Metadata remains non-authoritative for geometry/identity. | `✔️` | `partial-local`: projection design | No dedicated invariant snapshot. | renderer-svg + core | Scene immutability | P1 integrity | Add metadata-removal invariant test. |
-| `SVG-DIM-001` | Linear, radius, diameter, angular dimensions. | `🌗` | `verified-local`: tests/fixtures/security | Dimension kinds and hostile presentation values are covered; typography and exhaustive semantic placement remain partial. | renderer-svg | Dimension model; metrics | P1 placement | Add bounded placement assertions. |
-| `SVG-ANNOT-001` | Target, leader, placement, multiline, fallback annotations. | `🌗` | `verified-local`: output/tests/security | Annotation projection and hostile presentation escaping are covered; exact metrics and broader consumer evidence remain partial. | renderer-svg | Annotation model; metrics | P1 placement | Add bounded placement/consumer assertions. |
+| `SVG-DIM-001` | Linear, radius, diameter, angular dimensions. | `🌗` | `verified-local`: 90 renderer tests, semantic projection tests, fixtures, security | Dimension kinds, endpoints/measurements, hostile presentation values, and semantic placement projection are covered; typography and exhaustive consumer placement remain partial. | renderer-svg | Dimension model; metrics | P1 placement | Preserve semantic placement assertions; keep cross-consumer metric evidence separate. |
+| `SVG-ANNOT-001` | Target, leader, placement, multiline, fallback annotations. | `🌗` | `verified-local`: 90 renderer tests, semantic projection tests, security | Annotation target/leader/placement projection and hostile presentation escaping are covered; exact metrics and broader consumer evidence remain partial. | renderer-svg | Annotation model; metrics | P1 placement | Preserve semantic placement assertions; keep cross-consumer metric evidence separate. |
 | `SVG-SHEET-001` | Page border, placement/scale, title block, sheet sizing. | `🌗` | `partial-local`: mostly legacy 0.4 | Active v0.5 evidence thin. | renderer-svg + CLI/core | Views/sheets; units; bbox | P1 release | Add active v0.5 sheet fixture. |
 | `SVG-SHEET-002` | Unknown sheet/view selection fails explicitly. | `✔️` | `verified-local`: renderer and CLI negative tests | Typed missing-sheet/view errors replace model fallback and silent view skips. | renderer-svg + core/CLI | Selector and error contract | P0 correctness | Preserve deterministic missing-sheet/view errors. |
-| `SVG-DET-001` | Stable order, IDs, serialization, semantic projection. | `🌗` | `partial-local`: snapshots/repeated render | No cross-host all-object/order/numeric suite. | renderer-svg + core/parity | Canonical serializer; Node >=24 | P1 parity | Add replay comparator and cross-host run. |
+| `SVG-DET-001` | Stable order, IDs, serialization, semantic projection. | `🌗` | `verified-local`: semantic projection/replay tests, conformance | Renderer-owned semantic projection and replay comparator are covered; no cross-host all-object/order/numeric suite. | renderer-svg + core/parity | Canonical serializer; Node >=24 | P1 parity | Preserve semantic comparator; keep cross-host run separate. |
 | `SVG-ERR-001` | Explicit invalid-option, missing-view, unsupported-shape handling. | `✔️` | `verified-local`: renderer and CLI negative tests | Typed errors cover invalid options, missing composition targets, missing sheets/views, unsupported shapes, and upstream diagnostics. | renderer-svg + core/CLI | Error taxonomy; boundary policy | P0 correctness | Preserve deterministic error propagation. |
-| `SVG-SEC-001` | XML/text/attribute escaping prevents executable SVG. | `✔️` | `verified-local`: 88 renderer tests, 260 conformance checks | Current renderer worktree escapes dynamic fontFamily/fill/text/metadata values; browser E2E was attempted but sandbox binding returned `EPERM`, and canonical runtime remains unverified. | renderer-svg + Playground | Untrusted metadata; DOM insertion | P1 follow-up | Preserve escaping regressions; verify browser boundary on a host that permits local preview binding. |
+| `SVG-SEC-001` | XML/text/attribute escaping prevents executable SVG. | `✔️` | `verified-local`: 90 renderer tests, 298 conformance checks | Current renderer worktree escapes dynamic fontFamily/fill/text/metadata values; browser E2E was attempted but preview-server binding returned `EPERM`, so DOM insertion remains not-verified. | renderer-svg + Playground | Untrusted metadata; DOM insertion | P1 follow-up | Preserve escaping regressions; verify browser boundary on a host that permits local preview binding. |
 | `SVG-EXPORT-001` | SVG string export for stdout, files, docs, web. | `✔️` | `partial-local`: SVG and 9-file tarball | Registry/public artifact unverified. | renderer-svg + release | Package exports; registry | P1 release | Run Node >=24 pack/install checks. |
 | `SVG-INTEG-001` | CLI compile-to-SVG and selected-sheet boundary. | `✔️` | `verified-local`: CLI 10/10, conformance | CLI owns parsing/file I/O. | renderer-svg + CLI | Core resolve; CLI options | P1 integration | Preserve format/sheet assertions. |
-| `SVG-INTEG-002` | Playground worker → renderer → DOM preview/inspection. | `🌗` | `partial-local`: Playground 93/93 and production build | Browser E2E was attempted but sandbox preview-server binding returned `EPERM`; public runtime remains unverified. | renderer-svg + Playground | Worker; DOM; core | P0 consumer | Run browser smoke on a host that permits the preview server. |
-| `SVG-INTEG-003` | Shared fixture/conformance participation across statuses. | `✔️` | `verified-local`: 260/260, 20 fixtures | Capability fixtures are not automatic support. | workspace + renderer-svg | Manifest; conformance runner | P1 governance | Keep fixture and capability status separate. |
+| `SVG-INTEG-002` | Playground worker → renderer → DOM preview/inspection. | `🌗` | `partial-local`: Playground 102/102 tests, build, UX audit; browser E2E not-verified | Worker/DOM/sheet/overlay wiring is covered locally; `pnpm --filter relgeo-playground test:e2e` could not bind `127.0.0.1:4173` (`EPERM`), and public runtime remains unverified. | renderer-svg + Playground | Worker; DOM; core | P0 consumer | Run browser smoke on a host that permits the preview server. |
+| `SVG-INTEG-003` | Shared fixture/conformance participation across statuses. | `✔️` | `verified-local`: 298/298 checks across 23 fixtures | Capability fixtures are not automatic support. | workspace + renderer-svg | Manifest; conformance runner | P1 governance | Keep fixture and capability status separate. |
 | `SVG-INTEG-004` | Renderer-owned semantic projection anchors for comparators. | `✔️` | `verified-local`: public projection API and semantic tests | Versioned typed projection exposes identity, kind/order, endpoints, segments, rings/holes, normalized values, transforms, and tolerance; cross-consumer comparison remains separate. | renderer-svg + parity owners | Semantic schema; tolerance; Flutter | P1 parity | Preserve projection schema and add consumer comparator evidence separately. |
 
 ## Boundary findings kept separate
@@ -85,12 +85,12 @@ register. An unavailable consumer or environment must not turn `❌` into `➖`.
 
 | Evidence check | Result |
 | --- | --- |
-| Renderer tests | 88/88 local pass; Node 22.23.2 is below required Node >=24. |
+| Renderer tests | 90/90 local pass; Node 22.23.2 is below required Node >=24. |
 | Renderer build | CJS, ESM, and DTS build locally. |
-| Shared conformance | 260/260 checks across 20 fixtures. |
+| Shared conformance | 298/298 checks across 23 fixtures. |
 | CLI | 10/10 local tests pass. |
-| Playground | 93/93 tests and build pass locally. |
-| Markdown consumers | remark preview 5/5; highlight 3/3. |
+| Playground | 102/102 tests, production build, and UX audit pass locally; browser E2E not-verified because preview-server binding returned `EPERM`. |
+| Markdown consumers | remark-relgeo build/test/lint pass (9/9 tests); remark-relgeo-hl build/test/lint pass (6/6 tests). |
 | Package boundary | `npm pack --dry-run --json`: 9 files; public install unverified. |
 | Direct probes | Repeated render equal; missing sheet and malicious attribute defects reproduced. |
 

@@ -116,7 +116,7 @@ the legend `✔️ 🌗 ❌ ➖ ⏸️ ⚠️`.
 | Website/Pages | `website-pages/expected-capability-catalog.md` | `website-pages/implementation-audit.md` | `website-pages/status-matrix.md` | `website-pages/capability-matrix.md` is retained as historical baseline. |
 | Flutter workbench | `flutter-workbench/expected-capability-catalog.md` | `flutter-workbench/implementation-gap-map.md` | `flutter-workbench/status-matrix.md` | `implementation-audit.md` is a companion evidence summary; the local expected-catalog entry point delegates normative rows to plan 12. |
 | MCP | `mcp/expected-capability-catalog.md` | `mcp/implementation-audit.md` | `mcp/capability-matrix.md` | `mcp/status-matrix.md` is a compact secondary status report, not a competing catalog. |
-| Cross-repository | `cross-repository/expected-capability-catalog.md` | `cross-repository/implementation-audit.md` | `cross-repository/status-matrix.md` | No root-level capability matrix is duplicated. |
+| Cross-repository | `cross-repository/expected-capability-catalog.md` | `cross-repository/implementation-audit.md` | `cross-repository/status-matrix.md` | `cross-repository/capability-matrix.md` is a compatibility entry point; `status-matrix.md` remains canonical. |
 
 The detailed index below links to these profiles. Historical and archived files
 are explicitly labeled so they cannot be mistaken for current evidence.

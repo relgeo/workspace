@@ -44,6 +44,27 @@ workflow lulus, atau evidence runtime sudah ada. Audit implementation wajib
 menggunakan ID yang sama dan menambahkan status implementation/evidence secara
 terpisah.
 
+### Frozen bootstrap, baseline, and evidence field contract
+
+The implementation audit for the selected rows uses one stable machine-readable
+contract. Bootstrap reports expose `requiredToolchain`, `observedToolchain`,
+`outcome`, `steps[]`, `submodules[]`, and `limitations[]`. Baseline snapshots
+expose `baselineId`, `baselineName`, `capturedAt`, `rootRevision`,
+`compatibilityLine`, `toolchain`, and exact `submodules[].revision` values.
+Evidence envelopes expose `schemaVersion`, `evidenceClass`, `evidenceState`,
+`capturedAt`, `workspaceRevision`, `baseline`, `testedRevisions`, `toolchain`,
+`run`, `artifact`, `command`, and `limitations`.
+
+`evidenceClass` is one of `local-workspace`, `public-registry`, `ci-canonical`,
+`manual`, `public-deployment`, or `baseline-snapshot`; it is part of the claim
+and cannot be silently changed by a later consumer. `evidenceState=current`
+describes only the exact checkout observed at capture time. A current claim must
+match the root revision, baseline name, and all compared child revisions.
+`historical` records are retained for audit but are never promoted to current
+when pointers move; `unverified` records and limitations remain explicit and do
+not establish parity. This rule applies equally to local, CI, artifact, and
+public-smoke evidence.
+
 Aturan sumber daftar awal:
 
 1. daftar ini diturunkan dari user journey, target pengguna, workflow produk,

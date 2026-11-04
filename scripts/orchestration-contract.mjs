@@ -3,6 +3,21 @@ const ENVIRONMENT_FAILURE_PATTERN = /(?:requires Node(?:\.js)?|unsupported engin
 
 export const EVIDENCE_SCHEMA_VERSION = 1;
 
+export const EVIDENCE_CLASSES = Object.freeze([
+  "local-workspace",
+  "public-registry",
+  "ci-canonical",
+  "manual",
+  "public-deployment",
+  "baseline-snapshot",
+]);
+
+export const EVIDENCE_STATES = Object.freeze([
+  "current",
+  "historical",
+  "unverified",
+]);
+
 export const BLOCKER_CLASSES = Object.freeze([
   "target-defect",
   "transient",
@@ -38,11 +53,13 @@ export function classifyFailure({
   }
 
   if (blockerClass) {
+    const needsDecision = decisionRequired || blockerClass === "pending-human-decision";
     return {
       blockerClass,
       retryable: retryable ?? blockerClass === "transient",
       remediation: remediationFor(blockerClass),
-      decisionRequired: decisionRequired || blockerClass === "pending-human-decision",
+      decisionRequired: needsDecision,
+      decisionNeeded: needsDecision,
     };
   }
 
@@ -52,6 +69,7 @@ export function classifyFailure({
       retryable: false,
       remediation: remediationFor("pending-human-decision"),
       decisionRequired: true,
+      decisionNeeded: true,
     };
   }
 
@@ -61,6 +79,7 @@ export function classifyFailure({
       retryable: false,
       remediation: remediationFor("dependency-unavailable"),
       decisionRequired: false,
+      decisionNeeded: false,
     };
   }
 
@@ -71,6 +90,7 @@ export function classifyFailure({
       retryable: false,
       remediation: remediationFor("environment-unavailable"),
       decisionRequired: false,
+      decisionNeeded: false,
     };
   }
 
@@ -80,6 +100,7 @@ export function classifyFailure({
     retryable: isTransient,
     remediation: remediationFor(isTransient ? "transient" : "target-defect"),
     decisionRequired: false,
+    decisionNeeded: false,
   };
 }
 
@@ -95,27 +116,90 @@ function remediationFor(blockerClass) {
 
 export function createEvidenceEnvelope({
   evidenceClass,
+  evidenceState = "current",
+  capturedAt = new Date().toISOString(),
   workspaceRevision,
   baselineName,
+  baselineCapturedAt = null,
   compatibilityLine,
   toolchain = {},
+  childRevisions = {},
+  runId = null,
+  artifact = null,
+  command = null,
   limitations = [],
 } = {}) {
   if (!evidenceClass) throw new Error("evidenceClass is required");
+  if (!EVIDENCE_CLASSES.includes(evidenceClass)) {
+    throw new Error("Unknown evidence class: " + evidenceClass);
+  }
+  if (!EVIDENCE_STATES.includes(evidenceState)) {
+    throw new Error("Unknown evidence state: " + evidenceState);
+  }
+  if (!capturedAt) throw new Error("capturedAt is required");
   return {
     schemaVersion: EVIDENCE_SCHEMA_VERSION,
     evidenceClass,
+    evidenceState,
+    capturedAt,
     workspaceRevision: workspaceRevision ?? "unknown",
     baseline: {
       name: baselineName ?? "unknown",
+      capturedAt: baselineCapturedAt,
       compatibilityLine: compatibilityLine ?? "unknown",
+    },
+    testedRevisions: {
+      root: workspaceRevision ?? "unknown",
+      children: { ...childRevisions },
     },
     toolchain: {
       node: toolchain.node ?? process.version,
       pnpm: toolchain.pnpm ?? null,
     },
+    run: { id: runId },
+    artifact,
+    command,
     limitations: [...limitations],
   };
+}
+
+/**
+ * Historical evidence is immutable context, never a current claim. Current
+ * evidence is only eligible when its root/baseline/child revisions match the
+ * revisions being claimed; toolchain or limitation gaps remain visible.
+ */
+export function assessEvidenceFreshness({
+  evidence,
+  workspaceRevision,
+  baselineName,
+  childRevisions = {},
+} = {}) {
+  const reasons = [];
+  if (!evidence || typeof evidence !== "object") {
+    return { current: false, reasons: ["missing-evidence"] };
+  }
+  if (evidence.evidenceState === "historical") reasons.push("historical-evidence");
+  if (evidence.evidenceState !== "current") reasons.push("not-current-state");
+  if (workspaceRevision && evidence.testedRevisions?.root !== workspaceRevision) {
+    reasons.push("root-revision-mismatch");
+  }
+  if (baselineName && evidence.baseline?.name !== baselineName) {
+    reasons.push("baseline-name-mismatch");
+  }
+  for (const [path, revision] of Object.entries(childRevisions)) {
+    if (evidence.testedRevisions?.children?.[path] !== revision) {
+      reasons.push("child-revision-mismatch:" + path);
+    }
+  }
+  return { current: reasons.length === 0, reasons };
+}
+
+export function assertCurrentEvidence(options = {}) {
+  const assessment = assessEvidenceFreshness(options);
+  if (!assessment.current) {
+    throw new Error("Evidence is not eligible for a current claim: " + assessment.reasons.join(", "));
+  }
+  return assessment;
 }
 
 function sleepSync(milliseconds) {
@@ -135,21 +219,48 @@ export function runWithBoundedAttemptsSync(execute, {
   }
 
   const attempts = [];
+  const attemptLinks = [];
+  let firstFailure = null;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    const result = execute(attempt) ?? {};
+    let result;
+    try {
+      result = execute(attempt) ?? {};
+    } catch (error) {
+      result = {
+        passed: false,
+        error: error instanceof Error ? error.message : String(error),
+      };
+    }
+    const previousAttempt = attempts.at(-1) ?? null;
+    const attemptId = "attempt-" + attempt;
     const normalized = {
       ...result,
       attempt,
+      attemptId,
+      previousAttemptId: previousAttempt?.attemptId ?? null,
       passed: result.passed === true,
     };
     if (normalized.passed) {
       attempts.push(normalized);
+      attemptLinks.push({
+        attemptId,
+        attempt,
+        previousAttemptId: normalized.previousAttemptId,
+        linkedToFirstFailure: firstFailure?.attemptId ?? null,
+      });
       break;
     }
 
     const failure = classify(normalized);
     const classified = { ...normalized, ...failure };
+    if (!firstFailure) firstFailure = { ...classified };
     attempts.push(classified);
+    attemptLinks.push({
+      attemptId,
+      attempt,
+      previousAttemptId: classified.previousAttemptId,
+      linkedToFirstFailure: firstFailure.attemptId,
+    });
     if (!classified.retryable || attempt >= maxAttempts) break;
     sleep(backoffMs * attempt);
   }
@@ -159,5 +270,13 @@ export function runWithBoundedAttemptsSync(execute, {
     passed: finalAttempt.passed === true,
     attempts,
     finalAttempt,
+    firstFailure,
+    attemptLinks,
+    retryPolicy: {
+      maxAttempts,
+      backoffMs,
+      attemptsUsed: attempts.length,
+      exhausted: !finalAttempt.passed && attempts.length >= maxAttempts,
+    },
   };
 }

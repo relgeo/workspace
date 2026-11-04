@@ -25,6 +25,27 @@ const transientResult = runWithBoundedAttemptsSync(() => {
 assert.equal(transientResult.passed, true);
 assert.equal(transientResult.attempts.length, 2);
 assert.equal(transientResult.attempts[0].blockerClass, "transient");
+assert.deepEqual(transientResult.retryPolicy, {
+  maxAttempts: 2,
+  backoffMs: 250,
+  attemptsUsed: 2,
+  exhausted: false,
+});
+assert.equal(transientResult.firstFailure.attemptId, "attempt-1");
+assert.deepEqual(transientResult.attemptLinks, [
+  {
+    attemptId: "attempt-1",
+    attempt: 1,
+    previousAttemptId: null,
+    linkedToFirstFailure: "attempt-1",
+  },
+  {
+    attemptId: "attempt-2",
+    attempt: 2,
+    previousAttemptId: "attempt-1",
+    linkedToFirstFailure: "attempt-1",
+  },
+]);
 assert.deepEqual(sleeps, [250]);
 
 let deterministicAttempts = 0;
@@ -36,6 +57,9 @@ const deterministicResult = runWithBoundedAttemptsSync(() => {
 assert.equal(deterministicResult.passed, false);
 assert.equal(deterministicAttempts, 1);
 assert.equal(deterministicResult.finalAttempt.blockerClass, "target-defect");
+assert.equal(deterministicResult.retryPolicy.attemptsUsed, 1);
+assert.equal(deterministicResult.retryPolicy.exhausted, false);
+assert.equal(deterministicResult.firstFailure.attemptId, "attempt-1");
 
 const environmentResult = runWithBoundedAttemptsSync(() => ({
   passed: false,
@@ -44,6 +68,14 @@ const environmentResult = runWithBoundedAttemptsSync(() => ({
 }));
 assert.equal(environmentResult.finalAttempt.blockerClass, "environment-unavailable");
 assert.equal(environmentResult.finalAttempt.retryable, false);
+assert.equal(environmentResult.finalAttempt.decisionNeeded, false);
+
+const thrownResult = runWithBoundedAttemptsSync(() => {
+  throw new Error("contract exception");
+}, { sleep: () => { throw new Error("thrown failure was retried"); } });
+assert.equal(thrownResult.passed, false);
+assert.equal(thrownResult.finalAttempt.blockerClass, "target-defect");
+assert.equal(thrownResult.attempts.length, 1);
 
 const envelope = createEvidenceEnvelope({
   evidenceClass: "local-workspace",
@@ -70,7 +102,7 @@ const syncWorkflow = fs.readFileSync(
   "utf8",
 );
 assert.match(syncWorkflow, /name: Checkout workspace and submodules[\s\S]*?persist-credentials: false/);
-assert.match(syncWorkflow, /permissions:\n  contents: write\n  pull-requests: write\n  actions: write/);
+assert.match(syncWorkflow, /permissions:\n  contents: write\n  pull-requests: write\n  actions: read/);
 
 const runnerSources = [
   fs.readFileSync(path.join(root, "scripts", "verify-baseline.mjs"), "utf8"),
@@ -81,6 +113,9 @@ for (const source of runnerSources) {
   assert.match(source, /createEvidenceEnvelope/);
   assert.match(source, /classifyFailure/);
   assert.match(source, /dependencyStatus/);
+  assert.match(source, /firstFailure/);
+  assert.match(source, /retryPolicy/);
+  assert.match(source, /decisionNeeded/);
 }
 assert.match(runnerSources[1], /runWithBoundedAttemptsSync/);
 assert.match(runnerSources[2], /runWithBoundedAttemptsSync/);

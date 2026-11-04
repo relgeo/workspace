@@ -1,6 +1,6 @@
 # RelGeo language-service capability matrix
 
-> **Coverage statement — 2026-10-29.** This matrix covers the language-service
+> **Coverage statement — 2026-11-03.** This matrix covers the language-service
 > API and its core/Playground consumer boundary using source modules, tests,
 > schema/completion/token data, package metadata, shared fixtures, and docs
 > wiring. It inventories diagnostics, schema, tokens, completion, hover, and
@@ -10,7 +10,7 @@
 > absence.
 > See [inventory protocol](../INVENTORY-PROTOCOL.md) for status axes and evidence tiers.
 
-Status dokumen: audit baseline, 2026-10-29  
+Status dokumen: audit refresh, 2026-11-03
 Surface: `language-service/`  
 Owner: `relgeo/language-service`  
 Package: `@relgeo/language-service@0.5.1`  
@@ -40,24 +40,30 @@ berbasis source/test/fixture yang ada dan batas verifikasi ditulis eksplisit.
 | Diagnostics for invalid YAML, version, references, constraints, and schema fields | `✔️` | `service.ts:158-207`; invalid fixtures 11–13 and 17–18; conformance checks | One thrown validation/parser error is converted per call; exhaustive multi-error collection is not proven | language-service, Playground, CLI indirectly | core validation/error model | Add multi-error fixture only if editor contract requires aggregation |
 | Runtime/post-resolve violation diagnostics | `🌗` | `service.ts` calls `parseRelGeo(..., validate)` and `Validator.validate`, but not `resolveGeometry`; fixture 14 expects language service to accept the structurally valid runtime violation | Runtime `ConstraintViolation` is represented by core/Playground resolved data, not returned by `getDiagnostics` | Playground inspector, core, renderer | resolver constraint processing and diagnostic mapping | Decide whether runtime violations belong in this API; add a separate method/fixture if yes |
 | JSON Schema export for document/object/parameter/view/sheet/presentation vocabulary | `✔️` | `src/schema.ts:1-590`; tests for version, metadata, sheet placement, repeat, split | Schema is a constant export; no schema validator runner checks every branch against parser | editors, schema-aware YAML tooling | spec/core field vocabulary | Add schema-vs-spec/core drift checker |
-| Documented `langService.getSchema()` method | `⚠️` | README `language-service/README.md:327-334` documents method; `src/service.ts` has no `getSchema()` method; `RELGEO_SCHEMA` is exported separately | Consumer following README gets a missing method; source and docs disagree | editor integrators | public API/docs alignment | Either add method or correct README and add API test |
+| Documented `langService.getSchema()` method | `✔️` | `src/service.ts`, README, and focused API/version test expose the method consistently | Packed/registry artifact verification remains outside this audit | editor integrators | public API/docs alignment | Retain public artifact check at release boundary |
 | Context-aware completion for root, object types, fields, placement, metadata, geometry functions | `✔️` | `completions.ts:3-517`; `service.ts:287-552`; 66/66 tests | Completion is heuristic/indent-based rather than a full YAML AST/LSP completion engine | Playground CodeMirror, editor integrations | completion catalogs, core/spec vocabulary | Keep representative context fixtures and document heuristic boundary |
 | Object/reference/anchor completion for quoted IDs, components, repeats, path contexts | `✔️` | tests for punctuation-heavy IDs, component exports, indexed repeats, `point.on.path`, `along.target` | Object ID-level suggestions intentionally return empty (`service.ts:523-525`) | Playground, editor | source scanning and parsed editor document | Add bounded ID completion if consumer demand requires it |
 | Semantic tokenization with geometry/presentation/layout/function/unit categories | `✔️` | `tokens.ts:10-543`; token classification test; conformance token checks | Token spans are custom RelGeo lines, not standard LSP semantic-token integer arrays | remark-relgeo-hl, Playground syntax surface | completion vocabulary, tolerant source tokenizer | Keep token kind vocabulary synchronized with spec |
 | Hover for object type/resolved value/anchors/scalars | `🌗` | `service.ts:217-281`; Playground `Editor.tsx:65-89` wires hover | No direct language-service hover tests; only selected object/property shapes resolve and malformed/incomplete docs fall back to null | Playground, editor | core editor-mode resolver | Add hover tests for valid/incomplete/quoted IDs and document support boundary |
-| Playground editor integration: diagnostics, completion, hover | `🌗` | `playground/src/components/Editor.tsx:1-89,107-120`; package dependency | Source wiring exists; current browser/E2E execution was not run in this audit | Playground users | CodeMirror, language-service dist, browser bundle | Re-run browser smoke and record current build/commit |
+| Playground editor integration: diagnostics, completion, hover | `🌗` | `playground/src/components/Editor.tsx`; typed request helpers carry document/version/request identity; `npm test && npm run lint && npm run build` passes (102 tests) | Source wiring and production bundle build are verified; browser/E2E/public execution was not run in this audit | Playground users | CodeMirror, language-service dist, browser bundle | Re-run browser smoke and record current build/commit |
+| Typed result identity and stale-result boundary | `🌗` | `language-service/src/protocol.ts`, `src/__tests__/protocol.test.ts`; Playground adapter helpers; MCP identity echo test | Service guard is exact; worker/host ordering and every semantic producer remain consumer-owned/open | Playground, MCP, editor adapters | document identity, version, request ID, source revision | Add an end-to-end worker assertion before broad adapter rollout |
+| Minimal semantic navigation | `🌗` | `RelGeoLanguageService.analyzeNavigation()` and protocol test return object definition/reference locations with document ID and UTF-16 ranges | One object-reference relation is covered; Playground source-jump action and broader semantic index are not | future editor actions, Playground | core semantic identity and host navigation action | Wire one source-jump consumer |
+| Bounded re-analysis strategy | `🌗` | `language-service/src/analysis.ts`; protocol test records changed range, line budget, inspected lines/code units, and full-document fallback reason | Core dependency semantics require whole-document inspection today; this is measured fallback, not incremental parsing | language-service, worker | core semantic dependency/index contract | Replace fallback only after core exposes safe dependency-bounded analysis |
+| Active-spec vocabulary drift check | `🌗` | `node scripts/check-language-service-schema-drift.mjs` reports zero root/object differences against `spec/id` v0.5 | Checker covers active root/object catalogs; generated all-spec field/parameter comparison remains open | language-service, spec | active `spec/id` snapshot | Connect generated all-spec vocabulary evidence |
+| MCP editor result adapter | `🌗` | `mcp/lib/src/contract/mcp_schema.dart`, `local_dispatch.dart`; 34 Dart tests cover identity serialization/echo and legacy JSON compatibility | Core-backed language-service producer wiring and packaged/cross-host verification remain open | MCP tools, agent hosts | typed result/provenance contract | Wire core-backed semantic producer separately |
 | Normative language ownership and package semantics | `➖` | `docs/REPOSITORY-MAP.md:9-16,51-74`; `spec/id/` ownership; README relationship with core | Language-service mirrors/consumes vocabulary; it is not the normative source | spec, core, all editor consumers | spec revision and compatibility matrix | Keep schema/completions as generated/checked consumer views |
-| Formatting, refactoring, rename, semantic navigation, incremental parsing, collaborative editing | `➖` | `language-service/README.md:399-430` explicitly lists these outside current scope | These are not missing implementation bugs for the current editor-intelligence boundary | future IDE/LSP | future product contract | Do not represent as current capability until a consumer/contract is approved |
+| Formatting, refactoring, rename, incremental parsing, collaborative editing | `➖` | `language-service/README.md:399-430` explicitly lists these outside current scope | These are not missing implementation bugs for the current editor-intelligence boundary; minimal navigation is tracked separately above | future IDE/LSP | future product contract | Do not represent as current capability until a consumer/contract is approved |
 | Official LSP server/transport | `❌` | No LSP server entrypoint in package files; README roadmap lists “LSP server resmi” as future | Library exposes types/methods but not a process/transport server | future VS Code/LSP host | host protocol and lifecycle decision | Keep as future surface; add only with explicit server contract |
-| Package version/docs consistency | `⚠️` | `package.json:3` and `docs/compatibility-matrix.json:100-105` say `0.5.1`; `README.md:7` still says `0.5.0` | Stale package metadata can mislead consumers about patch release provenance | npm users, docs readers, release gate | release/version policy | Update README version and add compatibility metadata check |
-| Language-service build/test/lint and shared fixture evidence | `✔️` | test `66/66`; lint PASS; build PASS; conformance `260/260`; fixtures 10, 11–20 | Local toolchain is Node `22.23.2` while repository requires `>=24`; registry/current remote CI not rerun | root integration, Playground, remark plugin | dist artifacts, core package, fixture runner | Re-run canonical Node >=24 and registry/public gate |
+| Package version/docs consistency | `✔️` | `package.json`, README, and compatibility metadata agree on `0.5.1`; focused API/version test passes | Packed/registry/public artifact verification remains outside this audit | npm users, docs readers, release gate | release/version policy | Retain public artifact check at release boundary |
+| Language-service build/test/lint and consumer evidence | `✔️` | language-service `npm test && npm run lint && npm run build` (82 tests); Playground same command (102 tests); MCP snapshot test (34 tests); schema drift checker and diff checks pass | Browser/public/registry/current CI remain not verified; Dart analyzer is blocked by telemetry write outside workspace | root integration, Playground, MCP | dist artifacts, core package, fixture runner | Re-run canonical Node >=24, browser smoke, and Dart analyzer in an environment with writable telemetry/config |
 
 ## Priority order
 
-1. Resolve the documented `getSchema()` API mismatch and stale `0.5.0` README
-   version before claiming documentation/API parity.
-2. Decide whether `getDiagnostics` remains structural/validation-only or gains a
+1. Decide whether `getDiagnostics` remains structural/validation-only or gains a
    separate post-resolve violation API.
-3. Add direct hover tests and schema-vs-core/spec drift checks.
+2. Add direct hover tests and extend the active-spec drift checker to generated
+   field/parameter evidence.
+3. Wire the minimal navigation result to a Playground source-jump action and
+   add an end-to-end worker stale-result assertion.
 4. Keep official LSP, formatting, refactoring, rename, and incremental parsing
-   outside the current contract until a consumer owner is assigned.
+   outside the current contract until a consumer owner/core index contract is assigned.

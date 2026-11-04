@@ -9,10 +9,16 @@
   "packageManager": "pnpm@10.33.3",
   "scripts": {
     "install:workspace": "pnpm install --frozen-lockfile",
+    "bootstrap": "node scripts/bootstrap.mjs",
+    "bootstrap:contract:test": "node scripts/test-bootstrap-and-evidence-contract.mjs",
     "verify:baseline": "node scripts/verify-baseline.mjs",
     "verify:baseline:strict": "node scripts/verify-baseline.mjs --strict",
     "verify:baseline:failure": "node scripts/test-baseline-failure.mjs",
     "orchestration:contract:test": "node scripts/test-orchestration-contract.mjs",
+  "child-ci:contract:test": "node scripts/test-child-ci-sync-contract.mjs",
+  "workflow:security:test": "node scripts/test-workflow-security-policy.mjs",
+  "integration:evidence:test": "node scripts/test-joined-integration-evidence.mjs",
+    "integration:evidence:join": "node scripts/join-integration-evidence.mjs",
     "compatibility:check": "node scripts/check-compatibility.mjs",
     "compatibility:audit": "node scripts/audit-compatibility-behavior.mjs",
     "language-spec:check": "node scripts/check-language-spec-vocabulary.mjs",
@@ -36,6 +42,7 @@
     "lint": "pnpm --filter relgeo-playground lint",
     "check": "pnpm --filter relgeo-docs-site check",
     "docs:build": "pnpm --filter relgeo-docs-site build",
-    "playground:build": "pnpm --filter relgeo-playground build"
+    "playground:build": "pnpm --filter relgeo-playground build",
+    "playground:artifact:check": "node scripts/check-playground-artifact.mjs"
   }
 }

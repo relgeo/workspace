@@ -1,6 +1,14 @@
 # Sub-Rencana 11 — MCP Server dan Agent-Assisted RelGeo Authoring
 
-**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, desktop Streamable HTTP server, offline full-spec retrieval, dan edit dokumen aktif berbasis izin tersedia. Izin edit mati secara default; sesi read-write menerapkan patch bounded dengan revision guard sebagai satu transaksi undoable. Validasi/render mandiri masih belum diimplementasikan.
+**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, desktop Streamable HTTP server, offline full-spec retrieval, review patch read-only, dan edit dokumen aktif berbasis izin tersedia. Izin edit mati secara default; sesi read-write menerapkan patch bounded dengan revision guard sebagai satu transaksi undoable. Cancellation request/stop memiliki cooperative abort boundary sebelum commit. Validasi/render mandiri tetap owner-provided dan belum menjadi semantic engine di package MCP.
+
+Status delivery terbaru dan batas evidence per capability dicatat di [MCP
+capability matrix](../capability-map/mcp/capability-matrix.md), [reconciliation
+register](../capability-map/mcp/reconciliation.md), dan [implementation-gap
+backlog](../capability-map/mcp/implementation-gap-backlog.md). Local adapter
+fixtures close bounded read-only contracts only; they do not claim semantic
+producer composition, external-client interoperability, or packaged runtime
+smoke.
 **Repository pemilik:** `relgeo/workspace` sebagai orkestrator; package MCP berada sebagai submodule resmi pada repository `relgeo/mcp` dengan nama `relgeo_mcp`
 **Pemilik keputusan:** Agus Made
 **Compatibility line:** RelGeo DSL 0.5.x
@@ -186,7 +194,9 @@ Kontrak umum:
 
 - input tervalidasi dengan schema typed;
 - hasil memiliki output terstruktur dan ringkasan text;
-- diagnostics menyertakan severity, message, source range, dan code;
+- diagnostics menyertakan phase, stable code, severity, path, message, dan
+  source range sesuai structured diagnostic contract; raw `Error` tidak boleh
+  menjadi public MCP result;
 - source yang dikembalikan selalu dapat dibedakan antara input, proposal, dan
   hasil validasi;
 - tool tidak menulis filesystem pada MVP.
@@ -218,6 +228,59 @@ snapshot and constructs the index at desktop-server startup. See
 `docs/mcp/04-mvp-tool-resource-contract.md`,
 `docs/mcp/06-full-spec-search-contract.md`, and
 `docs/mcp/03-sdk-conformance-runbook.md` for the contract and evidence map.
+
+Language-service editor results use the frozen cross-consumer vocabulary in
+[`docs/capability-map/language-service/protocol-contract.md`](../capability-map/language-service/protocol-contract.md): protocol `0.2`, DSL/spec
+`0.5`, zero-based UTF-16 half-open ranges, `documentId` + monotonic document
+`version` + opaque string `requestId`, optional `sourceRevision`, and typed
+result families for diagnostics, validation, completion, hover, metadata,
+navigation, and aggregate analysis. A worker or MCP adapter accepts a result
+only when all three identity fields match its current request; otherwise it
+drops the result as stale. This freezes the data boundary without claiming
+that MCP semantic producers are already wired.
+
+### 4.2.1 Handoff kontrak language-specification
+
+MCP mengonsumsi kontrak dari source tree yang sama dengan downstream lain:
+
+1. vocabulary, types, fields, aliases, dan status labels berasal dari
+   [`normative-vocabulary-catalog.json`](../capability-map/language-specification/normative-vocabulary-catalog.json)
+   dan drift check `pnpm run language-spec:check`;
+2. phase, code, severity, path, message, range, mode, dan post-resolve
+   boundaries berasal dari
+   [`spec/id/core/04-evaluation-order.md`](../../spec/id/core/04-evaluation-order.md),
+   [`05-semantic-guarantees.md`](../../spec/id/core/05-semantic-guarantees.md),
+   dan [`06-error-model.md`](../../spec/id/core/06-error-model.md);
+3. dimension, annotation, drawing roles, metadata, dan safe semantic SVG
+   projection berasal dari `spec/id/presentation/22-dimension.md`,
+   `23-annotation.md`, `24-drawing-roles.md`, dan `26-metadata.md`.
+
+Handoff ini membekukan makna dan provenance, bukan klaim bahwa seluruh MCP
+producer atau consumer parity sudah selesai. Implementasi dapat memvalidasi
+kontrak dari checkout lokal dan tidak menunggu npm/pub.dev release, registry
+publication, atau production deployment. Promotion gate, transport/runtime
+evidence, dan producer normalization yang belum lulus harus tetap dilaporkan
+sebagai unresolved atau not verified.
+
+### 4.2.2 Post-full-spec contract edges
+
+Plan 14 is the retrieval foundation and remains read-only. The remaining
+MCP-T01–MCP-T10 work is bounded by these ownership rules:
+
+| Surface | Owner | MCP adapter may do | MCP adapter may not do |
+| --- | --- | --- | --- |
+| Schema and version | `relgeo_mcp` contract; `spec/id` meaning | Validate bounds, reject unsupported versions, serialize typed results | Invent a second DSL validator or silently coerce versions |
+| Examples | Versioned examples source | Return bounded explanatory examples with provenance | Present examples as normative rules |
+| Validation and diagnostics | `core`/`language-service` | Forward structured verdicts and diagnostics | Replace producer codes with raw exception text or mutate a document |
+| Rendering | `core`/`renderer-svg` | Request bounded in-memory SVG projection and map failure | Write files, Save/export, or return SVG for a failed render |
+| Resources and cache | MCP resource layer plus snapshot/catalog owners | Preserve revision/digest and explicit fallback identity | Mix snapshot and remote versions without identity |
+| Desktop bridge and edits | Flutter bridge/editor | Carry active identity/revision and explicit guarded outcomes | Implicitly apply proposals or bypass undo/save boundaries |
+| Workflow and provenance | MCP composition plus all owners | Preserve source kind, `basedOn[]`, ranges, and request identity | Put normative rules only in prompts or erase provenance |
+
+This handoff freezes contract edges, not implementation status. A passing
+full-spec retrieval test proves only retrieval; semantic producer, transport,
+host UX, cancellation, and edit evidence must be recorded against their own
+owner and task.
 
 ### 4.3 Dokumentasi GitHub dan website
 
@@ -352,7 +415,7 @@ DocumentEditProposal
   rationale
 
 DocumentEditResult
-  applied | stale | rejected | failed
+  review | applied | stale | rejected | failed | cancelled
   newRevision?
   diagnostics
 ```
@@ -369,6 +432,10 @@ Patch dengan `baseRevision` yang sudah kedaluwarsa harus ditolak sebagai
 `stale`, bukan diterapkan secara diam-diam. Patch yang lolos validasi diterapkan
 langsung ke source aktif sebagai satu transaksi undoable. Penerapan ini tidak
 menyimpan file otomatis; Save tetap merupakan aksi dokumen terpisah.
+`relgeo_review_proposed_patch` hanya mengembalikan proposal dan snapshot untuk
+review, tanpa memanggil setter editor. Request cancellation dan server stop
+membatalkan token in-flight; bridge desktop memeriksa token tepat sebelum
+transaksi editor sehingga request yang dibatalkan tidak dapat melakukan commit.
 
 ## 7. Direct-apply dan security boundary
 
@@ -440,6 +507,12 @@ log atau source code.
   diagnostics, dan active document;
 - [x] map contract ownership ke language-service, core, renderer, dan
   active-session bridge;
+- [x] hand off the checked vocabulary catalog, structured diagnostics contract,
+  and presentation/semantic-SVG contract to downstream owners;
+- [ ] consume frozen diagnostic phase/code/severity/path fields from producers
+  without exposing raw `Error` values;
+- [ ] consume semantic SVG projections and hostile-input guarantees without
+  requiring raw SVG byte equality;
 - [x] expose tools melalui adapter MCP dan hubungkan resources ke snapshot
   spec/examples yang versioned;
 - [ ] gunakan language-service untuk completion/diagnostics;
@@ -462,6 +535,10 @@ dikunci; evidence dan command validation ada di
 
 - [ ] tambah `get_syntax_rule`, `complete_source`, dan diagnostic explanation;
 - [ ] hasil tool memiliki source range dan structured diagnostics;
+- [ ] hasil tool mempertahankan phase, stable code, severity, path, dan mode;
+- [ ] hasil rendering memproyeksikan semantic SVG yang aman; byte equality
+  renderer bukan acceptance gate;
+- [x] fixture bounded discovery → example → completion → validation → explanation → render;
 - [ ] buat prompt author/debug/explain sebagai layer workflow;
 - [ ] tambahkan test intent-to-syntax fixtures;
 - [ ] pastikan agent menerima minimal valid examples, bukan dump spec besar.
@@ -479,9 +556,12 @@ Implementasi desktop memuat seluruh snapshot Markdown `spec/id/` dari Flutter
 asset bundle secara offline dan mengekspos pencarian, section retrieval
 normatif, contoh sekunder, dokumen aktif, dan diagnostics. Server dimulai
 read-only; pengguna dapat memilih izin edit saat mengaktifkan MCP. Sesi
-read-write hanya mengekspos `relgeo_apply_document_edit`, yang dibatasi oleh
-ukuran, active document ID, dan revision; perubahan menjadi satu transaksi
-undoable dan tidak autosave. Validasi mandiri dan rendering belum diekspos.
+read-write mengekspos `relgeo_review_proposed_patch` sebagai jalur review
+read-only dan `relgeo_apply_document_edit` sebagai jalur mutasi yang dibatasi
+oleh ukuran, active document ID, dan revision; perubahan menjadi satu
+transaksi undoable dan tidak autosave. Request yang dibatalkan atau server yang
+berhenti tidak boleh melewati commit boundary. Validasi mandiri dan rendering
+tetap disediakan melalui owner callbacks, bukan semantic engine kedua di host.
 Cara menjalankan dan batas kemampuan dijelaskan di
 [`flutter/docs/mcp-local-testing.md`](../../flutter/docs/mcp-local-testing.md).
 
@@ -492,13 +572,15 @@ Cara menjalankan dan batas kemampuan dijelaskan di
 - [x] cegah pembacaan dokumen yang bukan active session;
 - [ ] tambahkan test perubahan source saat agent sedang membaca.
 - [x] expose `relgeo_apply_document_edit` sebagai bounded patch, bukan overwrite bebas;
+- [x] expose `relgeo_review_proposed_patch` sebagai review read-only;
 - [x] terapkan edit langsung ke active document;
 - [x] jadikan setiap tool call edit satu undoable transaction;
 - [x] gunakan base revision guard;
 - [x] hubungkan apply dengan undo/redo dan dirty state;
 - [ ] tampilkan status perubahan dan affordance Undo pada Flutter;
 - [x] pastikan apply tidak melakukan autosave;
-- [x] pertahankan Save/Save As sebagai aksi eksplisit yang terpisah.
+- [x] pertahankan Save/Save As sebagai aksi eksplisit yang terpisah;
+- [x] batalkan edit in-flight saat cancellation notification atau server stop.
 
 ### Tahap 5 — Standalone Dart executable dan CLI bridge
 
@@ -525,7 +607,10 @@ Cara menjalankan dan batas kemampuan dijelaskan di
 - [x] setiap hasil dokumentasi menyertakan source URL dan revision/version;
 - [ ] website tidak pernah mengalahkan rule normatif dari spec;
 - [ ] source proposal selalu dapat divalidasi oleh core;
-- [ ] diagnostics dikembalikan terstruktur dengan source range;
+- [ ] diagnostics dikembalikan terstruktur dengan phase, stable code, severity,
+  path, message, mode, dan source range tanpa raw `Error` ambiguity;
+- [ ] semantic SVG output memenuhi hostile-input safety and semantic-projection
+  contract tanpa menjadikan raw SVG byte equality sebagai gate;
 - [x] Flutter dapat menghidupkan server lokal melalui UI;
 - [x] desktop tidak membutuhkan Node.js, npm, atau runtime kedua;
 - [x] agent dapat membaca dokumen aktif;
@@ -533,6 +618,8 @@ Cara menjalankan dan batas kemampuan dijelaskan di
 - [x] setiap edit Agent menjadi satu transaksi undoable;
 - [x] pengguna langsung melihat perubahan dan dapat membatalkannya dengan Undo;
 - [x] patch stale ditolak dengan aman;
+- [x] proposal memiliki outcome review/applied/stale/rejected/failed/cancelled;
+- [x] cancellation, stop, dan disconnect boundary tidak melakukan commit stale;
 - [x] direct apply tidak melakukan autosave atau menulis arbitrary filesystem;
 - [x] Save dan export tetap mengikuti document lifecycle sebagai aksi terpisah;
 - [x] localhost server tidak membuka arbitrary remote access;

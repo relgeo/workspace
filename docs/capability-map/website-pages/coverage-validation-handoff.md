@@ -57,7 +57,7 @@ Klaim yang aman:
 | Full status legend | PASS | Matrix menjelaskan `✔️`, `🌗`, `❌`, `➖`, `⏸️`, dan `⚠️`; evidence state dipisahkan dari status symbol. |
 | Evidence classes separated | PASS | Audit/matrix membedakan `verified-local`, `observed-local`, `unverified-public`, `environment-unavailable`, dan `deferred-external`; local evidence tidak dipromosikan diam-diam. |
 | Scope decisions preserved | PASS | Semua 15 row in scope; ownership boundaries, physical AT deferral, and website-versus-child-runtime ownership remain explicit rather than being converted to `➖`. |
-| Limitations stated | PASS | English spec placeholder/parity, absent query search, revision drift, no current CI/deployment result, DNS failure, no fresh viewport/AX run, and deferred physical AT are recorded. |
+| Limitations stated | PASS | English spec placeholder/parity, absent query search, no current CI/deployment result, DNS failure, incomplete viewport matrix, representative native Chrome AX smoke, and deferred physical AT are recorded. |
 | Unresolved questions recorded | PASS | §5 lists search baseline, English policy, pin synchronization, public/CI evidence, browser/AT evidence, SEO URL gating, and internal-link crawl questions. |
 | Gap backlog coverage | PASS | 11 candidate tasks cover all 11 non-green rows; each task has work type and acceptance evidence. |
 | Required paths resolve | PASS | `docs/capability-map`, `docs/REPOSITORY-MAP.md`, and `docs/MATURATION-MASTER-PLAN.md` are linked/readable; website/source and plan evidence are linked by the audit/catalog. |
@@ -79,7 +79,7 @@ implementation-audit observation.
 | Playground/Markdown handoff and surface/command orientation | `WEB-PAGE-007`, `WEB-PAGE-008` | Audit §2–§4: CTA links, Markdown fences, docs groups, CLI orientation, and child-owner boundary |
 | Responsive behavior, accessibility, and SEO/discoverability | `WEB-PAGE-009`, `WEB-PAGE-010`, `WEB-PAGE-011` | Audit §2–§5: CSS/accessibility contracts, static assertions, metadata, canonical URLs, sitemap, and deferred/unverified runtime evidence |
 | Generated artifact, Pages deployment, and public reliability | `WEB-PAGE-012`, `WEB-PAGE-013`, `WEB-PAGE-014` | Audit §2, §4–§7: build/artifact assertions, workflow pins/deploy steps, 13-route smoke definition, and DNS-limited public result |
-| Honest capability/version/provenance status | `WEB-PAGE-015` | Audit §4 and §6: status pages, DSL/package/application distinctions, spec output, and revision drift |
+| Honest capability/version/provenance status | `WEB-PAGE-015` | Audit §4 and §6: status pages, DSL/package/application distinctions, spec output, and synchronized local provenance |
 
 ## 4. Discovery coverage boundary
 
@@ -87,8 +87,8 @@ The audit covers the declared website/Pages boundary:
 
 1. `relgeo.github.io/src/pages/`, layouts, libraries, content configuration,
    localized route templates, legacy redirects, and sitemap generation;
-2. site/docs Markdown collections, active `spec/id` input, and `spec/en`
-   placeholder/content boundary;
+2. site/docs Markdown collections, active `spec/id` input, and the explicit
+   English editorial-mirror disclosure;
 3. global navigation, docs groups, language switcher, spec sidebar, active
    route state, CTA/Playground links, and article reading paths;
 4. website package scripts, Astro config, Markdown plugin registration,
@@ -110,20 +110,22 @@ deployment run, child revision, crawler, or external host has been executed.
 Expected capabilities remain visible even where implementation is absent or
 evidence is unavailable.
 
-## 5. Unresolved questions for human decision
+## 5. Remaining verification questions
 
-These questions must not be silently resolved by changing a status symbol or by
-calling documentation implementation:
+These are remaining verification or follow-up questions, not a license to
+silently change a status symbol or call documentation implementation. The
+claim, locale, and revision choices for `WEB-PAGE-003/004/005/015` are frozen
+in [`claim-locale-provenance-contract.md`](./claim-locale-provenance-contract.md).
 
 | ID | Question | Affected capabilities / artefacts |
 | --- | --- | --- |
-| `Q-WEB-001` | Apakah deterministic docs/spec index cukup sebagai search baseline, atau harus ada query search, index, dan no-result behavior? | `WEB-PAGE-003`, `GAP-WEB-003-SEARCH-001` |
-| `Q-WEB-002` | Apakah `/en` akan menjadi translation penuh atau honest mirror dari `spec/id` dengan disclosure yang lebih kuat? | `WEB-PAGE-004`, `005`, `015`; `GAP-WEB-004-LOCALE-001` |
-| `Q-WEB-003` | Revision Playground mana yang approved untuk menyelaraskan root gitlink, integration baseline, dan Pages workflow pin? | `WEB-PAGE-007`, `012`, `013`, `014`; `GAP-WEB-012-ARTIFACT-001` |
+| `Q-WEB-001` | Kapan browser evidence untuk deterministic docs/spec index dijalankan; query/server search tetap di luar baseline kecuali ada product change? | `WEB-PAGE-003`, `GAP-WEB-003-SEARCH-001` |
+| `Q-WEB-002` | Kapan English reference content dapat direview untuk parity tanpa menghapus editorial-mirror disclosure? | `WEB-PAGE-004`, `005`, `015`; `GAP-WEB-004-LOCALE-001` |
+| `Q-WEB-003` | Kapan frozen tuple website `6eb2e24`, spec `b96ba3b2`, Playground `c7cec4b5` direkonsiliasi ke integration baseline dan artifact? | `WEB-PAGE-007`, `012`, `013`, `014`; `GAP-WEB-012-ARTIFACT-001` |
 | `Q-WEB-004` | Kapan current canonical Pages workflow, deployed URL, dan public smoke dapat dijalankan pada host yang reachable? | `WEB-PAGE-001`, `007`, `011`–`014`; `GAP-WEB-013-PAGES-001`, `GAP-WEB-014-SMOKE-001` |
 | `Q-WEB-005` | Browser viewport/AX/keyboard evidence mana yang diwajibkan sekarang, dan kapan physical VoiceOver/TalkBack/mobile Safari dibuka kembali? | `WEB-PAGE-009`, `010`; `GAP-WEB-009-RESPONSIVE-001`, `GAP-WEB-010-A11Y-001` |
 | `Q-WEB-006` | Apakah deployment URL placeholder harus menjadi hard build failure dan seberapa luas crawler internal-link/SEO gate-nya? | `WEB-PAGE-001`, `011`; `WEB-PAGE-001` route-crawl follow-up and `GAP-WEB-011-SEO-001` |
-| `Q-WEB-007` | Field version/provenance mana yang menjadi canonical input untuk public capability/status claims? | `WEB-PAGE-015`; `GAP-WEB-015-STATUS-001` |
+| `Q-WEB-007` | Kapan frozen DSL/package/application/source/deployment fields dipublikasikan dari synchronized artifact evidence? | `WEB-PAGE-015`; `GAP-WEB-015-STATUS-001` |
 
 ## 6. Implementation handoff
 
@@ -149,22 +151,27 @@ surface is complete.
 
 ### Changed repository boundary
 
-Evidence was recorded from the current uncommitted worktree. The root
-workspace is at `1cfa86553d7adb18179c6b3e1a33618a179b1414`; the website child is
-at `5c4576ec83ff7d4beebcbc1553c716711b91db68`; the Playground child is at
-`59a42ae925cf0c21541bc19ccac39f5061b35439`; and the spec child is at
+Evidence was refreshed from the current uncommitted worktree. The root
+workspace is at `2ff198d7284d4ef947e21ea1cbedd88a66b6d977`; the frozen website
+child is at `6eb2e241b76a5f226644300f5cbe9814c342cd08`; the frozen Playground
+child is at `c7cec4b505f290beccac911ef97786c8f6b0a534`; and the spec child is at
 `b96ba3b23de202227eade06614635ef6717df516`. No commit was created for this
-handoff, and unrelated pre-existing worktree changes were preserved.
+handoff, and unrelated pre-existing worktree changes were preserved. The
+integration baseline records the frozen website/spec/Playground tuple, and the
+local provenance plus assembled-artifact gates pass for that synchronized set.
+CI, Pages deployment, and public-host evidence remain unverified.
 
 ### Reproducible evidence boundary
 
-- Website: `pnpm check`, deployment-configured `pnpm build`, `pnpm test`, and
-  `pnpm run test:pages-artifact` after assembling the current Playground
-  `dist/`.
+- Website: `pnpm check`, deployment-configured `pnpm build`, `pnpm test`,
+  `pnpm provenance:check`, and `pnpm provenance:pages` were run for the frozen
+  contract. `pnpm run test:pages-artifact` also passes against the assembled
+  Playground `dist/`.
 - Playground: `pnpm build` and `pnpm test` (16 test files, 99 tests).
-- Provenance: `pnpm provenance:report` records the three Playground revision
-  mismatches; `pnpm provenance:check` intentionally fails until an approved
-  revision set is selected.
+- Provenance: `pnpm provenance:check` and `pnpm provenance:pages` report
+  `synchronized: true` with no mismatches for the frozen tuple; the combined
+  artifact gate also passes. A current CI/Pages run and public deployment smoke
+  remain unverified.
 - Root integration: `node scripts/run-integration-gate.mjs --local` was
   environment-unavailable at its Node 24 preflight because the environment has
   Node 22.23.2.
@@ -174,17 +181,19 @@ handoff, and unrelated pre-existing worktree changes were preserved.
 No npm or pub.dev publication, production Pages deployment, GitHub Actions run,
 public host availability, custom/deferred platform host, or physical
 assistive-technology session was used as a prerequisite for the local evidence.
-The DNS failure, revision drift, Node-version preflight, browser runtime gaps,
-and physical AT deferral remain visible in the audit and backlog.
+The DNS failure, Node-version preflight, incomplete viewport matrix, browser
+runner limitation, and physical AT deferral remain visible in the audit and
+backlog.
 
 ### Handoff order
 
-1. Choose the approved Playground revision and synchronize the root pointer,
-   integration baseline, and Pages workflow pin.
-2. Resolve the English translation-versus-mirror decision and complete any
-   required reference content.
-3. Run the browser viewport/AX/keyboard checks, then rerun the configured Pages
-   workflow and 13-route public smoke when the host is reachable.
+1. Synchronize the frozen source tuple with the integration baseline and
+   assembled artifact.
+2. Review any missing English reference content while preserving the
+   editorial-mirror disclosure until translation parity is proven.
+3. Complete the browser viewport/AX/keyboard matrix when a stable runner is
+   available, then rerun the configured Pages workflow and 13-route public
+   smoke when the host is reachable.
 
 ## 8. Required evidence index
 

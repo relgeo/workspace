@@ -1,6 +1,6 @@
 # Cross-Repository Orchestration — Coverage Validation and Handoff
 
-> **Current checkout handoff — 2026-10-31:** Current child worktrees are clean and match all 12 root gitlinks, but 11 of 12 root manifest child pins are stale against the 2026-10-09 snapshot. The root Node/pnpm integration gate was not run because those commands are unavailable in this Codex shell. Earlier Node 22 and dirty-child records below are historical observations from 2026-10-30. Flutter CI `41184291670` passed and release run `41184693233` produced draft v1.0.1 bundles; the operator reports `@relgeo/core@0.5.2` publish success. Neither replaces a current root integration run.
+> **Current checkout handoff — 2026-11-03:** Current child gitlinks are observable but child worktrees contain local modifications, and 11 of 12 root manifest child pins are stale against the 2026-10-09 snapshot. The root Node/pnpm integration gate was blocked by Node `22.23.2` versus the declared Node `24+` requirement; pnpm `10.33.3` is available. Earlier Node 22 and dirty-child records below are retained as history. Flutter CI `41184291670` passed and release run `41184693233` produced draft v1.0.1 bundles; the operator reports `@relgeo/core@0.5.2` publish success. Neither replaces a current root integration run.
 
 **Status:** coverage validation selesai dengan boundary dan limitation eksplisit
 
@@ -89,7 +89,7 @@ was changed by this tranche.
 | `node scripts/run-flutter-conformance.mjs --exclude-tags=golden` | Exit `2` with `[BLOCKED]` | `environment-unavailable`: Flutter SDK cache `engine.stamp` write is not permitted outside the workspace. |
 | `git diff --check -- docs/capability-map/cross-repository scripts .github/workflows/sync-validated-submodule-after-ci.yml` | Passed | Root documentation/script/workflow hygiene check. |
 
-The root baseline remains stale: 11 of 12 manifest pins differ from current gitlinks (`spec` matches). Current child checkouts are clean and match root gitlinks. Because Node/pnpm are unavailable in this shell, strict verification must be rerun on a supported environment before using the validated child-CI synchronization flow.
+The root baseline remains stale: 11 of 12 manifest pins differ from current gitlinks (`spec` matches). Child worktrees contain local modifications, so clean-state verification remains open. Because Node `22.23.2` is below the declared Node `24+` requirement, strict verification must be rerun on a supported environment before using the validated child-CI synchronization flow.
 
 This audit session did not perform an npm/pub.dev publication, production
 deployment, or provider dispatch. The operator separately reports publishing

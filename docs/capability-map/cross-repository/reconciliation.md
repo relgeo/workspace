@@ -1,10 +1,10 @@
 # Expected-versus-Observed Cross-Repository Orchestration Reconciliation
 
-> **Current-state note — 2026-10-31:** The 2026-10-30 verifier observations in the audit are historical. Current child worktrees are clean and match all 12 root gitlinks, but the 2026-10-09 integration manifest differs from 11 of 12 current gitlinks. Node/pnpm are unavailable in this Codex shell, so strict root verification was not rerun. Flutter CI/release and core package evidence are recorded in the current audit overlay; they do not make the stale root manifest current.
+> **Current-state note — 2026-11-03:** The 2026-10-30 verifier observations are historical. Current child gitlinks are observable, but child worktrees contain unrelated local modifications, so no clean-baseline claim is made. The 2026-10-09 integration manifest differs from 11 of 12 current gitlinks. This shell has Node `22.23.2` and pnpm `10.33.3`; the declared Node `24+` gate therefore records `environment-unavailable` and strict current verification was not promoted. Flutter CI/release and core package evidence are recorded in the current audit overlay; they do not make the stale root manifest current.
 
 **Status:** reconciliation selesai; setiap expected capability memiliki tepat satu hasil
 
-**Tanggal:** 2026-10-31
+**Tanggal:** 2026-11-03
 
 **Expected source:** [Expected Cross-Repository Orchestration Capability Catalog](./expected-capability-catalog.md)
 
@@ -62,8 +62,8 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 
 | Implementation status | Count | Evidence status | Count |
 | --- | ---: | --- | ---: |
-| `implemented` | 33 | `verified-current` | 5 |
-| `partial` | 6 | `verified-static` | 21 |
+| `implemented` | 35 | `verified-current` | 5 |
+| `partial` | 4 | `verified-static` | 21 |
 | `absent` | 0 | `partial-current` | 7 |
 | `broken` | 0 | `unverified-runtime` | 6 |
 | `deferred` | 0 | `deferred-scope` | 0 |
@@ -73,12 +73,12 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 
 | ID | Expected capability | Scope decision | Implementation status | Evidence status | Reconciliation | Audit trace | Gap / next action |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `ORCH-BOOT-001` | Fresh clone bootstrap entrypoint | `IN` | `partial` | `unverified-environment` | `🌗` | [Audit §4 — ORCH-BOOT-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | No single root bootstrap executable; document and execute fresh-clone probe on Node 24. |
-| `ORCH-BOOT-002` | Pinned toolchain and dependency bootstrap | `IN` | `partial` | `unverified-environment` | `🌗` | [Audit §4 — ORCH-BOOT-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | The 2026-10-30 Node 22 observation is historical; Node/pnpm are unavailable in this Codex shell, so verify deterministic bootstrap on the supported toolchain. |
-| `ORCH-BOOT-003` | Recursive submodule initialization and synchronization | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-BOOT-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Recursive checkout and gitlink alignment are present; current child worktrees are clean; the 2026-10-09 manifest is stale against all 12 current gitlinks. Keep child pointer synchronization under the validated CI sync flow. |
+| `ORCH-BOOT-001` | Fresh clone bootstrap entrypoint | `IN` | `implemented` | `unverified-environment` | `🌗` | [Audit §4 — ORCH-BOOT-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | `scripts/bootstrap.mjs` and contract fixture exist; execute the fresh-clone probe on Node 24. |
+| `ORCH-BOOT-002` | Pinned toolchain and dependency bootstrap | `IN` | `implemented` | `unverified-environment` | `🌗` | [Audit §4 — ORCH-BOOT-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Host reports Node 22.23.2/pnpm 10.33.3 while Node 24+ is declared; verify deterministic bootstrap on the supported toolchain. |
+| `ORCH-BOOT-003` | Recursive submodule initialization and synchronization | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-BOOT-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Recursive checkout and gitlink alignment are present; current child worktrees are locally modified, so clean-state verification remains open; the 2026-10-09 manifest is stale against 11 of 12 current gitlinks. Keep child pointer synchronization under the validated CI sync flow. |
 | `ORCH-BOOT-004` | Public workspace boundary hygiene | `IN` | `partial` | `verified-static` | `🌗` | [Audit §4 — ORCH-BOOT-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Run a complete current secret/private-path scan across generated artifacts and logs. |
-| `ORCH-BASE-001` | Versioned integration baseline manifest | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-BASE-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Manifest exists; reconcile its 11 stale child revisions after validating the relevant child CI; the `spec` pin already matches. |
-| `ORCH-BASE-002` | Strict gitlink/checkout/manifest verification | `IN` | `implemented` | `unverified-environment` | `🌗` | [Audit §4 — ORCH-BASE-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Strict verifier and failure injection work, but current manifest is stale for 11 of 12 child revisions; verifier was not rerun in this shell. |
+| `ORCH-BASE-001` | Versioned integration baseline manifest | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-BASE-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Manifest exists; reconcile its 11 stale child revisions after validating the relevant child CI and clean checkouts; the `spec` pin already matches. |
+| `ORCH-BASE-002` | Strict gitlink/checkout/manifest verification | `IN` | `implemented` | `unverified-environment` | `🌗` | [Audit §4 — ORCH-BASE-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Failure injection and contract checks pass; current manifest is stale for 11 of 12 child revisions and the Node 24 strict verifier is unavailable on this host. |
 | `ORCH-BASE-003` | DSL/package/consumer compatibility verification | `IN` | `implemented` | `unverified-runtime` | `✔️` | [Audit §4 — ORCH-BASE-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Rerun canonical compatibility evidence on Node 24; current command emitted a Node warning. |
 | `ORCH-BASE-004` | Shared conformance orchestration | `IN WITH BOUNDARY` | `partial` | `partial-current` | `🌗` | [Audit §4 — ORCH-BASE-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Flutter runner is environment-blocked; cross-platform evidence remains incomplete. |
 | `ORCH-BASE-005` | Source-of-truth and ownership reconciliation | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-BASE-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Ownership is documented, but no central machine-readable registry covers every stage. |
@@ -97,7 +97,7 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 | `ORCH-EVID-003` | Revision-to-evidence traceability | `IN` | `implemented` | `partial-current` | `🌗` | [Audit §4 — ORCH-EVID-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared evidence envelope is implemented; current baseline drift still requires validated child CI and regeneration. |
 | `ORCH-EVID-004` | Canonical artifact and public-smoke reconciliation | `IN WITH BOUNDARY` | `partial` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-EVID-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Join a fresh artifact, deployment URL, and exact source baseline in one evidence record. |
 | `ORCH-EVID-005` | Honest environment-unavailable handling | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-EVID-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared blocker/evidence fields now preserve environment-unavailable evidence; extend to refreshed provider/Flutter reports later. |
-| `ORCH-REL-001` | Release preflight composition | `IN` | `implemented` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-REL-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | The 2026-10-30 Node 22/dirty-worktree probe is historical; current supported-toolchain preflight remains unverified. |
+| `ORCH-REL-001` | Release preflight composition | `IN` | `implemented` | `unverified-environment` | `🌗` | [Audit §4 — ORCH-REL-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Current host is Node 22.23.2/pnpm 10.33.3 below the declared Node 24 requirement; supported-toolchain preflight remains unverified. |
 | `ORCH-REL-002` | Public tarball and metadata hygiene gate | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-REL-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Keep constrained-host npm cache isolation documented; no publish was performed. |
 | `ORCH-REL-003` | Manual ordered publish with operator stop | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-REL-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Live publish was intentionally not performed; automation remains future scope. |
 | `ORCH-REL-004` | Post-publish registry and consumer verification | `IN` | `implemented` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-REL-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Repeat on a network-available Node 24 host; interrupted probe is not a package failure. |
@@ -105,12 +105,12 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 | `ORCH-REL-006` | Release decision record and no-op guard | `IN` | `implemented` | `verified-current` | `✔️` | [Audit §4 — ORCH-REL-006](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Two post-decision manual releases remain an automation prerequisite, not a record defect. |
 | `ORCH-OPS-001` | Actionable failure ownership | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared report fields and focused fixture are present; rerun full stages on Node 24. |
 | `ORCH-OPS-002` | Blocker classification and dependency propagation | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared taxonomy and dependency-impact fields are present; live provider propagation remains follow-up evidence. |
-| `ORCH-OPS-003` | Bounded retry and rerun policy | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Bounded transient retry and attempt retention fixture pass; verify a live transient CI case later. |
+| `ORCH-OPS-003` | Bounded retry and rerun policy | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Bounded transient retry, retry budget, attempt links, first-failure retention, and deterministic non-retry fixture pass; verify a live transient CI case later. |
 | `ORCH-OPS-004` | Cancellation, concurrency, and idempotent replay | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Add duplicate-dispatch and cancellation-race fixture or document provider-level limits. |
 | `ORCH-OPS-005` | Human decision boundary | `IN` | `partial` | `verified-static` | `🌗` | [Audit §4 — ORCH-OPS-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Policy is documented but not enforced by a central decision gate/tool. |
 | `ORCH-PUB-001` | Secret and private-path exclusion | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Run a complete artifact-by-artifact secret scan as follow-up evidence. |
 | `ORCH-PUB-002` | No sibling-source leakage in public consumers | `IN` | `implemented` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-PUB-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Public gate remains unavailable until Node 24/network/browser prerequisites exist. |
-| `ORCH-PUB-003` | Least-privilege CI and credential-free checkout | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Sync checkout policy and permission assertions pass; provider-side PR/dispatch remains follow-up evidence. |
+| `ORCH-PUB-003` | Least-privilege CI and credential-free checkout | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Root workflow policy, child-CI policy, credential-free checkout, bounded timeout/concurrency, and permission assertions pass; provider-side PR/dispatch remains follow-up evidence. |
 | `ORCH-PUB-004` | Safe report/artifact retention and provenance | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Query current uploaded artifact availability; provenance and bounded retention are present. |
 
 ## 4. Scope exclusions and `➖` boundaries
@@ -134,9 +134,9 @@ out-of-scope concern is not joined as an absent capability.
 
 - The reconciliation is evidence-based and current to the audit snapshot; it
   does not promote static source inspection into live provider/runtime proof.
-- The Node 22 observation belongs to the 2026-10-30 snapshot. Current Node/pnpm are unavailable here, so root integration and release/public commands remain `unverified-environment`.
+- The Node 22 observation belongs to the 2026-10-30 snapshot; the current host is also Node `22.23.2` with pnpm `10.33.3`, below the declared Node `24+` requirement. Root integration and release/public commands remain `unverified-environment`.
 - Flutter SDK cache permission prevented the local Flutter probe; this is an
   environment-unavailable result, not a target parity failure.
-- Eleven of 12 manifest revisions are stale against current gitlinks (`spec` matches); these are preserved and not silently rewritten by this documentation task.
+- Eleven of 12 manifest revisions are stale against current gitlinks (`spec` matches), and child worktrees contain local modifications; these facts are preserved and not silently rewritten by this documentation task.
 - No live child CI dispatch, provider API revalidation, PR merge, npm publish,
   or public deployment was triggered.

@@ -1,14 +1,15 @@
 # Geometry implementation-gap backlog
 
-**Tanggal:** 2026-10-30  
-**Status:** candidate goal/task register; no row in this document counts as implementation  
+**Tanggal:** 2026-11-03
+**Status:** candidate goal/task register; implemented bounded rows are retained as handoff evidence, not as broader parity claims
 **Source:** [geometry status matrix](./status-matrix.md)
 
 The expected catalog, audit, matrix, and this backlog are synchronized for the
-2026-10-30 evidence refresh: 40 expected IDs, 10 `✔️`, 30 `🌗`, and 0 `❌`.
+2026-11-03 evidence refresh: 40 expected IDs, 17 `✔️`, 23 `🌗`, and 0 `❌`.
 The candidate rows below preserve owner, dependency, acceptance evidence, and
-next action for the remaining partial or unverified work; `➖` and `⏸️` scope
-findings remain excluded from active implementation.
+next action for the remaining partial or unverified work, while selected
+bounded rows retain their local implementation handoff status; `➖` and `⏸️`
+scope findings remain excluded from active implementation.
 
 Backlog ini menurunkan setiap capability berstatus `🌗` atau `❌` menjadi
 kandidat pekerjaan yang dapat ditugaskan. Status `❌` saat ini berjumlah nol,
@@ -16,9 +17,9 @@ tetapi aturan retention tetap eksplisit: expected ID yang benar-benar tidak
 memiliki implementation/consumer behavior harus masuk ke backlog dengan status
 `❌`, bukan dihapus atau dipetakan menjadi `➖`. Evidence `not-verified`
 dipisahkan sebagai verification task, bukan implementation claim. Pada reconciliation saat ini
-`GEO-SER-002` adalah `🌗 partial` dengan evidence `not-verified`, sehingga ia
-memiliki candidate implementation task dan follow-up verification task yang
-terpisah.
+`GEO-SER-002` kini `✔️ implemented` pada bounded local contract; cross-runtime
+Node 24/Flutter/registry evidence tetap follow-up `not-verified` dan tidak
+mengubah local implementation result.
 
 ## Aturan backlog
 
@@ -35,23 +36,27 @@ terpisah.
   source/configuration change yang relevan ditambah executable acceptance
   evidence yang dapat mengubah status implementation.
 
-## Active bounded selection — task `select-and-bound-in-scope-capability-debt--1180446927`
+## Active bounded selection — task `bound-geometry-gap-scope-and-contract--3423449309`
 
 This is the bounded selection for the current geometry-repository task. It is
 an implementation/evidence scope decision, not a claim that any gap is closed
-and not a request to publish a new package. Selection is limited to behavior
-that can be changed or verified at the `geometry/` package boundary while
-preserving the active RelGeo DSL `0.5.x` contract. The status in the second
-column is copied from the status matrix/audit; selection does not promote any
-row to `✔️`.
+and not a request to publish a new package. The active IDs are
+`GAP-GEO-QUERY-004`, `GAP-GEO-NUM-001/002/003`, `GAP-GEO-DET-002`, and
+`GAP-GEO-SER-001/002`. Selection preserves the active RelGeo DSL `0.5.x`
+contract, keeps broader boolean promotion deferred, and records host-owned
+parity as excluded. The status in the second column is copied from the status
+matrix/audit; selection does not promote any row to `✔️`.
 
 | Selected task | Source status | Owner | Source-of-truth and implementation path | Contract boundary | Explicit acceptance behavior |
 | --- | --- | --- | --- | --- | --- |
 | `FIX-GEO-PROVENANCE-001` remove stale `v0.3` wording | `✔️` locally implemented | geometry | Normative: `spec/id/core/06-error-model.md`; package: `geometry/src/intersection.ts`; tests: `geometry/src/__tests__/intersection.test.ts`; compatibility: `geometry/package.json` | Intersection package diagnostics and provenance strings only. Do not redefine the DSL error taxonomy or core diagnostic mapping. | No exported intersection error mentions `v0.3`; unsupported pairs retain a stable, actionable error; a package regression test proves the wording. |
-| `GAP-GEO-QUERY-004` publish the bounded intersection pair/selector contract | `🌗` | geometry (lead), core (consumer dependency) | Normative: `spec/id/geometry/20-geometry-queries.md` §20.18 and `spec/id/core/06-error-model.md` §6.2; package: `geometry/src/intersection.ts`; tests: `geometry/src/__tests__/intersection.test.ts` | `computeIntersections` pair dispatch, deterministic ordering/deduplication, and `applySelector` behavior for currently supported low-level object pairs. Core owns DSL query parsing and diagnostic projection. No new pair or deferred boolean promotion is implied. | A supported-pair table and executable tests cover `first`, `last`, `index`, `nearest`, `farthest`, implicit single-result, multiple-result, empty-result, and unsupported-pair behavior; existing fixture-15 semantics remain unchanged. |
-| `GAP-GEO-NUM-001` define the low-level tolerance/error-bound policy | `🌗` | geometry (implementation), spec (contract review) | Normative: `spec/id/core/05-semantic-guarantees.md` §5.5 and `spec/id/geometry/14-geometry-objects.md`; package: `geometry/src/intersection.ts`, `geometry/src/split.ts`, `geometry/src/path-modifiers.ts`, `geometry/src/boolean/normalizeClosedShape.ts`; tests: `geometry/src/__tests__/intersection.test.ts`, `split.test.ts`, `path_modifiers.test.ts` | Numeric equality, membership, sampling cleanup, and split/modifier tolerances used by the low-level package. This does not publish a universal DSL epsilon or claim cross-runtime parity. | The supported operations and their tolerance boundaries are documented, near-boundary tests pass deterministically, and no test relies on raw floating-point equality where the package contract requires tolerance. |
-| `GAP-GEO-NUM-002` harden winding/holes normalization | `🌗` | geometry (lead), core (operation consumer) | Normative: `spec/id/core/05-semantic-guarantees.md` §5.5; package: `geometry/src/boolean/normalizeClosedShape.ts`, `geometry/src/boolean/ClipperBooleanEngine.ts`; existing tests: `geometry/src/__tests__/geometry.test.ts`; target: `geometry/src/__tests__/boolean.test.ts` | Closed-shape normalization before the existing boolean engine, including ring cleanup, winding-independent inputs, and hole preservation. Deferred union/xor/non-rectangle promotion remains out of scope. | Clockwise and counter-clockwise equivalent inputs produce equivalent normalized topology; holes remain holes after normalization; existing rectangle intersect/subtract and empty/multipart consumer expectations do not regress. |
-| `GAP-GEO-NUM-003` complete the low-level invalid-input error catalog | `🌗` | geometry (implementation), core (diagnostic consumer) | Normative: `spec/id/core/06-error-model.md` §§6.2–6.9; package: `geometry/src/error.ts`, `geometry/src/path-modifiers.ts`, `geometry/src/split.ts`, `geometry/src/intersection.ts`; tests: `geometry/src/__tests__/path_modifiers.test.ts`, `split.test.ts`, `intersection.test.ts` | Stable package-level error codes for invalid corner/offset/split and unsupported intersection operations. Core remains responsible for mapping package failures into document paths and public DSL diagnostics. | Every selected low-level invalid branch either raises an existing `GeometryError` code or has an explicit stable package error contract; negative tests cover degenerate radius/path/join/offset/tangent/split and unsupported intersection cases without silently coercing input. |
+| `GAP-GEO-QUERY-004` publish the bounded intersection pair/selector contract | `✔️ locally implemented` | geometry (lead), core (consumer dependency) | Normative: `spec/id/geometry/20-geometry-queries.md` §20.18 and `spec/id/core/06-error-model.md` §6.2; package: `geometry/src/intersection.ts`; tests: `geometry/src/__tests__/geometry-contract.fixture.ts`, `intersection.test.ts`; conformance: 298/298 | `computeIntersections` pair dispatch, deterministic ordering/deduplication, and `applySelector` behavior for currently supported low-level object pairs. Core owns DSL query parsing and diagnostic projection. No new pair or deferred boolean promotion is implied. | Supported-pair and selector cases pass local geometry/core/fixture evidence; broader sampled paths remain outside promotion. |
+| `GAP-GEO-NUM-001` define the low-level tolerance/error-bound policy | `✔️ locally implemented` | geometry (implementation), spec (contract review) | Normative: `spec/id/core/05-semantic-guarantees.md` §5.5 and `spec/id/geometry/14-geometry-objects.md`; package: `geometry/src/intersection.ts`, `geometry/src/split.ts`, `geometry/src/path-modifiers.ts`, `geometry/src/boolean/normalizeClosedShape.ts`; tests: geometry 88/88 | Numeric equality, membership, sampling cleanup, and split/modifier tolerances used by the low-level package. This does not publish a universal DSL epsilon or claim cross-runtime parity. | Tolerance constants and boundary tests are locally executable; cross-runtime numeric parity remains out of scope. |
+| `GAP-GEO-NUM-002` harden winding/holes normalization | `✔️ locally implemented` | geometry (lead), core (operation consumer) | Normative: `spec/id/core/05-semantic-guarantees.md` §5.5; package: `geometry/src/boolean/normalizeClosedShape.ts`, `geometry/src/boolean/ClipperBooleanEngine.ts`; tests: `geometry/src/__tests__/boolean.test.ts`; fixture 15 snapshot | Closed-shape normalization before the existing boolean engine, including ring cleanup, winding-independent inputs, and hole preservation. Deferred union/xor/non-rectangle promotion remains out of scope. | Canonical fixture removes duplicate closing points while preserving bounded rectangle intersect/subtract semantics and holes. |
+| `GAP-GEO-NUM-003` complete the low-level invalid-input error catalog | `✔️ locally implemented` | geometry (implementation), core (diagnostic consumer) | Normative: `spec/id/core/06-error-model.md` §§6.2–6.9; package: `geometry/src/error.ts`, `geometry/src/path-modifiers.ts`, `geometry/src/split.ts`, `geometry/src/intersection.ts`; tests: geometry 88/88; core 452/452 | Stable package-level error codes for invalid corner/offset/split and unsupported intersection operations. Core remains responsible for mapping package failures into document paths and public DSL diagnostics. | Selected low-level invalid branches have stable codes and negative tests; broader cross-consumer diagnostic catalog remains a separate consumer concern. |
+| `GAP-GEO-DET-002` freeze stable identity/order/path replay | `✔️` locally implemented | core + spec (geometry evidence dependency) | Normative: `spec/id/core/05-semantic-guarantees.md` §§5.1–5.4; package/fixture: `geometry/src/__tests__/geometry-contract.fixture.ts`; consumer: `core/src/resolver/` | Stable IDs, dependency order, selector order, operation anchors, collection order, and diagnostic paths are replay requirements. This task does not claim cross-runtime or host parity. | `core/src/projection.ts` exports `compareResolvedSceneReplay`; core and CLI tests compare repeated canonical snapshots. Resolver/host replay remains a separate verification boundary. |
+| `GAP-GEO-SER-001` freeze resolved-scene semantic projection shape | `✔️` locally implemented | core + parity consumer dependency | Normative: `spec/id/core/05-semantic-guarantees.md` §5.7; implementation: `core/src/projection.ts`; tests: `core/src/__tests__/projection.test.ts`; CLI: `cli/src/index.ts` | The JSON projection is renderer-neutral semantic data with explicit schema/version/compatibility, order arrays, canonical object maps, and diagnostics. It is not an internal object dump. | Core exports the projection and serializer; CLI JSON output consumes `serializeResolvedScene`. Flutter consumption and parity evidence remain outside this task. |
+| `GAP-GEO-SER-002` freeze canonical numeric/order serialization rules | `✔️` locally implemented | spec + core | Normative: `spec/id/core/05-semantic-guarantees.md` §5.7; implementation: `core/src/projection.ts`; tests: `core/src/__tests__/projection.test.ts`, `cli/src/__tests__/cli.test.ts`; fixture: `fixtures/manifest.json` | Numbers are finite, rounded to 12 decimal places, normalize `-0` to `0`, object keys are sorted, semantic arrays retain order, and undefined object fields are omitted. This is a same-runtime canonical contract, not cross-runtime proof. | Manifest and executable tests freeze the schema/order/numeric rules; Node-24, Flutter, registry, and host parity remain explicitly unverified/owned outside this task. |
 
 ### Deliberately excluded from active implementation
 
@@ -62,7 +67,7 @@ this task's active implementation set:
 | --- | --- | --- |
 | Broader boolean union/xor/non-rectangle topology (`GEO-BOOLEAN-001/002`) | `⏸️` finding over `🌗` rows | The existing decision and fixture boundary hold this expansion; preserve fixture 15 rather than treating the held expansion as active work. |
 | Geometry-owned UI routes, shortcuts, and platform file service | `➖` | These belong to consumer/platform surfaces, not `geometry/`; no geometry task is created for them. |
-| Evaluator/unit promotion (`GEO-MEASURE-002/004`), Flutter parity (`GEO-PARITY-001/002`), and canonical cross-runtime replay (`GEO-DET-001`, `GEO-SER-002`) | `🌗` with `not-verified` or consumer dependency | They require core, Flutter, serializer, or host evidence outside this bounded package task; their candidate rows remain unchanged. |
+| Evaluator/unit promotion (`GEO-MEASURE-002/004`), host-owned cross-runtime determinism (`GEO-DET-001`), and Flutter/semantic-SVG parity (`GEO-PARITY-001/002`) | `🌗` with `not-verified` or consumer dependency | These remain consumer/host verification work. The current task freezes local replay and serialization rules (`GAP-GEO-DET-002`, `GAP-GEO-SER-001/002`) without promoting cross-runtime or Flutter parity. |
 | Core-owned collections, placement, constraints, and high-level query implementation | `➖` boundary or `🌗` consumer-owned row | Geometry may provide primitives, but this selection does not duplicate or reassign core ownership. |
 
 No `➖` or `⏸️` item is an active implementation task. No current expected
@@ -78,8 +83,8 @@ the index is the review order, not a claim that any task has been started.
 
 | Priority | Candidate IDs | Rationale |
 | --- | --- | --- |
-| `P0` | `GAP-GEO-SER-002`; `GAP-GEO-BOOLEAN-001`; `GAP-GEO-BOOLEAN-002`; `GAP-GEO-MEASURE-002`; `GAP-GEO-MEASURE-004`; `GAP-GEO-PARITY-001`; `GAP-GEO-PARITY-002` | Establish canonical serialization, close active boolean/unit boundaries, and unblock cross-consumer parity decisions. The provenance defect is resolved locally and remains only as a follow-up record. |
-| `P1` | `GAP-GEO-OBJ-001`; `GAP-GEO-XFORM-002`; `GAP-GEO-PLACE-001`; `GAP-GEO-PLACE-002`; `GAP-GEO-COLL-001`; `GAP-GEO-COLL-002`; `GAP-GEO-COLL-003`; `GAP-GEO-COLL-004`; `GAP-GEO-COLL-005`; `GAP-GEO-QUERY-001`; `GAP-GEO-QUERY-002`; `GAP-GEO-QUERY-004`; `GAP-GEO-CONSTRAINT-001`; `GAP-GEO-NUM-001`; `GAP-GEO-NUM-002`; `GAP-GEO-NUM-003`; `GAP-GEO-DET-001`; `GAP-GEO-DET-002`; `GAP-GEO-SER-001` | Close high-risk gaps in identity, placement, collection semantics, queries, constraints, numerical policy, deterministic replay, and resolved-scene serialization. |
+| `P0` | `GAP-GEO-BOOLEAN-001`; `GAP-GEO-BOOLEAN-002`; `GAP-GEO-MEASURE-002`; `GAP-GEO-MEASURE-004`; `GAP-GEO-PARITY-001`; `GAP-GEO-PARITY-002` | Establish remaining boolean/unit boundaries and unblock cross-consumer parity decisions. Canonical local serialization is implemented; the provenance defect is resolved locally and remains only as a follow-up record. |
+| `P1` | `GAP-GEO-OBJ-001`; `GAP-GEO-XFORM-002`; `GAP-GEO-PLACE-001`; `GAP-GEO-PLACE-002`; `GAP-GEO-COLL-001`; `GAP-GEO-COLL-002`; `GAP-GEO-COLL-003`; `GAP-GEO-COLL-004`; `GAP-GEO-COLL-005`; `GAP-GEO-QUERY-001`; `GAP-GEO-QUERY-002`; `GAP-GEO-CONSTRAINT-001`; `GAP-GEO-DET-001` | Close remaining high-risk gaps in identity, placement, collection semantics, queries, constraints, and host/cross-runtime determinism. |
 | `P2` | `GAP-GEO-PRIM-003`; `GAP-GEO-PRIM-004`; `GAP-GEO-PRIM-005`; `GAP-GEO-ANCH-002` | Expand bounded curve, path/text, composition, and custom-anchor coverage after shared contract foundations are stable. |
 
 The index contains one candidate ID for every current `🌗`/`❌` row plus the
@@ -120,7 +125,7 @@ implementation priority index because it is evidence-only follow-up.
 | `GAP-GEO-COLL-005` prove stable collection replay | `🌗` | core | deterministic resolver, IDs | Repeated-process replay produces identical collection order and repeat IDs | Add replay harness |
 | `GAP-GEO-QUERY-001` complete measurement query coverage | `🌗` | core + spec | resolved objects, numeric policy | distance/length/perimeter/area/bbox/extents pass for every supported primitive and invalid target | Build query coverage table |
 | `GAP-GEO-QUERY-002` close path/vector query boundaries | `🌗` | core + geometry | path sampling, frame semantics | midpoint/polar/angleBetween/pointAt/tangentAt/normalAt pass endpoints, curves, and out-of-range cases | Add curve query fixture |
-| `GAP-GEO-QUERY-004` publish intersection pair/selector contract | `🌗` | geometry + core | intersection algorithms, selectors, boolean contract | Supported pair table, selector errors, deterministic first/last/nearest/farthest/index, and single/multi results pass | Draft pair matrix |
+| `GAP-GEO-QUERY-004` publish intersection pair/selector contract | `✔️ locally implemented` | geometry + core | intersection algorithms, selectors, boolean contract | Supported pair table, selector errors, deterministic first/last/nearest/farthest/index, and single/multi results pass | Preserve bounded pair matrix; do not promote deferred pairs |
 | `GAP-GEO-CONSTRAINT-001` complete relation validation | `🌗` | core + spec | resolved geometry, tolerance | equal/parallel/perpendicular/tangent valid and invalid fixtures emit stable violations | Add four relation fixtures |
 
 ## Candidate goal G-03 — Harden boolean, numeric, deterministic, and serialization contracts
@@ -133,13 +138,13 @@ implementation priority index because it is evidence-only follow-up.
 | --- | --- | --- | --- | --- | --- |
 | `GAP-GEO-BOOLEAN-001` promote boolean operation coverage | `🌗` | geometry + core | polygon clipping, result mode | Reviewed union/xor/non-rectangle cases pass with explicit topology and cross-consumer snapshots | Separate promotion fixture from active fixture 15 |
 | `GAP-GEO-BOOLEAN-002` close topology/result-mode errors | `🌗` | core + geometry | normalization, mode policy, diagnostics | single/multi, holes, empty, and multipart behavior have stable expected outcomes | Add topology acceptance matrix |
-| `GAP-GEO-NUM-001` define tolerance/error-bound policy | `🌗` | geometry + spec | numeric contract, operations | Supported operations document tolerance behavior and pass near-equality/membership cases without raw-float dependence | Inventory current tolerances |
-| `GAP-GEO-NUM-002` harden winding/holes normalization | `🌗` | geometry + core | polygon normalization, boolean engine | Clockwise/counter-clockwise and hole/even-odd inputs yield equivalent semantic results | Add winding/holes fixtures |
-| `GAP-GEO-NUM-003` complete invalid-input error catalog | `🌗` | core + geometry | error model, renderer/CLI propagation | Degenerate radius/path/join/offset/tangent/split cases map to stable codes and paths | Draft negative-case catalog |
+| `GAP-GEO-NUM-001` define tolerance/error-bound policy | `✔️ locally implemented` | geometry + spec | numeric contract, operations | Supported operations document tolerance behavior and pass near-equality/membership cases without raw-float dependence | Preserve low-level policy; keep cross-runtime parity separate |
+| `GAP-GEO-NUM-002` harden winding/holes normalization | `✔️ locally implemented` | geometry + core | polygon normalization, boolean engine | Clockwise/counter-clockwise and hole/even-odd inputs yield equivalent semantic results | Preserve bounded normalization; defer broader topology |
+| `GAP-GEO-NUM-003` complete invalid-input error catalog | `✔️ locally implemented` | core + geometry | error model, renderer/CLI propagation | Degenerate radius/path/join/offset/tangent/split cases map to stable codes and paths | Preserve selected package codes; extend consumer mapping only when promoted |
 | `GAP-GEO-DET-001` prove cross-runtime determinism | `🌗` | core + parity | canonical toolchain, serializer, fixtures | Repeated process and Node 24/Flutter runs produce identical semantic snapshots and diagnostics | Restore unavailable runtime probe |
-| `GAP-GEO-DET-002` close stable IDs/order/path replay | `🌗` | core + spec | graph, collections, diagnostics | IDs, operation anchors, collection order, and error paths match canonical replay | Add canonical replay comparator |
-| `GAP-GEO-SER-001` publish canonical scene serialization | `🌗` | core + parity | serializer, semantic comparator | All resolved scene fields and ordering have a documented canonical representation consumed consistently by CLI/Flutter | Define schema and snapshot |
-| `GAP-GEO-SER-002` establish canonical numeric/order contract | `🌗` | spec + core | serializer schema, fixtures, consumer review | Define canonical numeric/order semantics and add an executable cross-version/replay serializer test; documentation alone does not close the gap | Review source-only evidence and draft contract test |
+| `GAP-GEO-DET-002` close stable IDs/order/path replay | `✔️ locally implemented` | core + spec | graph, collections, diagnostics | IDs, operation anchors, collection order, and error paths match canonical replay | Preserve local comparator; keep host replay separate |
+| `GAP-GEO-SER-001` publish canonical scene serialization | `✔️ locally implemented` | core + parity | serializer, semantic comparator | All resolved scene fields and ordering have a documented canonical representation consumed consistently by core/CLI | Preserve core/CLI contract; Flutter parity remains not-verified |
+| `GAP-GEO-SER-002` establish canonical numeric/order contract | `✔️ locally implemented` | spec + core | serializer schema, fixtures, consumer review | Define canonical numeric/order semantics and add an executable replay serializer test; documentation alone does not close the gap | Preserve local contract; keep Node 24/Flutter/registry evidence separate |
 
 ## Candidate goal G-04 — Close semantic parity evidence
 
@@ -159,7 +164,7 @@ These follow-ups are intentionally separate from `🌗` implementation candidate
 | Candidate task | Current status | Owner | Dependency | Acceptance test / evidence target | Next action |
 | --- | --- | --- | --- | --- | --- |
 | `FIX-GEO-PROVENANCE-001` remove stale `v0.3` wording | `✔️` fixed locally | geometry | compatibility line 0.5, error-message tests | `intersection.ts` provenance and unsupported-operation wording match current 0.5 contract; regression test passes | Re-audit consumer-specific wording before removing the historical follow-up |
-| `VERIFY-GEO-SER-002` establish canonical numeric/order contract | `not-verified` evidence | spec + core | serializer schema, fixtures, consumer review | After the contract task, run the independent serializer/replay test and update the implementation/evidence axes without inferring absence from unavailable runtime | Review source-only evidence and write test |
+| `VERIFY-GEO-SER-002` establish canonical numeric/order contract | `✔️ local evidence resolved; host parity not-verified` | spec + core | serializer schema, fixtures, consumer review | Local serializer/replay contract is verified; keep Node 24/Flutter/registry/host replay as independent evidence | Re-run only when the host/runtime boundary becomes available |
 
 ## Absent-capability rule
 

@@ -25,6 +25,44 @@
     "omittedDefaultsTo": "0.5",
     "parserDiagnosticCode": "UNSUPPORTED_SPEC_VERSION"
   },
+  "semanticSerialization": {
+    "schema": "relgeo.resolved-scene",
+    "schemaVersion": 1,
+    "compatibilityLine": "0.5",
+    "numberPrecision": 12,
+    "negativeZero": 0,
+    "undefinedFields": "omitted",
+    "objectKeyOrder": "lexicographic",
+    "semanticArrayOrder": "preserved",
+    "replayComparator": "@relgeo/core.compareResolvedSceneReplay"
+  },
+  "cliContractCoverage": {
+    "input": {
+      "pathPrecedence": "explicit path wins over unrelated stdin",
+      "stdinMarker": "-",
+      "encoding": "strict UTF-8"
+    },
+    "renderOptions": {
+      "fixtureIds": [
+        "v05-evaluator-units-candidate",
+        "multi-sheet-title-block"
+      ],
+      "selectors": [
+        "--profile",
+        "--param",
+        "--unit",
+        "--sheet",
+        "--view"
+      ],
+      "invalidIntent": "unknown selectors and format mismatches fail non-zero"
+    },
+    "output": {
+      "formats": ["json", "svg", "graph"],
+      "encoding": "UTF-8",
+      "overwrite": "compile replaces by default; --no-overwrite refuses existing targets",
+      "streams": "data on stdout; progress and diagnostics on stderr"
+    }
+  },
   "fixtures": [
     {
       "id": "text-anchor-multiline",
@@ -128,6 +166,12 @@
           "path": "constraints[0]"
         }
       ],
+      "coreContract": {
+        "kind": "constraint-diagnostic",
+        "phase": "constraint",
+        "retainsResolvedScene": true,
+        "deterministicViolationOrder": true
+      },
       "expectedOutputPath": "expected/14-v05-runtime-align-violation.svg",
       "expectedResolvedPath": "expected/14-v05-runtime-align-violation.json"
     },
@@ -196,7 +240,12 @@
       "contractVersion": "0.5",
       "status": "invalid",
       "surfaces": ["core", "language-service"],
-      "expectedDiagnostic": "Unknown identifier: missing.center"
+      "expectedDiagnostic": "Unknown identifier: missing.center",
+      "coreContract": {
+        "kind": "reference-failure",
+        "phase": "parse",
+        "path": "objects.broken.center"
+      }
     },
     {
       "id": "v06-invalid-unsupported-version",
@@ -220,7 +269,12 @@
       "contractVersion": "0.5",
       "status": "runtime-error",
       "surfaces": ["core", "language-service", "cli"],
-      "expectedResolutionError": "BOOLEAN_EMPTY_RESULT"
+      "expectedResolutionError": "BOOLEAN_EMPTY_RESULT",
+      "coreContract": {
+        "kind": "empty-result",
+        "phase": "runtime",
+        "strict": "throws"
+      }
     },
     {
       "id": "v05-runtime-multipart-boolean",
@@ -228,7 +282,56 @@
       "contractVersion": "0.5",
       "status": "runtime-error",
       "surfaces": ["core", "language-service", "cli"],
-      "expectedResolutionError": "BOOLEAN_MULTIPART_RESULT"
+      "expectedResolutionError": "BOOLEAN_MULTIPART_RESULT",
+      "coreContract": {
+        "kind": "result-mode",
+        "phase": "runtime",
+        "singleMode": "throws"
+      }
+    },
+    {
+      "id": "v05-invalid-reference-path",
+      "path": "reference/21-v05-invalid-reference-path.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service"],
+      "expectedDiagnostic": "Unknown identifier: missing.x",
+      "coreContract": {
+        "kind": "reference-failure",
+        "phase": "parse",
+        "code": "INVALID_EXPRESSION",
+        "path": "objects.marker.at[0]"
+      }
+    },
+    {
+      "id": "v05-runtime-empty-collection",
+      "path": "reference/22-v05-runtime-empty-collection.yaml",
+      "contractVersion": "0.5",
+      "status": "runtime-error",
+      "surfaces": ["core", "language-service", "cli"],
+      "expectedResolutionError": "INVALID_COLLECTION_ACCESS",
+      "coreContract": {
+        "kind": "empty-collection",
+        "phase": "resolve",
+        "path": "objects.marker",
+        "editorMode": "tolerant"
+      }
+    },
+    {
+      "id": "v05-invalid-incomplete-editor",
+      "path": "reference/23-v05-invalid-incomplete-editor.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service"],
+      "expectedDiagnostic": "requires",
+      "coreContract": {
+        "kind": "editor-recovery",
+        "strictCode": "MISSING_REQUIRED_FIELD",
+        "strictPath": "objects.panel.size",
+        "editorObjectIds": ["panel", "secondary"],
+        "editorFallbackSize": [0, 0],
+        "multiDiagnosticCount": 2
+      }
     }
   ]
 }

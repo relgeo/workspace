@@ -1,6 +1,6 @@
 # Renderer-SVG Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-10-30
+**Tanggal:** 2026-11-03
 
 **Expected source:** [Renderer-SVG expected capability catalog](./expected-capability-catalog.md)
 
@@ -91,17 +91,17 @@ expected row.
 | `SVG-STYLE-002` | Text, font, arrow, multiline, and annotation presentation fallback. | `🌗 partial` | `partial` | `verified-local` | Typography/fallbacks are exercised safely; exact metrics and cross-runtime typography remain surface-specific. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-META-001` | Inspection-safe projection of selected resolved metadata. | `✔️ implemented` | `implemented` | `verified-local` | Role/intent/preset/label map to data attributes; promotion remains boundary-only. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-META-002` | Metadata remains non-authoritative for geometry and identity. | `✔️ implemented` | `implemented` | `partial-local` | Metadata is downstream by design; no dedicated mutation/snapshot invariant test. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
-| `SVG-DIM-001` | Linear, radius, diameter, and angular dimension projection. | `🌗 partial` | `partial` | `verified-local` | Dimension kinds render and hostile presentation values are escaped; typography and exhaustive semantic placement coverage remain partial. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
-| `SVG-ANNOT-001` | Target, leader, placement, multiline, and fallback annotation projection. | `🌗 partial` | `partial` | `verified-local` | Annotation projection and hostile presentation escaping are tested; exact text metrics and broader consumer evidence remain partial. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
+| `SVG-DIM-001` | Linear, radius, diameter, and angular dimension projection. | `🌗 partial` | `partial` | `verified-local` | Dimension kinds, endpoints/measurements, semantic placement, and hostile presentation escaping are covered by the 90-test renderer suite; typography and exhaustive consumer placement remain partial. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
+| `SVG-ANNOT-001` | Target, leader, placement, multiline, and fallback annotation projection. | `🌗 partial` | `partial` | `verified-local` | Annotation target/leader/placement projection and hostile presentation escaping are covered by semantic/output tests; exact metrics and broader consumer evidence remain partial. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-SHEET-001` | Page border, view placement/scale, title block, and sheet sizing. | `🌗 partial` | `partial` | `partial-local` | Sheet layout works, but most direct evidence is legacy 0.4. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-SHEET-002` | Missing/unknown sheet and view selection fails explicitly. | `✔️ implemented` | `implemented` | `verified-local` | Typed missing-sheet/view failures replace model fallback and silent view skips; renderer and CLI regressions pass. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
-| `SVG-DET-001` | Stable ordering, IDs, geometry serialization, and semantic projection. | `🌗 partial` | `partial` | `partial-local` | Snapshots/repeated render are stable; no complete cross-host determinism suite. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
+| `SVG-DET-001` | Stable ordering, IDs, geometry serialization, and semantic projection. | `🌗 partial` | `partial` | `verified-local` | Renderer semantic projection and replay-comparator tests cover deterministic identity/order/geometry; no complete cross-host determinism suite. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-ERR-001` | Explicit deterministic handling of invalid options, missing views, and unsupported shapes. | `✔️ implemented` | `implemented` | `verified-local` | Typed renderer errors cover invalid padding, unsupported shapes, missing composition targets, missing sheets/views, and upstream diagnostics. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-SEC-001` | XML/text/attribute escaping prevents executable SVG markup. | `✔️ implemented` | `implemented` | `verified-local` | Current renderer worktree escapes dynamic dimension/annotation font/fill and hostile text/metadata values; browser E2E remains unverified. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-EXPORT-001` | SVG string export for stdout, files, docs, and lightweight web embedding. | `✔️ implemented` | `implemented` | `partial-local` | SVG string/build/tarball work locally; registry/public artifact is unverified. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-INTEG-001` | CLI compile-to-SVG and selected-sheet renderer boundary. | `✔️ implemented` | `implemented` | `verified-local` | CLI formats/options/sheet flow are tested and covered by conformance. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
-| `SVG-INTEG-002` | Playground worker → renderer → browser DOM preview and inspection hooks. | `🌗 partial` | `partial` | `partial-local` | Worker/DOM/sheet/overlay wiring exists; browser E2E/public runtime unverified. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
-| `SVG-INTEG-003` | Shared fixture/conformance participation across active, legacy, invalid, diagnostic, and capability cases. | `✔️ implemented` | `implemented` | `verified-local` | Root conformance covers all declared statuses across 20 fixtures. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
+| `SVG-INTEG-002` | Playground worker → renderer → browser DOM preview and inspection hooks. | `🌗 partial` | `partial` | `partial-local; browser not-verified` | Worker/DOM/sheet/overlay wiring is covered by 102 Playground tests, build, and UX audit; Playwright could not start the preview server because binding `127.0.0.1:4173` returned `EPERM`. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
+| `SVG-INTEG-003` | Shared fixture/conformance participation across active, legacy, invalid, diagnostic, and capability cases. | `✔️ implemented` | `implemented` | `verified-local` | Root conformance covers 298 checks across all declared statuses and 23 fixtures. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-INTEG-004` | Renderer-owned semantic projection anchors for parity comparators. | `✔️ implemented` | `implemented` | `verified-local` | Public typed projection exposes schema/version, order/identity/kind, endpoints, segments, rings/holes, normalized geometry, transforms, and tolerance; cross-consumer comparator execution remains separate. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 
 ## 4. Findings and downstream handoff
@@ -118,7 +118,10 @@ Confirmed implementation gaps remain explicit in the join:
   hostile-value tests/conformance pass. Playground still inserts SVG through
   `dangerouslySetInnerHTML`, so browser E2E remains unverified.
 
-The remaining `🌗` rows are partial implementation or evidence/consumer
+The current local evidence is 90/90 renderer tests, 298/298 conformance checks,
+and 102/102 Playground unit tests plus production build and UX audit. Browser
+E2E is explicitly `not-verified` because the permitted Playwright run could not
+bind `127.0.0.1:4173` (`EPERM`). The remaining `🌗` rows are partial implementation or evidence/consumer
 coverage, not absent capability. Browser E2E, Node >=24, registry/public
 artifact, and native/platform checks remain `? unverified` where noted by the
 audit. They must not be converted to `❌` without a failed implementation

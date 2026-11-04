@@ -57,16 +57,33 @@ function packageManagerVersion() {
   return result.status === 0 ? result.stdout.trim() : null;
 }
 
+const observedPnpmVersion = packageManagerVersion();
+
+function stageEnvironment(cwd) {
+  return {
+    mode: localMode ? "local-workspace" : "public-registry",
+    boundary: cwd === root ? "workspace" : "temporary-checkout",
+    node: process.version,
+    pnpm: observedPnpmVersion,
+  };
+}
+
 function evidenceEnvelope() {
   return createEvidenceEnvelope({
     evidenceClass: localMode ? "local-workspace" : "public-registry",
+    evidenceState: "current",
     workspaceRevision: workspaceRevision(),
     baselineName: baselineManifest.baselineName,
+    baselineCapturedAt: baselineManifest.capturedAt ?? null,
     compatibilityLine: baselineManifest.compatibilityLine,
+    childRevisions: Object.fromEntries(
+      (baselineManifest.submodules ?? []).map((entry) => [entry.path, entry.revision]),
+    ),
     toolchain: {
       node: process.version,
-      pnpm: packageManagerVersion(),
+      pnpm: observedPnpmVersion,
     },
+    command: `node scripts/run-integration-gate.mjs ${localMode ? "--local" : "--public"}`,
     limitations: [],
   });
 }
@@ -75,7 +92,7 @@ function writeReport(report) {
   if (!reportPath) return;
   fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n");
-  console.log("\nReport: " + reportPath);
+  console.log("\nReport written; local report path is omitted from evidence.");
 }
 
 function stageFailureMetadata({ passed, error = "", output = "" }) {
@@ -84,7 +101,9 @@ function stageFailureMetadata({ passed, error = "", output = "" }) {
       blockerClass: null,
       remediation: null,
       decisionRequired: false,
+      decisionNeeded: false,
       dependencyImpact: "none",
+      downstreamImpact: "none",
       dependencyStatus: "ready",
     };
   }
@@ -92,7 +111,57 @@ function stageFailureMetadata({ passed, error = "", output = "" }) {
   return {
     ...failure,
     dependencyImpact: "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+    downstreamImpact: "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
     dependencyStatus: "blocked",
+  };
+}
+
+function reportAttempt(attemptResult) {
+  return {
+    attempt: attemptResult.attempt,
+    attemptId: attemptResult.attemptId ?? "attempt-" + attemptResult.attempt,
+    previousAttemptId: attemptResult.previousAttemptId ?? null,
+    passed: attemptResult.passed,
+    exitCode: attemptResult.exitCode ?? 1,
+    durationMs: attemptResult.durationMs ?? null,
+    blockerClass: attemptResult.blockerClass ?? null,
+    retryable: attemptResult.retryable ?? false,
+    remediation: attemptResult.remediation ?? null,
+    decisionRequired: attemptResult.decisionRequired ?? false,
+    decisionNeeded: attemptResult.decisionNeeded ?? attemptResult.decisionRequired ?? false,
+  };
+}
+
+function singleAttemptEvidence({ passed, exitCode, failure = null, owner, repository, surface }) {
+  const attempt = {
+    attempt: 1,
+    attemptId: "attempt-1",
+    previousAttemptId: null,
+    passed,
+    exitCode,
+    blockerClass: failure?.blockerClass ?? null,
+    retryable: failure?.retryable ?? false,
+    remediation: failure?.remediation ?? null,
+    decisionRequired: failure?.decisionRequired ?? false,
+    decisionNeeded: failure?.decisionNeeded ?? failure?.decisionRequired ?? false,
+  };
+  return {
+    retryPolicy: { maxAttempts: 1, backoffMs: 0, attemptsUsed: 1, exhausted: !passed },
+    attempts: [attempt],
+    attemptLinks: [{
+      attemptId: "attempt-1",
+      attempt: 1,
+      previousAttemptId: null,
+      linkedToFirstFailure: passed ? null : "attempt-1",
+    }],
+    firstFailure: passed
+      ? null
+      : {
+        ...attempt,
+        owner,
+        repository,
+        surface,
+      },
   };
 }
 
@@ -115,14 +184,14 @@ if (nodeMajor < minimumNodeMajor) {
       owner: "relgeo/workspace",
       repository: "relgeo/workspace",
       surface: "integration-gate",
-      command: process.argv.join(" "),
+      command: `node scripts/run-integration-gate.mjs ${localMode ? "--local" : "--public"}`,
       dependencyImpact: "All integration stages remain blocked until the declared Node.js runtime is available.",
       dependencyStatus: "blocked",
     },
     summary: { total: 1, passed: 0, failed: 1, blocked: 1 },
     results: [{
       label: "toolchain: Node.js prerequisite",
-      command: process.execPath,
+      command: "node",
       args: [],
       passed: false,
       exitCode: 2,
@@ -132,15 +201,21 @@ if (nodeMajor < minimumNodeMajor) {
       blockerClass: blocker.blockerClass,
       remediation: blocker.remediation,
       decisionRequired: blocker.decisionRequired,
+      decisionNeeded: blocker.decisionNeeded,
       dependencyImpact: "All integration stages remain blocked until the declared Node.js runtime is available.",
+      downstreamImpact: "All integration stages remain blocked until the declared Node.js runtime is available.",
       dependencyStatus: "blocked",
-      attempts: [{
-        attempt: 1,
+      ...singleAttemptEvidence({
         passed: false,
         exitCode: 2,
-        blockerClass: blocker.blockerClass,
-        retryable: false,
-      }],
+        failure: blocker,
+        owner: "relgeo/workspace",
+        repository: "relgeo/workspace",
+        surface: "toolchain",
+      }),
+      environment: stageEnvironment(root),
+      artifact: null,
+      limitation: "declared Node.js minimum is 24",
       error: message,
     }],
   };
@@ -190,15 +265,27 @@ function runStage(label, command, args, cwd = root, environment = process.env) {
     dependencyImpact: failure
       ? "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable."
       : "none",
+    downstreamImpact: failure
+      ? "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable."
+      : "none",
     dependencyStatus: failure ? "blocked" : "ready",
-    attempts: execution.attempts.map((attemptResult) => ({
-      attempt: attemptResult.attempt,
-      passed: attemptResult.passed,
-      exitCode: attemptResult.exitCode ?? 1,
-      durationMs: attemptResult.durationMs ?? null,
-      blockerClass: attemptResult.blockerClass ?? null,
-      retryable: attemptResult.retryable ?? false,
-    })),
+    retryPolicy: execution.retryPolicy,
+    environment: stageEnvironment(cwd),
+    artifact: null,
+    limitation: failure?.remediation ?? null,
+    attempts: execution.attempts.map(reportAttempt),
+    attemptLinks: execution.attemptLinks,
+    firstFailure: execution.firstFailure
+      ? {
+        ...reportAttempt(execution.firstFailure),
+        owner: "relgeo/workspace",
+        repository: "relgeo/workspace",
+        surface: label.split(":")[0],
+        dependencyImpact: "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        downstreamImpact: "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        dependencyStatus: "blocked",
+      }
+      : null,
   };
   if (finalAttempt.error) entry.error = finalAttempt.error;
   results.push(entry);
@@ -253,7 +340,7 @@ function runPackBoundaryStage(packageName, cwd) {
         );
       if (invalidFiles.length > 0) {
         passed = false;
-        error = "forbidden pack entries: " + invalidFiles.join(", ");
+        error = "forbidden pack entries detected";
       }
     } catch (parseError) {
       passed = false;
@@ -275,7 +362,24 @@ function runPackBoundaryStage(packageName, cwd) {
       error,
       output: (result.stderr ?? "") + "\n" + (result.stdout ?? ""),
     }),
+    ...singleAttemptEvidence({
+      passed,
+      exitCode: result.status ?? 1,
+      failure: passed ? null : classifyFailure({
+        error,
+        output: (result.stderr ?? "") + "\n" + (result.stdout ?? ""),
+      }),
+      owner: "relgeo/workspace",
+      repository: "relgeo/workspace",
+      surface: label.split(":")[0],
+    }),
     ...(error ? { error } : {}),
+    environment: stageEnvironment(cwd),
+    artifact: {
+      kind: "npm-pack-dry-run",
+      identity: packageName,
+    },
+    limitation: error ?? null,
   };
   results.push(entry);
   console.log((passed ? "[PASS] " : "[FAIL] ") + label + " (" + entry.durationMs + " ms)");
@@ -292,8 +396,9 @@ function copyPlaygroundArtifact(label, source, destination) {
     fs.cpSync(source, destination, { recursive: true });
   } catch (copyError) {
     passed = false;
-    error = copyError.message;
+    error = "artifact copy failed";
   }
+  const failure = passed ? null : classifyFailure({ error });
   results.push({
     label,
     command: "copy-built-artifact",
@@ -305,7 +410,21 @@ function copyPlaygroundArtifact(label, source, destination) {
     repository: "relgeo/workspace",
     surface: label.split(":")[0],
     ...stageFailureMetadata({ passed, error }),
+    ...singleAttemptEvidence({
+      passed,
+      exitCode: passed ? 0 : 1,
+      failure,
+      owner: "relgeo/workspace",
+      repository: "relgeo/workspace",
+      surface: label.split(":")[0],
+    }),
     ...(error ? { error } : {}),
+    environment: stageEnvironment(root),
+    artifact: {
+      kind: "assembled-playground-artifact",
+      identity: "relgeo.github.io/dist/playground",
+    },
+    limitation: error ?? null,
   });
   console.log((passed ? "[PASS] " : "[FAIL] ") + label);
   return passed;
@@ -415,6 +534,12 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
     if (!installed) return false;
 
     if (repositoryPath === "playground") {
+      environment = {
+        ...process.env,
+        RELGEO_PLAYGROUND_REVISION: execFileSync("git", ["-C", path.join(root, repositoryPath), "rev-parse", "HEAD"], {
+          encoding: "utf8",
+        }).trim(),
+      };
       ensurePlaywrightChromium(
         packageName + ": Playwright Chromium (public registry)",
         cwd,
@@ -483,9 +608,11 @@ if (localMode) {
     ["relgeo-playground", "audit:ux"],
     ["relgeo-playground", "build"],
     ["relgeo-playground", "test:e2e"],
+    ["relgeo-docs-site", "provenance:check"],
     ["relgeo-docs-site", "check"],
     ["relgeo-docs-site", "build"],
     ["relgeo-docs-site", "test"],
+    ["relgeo-docs-site", "provenance:pages"],
     ["relgeo-docs-site", "test:pages-artifact"],
   ];
 

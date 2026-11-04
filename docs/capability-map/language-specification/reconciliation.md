@@ -8,6 +8,23 @@
 Published views: [status matrix](./status-matrix.md) dan
 [implementation-gap backlog](./implementation-gap-backlog.md).
 
+Contract handoff frozen for this tranche:
+
+- vocabulary, aliases, types, fields, and document status labels are sourced
+  from [`normative-vocabulary-catalog.json`](./normative-vocabulary-catalog.json)
+  and checked by `pnpm run language-spec:check`;
+- diagnostics are sourced from
+  [`spec/id/core/04-evaluation-order.md`](../../../spec/id/core/04-evaluation-order.md),
+  [`05-semantic-guarantees.md`](../../../spec/id/core/05-semantic-guarantees.md),
+  and [`06-error-model.md`](../../../spec/id/core/06-error-model.md);
+- dimension, annotation, drawing-role, metadata, and safe semantic SVG
+  boundaries are sourced from the presentation contract in `spec/id/presentation/`
+  and its hostile-input/semantic-output fixture requirements.
+
+These sources are the normative and checked contract handoff. The capability
+rows below remain an observed implementation/release view; they must not be
+promoted to `implemented` merely because the contract is now explicit.
+
 ## 1. Aturan rekonsiliasi
 
 Rekonsiliasi ini adalah join satu-ke-satu pada ID capability. Setiap ID dari
@@ -71,7 +88,7 @@ disamarkan sebagai row capability atau dipakai untuk menghilangkan expected ID.
 | `LANG-002` | `🌗` | `partial` | `direct-local` | IN: deterministic relation-first; no solver/control flow | `LANG-002` — runtime deterministic; full negative/non-solver map incomplete |
 | `DOC-001` | `✔️` | `implemented` | `direct-local` | IN: root sections | `DOC-001` — parser/validator and fixture 10 |
 | `DOC-002` | `✔️` | `implemented` | `direct-local` | IN: 2D scene/unit configuration | `DOC-002` — scene, units, viewport tests |
-| `DOC-003` | `🌗` | `partial` | `direct-local` | IN: readable/editorial vocabulary | `DOC-003` — guidance exists and current document status labels pass the vocabulary check; broader editorial/example vocabulary is not generated |
+| `DOC-003` | `🌗` | `partial` | `direct-local` | IN: readable/editorial vocabulary | `DOC-003` — normative status labels and checked vocabulary are frozen; broader editorial/example vocabulary is informative and is not generated |
 
 ### B. Declarations, types, expressions, dan evaluation
 
@@ -136,14 +153,14 @@ disamarkan sebagai row capability atau dipakai untuk menghilangkan expected ID.
 
 | ID | Result | Implementation | Evidence | Scope decision | Audit trace / gap |
 | --- | --- | --- | --- | --- | --- |
-| `DIAG-001` | `🌗` | `partial` | `direct-local` | IN: structured diagnostics by phase | `DIAG-001` — core/fixtures cover main cases; error-code coverage incomplete |
-| `DIAG-002` | `⚠️` | `broken` | `direct-local` | IN: stable code/path/payload | `DIAG-002` — raw `Error` paths conflict with structured model |
-| `ERR-001` | `🌗` | `partial` | `direct-local` | IN: phase ordering/fail-safe modes | `ERR-001` — tolerant/compile modes and runtime errors; cross-consumer coverage incomplete |
+| `DIAG-001` | `🌗` | `partial` | `direct-local` | IN: structured diagnostics by phase | `DIAG-001` — phase/code/severity/path/message/range and mode boundaries are normatively specified; producer and fixture coverage remains incomplete |
+| `DIAG-002` | `⚠️` | `broken` | `direct-local` | IN: stable code/path/payload | `DIAG-002` — structured contract is frozen, but raw `Error` paths still conflict with the public boundary until downstream producers normalize them |
+| `ERR-001` | `🌗` | `partial` | `direct-local` | IN: phase ordering/fail-safe modes | `ERR-001` — tolerant/compile modes and post-resolve boundaries are specified; cross-consumer coverage remains incomplete |
 | `SER-001` | `🌗` | `partial` | `direct-local` | IN expected; canonical JSON contract unresolved | `SER-001` — JSON output/snapshots exist; no normative generated shape |
-| `SER-002` | `🌗` | `partial` | `direct-local` | IN layered SVG contract; raw bytes OUT | `SER-002` — selected dimension/annotation escaping paths are fixed and locally regression-tested; broader consumer evidence remains incomplete |
+| `SER-002` | `🌗` | `partial` | `direct-local` | IN layered SVG contract; raw bytes OUT | `SER-002` — semantic projection, hostile-input escaping, and raw-byte non-parity are specified; broader consumer evidence remains incomplete |
 | `VER-001` | `✔️` | `implemented` | `direct-local` | IN: explicit/omitted version | `VER-001` — parser/schema/negative fixtures |
 | `VER-002` | `✔️` | `implemented` | `direct-local` | IN: active/legacy/regression/future policy | `VER-002` — manifest/parser/compatibility checker |
-| `VER-003` | `🌗` | `partial` | `source+tests` | IN limited: documented aliases/fallbacks only | `VER-003` — styles/metaPresets alias exists; provenance not centralized |
+| `VER-003` | `🌗` | `partial` | `source+tests` | IN limited: documented aliases/fallbacks only | `VER-003` — styles/metaPresets aliases are bounded by the checked catalog; provenance and downstream alias coverage are not centralized |
 | `VER-004` | `✔️` | `implemented` | `direct-local` | IN: fixture promotion/status governance | `VER-004` — manifest policy and conformance enforcement |
 
 ## 4. Absence and not-applicable guardrails
@@ -184,6 +201,25 @@ being silently joined as language capabilities.
 - Existing surface audits are trace evidence only. The expected list came from
   the expected catalog before implementation reconciliation.
 
+## 5A. Downstream contract handoff
+
+The following table is the consumption boundary for downstream owners. “Checked”
+means a local deterministic check or focused test has run; it does not mean that
+every consumer has adopted the contract.
+
+| Contract | Normative source | Checked/local evidence | Downstream owner | Unresolved promotion gate |
+| --- | --- | --- | --- | --- |
+| Vocabulary, types, fields, aliases, and status labels | `spec/id/` plus [`normative-vocabulary-catalog.json`](./normative-vocabulary-catalog.json) | `pnpm run language-spec:check` | spec owner; core, language-service, CLI, and MCP consumers | full generated consumer catalog and cross-repository parity |
+| Structured diagnostics and error model | `spec/id/core/04-evaluation-order.md`, `05-semantic-guarantees.md`, `06-error-model.md` | core tests and language-spec check; raw-error normalization remains open | core/language-service/CLI/MCP owners | producer normalization, complete stable-code coverage, and consumer fixtures |
+| Dimensions, annotations, drawing roles, and metadata | `spec/id/presentation/22-dimension.md`, `23-annotation.md`, `24-drawing-roles.md`, `26-metadata.md` | renderer/core focused tests and language-spec check | core/renderer-svg/consumer owners | all supported kinds/hosts and canonical conformance evidence |
+| Safe semantic SVG serialization | presentation contract and hostile-input/semantic-output fixtures | renderer-svg focused tests; raw SVG byte equality explicitly out of scope | renderer-svg and consumer owners | browser/native consumer evidence and semantic parity across hosts |
+
+The handoff is consumable from the checked source tree and does not require an
+npm or pub.dev release, registry publication, or production deployment. Those
+may be promotion/release gates later, but they are not prerequisites for
+downstream implementation or contract validation. Until the unresolved gates
+are closed, rows remain `partial`, `broken`, or `not verified` as applicable.
+
 ## 6. Evidence register
 
 The reconciliation is grounded in the required source-of-truth and discovery
@@ -200,5 +236,7 @@ do not override the per-ID findings above:
   evidence, and status rules;
 - [`language-specification/expected-capability-catalog.md`](./expected-capability-catalog.md)
   — expected ID set; and
+- [`language-specification/normative-vocabulary-catalog.json`](./normative-vocabulary-catalog.json)
+  — checked vocabulary projection and drift-check scope; and
 - [`language-specification/implementation-audit.md`](./implementation-audit.md)
   — observed source/test/consumer/runtime findings.

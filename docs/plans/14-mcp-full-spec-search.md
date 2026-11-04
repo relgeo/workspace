@@ -123,6 +123,50 @@ Setiap cuplikan dan section penuh menyertakan versi DSL, revision/digest
 snapshot, file, heading/anchor, dan URL GitHub yang dapat dibuka. MCP tidak
 menulis ulang atau memparafrasekan isi aturan sebagai pengganti teks sumber.
 
+### 2.5 Handoff ke MCP-T01–MCP-T10
+
+Full-spec retrieval is the frozen read-only foundation for the remaining MCP
+backlog. Its output is a versioned section/search result with source path,
+anchor, status, revision, and digest. Downstream tasks must consume that
+result through typed owner boundaries:
+
+- `MCP-T01` may extend schemas and version checks, but must not change section
+  identity or introduce a second spec source;
+- `MCP-T02` and `MCP-T03` may call examples/core/language-service/renderer
+  owners, but must preserve `sourceKind`, structured diagnostics, and
+  provenance;
+- `MCP-T04` may add diagnostic resources/cache identity, but normative fallback
+  remains the pinned snapshot and remote content is never silently merged;
+- `MCP-T05` through `MCP-T06` cover transport and Flutter host UX without
+  moving lifecycle or widget dependencies into the pure-Dart package;
+- `MCP-T07` and `MCP-T08` remain the only path toward guarded mutation and its
+  cancellation boundary; retrieval itself never edits a document; and
+- `MCP-T09` and `MCP-T10` may compose the authoring workflow and cross-consumer
+  mappings, but prompts cannot replace normative spec content and proposals
+  cannot become implicit edits.
+
+The handoff is complete when these ownership and side-effect boundaries are
+stable in the backlog/catalog and each implementation task has owner-specific
+evidence. It is not a claim that the remaining tasks are implemented.
+
+### 2.6 Current delivery reconciliation (2026-11-03)
+
+The post-handoff local adapter evidence now closes the bounded T01–T09
+contract edges that can be verified without changing the snapshot: examples,
+structural validation, structured diagnostics, explanation/render callbacks,
+diagnostic catalog/cache identity, provenance guards, review-only proposals,
+cooperative cancellation, and the read-only six-step workflow fixture. The
+authoritative status split is maintained in the [MCP capability
+matrix](../capability-map/mcp/capability-matrix.md), [reconciliation
+register](../capability-map/mcp/reconciliation.md), and [implementation-gap
+backlog](../capability-map/mcp/implementation-gap-backlog.md).
+
+This does not promote semantic `core`/`language-service`/`renderer-svg`
+composition, ranked example selection, producer error-field mapping, standalone
+packaging, Inspector/external-client interoperability, or packaged runtime
+smoke. Those remain explicit partial, absent, or not-verified boundaries; no
+document mutation is part of the full-spec snapshot foundation.
+
 ## 3. Packaging snapshot desktop
 
 MCP Desktop harus membawa seluruh Markdown `spec/id/` di dalam aplikasi.

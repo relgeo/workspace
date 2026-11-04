@@ -1,0 +1,99 @@
+{
+  "catalogId": "relgeo-language-vocabulary-v0.5",
+  "catalogVersion": 1,
+  "compatibilityLine": "0.5",
+  "catalogKind": "checked-projection",
+  "sourceOfTruth": "spec/id",
+  "scope": ["LANG-002", "DOC-003", "TYPE-001", "TYPE-002", "VER-003"],
+  "artifactClassification": {
+    "normative": {
+      "paths": [
+        "spec/id/core/*.md",
+        "spec/id/syntax/*.md",
+        "spec/id/geometry/*.md",
+        "spec/id/presentation/*.md"
+      ],
+      "rule": "These chapters define the DSL contract and their Status dokumen label is Normative."
+    },
+    "informative": {
+      "paths": [
+        "spec/id/README.md",
+        "spec/id/editorial-guide.md",
+        "spec/id/*/README.md",
+        "spec/id/appendix/*.md",
+        "docs/capability-map/language-specification/expected-capability-catalog.md",
+        "docs/capability-map/language-specification/implementation-gap-backlog.md"
+      ],
+      "rule": "These documents explain, index, or audit the contract; they cannot add vocabulary or semantics."
+    },
+    "generated": {
+      "paths": [],
+      "rule": "No generated artifact is authoritative in this scope. Consumer schemas, completions, and parser tables are implementation-owned projections that must be checked against this catalog."
+    },
+    "checked": {
+      "command": "pnpm run language-spec:check",
+      "script": "scripts/check-language-spec-vocabulary.mjs",
+      "rule": "The checker compares this projection with normative spec headings/sections, status labels, and the owner consumer surfaces."
+    }
+  },
+  "rootFields": [
+    "version",
+    "scene",
+    "parameters",
+    "constants",
+    "derived",
+    "profiles",
+    "metaPresets",
+    "components",
+    "objects",
+    "constraints",
+    "views",
+    "sheets",
+    "meta"
+  ],
+  "rootAliases": ["styles"],
+  "scalarTypes": ["length", "number", "angle", "percent", "boolean", "string"],
+  "structuredTypes": [
+    "point",
+    "vector",
+    "array",
+    "object",
+    "frame2d",
+    "bbox2d",
+    "collection",
+    "path-ref"
+  ],
+  "aliases": [
+    {
+      "alias": "styles",
+      "canonical": "metaPresets",
+      "surface": "root field",
+      "provenance": "spec/id/presentation/26-metadata.md"
+    },
+    {
+      "alias": "style",
+      "canonical": "metaPreset",
+      "surface": "object field",
+      "provenance": "spec/id/presentation/26-metadata.md"
+    }
+  ],
+  "statusLabels": {
+    "normative": ["Normative"],
+    "informative": ["Informative", "Informative Index"]
+  },
+  "consumerSurfaces": {
+    "parserRootFields": "core/src/parser.ts",
+    "parameterTypes": "core/src/types.ts",
+    "schemaRootFields": "language-service/src/schema.ts",
+    "schemaParameterTypes": "language-service/src/schema.ts",
+    "completions": "language-service/src/completions.ts"
+  },
+  "driftPolicy": {
+    "missingNormativeEntry": "fail",
+    "missingConsumerEntry": "fail",
+    "undocumentedAlias": "fail",
+    "extraConsumerEntry": "report-only",
+    "statusMismatch": "fail",
+    "expectedCatalogStatus": "PENDING-AUDIT"
+  }
+}

@@ -1,6 +1,6 @@
 # RelGeo MCP MVP Tool dan Resource Contract
 
-Status: contract spike, protocol-agnostic
+Status: contract plus bounded owner-adapter implementation, protocol-agnostic
 
 The Plan 14 full-spec extension is frozen separately in
 [`06-full-spec-search-contract.md`](./06-full-spec-search-contract.md). This
@@ -13,6 +13,13 @@ Dokumen ini menurunkan capability pada Plan 11 menjadi DTO typed yang dapat
 dipakai oleh adapter MCP mana pun. Implementasinya berada di
 `mcp/lib/src/contract/mcp_schema.dart`; file ini tidak mengimpor Flutter,
 widget, HTTP, filesystem, `@relgeo/core`, atau `language-service`.
+
+The current `RelGeoMcpToolDispatcher` owns wire validation, bounds, provenance
+guards, error normalization, and serialization. It receives typed callbacks
+from the examples/core/language-service/renderer owners; it does not pretend to
+be those semantic engines. The checked-in workflow fixture therefore proves a
+bounded owner chain and no-mutation behavior, while producer composition stays
+an explicit follow-up.
 
 ## 1. Sumber dan boundary
 
@@ -93,18 +100,18 @@ character `TextRange`, `origin`, dan optional provenance. `origin` membedakan
 `languageService`, `core`, dan sumber lain; `provenance` tetap menunjuk versi
 spec bila rule normatif yang mendasari penjelasan perlu dilacak.
 
-Mapping implementasi:
+Owner-adapter mapping:
 
-- `relgeo_validate_source` memakai parser dan `Validator` core untuk kontrak
-  parse/semantic validation, lalu memakai bentuk diagnostic yang kompatibel
-  dengan `RelGeoLanguageService.getDiagnostics`.
-- `relgeo_complete_source` memetakan `RelGeoLanguageService.getCompletions`
-  ke `CompletionProposal[]`; item tetap proposal, bukan perubahan source.
-- `relgeo_explain_diagnostic` membaca katalog/versioned documentation dan
-  mengembalikan `DocumentationResult`, bukan mengganti code atau severity.
-- `relgeo_render_source` memetakan `parseRelGeo` → resolve →
-  `SVGRenderer.render`; error parse/validation harus dikembalikan sebagai
-  diagnostics, bukan disembunyikan.
+- `relgeo_validate_source` accepts a typed core/language-service owner result;
+  the adapter enforces source/sourceKind/specVersion preservation, diagnostic
+  bounds, and provenance. Direct parse/semantic invocation is not claimed.
+- `relgeo_complete_source` accepts a typed language-service result and echoes
+  request identity; items remain proposals, never source mutations.
+- `relgeo_explain_diagnostic` accepts versioned owner documentation/catalog
+  content and preserves code/severity semantics; it does not invent a catalog.
+- `relgeo_render_source` accepts bounded in-memory SVG from the renderer owner;
+  owner failures become typed dispatch errors and no file is written. Direct
+  `parseRelGeo` → resolve → `SVGRenderer.render` composition remains open.
 
 ## 4. Tool catalog typed
 
@@ -158,6 +165,12 @@ transport dipanggil.
 Website dapat menjadi fallback penjelasan dengan `McpProvenanceSource.website`,
 tetapi `isNormative` selalu false; website tidak pernah mengalahkan spec.
 
+`McpDiagnosticCatalog` is served at `relgeo://diagnostics/catalog` when the
+owner supplies it. `McpResourceCache` matches `specVersion`, `revision`, and
+digest before returning content, bounds TTL, evicts expired entries, and
+serializes whether content is `bundled`, `cache`, or `fallback`. Cache state
+never silently mixes revisions and does not require a remote fetch.
+
 ## 6. Evidence dan compatibility
 
 Contract ini merujuk langsung ke artefak yang ada:
@@ -177,4 +190,8 @@ Pure-Dart tests di `mcp/test/mcp_schema_test.dart` memverifikasi pemisahan
 input/proposal/validation/diagnostic, canonical resource URI, tool catalog,
 dan aturan bahwa provenance website tidak normative. Adapter protocol tetap
 terpisah sehingga conformance SDK/transport dapat dilakukan tanpa mengubah
-kontrak domain ini.
+kontrak domain ini. `mcp/test/local_dispatch_test.dart` additionally covers the
+six-call read-only workflow, owner bounds/provenance failures, diagnostic
+catalog cache identity/TTL, review-only proposals, cancellation, and stop-safe
+edits. The remaining semantic producer, external-client, and packaged-runtime
+limits are recorded in the [capability reconciliation](../capability-map/mcp/reconciliation.md).

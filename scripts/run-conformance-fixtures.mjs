@@ -85,7 +85,13 @@ check(Array.isArray(manifest.versionAcceptance?.regressionOnly) && manifest.vers
 check(manifest.versionAcceptance?.unsupportedFuture === true, "fixture manifest rejects undeclared future versions");
 check(manifest.versionAcceptance?.omittedDefaultsTo === manifest.compatibilityLine, "fixture manifest declares the omitted-version default");
 check(manifest.versionAcceptance?.parserDiagnosticCode === "UNSUPPORTED_SPEC_VERSION", "fixture manifest declares the parser diagnostic code");
-check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 20, "fixture manifest contains the expected 20-entry baseline set");
+check(manifest.semanticSerialization?.schema === "relgeo.resolved-scene", "fixture manifest declares the canonical semantic schema");
+check(manifest.semanticSerialization?.schemaVersion === 1, "fixture manifest declares the canonical semantic schema version");
+check(manifest.semanticSerialization?.compatibilityLine === manifest.compatibilityLine, "fixture manifest pins semantic serialization to the active compatibility line");
+check(manifest.semanticSerialization?.numberPrecision === 12, "fixture manifest declares 12-decimal numeric normalization");
+check(manifest.semanticSerialization?.negativeZero === 0, "fixture manifest declares negative-zero normalization");
+check(manifest.semanticSerialization?.replayComparator === "@relgeo/core.compareResolvedSceneReplay", "fixture manifest declares the core replay comparator");
+check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 23, "fixture manifest contains the expected 23-entry baseline set");
 
 const fixtureIds = new Set();
 const fixturePaths = new Set();
@@ -132,11 +138,11 @@ for (const fixture of manifest.fixtures ?? []) {
 const activeFixtures = manifest.fixtures.filter((fixture) => fixture.status === "active");
 check(activeFixtures.length >= 1, "fixture manifest has at least one active baseline fixture");
 const invalidFixtures = manifest.fixtures.filter((fixture) => fixture.status === "invalid");
-check(invalidFixtures.length === 5, "fixture manifest has the five invalid diagnostic fixtures");
+check(invalidFixtures.length === 7, "fixture manifest has the seven invalid diagnostic fixtures");
 const runtimeDiagnosticFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-diagnostic");
 check(runtimeDiagnosticFixtures.length === 1, "fixture manifest has one runtime-diagnostic fixture");
 const runtimeErrorFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-error");
-check(runtimeErrorFixtures.length === 2, "fixture manifest has the two runtime-error fixtures");
+check(runtimeErrorFixtures.length === 3, "fixture manifest has the three runtime-error fixtures");
 
 for (const fixture of manifest.fixtures) {
   const fixturePath = resolve(root, manifest.fixtureRoot, fixture.path);
@@ -300,6 +306,12 @@ for (const fixture of manifest.fixtures) {
     const expectedScene = JSON.parse(await readFile(resolve(root, manifest.fixtureRoot, fixture.expectedResolvedPath), "utf8"));
     check(JSON.stringify(projectScene(scene)) === JSON.stringify(expectedScene), `${fixture.id}: resolved scene matches the reviewable snapshot`);
   }
+
+  const replay = core.compareResolvedSceneReplay(
+    core.serializeResolvedScene(scene),
+    core.serializeResolvedScene(scene),
+  );
+  check(replay.equal, `${fixture.id}: canonical semantic serialization replays identically`);
 
   const service = new languageService.RelGeoLanguageService();
   const diagnostics = service.getDiagnostics(source);

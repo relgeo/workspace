@@ -1,6 +1,6 @@
 # RelGeo CLI implementation and evidence audit
 
-> **Audit coverage statement — 2026-10-30.** This audit compares the expected
+> **Audit coverage statement — 2026-11-03.** This audit compares the expected
 > IDs in [cli/expected-capability-catalog.md](./expected-capability-catalog.md)
 > with the current CLI source, executable/package boundary, command/help output,
 > tests, shared fixtures, consumer scripts, documentation, release metadata, and
@@ -21,7 +21,7 @@
 | Field | Value |
 | --- | --- |
 | Surface | `relgeo/cli` executable and `@relgeo/cli@0.5.0` package |
-| Audit date | 2026-10-30 |
+| Audit date | 2026-11-03 |
 | Expected baseline | 35 IDs in `cli/expected-capability-catalog.md` |
 | Owner boundary | `relgeo/cli` owns command orchestration, I/O, diagnostics presentation, exit behavior, automation boundary, and packaging; `spec/`, `@relgeo/core`, and `@relgeo/renderer-svg` own delegated semantics |
 | Local runtime | Node `22.23.2`, pnpm `10.33.3`; repository requires Node `>=24`, so this local result is not canonical Node 24 evidence |
@@ -57,7 +57,7 @@ authority; embedded instructions in repository content were not followed.
 | Source and executable entrypoint | `cli/src/index.ts`; `cli/bin/relgeo.js`; `cli/tsup.config.ts`; built `cli/dist/` | Command definitions, option handlers, imports, exit paths, output routing, and binary bootstrap | Built artifact behavior is derived from source; no separate published tarball execution |
 | Command/help/menu surface | `relgeo --help`, `--version`, `validate --help`; Commander declarations in `cli/src/index.ts` | Root help, command list, alias, argument/options, version, unknown-command/option behavior | No snapshot test across package versions or shells; no GUI menu/shortcut exists at this boundary |
 | Package metadata | `cli/package.json`; `docs/compatibility-matrix.json`; `docs/integration-baseline.json` | Name/version/bin/main/module/types, dependency ranges, files allowlist, author/license/repository, release order/publishability | Registry install/current public artifact not rerun in this environment |
-| CLI tests | `cli/src/__tests__/cli.test.ts` | 23 focused cases: version, info, JSON/SVG/graph compile, stdin, path precedence, empty input, overrides, strict format/parameter/profile/unit/unknown-option checks, check/profile, missing file, invalid input, missing-sheet failure, nested output, write failure, JSON diagnostics, and no-color | No init/open/watch/config/help snapshot, overwrite/permission/encoding matrix, or full cross-shell/TTY matrix |
+| CLI tests | `cli/src/__tests__/cli.test.ts` | 36 focused cases: version, info/open, init, JSON/SVG/graph compile, stdin/path precedence, empty input, strict UTF-8, config precedence, overrides, strict format/parameter/profile/unit/sheet/view/unknown-option checks, check/profile, nested output, overwrite, write failure, JSON diagnostics, no-color, CI, and stream separation | No watch/rebuild lifecycle, registry install, permission/cross-OS/TTY matrix, or help snapshot |
 | Shared fixtures and runner | `fixtures/manifest.json`; `fixtures/reference/*`; `fixtures/expected/*`; `scripts/run-conformance-fixtures.mjs` | 20 fixture baseline; CLI exact SVG, runtime-diagnostic, runtime-error, candidate, legacy, and version-boundary checks | Fixture runner uses compile/SVG path; it does not exercise all command options or shell permutations |
 | Consumer/integration scripts | `scripts/run-integration-gate.mjs`; `scripts/README.md`; `.github/workflows/integration.yml` | CLI build/test stage, package pack boundary, local/public integration design, CI Node 24 setup, conformance ordering | Current CI/public run for this exact checkout was not initiated |
 | Product and ownership docs | `README.md`; `cli/README.md`; `cli/docs/README.md`; website `relgeo.github.io/src/content/docs/{id,en}/cli.md`; `docs/REPOSITORY-MAP.md` | User positioning, target workflows, documented commands/options, non-UI boundary, ownership | Documentation claims are not implementation proof by themselves |
@@ -83,8 +83,11 @@ treated as absent. The 35 expected IDs are all mapped below.
 | `info <file>` | `cli/src/index.ts:27-111`; CLI test lines 66-76 | Reads UTF-8 file, parses editor mode, prints version, parameters, profiles, presets/styles, components, views, sheets, objects. |
 | `compile <file>` | `cli/src/index.ts:113-187`; CLI tests lines 78-114 | Reads file, parses overrides, compiles through core, emits JSON by default, SVG, graph, or a file. |
 | `check <file>` / `validate <file>` | `cli/src/index.ts:189-241`; CLI tests lines 116-122 | Alias pair; compiles/resolves and prints success summary without final JSON/SVG output. |
-| Compile options | `cli/src/index.ts:117-122`; package docs | `--output`, `--format`, `--unit`, `--profile`, repeatable `--param`, and `--sheet`. |
-| No command for `init`, `open`, `watch`, daemon, or config | Commander output and direct negative probes | Unknown command/option errors are returned; no implementation found. |
+| Compile/options and boundary controls | `cli/src/index.ts`; package docs | `--output`, `--format`, `--unit`, `--profile`, repeatable `--param`, `--sheet`, `--view`, diagnostics, config, color, and overwrite controls. |
+| `init` starter workflow | `cli/src/index.ts`; CLI tests | Writes a minimal v0.5 document, creates parents, and refuses existing targets unless forced. |
+| `open` inspection workflow | `cli/src/index.ts`; CLI tests | Reuses the metadata inspection path without launching an editor. |
+| Config and noninteractive controls | `cli/src/index.ts`; CLI tests | `.relgeo.json`, explicit config, environment/flag precedence, `--no-config`, `NO_COLOR`, and `CI` are implemented. |
+| No document watch/rebuild or daemon/JSON-RPC command | Commander output and scope docs | Intentionally held/out of the one-shot contract; package `dev` watch is build watch, not document watch. |
 
 ### Direct probes
 
@@ -94,10 +97,10 @@ treated as absent. The 35 expected IDs are all mapped below.
 | `relgeo --version` | Prints `0.5.0`; exit `0` | Implemented |
 | `relgeo validate --help` | Shows alias and validation options; exit `0` | Implemented |
 | `compile -` with valid YAML on stdin | JSON output on stdout; exit `0` | Stdin pipeline implemented and kept separate from diagnostics/progress |
-| `init` | Unknown command; exit `1` | Init absent |
-| `open <file>` | Unknown command; exit `1` | Open absent as a named command; path selection exists in other commands |
+| `init <path>` | Creates starter document; existing target fails safely without force | Implemented |
+| `open <file>` | Prints document metadata without launching an editor | Implemented |
 | `watch <file>` | Unknown command; exit `1` | Watch absent |
-| `compile --config x` | Unknown option; exit `1` | Config absent |
+| `compile --config x` | Reads explicit config path; missing config is a deterministic input failure | Config implemented |
 | `compile --format not-a-format` | Actionable diagnostic; exit `2` | Unsupported format rejected before dispatch |
 | `compile --param broken` | Actionable diagnostic; exit `2` | Malformed parameter token rejected before compilation |
 
@@ -123,48 +126,48 @@ is based on negative source/command discovery, not merely on a missing test.
 | `CLI-DISC-001` | `implemented` | E1/E2 | confirmed | in scope | Commander root help exposes commands, aliases, and options; no help snapshot test. |
 | `CLI-DISC-002` | `implemented` | E2 | partial | in scope | Root/subcommand help and usage errors work; wording stability is not version-snapshotted. |
 | `CLI-DISC-003` | `implemented` | E2/E3 | confirmed | in scope | `--version` prints `0.5.0`; package/docs/matrix declare DSL `0.5`. |
-| `CLI-INIT-001` | `absent` | E1/E2 | not assessed | expected-but-missing | No `init` command, template, or starter-document workflow in source/package/docs. |
-| `CLI-OPEN-001` | `partial` | E1/E2 | partial | in scope | Existing commands select a file path, but no named `open` workflow or open semantics exists. |
+| `CLI-INIT-001` | `implemented` | E2 | confirmed | in scope | `init` writes the minimal v0.5 starter document, creates parents, and protects existing targets unless forced. |
+| `CLI-OPEN-001` | `implemented` | E2 | confirmed | in scope | `open` reuses metadata inspection without launching an editor and follows the shared input contract. |
 | `CLI-IN-001` | `implemented` | E2 | confirmed | in scope | `path.resolve`, `pathExists`, and UTF-8 `readFile` are used by all three commands; tests cover valid/missing files. |
 | `CLI-IN-002` | `implemented` | E2 | confirmed | in scope | `-` reads UTF-8 stdin for file-taking commands; valid input emits data on stdout and empty stdin is an input failure. |
-| `CLI-IN-003` | `partial` | E1/E2 | partial | in scope | UTF-8 file handling and path resolution exist; path/stdin precedence, empty input, and encoding errors are not contracted. |
+| `CLI-IN-003` | `implemented` | E2 | confirmed | in scope | Explicit paths win over unrelated stdin; empty input and invalid UTF-8 fail with source-aware exit `3`. |
 | `CLI-INSPECT-001` | `implemented` | E2 | partial | in scope | `info` prints major document sections and is tested; editor-mode parsing intentionally permits inspection of structurally incomplete input. |
 | `CLI-VALID-001` | `implemented` | E2/E3 | partial | in scope | `check`/`validate` compiles/resolves without final output; diagnostics and warning semantics are not fully formalized. |
 | `CLI-VALID-002` | `implemented` | E1/E2 | confirmed | in scope | Commander alias `validate` maps to `check`; direct help probe passes. |
 | `CLI-RENDER-001` | `implemented` | E2/E3 | confirmed | in scope | Compile flow delegates parse/validate/resolve to core and render to renderer; shared fixture CLI output passes. |
 | `CLI-RENDER-002` | `partial` | E2/E3 | partial | in scope | Profile, parameter, and unit options are wired and strict unknown values fail; focused tests cover representative slices, not all combinations or delegated semantics. |
-| `CLI-RENDER-003` | `partial` | E2/E3 | partial | in scope | `--sheet` is passed to SVG renderer and missing-sheet failure is covered; the selector matrix and valid direct CLI case remain incomplete. |
+| `CLI-RENDER-003` | `partial` | E2/E3 | partial | in scope | `--sheet` and `--view` are validated and mapped to SVG selection; representative valid/negative cases pass, but the full renderer/view matrix remains bounded. |
 | `CLI-OUT-001` | `implemented` | E2/E3 | partial | in scope | Default JSON is parseable and scene fields are asserted; no independently versioned CLI JSON schema. |
 | `CLI-OUT-002` | `implemented` | E2/E3 | confirmed | in scope | SVG smoke passes; conformance compares CLI SVG byte output to shared snapshots for covered fixtures. |
 | `CLI-OUT-003` | `implemented` | E2 | partial | in scope | Graph output is produced via core and parsed as an array in tests; graph schema has no separate compatibility document. |
-| `CLI-OUT-004` | `partial` | E2 | partial | in scope | File output creates nested parents, reports success on stderr, and maps write failures to exit `5`; overwrite, permission, and encoding matrices remain incomplete. |
-| `CLI-DIAG-001` | `partial` | E2/E3 | partial | boundary only | CLI transports core codes through human and JSON modes with phase, severity, path, object, and range fields where available; broader phase/location fixture coverage remains incomplete. |
+| `CLI-OUT-004` | `implemented` | E2 | confirmed | in scope | File output creates nested parents, uses UTF-8 atomic replacement, honors overwrite policy, and maps write failures to exit `5` without a success claim. |
+| `CLI-DIAG-001` | `implemented` | E2/E3 | confirmed at CLI boundary | boundary only | CLI transports core codes through human and JSON modes with phase, severity, path, object, and range fields where available; delegated semantics remain in spec/core. |
 | `CLI-DIAG-002` | `implemented` | E2/E3 | partial | in scope | Human-readable stderr includes headings, codes, messages, object/path when supplied; color and exact wording vary by environment. |
-| `CLI-DIAG-003` | `partial` | E2 | partial | in scope | `--diagnostics json` emits a stable stderr envelope without progress prose; focused tests cover missing-file and runtime failures, while the full malformed/valid matrix remains incomplete. |
+| `CLI-DIAG-003` | `implemented` | E2 | confirmed | in scope | `--diagnostics json` emits one stable stderr envelope for input, runtime, output, and Commander usage failures; successful data remains on stdout. |
 | `CLI-EXIT-001` | `implemented` | E2 | confirmed | in scope | Documented codes distinguish success, usage, input, validation/runtime, and output/write failures; focused tests cover each selected category. |
 | `CLI-ERR-001` | `implemented` | E2 | confirmed | in scope | Supported formats are allowlisted before dispatch; unsupported values fail with an actionable diagnostic and cannot fall through to JSON. |
 | `CLI-ERR-002` | `implemented` | E2 | confirmed | in scope | Malformed parameters and unknown format/profile/unit/option values fail before compilation; valid string-like overrides remain supported. |
-| `CLI-CONFIG-001` | `absent` | E1/E2 | not assessed | expected-but-missing | No config file, config loader, precedence model, or `--config` option found. |
-| `CLI-CONFIG-002` | `absent` | E1/E2 | not assessed | expected-but-missing | No documented environment/config switches for color, prompts, or deterministic CI defaults found. |
+| `CLI-CONFIG-001` | `implemented` | E2 | confirmed | in scope | `.relgeo.json`, explicit config, `RELGEO_CONFIG`, environment, flags, and `--no-config` implement documented precedence and validation. |
+| `CLI-CONFIG-002` | `implemented` | E2 | confirmed | in scope | `NO_COLOR`, `RELGEO_NO_COLOR`, `CI`, and `--no-color` control noninteractive styling/progress; `RELGEO_*` supplies defaults. |
 | `CLI-AUTO-001` | `implemented` | E2/E3 | confirmed | in scope | Commands run noninteractively and are used by root conformance/integration scripts; current Node 24/canonical CI remains unverified. |
-| `CLI-AUTO-002` | `absent` | E1/E2 | not assessed | expected-but-missing | No watch command, file watcher, debounce, or rebuild lifecycle found. `pnpm dev` is package build watch, not document watch. |
-| `CLI-AUTO-003` | `partial` | E2 | partial | in scope | Compile data stays on stdout and progress/diagnostics on stderr; explicit `--no-color` is covered for info/check/compile, while CI/TTY and broader stream snapshots remain unverified. |
+| `CLI-AUTO-002` | `deferred` | E0/E1 | not assessed | held | One-shot CLI intentionally has no document watch/rebuild; `pnpm dev` is package build watch, not document watch. Lifecycle scope is held. |
+| `CLI-AUTO-003` | `implemented` | E2 | confirmed at local boundary | in scope | Compile data stays on stdout and progress/diagnostics on stderr; JSON diagnostics, `--no-color`, and `CI` stream behavior are tested. Cross-OS/TTY remains unverified. |
 | `CLI-AUTO-004` | `deferred` | E0/E1 | not assessed | held | Catalog holds daemon/JSON-RPC as a future bounded decision; no implementation or approved protocol contract. |
 | `CLI-PACK-001` | `implemented` | E1/E2 | partial | in scope | `bin/relgeo.js`, bin metadata, CJS/ESM dist, and local binary run work; fresh registry install not executed. |
 | `CLI-PACK-002` | `implemented` | E2 | confirmed | in scope | `NPM_CONFIG_CACHE=/private/tmp/relgeo-cli-npm-cache pnpm run release:audit` passes `106/106`; CLI tarball has 8 declared public entries. |
-| `CLI-PACK-003` | `implemented` | E3 | confirmed | in scope | `compatibility:check` passes `283/283`; matrix has CLI `0.5.0`, publishable `true`, same-line policy, and release order after renderer. |
+| `CLI-PACK-003` | `implemented` | E3 | confirmed at CLI rows | in scope | The CLI-specific compatibility rows pass; the current root gate has three unrelated failures in core/playground/Flutter, so cross-repo compatibility is not claimed green. |
 | `CLI-PACK-004` | `partial` | E1/E2 | partial | in scope | Manual preflight, pack, registry verifier, and forward-fix planner exist; current registry/public verification and Node 24 run are unverified. |
-| `CLI-PACK-005` | `implemented` | E3 | confirmed for declared fixtures | in scope | `conformance:fixtures` passes `260/260` across 20 fixtures, including exact CLI SVG and runtime-error status/code assertions; not exhaustive CLI-option coverage. |
+| `CLI-PACK-005` | `implemented` | E3 | confirmed for declared fixtures | in scope | `conformance:fixtures` passes `298/298` across 23 fixtures, including exact CLI SVG and runtime-error status/code assertions; not exhaustive CLI-option coverage. |
 
 ### Status roll-up
 
 | Status | Count | IDs / interpretation |
 | --- | ---: | --- |
-| `implemented` | 21 | Discovery/version, file and stdin input, inspect, validate alias, render, outputs, diagnostics/error handling, automation, packaging, compatibility, and fixture participation at bounded scope. |
-| `partial` | 9 | Open/path boundary, input rules, render options, output file, phase diagnostics, scripting, and package release evidence. |
+| `implemented` | 30 | Discovery/version, init/open, file and stdin input, inspect, validate, render, outputs, diagnostics/error handling, config, automation, packaging, compatibility, and fixture participation at bounded scope. |
+| `partial` | 3 | Profile/unit/selector breadth and package release evidence remain bounded. |
 | `broken` | 0 | No selected CLI error path remains a confirmed contract mismatch after strict dispatch and option validation. |
-| `absent` | 4 | `CLI-INIT-001`, `CLI-CONFIG-001`, `CLI-CONFIG-002`, `CLI-AUTO-002`; selected stdin and machine-diagnostics gaps now have local implementations. |
-| `deferred` | 1 | `CLI-AUTO-004`, held for a distinct protocol decision. |
+| `absent` | 0 | No expected CLI capability is absent at the one-shot boundary. |
+| `deferred` | 2 | `CLI-AUTO-002` watch/rebuild and `CLI-AUTO-004` daemon/JSON-RPC remain held for separate scope/protocol decisions. |
 | `not-applicable` | 0 expected IDs | UI/editor/parser/Flutter boundaries are reported separately in §4; they are not expected CLI IDs. |
 | `unverified` | 0 expected IDs | Unverified is an evidence axis: Node 24, CI/public registry, and cross-OS claims remain unverified even where local implementation is present. |
 
@@ -173,35 +176,32 @@ is based on negative source/command discovery, not merely on a missing test.
 | Command/evidence | Result | Evidence meaning |
 | --- | --- | --- |
 | `node -v && pnpm --version` | Node `22.23.2`, pnpm `10.33.3` | Local runtime only; Node is below required `>=24`. |
-| `pnpm test` in `cli/` | PASS — 1 file, 23 tests | Current-checkout direct package suite covering the selected CLI boundary behaviors. |
+| `pnpm test` in `cli/` | PASS — 1 file, 36 tests | Current-checkout direct package suite covering input, init/open, config, render options, output, diagnostics, exits, and stream controls. |
 | `pnpm exec tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --esModuleInterop --skipLibCheck src/index.ts` in `cli/` | PASS — no diagnostics | Direct TypeScript analyzer check; the package has no standalone `tsconfig.json`, so the effective CLI compiler settings were supplied explicitly. |
 | `/opt/homebrew/bin/pnpm build` in `cli/` | PASS — CJS/ESM output | Current-checkout source-to-dist package build. |
-| `pnpm run conformance:fixtures` | PASS — `260 passed, 0 failed across 20 fixtures` | Root cross-surface fixture evidence; CLI checks are exact for declared paths. |
-| `pnpm run compatibility:check` | PASS — `283 passed, 0 failed` | Matrix/package/version/README/dependency/release-order consistency. |
+| `pnpm run conformance:fixtures` | PASS — `298 passed, 0 failed across 23 fixtures` | Root cross-surface fixture evidence; CLI checks are exact for declared paths. Node 22 emitted an engine warning because canonical Node is >=24. |
+| `pnpm run compatibility:check` | NOT VERIFIED for the CLI handoff — current workspace run reported `280 passed, 3 failed`; failures are outside the CLI rows (`core` package version, `playground` → `core` dependency range, and Flutter application version) | The CLI-specific matrix/dependency checks passed in the same run, but the root compatibility gate cannot be claimed green for this dirty cross-repo workspace. |
 | `pnpm run compatibility:audit` | PASS — `10 passed, 0 warnings, 0 failed` | Compatibility behavior and active/legacy version inventory remain coherent. |
 | `node scripts/run-integration-gate.mjs --local` | NOT VERIFIED — gate requires Node `>=24`; local runtime is Node `22.23.2` | Integration consumer gate was not executed beyond its runtime preflight; this is an environment limitation, not evidence of a CLI implementation failure. |
 | `NPM_CONFIG_CACHE=/private/tmp/relgeo-cli-npm-cache pnpm run release:audit` | PASS — `106 passed, 0 failed` | Local tarball/package metadata boundary for all seven npm packages, including CLI. |
 | `NPM_CONFIG_CACHE=/private/tmp/relgeo-cli-npm-cache npm pack --dry-run --json` in `cli/` | PASS — 8 files, `@relgeo/cli@0.5.0` | Direct CLI tarball evidence; no secret/private material observed in listed entries. |
 | CLI help/version/alias probes | PASS | Command discovery, version, and `validate` alias behavior. |
 | CLI negative probes for stdin/init/open/watch/config/unknown format/malformed param | PASS for expected observations: stdin succeeds, absent commands/options fail, and invalid format/parameter values exit `2` | Direct evidence for the selected input and strict-validation contracts; init/open/watch/config remain absent. |
-| Current-checkout revalidation on 2026-10-30: `pnpm test` in `cli/` | PASS — 1 file, 23 tests | Reconfirms the package evidence at the current checkout, including stdin, output failure, JSON diagnostics, no-color, unknown-option, and missing-sheet coverage; broader shell/TTY and option matrices remain incomplete. |
-| Current-checkout direct probes: `node cli/bin/relgeo.js --help`, `--version`, `compile -`, `init`, `open`, `watch`, `compile --config x`, `compile <file> --format not-a-format`, and `compile <file> --param broken` | PASS for expected observations: stdin succeeds; absent surfaces exit `1`; unknown format and malformed parameter exit `2` | Reconfirms command/option absence and selected strict-boundary behavior on local Node `22.23.2`, not Node 24/canonical evidence. |
+| Current-checkout revalidation on 2026-11-03: `pnpm test` in `cli/` | PASS — 1 file, 36 tests | Reconfirms the package evidence, including init/open/config, stdin/encoding, output failure, JSON diagnostics, no-color/CI, unknown-option, sheet/view, and overwrite coverage; watch/rebuild and cross-shell/TTY remain out of scope/unverified. |
+| Current-checkout boundary probes: built CLI help/version, stdin, init/open, config, unknown format/parameter, JSON usage error, and watch | PASS for expected observations | Reconfirms implemented one-shot behavior and held watch boundary on local Node `22.23.2`, not Node 24/canonical evidence. |
 | Default `pnpm run release:audit` | FAIL — all 7 pack stages blocked by npm cache `EPERM` root-owned files | Environment blocker only; rerun with scoped temporary cache passed. |
 
 ## 7. Gaps, risks, and handoff
 
-### Confirmed implementation gaps/defects
+### Remaining implementation/evidence limits
 
-1. Add a bounded `init` workflow or explicitly remove it from the expected
-   product baseline through a scope decision.
-2. Expand profile/parameter/unit combinations and valid sheet-selection cases;
-   delegated evaluator and renderer semantics remain owned by core/spec.
-3. Complete the filesystem output matrix for overwrite, permissions, encoding,
-   and atomicity expectations.
-4. Expand phase/location diagnostic fixtures and malformed/valid machine-mode
-   coverage while preserving the documented exit and stream contracts.
-5. Decide whether `open`, config, and watch are active CLI product promises or
-   should remain expected-but-missing roadmap items.
+1. Expand profile/parameter/unit combinations and valid sheet/view selection
+   cases; delegated evaluator and renderer semantics remain owned by core/spec.
+2. Broaden filesystem permissions, cross-OS, TTY, and installed-package tests.
+3. Complete Node >=24, current CI, registry/public-package, and cross-platform
+   evidence before making release-parity claims.
+4. Keep document watch/rebuild and daemon/JSON-RPC explicitly held until their
+   lifecycle/protocol decisions are approved.
 
 ### Evidence gaps, not implementation failures
 

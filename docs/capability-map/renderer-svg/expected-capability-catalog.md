@@ -104,6 +104,30 @@ Playground command is a consumer integration gap, while a missing projection
 or unsafe serialization is an SVG renderer gap. Both remain expected rows for
 the downstream audit rather than being silently omitted.
 
+### 2.2 Frozen boundary-to-fixture contract
+
+The following crosswalk is part of the expected catalog. It fixes ownership and
+the semantic fixture oracle before implementation work proceeds. A fixture
+anchor is evidence of the intended contract, not a claim that every consumer or
+host is already verified.
+
+| ID | Owner boundary | Fixture / test anchor | Required stable projection |
+| --- | --- | --- | --- |
+| `SVG-SCENE-003` | Renderer owns root sizing/context; core owns unit/bbox; CLI/Playground own selection | `fixtures/reference/10-v05-relational-baseline.yaml`; renderer physical-mode/origin tests | Context changes may alter root sizing/viewBox, never resolved object identity or geometry; no executable markup |
+| `SVG-STYLE-002` | Renderer owns fallback typography, arrows, and XML encoding; spec owns field meaning | `renderer-svg/src/__tests__/fixtures/v05-presentation-escaping.yaml`; `security.test.ts` | Stable fallback attributes plus escaped text/style values; exact font metrics are not cross-host semantics |
+| `SVG-DIM-001` | Renderer projects dimensions; core supplies resolved points; spec owns dimension meaning | shared sheet fixture 02 and renderer dimension tests | Supported dimension kinds preserve label/leader/placement semantics and remain safe |
+| `SVG-ANNOT-001` | Renderer projects annotations; core supplies targets; Playground owns interactive presentation | shared sheet fixture 02 and renderer annotation tests | Target/leader, multiline order, fallback placement, and escaped content remain stable |
+| `SVG-SHEET-001` | Renderer owns sheet composition; core owns view/sheet model; CLI owns `--sheet/--view` routing | shared fixtures 02, 03, and 09 plus `reference_fixtures.test.ts` | Page size, placement/scale, title block, and selected-sheet result are stable; model geometry is not mutated |
+| `SVG-DET-001` | Workspace/core own canonical semantic serialization; renderer exposes semantic projection | `semantic_projection.test.ts`, manifest `semanticSerialization`, active fixture 10 JSON | Compare schema/version, bbox, order, IDs, kinds, topology, endpoints, and normalized numbers; never raw SVG bytes |
+| `SVG-INTEG-002` | Playground owns worker/DOM/inspection; renderer owns safe SVG output | fixture 10 and runtime-diagnostic fixture 14 with worker/Preview sources | Preview path preserves semantic output and diagnostic state; browser E2E remains separate evidence |
+| `GAP-009` | Shared gap owned by renderer-svg + core; CLI/Markdown/Playground consume | presentation-escaping fixture and language-spec `GAP-009` row | Dimension/annotation and dynamic attributes are escaped without changing semantic placement |
+| `GAP-013` | Renderer owns safe serialization; Markdown/Playground own host safety checks | presentation-escaping fixture and `security.test.ts` | No executable markup from dynamic values; semantic projection remains available |
+| `MD-DIAG-003` | Markdown owns tolerant AST transport; core owns diagnostic vocabulary; renderer owns preview | runtime-diagnostic fixture 14 plus a Markdown AST fixture to be added by the Markdown task | Valid preview is retained with structured non-fatal diagnostic; current expected status remains implementation-pending |
+
+For every row above, the safety invariant is: output is a single safe SVG
+document, dynamic text/attributes are XML-escaped, and semantic assertions use
+structured projection rather than byte equality.
+
 ## 3. Requirement register
 
 | Code | Requirement / decision | Source of truth |

@@ -36,6 +36,13 @@ dart test
 dart run tool/run_transport_conformance.dart --stdio-only
 ```
 
+The runner also sends an invalid tool argument and requires the fixture to
+return JSON-RPC `-32602` without terminating the process. Its HTTP path, when
+loopback sockets are available, additionally checks that post-initialize
+requests reject missing or mismatched `MCP-Protocol-Version` metadata. Every
+runner invocation probes `--host 0.0.0.0` and requires the fixture to reject the
+remote bind before opening a socket.
+
 ## Candidate A — `dart_mcp`
 
 Create a temporary Dart package outside the repository, add the pinned
@@ -100,6 +107,32 @@ passes it to both `RelGeoMcpToolDispatcher` and
 These checks are covered by `mcp/test/local_dispatch_test.dart`. They are
 adapter-boundary evidence, not evidence that either external SDK has been
 selected or that localhost HTTP socket binding is available in every sandbox.
+
+The embedded desktop host adds transport/security coverage in
+`flutter/test/mcp_server_io_test.dart`: missing bearer credentials, missing
+post-initialize protocol metadata, disallowed origins, read-only edit denial,
+read-write stale-revision handling, and the applied undoable result. The
+Flutter dialog keeps the bearer token hidden by default; copying the connection
+configuration or explicitly revealing the token are deliberate user actions.
+
+## Post-full-spec local delivery evidence
+
+The protocol-neutral adapter now has bounded owner callback paths for examples,
+completion, validation, diagnostic explanation, and in-memory render. The local
+fixture also composes discovery → example → completion → validation →
+explanation → render and asserts provenance/source-kind preservation. Diagnostic
+catalog reads carry version/revision/digest identity; the cache rejects identity
+mismatches and expires entries at a bounded TTL. Review is a separate read-only
+tool, and apply is guarded by document identity/revision plus a cooperative
+cancellation token. Stop and decoded-client disconnects cancel pending requests
+before an edit commit.
+
+These checks close the pure-Dart contract/adapter edge only. They do not claim
+direct `core`/`language-service`/`renderer-svg` composition, a standalone RelGeo
+executable, SDK selection, Inspector compatibility, or packaged-client write
+interoperability. Those boundaries remain tracked in the capability
+[reconciliation](../capability-map/mcp/reconciliation.md) and
+[implementation-gap backlog](../capability-map/mcp/implementation-gap-backlog.md).
 
 ## Full-spec retrieval quality evidence
 

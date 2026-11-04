@@ -43,6 +43,10 @@ function record(name, status, details = {}) {
       ?? (status === "passed"
         ? "none"
         : "Dependent preflight steps remain untrusted until this step passes."),
+    downstreamImpact: details.downstreamImpact
+      ?? (status === "passed"
+        ? "none"
+        : "Dependent preflight steps remain untrusted until this step passes."),
     dependencyStatus: details.dependencyStatus
       ?? (status === "passed" ? "ready" : "blocked"),
   });
@@ -97,18 +101,41 @@ function runStep(name, command, args) {
   const durationMs = Date.now() - started;
   const details = finalAttempt.error ?? "process exited with " + finalAttempt.exitCode;
   const blocker = execution.passed ? {} : classifyFailure(finalAttempt);
+  const firstFailure = execution.firstFailure;
   record(name, execution.passed ? "passed" : "failed", {
     command: [command, ...args],
     durationMs,
     details,
     ...blocker,
+    decisionNeeded: blocker.decisionNeeded ?? blocker.decisionRequired ?? false,
+    retryPolicy: execution.retryPolicy,
     attempts: execution.attempts.map((attemptResult) => ({
       attempt: attemptResult.attempt,
+      attemptId: attemptResult.attemptId,
+      previousAttemptId: attemptResult.previousAttemptId,
       passed: attemptResult.passed,
       exitCode: attemptResult.exitCode ?? 1,
       blockerClass: attemptResult.blockerClass ?? null,
       retryable: attemptResult.retryable ?? false,
+      remediation: attemptResult.remediation ?? null,
+      decisionRequired: attemptResult.decisionRequired ?? false,
+      decisionNeeded: attemptResult.decisionNeeded ?? attemptResult.decisionRequired ?? false,
     })),
+    attemptLinks: execution.attemptLinks,
+    firstFailure: firstFailure
+      ? {
+        attempt: firstFailure.attempt,
+        attemptId: firstFailure.attemptId,
+        previousAttemptId: firstFailure.previousAttemptId,
+        passed: false,
+        exitCode: firstFailure.exitCode ?? 1,
+        blockerClass: firstFailure.blockerClass ?? null,
+        retryable: firstFailure.retryable ?? false,
+        remediation: firstFailure.remediation ?? null,
+        decisionRequired: firstFailure.decisionRequired ?? false,
+        decisionNeeded: firstFailure.decisionNeeded ?? firstFailure.decisionRequired ?? false,
+      }
+      : null,
   });
   console.log((execution.passed ? "[PASS] " : "[FAIL] ") + name);
   return execution.passed;
@@ -149,14 +176,20 @@ const summary = {
   startedAt,
   finishedAt: new Date().toISOString(),
   evidence: createEvidenceEnvelope({
-    evidenceClass: "manual-preflight",
+    evidenceClass: "manual",
+    evidenceState: "current",
     workspaceRevision: spawnSync("git", ["rev-parse", "HEAD"], {
       cwd: root,
       encoding: "utf8",
     }).stdout.trim(),
     baselineName: baselineManifest.baselineName,
+    baselineCapturedAt: baselineManifest.capturedAt ?? null,
     compatibilityLine: baselineManifest.compatibilityLine,
+    childRevisions: Object.fromEntries(
+      (baselineManifest.submodules ?? []).map((entry) => [entry.path, entry.revision]),
+    ),
     toolchain: { node: process.version },
+    command: "node scripts/run-release-preflight.mjs",
     limitations: Number(process.versions.node.split(".")[0]) < 24
       ? ["declared Node.js minimum is 24"]
       : [],

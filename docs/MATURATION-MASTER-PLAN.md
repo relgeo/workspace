@@ -75,7 +75,20 @@ canonical lintas-platform untuk baseline tersebut. Setelahnya, commit root
 tersebut adalah follow-up dokumentasi/promotion, bukan klaim bahwa run CI menguji
 revision root yang lebih baru. Evaluator/unit tetap candidate.
 
-### 0.1 Status aktif — 2026-10-31
+### 0.1 Status aktif — 2026-11-03
+
+Orchestration security/evidence reconciliation was refreshed on 2026-11-03:
+the root workflow policy has read-only integration permissions, the validated
+sync workflow uses only `contents: write`, `pull-requests: write`, and
+`actions: read`, and all root checkouts disable credential persistence. Static
+policy, retry/ownership, child-CI, baseline-failure, and joined-evidence
+fixtures pass. The current executor host reports Node `22.23.2`/pnpm
+`10.33.3`; because Node `24+` is required, integration/bootstrap probes remain
+explicitly `environment-unavailable`, not target defects. The canonical
+cross-repository status view is [`status-matrix.md`](./capability-map/cross-repository/status-matrix.md);
+its compatibility entry point is [`capability-matrix.md`](./capability-map/cross-repository/capability-matrix.md).
+The current checkout also contains local modifications inside child worktrees,
+so this shell makes no clean-baseline or current-parity claim.
 
 - Untuk integrasi lintas-repository, canonical evidence tetap run `37832260326`
   pada root `328c869` (Flutter `ea8e754`), dengan enam job sukses dan lima
@@ -98,6 +111,57 @@ revision root yang lebih baru. Evaluator/unit tetap candidate.
   smoke lintas-OS.
 - Goal release npm tetap sengaja ditunda sampai ada dua kandidat release dengan
   perubahan package nyata. No-op release seperti `0.5.2` tidak diperbolehkan.
+
+### 0.2 Verifikasi lokal kontrak diagnostic dan semantic — 2026-11-03
+
+Workspace terbaru menambahkan fixture 21–23 untuk reference path failure,
+empty-collection access, dan incomplete-editor recovery/multi-diagnostic
+aggregation. Manifest kini memuat 23 fixture dan
+`TMPDIR=/private/tmp pnpm conformance:fixtures` lulus `290/290`.
+
+Consumer TypeScript juga diverifikasi lokal: `TMPDIR=/private/tmp pnpm test`
+lulus (Core 450 test, language-service 75, CLI 23, renderer-svg 88,
+remark-relgeo 7, remark-relgeo-hl 5, playground 102, geometry 75). Core lint,
+language-spec check (34 dokumen), dan whitespace checks lulus. Evidence ini
+memperbarui capability matrix, reconciliation, dan implementation-gap backlog;
+status tetap bounded/partial untuk raw internal throw coverage, violation-schema
+completeness, broader topology, dan source-range policy.
+
+Run lokal memakai Node `22.23.2` sementara engine repository mensyaratkan
+Node `>=24`; karena itu tidak ada klaim canonical Node 24, npm registry/public
+artifact, current CI, browser E2E, Flutter host, deployment, atau package
+release. Kegagalan reconnect/network SuClos pada percobaan sebelumnya dicatat
+sebagai keterbatasan orkestrasi, bukan bukti parity target.
+
+### 0.3 Kontrak klaim, locale, dan provenance website — 2026-11-03
+
+Kontrak publik website untuk `WEB-PAGE-003/004/005/015` dibekukan di
+[`docs/capability-map/website-pages/claim-locale-provenance-contract.md`](./capability-map/website-pages/claim-locale-provenance-contract.md).
+Baseline wayfinding yang boleh diklaim adalah deterministic localized topic
+index dengan filtering, direct links, live result count, dan no-result state;
+query/server search tidak termasuk klaim ini.
+
+`spec/id` tetap menjadi source normatif tunggal. Route `/en/docs/language-spec/`
+adalah editorial mirror dari source Indonesia, bukan completed English
+translation; disclosure tersebut wajib muncul pada index dan setiap chapter,
+dan full English normative parity tidak boleh diimplikasikan.
+
+Tuple revision yang dibekukan untuk handoff lokal adalah website
+`6eb2e241b76a5f226644300f5cbe9814c342cd08`, spec
+`b96ba3b23de202227eade06614635ef6717df516`, dan Playground
+`c7cec4b505f290beccac911ef97786c8f6b0a534`. Field public harus memisahkan DSL
+contract `0.5`, package/application version, source revision, dan deployment
+revision. `docs/integration-baseline.json`, Pages pins, child heads, dan
+assembled artifact kini diverifikasi sinkron secara lokal oleh provenance gate;
+CI/Pages deployment dan public smoke tetap merupakan evidence terpisah.
+
+Checkpoint public handoff 2026-11-03: local `pnpm check && pnpm test`, Pages
+provenance, and assembled-artifact gates pass. The command
+`RELGEO_PUBLIC_SITE_URL=https://relgeo.github.io node scripts/smoke-public-site.mjs`
+attempted the declared public routes but stopped at `/` after `fetch failed`;
+direct `curl` returned HTTP 000, curl exit 6, `Could not resolve host`.
+Statusnya `environment-unavailable` / `unverified-public`, bukan kegagalan
+source lokal atau bukti bahwa deployment publik rusak.
 
 ## 1. Tujuan dokumen
 
@@ -173,6 +237,7 @@ Daftar berikut adalah indeks lengkap. `Aktif` berarti masih ada pekerjaan implem
 - [Cross-Repository Orchestration Implementation and Evidence Audit](./capability-map/cross-repository/implementation-audit.md) — audit 39 ID terhadap source, workflow, fixture, command, current observation, gap, dan limitation environment.
 - [Cross-Repository Orchestration Expected-versus-Observed Reconciliation](./capability-map/cross-repository/reconciliation.md) — one-to-one join seluruh 39 expected ID dengan implementation status, evidence status, scope decision, symbol, audit trace, dan next action.
 - [Cross-Repository Orchestration Capability Status Matrix](./capability-map/cross-repository/status-matrix.md) — reporting view capability-first untuk 39 ID dengan status `✔️`/`🌗`/`❌`, evidence, owner, dependency, risk, dan next action.
+- [Cross-Repository Orchestration Capability Matrix](./capability-map/cross-repository/capability-matrix.md) — compatibility entry point for security/retry evidence; the 39-row canonical view remains the status matrix.
 - [Cross-Repository Orchestration Implementation Gap Backlog](./capability-map/cross-repository/implementation-gap-backlog.md) — 19 gap `❌`/`🌗` sebagai 8 kandidat goal/task dengan acceptance evidence; tidak mengklaim implementasi selesai.
 - [Cross-Repository Orchestration Coverage Validation and Handoff](./capability-map/cross-repository/coverage-validation-handoff.md) — validasi coverage/ID/link/legend/evidence/scope/limitation serta unresolved questions dan handoff implementasi terpisah; tidak mengklaim surface produk lengkap.
 - [Flutter 02 — Workbench Layout dan Panel System](../flutter/docs/plans/02-workbench-layout-and-panel-system.md)
@@ -327,6 +392,9 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 
 - [x] relgeo/relgeo.github.io memakai custom Pages workflow.
 - [x] Workflow Pages build dan deploy berhasil pada baseline terbaru.
+- [~] Checkpoint public handoff 2026-11-03: local artifact/provenance gates pass,
+  tetapi current workflow run dan public response belum dapat diobservasi karena
+  DNS `relgeo.github.io` tidak resolve; public smoke tetap evidence terpisah.
 - [x] Workflow memakai action major yang sudah diselaraskan dengan runner modern.
 - [x] Build website, artifact assertion, dan public smoke test tersedia.
 - [x] Route utama, docs, language spec, playground, sitemap, favicon, dan apple-touch-icon sudah termasuk smoke coverage.
@@ -528,7 +596,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi:** pre-promotion checkpoint menghasilkan `253/253`, lalu fixture 15 dipromosikan dan conformance menjadi `260/260`; canonical run `37832260326` memverifikasi gate lintas-platform. **Pekerjaan terkait namun terpisah:** fixture 16 evaluator/unit tetap candidate; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
+**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi historis:** pre-promotion checkpoint menghasilkan `253/253`, lalu fixture 15 dipromosikan dan conformance menjadi `260/260`; canonical run `37832260326` memverifikasi gate lintas-platform. **Verifikasi workspace terbaru:** 23 fixture dan `290/290` checks lulus secara lokal; ini tidak menggantikan canonical Node 24/CI/Flutter-host evidence. **Pekerjaan terkait namun terpisah:** fixture 16 evaluator/unit tetap candidate; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -668,6 +736,7 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 
 | Tanggal | Perubahan | Bukti/status |
 | --- | --- | --- |
+| 2026-11-03 | Kontrak diagnostic/semantic Core direkonsiliasi dan fixture recovery/result-mode ditambah | Fixture 21–23; conformance lokal `290/290` across 23 fixtures; workspace tests lulus pada Node `22.23.2`; raw internal paths, Node >=24, CI, browser, Flutter host, registry, dan release tetap terbuka/unverified |
 | 2026-10-31 | Status delivery Flutter desktop diselaraskan dengan workflow release terbaru | Flutter `60ec760`; CI `41184291670` dan release workflow `41184693233` sukses; draft v1.0.1 memuat macOS universal, Linux x64, Windows x64, checksum, dan manifest; launch smoke lintas-OS serta publikasi draft masih terbuka |
 | 2026-10-09 | Audit status pascapromotion | Canonical run `37832260326` ditetapkan sebagai evidence terbaru untuk baseline root `328c869`; fixture 15 `boolean/intersection` active dan conformance pascapromotion `260/260`; fixture 16 evaluator/unit, desktop runtime smoke interaktif, dan dua release npm nyata tetap terbuka/deferred; no-op release tidak diperbolehkan |
 | 2026-10-09 | Package MCP diekstrak dari root menjadi submodule resmi | `relgeo/mcp@6fd5cb2` dipasang pada root `workspace@5bf17ec`; package tetap pure-Dart, private/non-publishable, dan standalone Flutter CI diarahkan untuk checkout MCP sebagai sibling `../mcp`; canonical integration evidence untuk revision root terbaru masih perlu dijalankan |

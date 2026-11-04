@@ -19,7 +19,7 @@ matrix lama sebagai sumber enumerasi expected:
 | [Implementation audit evidence](./archive/implementation-audit-legacy.md) | Discovery coverage S/T/C/P/D/O, source/test/consumer evidence, status, limitation, and gap map | PASS — 33/33 expected IDs mapped; local evidence limits retained |
 | [Expected-versus-observed reconciliation](./reconciliation.md) | One-to-one join with separate implementation, evidence, and scope dimensions | PASS — 33 rows; no missing, extra, or duplicate ID |
 | [Current status matrix](./status-matrix.md) | Capability-first reporting view with status, evidence, gap, owner, dependency, risk, and next action | PASS — 33 rows and all required decision columns |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate handoff for partial, absent, and confirmed broken implementation work | PASS — 21 tasks for 17 partial, 3 absent, and 1 broken rows |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate handoff for partial, absent, and confirmed broken implementation work | PASS — 23 tracked tasks for 20 partial and 2 absent rows, with one closed local row retained |
 | [Historical capability matrix](./capability-matrix.md) | Historical evidence only; not the expected catalog source | PASS — retained and explicitly labeled historical in the current index |
 | [Repository map](../../REPOSITORY-MAP.md) | Repository ownership and language-service/consumer boundary | PASS — language-service, Playground, Markdown, MCP, and Flutter owners are distinct |
 | [Maturation master plan](../../MATURATION-MASTER-PLAN.md) | Product journey, layer ownership, roadmap, canonical evidence, and scope context | PASS — claims remain qualified by evidence freshness |
@@ -39,8 +39,8 @@ matrix lama sebagai sumber enumerasi expected:
 | Audit trace links | 33/33 | Every reconciliation row links to its current audit ID |
 | Required artifact links | PASS | Catalog, audit, reconciliation, current matrix, backlog, repository map, master plan, and compatibility matrix are linked |
 
-The counts are deliberately not a completeness claim. The 2026-10-31 overlay updates the matrix to 9 implemented, 19 partial,
-3 absent, 2 not-applicable, 0 deferred, and 0 broken. The backlog tracks 23
+The counts are deliberately not a completeness claim. The 2026-11-03 overlay updates the matrix to 9 implemented, 20 partial,
+2 absent, 2 not-applicable, 0 deferred, and 0 broken. The backlog tracks 23
 rows (22 open tasks and one locally closed row retained for evidence); creating
 or editing those tasks does not change implementation status.
 
@@ -133,7 +133,9 @@ implementation symbols above; verification availability is reported separately.
 - LS-CONS-003 and LS-CONS-004 are now 🌗: local MCP spec/document tools and
   desktop bridge exist; semantic service integration and live-client write
   verification remain open.
-- LS-RANGE-002, LS-INCR-001, and LS-VERS-002 remain ❌ implementation gaps.
+- LS-RANGE-002 and LS-INCR-001 remain ❌ implementation gaps; LS-VERS-002 now
+  has a frozen protocol envelope but remains 🌗 until all producers/adapters
+  propagate it.
 - LS-CONS-005 is ✔️ at the local source boundary after README/API/version repair;
   packed/registry/public delivery remains an evidence limitation.
 - Browser, registry, current CI, and native evidence limitations are ? evidence
@@ -161,7 +163,7 @@ implementation symbols above; verification availability is reported separately.
 | Question | Affected IDs | Why unresolved | Required decision/evidence |
 | --- | --- | --- | --- |
 | Should post-resolve geometry/constraint violations be part of getDiagnostics or a separate API? | LS-DIAG-004, LS-VAL-002 | Core/Playground expose the runtime path, while the service currently stops at parse/validation | Choose API boundary and add executable fixture/contract |
-| What is the shared result DTO for exact ranges, revision, and provenance? | LS-RANGE-001, LS-INCR-002, LS-VERS-002, LS-PROTO-001 | Existing types cover individual results but not one versioned cross-consumer shape | Approve range encoding, identity, provenance, and serialization policy |
+| What is the shared result DTO for exact ranges, revision, and provenance? | LS-RANGE-001, LS-INCR-002, LS-VERS-002, LS-PROTO-001 | Frozen in [`protocol-contract.md`](./protocol-contract.md) and exported from `language-service/src/protocol.ts`; producer/adapter coverage remains open | Propagate the frozen envelope and verify worker/MCP adapters |
 | Which bounded incremental strategy is required? | LS-INCR-001, LS-DOC-002 | Service is stateless and reparses/scans each call; performance target is not selected | Choose cache, edit-range, incremental parser, or measured bounded fallback |
 | Who owns schema/completion vocabulary generation and drift checks? | LS-SCHEMA-002, LS-COMP-002 | Current catalogs are maintained/tested but no generated spec/core parity check exists | Assign source-of-truth workflow and add drift evidence |
 | Should README be corrected to RELGEO_SCHEMA or should getSchema be added? | LS-CONS-005, LS-SCHEMA-001 | Public docs and observed exports disagree; package version text is also stale | Choose API change or docs correction, then run API/version regression test |
@@ -191,7 +193,7 @@ not implementation evidence.
 The language-service coverage map and handoff are **structurally validated**
 for the 33-ID catalog and inspected source/evidence boundary. The
 language-service surface is **not declared complete**: the status matrix still
-contains 17 partial, 3 absent, 1 broken, 2 deferred, and 2 host-owned rows,
+contains 20 partial, 2 absent, 0 broken, 0 deferred, and 2 not-applicable rows,
 and delivery evidence limitations remain explicit. Future implementation must
 proceed as separate goals from the candidate backlog, with status re-audited
 after each accepted change.

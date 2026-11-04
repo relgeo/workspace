@@ -1,7 +1,8 @@
 # Flutter Workbench — Implementation Gap Backlog
 
-**Status:** candidate backlog; no implementation gap is closed by this document  
-**Date:** 2026-10-31
+**Status:** frozen delivery contract; implementation gaps remain open until their
+own validation evidence passes
+**Date:** 2026-11-03
 
 **Expected source:** [`expected-capability-catalog.md`](./expected-capability-catalog.md) (canonical baseline: [`12-flutter-workbench-capability-baseline.md`](../../plans/12-flutter-workbench-capability-baseline.md))
 **Audit source:** [`flutter-workbench/implementation-gap-map.md`](./implementation-gap-map.md)  
@@ -26,6 +27,60 @@ user-facing capability with material authoring/data-loss impact; `P1` is a
 partial contract, integration, accessibility, or delivery capability that
 needs implementation and/or stronger evidence. Native host or CI unavailability
 does not lower an implementation priority and does not count as a fix.
+
+## Frozen authoring contract — 2026-11-03
+
+This section freezes the behavior boundary for `GAP-FW-001` through
+`GAP-FW-006`. It is an executable contract for the Flutter boundary, not a
+claim that native host evidence is complete. Behavior, local test evidence,
+and host evidence remain separate so a missing desktop runtime cannot silently
+become either a pass or an implementation failure.
+
+| Gap | Frozen behavior at the Flutter boundary | Local executable evidence | Host/evidence boundary |
+| --- | --- | --- | --- |
+| `GAP-FW-001` | New/Open/Close/Quit are destructive actions guarded by dirty state. Open picker cancellation has no discard prompt and no document mutation. Save writes the active identity when present; Save As and untitled Save use the host destination boundary. Successful local load/save/new/close clears the recovery record; host lifecycle callbacks remain host-owned and do not claim completion without a result. Dirty editor changes persist one best-effort recovery draft; startup offers `RESTORE` or `DISCARD`. | Lifecycle/file-service tests in `widget_test.dart`; `workbench_file_service_test.dart`; `workbench_document_recovery_test.dart`; recovery restore widget test. | Native picker appearance, permissions, forced process termination, and real relaunch remain `not verified` on this host. |
+| `GAP-FW-002` | Active import accepts YAML/RelGeo source through the file service. YAML parse failures and resolver/compiler failures remain distinct and are projected to stable bounded codes `relgeo.yaml.parse` and `relgeo.compile`; full path/phase parity belongs to the cross-consumer promotion gap. | `workbench_import_diagnostics_test.dart`; invalid fixture tests; active fixture/diagnostic widget tests. | Current-pointer cross-consumer promotion and full diagnostic path/phase parity are not claimed by Flutter-local tests. |
+| `GAP-FW-003` | Inspector and parameter surfaces consume the active compiled document/selection state. Parameter/profile edits recompile the active source; exhaustive evaluator/profile parity is outside this freeze. | Existing inspector, parameter, document-controller, and widget contract tests. | Full DSL/evaluator parity remains the dependent implementation task. |
+| `GAP-FW-004` | Scene graph, canvas hit-testing, and inspector share stable selected-object identity. Empty-canvas hits clear selection; hidden roles are excluded. | Existing scene-graph, selection, viewport, and inspector widget tests. | Physical pointer/keyboard and native accessibility announcement remain host evidence. |
+| `GAP-FW-005` | Commands route through the shared registry; focus/activation and dirty close/quit guards are host-neutral contracts. Native menu/window adapters are optional host implementations. | Existing command, keyboard, semantics, window-policy, and window-host tests. | Per-OS shortcut mapping, VoiceOver/screen-reader tree, and native close/quit event evidence remain `not verified`. |
+| `GAP-FW-006` | Artifact provenance records source pointer, workflow/artifact identity, platform/architecture, checksum, and verification result as separate observations. Build success does not imply install/launch/MCP/picker/export success. | Current local analyzer/test/build commands and the provenance notes below. | Ubuntu/Windows hosts, signed distribution, and target-host launch/install smoke are unavailable here and remain explicitly open. |
+
+The active implementation additionally freezes numeric parameter metadata (type,
+label, bounds, and step) at the document-settings boundary, rejects unknown or
+non-finite overrides, and keeps inspector detail rows aligned with resolved
+quadratic/cubic/boolean/clone/collection objects. Regression coverage is in
+`flutter/test/workbench_document_settings_test.dart`,
+`flutter/test/workbench_document_controller_test.dart`,
+`flutter/test/widget_test.dart`, and `flutter/test/inspector_panel_test.dart`.
+This is local target evidence; native host accessibility and window evidence
+remain separate.
+
+### Current verification handoff — 2026-11-03
+
+Current root `2ff198d` and Flutter child `60ec760` have passing local evidence:
+`flutter analyze --no-pub`, the full Flutter suite (324 tests), and the focused
+shared fixture/invalid boundary/SVG contract suite (45 tests). Canonical fixture
+staging copied 23 fixtures. The required conformance runner was also invoked,
+but stopped before analyzer/test because the managed Flutter SDK could not write
+`flutter/bin/cache/engine.stamp`; the macOS debug build was blocked by the same
+environment limitation. No claim is made for macOS launch, picker, export,
+accessibility, Linux/Windows runtime, or install behavior. This handoff keeps
+target test closure separate from unavailable host evidence.
+
+### Contract invariants
+
+- A failed Open or Save preserves the editor source, document identity, and
+  dirty state; the user receives an operation-specific error surface.
+- A picker cancellation is a no-op. Dirty confirmation runs only after a
+  document has been selected or when a destructive lifecycle action is about
+  to replace/close the active document.
+- Recovery is best effort and single-draft: missing, empty, or unreadable
+  storage is ignored; `RESTORE` loads the draft and consumes it; `DISCARD`
+  consumes it without changing the active document.
+- The Flutter import adapter exposes bounded MCP diagnostics only. It does not
+  derive a source path, phase, or evaluator parity claim from exception text.
+- Native picker, assistive technology, window-manager, target-host, signing,
+  and distribution results must be recorded as separate evidence classes.
 
 ## Implementation tranche evidence — 2026-10-30
 

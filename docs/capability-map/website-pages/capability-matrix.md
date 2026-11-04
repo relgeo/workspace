@@ -1,6 +1,6 @@
 # Website and Pages capability matrix
 
-> **Coverage statement — 2026-10-29.** This matrix covers the Astro website,
+> **Coverage statement — 2026-11-03.** This matrix covers the Astro website,
 > normative-spec ingestion, Markdown integration, localized presentation,
 > Playground assembly, Pages workflow, and public-smoke boundary using website
 > source/content/config, build/check/assertion scripts, child inputs, and
@@ -16,9 +16,9 @@
 |---|---|
 | Surface | relgeo.github.io public documentation website and GitHub Pages artifact |
 | Audit owner | Website repository + workspace/spec/plugin/Playground integration owners |
-| Audit date | 2026-10-29 |
+| Audit date | 2026-11-03 |
 | Source of truth | Astro source/content, spec loader, Markdown plugin config, Pages workflow, build/artifact/smoke scripts, plan 05 |
-| Evidence freshness | Current static build/check/assertion evidence is available. Current public deployment, network smoke, browser/AT validation, and synchronized Playground pin are not verified. |
+| Evidence freshness | Current static build/check/assertion and synchronized provenance/artifact evidence is available. The current public probe is environment-unavailable because DNS could not resolve `relgeo.github.io`; deployment, full viewport, and physical AT evidence remain separate. |
 
 ## Status legend
 
@@ -45,14 +45,14 @@ environment; it is not a status symbol.
 | Non-normative docs navigation and onboarding | ✔️ | Docs index/routes, Current Capabilities, Language Status, Getting Started, CLI, Playground, Desktop, Markdown pages | Prose claims are not executable capability proof | New users and authors | Website content; component matrices | Link claims to audited matrices where appropriate |
 | Markdown source/highlight surface | ✔️ | remark plugins configured; current built-output assertions detect rg token markup | Plugin fallback/registry parity is owned by Markdown surface and remains partial there | Docs readers and authors | remark-relgeo-hl; language-service | Keep website assertion and fix upstream fallback gap |
 | Markdown preview/embed surface | ✔️ | remark plugin configured; current assertions detect relgeo preview image and no source exposure | Preview behavior inherits plugin/core/renderer limits | Docs readers | remark-relgeo; core; renderer-svg | Keep artifact assertion and bounded preview contract |
-| Playground link and public route | ✔️ | DocsLayout/nav, docs content, built route checks, Pages workflow artifact path | Current public response not fetched in this audit | Website users | Playground artifact and Pages deployment | Re-run public smoke after current deployment |
-| Playground assembled Pages artifact | 🌗 | Pages workflow builds/copies Playground; preassembled artifact assertions pass | Standalone site build does not contain playground; current root/workflow pins differ | Public docs readers | Playground build; Pages workflow | Synchronize pin, build both inputs, then run combined artifact gate |
+| Playground link and public route | ✔️ | DocsLayout/nav, docs content, built route checks, Pages workflow artifact path, and a current public probe attempt | Current public response is environment-unavailable: DNS could not resolve `relgeo.github.io`; local route and handoff remain verified | Website users | Playground artifact and Pages deployment | Re-run public smoke when DNS resolves |
+| Playground assembled Pages artifact | 🌗 | Pages workflow builds/copies Playground; synchronized provenance and assembled-artifact assertions pass locally for the frozen tuple | Standalone site build does not contain playground; current Pages workflow run and public response are unverified | Public docs readers | Playground build; Pages workflow | Archive the synchronized Pages run and public smoke when the host is reachable |
 | SEO metadata and canonical routes | ✔️ | DocsLayout canonical/hreflang/OG/Twitter; built-output assertions | No external crawler or search-console verification | Search/social consumers | Configured Astro site URL/base | Add canonical/link crawler if SEO is release-critical |
 | Sitemap generation | ✔️ | sitemap.xml.ts; current build 84 loc entries; assertion covers root and localized routes | No deployed HTTP or search-engine ingestion evidence | Crawlers and navigation tools | Astro site URL; content collections | Verify deployed sitemap after Pages publish |
-| Accessibility static contract | 🌗 | Skip link, landmarks, labels, focus/reduced motion CSS, active states; assertions pass | No fresh screen-reader/keyboard browser session; no full WCAG audit | Keyboard/AT users | Browser/AT runtime | Run current browser accessibility and manual AT review |
+| Accessibility static contract | 🌗 | Skip link, landmarks, labels, focus/reduced motion CSS, active states; built gate and representative native Chrome AX smoke pass | No full route traversal, screen-reader/device session, or full WCAG audit | Keyboard/AT users | Browser/AT runtime | Extend current browser accessibility and manual AT review |
 | Link/route integrity across all generated pages | 🌗 | Selected route assertions, generated route inventory, sitemap | No exhaustive internal-link crawl; Markdown source relative links are not all checked after rewrite | All readers | Astro routes/content links | Add static internal-link crawler before release if required |
-| Pages reproducible input pins | ⚠️ | Workflow pins Playground 09ac1cb and spec b96ba3b; root Playground pointer is 59a42ae and baseline JSON is c0de7b0 | Three evidence sources do not identify the same Playground revision | Release/integration owners | GitHub Actions checkout and baseline sync | Refresh workflow pin and integration baseline after validating current Playground |
-| Public deployed site smoke | 🌗 | smoke-public-site.mjs checks 12 route/assets; plan 05 records historical READY/public smoke | Current network/deployment run not executed here | Public deployment consumers | GitHub Pages URL/network | Run after deploy and archive status for current revision |
+| Pages reproducible input pins | 🌗 | Workflow, root pointer, baseline JSON, child heads, and assembled artifact now identify Playground `c7cec4b5` and spec `b96ba3b2`; strict provenance/artifact gates pass locally | Current CI/Pages execution and public deployment remain unverified | Release/integration owners | GitHub Actions checkout and baseline sync | Retain the frozen tuple in CI and archive a Pages run |
+| Public deployed site smoke | 🌗 | `smoke-public-site.mjs` declares 13 route/asset probes; the 2026-11-03 run failed at `/` after `fetch failed`, and direct `curl` returned HTTP 000/curl exit 6 because DNS could not resolve the host | Current public reliability is unverified and environment-unavailable; no public defect is inferred from the DNS failure | Public deployment consumers | GitHub Pages URL/network | Re-run all declared probes when `relgeo.github.io` resolves and archive status for the current revision |
 | Custom domain or non-Pages hosting | ➖ | README and workflow target GitHub Pages; site/base env vars are configurability hooks | No current requirement/evidence for another host | None in current target | Separate deployment decision | Do not infer support from configurable site/base variables |
 | Website as normative language source | ➖ | DocsLayout footer and docs index say language spec remains contract source; loader consumes spec | Website intentionally does not own semantic authority | Implementers and maintainers | spec repository | Preserve source-of-truth boundary |
 | Manual VoiceOver/TalkBack/Safari-mobile validation | ⏸️ | Plan 05 explicitly defers these validations; static checks and historical browser evidence only | Requires external devices/assistive technology and separate QA decision | Mobile/AT users | Device/browser hosts | Reopen when product/release scope requires it |
@@ -60,14 +60,14 @@ environment; it is not a status symbol.
 
 ## Priority and dependency order
 
-1. **P0 — synchronize deployment inputs:** reconcile current Playground pointer,
-   docs/integration-baseline.json, and Pages workflow pin before calling public
-   artifact evidence current.
+1. **P0 — retain synchronized deployment inputs:** keep the current Playground
+   pointer, docs/integration-baseline.json, and Pages workflow pin joined by the
+   provenance/artifact gates before calling public artifact evidence current.
 2. **P0 — preserve spec truth:** keep the direct spec/id loader and document the
    English placeholder; do not present the en route as translated normative text.
-3. **P1 — run combined Pages gate:** build validated Playground and site inputs,
-   copy the Playground artifact, run test:pages-artifact, deploy, and run the
-   12-route public smoke.
+3. **P1 — complete the Pages handoff:** build validated Playground and site
+   inputs, copy the Playground artifact, run test:pages-artifact, observe the
+   Pages deployment, and run the 13-route public smoke when DNS is available.
 4. **P1 — close web accessibility/link evidence:** execute browser/AT checks and
    an exhaustive generated internal-link crawl if those are release criteria.
 5. **P2 — improve editorial parity:** translate spec/en only through the spec
@@ -78,7 +78,9 @@ environment; it is not a status symbol.
 The website is a functioning static presentation layer with direct normative
 spec ingestion, localized navigation, Markdown plugin integration, SEO shell,
 sitemap, and a reproducible Pages workflow. The strongest current evidence is a
-fresh 138-page build, built-output assertions, and Astro check. The English spec
-is not translated, the Playground artifact exists only after workflow assembly,
-and current public/deployment evidence is not fresh. Those boundaries are
-explicit in the matrix rather than being counted as full website capability.
+fresh 138-page build, built-output assertions, Astro check, and synchronized
+local provenance/artifact gates. The English spec is not translated, the
+Playground artifact exists only after workflow assembly, and the current public
+probe is environment-unavailable because DNS could not resolve the host. Those
+deployment and language boundaries are explicit in the matrix rather than being
+counted as full website capability.

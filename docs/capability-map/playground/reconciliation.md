@@ -1,6 +1,6 @@
 # Playground expected-versus-observed reconciliation
 
-> **Coverage statement — 2026-10-30.** This document is a one-to-one join of
+> **Coverage statement — 2026-11-03.** This document is a one-to-one join of
 > the 37 expected capability IDs in the Playground catalog with the 37 rows in
 > the current Playground implementation audit. It does not add observed-only
 > capabilities, remove expected rows, or convert an absent implementation into
@@ -52,11 +52,27 @@ Important distinctions:
 | Audit trace present | Yes, every row points to the matching audit ID and evidence section |
 | Required evidence sources represented | Yes: `playground` surface, `docs/REPOSITORY-MAP.md`, `docs/MATURATION-MASTER-PLAN.md`, and `docs/capability-map` |
 
+### 2.1 Validation checkpoint — 2026-11-03
+
+| Command / check | Result and interpretation |
+| --- | --- |
+| `pnpm test` in `playground/` | Pass; 17 files and 104 tests. Covers bootstrap phases/gating, theme helpers, and the existing source/unit contract. |
+| `pnpm build` in `playground/` | Pass; type-check and Vite build completed. Build provenance records child revision `c7cec4b505f290beccac911ef97786c8f6b0a534`. |
+| `pnpm audit:ux` in `playground/` | Pass; 13 component files and 4 approved dynamic inline styles. |
+| `pnpm exec playwright test --list` in `playground/` | Pass; 16 browser tests discovered, including the startup/accessibility and system-theme cases. |
+| `pnpm exec playwright test playground.spec.ts -g "exposes named landmarks\|applies the browser system preference"` | Not verified; Playwright could not start its preview server because binding `127.0.0.1:4173` returned `EPERM` before page creation. This is environment-limited, not a target failure. |
+| `pnpm run playground:artifact:check` at workspace root | Pass; source and assembled entrypoints/files match, child revision matches the Pages workflow pin, and the baseline revision is reported without being rewritten. |
+| `pnpm run test:pages-artifact` in `relgeo.github.io/` | Pass; fresh assembled Pages artifact has valid title, route references, provenance/digests, runtime markers, and local assets. |
+| `pnpm provenance:report` in `relgeo.github.io/` | Pass as a report; it records known drift between baseline `c0de7b0e…` and current/workflow Playground `c7cec4b…`. Strict parity is not claimed. |
+
+The canonical workspace declares Node `>=24`; these checks ran under the
+available Node `22.23.2`, so Node-version parity remains environment-limited.
+
 ## 3. Task-bound selection and accepted contracts
 
-The active implementation tranche selects six gaps from the expected catalog
-and this audit. The table is the explicit owner/source/acceptance boundary for
-the downstream implementation and verification tasks. All selected rows are
+The active implementation tranche selects seven relevant rows from the expected
+catalog and this audit. The table is the explicit owner/source/acceptance
+boundary for the downstream implementation and verification tasks. All selected rows are
 owned at the browser-IDE boundary by `relgeo/playground`; DSL, core, language-
 service, and renderer packages remain semantic owners where referenced.
 
@@ -69,17 +85,29 @@ service, and renderer packages remain semantic owners where referenced.
 | `PG-A11Y-001` | `relgeo/playground` UI/accessibility owner | `playground/scripts/audit-ux-contract.mjs`; `playground/src/App.tsx`; `playground/src/components/Navbar.tsx`; `playground/src/components/Inspector.tsx`; `playground/src/components/Sidebar.tsx`; `playground/src/components/Editor.tsx` | Supported-browser DOM/ARIA and keyboard checks cover landmarks, names, states, announcements, focus return/traps, and source/preview navigation; native AT evidence stays separately labeled. |
 | `PG-A11Y-002` | `relgeo/playground` UI/accessibility owner | `playground/src/styles/tokens.css`; `playground/src/index.css`; `playground/src/preview-toolbar.ts`; `playground/scripts/audit-ux-contract.mjs`; `playground/e2e/mobile-playground.spec.ts` | Contrast/focus, target size, reduced motion, and non-gesture alternatives pass at supported browser breakpoints; physical-device evidence is deferred or verified explicitly. |
 
-`PG-DELIVERY-001` is excluded from this tranche because hosted `/playground/`
-parity is a delivery verification follow-up, not a prerequisite for local
-capability work. The theme contract above is accepted task data; it does not
-open a separate human decision.
+`PG-DELIVERY-001` is bound in the active tranche as a delivery verification
+follow-up, but it remains independent from local capability implementation. Its
+closure requires a child-revision/build/hosted-artifact trace; a local build
+alone cannot close it. The theme contract above is accepted task data; it does
+not open a separate human decision.
+
+### 3.1 Active evidence contract
+
+| ID | State/evidence boundary frozen for the active task |
+| --- | --- |
+| `PG-LIFE-002` | `loading`, `empty`, `ready`, and `error` must be visibly distinct. Bootstrap interaction is blocked during `loading`; `resolving`, parser failure, and storage failure remain separately observable. Evidence: source state model, unit tests, and a delayed browser startup trace. |
+| `PG-A11Y-001` | Browser semantics and keyboard/focus behavior are checked through the static UX audit plus DOM/browser traversal. Native VoiceOver/TalkBack/device evidence remains explicitly `deferred` or `unverified` and is not inferred. |
+| `PG-DELIVERY-001` | Delivery is proven only by a traceable child revision, clean assembled build, hosted route/title/assets comparison, and hosted smoke/share result. Pages/network or canonical-environment limits are recorded as `environment-limited`. |
+
+The existing `system`/`light`/`dark` theme contract is preserved and is not a
+new decision surface.
 
 ## 4. One-to-one reconciliation register
 
 | ID | Expected capability / user outcome | Result | Implementation status | Evidence status | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- | --- |
 | `PG-LIFE-001` | Open a usable browser Playground session from the public entrypoint | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; Playground entry and delivery boundary | Audit §3 `PG-LIFE-001`; `index.html`, Vite base, build |
-| `PG-LIFE-002` | Show loading/startup state for app, workspace, example, and resolver | `🌗 partial` | `partial` | `partial-local` | `in scope`; Playground owns lifecycle presentation | Audit §3 `PG-LIFE-002`; Suspense, resolve status, persistence feedback |
+| `PG-LIFE-002` | Show loading/startup state for app, workspace, example, and resolver | `🌗 partial` | `implemented` | `partial-local` | `in scope`; Playground owns lifecycle presentation | `App.tsx`/`playground-status.ts` explicit `loading`/`empty`/`ready`/`error` phases, unit gating tests, and E2E definition; delayed browser trace remains unavailable |
 | `PG-LIFE-003` | Show editing, resolving, ready/inspecting, and exporting lifecycle transitions | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; Playground lifecycle UI | Audit §3 `PG-LIFE-003`; `playground-status.ts`, saving feedback, view state |
 | `PG-LIFE-004` | Give distinct failure and recovery states for resolve, storage, share, clipboard, and export | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; Playground recovery UI | Audit §3 `PG-LIFE-004`; worker/storage/share errors and recovery actions |
 | `PG-EDIT-001` | Read and edit RelGeo source while retaining editor interaction state | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; Playground editor; DSL remains delegated | Audit §3 `PG-EDIT-001`; CodeMirror, YAML, linter, completion, hover |
@@ -110,11 +138,11 @@ open a separate human decision.
 | `PG-THEME-001` | Use a readable user-visible theme across editor, canvas, controls, and diagnostics | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; Playground owns theme control and preference | Audit §3 `PG-THEME-001`; system/light/dark mode, local persistence, tokens, and unit/E2E definitions |
 | `PG-RESP-001` | Use the layout on desktop, tablet, and handset without inaccessible overflow | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; physical handset validation deferred | Audit §3 `PG-RESP-001`; breakpoints, drawer, surface switcher, split modes |
 | `PG-KEY-001` | Run primary actions through keyboard and documented command surface | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; documented command map is implemented, browser focus proof pending | Audit §3 `PG-KEY-001`; Mod+Alt dispatcher, documentation, unit tests, and E2E definition |
-| `PG-A11Y-001` | Expose landmarks, names, states, focus management, announcements, and navigation to AT | `🌗 partial` | `partial` | `partial-local` | `in scope`; local web semantics are implemented, browser/native AT evidence pending | Audit §3 `PG-A11Y-001`; ARIA, live status, traps, skip links, and static UX audit |
+| `PG-A11Y-001` | Expose landmarks, names, states, focus management, announcements, and navigation to AT | `🌗 partial` | `implemented` | `partial-local` | `in scope`; web semantics are implemented, browser/native AT evidence pending | ARIA/live status/focus code, UX audit, and discovered DOM/keyboard E2E coverage; browser execution is blocked by `EPERM`, native AT remains separate |
 | `PG-A11Y-002` | Provide reduced motion, focus/contrast tolerance, target usability, and non-gesture actions | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; source/static UX contract is implemented, physical evidence pending | Audit §3 `PG-A11Y-002`; reduced motion, forced-colors fallback, targets, and non-gesture alternatives |
 | `PG-SHARE-001` | Share source through URL/hash with feedback, clipboard fallback, and size guard | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no account/cloud collaboration | Audit §3 `PG-SHARE-001`; Base64URL, length guard, history and clipboard |
 | `PG-SHARE-002` | Keep shared source transient until explicit Save as, with distinct recovery states | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no silent local overwrite | Audit §3 `PG-SHARE-002`; Shared draft, Save as, invalid/oversized hash paths |
-| `PG-DELIVERY-001` | Serve the tested build consistently at hosted `/playground/` | `🌗 partial` | `partial` | `environment-limited` | `in scope`; delivery guardrail spans Playground and Pages | Audit §3 `PG-DELIVERY-001`; local Vite build/base pass, public parity unverified |
+| `PG-DELIVERY-001` | Serve the tested build consistently at hosted `/playground/` | `🌗 partial` | `implemented` | `environment-limited` | `in scope`; delivery guardrail spans Playground and Pages | Local assembled artifact, route/title/assets, child revision, and all-file digest assertions pass; hosted public parity/smoke remains unverified |
 
 ## 5. Findings and handoff
 
@@ -122,9 +150,9 @@ open a separate human decision.
 
 | Result | IDs | Finding |
 | --- | --- | --- |
-| `🌗 partial` | `PG-LIFE-002` | Startup loading is represented by fallback/status paths, not one complete explicit bootstrap state. |
-| `🌗 partial` | `PG-A11Y-001` | Web semantics and tolerance mechanisms exist, but native AT and current browser traversal evidence remain incomplete. |
-| `🌗 partial` | `PG-DELIVERY-001` | Local artifact is verified; hosted Pages parity and smoke are not current-verified. |
+| `🌗 partial` | `PG-LIFE-002` | Explicit source phases and interaction gating are implemented and unit-tested; the delayed browser startup trace remains unavailable because the preview server cannot bind. |
+| `🌗 partial` | `PG-A11Y-001` | Landmarks, names, states, announcements, focus return, and source/preview navigation are implemented and statically audited; browser traversal and native AT evidence remain incomplete. |
+| `🌗 partial` | `PG-DELIVERY-001` | Fresh local assembled artifact is verified with revision/file-digest assertions; hosted Pages parity and public smoke are not current-verified. |
 
 ### Evidence and scope limitations
 

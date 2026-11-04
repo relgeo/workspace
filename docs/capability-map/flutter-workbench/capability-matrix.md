@@ -20,6 +20,30 @@
 | Audit date | 2026-10-29 |
 | Evidence freshness | Historical local/CI evidence exists; current Flutter execution is not verified because the SDK cache write was denied. Current gitlink is `b21eceb`; baseline JSON is `f39a913`; plan CI evidence is root `328c869`. |
 
+## Current verification checkpoint — 2026-11-03
+
+The current checkout was exercised locally at root `2ff198d` with Flutter
+submodule `60ec760`. The following are current target evidence, not native-host
+evidence:
+
+- `flutter analyze --no-pub`: pass, no issues.
+- `flutter test --no-pub --reporter compact`: 324 tests passed; the existing
+  undeclared `golden` tag warning was non-failing.
+- Focused shared fixture/invalid boundary/SVG contract suite: 45 tests passed.
+- `node scripts/stage-flutter-fixtures.mjs --out=/private/tmp/...`: 23
+  canonical fixtures staged successfully.
+- `node scripts/run-flutter-conformance.mjs --reporter compact`: blocked before
+  analyzer because the managed SDK attempts to write
+  `flutter/bin/cache/engine.stamp`; this is recorded as environment unavailable,
+  not as a Flutter source failure. The direct analyzer/test commands above use
+  the already-installed dependency cache.
+- `flutter build macos --no-pub --debug`: not verified for the same SDK cache
+  write limitation; no macOS launch/picker/accessibility result is claimed.
+
+Ubuntu/Linux and Windows runtime, native picker, physical pointer, OS shortcut,
+VoiceOver/NVDA/screen-reader, window-manager close/quit, signing, and install
+evidence remain explicitly unavailable on this host.
+
 This aggregate matrix is retained as historical context. The capability-first
 status authority is [`status-matrix.md`](./status-matrix.md), joined to the
 expected IDs by [`reconciliation.md`](./reconciliation.md); the current local

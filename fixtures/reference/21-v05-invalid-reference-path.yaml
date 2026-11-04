@@ -1,0 +1,10 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Invalid Reference Path
+  description: Invalid point expression with a stable semantic path.
+
+objects:
+  marker:
+    type: point
+    at: [missing.x, 0]

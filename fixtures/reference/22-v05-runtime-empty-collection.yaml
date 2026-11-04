@@ -1,0 +1,17 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Empty Collection Access
+  description: Valid editor-tolerant source whose strict resolution reads first() from an empty collection.
+
+objects:
+  empty:
+    type: repeat
+    each: []
+    item:
+      type: circle
+      radius: 5
+
+  marker:
+    type: point
+    at: ["first(empty).radius", 0]

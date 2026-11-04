@@ -1,6 +1,6 @@
 # Flutter Workbench — Expected-versus-Observed Reconciliation
 
-> **Coverage statement — 2026-10-30.** Dokumen ini adalah join satu-per-satu
+> **Coverage statement — 2026-11-03.** Dokumen ini adalah join satu-per-satu
 > antara seluruh 61 ID pada [expected capability catalog](./expected-capability-catalog.md)
 > dan baris observed pada [Flutter implementation audit](./implementation-gap-map.md).
 > Ia tidak menambah capability, tidak menghapus expected row, dan tidak
@@ -27,6 +27,43 @@ The reconciliation result is assigned exactly once per expected capability. It
 is intentionally independent from the evidence qualifier: `✔️`/`🌗`/`❌`/
 `➖`/`⏸️`/`⚠️` describes the implementation or scope outcome, while the
 Evidence status column describes how that outcome was verified.
+
+## Frozen contract and provenance boundary
+
+The six delivery gaps are now bounded by the contract in the [implementation
+gap backlog](./implementation-gap-backlog.md#frozen-authoring-contract--2026-11-03).
+The join remains unchanged in meaning: freezing behavior does not close a gap
+and does not upgrade evidence.
+
+| Evidence class | May establish | Must not be inferred |
+| --- | --- | --- |
+| Flutter unit/widget/contract tests | Session dirty transitions, New/Open/Save/Save As callback behavior, picker cancellation, recovery-store semantics, bounded import diagnostic codes, and host-neutral command/selection/window contracts. | Native dialog rendering, permissions, process crash/relaunch, physical pointer, OS shortcuts, VoiceOver/NVDA, or window-manager events. |
+| Core/renderer/fixture tests | Shared fixture and semantic diagnostic observations for the active contract. | Full Flutter evaluator/presentation parity or current-pointer parity unless the exact consumer run is attached. |
+| Local macOS artifact/build notes | Machine/toolchain and binary architecture observations. | Ubuntu/Windows launch/install, signed distribution, or target-host smoke. |
+| CI/release artifact metadata | Source/workflow/platform/checksum provenance. | Successful end-user installation, native picker/export, MCP packaged smoke, or notarization. |
+
+The active Flutter import adapter intentionally emits only
+`relgeo.yaml.parse` and `relgeo.compile` in the bounded MCP diagnostic shape.
+Source path/phase/object parity remains part of `EDIT-04`/`CONTRACT-02` and is
+not synthesized from exception strings.
+
+## Current target evidence handoff — 2026-11-03
+
+Current root/submodule pointers are `2ff198d` and `flutter@60ec760`. Local
+Flutter evidence is `flutter analyze --no-pub` passing, the complete Flutter
+suite passing with 324 tests, and the focused shared fixture/invalid-boundary/
+SVG contract suite passing with 45 tests. Fixture staging copied 23 canonical
+fixtures successfully. Core and renderer evidence is recorded separately and
+does not promote unsupported evaluator or presentation parity.
+
+The conformance runner was invoked, but its managed SDK probe/bootstrap was
+blocked when Flutter attempted to write `flutter/bin/cache/engine.stamp`.
+Likewise, the available macOS debug build could not start for that same cache
+permission. These are `not verified` environment observations. No Linux,
+Windows, native picker, physical pointer, OS shortcut, VoiceOver/NVDA, or
+window-manager smoke is claimed. The missing host evidence does not downgrade
+the passing Flutter source/test result or turn unsupported parity into an
+implementation failure.
 
 ## Aturan rekonsiliasi
 

@@ -1,13 +1,26 @@
 {
   "schemaVersion": 1,
+  "contract": "integration-baseline-v1",
+  "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-10-09",
+  "capturedAt": "2026-11-03",
+  "rootRevision": "2ff198d7284d4ef947e21ea1cbedd88a66b6d977",
   "compatibilityLine": "0.5",
+  "toolchain": {
+    "node": ">=24",
+    "pnpm": "10.33.3"
+  },
   "repository": "relgeo/workspace",
+  "evidence": {
+    "evidenceClass": "baseline-snapshot",
+    "evidenceState": "current",
+    "currentRule": "Only exact root gitlink and child checkout revisions captured together may support a current claim.",
+    "historicalRule": "A prior snapshot remains historical when root or any child revision changes."
+  },
   "submodules": [
     {
       "path": "relgeo.github.io",
-      "revision": "5c4576ec83ff7d4beebcbc1553c716711b91db68",
+      "revision": "6eb2e241b76a5f226644300f5cbe9814c342cd08",
       "package": {
         "name": "relgeo-docs-site",
         "version": "0.5.0"
@@ -15,7 +28,7 @@
     },
     {
       "path": "playground",
-      "revision": "c0de7b0eec38a436f52893404fa420051e3d34e6",
+      "revision": "c7cec4b505f290beccac911ef97786c8f6b0a534",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"

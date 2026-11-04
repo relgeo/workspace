@@ -59,6 +59,9 @@ same sequence is sent through both implementations in
 [`run_transport_conformance.dart`](../../mcp/tool/run_transport_conformance.dart).
 The fixture server is in
 [`mcp_fixture_server.dart`](../../mcp/tool/mcp_fixture_server.dart).
+The dependency-free runner also checks invalid tool arguments, the loopback
+remote-bind guard, and (when a local socket is permitted) post-initialize
+missing/mismatched protocol metadata.
 
 MCP semantics are transport-independent: stdio carries newline-delimited
 JSON-RPC messages, while Streamable HTTP sends each request as a POST to one
@@ -77,6 +80,7 @@ round trip passes:
 ```text
 dart run tool/run_transport_conformance.dart --stdio-only
 stdio fixture conformance: PASS
+remote bind guard: PASS
 ```
 
 The full harness then attempts the same sequence over HTTP. In this managed
@@ -137,7 +141,7 @@ step on a writable desktop toolchain.
 
 | Acceptance evidence | Status | Reproduction / interpretation |
 | --- | --- | --- |
-| Same protocol fixture over stdio | PASS | `dart test` and `dart run tool/run_transport_conformance.dart --stdio-only` |
+| Same protocol fixture over stdio, including invalid-argument error | PASS | `dart test` and `dart run tool/run_transport_conformance.dart --stdio-only` |
 | Same protocol fixture over localhost Streamable HTTP | ENVIRONMENT-GATED | Harness/server are implemented; this sandbox rejects `127.0.0.1` socket bind with `Operation not permitted`. |
 | Remote HTTP disabled | PASS | `--host 0.0.0.0` exits 64 with `remote HTTP is disabled`; server only binds loopback. |
 | Candidate SDK comparison | DOCUMENTED / SDK RUN PENDING | Candidate capabilities and versions are recorded from published primary docs; neither dependency is in production `pubspec.yaml`. |

@@ -26,7 +26,8 @@ Flutter internals into the package.
 The same pure-Dart package includes typed `DocumentationResult` and
 `DocumentationProvenance` values with `source`, `sourceUrl`, `specVersion`, and
 `revision`. Only `spec` provenance is normative (`website` is explanatory and
-cannot override it); the future resource resolver must preserve that rule.
+cannot override it). The current resource resolver also preserves diagnostic
+catalog revision/digest and bounded cache TTL identity.
 
 ## Snapshot and revision invariants
 
@@ -81,6 +82,21 @@ The transport adapter must enforce the token and permission before invoking the
 bridge. The bridge itself only sees active-document operations, so even a future
 transport cannot turn this contract into an arbitrary file writer.
 
+## Review, cancellation, and disconnect boundary
+
+`relgeo_review_proposed_patch` is read-only: it validates the bounded proposal,
+returns the current active snapshot, and never calls the editor setter. Apply
+results are explicit `review`, `applied`, `stale`, `rejected`, `failed`, or
+`cancelled` states. `McpRequestCancellationRegistry` maps a cancellation
+notification to the request token; the router returns JSON-RPC `-32800` and the
+Flutter server cancels pending work before stop/revoke. The guarded bridge checks
+the token immediately before its editor transaction and converts transaction
+failure to `failed` rather than reporting a partial success.
+
+This is a cooperative boundary: an owner callback must observe the token at its
+commit point. The local race fixtures prove that cancellation/stop cannot commit
+after that boundary; a packaged external-client disconnect race is not claimed.
+
 ## Save and autosave separation
 
 Direct apply mutates the active in-memory session and marks it dirty. It does
@@ -98,6 +114,8 @@ Flutter test covers the active-document adapter, one native undo entry, dirty
 state, document identity/revision reset, and stale replay rejection:
 
 - `mcp/test/session_bridge_test.dart`
+- `mcp/test/local_dispatch_test.dart` (review, cancellation, stop, and no-commit
+  race fixtures)
 - `flutter/test/workbench_agent_bridge_test.dart`
 
 The SDK/transport candidate decision and protocol fixture conformance remain a

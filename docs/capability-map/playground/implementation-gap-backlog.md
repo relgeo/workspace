@@ -1,6 +1,6 @@
 # Playground implementation-gap backlog
 
-**Tanggal:** 2026-10-30
+**Tanggal:** 2026-11-03
 
 **Status:** candidate goal/task register; no row here counts as implementation
 
@@ -35,6 +35,34 @@ demonstrate the result.
 - A blocked environment affects only the evidence target that needs it; it does
   not erase independent implementation work.
 
+## Active task scope freeze
+
+The active SuClos task binds exactly three partial rows. This is a scope and
+evidence contract; it does not close a row or promote a local result to hosted
+parity.
+
+| ID | Bound outcome | Required evidence before closure | Explicit non-goal |
+| --- | --- | --- | --- |
+| `PG-LIFE-002` | Startup distinguishes `loading`, `empty`, `ready`, and `error`; editor, file actions, preview controls, and command shortcuts are gated while bootstrap is `loading`. | Source state model in `playground/`; unit tests for all four states and gating; browser trace with delayed IndexedDB/bootstrap showing the four visible states and the first interactive point. | Do not reinterpret resolver `resolving` or storage failure as `empty`; do not change the accepted theme contract. |
+| `PG-A11Y-001` | Browser DOM/ARIA semantics expose landmarks, names, roles, selected/expanded/pressed/value states, announcements, focus return/traps, and source/preview navigation. | `playground/scripts/audit-ux-contract.mjs`; DOM/keyboard browser run; focused source/tests; native VoiceOver/TalkBack remains separately labeled as deferred or unverified. | Native AT/device evidence is not silently claimed by static source checks. |
+| `PG-DELIVERY-001` | Hosted `/playground/` is traceable to the tested child revision and assembled artifact. | Child revision, clean build output, base route/title/asset manifest comparison, hosted smoke/share run, and explicit environment/host limitation record. | A local Vite build is not public parity; Pages/network unavailability is `environment-limited`, not an implementation failure. |
+
+The existing `system`/`light`/`dark` theme contract is preserved as accepted
+task data: initial `system` follows `prefers-color-scheme`, explicit overrides
+remain supported, and no new theme decision is opened here.
+
+## Latest evidence checkpoint — 2026-11-03
+
+| Bound row | Current evidence | Remaining boundary |
+| --- | --- | --- |
+| `PG-LIFE-002` | Explicit `loading`/`empty`/`ready`/`error` phases, bootstrap gate, unit coverage, successful build, and a discovered delayed-startup E2E case | Browser execution is unavailable because Playwright preview binding returns `EPERM`; no browser state is claimed. |
+| `PG-A11Y-001` | Static UX audit passes; source includes landmarks, semantic states, announcements, focus return/traps, and source/preview navigation; DOM/keyboard E2E cases are discovered | Browser AX/traversal execution and native VoiceOver/TalkBack remain unverified/deferred. |
+| `PG-DELIVERY-001` | Fresh local build and assembled website pass child-revision, title/base-route, asset, provenance, and all-file digest assertions | Public hosted smoke/parity is unavailable; baseline snapshot remains older than the current Pages pin and is reported, not rewritten. |
+
+The available workspace is Node `22.23.2` while the canonical project contract is
+Node `>=24`; build/test results are therefore local evidence, not canonical
+toolchain parity.
+
 | Check | Result |
 | --- | --- |
 | Expected gap rows | 3 |
@@ -49,9 +77,9 @@ demonstrate the result.
 
 | Candidate task | Expected ID | Source status | Work kind | Owner | Dependency | Acceptance test / evidence target | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `PG-TASK-002` Make startup loading state explicit | `PG-LIFE-002` | `🌗` | implementation + browser evidence | Playground lifecycle owner | Bootstrap sequence for IndexedDB, hash/shared draft, examples, and first resolve | First load visibly distinguishes loading from empty, ready, and error; delayed persistence/example fixtures assert status and interaction gating; browser smoke records each transition | P1 users can mistake an empty/loading surface for a ready workspace | Model bootstrap phases, add visible state, and test delayed startup paths |
-| `PG-TASK-005` Close web accessibility semantics evidence gaps | `PG-A11Y-001` | `🌗` | implementation verification | Playground UI/accessibility owner | `PG-TASK-004` command/focus map; supported browser/AT matrix | Automated AX/DOM checks and manual keyboard traversal cover landmarks, names, roles, selected/expanded/pressed/value states, focus return/traps, error announcements, and source/preview navigation; native AT result is recorded separately | P1 inaccessible state changes can block authoring and recovery | Run AX and keyboard checks, fix findings, then schedule VoiceOver/TalkBack evidence if scope opens |
-| `PG-TASK-007` Prove hosted artifact consistency | `PG-DELIVERY-001` | `🌗` | delivery verification | Playground + Pages delivery owner | Current child revision, Pages build workflow, Node >=24 canonical environment; rerun after implementation tasks that affect artifact | Build from the recorded revision, compare hosted `/playground/` assets/title/base route to the tested artifact, and run public smoke/share checks; archive revision and environment evidence | P1 users may receive an artifact different from the audited local source | Run clean hosted build/smoke when Pages and canonical environment are available |
+| `PG-TASK-002` Complete startup browser evidence | `PG-LIFE-002` | `🌗` | browser evidence follow-up | Playground lifecycle owner | Playwright-capable host; source implementation and unit gate already pass | Delayed bootstrap run visibly distinguishes `loading → empty/ready` and `error`, with interaction blocked only during bootstrap; record the first interactive point | P1 startup ambiguity can still be missed without a browser trace | Run the existing delayed-startup browser case when the preview server can bind |
+| `PG-TASK-005` Complete web accessibility evidence | `PG-A11Y-001` | `🌗` | browser/native evidence follow-up | Playground UI/accessibility owner | Playwright-capable host; native VoiceOver/TalkBack host for separate evidence | Browser AX/DOM and keyboard traversal cover landmarks, names, roles, selected/expanded/pressed/value states, focus return/traps, error announcements, and source/preview navigation; native AT remains separately recorded | P1 inaccessible state changes can block authoring and recovery | Run discovered DOM/keyboard cases, then schedule native AT evidence if scope opens |
+| `PG-TASK-007` Complete hosted artifact consistency | `PG-DELIVERY-001` | `🌗` | hosted evidence follow-up | Playground + Pages delivery owner | Public Pages access and Node >=24 canonical environment; local artifact assertions already pass | Compare hosted `/playground/` route/title/assets and deployed revision to the tested artifact, then run public smoke/share checks; retain baseline drift as an explicit finding | P1 users may receive an artifact different from the audited local source | Run hosted smoke/parity when public access and canonical toolchain are available |
 
 ### Closed candidate rows
 

@@ -1,12 +1,12 @@
 # Language-Service Expected-versus-Observed Reconciliation
 
-> **Coverage statement — 2026-10-30.** Dokumen ini adalah join satu-per-satu
+> **Coverage statement — 2026-11-03.** Dokumen ini adalah join satu-per-satu
 > antara seluruh 33 ID pada katalog expected dan baris observasi pada audit
 > implementasi current. Ia tidak menambah capability baru, tidak menghapus
 > expected row, dan tidak mengubah capability absent menjadi unverified hanya
 > karena evidence delivery belum tersedia.
 
-Tanggal rekonsiliasi: 2026-10-30  
+Tanggal rekonsiliasi: 2026-11-03
 Owner: relgeo/language-service  
 Expected source: [language-service expected capability catalog](./expected-capability-catalog.md)  
 Observed source: [language-service implementation audit evidence](./implementation-audit.md)
@@ -17,18 +17,28 @@ Audit revisions joined in this reconciliation: workspace
 `39c06dd8505d480672b0953d523f3675a7f30075`, Playground
 `59a42ae925cf0c21541bc19ccac39f5061b35439`, and Markdown highlighter
 `507ad18fe1b8c91eb3a48e365b5290cd02b049b8`. Local evidence was refreshed with
-75 language-service tests, lint, build, 260/260 shared fixtures, 3 Markdown
-tests, and 93 Playground tests; Node 24, registry, current CI, browser/public,
-and native-host evidence remain separate `not verified` limitations.
+82 language-service tests, lint, build, 260/260 shared fixtures, 3 Markdown
+tests, 102 Playground tests, and 34 MCP adapter tests; Node 24, registry,
+current CI, browser/public, Dart analyzer, and native-host evidence remain
+separate `not verified` limitations.
 
-Current audit-entry refresh: the language-service, Markdown, and Playground
-test commands were rerun locally with results of 75/75, 3/3, and 93/93; the
-workspace conformance runner also passes 260/260 checks across 20 fixtures. The
-language-service type-check and ESM/CJS/DTS build also pass. The implementation
-task repaired the local `getSchema()`/README-version mismatch and added bounded
-diagnostic aggregation, schema drift, completion, range, and identity evidence;
-the status join below records those bounded changes without closing their
-remaining broader gaps.
+Current audit-entry refresh: language-service and Playground test/lint/build
+commands were rerun locally with results of 82/82 and 102/102; MCP's direct
+Dart test snapshot passes 34/34; the workspace conformance runner passes
+260/260 checks across 20 fixtures; and the active-spec drift checker reports
+zero root/object differences. The implementation task repaired the local
+`getSchema()`/README-version mismatch and added bounded diagnostic aggregation,
+schema drift, completion, range, identity, navigation, and measured analysis
+fallback evidence; the status join below records those bounded changes without
+closing their remaining broader gaps.
+
+Protocol vocabulary refresh: `language-service/src/protocol.ts` now freezes
+protocol `0.2`, DSL/spec `0.5` metadata, UTF-16 half-open ranges, explicit
+validation readiness, document/version/request identity, optional source
+revision/provenance, typed DTOs for diagnostics/validation/completion/hover/
+metadata/navigation/analysis, and the exact stale-result guard. This is a
+contract and local serialization evidence; it does not promote absent
+navigation or host-owned ordering to implemented.
 
 ## Aturan rekonsiliasi
 
@@ -75,15 +85,15 @@ Makna penting:
 | LS-HOVER-001 | 🌗 partial | partial | verified-local | In scope; hover exists but syntax/documentation catalog coverage is incomplete. | [audit LS-HOVER-001](./archive/implementation-audit-legacy.md#ls-hover-001) |
 | LS-HOVER-002 | 🌗 partial | partial | verified-local | In scope; metadata lacks complete provenance and semantic inspection shape. | [audit LS-HOVER-002](./archive/implementation-audit-legacy.md#ls-hover-002) |
 | LS-RANGE-001 | 🌗 partial | partial | verified-local bounded implementation | In scope; diagnostic/token/completion/hover ranges are covered, metadata/semantic-reference ranges remain open. | [current audit](./implementation-audit.md#selected-capability-findings) |
-| LS-RANGE-002 | ❌ absent | absent | verified-local | In scope at the language-service result boundary; host source jump does not supply semantic navigation API. | [audit LS-RANGE-002](./archive/implementation-audit-legacy.md#ls-range-002) |
+| LS-RANGE-002 | 🌗 partial | partial | verified-local bounded implementation | `analyzeNavigation()` supplies one object definition/reference relation with stable document identity and exact UTF-16 ranges; host source-jump action remains open. | [current audit](./implementation-audit.md#selected-capability-findings) |
 | LS-DOC-001 | ✔️ implemented | implemented | verified-local | In scope; editor-agnostic library boundary is present. | [audit LS-DOC-001](./archive/implementation-audit-legacy.md#ls-doc-001) |
 | LS-DOC-002 | 🌗 partial | partial | verified-local | In scope; update-to-analysis flow exists but no explicit service session lifecycle. | [audit LS-DOC-002](./archive/implementation-audit-legacy.md#ls-doc-002) |
 | LS-DOC-003 | ➖ not-applicable | not applicable | verified-local at host boundary | Boundary-only; active document identity, dirty state, and session belong to host/MCP/Playground. | [audit LS-DOC-003](./archive/implementation-audit-legacy.md#ls-doc-003) |
-| LS-INCR-001 | ❌ absent | absent | verified-local | In scope; no incremental parser, cache, edit-range API, or retained analysis state was found. | [audit LS-INCR-001](./archive/implementation-audit-legacy.md#ls-incr-001) |
+| LS-INCR-001 | 🌗 partial | partial | verified-local bounded implementation | Local edits produce a measured changed range/line budget, while analysis explicitly reports a full-document semantic fallback because core dependencies are not incremental. | [current audit](./implementation-audit.md#selected-capability-findings) |
 | LS-INCR-002 | 🌗 partial | partial | verified-local bounded implementation | Boundary integration; service identity is serializable, while Playground still owns ordering enforcement. | [current audit](./implementation-audit.md#selected-capability-findings) |
 | LS-VERS-001 | ✔️ implemented | implemented | verified-local | In scope; active/legacy/future acceptance vocabulary is locally tested. | [audit LS-VERS-001](./archive/implementation-audit-legacy.md#ls-vers-001) |
-| LS-VERS-002 | ❌ absent | absent | verified-local | In scope; service results do not carry spec version, revision, source URL, or provenance. | [audit LS-VERS-002](./archive/implementation-audit-legacy.md#ls-vers-002) |
-| LS-PROTO-001 | 🌗 partial | partial | verified-local | In scope as typed library protocol; no unified DTO or official LSP server/transport. | [audit LS-PROTO-001](./archive/implementation-audit-legacy.md#ls-proto-001) |
+| LS-VERS-002 | 🌗 partial | partial | verified-local contract evidence | Shared result envelope now carries protocol/spec version and optional source revision/provenance; remaining producers/consumer integration still require closure. | [protocol contract](./protocol-contract.md) |
+| LS-PROTO-001 | 🌗 partial | partial | verified-local | Unified DTO envelope and family adapters are frozen; no official LSP server/transport and not every producer is implemented. | [protocol contract](./protocol-contract.md) |
 | LS-PROTO-002 | 🌗 partial | partial | verified-local + MCP local runtime | MCP local transport and permission boundary are implemented; semantic DTO round-trip and packaged/cross-host evidence remain open. | [audit LS-PROTO-002](./archive/implementation-audit-legacy.md#ls-proto-002) |
 | LS-REC-001 | 🌗 partial | partial | verified-local | In scope for actionable analysis results; host recovery state/action is incomplete. | [audit LS-REC-001](./archive/implementation-audit-legacy.md#ls-rec-001) |
 | LS-REC-002 | ➖ not-applicable | not applicable | verified-local at consumer boundary | Boundary-only; retaining last valid preview is a Playground/host responsibility. | [audit LS-REC-002](./archive/implementation-audit-legacy.md#ls-rec-002) |
@@ -103,7 +113,7 @@ Makna penting:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 9 implemented, 19 partial, 3 absent, 0 broken, 0 deferred, 2 not-applicable |
+| Result counts | 9 implemented, 22 partial, 0 absent, 0 broken, 0 deferred, 2 not-applicable |
 | Evidence/scope columns present on every row | Yes |
 | Audit trace present on every row | Yes |
 
@@ -112,10 +122,13 @@ has exactly one allowed reconciliation result, one implementation status, one
 evidence status, a scope/owner decision, and an audit trace. The status matrix
 matches the reconciliation result for all 33 IDs.
 
-The result-count total is 33. In particular, LS-RANGE-002, LS-INCR-001,
-and LS-VERS-002 remain explicit ❌ absent; they are not downgraded to
-? unverified. LS-DOC-003 and LS-REC-002 are ➖ only because their catalog
-scope decision assigns ownership to the host/consumer boundary.
+The result-count total is 33. LS-RANGE-002 and LS-INCR-001 are explicit 🌗
+bounded rows; they are not promoted to complete because host navigation and
+core incremental dependency semantics remain open. LS-VERS-002 is partial at
+the protocol boundary because the vocabulary is implemented, while remaining
+producer and consumer coverage is still open. LS-DOC-003 and LS-REC-002 are ➖
+only because their catalog scope decision assigns ownership to the
+host/consumer boundary.
 
 ## Findings kept separate from implementation status
 
@@ -131,9 +144,9 @@ scope decision assigns ownership to the host/consumer boundary.
 
 True implementation gaps that require implementation or product decisions:
 
-- ❌ LS-RANGE-002 — define semantic navigation/reference locations.
-- ❌ LS-INCR-001 — define bounded/incremental analysis behavior.
-- ❌ LS-VERS-002 — add version/revision/provenance to result contract.
+- 🌗 LS-RANGE-002 — host source-jump consumption remains open after the minimal service navigation path.
+- 🌗 LS-INCR-001 — replace the measured full-document semantic fallback only after core exposes incremental dependency semantics.
+- 🌗 LS-VERS-002 — carry the frozen version/revision/provenance envelope through every remaining producer and consumer adapter.
 - ✔️ LS-CONS-005 — local API/version contract repair is verified; retain public-artifact verification as a release-boundary follow-up.
 - 🌗 rows remain open partial work even when their local evidence is verified.
 - ⏸️ rows remain expected and traceable, but delivery is held by the stated

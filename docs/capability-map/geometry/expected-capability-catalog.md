@@ -113,7 +113,7 @@ dipromosikan, atau belum dapat diverifikasi tetap dipertahankan sebagai row
 expected. Status di katalog ini adalah snapshot yang disinkronkan; ia tidak
 menghapus row atau menggantikan downstream evidence.
 
-Snapshot 2026-10-30: 40 expected IDs, 10 `✔️`, 30 `🌗`, 0 `❌`, dan tidak ada
+Snapshot 2026-11-03: 40 expected IDs, 17 `✔️`, 23 `🌗`, 0 `❌`, dan tidak ada
 row hasil join berstatus `➖`, `⏸️`, atau `⚠️`. Scope findings yang berstatus
 `➖`/`⏸️` tetap dicatat pada audit dan matrix, bukan dipromosikan menjadi
 implementation rows.
@@ -141,6 +141,27 @@ Scope decisions yang berlaku untuk katalog ini:
 - **OUT:** general bidirectional constraint solving, implicit relation
   inference, byte-for-byte SVG equality, Flutter menjadi dependency runtime
   TypeScript, dan mobile release gate yang ditunda oleh keputusan scope.
+
+### 3.2 Geometry contract freeze untuk task aktif
+
+Task `bound-geometry-gap-scope-and-contract--3423449309` membekukan boundary
+evidence berikut; status `✔️` di bawah berarti bounded local implementation,
+bukan cross-runtime atau host parity:
+
+| Active gap ID | Contract yang dibekukan | Bukti deterministik | Yang tetap di luar scope |
+| --- | --- | --- | --- |
+| `GAP-GEO-QUERY-004` | Pair dispatch intersection, ordering/deduplication, implicit single-result, explicit selectors, empty/multiple/unsupported errors | `geometry/src/__tests__/geometry-contract.fixture.ts` + `intersection.test.ts` | DSL parser/diagnostic projection milik core; tidak ada pair baru |
+| `GAP-GEO-NUM-001` | Tolerance low-level per operation boundary, tanpa mengklaim satu epsilon universal lintas runtime | `geometry/src/tolerance.ts` + boundary assertions | Cross-runtime numeric parity dan raw-float equality |
+| `GAP-GEO-NUM-002` | Outer ring canonical `ccw`, hole ring canonical `cw`, cleanup dan hole preservation | `geometry/src/__tests__/boolean.test.ts` | Promosi union/xor/non-rectangle topology |
+| `GAP-GEO-NUM-003` | Invalid low-level inputs menghasilkan stable package error code; caller tetap memetakan document path | `geometry/src/error.ts` + negative tests | Penggantian taxonomy/error mapping core |
+| `GAP-GEO-DET-002` | Stable identity, dependency/order, selector result order, operation anchors, collection order, dan error paths | `core/src/projection.ts` replay comparator + deterministic fixture/replay assertions | Node-24, Flutter, registry, dan host replay proof |
+| `GAP-GEO-SER-001/002` | Versioned semantic projection, explicit order arrays, sorted map keys, finite 12-decimal numbers, `-0 → 0`, undefined omission | `core/src/projection.ts`, `cli/src/index.ts`, `fixtures/manifest.json`, dan projection/CLI tests | Raw SVG bytes/style parity dan cross-runtime promotion |
+
+The active boolean evidence remains limited to fixture 15's approved
+`intersect`/`subtract` boundary. `union`, `xor`, and broader non-rectangle
+topology remain deferred even when low-level engine methods exist. Likewise,
+Flutter and other host-owned parity rows remain evidence dependencies, not
+implicit acceptance of this local contract freeze.
 
 ## 4. Expected capability catalog
 
@@ -193,7 +214,7 @@ Scope decisions yang berlaku untuk katalog ini:
 | `GEO-QUERY-001` | Measurement queries: `distance`, `length`, `perimeter`, `area`, `bbox`, `width`, `height`, `minX`, `maxX`, `minY`, `maxY` | Pengguna dapat mengukur dan menurunkan layout dari geometry dunia yang sudah resolved | `R-RELATE`, `R-DRAW` | **IN**; bbox adalah `bbox2d` record, bukan object placeable; perimeter boleh deterministic approximation | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.1–20.8; `spec/id/syntax/07-type-system.md` | `🌗` |
 | `GEO-QUERY-002` | Point/vector/path queries: `midpoint`, `polar`, `angleBetween`, `pointAt`, `tangentAt`, `normalAt` | Pengguna dapat membuat titik turunan dan orientasi lokal pada lintasan | `R-RELATE`, `R-PARAM` | **IN**; `angleBetween` v0.5 hanya point-to-point; `t` berada pada `[0,1]` | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.7–20.13 | `🌗` |
 | `GEO-QUERY-003` | Spatial queries `closestPoint`, `project`, `reflect`, `toWorld`, `toLocal` | Pengguna dapat mengaitkan titik ke garis/objek dan berpindah antar coordinate space | `R-RELATE` | **IN WITH BOUNDARY**; target overload dibatasi sesuai v0.5 type contract | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.14–20.17 | `✔️` |
-| `GEO-QUERY-004` | Parametric intersection query dengan selector `first`, `last`, `nearest`, `farthest`, `index` dan single/multi result context | Pengguna dapat membuat crossing point, split point, atau memilih intersection deterministically | `R-BOOL`, `R-RELATE`, `R-COLLECTION` | **IN**; no silent choice when multiple intersections require explicit selector | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.18; `spec/id/core/06-error-model.md` §6.2; fixture `v05-boolean-intersection-candidate` | `🌗` |
+| `GEO-QUERY-004` | Parametric intersection query dengan selector `first`, `last`, `nearest`, `farthest`, `index` dan single/multi result context | Pengguna dapat membuat crossing point, split point, atau memilih intersection deterministically | `R-BOOL`, `R-RELATE`, `R-COLLECTION` | **IN WITH BOUNDARY**; bounded pair/selector/error matrix is executable; broader sampled pairs remain outside promotion | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.18; `spec/id/core/06-error-model.md` §6.2; geometry contract fixture; conformance 298/298 | `✔️` |
 | `GEO-QUERY-005` | `frameAt` dan `tAtLength` sebagai surface orientasi/distribusi lintasan | `on.frame` dan `repeat.along` dapat berbagi semantics frame dan length traversal | `R-RELATE`, `R-COLLECTION` | **IN**; frame read-only dengan point/angle/tangent/normal | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.19–20.20 | `✔️` |
 
 ### F. Constraints dan diagnostics
@@ -214,18 +235,18 @@ Scope decisions yang berlaku untuk katalog ini:
 
 | ID | Capability | User outcome | Dasar requirement | Scope decision | Owner / source of truth | Status verifikasi |
 | --- | --- | --- | --- | --- | --- | --- |
-| `GEO-NUM-001` | Consistent epsilon/tolerance for geometric equality and membership tests | Hasil intersection, split, constraint, dan comparison tidak rapuh terhadap raw float equality | `R-ROBUST` | **IN**; tolerance policy harus konsisten dan terdokumentasi per boundary | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.5; `spec/id/geometry/14-geometry-objects.md` path comparison note | `🌗` |
-| `GEO-NUM-002` | Winding-independent closed-shape normalization dan stable holes/even-odd semantics | Bentuk clockwise/counter-clockwise menghasilkan area/offset/holes yang setara | `R-BOOL`, `R-ROBUST` | **IN**; normalization dilakukan sebelum operation yang memerlukannya | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.5 | `🌗` |
-| `GEO-NUM-003` | Degenerate geometry, invalid radius/path/join/offset/tangent/split detection dengan error code stabil | Author mendapat kegagalan yang jelas daripada geometry korup atau hasil diam-diam | `R-ROBUST`, `R-CONTRACT` | **IN**; invalid input tidak boleh diproyeksikan/diubah diam-diam untuk memenuhi operation | `relgeo/spec`; `spec/id/core/06-error-model.md` §6.2–§6.9 | `🌗` |
+| `GEO-NUM-001` | Consistent epsilon/tolerance for geometric equality and membership tests | Hasil intersection, split, constraint, dan comparison tidak rapuh terhadap raw float equality | `R-ROBUST` | **IN WITH BOUNDARY**; low-level tolerance policy konsisten per operation, tanpa universal cross-runtime epsilon | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.5; geometry tolerance and boundary tests | `✔️` |
+| `GEO-NUM-002` | Winding-independent closed-shape normalization dan stable holes/even-odd semantics | Bentuk clockwise/counter-clockwise menghasilkan area/offset/holes yang setara | `R-BOOL`, `R-ROBUST` | **IN WITH BOUNDARY**; supported normalization is canonical; broader topology promotion remains deferred | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.5; `normalizeClosedShape.ts`; boolean tests; fixture 15 | `✔️` |
+| `GEO-NUM-003` | Degenerate geometry, invalid radius/path/join/offset/tangent/split detection dengan error code stabil | Author mendapat kegagalan yang jelas daripada geometry korup atau hasil diam-diam | `R-ROBUST`, `R-CONTRACT` | **IN WITH BOUNDARY**; selected low-level invalid input branches expose stable codes; public path mapping remains core-owned | `relgeo/spec`; `spec/id/core/06-error-model.md` §6.2–§6.9; geometry/core negative tests | `✔️` |
 | `GEO-DET-001` | Deterministic resolution independent of platform, parse order, time, randomness, dan global mutable state | Input source yang sama selalu menghasilkan scene dan diagnostics yang sama | `R-ROBUST`, `R-CONTRACT` | **IN**; resolver harus pure terhadap document context | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.1, `12-expressions.md` §12.8 | `🌗` |
-| `GEO-DET-002` | Stable object identity, dependency ordering, operation result anchors, collection order, dan error paths | Reference, indexing, snapshots, dan reviewer navigation tidak berubah-ubah | `R-RELATE`, `R-COLLECTION`, `R-ROBUST` | **IN**; no resolver-generated rename atau unordered result exposure | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.2–5.4; `spec/id/geometry/13-object-model.md`, `19-collections.md` | `🌗` |
+| `GEO-DET-002` | Stable object identity, dependency ordering, operation result anchors, collection order, dan error paths | Reference, indexing, snapshots, dan reviewer navigation tidak berubah-ubah | `R-RELATE`, `R-COLLECTION`, `R-ROBUST` | **IN WITH BOUNDARY**; local canonical replay comparator covers ordered semantic snapshots; cross-runtime replay remains separate | `relgeo/spec`; `core/src/projection.ts`; core/CLI replay tests; conformance 298/298 | `✔️` |
 
 ### I. Serialization dan semantic parity
 
 | ID | Capability | User outcome | Dasar requirement | Scope decision | Owner / source of truth | Status verifikasi |
 | --- | --- | --- | --- | --- | --- | --- |
-| `GEO-SER-001` | Resolved scene serialization yang mempertahankan object identity/type, primitive/path geometry, anchors/properties, collections, dan diagnostics | CLI, inspector, renderer, dan downstream tooling dapat membaca hasil resolve tanpa mengulang semantics | `R-CONTRACT`, `R-PARITY` | **IN**; JSON scene adalah semantic projection, bukan dump internal yang tidak stabil | `relgeo/spec` untuk semantics; `relgeo/workspace` untuk expected fixtures; `fixtures/manifest.json` expected resolved snapshots | `🌗` |
-| `GEO-SER-002` | Stable geometry serialization ordering and canonical numeric representation | Snapshot/review diff menunjukkan perubahan semantics, bukan noise akibat order atau float formatting | `R-ROBUST`, `R-CONTRACT` | **IN**; canonicalization harus terpisah dari renderer-specific style | `relgeo/workspace` sebagai fixture/evidence owner; `spec/id/core/05-semantic-guarantees.md`; `docs/plans/07-flutter-capability-promotion-and-svg-parity.md` §3–§7 | `🌗` |
+| `GEO-SER-001` | Resolved scene serialization yang mempertahankan object identity/type, primitive/path geometry, anchors/properties, collections, dan diagnostics | CLI, inspector, renderer, dan downstream tooling dapat membaca hasil resolve tanpa mengulang semantics | `R-CONTRACT`, `R-PARITY` | **IN WITH BOUNDARY**; versioned canonical semantic projection consumed by core/CLI, without claiming Flutter parity | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.7; `core/src/projection.ts`; `cli/src/index.ts`; CLI tests | `✔️` |
+| `GEO-SER-002` | Stable geometry serialization ordering and canonical numeric representation | Snapshot/review diff menunjukkan perubahan semantics, bukan noise akibat order atau float formatting | `R-ROBUST`, `R-CONTRACT` | **IN WITH BOUNDARY**; finite numbers dibulatkan 12 desimal, map keys diurutkan, array semantic mempertahankan order; tidak mengklaim cross-runtime parity | `fixtures/manifest.json`; `spec/id/core/05-semantic-guarantees.md` §5.7; `core/src/projection.ts`; projection/CLI tests; conformance 298/298 | `✔️` |
 | `GEO-PARITY-001` | Shared fixture semantic parity antara TypeScript consumers dan Flutter untuk object/primitive/path geometry | Input DSL yang sama memberi geometry semantics yang dapat dibandingkan lintas consumer | `R-PARITY`, `R-CONTRACT` | **IN WITH BOUNDARY**; fixture 15 boolean/intersection active pada boundary disetujui; fixture 16 evaluator/unit tetap capability/candidate | `relgeo/workspace` untuk `fixtures/manifest.json` dan expected snapshots; `docs/plans/06-flutter-alignment.md`, `07-flutter-capability-promotion-and-svg-parity.md` | `🌗` |
 | `GEO-PARITY-002` | Semantic SVG projection parity untuk object/primitive/path geometry dengan tolerance | Preview dan renderer berbeda platform tetap dapat dinilai setara secara geometry | `R-PARITY`, `R-ROBUST` | **IN WITH BOUNDARY**; compare semantic anchors/object paths; raw SVG bytes, style, viewBox, dan full presentation bukan contract aktif | `relgeo/workspace` + `relgeo/flutter` evidence policy; `docs/plans/06-flutter-alignment.md` §2, §6; `docs/plans/07-flutter-capability-promotion-and-svg-parity.md` §2–§7 | `🌗` |
 

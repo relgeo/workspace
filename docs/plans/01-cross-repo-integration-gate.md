@@ -183,6 +183,48 @@ Nilai <git-commit> harus berasal dari checkout aktual dan tidak boleh ditebak. J
 
 Runner menghasilkan laporan terminal yang cukup untuk diagnosis dan, bila dibutuhkan, file report ignored atau artifact CI. Laporan publik tidak boleh memuat absolute path komputer operator.
 
+Setiap gate juga dapat menghasilkan joined machine-readable evidence:
+
+~~~text
+node scripts/join-integration-evidence.mjs \
+  --report=.local/integration-gate.json \
+  --output=.local/integration-gate-joined-evidence.json \
+  --evidence-class=ci-canonical \
+  --evidence-state=current \
+  --run-id="$GITHUB_RUN_ID" \
+  --run-url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+  --artifact-id=relgeo-integration-gate-report \
+  --artifact-path=.local/integration-gate.json
+~~~
+
+Joined evidence binds root/child revisions, baseline, toolchain, stage command,
+execution boundary (`workspace` or `temporary-checkout`), artifact identity,
+run identity, evidence class, and limitations. A historical record is retained
+for audit but `claim.currentClaimEligible` is false; a current claim is also
+ineligible when the gate failed or the supplied root, baseline, or child
+revision does not match. `currentObservationEligible` remains available to
+distinguish a current failure from historical evidence.
+The Integration workflow emits this joined record for both local and public
+jobs and uploads it with the source gate report.
+
+### 5.4 Blocker ownership and bounded retry record
+
+Every failed stage is attributable through `owner`, `repository`, and
+`surface`. Its classification includes `blockerClass`, `remediation`,
+`decisionRequired`/`decisionNeeded`, `dependencyImpact`,
+`downstreamImpact`, and `dependencyStatus`. Retryable work is limited to the
+shared transient classifier. The stage records the effective `retryPolicy`
+(`maxAttempts`, `backoffMs`, `attemptsUsed`, `exhausted`), every sanitized
+attempt, and `attemptLinks`; `firstFailure` is retained even when a later
+attempt passes. A deterministic, dependency, environment, or human-decision
+blocker consumes no automatic retry budget. These fields are diagnostic
+evidence, not permission to promote a failed or environment-limited gate.
+
+The report contains only public-safe command names and metadata. Attempt links
+must not embed temporary absolute paths, credentials, environment dumps, or
+raw process output. A rerun creates a new report/artifact identity and does
+not overwrite the first-failure evidence from the previous run.
+
 Format minimal:
 
 ~~~text

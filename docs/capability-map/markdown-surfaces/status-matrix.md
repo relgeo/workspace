@@ -1,6 +1,6 @@
 # Markdown Surfaces Status Matrix
 
-> **Coverage statement — 2026-11-04.** This is the capability-first downstream
+> **Coverage statement — 2026-11-05.** This is the capability-first downstream
 > view of all 38 expected Markdown plugin capabilities. Rows and statuses come
 > from the [expected-versus-observed reconciliation](./reconciliation.md);
 > discovery detail remains in the [implementation audit](./implementation-audit.md).
@@ -9,7 +9,7 @@
 
 Owner surface: `remark-relgeo` + `remark-relgeo-hl` and the official website consumer
 Compatibility line: RelGeo DSL `0.5.x` / package line `0.5.0`
-Current evidence refresh: local package/conformance/Astro consumer checks on 2026-11-04; registry, deployed, and Node 24 gate remain separate evidence boundaries.
+Current evidence refresh: local package checks (remark preview 16/16; highlighter 10 Vitest + 1 package-boundary test), conformance 298/298, Astro consumer checks, and renderer semantic replay on 2026-11-05; registry, deployed, and Node 24 gates remain separate evidence boundaries.
 Policy evidence: [maturation master plan](../../MATURATION-MASTER-PLAN.md) · [compatibility matrix](../../compatibility-matrix.json)
 
 ## Status and evidence legend
@@ -37,9 +37,9 @@ accessibility validation. Editing this matrix never closes an implementation gap
 | `MD-FENCE-001` Recognize RelGeo fences and aliases | ✔️ | verified-local | Package defaults remain `relgeo` for preview and `rg` for highlighting; explicit overrides and non-target isolation pass focused tests | both plugins | naming policy; spec terminology | P1 fence mapping can regress | Keep alias matrix regression |
 | `MD-FENCE-002` Preserve source, whitespace, metadata, and boundaries | ✔️ | verified-local | Focused AST tests preserve exact source, metadata, position, and surrounding nodes; highlighter fallback preserves source | both plugins | unified mdast/hast contract | P1 source fallback or copy behavior can drift | Keep preservation regression |
 | `MD-FENCE-003` Handle mixed/multiple blocks deterministically | ✔️ | verified-local | Repeated mixed target/non-target/malformed blocks produce identical transformed trees and preserve order/isolation | both plugins | visitor isolation; deterministic build | P1 one block can affect another | Keep multi-block determinism regression |
-| `MD-PREVIEW-001` Render valid fences as previews | ✔️ | verified-local | Only current mdast/HTML consumer path is directly exercised | remark-relgeo | core; renderer-SVG | P1 host-specific integration drift | Add one generic host smoke fixture |
+| `MD-PREVIEW-001` Render valid fences as previews | ✔️ | verified-local | Current mdast/HTML path emits a safe SVG data-URI preview; plugin safety checks, renderer security tests, conformance, and website output assertions pass | remark-relgeo | core; renderer-SVG | P1 host-specific integration drift | Add one generic host smoke fixture |
 | `MD-PREVIEW-002` Default model preview with explicit sheet/view path | ✔️ | verified-local | Default model preview, canonical sheet selection, metadata pass-through, invalid metadata fallback, and strict failure are covered; view selection remains canonical DSL sheet/view behavior | remark-relgeo | presentation spec; renderer sheet API | P1 output may not match author-selected view | Keep presentation projection regression |
-| `MD-PREVIEW-003` Reuse canonical semantics | ✔️ | verified-local | Cross-version/registry parity is not independently verified | core + renderer-SVG boundary | compileRelGeo; renderToSVG | P1 Markdown can diverge from CLI/Playground | Add cross-consumer parity fixture |
+| `MD-PREVIEW-003` Reuse canonical semantics | ✔️ | verified-local | `compileRelGeo`/`renderToSVG` remain the source path; semantic replay uses the renderer comparator, while SVG bytes are only reviewable fixture output | core + renderer-SVG boundary | compileRelGeo; renderToSVG | P1 Markdown can diverge from CLI/Playground | Add cross-consumer parity fixture |
 | `MD-PREVIEW-004` Preserve surrounding Markdown structure | ✔️ | verified-local | Website rehype assembly unwraps the preview wrapper; surrounding Markdown remains intact in the built consumer | remark-relgeo + website | rehype unwrap contract | P1 invalid/undesirable structure and a11y impact | Keep wrapper and built-output regression assertion |
 | `MD-HL-001` Highlight RelGeo source | ✔️ | verified-local | Token completeness follows language-service coverage | remark-relgeo-hl | language-service token API | P1 vocabulary drift | Keep token fixtures tied to spec vocabulary |
 | `MD-HL-002` Preserve readable invalid source without crash | ✔️ | verified-local | Injected language-service throw now returns source-preserving fallback with structured diagnostic | remark-relgeo-hl | service error handling | P0 docs build can fail on service failure | Keep fallback and failure regression test |

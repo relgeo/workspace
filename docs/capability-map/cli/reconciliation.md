@@ -103,7 +103,7 @@ evidence.
 | `CLI-RENDER-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI option matrix closed at the documented boundary; core/spec retain semantics | Audit §5/§6 `CLI-RENDER-002`; v0.5 fixture, compile/check profile-plus-override/unit matrix, strict failures |
 | `CLI-RENDER-003` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI selector mapping and failure transport closed; renderer retains SVG semantics | Audit §5/§6 `CLI-RENDER-003`; CLI sheet validation, valid sheet/view, wrong-sheet/unknown-view/format mismatch, and no-artifact tests |
 | `CLI-OUT-001` | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; core scene semantics, CLI serialization boundary | Audit §5 `CLI-OUT-001`; JSON test; no separate CLI schema |
-| `CLI-OUT-002` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; renderer owns SVG semantics | Audit §5 `CLI-OUT-002`; SVG test and exact fixture comparisons |
+| `CLI-OUT-002` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; renderer owns SVG semantics | Audit §5 `CLI-OUT-002`; SVG test, reviewable fixture output, conformance, and renderer semantic replay boundary; raw SVG bytes are not cross-host parity |
 | `CLI-OUT-003` | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; core owns graph semantics | Audit §5 `CLI-OUT-003`; graph test; no separately versioned graph schema |
 | `CLI-OUT-004` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI owns stdout/file behavior | Audit §5 `CLI-OUT-004`; nested output, overwrite, UTF-8, success-stream, and write-failure tests |
 

@@ -1,6 +1,6 @@
 # Website and Pages Expected-versus-Observed Reconciliation
 
-**Reconciliation date:** 2026-11-04
+**Reconciliation date:** 2026-11-05
 **Expected source:** [`website-pages/expected-capability-catalog.md`](./expected-capability-catalog.md)  
 **Observed source:** [`website-pages/implementation-audit.md`](./implementation-audit.md)  
 **Policy sources:** [`MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), [`REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`05-public-docs-and-playground-hardening.md`](../../plans/05-public-docs-and-playground-hardening.md), [`integration-baseline.json`](../../integration-baseline.json)  
@@ -10,8 +10,9 @@
 [implementation-gap backlog](./implementation-gap-backlog.md) ·
 [coverage validation and handoff](./coverage-validation-handoff.md)
 
-**Current consumer-boundary checkpoint (2026-11-04):** website and Playground
-local consumers pass their direct build/test assertions. The current checked-out
+**Current consumer-boundary checkpoint (2026-11-05):** CLI, Markdown plugins,
+Playground, and website local consumers pass their direct build/test assertions
+after the renderer semantic/safety closure. The current checked-out
 website/Playground/spec revisions do not match the recorded baseline and Pages
 pins, so strict provenance and assembled-artifact parity remain unverified.
 

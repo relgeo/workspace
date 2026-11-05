@@ -4,21 +4,31 @@
 row-level implementation status remains assigned by the downstream audit,
 reconciliation, matrix, and backlog artifacts
 
-**Tanggal katalog:** 2026-10-30<br>
+**Tanggal katalog:** 2026-11-05<br>
 **Compatibility line:** RelGeo DSL `0.5.x`<br>
 **Owner keputusan dan katalog:** `relgeo/workspace`<br>
 **Owner implementasi:** `relgeo/renderer-svg`<br>
 **Runtime boundary:** resolved RelGeo scene → SVG string/markup untuk Node,
 browser, CLI, Playground, dokumentasi, dan export ringan
 
-**Current reconciliation:** 33 expected IDs; 26 `✔️`, 7 `🌗`, 0 `❌`, and 0
+**Current reconciliation:** 33 expected IDs; 33 `✔️`, 0 `🌗`, 0 `❌`, and 0
 `⚠️`. The `➖` non-goals, `⏸️` deferred boolean expansion, and `?` environment
 findings remain outside the expected implementation-row count. Current
 row-level evidence, remaining gaps, owners, dependencies, and next actions are
 maintained in the [implementation audit](./implementation-audit.md),
 [reconciliation](./reconciliation.md), [status matrix](./status-matrix.md),
 [capability matrix](./capability-matrix.md), and
-[implementation-gap backlog](./implementation-gap-backlog.md).
+[implementation-gap backlog](./implementation-gap-backlog.md), and the frozen
+[closure-boundary register](./reconciliation.md#02-frozen-closure-boundary-register--2026-11-05).
+
+The closure boundary is **33 expected renderer IDs plus shared renderer
+rows `GAP-009` and `GAP-013`**. The related consumer row `MD-DIAG-003` is
+retained as an explicit downstream boundary, not silently absorbed into or
+removed from the renderer inventory. The closure register records each row's
+owner, source of truth, class (`renderer-owned`, `shared`, `consumer`, or
+`evidence-only`), current status, evidence requirement, and scope decision.
+`➖`, `⏸️`, and external `? not-verified` findings are recorded as explicit
+boundaries and never used to hide an expected capability.
 
 ## 1. Tujuan dan aturan baca
 
@@ -119,7 +129,7 @@ host is already verified.
 | `SVG-DIM-001` | Renderer projects dimensions; core supplies resolved points; spec owns dimension meaning | shared sheet fixture 02 and renderer dimension tests | Supported dimension kinds preserve label/leader/placement semantics and remain safe |
 | `SVG-ANNOT-001` | Renderer projects annotations; core supplies targets; Playground owns interactive presentation | shared sheet fixture 02 and renderer annotation tests | Target/leader, multiline order, fallback placement, and escaped content remain stable |
 | `SVG-SHEET-001` | Renderer owns sheet composition; core owns view/sheet model; CLI owns `--sheet/--view` routing | shared fixtures 02, 03, and 09 plus `reference_fixtures.test.ts` | Page size, placement/scale, title block, and selected-sheet result are stable; model geometry is not mutated |
-| `SVG-DET-001` | Workspace/core own canonical semantic serialization; renderer exposes semantic projection | `semantic_projection.test.ts`, manifest `semanticSerialization`, active fixture 10 JSON | Compare schema/version, bbox, order, IDs, kinds, topology, endpoints, and normalized numbers; never raw SVG bytes |
+| `SVG-DET-001` | Workspace/core own canonical semantic serialization; renderer exposes semantic projection and replay comparator | `semantic_projection.test.ts`, `scripts/run-renderer-semantic-replay.mjs`, manifest `semanticSerialization`, active fixtures 10/15/16 | Compare schema/version, bbox, order, IDs, kinds, topology, endpoints, transforms, and normalized numbers; never raw SVG bytes |
 | `SVG-INTEG-002` | Playground owns worker/DOM/inspection; renderer owns safe SVG output | fixture 10 and runtime-diagnostic fixture 14 with worker/Preview sources | Preview path preserves semantic output and diagnostic state; browser E2E remains separate evidence |
 | `GAP-009` | Shared gap owned by renderer-svg + core; CLI/Markdown/Playground consume | presentation-escaping fixture and language-spec `GAP-009` row | Dimension/annotation and dynamic attributes are escaped without changing semantic placement |
 | `GAP-013` | Renderer owns safe serialization; Markdown/Playground own host safety checks | presentation-escaping fixture and `security.test.ts` | No executable markup from dynamic values; semantic projection remains available |

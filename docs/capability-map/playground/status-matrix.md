@@ -1,6 +1,6 @@
 # Playground status matrix
 
-> **Coverage statement — 2026-11-04.** This is the capability-first status
+> **Coverage statement — 2026-11-05.** This is the capability-first status
 > view for all 37 rows in the Playground expected catalog. It is derived from
 > the [implementation audit](./implementation-audit.md) and
 > [expected-versus-observed reconciliation](./reconciliation.md);
@@ -14,8 +14,8 @@
 | Surface | `relgeo/playground` browser IDE and `/playground/` delivery artifact |
 | Matrix owner | Playground product owner; delegated DSL semantics remain with `spec/id/`, core, language-service, and renderer packages |
 | Source of truth | Expected catalog → implementation audit → reconciliation; required plans remain requirement and scope sources |
-| Audit date | 2026-11-04 |
-| Evidence freshness | Current source includes the selected lifecycle, viewport, keyboard, accessibility, theme, and worker changes with 107 unit tests, 298 shared conformance assertions, and local website consumer checks; browser E2E, hosted Pages parity, and native device evidence remain separately unverified |
+| Audit date | 2026-11-05 |
+| Evidence freshness | Current source includes the selected lifecycle, viewport, keyboard, accessibility, theme, and worker changes with 107 unit tests, 298 shared conformance assertions, safe renderer SVG output, and local website consumer checks; browser E2E, hosted Pages parity, and native device evidence remain separately unverified |
 
 ## Status and evidence legend
 
@@ -64,7 +64,7 @@ matrix status.
 | `PG-LIFE-003` | Product lifecycle state | `✔️` | Stable fixed-width status dot; ready/error text is available as tooltip without shifting toolbar controls | Export is action feedback, not a separately named state | Playground | Worker, persistence, view state | Transition meaning can be inferred inconsistently | Keep lifecycle assertions in browser smoke |
 | `PG-LIFE-004` | Failure and recovery state | `✔️` | Worker/storage/share/clipboard paths and recovery controls | Native/platform presentation unverified | Playground | Worker, IndexedDB, URL, clipboard | Users may not recover consistently across browsers | Run browser failure-path evidence |
 | `PG-EDIT-001` | RelGeo source editor | `✔️` | CodeMirror, YAML, linter, completion, hover; local tests/build | Fresh browser cursor/selection proof unavailable | Playground editor | CodeMirror and language-service | Authoring confidence may exceed current browser evidence | Retain browser editor smoke |
-| `PG-DSL-001` | Resolve against DSL v0.5 | `✔️` | Worker parser/resolver/graph/renderer wiring and worker tests | Full semantic parity is delegated and not re-audited here | Playground consumer | `spec/id/`, core, renderer, language-service | Consumer can drift from normative DSL | Maintain cross-package conformance fixtures |
+| `PG-DSL-001` | Resolve against DSL v0.5 | `✔️` | Worker parser/resolver/graph/renderer wiring, worker tests, and shared semantic replay/conformance | Full semantic parity is delegated and not re-audited here; renderer owns the typed semantic projection and safe SVG serialization | Playground consumer | `spec/id/`, core, renderer, language-service | Consumer can drift from normative DSL | Maintain cross-package conformance fixtures |
 | `PG-DIAG-001` | Actionable diagnostics | `✔️` | Typed worker errors and Inspector Errors; diagnostic tests | Full vocabulary remains delegated | Playground UI | Core/language-service/spec | Missing delegated error cases can surface late | Add representative consumer fixtures as DSL expands |
 | `PG-DIAG-002` | Error navigation and valid-preview recovery | `✔️` | First-error/source jump, restore-last-successful, reset | Current browser recovery sequence unverified | Playground | Editor, worker, Preview, status | Stale preview may be misread without browser assertion | Run error-to-recovery E2E when harness is available |
 | `PG-FILE-001` | Create file | `✔️` | New handler and local document model | Browser activation unverified | Playground | IndexedDB and starter example | Starter identity can regress | Keep create-and-reload test |
@@ -79,7 +79,7 @@ matrix status.
 | `PG-PERSIST-001` | Durable local persistence | `✔️` | IndexedDB schema v1, active restore, read-back verification | Private-mode/quota/reload browser matrix unverified | Playground | Browser IndexedDB | Data loss or browser-specific failure | Run supported-browser persistence matrix |
 | `PG-PERSIST-002` | Persistence lifecycle status | `✔️` | Dirty/autosave/saved/error feedback and queued writes | Timing/focus preservation unverified in browser | Playground | Persistence queue and status UI | False saved state can hide loss | Add delayed/quota browser assertions |
 | `PG-PERSIST-003` | Workspace backup/restore | `✔️` | Versioned JSON, 5 MB guard, parse/confirm/replace | File interaction unverified in browser | Playground | File API and persistence schema | Replacement can destroy local workspace | Preserve confirmation and malformed-backup tests |
-| `PG-CANVAS-001` | Live canvas/preview | `✔️` | Worker SVG and Preview model/physical surfaces | Visual browser assertion unavailable | Playground consumer | Core, renderer, worker | Render drift can evade source tests | Re-run visual/interaction smoke |
+| `PG-CANVAS-001` | Live canvas/preview | `✔️` | Worker SVG and Preview model/physical surfaces; 107 tests, shared conformance, and renderer safety boundary pass | Visual browser assertion unavailable; DOM insertion remains dependent on the renderer-produced SVG contract | Playground consumer | Core, renderer, worker | Render drift can evade source tests | Re-run visual/interaction smoke |
 | `PG-CANVAS-002` | Zoom viewport | `✔️` | Toolbar, clamped zoom, Ctrl/Meta+wheel | Browser control/gesture unverified | Playground Preview | Pointer/wheel events and camera state | Zoom can become inaccessible or mutate model | Add browser zoom boundary assertions |
 | `PG-CANVAS-003` | Pan viewport | `✔️` | Pointer capture, pinch/pan handlers, gesture tests | Physical touch evidence deferred | Playground Preview | Pointer events and touch contract | Device gesture behavior may differ | Keep device validation as separate held follow-up |
 | `PG-CANVAS-004` | Fit/recenter | `✔️` | Camera computation and `ResizeObserver` | Resize sequence unverified in browser | Playground Preview | SVG bounds, container resize | Scene can remain off-screen after layout change | Add resize/fit browser assertion |

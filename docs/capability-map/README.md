@@ -44,7 +44,7 @@ sama.
 | Spec | [capability matrix](./language-specification/capability-matrix.md) · [expected catalog](./language-specification/expected-capability-catalog.md) · [status matrix](./language-specification/status-matrix.md) · [implementation audit](./language-specification/implementation-audit.md) | expected baseline → audit input | `spec/id/` normatif; the capability matrix is a compatibility entry point and the status matrix remains the canonical 53-row view. |
 | Geometry | [status matrix](./geometry/status-matrix.md) | `✔️` bounded library / `🌗` expansion | Primitive/boolean tested; query expansion dan provenance wording memiliki gap. |
 | Core runtime | [status matrix](./core-runtime/status-matrix.md) | `✔️` bounded runtime / `⚠️` error catalog | Parser, resolver, graph, evaluator, diagnostics; error-code typing perlu direkonsiliasi. |
-| Renderer-SVG | [status matrix](./renderer-svg/status-matrix.md) · [capability matrix](./renderer-svg/capability-matrix.md) | `✔️` bounded renderer / `🌗` presentation | Status matrix is the canonical status view; the detailed capability matrix and backlog preserve renderer evidence and bounded gaps. |
+| Renderer-SVG | [status matrix](./renderer-svg/status-matrix.md) · [capability matrix](./renderer-svg/capability-matrix.md) | `33 ✔️` closure boundary / external evidence qualifiers | Status matrix is the canonical status view; browser, Node >=24, public, and host parity limitations remain evidence qualifiers rather than renderer capability gaps. |
 | Language service | [matrix](./language-service/capability-matrix.md) | `✔️` local API / `🌗` host parity | Diagnostics/schema/completion/token tersedia; LSP runtime dan API docs memiliki gap. |
 | CLI | [status matrix](./cli/status-matrix.md) | `✔️` local commands / `⚠️` format edge | `info`, `compile`, `check/validate` tersedia; registry/Node 24 belum diverifikasi. |
 | Markdown plugins | [matrix](./markdown-surfaces/capability-matrix.md) | `✔️` bounded transforms / `🌗` fallback | Preview/highlight tersedia; fallback language-service dan registry evidence terbatas. |
@@ -202,13 +202,14 @@ are explicitly labeled so they cannot be mistaken for current evidence.
   compatibility policy, consumer workflows, decisions, and fixture provenance;
   prerequisite for the implementation audit.
 - [Renderer-SVG implementation audit](./renderer-svg/implementation-audit.md) —
-  source paths, fixture/consumer evidence, confirmed escaping issue, and limits.
+  source paths, fixture/consumer evidence, locally resolved escaping/presentation
+  boundaries, and remaining evidence limits.
 - [Renderer-SVG expected-versus-observed reconciliation](./renderer-svg/reconciliation.md)
   — one-to-one join of all 33 expected IDs with separate implementation,
   evidence, and scope status; absent capability remains explicit as `❌`.
 - [Renderer-SVG implementation-gap backlog](./renderer-svg/implementation-gap-backlog.md)
-  — nine candidate tasks for the `🌗`/`❌` rows, plus separate confirmed-defect
-  and verification follow-ups; documenting a gap does not close it.
+  — historical candidate tasks and retained regression/evidence follow-ups for
+  the closed renderer boundary; documenting a gap does not close it.
 - [Renderer-SVG coverage validation and handoff](./renderer-svg/coverage-validation-handoff.md)
   — validates ID/link/legend/evidence/scope coverage, records limitations and
   unresolved questions, and keeps implementation work as separate goals/tasks.

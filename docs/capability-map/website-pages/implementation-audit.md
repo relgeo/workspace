@@ -159,7 +159,7 @@ and strict provenance result remain explicit limitations.
 | `relgeo.github.io: RELGEO_DOCS_SITE_URL=https://relgeo.github.io RELGEO_DOCS_BASE=/ pnpm build` | PASS; 138 pages | The deployment-configured static site builds locally. |
 | `relgeo.github.io: pnpm test` | PASS; built-output assertions passed | Search/filtering/no-result markup and handler markers, English mirror disclosure, metadata, navigation, accessibility shell, Markdown, and preview-error assertions pass. |
 | `playground: pnpm build` | PASS; TypeScript and Vite build completed; Vite emitted a non-failing >500 kB chunk warning | The current local Playground consumer artifact builds; the size warning remains visible and is not treated as a website failure. |
-| `playground: pnpm test` | PASS; 16 test files and 99 tests | The current child consumer/runtime suite passes locally. |
+| `playground: pnpm test` | PASS; 17 test files and 107 tests | The current child consumer/runtime suite passes locally, including worker SVG, diagnostics, sheet selection, and preview state regressions. |
 | `relgeo.github.io: pnpm provenance:check` | PASS; report generated with `synchronized: true` and no mismatches | Strict workspace parity joins the website, Playground, spec, baseline, and Pages pins on the frozen revision set. |
 | `relgeo.github.io: RELGEO_PLAYGROUND_ROOT=../playground RELGEO_SPEC_ROOT=../spec pnpm provenance:pages` | PASS; report generated with `synchronized: true` and no mismatches | Standalone Pages-input parity is verified independently of the root baseline. |
 | Reassembled `dist/playground` plus `pnpm run test:pages-artifact` | PASS; 3 Playground assets checked | The local combined Pages artifact is structurally valid for the current root Playground build. |

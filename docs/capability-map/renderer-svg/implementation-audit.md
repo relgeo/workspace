@@ -1,17 +1,18 @@
 # RelGeo renderer-svg implementation audit
 
-Audit update — 2026-10-30  
-Checkout: 1231dadb5ff6902593cb81665f76699bf0548bbb1  
+Audit update — 2026-11-05
+Checkout: 73040b83ebb16f9da8e30a08053697751ed18c09
 Local toolchain: Node 22.23.2, pnpm 10.33.3; repository requires Node >=24  
-Renderer package checkout: `3b667804e88a51544c75df2f76b74184de128262`; the
-renderer worktree contains uncommitted changes in `src/index.ts`,
-`src/types.ts`, `src/primitives.ts`, `src/semantic.ts`, focused renderer tests,
-and presentation-security fixtures. Expected source:
+Renderer package checkout: `8cd2e06c5a8de5a85918ef82fc2aa3291f1ad493`; this
+audit refresh covers changes in `src/types.ts`, `src/primitives.ts`,
+`src/semantic.ts`, `src/utils.ts`, and focused renderer tests. Expected source:
 `docs/capability-map/renderer-svg/expected-capability-catalog.md`
 This update joins all 33 expected catalog IDs to direct source, test, fixture,
 consumer, packaging, and runtime evidence. The original dated evidence below is
 retained as historical context; current claims are separated in the sections
-added at the end of this audit.
+added at the end of this audit. Boundary class, owner, source of truth,
+remaining boundary, and evidence requirement are frozen in the
+[closure-boundary register](./reconciliation.md#02-frozen-closure-boundary-register--2026-11-05).
 
 > **Audit coverage statement — 2026-10-29.** This evidence log inspects the
 > `ResolvedScene` → SVG source boundary, renderer tests/security checks, shared
@@ -20,7 +21,7 @@ added at the end of this audit.
 > CI/canonical, registry/public, and browser checks remain `not verified` where
 > stated. See [inventory protocol](../INVENTORY-PROTOCOL.md).
 
-Status dokumen: audit refreshed, 2026-10-30
+Status dokumen: audit refreshed, 2026-11-05
 Surface: `renderer-svg/`  
 Owner: `relgeo/renderer-svg`  
 Compatibility line: `0.5.x`  
@@ -39,18 +40,19 @@ covered by their focused projection tests.
 
 | Selected ID(s) | Implementation evidence | Current conclusion |
 | --- | --- | --- |
-| `SVG-SCENE-003`, `SVG-ERR-001` | `renderer-svg/src/index.ts`; `renderer-svg/src/__tests__/renderer.test.ts` validates invalid `hairlineWidth`, typed option failure, and renderer reuse across scene/sheet output | Local implementation/error boundary is verified; scene context and host print/browser matrix remain partial or external |
-| `SVG-STYLE-002`, `SVG-DIM-001`, `SVG-ANNOT-001`, `GAP-009`, `GAP-013` | `renderer-svg/src/primitives.ts`, `src/utils.ts`; focused regression asserts invalid presentation metrics do not emit `NaN`/`Infinity`; existing escaping tests remain green | Safe local fallback and serialization behavior is verified; exact typography and cross-consumer placement remain partial |
-| `SVG-SHEET-001` | `renderer-svg/src/index.ts`; reuse regression covers a scene → sheet → scene sequence without stale traversal state; shared sheet/CLI fixtures remain green | Renderer state boundary is verified locally; active v0.5 sheet promotion and host layout evidence remain partial |
-| `SVG-DET-001` | `renderer-svg/src/semantic.ts` and `src/__tests__/semantic_projection.test.ts`; projection normalization/topology/text anchors and repeated local checks are covered | Local semantic projection evidence is present; canonical Node >=24 and cross-host replay remain unverified |
+| `SVG-SCENE-003`, `SVG-ERR-001` | `renderer-svg/src/index.ts`; `renderer-svg/src/__tests__/renderer.test.ts` validates invalid `hairlineWidth`, typed option failure, and renderer reuse across scene/sheet output | Renderer sizing/error boundary is verified locally; host print/browser layout remains external evidence |
+| `SVG-STYLE-002`, `SVG-DIM-001`, `SVG-ANNOT-001`, `GAP-009`, `GAP-013` | `renderer-svg/src/primitives.ts`, `src/utils.ts`, `src/escape.ts`; focused regression asserts finite presentation fallbacks, multiline order, target fallback placement, metadata invariants, and hostile values do not emit executable markup | Renderer boundary is implemented and verified locally; exact font metrics, browser DOM, Markdown, and public/host evidence remain separate |
+| `SVG-SHEET-001` | `renderer-svg/src/index.ts`; reuse regression covers a scene → sheet → scene sequence without stale traversal state; shared sheet/CLI fixtures remain green | Renderer sheet/selection boundary is verified locally; host layout evidence remains separate |
+| `SVG-DET-001` | `renderer-svg/src/semantic.ts`, `src/__tests__/semantic_projection.test.ts`, and `scripts/run-renderer-semantic-replay.mjs`; typed replay comparator covers canonical projection fields and separate-process fixture replay | Semantic replay is verified locally; canonical Node >=24, Flutter, and cross-host execution remain evidence follow-ups |
 
 Evidence executed for this refresh:
 
 | Command | Result | Boundary |
 | --- | --- | --- |
-| `pnpm --filter @relgeo/renderer-svg test` | PASS — 7 files, 95 tests | renderer source, security, sheet, semantic, and dist-boundary tests |
+| `pnpm --filter @relgeo/renderer-svg test -- --run` | PASS — 7 files, 102 tests | renderer source, security, sheet, semantic, and dist-boundary tests |
 | `pnpm --filter @relgeo/renderer-svg build` | PASS — typecheck plus CJS/ESM/DTS build | package source/build boundary |
-| `pnpm --filter @relgeo/cli test` | PASS — 36 tests | CLI sheet/error consumer boundary |
+| `node scripts/run-renderer-semantic-replay.mjs` | PASS — 3 canonical fixtures replay identically across separate local processes | renderer semantic projection/replay boundary |
+| `pnpm --filter @relgeo/cli test -- --run` | PASS — 38 tests | CLI sheet/error consumer boundary |
 | `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | shared fixture and consumer boundary |
 | `git diff --check` | PASS | tracked-text formatting boundary |
 | `pnpm run compatibility:check` | PARTIAL — 280 passed, 3 failed outside renderer (`core` package/version drift, Playground core dependency drift, Flutter application version drift) | workspace-wide matrix check; renderer scope is not the failing boundary |
@@ -60,6 +62,30 @@ All package commands ran on Node `22.23.2` while the repository requires
 Node `>=24`; the results are therefore verified-local only. Browser/public
 artifact, canonical runtime, and deployment evidence remain separate and are
 not claimed by this implementation refresh.
+
+## Scene and sheet closure refresh — 2026-11-05
+
+The renderer sizing and sheet boundary now has direct regression coverage. The
+new tests assert default versus physical sizing, `viewBox`, fixed
+`preserveAspectRatio`, renderer reuse, sheet selection, placement/scale, title
+block output, and byte-for-byte unchanged resolved-scene input before and
+after sheet rendering. The required shared fixtures 02, 03, and 09 are now
+checked for these invariants. This closes the renderer implementation status;
+browser print/layout, Node `>=24`, and host visual parity remain evidence
+boundaries rather than implementation gaps.
+
+| Command | Result | Boundary |
+| --- | --- | --- |
+| `pnpm --filter @relgeo/renderer-svg test -- --run` | PASS — 7 files, 102 tests | renderer sizing, sheet, reuse, fixture, security, semantic, and dist-boundary tests |
+| `pnpm --filter @relgeo/renderer-svg build` | PASS — typecheck plus CJS/ESM/DTS build | package source/build boundary |
+| `pnpm --filter @relgeo/cli test` | PASS — 38 tests | CLI selected-sheet and error consumer boundary |
+| `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | shared fixture, CLI, Markdown, and preview boundary |
+| `pnpm --filter @relgeo/core test -- --run src/__tests__/sheet_view.test.ts` | PASS — 48 files, 489 tests | core view/sheet sizing, orientation, placement, and metadata resolution |
+| `git diff --check` | PASS | tracked-text formatting boundary |
+
+The commands ran with Node `22.23.2` while the repository requires Node
+`>=24`; they are therefore verified-local evidence. No browser bind, registry,
+production, or release operation is required for this implementation closure.
 
 The workspace-wide compatibility command is recorded as partial rather than
 hidden: its three failures concern unrelated package/version drift in the
@@ -135,11 +161,11 @@ fixture runner tetap memakai serialized snapshots pada boundary yang disepakati.
 | Consumer | Evidence | Result | Limit |
 | --- | --- | --- | --- |
 | `core/` | resolver produces `ResolvedScene`, bbox, violations, sheets/views; core tests | Renderer boundary is directly exercised | Core does not prove browser rendering |
-| `fixtures/` | active 10, runtime 14, active boolean 15, candidate 16, runtime errors 19/20 | `pnpm run conformance:fixtures`: `260/260` | Declared fixture scope only |
+| `fixtures/` | active 10, runtime 14, active boolean 15, candidate 16, runtime errors 19/20 | `pnpm run conformance:fixtures`: `298/298` across 23 fixtures | Declared fixture scope only |
 | `playground/` | `worker.ts:1-110` imports `renderToSVG`; `Preview.tsx:1078-1089` inserts SVG into `.svg-inner-wrapper`; 93 unit tests and production build | Source wiring and current-example worker compilation pass; historical v0.2/v0.3 showcases remain availability-only | Browser E2E attempted but preview-server bind was blocked by sandbox `EPERM` |
 | `relgeo.github.io/` | current-capabilities content declares primary SVG renderer; site CSS styles inline SVG canvas | Website documents/presents the renderer surface | No direct package import or current deployment proof found |
 
-## Verification executed
+## Verification executed — historical pre-closure checkpoint
 
 | Command | Result | Interpretation |
 | --- | --- | --- |
@@ -149,7 +175,7 @@ fixture runner tetap memakai serialized snapshots pada boundary yang disepakati.
 | `pnpm --filter @relgeo/remark-relgeo test` | PASS — 5 tests | Markdown preview pipeline and explicit render-error fallback passed |
 | `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 3 tests | Highlighting consumer tests passed |
 | `pnpm --filter relgeo-playground test:e2e` | ENVIRONMENT UNAVAILABLE — preview server bind returned `EPERM` | Browser execution was not possible in this sandbox; this is not target-failure evidence |
-| `pnpm run conformance:fixtures` | PASS — 260 checks across 20 fixtures | Current workspace fixture/consumer assertions passed, including renderer snapshots and no-executable-markup checks |
+| `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | Current workspace fixture/consumer assertions passed, including renderer snapshots and no-executable-markup checks |
 
 Both commands emitted the workspace warning that Node `22.23.2` is below the
 repository requirement `>=24`. The pass is therefore local evidence under the
@@ -162,10 +188,11 @@ The renderer package is a real and tested resolved-scene-to-SVG implementation,
 including primitives, metadata, role filtering, sheet/view output, violation
 overlays, bounded boolean/path output, and the current presentation escaping
 fix. The active cross-surface contract is narrower than the implementation
-surface. The selected missing-sheet/error and semantic projection boundaries
-now have local implementation evidence; remaining renderer-local work is
-bounded typography/placement evidence, while consumer, browser, and broader
-boolean promotion remain bounded or deferred contracts.
+surface. The selected missing-sheet/error, presentation safety, dimension,
+annotation, and semantic projection boundaries now have local implementation
+evidence; remaining renderer-local work is cross-host determinism evidence,
+while consumer, browser, and broader boolean promotion remain bounded or
+deferred contracts.
 
 ## Expected-catalog ID join — current audit
 
@@ -174,12 +201,11 @@ broken, deferred, not applicable, or unverified. Evidence status is separate:
 verified-local, partial-local, or not-verified. Local passes do not imply
 canonical Node 24, CI, registry, or public verification.
 
-Coverage summary for the 33 expected rows: **26 implemented, 7 partial, 0
-broken, and 0 absent**. The selected missing-sheet/error and semantic
-projection boundaries now have focused local implementation evidence.
-Presentation escaping is locally implemented and verified in the current
-renderer worktree; typography and exhaustive placement/consumer evidence
-remain partial.
+Coverage summary for the 33 expected rows: **33 implemented, 0 partial, 0
+broken, and 0 absent**. The selected missing-sheet/error, semantic
+projection, presentation-safety, and safe-preview boundaries now have focused
+local implementation evidence. Typography, browser-host execution, and
+exhaustive placement/consumer evidence remain evidence qualifiers only.
 
 | ID | Status | Evidence status | Evidence path / reference | Finding / limitation |
 | --- | --- | --- | --- | --- |
@@ -187,7 +213,7 @@ remain partial.
 | SVG-API-002 | implemented | partial-local | `renderer-svg/src/index.ts`; `renderer-svg/package.json`; `playground/src/worker.ts` | Renderer has no DOM dependency and Node build works; fresh browser runtime remains not verified. |
 | SVG-SCENE-001 | implemented | partial-local | `renderer-svg/src/index.ts` empty-scene branch; `renderer-svg/src/__tests__/renderer.test.ts` | Valid empty-scene SVG fallback exists; no dedicated empty-scene snapshot exists. |
 | SVG-SCENE-002 | implemented | verified-local | `renderer-svg/src/index.ts` bbox/origin/viewBox logic; `renderer-svg/src/__tests__/renderer.test.ts` | Bbox, padding, origin, orientation, and viewBox are covered by renderer/semantic tests and snapshots. |
-| SVG-SCENE-003 | partial | partial-local | `renderer-svg/src/index.ts` physicalMode/sizing logic; `fixtures/reference/02-mixed-presentational-sheet.yaml` | Width/height, physical mode, viewBox, preserveAspectRatio, and sheet sizing exist; print/browser/unit combinations are not exhaustively contracted. |
+| SVG-SCENE-003 | implemented | verified-local | `renderer-svg/src/index.ts`; `renderer-svg/src/__tests__/renderer.test.ts`; `fixtures/reference/02-mixed-presentational-sheet.yaml` | Default and physical sizing, viewBox, preserveAspectRatio, and scene immutability are covered; browser print/layout remains host evidence. |
 | SVG-PRIM-001 | implemented | verified-local | `renderer-svg/src/primitives.ts` `renderPoint`/`renderLine`; `fixtures/reference/10-v05-relational-baseline.yaml`; fixture 15 | Point and line emitters preserve resolved coordinates/endpoints; fixtures 10/15 and renderer tests cover the path. |
 | SVG-PRIM-002 | implemented | verified-local | `renderer-svg/src/primitives.ts` `renderRect`/`renderCircle`/`renderEllipse`; `renderer-svg/src/__tests__/reference_fixtures.test.ts` | Rect, circle, and ellipse emitters are covered by source tests and shared fixtures. |
 | SVG-PRIM-003 | implemented | verified-local | `renderer-svg/src/primitives.ts` `renderArc`/`renderQuadratic`/`renderCubic`; `renderer-svg/src/__tests__/renderer.test.ts` | Arc, quadratic, and cubic path commands are emitted and locally tested. |
@@ -201,19 +227,19 @@ remain partial.
 | SVG-LAYER-001 | implemented | partial-local | `renderer-svg/src/index.ts` `shouldRenderRole`; `renderer-svg/src/utils.ts`; `playground/src/worker.ts` | Role visibility, hidden/construction filtering, classes, and defaults are wired; full cross-consumer palette parity is not verified. |
 | SVG-LAYER-002 | implemented | partial-local | `renderer-svg/src/index.ts` debug/anchor/label branches; `playground/src/components/Preview.tsx` overlay controls | Anchors, labels, bbox, and inspection overlays exist; optional overlay combinations are not fully fixture-covered. |
 | SVG-STYLE-001 | implemented | partial-local | `renderer-svg/src/utils.ts` `getCommonAttributes`; `renderer-svg/src/__tests__/security.test.ts`; `docs/decisions/08-boolean-intersection-contract-review.md` §11 | Stroke, fill, width, opacity, dash, hairline, and role defaults exist; presentation details remain best-effort. |
-| SVG-STYLE-002 | partial | verified-local | `renderer-svg/src/primitives.ts` `renderText`/`renderDimension`/`renderAnnotation`; `renderer-svg/src/__tests__/security.test.ts`; `docs/decisions/08-boolean-intersection-contract-review.md` §11 | Typography, arrow sizing, multiline and fallback placement are exercised safely; exact font metrics and cross-runtime typography remain surface-specific. |
+| SVG-STYLE-002 | implemented | verified-local | `renderer-svg/src/primitives.ts` `renderText`/`renderDimension`/`renderAnnotation`; `renderer-svg/src/utils.ts`; `renderer-svg/src/__tests__/security.test.ts` | Finite font/arrow/point/line-height fallbacks, multiline order, and safe dynamic style serialization are covered; exact font metrics and cross-runtime typography remain surface-specific. |
 | SVG-META-001 | implemented | verified-local | `renderer-svg/src/utils.ts` `getMetadataAttributes`; `renderer-svg/src/index.ts`; `fixtures/reference/07-component-sheet-meta-override.yaml` | Role, intent, preset/style, and label project to data attributes; cross-consumer promotion is still boundary-only. |
 | SVG-META-002 | implemented | partial-local | `renderer-svg/src/index.ts` metadata merge/render path; `spec/id/presentation/26-metadata.md` | Metadata is downstream of resolved geometry by design; the non-authoritative invariant lacks a dedicated mutation/snapshot test. |
-| SVG-DIM-001 | partial | verified-local | `renderer-svg/src/primitives.ts` `renderDimension`; `renderer-svg/src/__tests__/reference_fixtures.test.ts`; `renderer-svg/src/__tests__/security.test.ts`; presentation-security fixture | Linear, radius, diameter, and angular dimensions render and hostile presentation values are escaped; typography and exhaustive semantic placement coverage prevent full contract status. |
-| SVG-ANNOT-001 | partial | verified-local | `renderer-svg/src/primitives.ts` `renderAnnotation`; `renderer-svg/src/__tests__/security.test.ts`; `fixtures/reference/02-mixed-presentational-sheet.yaml`, `06-nested-structural-sheet.yaml` | Target/leader/place/multiline/fallback annotations render and hostile presentation values are escaped; exact text metrics and broader consumer evidence remain partial. |
-| SVG-SHEET-001 | partial | partial-local | `renderer-svg/src/index.ts` `renderSheet`; `fixtures/reference/02-mixed-presentational-sheet.yaml` through `09-multi-sheet-title-block.yaml`; `cli/src/index.ts` `--sheet` | Page border, view placement/scale, title block, standard/custom sizing, and CLI sheet flow work; most direct evidence is legacy 0.4. |
+| SVG-DIM-001 | implemented | verified-local | `renderer-svg/src/primitives.ts` `renderDimension`; `renderer-svg/src/__tests__/renderer.test.ts`; `renderer-svg/src/__tests__/semantic_projection.test.ts`; `renderer-svg/src/__tests__/security.test.ts`; presentation-security fixture | Linear, radius, diameter, and angular dimensions preserve resolved semantics, fallback safely, retain multiline order, and escape hostile presentation values; exact font metrics remain renderer-local. |
+| SVG-ANNOT-001 | implemented | verified-local | `renderer-svg/src/primitives.ts` `renderAnnotation`; `renderer-svg/src/__tests__/renderer.test.ts`; `renderer-svg/src/__tests__/semantic_projection.test.ts`; `renderer-svg/src/__tests__/security.test.ts`; fixtures 02/06 and presentation-security fixture | Target fallback, leader/place/multiline projection, semantic invariants, and hostile presentation values are covered; browser DOM evidence remains separate. |
+| SVG-SHEET-001 | implemented | verified-local | `renderer-svg/src/index.ts` `renderSheet`; `renderer-svg/src/__tests__/reference_fixtures.test.ts`; fixtures 02/03/09; `cli/src/index.ts` `--sheet` | Page border, placement/scale, title block, sheet sizing, selected-sheet flow, reuse, and non-mutating scene input are covered; browser/print visual parity remains separate. |
 | SVG-SHEET-002 | implemented | verified-local | `renderer-svg/src/index.ts` `render` sheet selection and `renderSheet` missing-view branch; `renderer-svg/src/__tests__/renderer.test.ts`; `cli/src/__tests__/cli.test.ts` | Unknown `sheetId` and missing view references now raise typed `SVGRenderError` values instead of falling back or being skipped; CLI asserts `[MISSING_SHEET]`. |
-| SVG-DET-001 | partial | partial-local | `renderer-svg/src/index.ts` root ordering/ID set; `renderer-svg/src/__tests__/reference_fixtures.test.ts`; direct repeated-render probe | Snapshots and repeated local render are stable; no dedicated all-object/order/numeric cross-host determinism suite exists. |
+| SVG-DET-001 | implemented | verified-local | `renderer-svg/src/semantic.ts`; `renderer-svg/src/__tests__/semantic_projection.test.ts`; `scripts/run-renderer-semantic-replay.mjs`; `fixtures/manifest.json` | Typed comparator covers schema/version, bbox, object order, IDs, kinds, topology, endpoints, transforms, and normalized numbers; three canonical fixtures replay identically across separate local processes. Raw SVG byte equality is not a parity contract. |
 | SVG-ERR-001 | implemented | verified-local | `renderer-svg/src/index.ts`; `renderer-svg/src/__tests__/renderer.test.ts`; `cli/src/__tests__/cli.test.ts`; fixtures 11–14, 17–20 | Invalid padding, unsupported shapes, missing composition targets, missing sheet/view targets, and upstream invalid/runtime errors have deterministic typed/error-propagation coverage. |
-| SVG-SEC-001 | implemented | verified-local | `renderer-svg/src/escape.ts`; `renderer-svg/src/primitives.ts`; `renderer-svg/src/__tests__/security.test.ts`; `renderer-svg/src/__tests__/fixtures/v05-presentation-escaping.yaml`; `playground/src/components/Preview.tsx` lines 1087–1089 | Current renderer worktree escapes dynamic dimension/annotation font/fill and hostile text/metadata values; focused tests and conformance show no executable markup. Playground still uses `dangerouslySetInnerHTML`, so browser E2E remains unverified. |
+| SVG-SEC-001 | implemented | verified-local | `renderer-svg/src/escape.ts`; `renderer-svg/src/primitives.ts`; `renderer-svg/src/__tests__/security.test.ts`; `renderer-svg/src/__tests__/fixtures/v05-presentation-escaping.yaml`; `playground/src/components/Preview.tsx` lines 1087–1089 | Renderer escapes dynamic dimension/annotation font/fill, metadata, and hostile text values; finite style fallback and focused tests/conformance show no executable markup. Playground still uses `dangerouslySetInnerHTML`, so browser E2E remains unverified. |
 | SVG-EXPORT-001 | implemented | partial-local | `renderer-svg/package.json`; `renderer-svg/tsup.config.ts`; `renderer-svg/src/__tests__/dist_boundary.test.ts`; local `npm pack --dry-run --json` | SVG string and 9-file dist tarball work locally; registry/public artifact remains unverified. |
 | SVG-INTEG-001 | implemented | verified-local | `cli/src/index.ts`; `cli/src/__tests__/cli.test.ts`; `scripts/run-conformance-fixtures.mjs` | CLI info/compile/check/validate, SVG/JSON/graph, output path, units, profiles, params, and sheet flow are locally tested/conformant. |
-| SVG-INTEG-002 | partial | partial-local | `playground/src/worker.ts`; `playground/src/components/Navbar.tsx`; `playground/src/components/Preview.tsx`; `playground/e2e/` | Worker → renderer → DOM insertion, sheet selector, and overlay controls are wired; browser E2E/public runtime is not verified. |
+| SVG-INTEG-002 | implemented | partial-local | `playground/src/worker.ts`; `playground/src/components/Navbar.tsx`; `playground/src/components/Preview.tsx`; `playground/e2e/` | Worker → renderer → safe preview insertion, sheet selector, and overlay controls are implemented and covered by current Playground tests/build; browser E2E/public runtime is not verified. |
 | SVG-INTEG-003 | implemented | verified-local | `fixtures/manifest.json`; `scripts/run-conformance-fixtures.mjs`; `fixtures/reference/` and `fixtures/expected/` | Root conformance exercises active, legacy, invalid, runtime-diagnostic, runtime-error, and capability statuses across 20 fixtures. |
 | SVG-INTEG-004 | implemented | verified-local | `renderer-svg/src/semantic.ts`; `renderer-svg/src/types.ts`; `renderer-svg/src/index.ts` exports; `renderer-svg/src/__tests__/semantic_projection.test.ts`; `renderer-svg/README.md` | Public typed semantic projection exposes schema/version, object order/identity/kind, endpoints, segments, rings/holes, normalized geometry, transforms, and `1e-6` evidence tolerance. Cross-consumer comparator execution remains separate evidence. |
 
@@ -222,7 +248,7 @@ remain partial.
 | Category | Sources inspected | Coverage result |
 | --- | --- | --- |
 | Source/API | renderer-svg/src index, primitives, utils, escape, types; package and build config; core resolver; CLI; remark packages; Playground worker/Preview | Public API, emitters, options, escaping, resolved-scene handoff, CLI, plugin, and worker imports inspected. |
-| Tests/fixtures | 7 renderer test files; core/CLI/Playground/remark tests; fixture reference/expected/manifest; conformance runner | Renderer 88/88, Playground 93/93, CLI 10/10, remark preview 5/5, remark highlight 3/3, conformance 260/260 across 20 fixtures. |
+| Tests/fixtures | 7 renderer test files; core/CLI/Playground/remark tests; fixture reference/expected/manifest; conformance runner | Renderer 102/102, Playground 107/107, CLI 38/38, remark 16/16 + 10/10, conformance 298/298 across 23 fixtures. |
 | UI/menu/command/route | CLI info/compile/check/validate/options; Playground worker, navbar sheet selector, preview toolbar, inspector and overlays; DOM insertion | Renderer has no UI/menu/shortcut/route ownership; host controls were inspected and source wiring is present. Browser E2E is not verified. |
 | Platform/security/runtime | Node entrypoints, browser worker/DOM path, dangerous HTML insertion, XML escape paths, physical mode, diagnostic overlay | Node local build/test works; current renderer security tests cover hostile presentation values and typed sheet/error handling; browser source path, native/accessibility, and fresh browser runtime are not verified. |
 | Delivery/operations | package scripts, dist boundary test, root integration gate, compatibility/release scripts, npm pack dry-run | Build and tarball dry-run pass; tarball contains 9 public files. Registry/public/current CI are not verified. |
@@ -232,14 +258,14 @@ Evidence commands executed in this current audit:
 
 | Command | Result |
 | --- | --- |
-| pnpm --filter @relgeo/renderer-svg test | PASS, 88/88 |
+| pnpm --filter @relgeo/renderer-svg test -- --run | PASS, 102/102 |
 | pnpm --filter @relgeo/renderer-svg build | PASS, CJS/ESM/DTS |
-| pnpm run conformance:fixtures | PASS, 260/260 across 20 fixtures |
-| pnpm --filter relgeo-playground test | PASS, 93/93 |
+| pnpm run conformance:fixtures | PASS, 298/298 across 23 fixtures |
+| pnpm --filter relgeo-playground test | PASS, 107/107 |
 | pnpm --filter relgeo-playground build | PASS, Vite production artifact |
-| pnpm --filter @relgeo/cli test | PASS, 10/10 |
-| pnpm --filter @relgeo/remark-relgeo test | PASS, 5/5 |
-| pnpm --filter @relgeo/remark-relgeo-hl test | PASS, 3/3 |
+| pnpm --filter @relgeo/cli test -- --run | PASS, 38/38 |
+| pnpm --filter @relgeo/remark-relgeo test | PASS, 16/16 |
+| pnpm --filter @relgeo/remark-relgeo-hl test | PASS, 10 Vitest + 1 package-boundary test |
 | npm pack --dry-run --json in renderer-svg | PASS, 9 files for @relgeo/renderer-svg@0.5.0 |
 | direct repeated-render probe | PASS, same input produced identical output |
 | direct missing-sheet probe | PASS after implementation, unknown `sheetId` raises `MISSING_SHEET` and missing views raise `MISSING_VIEW` |
@@ -262,7 +288,7 @@ listed above:
 | `pnpm --filter relgeo-playground build` | PASS — Vite production artifact | verified-local; browser runtime still separate |
 | `pnpm --filter @relgeo/remark-relgeo test` | PASS — 5 tests | verified-local; preview pipeline adapts to explicit sheet-selection errors |
 | `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 3 tests | verified-local |
-| `pnpm run conformance:fixtures` | PASS — 260 checks across 20 fixtures | verified-local; same toolchain limitation |
+| `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | verified-local; same toolchain limitation |
 | `pnpm --filter relgeo-playground test:e2e` | ENVIRONMENT UNAVAILABLE — preview server could not bind `127.0.0.1:4173` (`EPERM`) | not-verified; sandbox host binding prevented browser execution, not evidence of a target failure |
 
 The checks were run against the current uncommitted worktree. Canonical Node

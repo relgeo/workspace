@@ -3,8 +3,8 @@
   "contract": "integration-baseline-v1",
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-11-03",
-  "rootRevision": "2ff198d7284d4ef947e21ea1cbedd88a66b6d977",
+  "capturedAt": "2026-11-05",
+  "rootRevision": "73040b83ebb16f9da8e30a08053697751ed18c09",
   "compatibilityLine": "0.5",
   "toolchain": {
     "node": ">=24",
@@ -20,7 +20,7 @@
   "submodules": [
     {
       "path": "relgeo.github.io",
-      "revision": "6eb2e241b76a5f226644300f5cbe9814c342cd08",
+      "revision": "33d7f969c9f73ea6c25bff3062ac92132699b8b1",
       "package": {
         "name": "relgeo-docs-site",
         "version": "0.5.0"
@@ -28,7 +28,7 @@
     },
     {
       "path": "playground",
-      "revision": "c7cec4b505f290beccac911ef97786c8f6b0a534",
+      "revision": "fad88630f2fcac77e78045e78550e3b05c3ef5db",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"
@@ -36,19 +36,19 @@
     },
     {
       "path": "spec",
-      "revision": "b96ba3b23de202227eade06614635ef6717df516"
+      "revision": "f4fecf2153ad2d960f36eda96a6a593d5aed30b7"
     },
     {
       "path": "core",
-      "revision": "070defe7fb79146f9b56289faefd9fa52b886260",
+      "revision": "929dbc8b53abed5f98ecb18b67a29bc6faed8142",
       "package": {
         "name": "@relgeo/core",
-        "version": "0.5.1"
+        "version": "0.5.2"
       }
     },
     {
       "path": "geometry",
-      "revision": "36469faf4b953ab185b800504db748eb07147b3e",
+      "revision": "e5d12959db382ea417992247737e85d83df62b50",
       "package": {
         "name": "@relgeo/geometry",
         "version": "0.5.0"
@@ -56,7 +56,7 @@
     },
     {
       "path": "language-service",
-      "revision": "39c06dd8505d480672b0953d523f3675a7f30075",
+      "revision": "e855460eb2593b5c373340237fb05f7a110e5dac",
       "package": {
         "name": "@relgeo/language-service",
         "version": "0.5.1"
@@ -64,7 +64,7 @@
     },
     {
       "path": "renderer-svg",
-      "revision": "3b667804e88a51544c75df2f76b74184de128262",
+      "revision": "9626667c7d1c72f23747f24d20f31aeac4d50a3b",
       "package": {
         "name": "@relgeo/renderer-svg",
         "version": "0.5.0"
@@ -72,7 +72,7 @@
     },
     {
       "path": "cli",
-      "revision": "7a6c0ce30b0a06fad9f56360edca0e94c27423e0",
+      "revision": "8f57709fd56a43eaef27e5b1320a5af713f67125",
       "package": {
         "name": "@relgeo/cli",
         "version": "0.5.0"
@@ -80,7 +80,7 @@
     },
     {
       "path": "remark-relgeo",
-      "revision": "134e9d7b67225d55976876521fb8c00f202e74d8",
+      "revision": "50866756c4b50adac64a2acdb4692300aa7871be",
       "package": {
         "name": "@relgeo/remark-relgeo",
         "version": "0.5.0"
@@ -88,7 +88,7 @@
     },
     {
       "path": "remark-relgeo-hl",
-      "revision": "507ad18fe1b8c91eb3a48e365b5290cd02b049b8",
+      "revision": "6d109a96a265f64b8934e13e4d9e1e1ae1e8b028",
       "package": {
         "name": "@relgeo/remark-relgeo-hl",
         "version": "0.5.0"
@@ -96,11 +96,11 @@
     },
     {
       "path": "flutter",
-      "revision": "f39a913708e28625125ee8b64ccb350250db1d5d"
+      "revision": "5d39a58c788798f510b466e30de59a27f4d864ba"
     },
     {
       "path": "mcp",
-      "revision": "48821c47f211fcce29013355803aa271e63a7b47"
+      "revision": "824b46eccabd77da37bb37fa72b1c4a0e019442f"
     }
   ]
 }

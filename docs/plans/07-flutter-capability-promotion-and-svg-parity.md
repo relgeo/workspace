@@ -74,6 +74,11 @@ Node `24.21.0` menghasilkan evidence berikut:
 - semantic SVG comparator Flutter tetap terverifikasi secara source-level:
   canonicalization ring dan perbandingan numerik `1e-6` dipakai, sedangkan
   style, viewBox, whitespace, dan attribute formatting tidak dibandingkan;
+- renderer TypeScript now exposes a typed semantic replay comparator that
+  canonicalizes object keys and finite numbers while preserving semantic array
+  order; `scripts/run-renderer-semantic-replay.mjs` exercises it across
+  separate local Node processes for canonical fixtures. This is local evidence
+  for the renderer boundary, not a claim of cross-host typography parity;
 - `pnpm run flutter:conformance` belum dapat menjalankan test karena Flutter SDK
   gagal menulis `bin/cache/engine.stamp` di luar workspace (`EPERM`). Karena itu
   evidence Flutter checkout bersih belum lengkap dan promotion tidak dilakukan.

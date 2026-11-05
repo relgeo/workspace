@@ -1,31 +1,40 @@
 # Renderer-SVG coverage validation and handoff
 
-**Tanggal:** 2026-10-30
-**Status:** validation checkpoint selesai; surface belum dinyatakan lengkap
+**Tanggal:** 2026-11-05
+**Status:** focused validation checkpoint selesai; local target evidence ready for validation
 **Boundary:** `relgeo/renderer-svg` pada compatibility line RelGeo DSL `0.5.x`
 
-## Current verification refresh — 2026-11-04
+## Current verification refresh — 2026-11-05
 
 The following checks were rerun against the current uncommitted worktree after
-the renderer-local implementation changes. They are evidence for behavior and
-consumer boundaries, not a promotion of every `🌗` capability to complete.
+the renderer-local implementation and consumer-map changes. They are evidence
+for behavior and consumer boundaries; raw SVG byte equality is not used as a
+cross-host parity contract.
 
 | Command | Result | Evidence boundary |
 | --- | --- | --- |
-| `pnpm --filter @relgeo/renderer-svg test` | PASS — 7 files, 95 tests | Renderer unit, negative typed-error, security, sheet, semantic projection, and regression tests |
-| `pnpm --filter @relgeo/renderer-svg test:dist` | PASS — 1 test | Built/dist public export boundary |
-| `pnpm --filter @relgeo/cli test` | PASS — 36 tests | CLI render, sheet-selection, and error consumer boundary |
-| `pnpm --filter relgeo-playground test` | PASS — 17 files, 104 tests | Worker, preview, options, selection, and DOM-boundary unit coverage |
-| `pnpm --filter @relgeo/remark-relgeo test` | PASS — 9 tests | Markdown preview/error/safe-SVG consumer boundary |
-| `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 6 tests | Highlighting consumer boundary |
-| `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | Fixture rendering, semantic serialization/provenance, diagnostics, security, CLI, Markdown, and preview checks |
-| `pnpm --filter relgeo-playground test:e2e` | ENVIRONMENT UNAVAILABLE — preview server bind returned `EPERM` on `127.0.0.1:4173` | Browser DOM/visual execution not verified; this is not target parity failure evidence |
+| `pnpm --filter @relgeo/renderer-svg build && pnpm --filter @relgeo/renderer-svg test -- --run && node scripts/run-renderer-semantic-replay.mjs` | PASS — build, 7 files/102 tests, and 3 separate-process replay fixtures | Renderer package, security/escaping, semantic projection/replay, and built export boundary |
+| `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | Workspace fixture manifest, diagnostics, security, semantic serialization, CLI, Markdown, preview, and canonical fixture consumers |
+| `pnpm --filter @relgeo/cli test -- --run` | PASS — 38 tests | CLI render, sheet/view selection, diagnostics, and error consumer boundary |
+| `pnpm --filter @relgeo/remark-relgeo test` | PASS — 16 tests | Markdown preview, safe-SVG data URI, diagnostics, and renderer consumer boundary |
+| `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 10 Vitest tests plus package-boundary test | Highlighting consumer boundary |
+| `pnpm --filter relgeo-playground test` | PASS — 17 files, 107 tests | Worker, preview, options, selection, safe SVG, and DOM-boundary unit coverage |
+| `pnpm --dir relgeo.github.io test` | PASS — docs-site built-output and content-integrity assertions | Website generated routes, locale parity, frontmatter, and internal-link boundary |
+| `pnpm --filter @relgeo/cli build` | PASS | CLI build boundary |
+| `pnpm --filter @relgeo/remark-relgeo build` | PASS | Markdown preview build boundary |
+| `pnpm --filter @relgeo/remark-relgeo-hl build` | PASS | Highlighting build boundary |
+| `pnpm --filter relgeo-playground build` | PASS | Playground production build; Vite emitted a non-failing chunk-size warning |
+| `pnpm --dir relgeo.github.io build` | PASS — 138 pages | Website build boundary |
+| `pnpm --filter @relgeo/remark-relgeo lint && pnpm --filter @relgeo/remark-relgeo-hl lint && pnpm --dir relgeo.github.io check` | PASS — 0 Astro errors/warnings/hints | Changed consumer static checks |
+| `pnpm run integration:gate -- --local` | NOT VERIFIED — gate requires Node `>=24`, local runtime is `22.23.2` | Consumer integration gate was not executed; this is an environment limitation, not target parity failure evidence |
+| `pnpm run verify:baseline` / `pnpm run verify:baseline:strict` | NOT GREEN — each reports 14 baseline failures | Existing manifest/gitlink and version drift plus intentionally dirty renderer worktree; not a renderer behavior failure |
 
-All package commands emitted the repository engine warning because the
-available runtime is Node `22.23.2` while the repository requires Node `>=24`.
-The passing results are therefore verified-local. Browser E2E, canonical Node,
-public registry artifacts, native/Flutter, and cross-host parity remain
-separate unverified/deferred boundaries.
+Environment: Node `22.23.2`, pnpm `10.33.3`, workspace root HEAD
+`73040b83ebb16f9da8e30a08053697751ed18c09`, renderer submodule HEAD
+`8cd2e06c5a8de5a85918ef82fc2aa3291f1ad493`. All passing package commands are
+`verified-local`; the repository engine warning is retained as a qualifier.
+Browser E2E, canonical Node, public registry artifacts, native/Flutter, and
+cross-host parity remain separate unverified/deferred boundaries.
 
 Dokumen ini memvalidasi catalog expected, audit implementation, reconciliation,
 status matrix, dan gap backlog. Ia memeriksa coverage dan keterlacakan artefak;
@@ -58,7 +67,7 @@ behavior pada sumber tersebut sudah lengkap.
 | Discovery category | Sources / boundary checked | Current result |
 | --- | --- | --- |
 | Source/API | `renderer-svg/src` index, primitives, utils, escape, types; package/build config; core resolver; CLI; remark; Playground worker/Preview | Public API, emitters, options, escaping, resolved-scene handoff, CLI, plugin, dan worker imports inspected. |
-| Tests/fixtures | Renderer tests, core/CLI/Playground/remark tests, fixture reference/expected/manifest, conformance runner | Current refresh: renderer 95/95, Playground 104/104, CLI 36/36, remark 9/9 + 6/6, conformance 298/298 across 23 fixtures. Historical counts remain only in dated audit sections. |
+| Tests/fixtures | Renderer tests, core/CLI/Playground/remark tests, fixture reference/expected/manifest, conformance runner | Current refresh: renderer 102/102, Playground 107/107, CLI 38/38, remark 16/16 + 10/10, conformance 298/298 across 23 fixtures. Historical counts remain only in dated audit sections. |
 | UI/menu/command/route | CLI info/compile/check/validate; Playground selector, toolbar, inspector, overlays, DOM insertion | Host wiring inspected; renderer owns no UI/menu/shortcut/route. Browser E2E remains not verified. |
 | Platform/security/runtime | Node entrypoints, browser worker/DOM path, dynamic HTML insertion, XML escaping, physical mode, diagnostic overlay | Local build/test and current hostile-value security checks pass; typed sheet/error handling and semantic projection are renderer-local; fresh browser/native/accessibility runtime not verified. |
 | Delivery/operations | Package scripts, dist boundary, root integration gate, release/compatibility scripts, npm pack | Build and 9-file tarball dry-run pass; registry/public/current CI not verified for this audit revision. |
@@ -106,10 +115,12 @@ Required trace chain:
 
 `expected catalog ID → audit ID row → reconciliation result → matrix row → backlog task (when 🌗/❌)`
 
-Every remaining `🌗` expected row has exactly one candidate backlog task. The
-resolved sheet/error, semantic, and security rows remain historical backlog
+No expected row remains `🌗`, `❌`, or `⚠️` at the current renderer boundary.
+The resolved sheet/error, semantic, and security rows remain historical backlog
 evidence rather than active unimplemented work; `➖` and `⏸️` boundaries remain
-outside the implementation selection.
+outside the implementation selection. If a future audit discovers a new
+expected gap, it must add one explicit ID and one corresponding backlog task
+rather than silently reusing a closed row.
 
 ## 4. Limitations that remain open
 
@@ -135,15 +146,15 @@ checkout boundaries:
 
 | Boundary | Revision / state | Evidence scope |
 | --- | --- | --- |
-| Workspace root | Git `HEAD` `1cfa86553d7adb18179c6b3e1a33618a179b1414`; uncommitted worktree | Renderer capability documentation and the local verification commands listed in the audit. |
-| `renderer-svg/` | Submodule `HEAD` `3b667804e88a51544c75df2f76b74184de128262`; uncommitted source/test/docs changes | Typed render errors, semantic projection API, escaping regressions, renderer tests/build. |
-| Downstream consumer tests | Uncommitted changes in `playground/src/__tests__/examples.test.ts` and `remark-relgeo/test/remark-relgeo.test.mjs` | Current-example worker contract and preview-pipeline compatibility with explicit sheet selection. |
+| Workspace root | Git `HEAD` `73040b83ebb16f9da8e30a08053697751ed18c09`; uncommitted worktree | Renderer and consumer capability documentation plus the local verification commands listed above. |
+| `renderer-svg/` | Submodule `HEAD` `8cd2e06c5a8de5a85918ef82fc2aa3291f1ad493`; uncommitted source/test changes | Typed render errors, semantic projection API, escaping regressions, renderer tests/build, and replay comparator. |
+| Downstream consumer boundaries | CLI `8f57709fd56a43eaef27e5b1320a5af713f67125`; remark-relgeo `50866756c4b50adac64a2acdb4692300aa7871be`; remark-relgeo-hl `6d109a96a265f64b8934e13e4d9e1e1ae1e8b028`; Playground `fad88630f2fcac77e78045e78550e3b05c3ef5db`; website `33d7f969c9f73ea6c25bff3062ac92132699b8b1` | Consumer tests/builds and capability-map alignment were checked at these local revisions. |
 | External delivery/runtime | Not invoked | No npm/pub.dev publication, production deployment, registry install, Flutter/native host, or deferred external platform was used as a prerequisite. |
 
-The renderer-scope uncommitted changes include `src/index.ts`, `src/types.ts`,
-`src/primitives.ts`, `src/semantic.ts`, focused renderer tests/fixtures,
-`renderer-svg/README.md`, and the capability-map documents linked below. The
-root worktree also contains unrelated dirty paths in other packages and
+The renderer-scope changes include `src/types.ts`, `src/primitives.ts`,
+`src/semantic.ts`, `src/utils.ts`, focused renderer tests, the semantic replay
+script at `scripts/run-renderer-semantic-replay.mjs`, and the capability-map
+documents linked below. The root worktree also contains unrelated dirty paths in other packages and
 capability surfaces; those paths are not claimed as renderer evidence and were
 not staged or committed by this handoff.
 
@@ -166,20 +177,24 @@ Implementation work remains separate from this validation artifact. The next
 work must be tracked as goals/tasks using the backlog, not closed by editing
 documentation:
 
-- P0/P1: retain the passing sheet/view error, semantic projection, and
-  security regressions; continue bounded typography/dimension/annotation
-  evidence and active v0.5 sheet coverage where owners promote it;
-- P1: add deterministic replay/comparator checks and rerun browser smoke when
-  a host permits the preview server; the renderer-owned semantic projection API
-  is implemented and cross-consumer comparison remains separate;
+- Closure: retain the passing sheet/view error, semantic projection, security,
+  sizing, and safe-preview regressions; all 33 expected renderer rows are
+  closed at the observed implementation boundary;
+- P1: retain the deterministic replay/comparator checks and rerun browser smoke
+  when a host permits the preview server; the renderer-owned semantic projection
+  API and local cross-process comparator are implemented, while cross-consumer
+  comparison remains separate;
 - verification: run canonical Node >=24, browser, registry/public, Flutter,
   and native/accessibility checks according to their owners;
 - after implementation or evidence changes, repeat audit and reconciliation
   before changing any matrix status.
 
-Current conclusion: the renderer baseline and gap map are validated for the
-inspected discovery boundary, but the renderer surface is **not complete**,
-**not fully verified**, and **not closed for implementation**.
+Current conclusion: renderer package behavior, semantic replay, canonical
+fixture conformance, and changed consumer checks are passing locally. All 33
+expected renderer capabilities and shared renderer mappings are `✔️` at the
+observed boundary. Node `>=24`, browser, canonical CI/public, native/Flutter,
+and cross-host checks remain explicitly `not verified` evidence qualifiers,
+not implementation failures.
 
 ## Source links
 

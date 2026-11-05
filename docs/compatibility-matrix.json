@@ -7,7 +7,7 @@
     "version": "0.5",
     "specPath": "spec",
     "normativePath": "spec/id",
-    "specRevision": "f4fecf2153ad2d960f36eda96a6a593d5aed30b7"
+    "specRevision": "dc47343c9f4da7275fcb1563d5c5815647917760"
   },
   "policy": {
     "publicPackageVersion": "0.5.x",

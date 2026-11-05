@@ -1,10 +1,10 @@
 # Cross-Repository Orchestration — Coverage Validation and Handoff
 
-> **Current checkout handoff — 2026-11-03:** Current child gitlinks are observable but child worktrees contain local modifications, and 11 of 12 root manifest child pins are stale against the 2026-10-09 snapshot. The root Node/pnpm integration gate was blocked by Node `22.23.2` versus the declared Node `24+` requirement; pnpm `10.33.3` is available. Earlier Node 22 and dirty-child records below are retained as history. Flutter CI `41184291670` passed and release run `41184693233` produced draft v1.0.1 bundles; the operator reports `@relgeo/core@0.5.2` publish success. Neither replaces a current root integration run.
+> **Current checkout handoff — 2026-11-05:** Current child gitlinks are observable but child worktrees contain local modifications, and 11 of 12 root manifest child pins are stale against the 2026-10-09 snapshot. The root Node/pnpm integration gate was blocked by Node `22.23.2` versus the declared Node `24+` requirement; pnpm `10.33.3` is available. Current root contract/conformance checks pass, but they do not replace a current full integration run. Earlier Node 22 and dirty-child records below are retained as history. Flutter CI `41184291670` passed and release run `41184693233` produced draft v1.0.1 bundles; the operator reports `@relgeo/core@0.5.2` publish success. Neither replaces a current root integration run.
 
 **Status:** coverage validation selesai dengan boundary dan limitation eksplisit
 
-**Tanggal:** 2026-10-31
+**Tanggal:** 2026-11-05
 
 **Scope:** orkestrasi lintas-repository RelGeo pada 39 expected capability ID.
 
@@ -34,7 +34,7 @@ surface produk sudah lengkap.
 | Status matrix rows | **39 unique** | Capability-first reporting view mencakup seluruh expected set. |
 | Gap backlog coverage | **15/15 unresolved** | Seluruh current `🌗` matrix ID tercakup dalam 8 candidate tasks; 4 selected `✔️` IDs remain as explicit closure traceability. |
 | Matrix status counts | **24 `✔️` · 15 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`** | Selected blocker/report/retry/sync boundaries now have focused source/fixture evidence; evidence not current remains `🌗`, not `❌`. |
-| Audit implementation counts | **33 implemented · 6 partial · 0 absent** | 0 broken, 0 deferred, 0 not-applicable dari 39 expected IDs. |
+| Audit implementation counts | **35 implemented · 4 partial · 0 absent** | 0 broken, 0 deferred, 0 not-applicable dari 39 expected IDs. |
 | Historical audit evidence counts (2026-10-30) | **5 verified-current · 21 verified-static · 7 partial-current · 6 unverified-runtime** | These counts belong to the earlier root snapshot; do not read them as a 2026-10-31 verification run. |
 | Link/path checks | **Pass** | Artefak capability-map dan dua required context docs ada pada path yang dirujuk. |
 | Documentation hygiene | **Pass** | `git diff --check` lulus untuk perubahan task; tidak ada whitespace trailing pada dua artefak baru. |
@@ -90,6 +90,39 @@ was changed by this tranche.
 | `git diff --check -- docs/capability-map/cross-repository scripts .github/workflows/sync-validated-submodule-after-ci.yml` | Passed | Root documentation/script/workflow hygiene check. |
 
 The root baseline remains stale: 11 of 12 manifest pins differ from current gitlinks (`spec` matches). Child worktrees contain local modifications, so clean-state verification remains open. Because Node `22.23.2` is below the declared Node `24+` requirement, strict verification must be rerun on a supported environment before using the validated child-CI synchronization flow.
+
+### 2.5 Current verification checkpoint — 2026-11-05
+
+The following commands were run against the current checkout after the
+orchestration contract and public-boundary changes. Passing focused evidence is
+promotable only to the declared static/fixture boundary; environment,
+workspace-state, and provider-dependent failures remain unverified or
+deferred. These results do not change the status matrix symbols by themselves.
+
+| Command / check | Result | Evidence / interpretation |
+| --- | --- | --- |
+| `pnpm run public-boundary:contract:test` | **Passed** | `public-boundary-v1` clean entries pass and unsafe paths/content fail closed. |
+| `pnpm run bootstrap:contract:test` | **Passed** | Bootstrap report schema and public-boundary evidence are validated. |
+| `pnpm run orchestration:contract:test` | **Passed** | Bounded retry, blocker taxonomy, evidence envelope, sync checkout policy, and approved/pending decision-gate behavior are fixture-verified. |
+| `pnpm run child-ci:contract:test` | **Passed** | Child-CI allowlist, exact-run validation, concurrency, credential-free checkout, gitlink staging, baseline regeneration, PR flow, and dispatch metadata are statically verified. |
+| `pnpm run workflow:security:test` | **Passed** | Workflow run bounds, credential persistence policy, and least-privilege permissions are statically verified. |
+| `pnpm run integration:evidence:test` | **Passed** | Current-revision join is accepted and historical evidence is rejected for promotion. |
+| `node scripts/test-baseline-failure.mjs` | **Passed** | Baseline mismatch failure injection emits an actionable diagnostic. |
+| `pnpm run release:record:check -- --json` | **35/35 passed** | Release-record schema/policy check; no publication performed. |
+| `pnpm run release:record:failure` | **Passed** | Unsafe recovery, reordered package plans, and read-only recovery planning are covered by failure injection. |
+| `pnpm run conformance:fixtures` | **298 passed, 0 failed across 23 fixtures** | Root semantic serialization, provenance, renderer/CLI, invalid-input, runtime-error, and consumer fixture evidence is current for this checkout. |
+| `node scripts/bootstrap.mjs --skip-submodules --skip-install --report=/private/tmp/relgeo-bootstrap-verification.json` | **Exit 2 / blocked** | Bootstrap report records Node `22.23.2` below declared `>=24`; 12 submodules also reported the current workspace boundary. Report public-boundary scan passed with 1 entry and 1 content item checked. |
+| `node scripts/verify-baseline.mjs --strict --json` | **Exit 1 / not promotable** | 61/85 checks passed; current child gitlinks/pins and dirty child worktrees differ from the recorded baseline. This is workspace-state evidence, not a failure of the root orchestration contract changes. |
+| `pnpm run compatibility:check -- --json` | **Exit 1 / unverified** | 280 passed, 3 failed on existing child drift: core package version, playground internal range, and Flutter application version. No root compatibility contract was changed. |
+| `node scripts/run-integration-gate.mjs --local --report=/private/tmp/relgeo-orchestration-local-verification.json` | **Exit 2 / environment-unavailable** | Gate stops before stages because host Node is `22.23.2`; structured report classifies the blocker as `environment-unavailable`. |
+| `node scripts/run-integration-gate.mjs --public --report=/private/tmp/relgeo-orchestration-public-verification.json` | **Exit 2 / environment-unavailable** | Public gate stops at the same Node 24 prerequisite; no deployment or public consumer claim was made. |
+
+The focused contract, conformance, serialization/provenance, child-CI, and
+evidence-reconciliation checks are therefore current and passing. Fresh-clone,
+strict baseline, compatibility, and local/public integration remain handoff
+items for a clean checkout on Node 24+ (and, where applicable, the provider,
+registry, browser, and Flutter hosts). A failed reference or unavailable
+environment does not establish target parity failure.
 
 This audit session did not perform an npm/pub.dev publication, production
 deployment, or provider dispatch. The operator separately reports publishing

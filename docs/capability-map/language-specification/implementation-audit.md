@@ -1,6 +1,6 @@
 # Language Specification Implementation and Evidence Audit
 
-**Tanggal audit:** 2026-10-30
+**Tanggal audit:** 2026-11-04
 **Baseline kontrak:** RelGeo DSL `0.5`
 **Expected baseline:** [`language-specification/expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Normative owner:** `relgeo/spec`
@@ -80,6 +80,69 @@ The evidence does not change the honest capability statuses:
 No npm/pub.dev publishing, production deployment, public host, or deferred
 native/mobile platform was used as an audit prerequisite.
 
+## 1.2 Current implementation refresh — GAP-011
+
+**Refresh date:** 2026-11-04. The core implementation now preserves an existing
+structured boundary error when `resolveGeometry()` returns from validation or
+another typed phase, including errors raised by per-object resolver helpers.
+Previously, resolver catches could re-wrap a `ValidationError` or another
+structured error as `ResolveError`, changing the public phase from its original
+value. The change is in `core/src/evaluator.ts`, `core/src/resolver/index.ts`,
+`core/src/resolver/primitives/utils.ts`, and `core/src/resolver/values.ts`, with
+regression coverage in `core/src/__tests__/diagnostics.test.ts` and
+`core/src/__tests__/structured_errors.test.ts`.
+
+The evaluator boundary now also preserves compatible structured `Error`
+instances supplied by callbacks, and `INVALID_COLLECTION_ACCESS` is classified
+as a runtime diagnostic rather than a generic resolve diagnostic. These cases
+are covered in `core/src/__tests__/diagnostics.test.ts`.
+
+The divide and clone resolver helpers now emit structured `ResolveError`
+instances with field-level paths for invalid counts and missing targets; these
+boundaries are covered in `core/src/__tests__/structured_errors.test.ts`.
+
+Repeat helper validation now follows the same structured boundary for target,
+spacing, and count failures, while already-structured evaluator errors remain
+untouched.
+
+Collection access and component export failures from the resolver evaluation
+context now preserve their runtime/resolve phase, object identity, and object
+path instead of relying on evaluator fallback normalization.
+
+Current local evidence for this refresh:
+
+- core: `469 passed` across `48` test files, including the structured phase/path
+  assertions; `pnpm --filter @relgeo/core lint` passes;
+- CLI: `36 passed` across `1` test file;
+- language-service: `82 passed` across `2` test files.
+
+This is a real producer-boundary fix, not a status-only documentation change.
+`GAP-011` remains mixed `🌗`/`⚠️`: raw internal throws outside the normalized
+resolver/helper boundaries and complete phase/code coverage across every public
+consumer still require follow-up. Node `22.23.2`
+versus the repository's Node `>=24` requirement remains a local-evidence
+limitation, not an implementation blocker.
+
+## 1.3 Current implementation refresh — GAP-002
+
+**Refresh date:** 2026-11-04. The core validator now checks profile overrides
+against the declared parameter surface before evaluation. An undeclared profile
+key is rejected as `UNKNOWN_FIELD`, and a value incompatible with a typed
+parameter reuses the default-value contract and is rejected as
+`TYPE_MISMATCH`. This follows the normative rule that profiles may override
+parameters only; constants and styling are not profile surfaces. The change is
+in `core/src/validator.ts`, with v0.5 regression coverage in
+`core/src/__tests__/parameter_type_validation.test.ts`.
+
+The focused core run passes `469` tests across `48` files, including valid
+length/angle profile overrides, incompatible typed overrides, undeclared or
+constant-backed profile keys, and malformed override maps. Existing shorthand
+profile resolution and unknown-profile rejection remain covered by
+`core/src/__tests__/resolver.test.ts`. `GAP-002` remains `🌗`/`partial`: the
+shared fixture-16 promotion decision, exhaustive evaluator/unit semantics, and
+cross-consumer Flutter/native evidence remain open. No compatibility-line or
+normative spec change was made.
+
 ## 2. Taxonomy status
 
 | Status | Arti audit |
@@ -128,9 +191,11 @@ Discovery coverage mencakup source, test, UI/menu/command, shortcut/route,
 config/platform service, runtime, fixture, dan docs. Tidak ada claim bahwa
 setiap consumer/deployment variation telah dieksekusi.
 
-## 4. Direct verification
+## 4. Historical direct verification baseline (2026-10-30)
 
-Commands dijalankan dari root workspace pada 2026-10-30:
+The following commands were the original audit baseline. The current refresh is
+recorded in sections 1.2–1.3 and in the current coverage handoff; these
+historical counts are retained for traceability and are not the current claim.
 
 | Command | Result | Interpretation |
 | --- | --- | --- |
@@ -233,7 +298,7 @@ menjelaskan perbedaan antara expected capability dan realization yang diaudit.
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
 | `DIAG-001` | `partial` | `direct-local` | error-model spec; parser/validator/resolver errors; fixtures 11–14, 17–20 | Main parse/validation/runtime diagnostics exist; not every normative phase/code has fixture and consumer parity. |
-| `DIAG-002` | `broken` | `direct-local` | `core/src/resolver/eval-context.ts`, `core/src/validator.ts`, `core/src/evaluator.ts`, `resolver/objects.ts`, `primitives/divide.ts`, error-model spec; core suite 430 passed | Resolver and validator entry points now normalize uncategorized failures, but exported evaluator paths and some internal helpers still throw raw `Error` while the expected model requires structured code/path/phase. |
+| `DIAG-002` | `broken` | `direct-local` | `core/src/resolver/index.ts`, `core/src/resolver/eval-context.ts`, `core/src/validator.ts`, `core/src/evaluator.ts`, `resolver/objects.ts`, `primitives/divide.ts`, `primitives/repeat.ts`, error-model spec; core 469/469, CLI 36/36, language-service 82/82 | `resolveGeometry()`, per-object helpers, the public evaluator helper, and boolean/collection runtime diagnostics now preserve structured phase/code/path; exported evaluator paths and some internal helpers still throw raw `Error`, so the public diagnostic contract remains incomplete. |
 | `ERR-001` | `partial` | `direct-local` | evaluation/error-model specs; tolerant/validation mode tests; fixture 14/19/20 | Error phases and tolerant vs compile modes exist; full fail-safe and code coverage across consumers is incomplete. |
 | `SER-001` | `partial` | `direct-local` | CLI `compile` JSON path; expected JSON snapshots; `run-conformance-fixtures.mjs` | JSON serialization exists and snapshots are reviewable, but canonical field ordering/number/error serialization is not a normative generated contract. |
 | `SER-002` | `partial` | `direct-local` | renderer `index.ts`/`primitives.ts`, `escape.ts`, v0.5 presentation-escaping fixture, SVG snapshots/security checks, conformance runner; renderer suite 82 passed | Dimension/annotation text and dynamic presentation attributes are escaped and locally regression-tested; full cross-consumer and current-host evidence remains incomplete. |

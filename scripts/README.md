@@ -74,6 +74,16 @@ Manifest snapshot publik berada di `docs/integration-baseline.json`. Verifier ti
 
 Mode `--local` menggunakan root pnpm workspace dan workspace links. Mode `--public` menyalin setiap consumer ke direktori temporary tanpa sibling submodule, lalu meng-install dependency dari npm registry dan menjalankan package/consumer checks di sana. Mode public juga menjalankan `npm pack --dry-run --json` untuk package library dan menolak path absolute/parent traversal serta material `node_modules`, `.git`, file `.env`/`.env.*`, secret, dan direktori lokal.
 
+Aturan public-boundary terpusat di `scripts/public-boundary.mjs` dan dipakai
+oleh bootstrap report serta npm pack inspection. Scanner menolak path absolute,
+parent traversal, direktori private/generated/cache, credential-like filenames,
+dan credential-like report content tanpa memasukkan isi sensitif ke diagnostic.
+Fixture lokalnya dijalankan dengan:
+
+~~~text
+pnpm run public-boundary:contract:test
+~~~
+
 Mode public menambahkan override sementara di checkout temporary agar seluruh dependency `@relgeo/*` tepat pada versi baseline manifest, lalu mengabaikan lockfile temporary. Override dan perubahan package manager ini tidak pernah ditulis kembali ke repository sumber.
 
 Sebelum assertion Pages website, runner menyalin `playground/dist` hasil build ke `relgeo.github.io/dist/playground`. Ini meniru perakitan artifact pada workflow Pages dan menjaga agar `test:pages-artifact` tidak lulus atau gagal karena state `dist` lama.
@@ -114,6 +124,12 @@ kontrak lokal dijalankan dengan:
 ~~~text
 pnpm run orchestration:contract:test
 ~~~
+
+Promotion dan scope decision memakai `evaluateDecisionGate()`. Status
+`approved` membuka stage; `pending`, `rejected`, atau `stale` berhenti
+fail-closed dengan `pending-human-decision`, `retryable: false`,
+`decisionRequired: true`, dan `decisionNeeded: true`. Release preflight
+menggunakan gate ini sebelum membaca status completed.
 
 Baseline JSON report dan release preflight memakai envelope evidence yang sama:
 revision workspace, nama/compatibility baseline, toolchain, evidence class,

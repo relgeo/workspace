@@ -1,12 +1,16 @@
 # Language-Service bounded in-scope selection
 
 **Date:** 2026-10-30  
-**Status:** bounded active selection; selection is not implementation or
-completion evidence  
+**Status:** historical bounded selection baseline; selection is not
+implementation or completion evidence
 **Task:** `select-and-bound-in-scope-capability-debt--1181746432`  
 **Owner boundary:** `relgeo/language-service` owns the editor-intelligence
 contract. `relgeo/core` remains the semantic authority; Playground, MCP, and
 other hosts remain consumers or adjacent owners where explicitly named below.
+
+> Current P0/P1 intake supersedes this seven-row 2026-10-30 baseline and is
+> recorded in the [implementation-gap backlog triage](./implementation-gap-backlog.md#triage-p0p1--2026-11-04).
+> This file is retained as historical selection provenance.
 
 ## Decision
 

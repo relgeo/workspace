@@ -130,6 +130,22 @@ The accepted theme contract remains unchanged: `system` follows
 `prefers-color-scheme`, explicit `light`/`dark` overrides remain available,
 and no new decision task is created for theme behavior.
 
+### 3.2 P0/P1 triage handoff 2026-11-04
+
+The current Playground triage reviews seven P0/P1 risk rows from the status
+matrix and reconciliation: `PG-LIFE-002`, `PG-CANVAS-005`, `PG-KEY-001`,
+`PG-A11Y-001`, `PG-A11Y-002`, `PG-THEME-001`, and `PG-DELIVERY-001`. The
+selection is a downstream execution handoff, not an implementation claim and
+does not change the expected-only verification status of this catalog.
+
+Six rows are implementation-closable at the Playground source/browser
+boundary. `PG-DELIVERY-001` is retained as P1 evidence-only because its
+remaining acceptance requires a hosted Pages artifact and public smoke. Native
+assistive-technology and physical-device checks attached to the accessibility
+rows remain separately deferred or unverified; they are not used to erase the
+web implementation boundary. Owner, source of truth, acceptance test, and
+initial status are locked in the [implementation-gap backlog](./implementation-gap-backlog.md#p0p1-triage-2026-11-04).
+
 ## 4. Expected capability catalog
 
 Kolom `Requirement basis` merujuk ke sumber S1–S9 di §1. `Owner / source of

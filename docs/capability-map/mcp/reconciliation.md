@@ -1,6 +1,6 @@
 # RelGeo MCP — Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-11-03
+**Tanggal:** 2026-11-05
 **Expected source:** [Expected MCP capability catalog](./expected-capability-catalog.md)
 **Observed source:** [current MCP implementation audit](./implementation-audit.md)
 **Compatibility line:** RelGeo DSL `0.5.x`
@@ -21,13 +21,16 @@ Tiga dimensi sengaja dipisahkan:
    `verified-defect`, `verified-scope`, atau `not-verified`).
 3. **Scope decision**: keputusan owner/boundary untuk expected capability.
 
-> **Freshness note (2026-11-03):** This 68-row register includes the post-
+> **Freshness note (2026-11-05):** This 68-row register includes the post-
 > full-spec adapter delivery: bounded owner callbacks for examples, completion,
 > validation, diagnostics, explanation, and render; versioned diagnostic
 > resources/cache identity; workflow fixtures; and guarded review/cancellation
 > outcomes. Local MCP evidence is contract/adapter evidence and does not claim
 > that `core`, `language-service`, or `renderer-svg` are already composed into
-> a production semantic engine. Packaged runtime and live external-client
+> a production semantic engine. The current consumer boundary also has local
+> evidence: MCP package tests/analyzer pass, Flutter analyzer passes, and the
+> offline snapshot, Workbench bridge, and desktop HTTP MCP integration tests
+> pass. Packaged runtime, CI/public, Inspector, and live external-client
 > evidence remain separate limitations.
 
 ### 1.1 Legend hasil rekonsiliasi
@@ -51,9 +54,9 @@ Tiga dimensi sengaja dipisahkan:
 | Duplicate reconciliation IDs | 0 |
 | Observed-only IDs added | 0 |
 | `✔️ implemented` | 43 |
-| `🌗 partial` | 19 |
+| `🌗 partial` | 20 |
 | `⚠️ broken` | 0 |
-| `❌ absent` | 4 |
+| `❌ absent` | 3 |
 | `⏸️ deferred` | 2 |
 | `not-verified evidence rows` | 4 |
 | `➖ not-applicable` expected rows | 0 |
@@ -78,7 +81,7 @@ package lain.
 | `REF-01` | U1/U2 menelusuri index dan rule lengkap berdasarkan `ruleId`. | `✔️` | `implemented` | `verified-local` | Search result section IDs resolve to complete normative Markdown sections; spec index/section resources are exposed. | Current audit §3, `REF-01` |
 | `REF-02` | Agent meminta satu syntax rule terarah. | `✔️` | `implemented` | `verified-local` | `relgeo_get_syntax_rule` resolves a requested rule ID from the full spec index with provenance. | Current audit §3, `REF-02` |
 | `EX-01` | U1 menemukan example minimal yang relevan. | `✔️` | `implemented` | `verified-local` | Typed bounded example owner callback and provenance-preserving fixtures are available; the catalog is intentionally small and illustrative. | Current audit §3 addendum, `EX-01` |
-| `EX-02` | Agent menerima example kecil yang valid dan bounded. | `❌` | `absent` | `verified-absence` | In scope; retrieval/ranking policy belum diimplementasikan. | Current audit §3, `EX-02` |
+| `EX-02` | Agent menerima example kecil yang valid dan bounded. | `🌗` | `partial` | `verified-local` | Deterministic relevance/minimal-source ranking and bounded output are implemented in the MCP adapter; semantic validity and a production examples catalog remain owner boundaries. | Current audit §3.2, `EX-02` |
 | `COMP-01` | U1/U2 mendapat completion pada source dan position. | `🌗` | `partial` | `partial-local` | In scope; language-service adapter belum ada. | Current audit §3, `COMP-01` |
 | `COMP-02` | Agent membedakan proposal completion dari applied edit. | `🌗` | `partial` | `partial-local` | In scope; DTO ada, runtime proposal belum ada. | Current audit §3, `COMP-02` |
 | `VAL-01` | U1/U2 memperoleh structural/schema validation terstruktur. | `✔️` | `implemented` | `verified-local` | Dispatcher validates bounded source/sourceKind/specVersion/includeInfo and guards the typed owner result. | Current audit §3 addendum, `VAL-01` |
@@ -155,14 +158,23 @@ package lain.
    cooperative cancellation, stop/disconnect hooks, and a six-call read-only
    workflow fixture. `EDIT-05` dan `CXL-02` tetap partial/not-verified where a
    live packaged transport/client race is still absent.
-4. `VAL-02`, `HOST-05`, `ERR-02`, dan `EX-02` tetap `❌`: semantic
-   parse/resolve, shared consumer composition, producer error-field mapping,
-   and a ranked/minimal-example policy are not invented by the MCP adapter.
+4. `VAL-02`, `HOST-05`, dan `ERR-02` tetap `❌`: semantic parse/resolve,
+   shared consumer composition, and producer error-field mapping are not
+   invented by the MCP adapter. `EX-02` is now `🌗`: deterministic local
+   ranking/minimal-source selection is implemented, while semantic validity and
+   a production examples catalog remain owner boundaries.
 5. `TRAN-03`, `TRAN-06`, `VAL-03`, `DEL-03`, `DEL-04`, `HOST-03`, `SEC-08`,
    and `CXL-02` retain explicit partial or not-verified limits for standalone
    packaging, external clients/Inspector, packaged UX, and cross-host/runtime
    evidence. A managed runner's inability to bind a socket is not treated as a
    target implementation failure.
+6. The 2026-11-05 downstream consumer refresh found no current local MCP
+   regression: 44 pure-Dart tests and analyzer pass, Flutter analyzer passes,
+   and the selected snapshot/bridge/HTTP consumer tests pass. This is local E3
+   evidence only; it does not promote CI, public, Inspector, or packaged-host
+   evidence. The HTTP fixture correction supplies the negotiated protocol
+   header on valid post-initialize requests while retaining the missing-header
+   rejection assertion.
 
 Implementation work berikutnya harus memakai [MCP implementation gap
 backlog](./implementation-gap-backlog.md), sedangkan perubahan capability

@@ -1,6 +1,6 @@
 # Markdown Surfaces Expected-versus-Observed Reconciliation
 
-**Reconciliation date:** 2026-11-03
+**Reconciliation date:** 2026-11-04
 **Expected source:** [`markdown-surfaces/expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Observed source:** [`markdown-surfaces/implementation-audit.md`](./implementation-audit.md)
 **Policy/context sources:** [`MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), [`compatibility-matrix.json`](../../compatibility-matrix.json), and [`05-public-docs-and-playground-hardening.md`](../../plans/05-public-docs-and-playground-hardening.md)
@@ -46,8 +46,8 @@ The dimensions below are intentionally independent:
 | Missing expected IDs | 0 |
 | Duplicate reconciliation IDs | 0 |
 | Observed-only IDs | 0 |
-| `✅ implemented` | 17 |
-| `🌗 partial` | 20 |
+| `✅ implemented` | 23 |
+| `🌗 partial` | 14 |
 | `⚠️ broken` | 0 |
 | `❌ absent` | 0 |
 | `➖ not applicable` | 1 |
@@ -67,22 +67,22 @@ capabilities.
 
 | ID | Expected user outcome | Result | Implementation status | Evidence status | Scope decision | Audit evidence / gap |
 | --- | --- | --- | --- | --- | --- | --- |
-| `MD-FENCE-001` | Recognize `relgeo`/`rg` fences without touching other languages. | `🌗 partial` | `partial` | `partial-local` | in scope | Both plugins support one configurable fence (`relgeo` or `rg`); no shared alias contract or alias matrix test. |
-| `MD-FENCE-002` | Preserve source, whitespace, info metadata, and block boundaries. | `🌗 partial` | `partial` | `partial-local` | in scope | Matching mdast code nodes retain metadata and highlighter text; full remark/rehype preservation is not directly tested. |
-| `MD-FENCE-003` | Process mixed and multiple blocks deterministically. | `🌗 partial` | `partial` | `partial-local` | in scope | `unist-util-visit` isolates matching nodes and selected fixtures pass; no dedicated mixed-block ordering test. |
+| `MD-FENCE-001` | Recognize `relgeo`/`rg` fences without touching other languages. | `✅ implemented` | `implemented` | `verified-local` | in scope | Package defaults remain `relgeo` for preview and `rg` for highlighting; explicit overrides, non-target isolation, and focused alias tests pass. |
+| `MD-FENCE-002` | Preserve source, whitespace, info metadata, and block boundaries. | `✅ implemented` | `implemented` | `verified-local` | in scope | Focused preview AST tests preserve exact source, metadata, position, and surrounding nodes; highlighter fallback preserves source text. |
+| `MD-FENCE-003` | Process mixed and multiple blocks deterministically. | `✅ implemented` | `implemented` | `verified-local` | in scope | Repeated mixed target/non-target/malformed blocks produce identical transformed trees and preserve block order/isolation. |
 | `MD-PREVIEW-001` | Render a valid RelGeo fence as an embeddable preview. | `✅ implemented` | `implemented` | `verified-local` | in scope | `remark-relgeo` delegates to core and renderer-SVG; package tests, conformance, and website assertions pass. |
-| `MD-PREVIEW-002` | Keep model preview as default with explicit sheet/view selection. | `🌗 partial` | `partial` | `partial-local` | in scope | `sheet`, `profile`, and `unit` metadata reach the renderer; no explicit view option or complete presentation contract. |
+| `MD-PREVIEW-002` | Keep model preview as default with explicit sheet/view selection. | `✅ implemented` | `implemented` | `verified-local` | in scope | Default model preview, canonical sheet selection, metadata pass-through, invalid metadata fallback, and strict failure are covered; view selection remains defined by canonical sheet/view DSL definitions, with no standalone plugin `view` option. |
 | `MD-PREVIEW-003` | Reuse canonical parse, validation, resolution, and rendering semantics. | `✅ implemented` | `implemented` | `verified-local` | boundary only — core/renderer own semantics | Source calls `compileRelGeo` and `renderToSVG`; fixture output matches the canonical preview path. |
 | `MD-PREVIEW-004` | Preserve surrounding headings, paragraphs, lists, links, and adjacent Markdown. | `✅ implemented` | `implemented` | `verified-local` | in scope | The website rehype helper now replaces the generated outer `pre` with the preview wrapper; localized built-output assertions confirm clean structure and surrounding Markdown remains intact. |
 | `MD-HL-001` | Highlight RelGeo source with readable semantic token output. | `✅ implemented` | `implemented` | `verified-local` | in scope | Highlighter emits `pre > code`, line wrappers, token spans, and stable classes; tests and site output assert token kinds. |
 | `MD-HL-002` | Keep partial or invalid source visible without crashing the build. | `✅ implemented` | `implemented` | `verified-local` | in scope | Token-service failures now produce a source-preserving `pre > code` fallback with `HIGHLIGHT_SERVICE_FAILED` diagnostic; strict mode remains the explicit throw path. |
 | `MD-HL-003` | Keep token classes, whitespace, line breaks, and copy/wrap behavior stable. | `✅ implemented` | `implemented` | `verified-local` | in scope | `rg-line`, `data-line`, token-kind classes, whitespace text nodes, and escaping are implemented and consumed by site CSS. |
-| `MD-HL-004` | Keep highlighting isolated from semantic resolution and preview success. | `🌗 partial` | `partial` | `partial-local` | boundary only — lexical contract follows language-service | The plugin uses language-service tokenization and no renderer; peer service failure now has a bounded source-preserving fallback, but no independent lexical fallback mode exists. |
+| `MD-HL-004` | Keep highlighting isolated from semantic resolution and preview success. | `✅ implemented` | `implemented` | `verified-local` | boundary only — lexical contract follows language-service | Explicit service opt-out now emits source-preserving lexical `pre > code` without core/renderer; service failure and strict behavior remain bounded by focused tests. |
 | `MD-DIAG-001` | Emit structured diagnostic code, severity, message, and location. | `✅ implemented` | `implemented` | `verified-local` | boundary only — vocabulary from spec/core | Both plugins serialize stable code, severity, message, phase, and fenced-block/source location in `data-relgeo-diagnostic`; focused tests cover preview and highlighter failures. |
 | `MD-DIAG-002` | Render actionable source/build diagnostics while retaining readable fallback. | `✅ implemented` | `implemented` | `verified-local` | in scope — host owns visual presentation | Preview errors retain visible fallback text and structured payload; highlighter failures preserve readable source, and the website consumer asserts successful output remains source-free. |
 | `MD-DIAG-003` | Preserve a valid preview when a runtime diagnostic is non-fatal. | `✅ implemented` | `implemented` | `verified-local` | in scope | Fixture 14 produces a stable `RUNTIME_CONSTRAINT_VIOLATION` warning while tolerant output retains the valid preview image; strict mode throws explicitly. |
 | `MD-DIAG-004` | Offer an explicit tolerant versus strict failure policy. | `✅ implemented` | `implemented` | `verified-local` | in scope | Both plugin boundaries document a tolerant default and strict policy; focused tests prove fallback versus deterministic `RemarkRelgeoError`/`RemarkRelgeoHlError` behavior. |
-| `MD-OPT-001` | Document option schema, defaults, and safe instance reuse. | `🌗 partial` | `partial` | `partial-local` | in scope | Interfaces and README expose options, but invalid values, unknown keys, and exhaustive defaults are not diagnosed or tested. |
+| `MD-OPT-001` | Document option schema, defaults, and safe instance reuse. | `✅ implemented` | `implemented` | `verified-local` | in scope | README/types document defaults and validation; invalid known values fail deterministically, unknown keys are ignored/not forwarded, and focused package tests cover the contract. |
 | `MD-OPT-002` | Pass through DSL version, profile, view, and sheet selection. | `🌗 partial` | `partial` | `partial-local` | in scope | Profile/sheet/unit pass through and core handles version; no plugin version/view option, and future version becomes a generic placeholder. |
 | `MD-OPT-003` | Configure controlled output/presentation and code-class behavior. | `🌗 partial` | `partial` | `partial-local` | in scope | Class prefixes and custom render hook are configurable; asset strategy/base URL is not, and custom SVG has bounded unsafe-pattern rejection rather than a general sanitizer. |
 | `MD-OPT-004` | Configure diagnostic and fallback policy for invalid input. | `✅ implemented` | `implemented` | `verified-local` | in scope | `failurePolicy` documents and tests tolerant fallback versus strict failure for preview errors; no release or deployment dependency is required. |
@@ -120,10 +120,13 @@ The join makes the current gap map explicit:
   `✅ implemented`. `MD-DIAG-003` uses core's retained-scene constraint
   violation as a warning payload; the preview image is not dropped in tolerant
   mode and strict mode remains an explicit caller policy.
-- The local package evidence is remark-relgeo 9/9 tests plus build/lint and
-  remark-relgeo-hl 6/6 tests plus build/lint. The browser/host boundary remains
-  `not-verified` where a standalone unified host or public registry consumer
-  was not run.
+- The current local package evidence is remark-relgeo 16/16 tests and
+  remark-relgeo-hl 10 Vitest tests plus 1 Node package-boundary test; the
+  shared real pipeline passes 298/298 assertions across 23 fixtures, and the
+  Astro consumer passes check/build/built-output assertions with 0 diagnostics
+  and 138 pages. The full cross-repo runner remains environment-unavailable on
+  this Node 22 host because it requires Node 24+, while registry/public and
+  browser-host evidence remain separate boundaries.
 - `MD-A11Y-003` is the only `➖` row because the current plugin boundary owns no
   interactive controls. It is not a substitute for any missing accessibility
   output capability.
@@ -131,9 +134,20 @@ The join makes the current gap map explicit:
   physical accessibility checks remain evidence limitations or deferred scope;
   they are not converted to implementation absence without a failed target
   observation.
+- The 2026-11-04 implementation refresh closes `MD-FENCE-001`,
+  `MD-FENCE-002`, `MD-FENCE-003`, `MD-PREVIEW-002`, `MD-HL-004`, and
+  `MD-OPT-001` with package source and focused tests. `MD-SSR-004` remains
+  `🌗 partial`/`unverified-external` because local pack succeeded but the fresh
+  temporary npm consumer could not complete in the current environment.
 
 This reconciliation is ready to feed the downstream Markdown status matrix and
 gap backlog. Implementation work remains separate from this evidence register.
+
+The pre-implementation contract and acceptance lock for the seven selected
+P0/P1 rows is recorded in the [Markdown gap backlog contract section](./implementation-gap-backlog.md#contract-and-acceptance-lock--selected-tranche-2026-11-04).
+It preserves the `0.5.x` compatibility line and separates local implementation
+acceptance from generic-host, registry, deployed, and physical-accessibility
+evidence that is not currently verified.
 
 ## 5. Primary evidence
 

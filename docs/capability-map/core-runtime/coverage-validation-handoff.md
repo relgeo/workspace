@@ -1,6 +1,6 @@
 # Core Runtime Coverage Validation and Handoff
 
-**Tanggal:** 2026-10-30  
+**Tanggal:** 2026-11-04
 **Boundary:** core runtime capability baseline and gap map  
 **Validation status:** coverage artifacts pass validation with explicit implementation and evidence limitations  
 **Important:** this handoff does not claim that the core surface is complete or
@@ -18,12 +18,31 @@ dasarnya:
 | [Expected-versus-observed reconciliation](./reconciliation.md) | One-to-one join and separated implementation/evidence/scope dimensions | PASS — 38 rows, no missing/extra/duplicate |
 | [Status matrix](./status-matrix.md) | Capability-first downstream status and action view | PASS — 38 rows, required decision columns present |
 | [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate work handoff for non-complete capabilities | PASS — 15 tasks for 15 non-complete expected IDs |
-| [`core/` source and tests](../../../core) plus the audit's local execution record | Implementation, tests, public exports, and runtime evidence | PASS — current audit records 47 test files/436 tests, rebuilt Core output, and current local run limits |
+| [`core/` source and tests](../../../core) plus the audit's local execution record | Implementation, tests, public exports, and runtime evidence | PASS — current execution records 48 test files/489 tests, rebuilt Core output, and explicit local run limits |
 | [Repository map](../../REPOSITORY-MAP.md) | Ownership and repository boundary | PASS — `core/` is mapped to `relgeo/core`; consumers remain separate |
 | [Capability inventory protocol](../INVENTORY-PROTOCOL.md) | Discovery categories, status/evidence axes, and expected-but-missing policy | PASS — applied to catalog, audit, reconciliation, matrix, and backlog |
 | [Maturation master plan](../../MATURATION-MASTER-PLAN.md) | Roadmap, fixture, canonical-evidence, and scope context | PASS — current claims are qualified against historical/canonical freshness |
 | [Compatibility matrix](../../compatibility-matrix.json) and [contract-versioning plan](../../plans/02-contract-versioning.md) | DSL line, legacy/future policy, package and consumer compatibility | PASS — active `0.5`, legacy `0.4`, regression `0.1–0.3`, future rejection retained |
 | [Fixture manifest](../../../fixtures/manifest.json) | Active, legacy, invalid, runtime, and capability provenance | PASS — fixture status is retained; candidate fixture 16 is not silently promoted |
+
+## 1.1 Current execution evidence — 2026-11-04
+
+The following commands were executed against the current working tree. They
+are local E1–E3 evidence only; they do not replace Node `>=24`, remote CI,
+registry/public-artifact, browser, or Flutter-host evidence.
+
+| Command | Result | Boundary checked |
+| --- | --- | --- |
+| `pnpm --dir core exec vitest run src/__tests__/parser.test.ts src/__tests__/resolver.test.ts src/__tests__/evaluator.test.ts src/__tests__/diagnostics.test.ts src/__tests__/structured_errors.test.ts src/__tests__/projection.test.ts src/__tests__/semantic_contract_fixtures.test.ts src/__tests__/constraints_diagnostics.test.ts src/__tests__/tolerant_resolver.test.ts src/__tests__/component.test.ts src/__tests__/repeat_divide.test.ts src/__tests__/split.test.ts src/__tests__/path_holes.test.ts src/__tests__/boolean.test.ts` | **PASS — 14 files, 175 tests** | Parser, resolver, evaluator, diagnostics, semantic projection, recovery, component/model, collection/result modes, holes, booleans, and constraint negatives. |
+| `pnpm --dir core test -- --run` | **PASS — 48 files, 489 tests** | Full Core regression suite, including all focused behavior and existing compatibility regressions. |
+| `node scripts/run-conformance-fixtures.mjs` | **PASS — 298 passed, 0 failed across 23 fixtures** | Shared active/legacy/invalid/runtime-diagnostic/runtime-error/capability fixtures, semantic snapshots, runtime error codes, CLI, language-service, renderer, Markdown, and highlighting projections. |
+| `pnpm --dir geometry run build && pnpm --dir core run lint && pnpm --dir core run build` | **PASS** | Geometry and Core declarations/build artifacts compile locally; generated output is verification-only and is not tracked. |
+| `node --input-type=module -e 'import{readFileSync as r}from"node:fs";const d=["implementation-audit.md","implementation-gap-backlog.md","reconciliation.md","status-matrix.md"].map(f=>r("docs/capability-map/core-runtime/"+f,"utf8"));const v=JSON.parse(r("fixtures/expected/14-v05-runtime-align-violation.json","utf8"));if(d.some(x=>!x.includes("CORE-CONSTRAINT-002"))||!d[0].includes("298 passed, 0 failed")||!d[1].includes("489 passed")||v.violations?.[0]?.origin!=="constraint")throw Error("coverage evidence mismatch");console.log("Core coverage evidence and constraint fixture synchronized")'` | **PASS** | Current audit/backlog/reconciliation/matrix entries and runtime violation fixture contain synchronized implementation evidence. |
+| `pnpm run compatibility:check` | **LIMITATION — 280 passed, 3 failed** | Active `0.5` line and behavior policy checks pass. The failures are existing metadata drift: Core manifest `0.5.2` vs matrix `0.5.1`, Playground Core dependency `^0.5.2` vs matrix `^0.5.0`, and Flutter app `1.0.1+1` vs matrix `1.0.0+1`; no Core behavior failure is inferred. |
+
+The compatibility policy remains the active DSL line `0.5`; local tests do not
+constitute a release or registry-install claim. The current Core Runtime matrix
+remains `23 ✔️`, `14 🌗`, `0 ❌`, and `1 ⚠️`.
 
 ## 2. Mechanical coverage checks
 
@@ -85,15 +104,18 @@ The audit defines the following evidence classes:
 | Class | Meaning | Current use |
 | --- | --- | --- |
 | `E1` | Source/static inspection | Core source, types, exports, package metadata, consumer call sites. |
-| `E2` | Local unit or fixture test | Current Core 47-file/436-test suite and shared fixture assertions. |
+| `E2` | Local unit or fixture test | Current Core 48-file/489-test suite and shared fixture assertions. |
 | `E3` | Local cross-surface/integration test | CLI, language-service, renderer, conformance, compatibility checks. |
 | `E4` | Named CI/canonical evidence | Historical/current canonical records are referenced only with revision/date qualification. |
 | `E5` | Public/registry evidence | Not inferred from local build; must be tied to a named artifact/run. |
 
 This validation confirms that the current audit produced `E1`–`E3` evidence,
-including direct local language-service (66 tests), renderer-svg (82 tests plus
-distribution-boundary), and CLI (9 tests) checks with consumer lint/build
+including direct local language-service (82 tests), renderer-svg (92 tests plus
+distribution-boundary), CLI (36 tests), and remark consumer checks with build
 passes.
+The 2026-11-04 execution adds current Core evidence of 14 focused test files /
+175 tests, 48 full-suite files / 489 tests, and 23 shared fixtures with 298
+conformance assertions passing.
 `E4`/`E5` are not promoted merely because the local commands passed. The
 master plan records older canonical and registry evidence, including a named
 canonical run and published package verification; those records remain
@@ -119,10 +141,11 @@ Limitations that remain open:
 1. Current local verification used Node `22.23.2`, while package metadata
    requests Node `>=24`.
 2. Current remote CI, a fresh registry install, and current public artifact
-   verification were not rerun in this validation turn.
+   verification were not rerun. The local compatibility check was rerun and
+   remains limited by the three metadata mismatches recorded in §1.1.
 3. Current browser E2E and Flutter host verification are not substituted by
    TypeScript local tests.
-4. 20 shared fixtures and 436 core tests are declared-surface evidence, not
+4. 23 shared fixtures and 489 core tests are declared-surface evidence, not
    exhaustive coverage of every DSL combination, error path, tolerance, or
    consumer.
 5. A passing documentation/coverage check does not close any implementation
@@ -134,7 +157,7 @@ Limitations that remain open:
 | --- | --- | --- | --- |
 | Does core own a public AST/source-range model, or only a semantic document model? | `CORE-INPUT-002`, `CORE-MODEL-002` | Parser and language-service currently divide syntax/source-location responsibility. | Choose ownership and specify public type/path contract. |
 | Does deterministic multi-diagnostic aggregation belong in core or language-service? | `CORE-DIAG-002` | Core ownership and a bounded ordering/truncation policy are now recorded in `collectDiagnostics`; broader fault coverage remains open. | Keep the core contract stable and expand executable coverage before promotion. |
-| What are severity and origin semantics for constraint violations? | `CORE-CONSTRAINT-002`, `CORE-DIAG-001` | Current violation shape lacks stable severity/origin fields. | Approve schema and consumer rendering contract. |
+| What are the consumer rendering semantics for constraint violation metadata? | `CORE-CONSTRAINT-002`, `CORE-DIAG-001` | Core now emits stable `severity`, `origin`, `expected`, and `actual` fields locally; cross-consumer rendering/parity remains open. | Review consumer schema and add comparator evidence. |
 | What is the canonical resolved-scene serialization/versioning contract? | `CORE-RESOLVE-005`, `CORE-DET-002`, `CORE-API-002` | Core now exposes a versioned projection and serializer; downstream consumer migration/comparator evidence remains open. | Review the projection contract and add consumer comparator evidence. |
 | Should fixture 16 become active cross-consumer contract? | `CORE-EVAL-002`, `CORE-UNIT-001`, `CORE-INT-004` | Local core/CLI evidence exists, but manifest and Flutter posture remain candidate/partial. | Human promotion decision plus shared consumer snapshots. |
 | Which current checkout/revision should be the canonical release evidence target? | `CORE-DET-001`, `CORE-COMPAT-003`, `CORE-INT-003` | Master plan contains named historical canonical/registry evidence; this turn did not rerun it. | Select target revision and run Node `>=24`, registry, CI, browser, and Flutter evidence. |

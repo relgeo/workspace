@@ -2,7 +2,7 @@
 
 > **Current package/evaluator checkpoint — 2026-10-31:** Current root gitlink is core `690278e02746c6c3470166cf233e1ec8b4a9eb11`, with the evaluator division-by-zero syntax-only fix in `31347e4`. That fix returns a non-zero placeholder when evaluation is only serving syntax validation; it avoids reporting division-by-zero for an expression that has not actually been evaluated and has a focused regression case. The operator reports that `@relgeo/core@0.5.2` was successfully published to npm. This Codex shell cannot find Node/pnpm, so I have not independently run the current core suite or a fresh registry install. The Node 22 results below are dated historical evidence, not current-pointer verification.
 
-**Audit checkpoint:** 2026-10-31
+**Audit checkpoint:** 2026-11-04
 **Status:** current local implementation/evidence audit; not a release, registry,
 CI, browser, or Flutter-host claim
 **Owner package:** `relgeo/core`
@@ -15,6 +15,20 @@ source/evidence log retained from the previous flat layout is the
 section traces remain useful historical evidence but are not treated as proof
 of the current checkout. The [reconciliation](./reconciliation.md) and
 [status matrix](./status-matrix.md) retain the one-to-one 38-ID result.
+
+## 2026-11-04 implementation tranche
+
+The current execution tranche made source and fixture changes for the selected
+constraint/error boundary; it did not promote any matrix row:
+
+| Gap | Concrete change | Local evidence | Remaining boundary |
+| --- | --- | --- | --- |
+| `CORE-CONSTRAINT-002` | `geometry/src/types.ts` now declares `severity`, `origin`, `expected`, and `actual`; `core/src/resolver/constraints.ts` emits those fields for every violation. | `core/src/__tests__/constraints_diagnostics.test.ts`; fixture `v05-runtime-align-violation`; `node scripts/run-conformance-fixtures.mjs` (`298 passed, 0 failed`). | Cross-consumer schema review and broader relation/topology coverage remain open. |
+| `CORE-DIAG-001` / `CORE-ERROR-003` | `core/src/errors.ts` maps previously uncatalogued raw evaluator/resolver phrases to registered actionable codes; the path-parameter failure now emits `INVALID_VALUE` rather than an unregistered code. | `core/src/__tests__/diagnostics.test.ts`, `structured_errors.test.ts`; `pnpm --dir core run lint`; `pnpm --dir core test -- --run` (`48 files, 489 tests`). | Exhaustive raw-throw inventory and complete source-range mapping remain open; `CORE-ERROR-003` stays `broken`. |
+
+Generated `dist/` output was used only for local build/conformance execution and
+was not added to the tracked tree. The status matrix remains `23 ✔️`, `14 🌗`,
+`0 ❌`, and `1 ⚠️`.
 
 ## Audited boundary and method
 
@@ -38,14 +52,14 @@ the inspected working tree, not a committed or published artifact.
 | Command / source | Result | Evidence boundary and limitation |
 | --- | --- | --- |
 | `pnpm run lint` in `core/` | **PASS — TypeScript `tsc --noEmit`** | Current working-tree source and declarations type-check locally. |
-| `pnpm test` in `core/` | **PASS — 47 test files, 436 tests** | Parser, validator, evaluator, graph, resolver, units, constraints, structured-error, diagnostic-aggregation, and projection tests execute locally. |
+| `pnpm test` in `core/` | **PASS — 48 test files, 489 tests** | Parser, validator, evaluator, graph, resolver, units, constraints, structured-error, diagnostic-aggregation, and projection tests execute locally. |
 | `pnpm run build` in `core/` | **PASS — CJS, ESM, and declaration output** | Rebuilt the local Core `dist/` used by the subsequent conformance run; this is not package publication evidence. |
-| `pnpm test` in `language-service/` | **PASS — 1 test file, 66 tests** | Direct diagnostic/editor consumer tests pass against the local Core workspace dependency. |
-| `pnpm test` and `pnpm run test:dist` in `renderer-svg/` | **PASS — 82 tests plus 1 distribution-boundary test** | Renderer semantic projection and built-package boundary remain compatible locally. |
-| `pnpm test` in `cli/` | **PASS — 1 test file, 9 tests** | CLI parse/resolve/error projection remains compatible with the rebuilt Core output. |
+| `pnpm test` in `language-service/` | **PASS — 2 test files, 82 tests** | Direct diagnostic/editor consumer tests pass against the local Core workspace dependency. |
+| `pnpm test` and `pnpm run test:dist` in `renderer-svg/` | **PASS — 92 tests plus 1 distribution-boundary test** | Renderer semantic projection and built-package boundary remain compatible locally. |
+| `pnpm test` in `cli/` | **PASS — 36 tests** | CLI parse/resolve/error projection remains compatible with the rebuilt Core output. |
 | Consumer `lint`/`build` in `language-service/`, `renderer-svg/`, and `cli/` | **PASS — TypeScript checks and local package builds** | Local consumer artifacts compile; this is not registry-install or production-host evidence. |
-| `node scripts/run-conformance-fixtures.mjs` | **PASS — 260/260 across 20 fixtures** | Active, legacy, invalid, runtime-diagnostic, runtime-error, renderer, language-service, highlighting, preview, Markdown, and CLI projections pass from local built artifacts. |
-| `pnpm run compatibility:check` | **PASS — 283/283** | Compatibility line, package metadata, dependency ranges, fixture policy, and consumer declarations pass locally. |
+| `node scripts/run-conformance-fixtures.mjs` | **PASS — 298/298 across 23 fixtures** | Active, legacy, invalid, runtime-diagnostic, runtime-error, renderer, language-service, highlighting, preview, Markdown, and CLI projections pass from local built artifacts. |
+| `pnpm run compatibility:check` | **LIMITATION — 280 passed, 3 failed** | Active DSL policy checks pass; three package/application metadata mismatches remain and are not inferred as Core behavior failures. |
 | Expected catalog → reconciliation → matrix | **PASS — 38/38, no missing/duplicate/extra IDs** | Status view is 23 `✔️`, 14 `🌗`, 0 `❌`, and 1 `⚠️`; scope/evidence findings remain separate. |
 
 All commands ran with Node `22.23.2` while the workspace requests Node
@@ -63,11 +77,11 @@ independent commands:
 | Boundary | Command | Recorded result |
 | --- | --- | --- |
 | Core source | `cd core && pnpm run lint` | TypeScript check passed. |
-| Core source | `cd core && pnpm test` | 47 test files and 436 tests passed. |
+| Core source | `cd core && pnpm test` | 48 test files and 489 tests passed. |
 | Core package | `cd core && pnpm run build` | CJS, ESM, and declaration builds passed. |
-| Direct consumers | `pnpm test`, `pnpm run lint`, and `pnpm run build` in `language-service/`, `renderer-svg/`, and `cli/` | Language service 66 tests; renderer 82 tests plus 1 distribution-boundary test; CLI 9 tests; consumer checks/builds passed. |
-| Shared integration | `node scripts/run-conformance-fixtures.mjs` | 260/260 checks passed across 20 fixtures. |
-| Compatibility | `pnpm run compatibility:check` | 283/283 checks passed. |
+| Direct consumers | `pnpm test`, `pnpm run lint`, and `pnpm run build` in `language-service/`, `renderer-svg/`, and `cli/` | Language service 82 tests; renderer 92 tests plus 1 distribution-boundary test; CLI 36 tests; consumer checks/builds passed. |
+| Shared integration | `node scripts/run-conformance-fixtures.mjs` | 298/298 checks passed across 23 fixtures. |
+| Compatibility | `pnpm run compatibility:check` | 280 checks passed, 3 metadata-drift checks failed; no Core behavior failure inferred. |
 
 Revision and working-tree boundary:
 

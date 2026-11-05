@@ -6,6 +6,28 @@
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
 **Required context:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)
 
+## Current local validation overlay — 2026-11-05
+
+The implementation tranche was revalidated at the local Flutter child pointer
+`9816b47744748c8ac537b1e3a15f083f17c64365` (root workspace pointer
+`f42eeafe42489c3daee6def71958bbebdd3664dd`). These results supersede neither
+the historical CI/release claims above nor the native-host evidence boundary.
+
+| Check | Result | Evidence / interpretation |
+| --- | --- | --- |
+| `flutter analyze --no-pub` | **PASS** | No issues found. |
+| Focused Workbench regression/conformance suite | **PASS — 135 tests passed** | Covers recovery, recent-file/file operations, bounded parameters, invalid-input diagnostics, current v0.5 semantic fixtures, inspector/graph/selection, lifecycle/window policy, keyboard/semantics, viewport, SVG export, and editor behavior. |
+| Core/Geometry/MCP package consumers | **PASS — 489 / 91 / 42 tests** | Local downstream package evidence; no clean-checkout, registry, or public-install claim. |
+| `flutter test --no-pub --reporter compact` | **PARTIAL — 326 passed, 1 failed** | The only observed failure is the existing `test/mcp_server_io_test.dart` HTTP MCP cast at line 134; this is recorded as a separate MCP boundary issue, not as a failure of the changed Workbench source. |
+| `flutter devices` | **NOT VERIFIED — environment unavailable** | The managed Flutter SDK could not write `flutter/bin/cache/engine.stamp` (`Operation not permitted`); no host-runtime or packaged-artifact claim is inferred. |
+| Compatibility/catalog/provenance assertion | **PASS** | Node assertion confirms compatibility line `0.5`, public package line `0.5.x`, 61 baseline capability IDs represented in the status matrix, and required contract markers in the backlog. |
+| Changed-tree hygiene | **PASS** | `git -C flutter diff --check` and status inspection show only intended Flutter source/tests; no generated, cache, release, or publish artifact was introduced. |
+
+The local evidence closes the relevant source/test verification boundary only.
+Native picker, forced relaunch, OS accessibility/shortcut behavior, packaged
+desktop launch, signing, and release installation remain `unverified` or
+deferred according to the capability matrix.
+
 ## 1. Hasil validasi
 
 Artefak Flutter Workbench siap untuk review manusia sebagai dokumentasi,

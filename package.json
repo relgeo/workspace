@@ -11,6 +11,7 @@
     "install:workspace": "pnpm install --frozen-lockfile",
     "bootstrap": "node scripts/bootstrap.mjs",
     "bootstrap:contract:test": "node scripts/test-bootstrap-and-evidence-contract.mjs",
+    "public-boundary:contract:test": "node scripts/test-public-boundary-contract.mjs",
     "verify:baseline": "node scripts/verify-baseline.mjs",
     "verify:baseline:strict": "node scripts/verify-baseline.mjs --strict",
     "verify:baseline:failure": "node scripts/test-baseline-failure.mjs",

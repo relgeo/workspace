@@ -1,6 +1,6 @@
 # RelGeo CLI expected-versus-observed reconciliation
 
-> **Coverage statement — 2026-11-03.** This document is a one-to-one join of
+> **Coverage statement — 2026-11-04.** This document is a one-to-one join of
 > the 35 expected capability IDs in the CLI catalog with the observed rows in
 > the CLI implementation audit. It does not add observed-only capabilities,
 > remove expected rows, or convert an absent implementation into `➖` merely
@@ -48,10 +48,34 @@ Important distinction:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 30 implemented, 3 partial, 0 broken, 0 absent, 2 deferred |
+| Result counts | 32 implemented, 1 partial, 0 broken, 0 absent, 2 deferred |
 | Implementation/evidence/scope columns present on every row | Yes |
 | Audit trace present on every row | Yes; each trace points to the corresponding audit ID and evidence section |
-| Current evidence refresh | Yes; audit §6 records the 2026-11-03 CLI revalidation (36/36), typecheck, build, conformance (298/298), and boundary checks; Node 24/CI/registry/cross-OS evidence remains separate and unverified |
+| Current evidence refresh | Yes; audit §6 records the 2026-11-04 CLI revalidation (38/38), typecheck, build, CLI pack boundary (8 files), conformance (298/298), and consumer checks; Node 24/CI/registry/cross-OS evidence remains separate and unverified |
+
+## Contract lock for selected render gaps — 2026-11-04
+
+This lock records the existing CLI boundary before implementation work. It does
+not add a command or option, change diagnostic/exit-code meaning, or move the
+package off the `0.5.x` compatibility line. CLI orchestration remains owned by
+`relgeo/cli`; document evaluation and units remain owned by `spec/id/` and
+`@relgeo/core`; sheet/view and SVG semantics remain owned by
+`@relgeo/renderer-svg`. The compatibility line and release rules are taken
+from [`docs/compatibility-matrix.json`](../../compatibility-matrix.json), while
+the evidence separation follows the
+[`INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md).
+
+| Gap | Locked boundary and success behavior | Failure / edge behavior | Acceptance evidence expected | Normative / source-of-truth record |
+| --- | --- | --- | --- | --- |
+| `CLI-RENDER-002` profile, parameter, and unit selection | `compile <file>` and `check <file>`/`validate <file>` accept `--profile <name>`, repeatable `--param <key=value>`, and `--unit <unit>`. Supported target units remain `px`, `mm`, `cm`, `m`, and `in`; explicit parameter overrides are forwarded together with the selected profile. `compile` emits the requested resolved artifact; `check` resolves and reports success without a final artifact. | Malformed or empty parameter tokens fail with `INVALID_PARAMETER_OVERRIDE` and exit `2`; unknown parameters fail with `UNKNOWN_PARAMETER` and exit `2`; unknown profiles fail with `UNKNOWN_PROFILE` and exit `2`; unsupported units fail with `UNKNOWN_UNIT` and exit `2`. Values remain typed by the existing CLI parser: `true`/`false`, numeric literals, or non-empty strings. No invalid intent may be silently ignored. | `cli/src/__tests__/cli.test.ts`: string-like override, combined profile/override/unit, malformed/unknown parameter, unknown profile/unit, and check/profile cases; `fixtures/reference/16-v05-evaluator-units-candidate.yaml`; manifest `cliContractCoverage.renderOptions`; `pnpm test` in `cli/`. | Expected rows `CLI-RENDER-002` in the catalog and status matrix; `cli/src/index.ts` option/validation boundary; `cli/docs/README.md` option list; semantic authority `spec/id/` + `@relgeo/core`; compatibility line `0.5` and package policy `0.5.x`. |
+| `CLI-RENDER-003` sheet/view targeting | `compile <file> --format svg` accepts `--sheet <id>` and `--view <id>`. A valid sheet selects that SVG sheet; a valid view selects its placement, auto-selecting the only matching sheet when unambiguous. Output is SVG only and contains the selected sheet/view projection. | `--sheet`/`--view` with a non-SVG format fails with `SHEET_FORMAT_MISMATCH`/`VIEW_FORMAT_MISMATCH` and exit `2`; unknown views fail with `UNKNOWN_VIEW` and exit `2`; an unknown selected sheet fails with `MISSING_SHEET` and exit `4`; a view on the wrong sheet fails with `VIEW_NOT_ON_SHEET` and exit `4`; an ambiguous view without `--sheet` fails with `VIEW_REQUIRES_SHEET` and exit `2`. Failures occur before output-file success is reported and must not leave a misleading artifact. | `cli/src/__tests__/cli.test.ts`: valid view selection, unknown sheet, unknown view, wrong-sheet, and non-SVG selector cases; manifest `cliContractCoverage.renderOptions`; `fixtures/reference/09-multi-sheet-title-block.yaml` for selector coverage; exact SVG/conformance checks via `pnpm test` in `cli/` and the shared fixture runner. | Expected row `CLI-RENDER-003` in the catalog and status matrix; `cli/src/index.ts` selector validation/selection boundary; `cli/docs/README.md` SVG option contract; semantic/render authority `spec/id/` + `@relgeo/renderer-svg`; compatibility line `0.5` and package policy `0.5.x`. |
+
+The shared fixture manifest is evidence scope, not a replacement for the
+normative spec or renderer contract. In particular, the selector fixture is
+declared as supported legacy coverage; expanding it to an active 0.5 fixture
+requires the fixture status/promotion rules to be updated separately. Local
+tests do not claim Node 24, CI, registry, public-package, or cross-OS/TTY
+evidence.
 
 ## 3. One-to-one reconciliation register
 
@@ -76,8 +100,8 @@ Important distinction:
 | `CLI-VALID-001` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; CLI orchestration, core/spec semantics | Audit §5 `CLI-VALID-001`; `check`/`validate`; CLI tests and runtime fixtures |
 | `CLI-VALID-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; alias compatibility owned by CLI | Audit §3/§5 `CLI-VALID-002`; Commander alias and `validate --help` |
 | `CLI-RENDER-001` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; core/renderer remain semantic owners | Audit §5 `CLI-RENDER-001`; compile pipeline; conformance 298/298 |
-| `CLI-RENDER-002` | `🌗 partial` | `partial` | `partial-local` | `in scope`; option breadth and negative cases incomplete | Audit §5 `CLI-RENDER-002`; profile/param/unit options; limited tests/fixture |
-| `CLI-RENDER-003` | `🌗 partial` | `partial` | `partial-local` | `in scope`; sheet/view mapping bounded to renderer path | Audit §5 `CLI-RENDER-003`; `--sheet`; missing-sheet smoke regression; valid/selector matrix remains incomplete |
+| `CLI-RENDER-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI option matrix closed at the documented boundary; core/spec retain semantics | Audit §5/§6 `CLI-RENDER-002`; v0.5 fixture, compile/check profile-plus-override/unit matrix, strict failures |
+| `CLI-RENDER-003` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; CLI selector mapping and failure transport closed; renderer retains SVG semantics | Audit §5/§6 `CLI-RENDER-003`; CLI sheet validation, valid sheet/view, wrong-sheet/unknown-view/format mismatch, and no-artifact tests |
 | `CLI-OUT-001` | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; core scene semantics, CLI serialization boundary | Audit §5 `CLI-OUT-001`; JSON test; no separate CLI schema |
 | `CLI-OUT-002` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; renderer owns SVG semantics | Audit §5 `CLI-OUT-002`; SVG test and exact fixture comparisons |
 | `CLI-OUT-003` | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; core owns graph semantics | Audit §5 `CLI-OUT-003`; graph test; no separately versioned graph schema |
@@ -110,7 +134,7 @@ Important distinction:
 | ID | Reconciliation result | Implementation status | Evidence status | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `CLI-PACK-001` | `✔️ implemented` | `implemented` | `environment-limited` | `in scope`; npm binary/package boundary | Audit §5 `CLI-PACK-001`; binary/dist/package metadata; registry install unverified |
-| `CLI-PACK-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; release guard owns tarball boundary | Audit §6 `CLI-PACK-002`; release audit 106/106; CLI pack 8 files |
+| `CLI-PACK-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; release guard owns tarball boundary | Audit §6 `CLI-PACK-002`; prior scoped release audit 106/106; current CLI pack boundary 8 files; consumer refresh §5 |
 | `CLI-PACK-003` | `✔️ implemented` | `implemented` | `environment-limited` | `in scope`; CLI package/version compatibility; root cross-repo gate remains outside CLI | Audit §6 `CLI-PACK-003`; CLI-specific compatibility rows pass; root gate has unrelated core/playground/Flutter failures |
 | `CLI-PACK-004` | `🌗 partial` | `partial` | `environment-limited` | `in scope`; manual release/recovery exists, current registry proof absent | Audit §5/§6 `CLI-PACK-004`; release scripts; Node24/public registry unverified |
 | `CLI-PACK-005` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; workspace owns fixture orchestration, spec owns semantics | Audit §6 `CLI-PACK-005`; conformance 298/298, exact CLI output/error checks |
@@ -128,10 +152,29 @@ These findings qualify the join but do not replace any of its 35 expected rows.
 | Default release audit with repository npm cache | Evidence/environment | `? unverified` for that attempt because npm cache permissions caused `EPERM`; scoped temporary cache rerun passed and is the valid local pack evidence. |
 | Historical master-plan and CI/public claims | Evidence freshness | Historical context only; they do not upgrade current local evidence. |
 
-## 5. Handoff
+## 5. Consumer and integration boundary refresh — 2026-11-04
 
-The reconciliation is documentation-only and does not claim Node 24, registry,
-CI, or cross-OS parity. The current local implementation rows are reconciled
-against the expected catalog; the remaining partial rows are render-option
-breadth and release verification, while watch/rebuild and daemon/JSON-RPC remain
-explicitly held by scope.
+This refresh checks the selected CLI rows at the downstream boundaries that are
+available in the current checkout. It separates local package/conformance
+evidence from canonical CI and public-registry evidence; no historical CI or
+public result is reused as current-pointer proof.
+
+| Boundary | Result | Evidence class and limitation |
+| --- | --- | --- |
+| CLI package tarball | PASS — `npm pack --dry-run --json` reports `@relgeo/cli@0.5.0` with 8 files: `LICENSE`, `README.md`, `bin/relgeo.js`, four `dist/*` files, and `package.json` | Local E2 package boundary; no publish or registry install claim |
+| Shared downstream fixture consumers | PASS — `pnpm run conformance:fixtures` reports 298 passed, 0 failed across 23 fixtures, including exact CLI SVG/error output and semantic serialization/provenance assertions | Local E3 cross-surface/conformance evidence |
+| Current full local integration gate | ENVIRONMENT UNAVAILABLE — `pnpm run integration:gate -- --local` exits 2 before stages because the host provides Node 22.23.2 and the runner requires Node 24+ | Not a consumer parity failure; package/consumer stages did not execute through this runner |
+| Repository-wide release audit | ENVIRONMENT/WORKSPACE-LIMITED — `pnpm run release:audit` records 63 passed and 8 failed; failures include npm cache `EPERM`/log-write errors and a separate core version mismatch outside the selected CLI rows | Not used as a CLI consumer failure; the scoped CLI pack result above is the applicable local artifact evidence |
+| Canonical CI and public registry | Not rerun for this working tree | Historical records in [`docs/plans/01-cross-repo-integration-gate.md`](../../plans/01-cross-repo-integration-gate.md) remain revision-bound; current CI/public evidence is unverified |
+
+Conclusion for the selected CLI boundary: no local downstream consumer
+regression was observed. The implementation and fixture changes remain
+compatible with the active `0.5.x` package shape, while the unavailable Node
+24, CI, registry, and cross-OS environments remain explicitly deferred.
+
+## 6. Handoff
+
+The reconciliation records the source/test/fixture implementation closure for
+the two selected render-option rows and still does not claim Node 24, registry,
+CI, or cross-OS parity. The remaining partial row is release verification,
+while watch/rebuild and daemon/JSON-RPC remain explicitly held by scope.

@@ -70,11 +70,18 @@ available Node `22.23.2`, so Node-version parity remains environment-limited.
 
 ## 3. Task-bound selection and accepted contracts
 
-The active implementation tranche selects seven relevant rows from the expected
+The 2026-11-04 P0/P1 triage selects seven relevant rows from the expected
 catalog and this audit. The table is the explicit owner/source/acceptance
-boundary for the downstream implementation and verification tasks. All selected rows are
-owned at the browser-IDE boundary by `relgeo/playground`; DSL, core, language-
-service, and renderer packages remain semantic owners where referenced.
+boundary for the downstream implementation and verification tasks. Six rows
+are implementation-closable at the bounded Playground source/browser surface;
+`PG-DELIVERY-001` is an external-evidence-only delivery follow-up. All selected
+rows are owned at the browser-IDE boundary by `relgeo/playground`; DSL, core,
+language-service, and renderer packages remain semantic owners where referenced.
+
+No whole-row scope-deferred item is selected. Native AT, physical handset, and
+hosted/public checks remain separately labeled evidence or scope boundaries.
+Selection does not change any result, implementation status, or evidence
+status below.
 
 | ID | Owner | Source paths | Acceptance behavior |
 | --- | --- | --- | --- |
@@ -91,7 +98,42 @@ closure requires a child-revision/build/hosted-artifact trace; a local build
 alone cannot close it. The theme contract above is accepted task data; it does
 not open a separate human decision.
 
-### 3.1 Active evidence contract
+### 3.1 Contract and acceptance lock — 2026-11-04
+
+This lock freezes the acceptance boundary before implementation changes. The
+Playground is a consumer/presentation surface: it must continue to consume the
+RelGeo DSL `0.5.x` contract, while normative language meaning remains owned by
+`spec/id/`. The compatibility authority is
+[`docs/compatibility-matrix.json`](../../compatibility-matrix.json): active
+contract `0.5`, public package line `0.5.x`, omitted document version defaults
+to `0.5`, and breaking language changes require a decision record and the next
+compatibility line. No row below authorizes a public DSL, package, or protocol
+contract change.
+
+Evidence labels follow [`INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md):
+`E1` source/static, `E2` local tests/fixtures, `E3` local cross-surface or
+artifact checks, and `E5` public/deployed evidence. Missing browser, native,
+canonical, or public environments remain `not verified`/`environment-limited`;
+they do not become implementation failures.
+
+| ID | Success behavior | Failure / edge behavior | Expected evidence before status change |
+| --- | --- | --- | --- |
+| `PG-LIFE-002` | Bootstrap visibly progresses through `loading`, then `empty` when no local files exist or `ready` when the workspace/example is usable; editor, file actions, preview controls, and shortcuts become interactive only after bootstrap. Resolver `resolving` remains a separate lifecycle. | Delayed IndexedDB/bootstrap must not look like `empty`; storage-open/quota failure is `error`, not an empty workspace; parser/resolve errors remain distinct; source and focus are not discarded during recovery. | `E1` `App.tsx`/`playground-status.ts` state model; `E2` `playground-status.test.ts` all phases and gating; `E3` delayed browser startup trace in `playground/e2e/playground.spec.ts`. If preview binding remains `EPERM`, browser evidence is `not verified`. |
+| `PG-CANVAS-005` | Reset viewport returns the camera to the deterministic baseline and changes camera state only; source, active file identity, dirty state, selection, and persisted content remain unchanged. Repeated reset is idempotent. | Reset during resolve, with no scene, or after resize must not mutate source/document state, trigger an unintended save, or clear selection; invalid camera values fall back to the baseline. | `E1` `view-state.ts`, `preview-toolbar.ts`, `App.tsx`; `E2` `view-state.test.ts`; `E3` browser command/reset flow in `playground/e2e/playground.spec.ts`, with preservation assertions. |
+| `PG-KEY-001` | Documented command bindings and accessible controls reach primary file, surface, viewport, diagnostics, drawer/panel, and confirmation actions; commands preserve focus semantics and work alongside menus. | In editor/text-entry focus, printable input and browser-reserved keys are not hijacked; Escape closes the relevant dialog/drawer and returns focus; unknown or unavailable commands are safe no-ops. | `E1` `keyboard-commands.ts`/command map and UI controls; `E2` `keyboard-commands.test.ts`; `E3` keyboard traversal in `playground/e2e/playground.spec.ts`. Browser execution remains `not verified` when the runner cannot bind. |
+| `PG-A11Y-001` | Supported-browser DOM exposes named landmarks, roles, selected/expanded/pressed/value states, live status/error announcements, focus return/traps, and source↔preview navigation. | Missing names/states, stale live announcements, focus loss after menu/dialog actions, or broken source/preview jumps fail acceptance; native VoiceOver/TalkBack/AX behavior is never inferred from static checks. | `E1` `audit-ux-contract.mjs` and component source; `E2` focused accessibility/unit checks; `E3` DOM/keyboard browser traversal. Native AT/device evidence remains separately `deferred` or `not verified`. |
+| `PG-A11Y-002` | Supported browser breakpoints provide readable contrast/focus treatment, usable target sizes, reduced-motion behavior, and non-gesture alternatives for primary actions. | `prefers-reduced-motion` removes nonessential transitions; forced-colors/focus remains perceivable; narrow supported layouts do not hide controls; physical handset/touch behavior is not claimed without device evidence. | `E1` tokens/CSS/toolbar and UX audit; `E2` static contract checks; `E3` supported-breakpoint/mobile browser checks when available. Physical handset evidence remains `deferred-device`. |
+| `PG-THEME-001` | First load uses `system` and follows `prefers-color-scheme`; explicit `light` and `dark` overrides apply to editor, canvas, controls, and diagnostics and persist browser-locally when storage is available. | Invalid/missing stored preference falls back to `system`; storage failure does not block the Playground; changing theme does not alter source, camera, selection, or file identity; all surfaces remain readable. | `E1` `theme.ts`, tokens, and App wiring; `E2` `theme.test.ts`; `E3` browser system-preference, override, and reload checks in `playground/e2e/playground.spec.ts`. |
+| `PG-DELIVERY-001` | Hosted `/playground/` serves the exact tested child revision and assembled artifact; route, title, runtime assets, provenance, and share flow match the traceable build tuple. | Revision/pointer drift, missing/stale assets, wrong route/title, or hosted smoke failure keeps delivery partial; inaccessible Pages/network or unavailable Node `>=24` is recorded as `environment-limited`, not as a local implementation defect. | `E3` `playground:artifact:check`, `test:pages-artifact`, and provenance reports for the assembled artifact; `E4` canonical build provenance when available; `E5` hosted route/title/assets and public smoke/share run. |
+
+The lock is intentionally narrower than a release or deployment gate. Local
+source/test evidence can change the implementation finding, but only the
+corresponding browser, native, canonical, or hosted evidence can change its
+separate evidence axis. A future contract change must update the normative
+source and compatibility decision first; this Playground lock cannot authorize
+one implicitly.
+
+### 3.2 Active evidence contract
 
 | ID | State/evidence boundary frozen for the active task |
 | --- | --- |
@@ -142,7 +184,7 @@ new decision surface.
 | `PG-A11Y-002` | Provide reduced motion, focus/contrast tolerance, target usability, and non-gesture actions | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; source/static UX contract is implemented, physical evidence pending | Audit §3 `PG-A11Y-002`; reduced motion, forced-colors fallback, targets, and non-gesture alternatives |
 | `PG-SHARE-001` | Share source through URL/hash with feedback, clipboard fallback, and size guard | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no account/cloud collaboration | Audit §3 `PG-SHARE-001`; Base64URL, length guard, history and clipboard |
 | `PG-SHARE-002` | Keep shared source transient until explicit Save as, with distinct recovery states | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no silent local overwrite | Audit §3 `PG-SHARE-002`; Shared draft, Save as, invalid/oversized hash paths |
-| `PG-DELIVERY-001` | Serve the tested build consistently at hosted `/playground/` | `🌗 partial` | `implemented` | `environment-limited` | `in scope`; delivery guardrail spans Playground and Pages | Local assembled artifact, route/title/assets, child revision, and all-file digest assertions pass; hosted public parity/smoke remains unverified |
+| `PG-DELIVERY-001` | Serve the tested build consistently at hosted `/playground/` | `🌗 partial` | `implemented` | `environment-limited` | `in scope`; delivery guardrail spans Playground and Pages | Local assembled artifact and route/title/assets/digest comparison were prepared, but provenance assertions reject current child/baseline/Pages pin drift; hosted public parity/smoke remains unverified |
 
 ## 5. Findings and handoff
 
@@ -152,7 +194,7 @@ new decision surface.
 | --- | --- | --- |
 | `🌗 partial` | `PG-LIFE-002` | Explicit source phases and interaction gating are implemented and unit-tested; the delayed browser startup trace remains unavailable because the preview server cannot bind. |
 | `🌗 partial` | `PG-A11Y-001` | Landmarks, names, states, announcements, focus return, and source/preview navigation are implemented and statically audited; browser traversal and native AT evidence remain incomplete. |
-| `🌗 partial` | `PG-DELIVERY-001` | Fresh local assembled artifact is verified with revision/file-digest assertions; hosted Pages parity and public smoke are not current-verified. |
+| `🌗 partial` | `PG-DELIVERY-001` | Local assembled artifact is available and its content comparison was attempted; current revision/file-digest gate remains unverified because baseline/Pages pins still reference `c7cec4b…` while the checkout uses `47fd715…`; hosted Pages parity and public smoke are not current-verified. |
 
 ### Evidence and scope limitations
 

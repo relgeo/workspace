@@ -47,6 +47,12 @@ mengubah expected ownership: `spec/id/` tetap normative source of truth, dan
 Node 24 CI, public/browser/native-host evidence, publishing, serta deployment
 tetap bukan prerequisite.
 
+Triage lanjutan pada 2026-11-04 mencatat seluruh P0/P1 implementation-closable
+rows—termasuk `LANG-002`, `DOC-003`, `DECL-001`, `DECL-004`, dan `TYPE-001`—di
+[implementation-gap backlog](./implementation-gap-backlog.md#p0p1-implementation-closability-triage).
+Triage tersebut adalah handoff pekerjaan, bukan perubahan pada expected status
+`PENDING-AUDIT` dan bukan klaim bahwa bounded tranche sudah bertambah.
+
 ### 1.1 Evidence boundary used to build the expected catalog
 
 Katalog ini sengaja dibangun dari expectation sources berikut. `spec/id/` adalah

@@ -8,6 +8,26 @@
 **Important:** handoff ini tidak menyatakan language-service surface lengkap atau
 bahwa capability yang masih partial, absent, deferred, atau broken sudah selesai.
 
+## Current verification refresh — 2026-11-04
+
+Refresh ini mencatat evidence executable untuk tranche implementasi terbaru. Ia
+tidak mengubah status capability menjadi selesai dan tidak menggantikan
+evidence eksternal atau keputusan scope.
+
+| Check | Exact command | Result | Boundary / limitation |
+| --- | --- | --- | --- |
+| Language-service protocol, range, completion, diagnostic, recovery, and provenance tests plus type/build regression | `npm test && npm run lint && npm run build` (cwd `language-service`) | PASS — 2 files, 90 tests; TypeScript check and CJS/ESM/DTS build pass | Local Node checkout only; registry/public delivery not exercised |
+| Playground worker and consumer regression | `npm test && npm run lint && npm run build` (cwd `playground`) | PASS — 17 files, 106 tests; ESLint, TypeScript, Vite build, and build provenance pass | Browser/public route, native host, and current CI not exercised; Vite emitted a non-blocking chunk-size warning |
+| Cross-surface conformance fixtures | `node scripts/run-conformance-fixtures.mjs > /tmp/relgeo-language-service-conformance.log 2>&1; rc=$?; tail -n 40 /tmp/relgeo-language-service-conformance.log; exit $rc` (cwd repository root) | PASS — 298 passed, 0 failed across 23 fixtures | Local fixtures and CLI/service boundary only; does not prove MCP semantic adapter parity |
+| Schema drift and diff hygiene | `node scripts/check-language-service-schema-drift.mjs && git diff --check && git -C language-service diff --check && git -C playground diff --check` (cwd repository root) | PASS — root/object schema differences empty; all diff checks clean | Checks the active local snapshot, not a released package |
+| MCP Dart serialization/runtime suite | `dart test` (cwd `mcp`) | NOT VERIFIED — Flutter SDK attempted to update `cache/engine.stamp` and was denied by the environment | Environment unavailable; this is not a target parity failure |
+
+The checkout reports Node 22.23.2 while repository metadata requests Node 24 or
+newer. Browser/public deployment, registry installation, current remote CI,
+native host accessibility, and live ChatGPT Desktop interoperability remain
+unverified. Generated build output remains ignored and is not used as tracked
+evidence.
+
 ## 1. Validation scope
 
 Artefak dan evidence berikut diperiksa sebagai satu rantai, tanpa menjadikan
@@ -19,7 +39,7 @@ matrix lama sebagai sumber enumerasi expected:
 | [Implementation audit evidence](./archive/implementation-audit-legacy.md) | Discovery coverage S/T/C/P/D/O, source/test/consumer evidence, status, limitation, and gap map | PASS — 33/33 expected IDs mapped; local evidence limits retained |
 | [Expected-versus-observed reconciliation](./reconciliation.md) | One-to-one join with separate implementation, evidence, and scope dimensions | PASS — 33 rows; no missing, extra, or duplicate ID |
 | [Current status matrix](./status-matrix.md) | Capability-first reporting view with status, evidence, gap, owner, dependency, risk, and next action | PASS — 33 rows and all required decision columns |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate handoff for partial, absent, and confirmed broken implementation work | PASS — 23 tracked tasks for 20 partial and 2 absent rows, with one closed local row retained |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate handoff for partial, absent, and confirmed broken implementation work | PASS — 23 tracked tasks for 22 partial and 0 absent rows, with one closed local row retained |
 | [Historical capability matrix](./capability-matrix.md) | Historical evidence only; not the expected catalog source | PASS — retained and explicitly labeled historical in the current index |
 | [Repository map](../../REPOSITORY-MAP.md) | Repository ownership and language-service/consumer boundary | PASS — language-service, Playground, Markdown, MCP, and Flutter owners are distinct |
 | [Maturation master plan](../../MATURATION-MASTER-PLAN.md) | Product journey, layer ownership, roadmap, canonical evidence, and scope context | PASS — claims remain qualified by evidence freshness |
@@ -39,8 +59,8 @@ matrix lama sebagai sumber enumerasi expected:
 | Audit trace links | 33/33 | Every reconciliation row links to its current audit ID |
 | Required artifact links | PASS | Catalog, audit, reconciliation, current matrix, backlog, repository map, master plan, and compatibility matrix are linked |
 
-The counts are deliberately not a completeness claim. The 2026-11-03 overlay updates the matrix to 9 implemented, 20 partial,
-2 absent, 2 not-applicable, 0 deferred, and 0 broken. The backlog tracks 23
+The counts are deliberately not a completeness claim. The 2026-11-04 reconciliation updates the matrix to 9 implemented, 22 partial,
+0 absent, 2 not-applicable, 0 deferred, and 0 broken. The backlog tracks 23
 rows (22 open tasks and one locally closed row retained for evidence); creating
 or editing those tasks does not change implementation status.
 
@@ -79,13 +99,13 @@ the source tree.
 | Tokenization | LS-TOKEN-001 | 1 | 1 ✔️ | [LS-TOKEN-001](./archive/implementation-audit-legacy.md#ls-token-001) |
 | Completion | LS-COMP-001–003 | 3 | 1 ✔️ · 2 🌗 | [LS-COMP-001](./archive/implementation-audit-legacy.md#ls-comp-001) |
 | Hover/metadata | LS-HOVER-001–002 | 2 | 2 🌗 | [LS-HOVER-001](./archive/implementation-audit-legacy.md#ls-hover-001) |
-| Source ranges/navigation | LS-RANGE-001–002 | 2 | 1 🌗 · 1 ❌ | [LS-RANGE-001](./archive/implementation-audit-legacy.md#ls-range-001) |
+| Source ranges/navigation | LS-RANGE-001–002 | 2 | 2 🌗 | [LS-RANGE-001](./archive/implementation-audit-legacy.md#ls-range-001) |
 | Document lifecycle | LS-DOC-001–003 | 3 | 1 ✔️ · 1 🌗 · 1 ➖ | [LS-DOC-001](./archive/implementation-audit-legacy.md#ls-doc-001) |
-| Incremental behavior | LS-INCR-001–002 | 2 | 1 🌗 · 1 ❌ | [LS-INCR-001](./archive/implementation-audit-legacy.md#ls-incr-001) |
-| Versioning/provenance | LS-VERS-001–002 | 2 | 1 ✔️ · 1 ❌ | [LS-VERS-001](./archive/implementation-audit-legacy.md#ls-vers-001) |
+| Incremental behavior | LS-INCR-001–002 | 2 | 2 🌗 | [LS-INCR-001](./archive/implementation-audit-legacy.md#ls-incr-001) |
+| Versioning/provenance | LS-VERS-001–002 | 2 | 1 ✔️ · 1 🌗 | [LS-VERS-001](./archive/implementation-audit-legacy.md#ls-vers-001) |
 | Editor protocol | LS-PROTO-001–002 | 2 | 2 🌗 | [LS-PROTO-001](./archive/implementation-audit-legacy.md#ls-proto-001) |
 | Error recovery | LS-REC-001–003 | 3 | 2 🌗 · 1 ➖ | [LS-REC-001](./archive/implementation-audit-legacy.md#ls-rec-001) |
-| Consumer integration | LS-CONS-001–005 | 5 | 2 🌗 · 2 ⏸️ · 1 ⚠️ | [LS-CONS-001](./archive/implementation-audit-legacy.md#ls-cons-001) |
+| Consumer integration | LS-CONS-001–005 | 5 | 1 ✔️ · 4 🌗 | [LS-CONS-001](./archive/implementation-audit-legacy.md#ls-cons-001) |
 
 The category counts sum to 33 and the status summaries sum to the matrix
 totals. A category's ✔️ entry means bounded implementation evidence on the
@@ -133,9 +153,10 @@ implementation symbols above; verification availability is reported separately.
 - LS-CONS-003 and LS-CONS-004 are now 🌗: local MCP spec/document tools and
   desktop bridge exist; semantic service integration and live-client write
   verification remain open.
-- LS-RANGE-002 and LS-INCR-001 remain ❌ implementation gaps; LS-VERS-002 now
-  has a frozen protocol envelope but remains 🌗 until all producers/adapters
-  propagate it.
+- LS-RANGE-002 and LS-INCR-001 now have bounded local implementation evidence
+  and remain 🌗 because host navigation and core dependency/index semantics are
+  still open; LS-VERS-002 has a frozen protocol envelope but remains 🌗 until
+  all producers/adapters propagate it.
 - LS-CONS-005 is ✔️ at the local source boundary after README/API/version repair;
   packed/registry/public delivery remains an evidence limitation.
 - Browser, registry, current CI, and native evidence limitations are ? evidence
@@ -193,7 +214,7 @@ not implementation evidence.
 The language-service coverage map and handoff are **structurally validated**
 for the 33-ID catalog and inspected source/evidence boundary. The
 language-service surface is **not declared complete**: the status matrix still
-contains 20 partial, 2 absent, 0 broken, 0 deferred, and 2 not-applicable rows,
+contains 22 partial, 0 absent, 0 broken, 0 deferred, and 2 not-applicable rows,
 and delivery evidence limitations remain explicit. Future implementation must
 proceed as separate goals from the candidate backlog, with status re-audited
 after each accepted change.

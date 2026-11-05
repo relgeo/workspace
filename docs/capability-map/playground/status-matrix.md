@@ -1,6 +1,6 @@
 # Playground status matrix
 
-> **Coverage statement — 2026-10-31.** This is the capability-first status
+> **Coverage statement — 2026-11-04.** This is the capability-first status
 > view for all 37 rows in the Playground expected catalog. It is derived from
 > the [implementation audit](./implementation-audit.md) and
 > [expected-versus-observed reconciliation](./reconciliation.md);
@@ -14,8 +14,8 @@
 | Surface | `relgeo/playground` browser IDE and `/playground/` delivery artifact |
 | Matrix owner | Playground product owner; delegated DSL semantics remain with `spec/id/`, core, language-service, and renderer packages |
 | Source of truth | Expected catalog → implementation audit → reconciliation; required plans remain requirement and scope sources |
-| Audit date | 2026-10-31 |
-| Evidence freshness | Current source includes compact desktop toolbar/status UX reviewed by the user; hosted Pages parity, fresh automated viewport E2E, and native device evidence remain separately unverified |
+| Audit date | 2026-11-04 |
+| Evidence freshness | Current source includes the selected lifecycle, viewport, keyboard, accessibility, theme, and worker changes with 107 unit tests, 298 shared conformance assertions, and local website consumer checks; browser E2E, hosted Pages parity, and native device evidence remain separately unverified |
 
 ## Status and evidence legend
 
@@ -31,6 +31,29 @@
 `unverified`, `environment-limited`, and `deferred-device` are evidence states,
 not substitutes for implementation status. The current Playwright bind failure
 is therefore not represented as `⚠️`.
+
+## P0/P1 triage handoff — 2026-11-04
+
+The seven requested P0/P1 rows are reviewed as a single triage set. No current
+row is `P0`: the matrix has no confirmed `⚠️` or `❌` Playground result, so the
+selected risks are ranked P1. Six rows have a local implementation or test
+boundary that can be advanced without npm/pub.dev release, production
+deployment, or a host-only decision. `PG-DELIVERY-001` is evidence-only because
+its remaining proof is hosted artifact parity and public smoke.
+
+| ID | Priority | Triage classification | Initial matrix status | Boundary kept separate |
+| --- | --- | --- | --- | --- |
+| `PG-LIFE-002` | P1 | implementation-closable | `🌗` | Delayed browser startup trace is environment-limited; resolver/storage phases remain distinct. |
+| `PG-CANVAS-005` | P1 | implementation-closable | `✔️` | Browser preservation proof is evidence follow-up, not a source absence. |
+| `PG-KEY-001` | P1 | implementation-closable | `✔️` | Browser focus/key-conflict proof remains unverified. |
+| `PG-A11Y-001` | P1 | implementation-closable at web boundary | `🌗` | Native VoiceOver/TalkBack and device AX evidence remain deferred/unverified. |
+| `PG-A11Y-002` | P1 | implementation-closable at supported-browser boundary | `✔️` | Physical handset/touch evidence remains deferred. |
+| `PG-THEME-001` | P1 | implementation-closable | `✔️` | Browser system-preference/reload proof remains unverified. |
+| `PG-DELIVERY-001` | P1 | external-evidence-only | `🌗` | Hosted Pages revision/parity and public smoke require the delivery environment. |
+
+The backlog is the authoritative triage register for each row's owner, source
+of truth, acceptance test, and next action. This handoff does not promote any
+matrix status.
 
 ## Capability-first matrix
 
@@ -72,7 +95,7 @@ is therefore not represented as `⚠️`.
 | `PG-A11Y-002` | Accessibility preferences/input tolerance | `✔️` | Reduced motion, forced-colors focus fallback, target sizing, keyboard alternatives, UX audit | Physical handset/touch evidence deferred | Playground UI + accessibility owner | Design tokens, CSS media, device QA | Device-specific tolerance remains unobserved | Record supported-browser contrast/target review and device result when available |
 | `PG-SHARE-001` | URL/share source | `✔️` | Base64URL, 180000 guard, history, clipboard fallback | Public URL/permission behavior unverified | Playground | URL hash and clipboard APIs | Share may be too large or fail silently | Run deployed share-link smoke |
 | `PG-SHARE-002` | Transient-share safety | `✔️` | Shared draft, explicit Save as, invalid/oversized hash feedback | Browser reload/share flow unverified | Playground | Hash parser and file model | Shared source could overwrite local work | Add browser reload and no-overwrite assertions |
-| `PG-DELIVERY-001` | Public artifact consistency | `🌗` | Current Playground source pointer `c7cec4b`; root Pages pointer `6eb2e24` | Current deployed route/revision has not been smoke-checked against compact-toolbar changes | Playground + Pages delivery owner | Pages workflow and current child pointer | Public artifact can differ from audited source | Build/deploy current Playground pointer, then archive hosted `/playground/` smoke evidence |
+| `PG-DELIVERY-001` | Public artifact consistency | `🌗` | Local source/build pointer `47fd715…`; Pages workflow pin `c7cec4b…`; root website checkout `1b9bb92…` | Local assembly and website built-output checks pass, but provenance/artifact assertions reject revision drift; deployed route/revision has not been smoke-checked | Playground + Pages delivery owner | Pages workflow and current child pointer | Public artifact can differ from audited source | Align to the authorized delivery pin or run an authorized delivery update, then rerun provenance/artifact checks and archive hosted `/playground/` smoke evidence |
 
 ## Summary and handoff
 

@@ -1,7 +1,7 @@
 # Markdown Surfaces Coverage Validation and Handoff
 
-**Validation date:** 2026-10-30
-**Status:** validation checkpoint selesai; Markdown surface belum dinyatakan lengkap
+**Validation date:** 2026-11-04
+**Status:** current verification refresh selesai; local implementation and Astro consumer evidence updated, external boundaries remain explicit
 **Boundary:** `remark-relgeo` preview/embed, `remark-relgeo-hl` source highlighting, dan official Astro consumer
 
 Dokumen ini memvalidasi coverage, keterlacakan, legend, evidence class, scope,
@@ -84,7 +84,7 @@ the status matrix then carries the same rows into the actionable handoff.
 The audit therefore covers the required discovery surface, while explicitly
 retaining host, release, and physical-validation limits.
 
-## 4. ID, legend, evidence, and scope checks
+## 4. Historical ID, legend, evidence, and scope checks
 
 Implementation, evidence, and scope are separate axes across all linked docs:
 
@@ -103,7 +103,7 @@ Implementation, evidence, and scope are separate axes across all linked docs:
 - `unverified-external` is an evidence state for external boundaries, never a
   replacement for an implementation status or an absent implementation finding.
 
-## 5. Limitations and evidence boundaries
+## 5. Historical limitations and evidence boundaries
 
 | Limitation | Status | Consequence |
 | --- | --- | --- |
@@ -141,7 +141,7 @@ These questions are scope/product decisions or verification planning items;
 they do not authorize silently changing the expected catalog or implementation
 status.
 
-## 7. Implementation handoff
+## 7. Historical implementation handoff
 
 Implementation work must be created as separate goals/tasks from the validated
 documentation set:
@@ -167,7 +167,9 @@ implementation**.
 
 ### Verification commands and results
 
-These commands were rerun against the current working tree on 2026-10-30:
+These commands are the historical 2026-10-30 baseline; the current refresh is
+recorded in §10 below and supersedes stale test counts without deleting the
+historical trace:
 
 | Command | Result | Boundary proven |
 | --- | --- | --- |
@@ -202,7 +204,7 @@ capability-map surfaces and child repositories. They were preserved and are
 not part of this Markdown handoff. The child repository status is intentionally
 reported separately because the root records those repositories as gitlinks.
 
-## 9. Remaining-gap handoff
+## 9. Historical remaining-gap handoff
 
 | Gap | Current status | Owner/source boundary | Next action | Evidence prerequisite |
 | --- | --- | --- | --- | --- |
@@ -215,6 +217,37 @@ reported separately because the root records those repositories as gitlinks.
 No npm/pub.dev publication, production deployment, registry install, external
 service, or deferred platform host was used as a prerequisite for the local
 implementation or verification result.
+
+## 10. Current verification refresh — 2026-11-04
+
+The selected implementation tranche was reverified after the contract and
+source changes. This section is the current evidence handoff; sections 1–9
+retain the earlier discovery and audit trail for traceability.
+
+| Check | Result | Boundary proven |
+| --- | --- | --- |
+| `pnpm test` in `remark-relgeo/` | PASS; 16/16 | Fence aliases/overrides, AST source and metadata preservation, mixed-block determinism, canonical sheet selection, invalid metadata, tolerant/strict failures, option validation, unsafe output, and package exports. |
+| `pnpm test` in `remark-relgeo-hl/` | PASS; 10 Vitest + 1 Node boundary test | Fence mapping, source-preserving lexical/service fallback, strict behavior, option validation, and ESM/CJS/types export boundary. |
+| `pnpm conformance:fixtures` at workspace root | PASS; 298/298 across 23 fixtures | Real parser/core/renderer/language-service plus Markdown preview/highlight pipeline, negative fixtures, runtime diagnostics, canonical semantic serialization replay, and output digest comparison. The command emitted only the known Node 22 engine warning because the workspace declares Node >=24. |
+| `pnpm check && /opt/homebrew/bin/pnpm build && pnpm test` in `relgeo.github.io/` | PASS; 0 Astro diagnostics, 138 pages, built-output assertions pass | Official Astro Markdown consumer, both plugin registrations, localized routes, wrapper/output assertions, and preview source non-exposure. |
+| `npm_config_cache=/private/tmp/markdown-npm-cache npm pack --pack-destination /private/tmp/markdown-pack-smoke` in each package | PASS | Local 0.5.0 tarballs contain only the documented package surface: manifest, README, LICENSE, and ESM/CJS/type `dist` files. |
+| `pnpm provenance:check` in `relgeo.github.io/` | NOT VERIFIED; exit 1 | The provenance checker correctly detected working-tree revisions differing from the recorded baseline/Pages pins for website, Playground, and spec. This is checkout synchronization evidence, not a Markdown behavior failure. |
+| Fresh temporary `npm install` from both local tarballs | NOT VERIFIED; environment resolver hung and was interrupted | No registry, public release, or clean external consumer claim is made for `MD-SSR-004`. |
+
+Current selected-row disposition:
+
+- `MD-FENCE-001`, `MD-FENCE-002`, `MD-FENCE-003`, `MD-PREVIEW-002`,
+  `MD-HL-004`, and `MD-OPT-001` are `implemented / verified-local` with
+  package source and focused regression evidence.
+- `MD-SSR-004` remains `partial / unverified-external`: local build, package
+  boundary, and pack evidence pass, while clean consumer installation remains
+  environment-unverified.
+- `MD-SSR-003`, `MD-REL-002`, deployed public smoke, Node 24 parity, and
+  physical accessibility checks remain external/deferred boundaries and are
+  not inferred from the local passes.
+
+Generated `dist`, provenance, and temporary pack outputs are verification
+artifacts only and are not intentionally added to the tracked change set.
 
 ## Source links
 

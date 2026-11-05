@@ -36,6 +36,12 @@ Related evidence:
 - [Reconciliation](./reconciliation.md)
 - [Bounded in-scope selection](./in-scope-selection.md)
 
+The current P0/P1 triage is maintained in the [canonical implementation-gap
+backlog](./implementation-gap-backlog.md#p0p1-triage-disposition--2026-11-04).
+It does not alter this expected catalog: source/contract work, external host
+evidence, and deferred/not-applicable scope are recorded as separate
+dispositions.
+
 For this task, the selected IDs are joined against the baseline catalog and
 the current audited status symbols in the reconciliation. `✔️` rows are not
 active debt; `➖` and `⏸️` rows are scope decisions and are not implementation

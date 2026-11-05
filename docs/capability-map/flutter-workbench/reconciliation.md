@@ -47,6 +47,27 @@ The active Flutter import adapter intentionally emits only
 Source path/phase/object parity remains part of `EDIT-04`/`CONTRACT-02` and is
 not synthesized from exception strings.
 
+## P0/P1 triage checkpoint — 2026-11-04
+
+The [canonical backlog triage](./implementation-gap-backlog.md#p0p1-triage-disposition--2026-11-04)
+selects `DOC-08`, `IO-01`, `IO-02`, `EDIT-04`, `CONTRACT-01`, `CONTRACT-02`,
+`CONTRACT-03`, `CANVAS-03`, `CANVAS-04`, `CMD-03`, `A11Y-01`, `A11Y-02`, and
+`WINDOW-01` as implementation-closable source/contract slices. Their current
+reconciliation remains `🌗 partial` until the listed acceptance evidence passes.
+
+`CANVAS-05` and `VIEW-05` are `implemented at Flutter boundary` with host
+evidence still open. `PLAT-01`–`PLAT-04` are evidence-only target-host or
+provenance follow-up. This split prevents missing macOS/Linux/Windows,
+forced-exit, native picker, OS shortcut, VoiceOver/NVDA, or window-manager
+evidence from being misreported as either a source defect or a completed claim.
+Deferred/not-applicable scope remains separate: mobile, custom title bar, raw
+SVG presentation parity, publication, signing, and deployment.
+
+The detailed success, failure/edge, and evidence contract for these rows is
+locked in the [backlog acceptance matrix](./implementation-gap-backlog.md#contract-and-acceptance-lock--2026-11-04).
+It is a documentation boundary only; no public contract change or compatibility
+line promotion is implied.
+
 ## Current target evidence handoff — 2026-11-03
 
 Current root/submodule pointers are `2ff198d` and `flutter@60ec760`. Local
@@ -64,6 +85,27 @@ Windows, native picker, physical pointer, OS shortcut, VoiceOver/NVDA, or
 window-manager smoke is claimed. The missing host evidence does not downgrade
 the passing Flutter source/test result or turn unsupported parity into an
 implementation failure.
+
+## Current consumer-boundary refresh — 2026-11-05
+
+The local current checkout (`workspace@f42eeaf`, `flutter@9816b477`,
+`core@3d9112d`, `geometry@395019d`, `mcp@670121e`) was checked at the direct
+consumer boundaries affected by the implementation tranche:
+
+| Consumer boundary | Result | Evidence class / limitation |
+| --- | --- | --- |
+| Flutter Workbench focused regression/conformance | **PASS — 135 tests** | Local source/widget/fixture evidence; includes current v0.5 semantic projection and invalid-boundary cases. |
+| Core Runtime package | **PASS — 489 tests** | Local downstream package evidence; no public-package or fresh-clone claim. |
+| Geometry package | **PASS — 91 tests** | Local shared-type/geometry consumer evidence. |
+| MCP contract package | **PASS — 42 tests** | Local protocol/schema/dispatch evidence; the Flutter HTTP transport remains a separate integration test. |
+| Flutter full suite | **PARTIAL — 326 passed, 1 failed** | Existing `test/mcp_server_io_test.dart:134` cast failure; targeted Workbench tests remain green. |
+| Native host/runtime, packaged artifacts, CI/public | **NOT VERIFIED** | Managed Flutter SDK cache write boundary blocked `flutter devices`; historical CI/public records remain scoped to their recorded revisions. |
+
+This refresh verifies that the selected source changes did not regress the
+available Core, Geometry, MCP-contract, or focused Flutter consumers. It does
+not promote the `EDIT-04`/`CONTRACT-01` rows to full parity, and it does not
+convert the isolated HTTP MCP failure or unavailable host into a claim about
+the unrelated downstream consumers.
 
 ## Aturan rekonsiliasi
 

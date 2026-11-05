@@ -163,6 +163,25 @@ topology remain deferred even when low-level engine methods exist. Likewise,
 Flutter and other host-owned parity rows remain evidence dependencies, not
 implicit acceptance of this local contract freeze.
 
+### 3.3 Triage boundary for remaining gaps — 2026-11-04
+
+The current triage is tracked canonically in the [implementation-gap
+backlog](./implementation-gap-backlog.md#triage-decision--task-triage-remaining-geometry-gaps--9052928134).
+The initial status for every selected row remains the status in this catalog;
+triage only decides whether the next action is local implementation, external
+evidence, or deferred scope.
+
+| Triage outcome | IDs | Initial status |
+| --- | --- | --- |
+| Implementation-closable | `GEO-OBJ-001`, `GEO-PRIM-003`, `GEO-PRIM-004`, `GEO-PRIM-005`, `GEO-MEASURE-002`, `GEO-MEASURE-004`, `GEO-XFORM-002`, `GEO-PLACE-001/002`, `GEO-COLL-001..005`, `GEO-QUERY-001/002`, `GEO-CONSTRAINT-001` | `🌗` partial |
+| External-evidence-only | `GEO-DET-001`, `GEO-PARITY-001`, `GEO-PARITY-002` | `🌗` partial |
+| Scope-deferred | `GEO-BOOLEAN-001`, `GEO-BOOLEAN-002` broader topology/promotion | `🌗` partial |
+
+The backlog table supplies the owner, source of truth, acceptance test, and
+next action for each ID. In particular, `GEO-MEASURE-002` is locally
+implementation-closable for the bounded TypeScript/core unit contract; Flutter
+parity is a separate external-evidence follow-up.
+
 ## 4. Expected capability catalog
 
 ### A. Object model dan primitives

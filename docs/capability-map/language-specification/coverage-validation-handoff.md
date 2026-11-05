@@ -1,6 +1,6 @@
 # Language Specification Coverage Validation and Handoff
 
-**Tanggal validasi:** 2026-10-30
+**Tanggal validasi:** 2026-11-04
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog
 **Required context:** [`spec/id/`](../../../spec/id), [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), [`capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md)
 
@@ -19,7 +19,7 @@ ini **tidak** menyatakan surface implementasi lengkap. Klaim yang aman adalah:
   tetap dicatat sebagai structural absence;
 - 37 non-green capability diturunkan menjadi 13 candidate implementation
   workstreams;
-- current local consumer evidence includes Playground `93/93` tests and build,
+- current local consumer evidence includes Playground `104/104` tests and build,
   website Astro check/build (`138` pages), and Flutter `302` tests; this is not
   canonical CI/public/browser/native-host evidence. MCP tests remain
   environment-unavailable because Dart package resolution and host writes are
@@ -184,7 +184,10 @@ No unrelated repository or external host was used as an implementation boundary.
 Generated package `dist` output is local build output and is not treated as
 source evidence or a release artifact.
 
-### 8.2 Reproducible local evidence
+### 8.2 Historical reproducible local evidence (2026-10-30)
+
+The following is retained as historical traceability; the current checkpoint is
+in sections 9–10.
 
 Run from `/Users/agusmade/projects/relgeo-workspace` with Node `22.23.2` and
 pnpm `10.33.3`:
@@ -226,3 +229,92 @@ The next owner actions are intentionally bounded and do not promote statuses:
 No npm/pub.dev publication, production deployment, public host, registry
 access, or deferred platform host was used or required. The remaining limits
 are evidence/contract gaps, not silently converted completion claims.
+
+## 9. Current verification checkpoint
+
+**Checkpoint date:** 2026-11-04
+
+The following commands were executed from the workspace root after the current
+implementation tranche. Results are direct local evidence; this host runs Node
+`22.23.2` while the workspace declares Node `>=24`.
+
+| Command | Result | What it proves |
+| --- | --- | --- |
+| `pnpm --filter @relgeo/core test -- src/__tests__/diagnostics.test.ts src/__tests__/structured_errors.test.ts src/__tests__/parameter_type_validation.test.ts src/__tests__/resolver.test.ts` | PASS — 469 tests across 48 files | Focused diagnostic, structured-error, profile, resolver, negative, and backward-compatible regression coverage |
+| `pnpm --filter @relgeo/core test` | PASS — 469 tests across 48 files | Complete core regression suite |
+| `pnpm --filter @relgeo/core lint` | PASS | Core TypeScript type check |
+| `pnpm --filter @relgeo/cli test` | PASS — 36 tests | CLI consumer regression coverage |
+| `pnpm --filter @relgeo/language-service test` | PASS — 82 tests | Language-service schema/diagnostic consumer coverage |
+| `pnpm run language-spec:check` | PASS — 34 spec documents | Normative vocabulary/drift and status-label checks against `spec/id` |
+| `pnpm run conformance:fixtures` | PASS — 298 passed, 0 failed across 23 fixtures | Negative fixtures, runtime diagnostics, semantic serialization replay, SVG safety, CLI, language-service, Markdown, and preview checks |
+| `git diff --check && git -C core diff --check` | PASS | Patch integrity and whitespace checks |
+| `pnpm run compatibility:check` | LIMITATION — 280 passed, 3 failed | Repository metadata drift: matrix expects core `0.5.1` but package is `0.5.2`; Playground expects `@relgeo/core ^0.5.0` but declares `^0.5.2`; Flutter application metadata also differs from the matrix. This is not a language-spec behavior failure. |
+| `pnpm run spec:snapshot:check` | UNVERIFIED — exit 1 | Flutter snapshot manifest metadata/digest differs from current `spec/id`; no sync or generated-artifact mutation was performed. |
+
+The two non-pass checks are recorded separately from implementation behavior:
+compatibility is repository metadata/configuration drift, while the snapshot
+result requires deliberate snapshot regeneration/reconciliation. Neither is
+claimed as a passing check, and neither is used to infer target-language parity
+failure. No Flutter, MCP transport, production host, or Node-24 canonical-CI
+execution was available in this environment.
+
+### 9.1 Validation handoff
+
+- `GAP-002` and `GAP-011` changes have source and regression-test evidence;
+- `GAP-011` remains open for broader raw evaluator/helper inventory and complete
+  consumer diagnostic mapping;
+- fixture-16 promotion, Flutter/native parity, MCP transport, publication, and
+  deployment remain deferred or unverified;
+- no status-matrix row is promoted by this checkpoint alone.
+
+## 10. Downstream consumer and boundary checkpoint
+
+**Checkpoint date:** 2026-11-04. These results are direct local workspace
+evidence. They are not canonical CI, public-registry, browser-host, native-host,
+or MCP transport evidence.
+
+| Boundary / command | Result | Interpretation |
+| --- | --- | --- |
+| `pnpm --filter @relgeo/renderer-svg test` | PASS — 90 tests across 7 files | Renderer consumer behavior and hostile-input/security regression coverage pass locally. |
+| `pnpm --filter @relgeo/renderer-svg test:dist` | PASS — 1 dist-boundary test | Published-package-style renderer entrypoint boundary passes locally. |
+| `pnpm --filter @relgeo/renderer-svg build` | PASS | Renderer package compiles and emits local build output. |
+| `pnpm --filter @relgeo/remark-relgeo test` | PASS — 9 tests | Markdown preview consumer preserves structured diagnostics and safe fallback behavior. |
+| `pnpm --filter @relgeo/remark-relgeo build` | PASS | Markdown renderer package build passes locally. |
+| `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 6 tests | Syntax-highlighting consumer regression coverage passes locally. |
+| `pnpm --filter @relgeo/remark-relgeo-hl build` | PASS | Highlighting package build passes locally. |
+| `pnpm --filter relgeo-playground test` | PASS — 104 tests across 17 files | Playground consumer regression coverage passes locally. |
+| `pnpm --filter relgeo-playground lint` | PASS | Playground source lint passes locally. |
+| `pnpm --filter relgeo-playground build` | PASS | Fresh local browser artifact and provenance were generated. |
+| `pnpm --filter relgeo-docs-site check` | PASS — 0 errors, warnings, hints | Website language-spec routes and Astro types validate locally. |
+| `pnpm --filter relgeo-docs-site build` | PASS — 138 pages | Fresh local documentation artifact builds successfully. |
+| `pnpm --filter relgeo-docs-site test` | PASS | Built-output assertions pass for the website artifact. |
+| `pnpm run integration:gate -- --local --report=.local/integration-language-spec-current.json` | UNVERIFIED — blocked before stages, Node 22.23.2 < required Node 24 | The canonical local integration runner could not start; this is an environment limitation, not a consumer parity failure. |
+| `pnpm run flutter:conformance` | UNVERIFIED — Flutter SDK could not write `flutter/bin/cache/engine.stamp` | Flutter projection/native-host evidence is unavailable in this sandbox. |
+| `pnpm run playground:artifact:check` and `pnpm --filter relgeo-docs-site test:pages-artifact` | LIMITATION — baseline/provenance artifact pins differ from checkout; Pages provenance file is absent | The assembled artifact was created locally, but baseline reconciliation is required before this can be promoted to Pages/public evidence. |
+| `pnpm --filter relgeo-docs-site run provenance:check` | LIMITATION — strict check reports root, Playground, and spec revision mismatches | Existing integration baseline/workflow pins are stale relative to the current checkout; no baseline/config update was authorized or performed. |
+
+The successful rows establish local downstream compatibility for renderer,
+Markdown, Playground, and website consumers. The failed or unavailable rows are
+kept as separate evidence classes: Node-24 runner availability, baseline
+revision/provenance reconciliation, Flutter SDK host writes, MCP transport,
+public registry, and deployment remain unverified/deferred. No consumer status
+is promoted solely from this checkpoint.
+
+### 10.1 Validator follow-up
+
+The automatic validator initially found that a fresh website build used the
+placeholder `https://example.com`, causing `pnpm test` to fail in
+`relgeo-docs-site`. The consumer configuration default in
+`relgeo.github.io/astro.config.mjs` was corrected to the canonical
+`https://relgeo.github.io` URL. After rebuilding:
+
+| Command | Result |
+| --- | --- |
+| `pnpm --filter relgeo-docs-site build` | PASS — 138 pages |
+| `pnpm --filter relgeo-docs-site check` | PASS — 0 errors, warnings, hints |
+| `pnpm --filter relgeo-docs-site test` | PASS — built-output assertions |
+| `pnpm test` | PASS — all 9 workspace test projects, including core 469, renderer 90, Playground 104, CLI 36, language-service 82, and Markdown consumers |
+
+This is a source-level downstream consumer fix with local regression evidence;
+it does not alter integration baseline pins or claim public/Pages deployment
+evidence.

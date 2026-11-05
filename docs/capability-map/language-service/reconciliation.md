@@ -1,12 +1,12 @@
 # Language-Service Expected-versus-Observed Reconciliation
 
-> **Coverage statement — 2026-11-03.** Dokumen ini adalah join satu-per-satu
+> **Coverage statement — 2026-11-04.** Dokumen ini adalah join satu-per-satu
 > antara seluruh 33 ID pada katalog expected dan baris observasi pada audit
 > implementasi current. Ia tidak menambah capability baru, tidak menghapus
 > expected row, dan tidak mengubah capability absent menjadi unverified hanya
 > karena evidence delivery belum tersedia.
 
-Tanggal rekonsiliasi: 2026-11-03
+Tanggal rekonsiliasi: 2026-11-04
 Owner: relgeo/language-service  
 Expected source: [language-service expected capability catalog](./expected-capability-catalog.md)  
 Observed source: [language-service implementation audit evidence](./implementation-audit.md)
@@ -16,17 +16,25 @@ Audit revisions joined in this reconciliation: workspace
 `1231dadb5ff6902593cb81665f76699bf0548bbb`, language-service
 `39c06dd8505d480672b0953d523f3675a7f30075`, Playground
 `59a42ae925cf0c21541bc19ccac39f5061b35439`, and Markdown highlighter
-`507ad18fe1b8c91eb3a48e365b5290cd02b049b8`. Local evidence was refreshed with
-82 language-service tests, lint, build, 260/260 shared fixtures, 3 Markdown
-tests, 102 Playground tests, and 34 MCP adapter tests; Node 24, registry,
-current CI, browser/public, Dart analyzer, and native-host evidence remain
-separate `not verified` limitations.
+`507ad18fe1b8c91eb3a48e365b5290cd02b049b8`. Current local evidence includes
+90 language-service tests with lint/build, 298/298 shared conformance
+assertions, 9 remark-relgeo tests, 6 remark-relgeo-hl tests, 106 Playground
+tests with lint/build, and 36 CLI tests. MCP's earlier 34-test local snapshot
+remains historical support evidence; the current Dart rerun was environment
+unavailable. Node 24, registry, current CI, browser/public, and native-host
+evidence remain separate `not verified` limitations.
+
+The P0/P1 implementation intake is recorded in the
+[implementation-gap backlog triage](./implementation-gap-backlog.md#triage-p0p1--2026-11-04).
+It is an execution classification only; the reconciliation result,
+implementation status, evidence status, and scope decision below remain the
+authority for capability state.
 
 Current audit-entry refresh: language-service and Playground test/lint/build
-commands were rerun locally with results of 82/82 and 102/102; MCP's direct
-Dart test snapshot passes 34/34; the workspace conformance runner passes
-260/260 checks across 20 fixtures; and the active-spec drift checker reports
-zero root/object differences. The implementation task repaired the local
+commands were rerun locally with results of 90/90 and 106/106; Markdown
+consumers pass 9/9 and 6/6, CLI passes 36/36, the workspace conformance runner
+passes 298/298 assertions across 23 fixtures, and the active-spec drift checker
+reports zero root/object differences. The implementation task repaired the local
 `getSchema()`/README-version mismatch and added bounded diagnostic aggregation,
 schema drift, completion, range, identity, navigation, and measured analysis
 fallback evidence; the status join below records those bounded changes without
@@ -39,6 +47,27 @@ revision/provenance, typed DTOs for diagnostics/validation/completion/hover/
 metadata/navigation/analysis, and the exact stale-result guard. This is a
 contract and local serialization evidence; it does not promote absent
 navigation or host-owned ordering to implemented.
+
+## Consumer-boundary verification refresh — 2026-11-04
+
+The current downstream checks preserve the separation between implementation,
+local consumer evidence, and external delivery evidence:
+
+| Boundary | Result | Evidence class / limitation |
+| --- | --- | --- |
+| Language Service package | PASS — 90 tests, lint, and CJS/ESM/DTS build | verified-local; Node 22 checkout, while repository metadata requests Node 24+ |
+| Playground worker/consumer | PASS — 106 tests, lint, production build, and build provenance | local consumer evidence; browser/public route not verified |
+| Markdown consumers | PASS — remark-relgeo 9 tests/build and remark-relgeo-hl 6 tests/build | local consumer evidence; registry/public install not verified |
+| CLI consumer | PASS — 36 tests | local consumer evidence |
+| Shared conformance | PASS — 298/298 assertions across 23 fixtures | local conformance; does not prove MCP semantic adapter parity |
+| Package artifact | PASS — `npm pack --dry-run --json` reports 9 files for `@relgeo/language-service@0.5.1` | local artifact shape; publish/registry boundary not verified |
+| Cross-repo integration runner | ENVIRONMENT UNAVAILABLE — `node scripts/run-integration-gate.mjs --local` exits 2 before stages because Node 22.23.2 is below the declared Node 24 minimum | limitation only; not a parity failure |
+
+Canonical CI, public registry, browser/public Playground, native Flutter, and
+live-client evidence remain separate. The local consumer passes do not change
+the reconciliation status of partial rows such as LS-CONS-001 through
+LS-CONS-004, nor do they close the remaining semantic MCP or host-boundary
+gaps.
 
 ## Aturan rekonsiliasi
 

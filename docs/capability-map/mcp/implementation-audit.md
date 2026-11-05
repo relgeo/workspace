@@ -1,6 +1,6 @@
 # RelGeo MCP — current implementation and evidence audit
 
-**Audit date:** 2026-11-03
+**Audit date:** 2026-11-05
 
 **Compatibility line:** RelGeo DSL `0.5.x`
 
@@ -9,7 +9,7 @@
 fixture, contract, documentation statement, or CI definition is not promoted
 to end-to-end MCP delivery without a directly matching runtime observation.
 
-> **Current implementation overlay (2026-11-03):** The original audit tables
+> **Current implementation overlay (2026-11-05):** The original audit tables
 > below remain historical observations; the addendum in §3.1 is the current
 > source for post-full-spec T01–T10 delivery. Local MCP tests now cover bounded
 > owner callbacks, provenance/diagnostic/cache identity, workflow, review, and
@@ -75,15 +75,15 @@ failures.
 | Current Flutter checkout | `60ec76042b369659e4d048b2a53ea3a66a384de3` | Child commit includes desktop MCP editing and release workflow |
 | Expected catalog → reconciliation | `68/68` | [reconciliation](./reconciliation.md) coverage |
 | Expected catalog → capability matrix | `68/68` | [capability matrix](./capability-matrix.md) rows |
-| Current capability status | `43 ✔️`, `19 🌗`, `4 ❌`, `0 ⚠️`, `2 ⏸️`, `0 ➖` | Updated capability matrix count; evidence state remains separate |
+| Current capability status | `43 ✔️`, `20 🌗`, `3 ❌`, `0 ⚠️`, `2 ⏸️`, `0 ➖` | Updated capability matrix count; evidence state remains separate |
 | Rows with not-verified evidence | `VAL-03`, `CXL-02`, `DEL-03`, `DEL-04` | Current matrix; no live cross-host, packaged-runtime, or Inspector proof is claimed |
-| Environment-unavailable evidence | Managed runner denied localhost socket bind for the full Streamable HTTP fixture; Flutter wrapper also denied `engine.stamp` before IO test execution | This is environment-unavailable evidence, not a target failure; stdio, remote-bind guard, analyzer, and pure-Dart tests remain independently verified |
+| Environment-unavailable evidence | Managed runner denied localhost socket bind for the full dependency-free Streamable HTTP fixture; an earlier Flutter wrapper preflight also hit `engine.stamp` access, while the direct Flutter binary now runs the selected consumer tests | This is environment-unavailable evidence, not a target failure; stdio, remote-bind guard, analyzer, pure-Dart tests, and selected Flutter consumer tests remain independently verified |
 
 The bounded active tranche is recorded in the [MCP in-scope selection](./in-scope-selection.md).
 It selects 20 rows; the remaining active backlog rows stay visible and are not
 implicitly promoted, removed, or treated as completed.
 
-## 3. Current implementation boundaries — 2026-11-03
+## 3. Current implementation boundaries — 2026-11-05
 
 | Boundary | Current implementation and direct evidence | Remaining boundary |
 | --- | --- | --- |
@@ -92,7 +92,7 @@ implicitly promoted, removed, or treated as completed.
 | Embedded transport/lifecycle | Flutter `60ec760` owns `RelGeoMcpDesktopServer`, binds ephemeral IPv4 loopback, validates host/origin, authenticates an in-memory eight-hour bearer token, and closes/revokes on stop. Workbench dialog is opt-in and exposes running state, endpoint, permission, temporary token, copy-config, Enable, and Disable. | Connected-client count/status is not exposed. Packaged-app behavior on each OS is not verified. |
 | Permission-gated edit | Read-only mode omits/rejects `relgeo_apply_document_edit`; read-write is an explicit dialog choice. The tool applies bounded patches only to the active document with identity/revision checks and one undoable editor transaction. HTTP integration covers denied, stale, applied, dirty, and undo behavior. | A live ChatGPT Desktop edit round-trip and packaged app smoke remain pending. `EDIT-01`, `EDIT-05`, and cancellation/race coverage remain partial. |
 | Save/file boundary | Apply changes the in-memory editor; Save, Save As, export, and autosave are separate host actions. | Manual packaged-app persistence/close/reopen smoke remains pending. |
-| Tool composition boundary | The pure-Dart dispatcher now adapts bounded owner callbacks for examples, completion, validation, diagnostics, explanation, and render; local tests compose a six-call read-only workflow without mutation. | Direct `core`/`language-service`/`renderer-svg` production composition, semantic validation, producer error mapping, and ranked examples remain open. |
+| Tool composition boundary | The pure-Dart dispatcher adapts bounded owner callbacks for examples, completion, validation, diagnostics, explanation, and render; local tests compose a six-call read-only workflow without mutation. Example selection now applies deterministic relevance/minimal-source ranking, and completion results are bounded with proposal/identity guards. | Direct `core`/`language-service`/`renderer-svg` production composition, semantic example validity, semantic validation, producer error mapping, and proposal `basedOn[]` production remain open. |
 | Release/delivery | Flutter CI `41184291670` and release workflow `41184693233` passed; draft v1.0.1 has macOS universal, Linux x64, and Windows x64 bundles with checksums/provenance. | Draft is unpublished; no MCP-specific packaged runtime/client smoke or live Inspector proof is recorded. Root baseline manifest remains captured 2026-10-09. |
 
 ### 3.1 Post-full-spec delivery addendum — 2026-11-03
@@ -109,6 +109,18 @@ The addendum is the current evidence for the post-full-spec rows. It does not
 rewrite the historical absence statements below; the joined current result is
 the [capability matrix](./capability-matrix.md) and
 [reconciliation](./reconciliation.md).
+
+### 3.2 Targeted implementation delta — 2026-11-05
+
+| Capability | Implementation change and evidence | Current boundary |
+| --- | --- | --- |
+| `EX-02` minimal example selection | `mcp/lib/src/adapter/local_dispatch.dart` ranks owner examples by query relevance, then source size, title, and ID; `mcp/test/local_dispatch_test.dart` proves relevant minimal examples precede irrelevant/longer results and preserves provenance/bounds. | Local bounded selection is implemented; semantic validity and a production examples catalog remain owner responsibilities. |
+| `COMP-01` source completion bounds | Dispatcher rejects owner completion results above the requested `maxResults` and rejects oversized label/insert/documentation payloads. | Adapter boundary is guarded; a live language-service producer is not wired here. |
+| `COMP-02` proposal semantics and identity | Dispatcher rejects empty proposal fields and mismatched returned document/request identity while preserving the existing proposal-only JSON shape and no-mutation path. | Proposal semantics are locally guarded; producer handoff/editor integration remains separate. |
+
+Evidence command for this delta: `cd mcp && dart --suppress-analytics test`
+(44 tests passed); `dart analyze` also reported
+no issues in the same checkout.
 
 ## 4. Historical contract defect closure evidence (2026-10-30)
 
@@ -132,9 +144,10 @@ production socket/host delivery.
 
 | Evidence | Result | What it proves / does not prove |
 | --- | --- | --- |
-| MCP package tests | **PASS — 43 Dart tests** | Schema, spec index/retrieval, bounded owner dispatch, resources/cache, workflow, session/security, cancellation, and edit contracts; does not prove a client session against a packaged app. |
-| Flutter analyzer and bridge test | **PASS** | `flutter analyze` and `test/workbench_agent_bridge_test.dart` pass for guarded review/apply/failure behavior. |
-| Flutter IO integration test | **Not verified in managed runner** | The post-change command was blocked before test execution by Flutter wrapper access to `engine.stamp`; no HTTP pass is claimed here. |
+| Latest MCP validation | **PASS — 44 Dart tests; analyzer reports no issues** | Covers the EX-02 ranking policy and COMP-01/COMP-02 bounds, proposal, identity, provenance, session, and no-mutation paths in the current checkout; it does not prove external client or packaged-app behavior. Command: `cd mcp && dart --suppress-analytics test`. |
+| MCP package tests | **PASS — 44 Dart tests** | Schema, spec index/retrieval, bounded owner dispatch, resources/cache, workflow, session/security, cancellation, and edit contracts; does not prove a client session against a packaged app. |
+| Flutter analyzer and selected consumer tests | **PASS** | `flutter analyze`, `test/spec_snapshot_loader_test.dart`, and `test/workbench_agent_bridge_test.dart` pass for offline retrieval, guarded review/apply/failure behavior, and the declared path dependency. |
+| Flutter IO integration test | **PASS — 1 test** | `test/mcp_server_io_test.dart` passes through the direct Flutter binary for bearer auth, protocol metadata, origin guard, permission, stale revision, applied edit, dirty state, and undo. The separate dependency-free full HTTP transport harness remains environment-gated on socket bind. |
 | Stdio/remote-bind fixture | **PASS** | `run_transport_conformance.dart --stdio-only` passes stdio and remote-bind guard; full loopback HTTP remains environment-gated. |
 | Release workflow `41184693233` | **PASS; draft v1.0.1** | Three desktop archives and SHA-256 checksums verified; draft is not published and runtime usability is not established. |
 | ChatGPT Desktop live mutation | **Not verified** | Read-only MCP/spec and document calls have prior user-observed success; the new edit-permission path still needs an explicit end-to-end smoke. |
@@ -146,9 +159,11 @@ production socket/host delivery.
    server, and explicitly authorized bounded edits are now implemented and
    locally tested at their declared boundaries.
 2. These changes do not provide direct semantic parse/resolve validation,
-   producer completion/diagnostic mapping, renderer composition, ranked example
-   selection, or a production authoring orchestrator.
-3. The current joined status is `43 ✔️`, `19 🌗`, `4 ❌`, `0 ⚠️`, and `2 ⏸️`.
+   producer completion/diagnostic mapping, renderer composition, semantic
+   example validity, or a production authoring orchestrator. Example ranking
+   and completion result guards are implemented only at the local adapter
+   boundary.
+3. The current joined status is `43 ✔️`, `20 🌗`, `3 ❌`, `0 ⚠️`, and `2 ⏸️`.
    The expected catalog remains 68 rows; no expected capability was deleted.
 4. `VAL-03`, `CXL-02`, `DEL-03`, and `DEL-04` retain `not-verified` evidence. Client-level
    write interoperability, packaged-app MCP smoke, and current root baseline

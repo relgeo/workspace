@@ -97,6 +97,13 @@ This freezes the claim boundary and the selected source identities; it does
 not turn unavailable CI, Pages, or public evidence into a local or deployment
 pass.
 
+The current P0/P1 implementation-closability triage is recorded in the
+[implementation-gap backlog](./implementation-gap-backlog.md#p0p1-implementation-closability-triage).
+It reviews all P0/P1 candidate rows and separates local implementation or
+fail-closed contract work from deployment/public evidence and scope-deferred
+boundaries. It is a work-selection handoff, not a change to this expected set
+or to any downstream status symbol.
+
 ### Source coverage register
 
 The expected set is derived from the product intent and declared boundaries

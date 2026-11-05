@@ -1,6 +1,6 @@
 # Geometry Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-11-03
+**Tanggal:** 2026-11-04
 
 **Expected source:** [Expected Geometry Capability Catalog](./expected-capability-catalog.md)
 
@@ -49,7 +49,7 @@ memuat `not-verified` atau `source-only` sesuai temuan.
 
 **Hasil absence check:** 40/40 expected rows memiliki minimal satu observed
 implementation atau consumer boundary pada audit. Jadi jumlah row `❌ absent`
-saat ini adalah **0**. Ini bukan klaim parity penuh: 30 row `🌗 partial`
+saat ini adalah **0**. Ini bukan klaim parity penuh: 23 row `🌗 partial`
 memuat behavior, boundary, contract, atau evidence yang belum lengkap; satu di
 Host-owned rows tetap memiliki evidence `not-verified`; ini tidak menurunkan
 bounded local implementation yang sudah memiliki test/fixture pass.
@@ -87,6 +87,40 @@ register di catalog/audit, `docs/MATURATION-MASTER-PLAN.md`,
 `docs/compatibility-matrix.json`, dan `fixtures/manifest.json`. Matrix lama
 tidak menambah atau menghapus expected ID.
 
+## 2.1 Triage handoff — task `triage-remaining-geometry-gaps--9052928134`
+
+Reconciliation mengesahkan initial status `🌗 partial` untuk seluruh row yang
+dipilih; keputusan triage hanya menetapkan jalur tindak lanjut. Detail owner,
+source of truth, acceptance test, dan next action ada di [implementation-gap
+backlog](./implementation-gap-backlog.md#triage-decision--task-triage-remaining-geometry-gaps--9052928134).
+
+| Jalur tindak lanjut | Jumlah | IDs |
+| --- | ---: | --- |
+| Implementation-closable | 17 | `GEO-OBJ-001`, `GEO-PRIM-003/004/005`, `GEO-MEASURE-002/004`, `GEO-XFORM-002`, `GEO-PLACE-001/002`, `GEO-COLL-001..005`, `GEO-QUERY-001/002`, `GEO-CONSTRAINT-001` |
+| External-evidence-only | 3 | `GEO-DET-001`, `GEO-PARITY-001/002` |
+| Scope-deferred | 2 | `GEO-BOOLEAN-001/002` broader topology/promotion |
+
+`GEO-MEASURE-002` tetap implementation-closable pada bounded TypeScript/core
+unit contract; kebutuhan Flutter parity tidak mengubah status implementasi
+lokal dan tetap menjadi evidence follow-up.
+
+## 2.2 Contract lock handoff — task `lock-geometry-contracts-and-acceptance--9052928134`
+
+The [locked contract and acceptance matrix](./implementation-gap-backlog.md#locked-contract-and-acceptance-matrix--task-lock-geometry-contracts-and-acceptance--9052928134)
+is the acceptance source for the next implementation task. It applies these
+authoritative boundaries:
+
+| Authority | Applied rule |
+| --- | --- |
+| [`docs/compatibility-matrix.json`](../../compatibility-matrix.json) | Active compatibility line is `0.5`, public package family is `0.5.x`, normative path is `spec/id`, and breaking changes require a decision record. |
+| [`docs/capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) | Each row keeps contract, implementation, tests/fixtures, consumer, delivery, ownership, evidence tier, parity, and scope distinct; unavailable host evidence remains `not verified`. |
+| [`spec/id/`](../../../spec/id) and the geometry rows below | Normative semantics remain the source of truth; core/geometry/renderer/Flutter own only their stated implementation or evidence boundary. |
+
+No public contract change is authorized by the lock task. The acceptance
+matrix requires a success case, failure/edge case, and expected evidence for
+all 22 triaged rows, while external-evidence-only and scope-deferred rows stay
+qualified rather than becoming implementation blockers.
+
 ## 3. One-to-one reconciliation register
 
 ### A. Object model dan primitives
@@ -105,7 +139,7 @@ tidak menambah atau menghapus expected ID.
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `GEO-MEASURE-001` | `✔️ implemented` | `implemented` | `local-pass` | IN; type/evaluator contract is core/spec-owned | Audit §3B `GEO-MEASURE-001`; `spec/id/syntax/07-type-system.md` |
-| `GEO-MEASURE-002` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; unit candidate remains candidate promotion | Audit §3B `GEO-MEASURE-002`; fixture 16 |
+| `GEO-MEASURE-002` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; bounded TypeScript/core unit contract is implementation-closable, cross-surface parity remains external evidence | Audit §3B `GEO-MEASURE-002`; fixture 16 |
 | `GEO-MEASURE-003` | `✔️ implemented` | `implemented` | `local-pass` | IN; expression evaluator is core-owned and tested | Audit §3B `GEO-MEASURE-003`; `core/src/evaluator.ts` |
 | `GEO-MEASURE-004` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; evaluator/unit parity is not fully active | Audit §3B `GEO-MEASURE-004`; fixture 16 |
 | `GEO-MEASURE-005` | `✔️ implemented` | `implemented` | `fixture-pass` | IN; validator and negative fixture diagnostics are active | Audit §3B `GEO-MEASURE-005`; fixtures 11–13/17–18 |
@@ -196,6 +230,34 @@ were implementation absence:
 | `node scripts/run-conformance-fixtures.mjs` | fixture-pass; 298/298 across 23 fixtures | Shared Node workspace runner, not Flutter/host parity |
 | Flutter probe | not-verified | SDK command blocked by permission on `.../flutter/bin/cache/engine.stamp` |
 | Registry/public release install | not-verified | No fresh registry artifact check was run in this evidence refresh |
+
+### 4.2 Consumer boundary verification — 2026-11-04
+
+The downstream verification task reran the affected package and consumer
+boundaries from the current shared workspace. Evidence classes remain
+separate: package/consumer commands are `local-workspace`, the shared fixture
+runner is `fixture-pass`, and the canonical integration runner was
+`environment-unavailable` before consumer stages because the host has Node
+22.23.2 while the integration contract requires Node 24+.
+
+| Boundary / command | Result | Evidence class and limitation |
+| --- | --- | --- |
+| `pnpm test && pnpm lint && pnpm build` from `geometry/` | PASS — 5 files, 91 tests | `local-workspace`; low-level package, tolerance/intersection/boolean, lint, and build evidence. |
+| `pnpm test && pnpm lint && pnpm build` from `core/` | PASS — 48 files, 488 tests | `local-workspace`; resolver, query, collection, placement, constraints, deterministic projection, and build evidence. |
+| `pnpm test && pnpm build` from `renderer-svg/` | PASS — 7 files, 92 tests | `local-workspace`; semantic SVG projection and build evidence. |
+| `pnpm test && pnpm build` from `cli/` | PASS — 36 tests | `local-workspace`; downstream validation/compile and repeated-process serialization boundary. |
+| `pnpm run build && pnpm run test` from `playground/` | PASS — 104 tests and fresh Vite build | `local-workspace`; browser consumer build/provenance generated locally, but no browser E2E or public deployment claim. |
+| `pnpm run build && pnpm run check && pnpm run test` from `relgeo.github.io/` | PASS — 138 pages, 0 Astro diagnostics, built-output assertions pass | `local-workspace`; website consumer renders and validates locally, without deployment/public-route evidence. |
+| `pnpm run conformance:fixtures` from workspace root | PASS — 298/298 across 23 fixtures | `fixture-pass`; shared workspace surfaces, not Flutter/native or public registry evidence. |
+| `pnpm run integration:gate -- --local --report=.local/geometry-consumer-integration-local.json` | BLOCKED — exit 2 before consumer stages | `environment-unavailable`; report classifies the declared Node 24 prerequisite as blocked with no human decision required. |
+| `pnpm run playground:artifact:check` after local Playground→website assembly | QUALIFIED — failed baseline child-revision assertion | `local-workspace`; assembled files exist, but current Playground `c7cec4b…` differs from baseline pin `47fd715…`; no artifact/public claim is promoted. |
+| Public registry / CI / Flutter consumer boundary | NOT VERIFIED | No current public or native-host claim is made; historical CI/public records in `docs/plans/01-cross-repo-integration-gate.md` remain historical and do not bind this dirty working tree. |
+
+The local package, renderer, CLI, and fixture checks show no consumer failure
+within the tested TypeScript workspace boundary. They do not promote the
+external parity rows (`GEO-DET-001`, `GEO-PARITY-001/002`) or the deferred
+boolean topology rows, and they do not override the Node 24/Flutter/public
+environment limitation.
 
 ## 5. Downstream handoff
 

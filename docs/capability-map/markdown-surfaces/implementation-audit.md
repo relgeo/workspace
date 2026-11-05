@@ -135,29 +135,29 @@ of either plugin:
 
 | ID | Status | Observed implementation and evidence | Gap, defect, or verification limit |
 | --- | --- | --- | --- |
-| `MD-FENCE-001` | `partial` | Preview default is `relgeo`; highlighter default is `rg`; each supports a configurable single `fence` option. | The expected alias contract is split across packages rather than a documented shared alias set; no alias matrix test. |
-| `MD-FENCE-002` | `partial` | Both visit mdast `code` nodes, preserve `code.value` for their output path, retain `meta` in `data-relgeo-meta`, and highlighter preserves line text. | Preview intentionally removes source, and whitespace/info preservation is not tested through a real remark/rehype pipeline. |
-| `MD-FENCE-003` | `partial` | `unist-util-visit` processes every matching code node without package-global state; conformance covers selected fixtures. | No dedicated multi-block/mixed-Markdown test or exact ordering assertion. |
+| `MD-FENCE-001` | `implemented` | Preview and highlighter retain documented defaults (`relgeo` and `rg`), validate explicit fence overrides, and leave non-target fences untouched; focused alias/isolation tests pass. | Generic host alias evidence remains separate from the package boundary. |
+| `MD-FENCE-002` | `implemented` | Focused preview AST tests preserve exact source value, info metadata, position, and surrounding node order; highlighter fallback preserves source text. | A full external remark/rehype host matrix remains separate evidence. |
+| `MD-FENCE-003` | `implemented` | Repeated mixed target/non-target/malformed preview blocks produce identical transformed trees and preserve order/isolation. | Generic host ordering remains the separate `MD-SSR-003` verification row. |
 | `MD-PREVIEW-001` | `implemented` | `remark-relgeo` compiles with `@relgeo/core`, renders with `@relgeo/renderer-svg`, emits a preview marker/image, and passes package, conformance, and website assertions. | Only current mdast/HTML consumer path is directly exercised. |
-| `MD-PREVIEW-002` | `partial` | Default output is lightweight model preview; `sheet`, `profile`, and `unit` metadata reach runtime and `sheetId` is tested. | No explicit view selection; print/sheet semantics are only partially exposed and no full option contract exists. |
+| `MD-PREVIEW-002` | `implemented` | Default output is canonical model preview; `sheet`, `profile`, and `unit` metadata reach runtime, canonical sheet fixture output is asserted, and invalid metadata has tolerant/strict tests. | View selection remains defined by canonical DSL sheet/view definitions; no standalone plugin `view` option is in the `0.5.x` contract. |
 | `MD-PREVIEW-003` | `implemented` | Source delegates to `compileRelGeo` and `renderToSVG`; conformance compares preview image SVG exactly to the preview pipeline snapshot. | Cross-version/registry parity is not independently verified. |
 | `MD-PREVIEW-004` | `implemented` | Transform mutates only matching code nodes; the website rehype helper now replaces the generated outer `pre` with the preview wrapper and built-output assertions pass. | Generic non-Astro host structure remains a separate unverified boundary. |
 | `MD-HL-001` | `implemented` | `remark-relgeo-hl` produces `pre > code`, line wrappers, semantic token spans, and stable classes; tests and site output assert token kinds. | Token completeness follows language-service coverage rather than a separately versioned Markdown taxonomy. |
 | `MD-HL-002` | `implemented` | Invalid-looking source remains visible when language service returns tokens, and injected service failure now returns source-preserving `pre > code` fallback with a structured diagnostic. | Strict policy deliberately throws; the tolerant fallback is covered by focused package tests. |
 | `MD-HL-003` | `implemented` | `rg-line`, `data-line`, `data-token-kind`, class prefix, whitespace text nodes, and escaped helper output are implemented; CSS consumes the classes. | No snapshot/compatibility policy for class/token renames; raw helper has limited direct tests. |
-| `MD-HL-004` | `partial` | Highlighter calls language-service tokenization and does not import renderer; invalid source can still be tokenized, and peer service failure now has a bounded source-preserving fallback. | Language-service remains coupled to core semantics and no independent lexical fallback mode exists. |
+| `MD-HL-004` | `implemented` | Highlighter calls language-service tokenization when available, accepts explicit `languageService: null`, and emits source-preserving lexical fallback without core/renderer; service failure and strict behavior are tested. | Semantic token quality remains owned by language-service; preview success is intentionally not inferred. |
 | `MD-DIAG-001` | `implemented` | Both plugins emit `data-relgeo-diagnostic` with stable code, severity, message, phase, and fenced-block/source location. | Semantic vocabulary remains delegated to core/spec; plugin fallback codes cover adapter failures. |
 | `MD-DIAG-002` | `implemented` | Preview errors retain visible fallback text and the structured payload; highlighter service failures retain readable source and expose the same diagnostic shape. | Website owns final visual presentation; non-fatal runtime diagnostics remain a separate capability. |
-| `MD-DIAG-003` | `absent` | Core/renderer may support runtime diagnostics and shared runner verifies them elsewhere. | Preview plugin only receives a compiled scene or thrown error; no non-fatal diagnostic path preserves preview plus diagnostic. |
+| `MD-DIAG-003` | `implemented` | Core retained-scene constraint violations are serialized as warnings while tolerant preview output keeps the image; strict mode throws explicitly. | Runtime vocabulary remains owned by core/spec. |
 | `MD-DIAG-004` | `implemented` | Both plugin APIs document `failurePolicy: 'tolerant' | 'strict'`, defaulting to tolerant; focused tests cover fallback and typed strict errors. | This policy applies to plugin failures; it does not implement non-fatal runtime diagnostics. |
-| `MD-OPT-001` | `partial` | TypeScript interfaces expose `classPrefix`, `fence`, render hook, and language service; preview parses `padding`, `profile`, `sheet`, `unit`. | Defaults exist in code/README, but invalid values/unknown keys are not diagnosed and options are not tested exhaustively. |
+| `MD-OPT-001` | `implemented` | Both package APIs document defaults, validate known option values and injected hook/service shapes, ignore unknown keys, and pass focused option tests. | Future option additions still require source-of-truth and compatibility review. |
 | `MD-OPT-002` | `partial` | `profile`, `sheet`, and `unit` pass through; source version is handled by core. | No plugin option for version or view selection; future version becomes a generic placeholder error. |
 | `MD-OPT-003` | `partial` | `classPrefix`, custom preview hook, and highlighter class prefix are configurable; unsafe custom SVG patterns are rejected. | No configurable asset strategy/base URL; the bounded hook check is not a general sanitizer. |
 | `MD-OPT-004` | `implemented` | `failurePolicy` exposes documented tolerant fallback versus strict failure behavior and is covered by focused preview tests. | This option covers adapter failures; non-fatal runtime diagnostic preservation remains `MD-DIAG-003`. |
 | `MD-SSR-001` | `partial` | Package source uses Node-compatible compile/render and no browser globals; Astro static build succeeds. | Generic SSR/other unified hosts were not run; data URI and runtime dependencies are only verified in Astro/local Node. |
 | `MD-SSR-002` | `implemented` | Exact preview SVG and highlight digest checks pass for selected shared fixtures; repeated static build is deterministic in the inspected run. | Determinism is not proven for all options, custom hooks, or arbitrary hosts. |
 | `MD-SSR-003` | `unverified` | Astro config successfully orders `remarkRelgeoHl`, `remarkRelgeo`, then `rehype` unwrap; website build passes. | No standalone remark-parse → remark-rehype → rehype-stringify integration fixture or documented ordering matrix outside Astro. |
-| `MD-SSR-004` | `partial` | Both packages build ESM/CJS/types, expose `dist`, and have public package metadata. | No fresh `npm pack`/registry install/temporary consumer proof; local site uses workspace-linked resolution in the inspected checkout. |
+| `MD-SSR-004` | `partial` | Both packages build ESM/CJS/types, pass manifest/dist boundary tests, and produce clean local `npm pack` tarballs. | Fresh temporary consumer install hung in the environment and was interrupted; registry/public parity remains unverified. |
 | `MD-ASSET-001` | `partial` | Preview uses deterministic `data:image/svg+xml;charset=utf-8` URI and Pages artifact carries it. | Asset mode is fixed, not configurable; no external/relative asset-base policy for large previews or alternate hosts. |
 | `MD-ASSET-002` | `implemented` | Plugin source performs no filesystem or network access; inputs are source/meta and caller hook only. | A caller-supplied custom render hook remains an explicit trust boundary. |
 | `MD-ASSET-003` | `partial` | Source text is represented as AST text, helper output escapes HTML text/block IDs, and custom SVG is rejected for executable tags, handlers, and unsafe URL forms. | This bounded rejection policy is covered by focused tests, but it is not a general SVG sanitizer or complete URL policy. |
@@ -243,7 +243,7 @@ and Pages artifact assertions for 3 assets. The remaining absent row
 (`MD-DIAG-003`) and all unrelated backlog rows remain visible and are not
 promoted by this implementation.
 
-### Status summary
+### Historical status summary — 2026-10-30
 
 | Status | Count |
 | --- | ---: |
@@ -273,3 +273,46 @@ The next reconciliation task should join all 38 IDs to this audit without
 deleting absent capabilities. It should keep implementation, verification, and
 scope axes separate, and should treat the Pages artifact pass as consumer
 evidence—not as proof of clean npm registry parity or physical accessibility.
+
+## Current implementation refresh — 2026-11-04
+
+This refresh records the selected implementation tranche after the contract
+lock. It supersedes the stale selected-row claims above for the rows listed
+here while preserving the historical audit entries for traceability.
+
+| Current status | Count |
+|---|---:|
+| `implemented` | 23 |
+| `partial` | 14 |
+| `broken` | 0 |
+| `absent` | 0 |
+| `not applicable` | 1 |
+| `unverified` | 2 |
+
+| Selected capability | Current implementation evidence | Current status |
+|---|---|---|
+| `MD-FENCE-001` | Both package entrypoints retain their documented defaults (`relgeo` and `rg`), validate explicit fence overrides, leave non-target fences untouched, and pass focused alias/isolation tests. | `implemented / verified-local` |
+| `MD-FENCE-002` | Preview tests assert exact source value, metadata, position, and neighboring node preservation; highlighter tests assert source-preserving output, including service fallback. | `implemented / verified-local` |
+| `MD-FENCE-003` | Preview tests run mixed target/non-target/malformed blocks twice and compare the complete transformed tree, proving order and block isolation at the package boundary. | `implemented / verified-local` |
+| `MD-PREVIEW-002` | Preview tests cover default model output, canonical `sheetId` selection from fixture 03, metadata pass-through, invalid presentation metadata, tolerant placeholder, and strict failure. | `implemented / verified-local` |
+| `MD-HL-004` | Highlighter accepts explicit `languageService: null` and emits a source-preserving lexical `pre > code` fallback without renderer/core use; injected service failure and strict behavior are tested. | `implemented / verified-local` |
+| `MD-OPT-001` | Both packages validate fence/class prefix/failure policy and injected hook/service shapes, ignore unknown keys, document defaults, and test same-instance-compatible behavior. | `implemented / verified-local` |
+| `MD-SSR-004` | Both packages build ESM/CJS/types, pass manifest/dist boundary tests, and produce clean `npm pack` tarballs containing only the documented package surface. Fresh temporary `npm install` hung in the environment and was interrupted; registry parity remains separate. | `partial / unverified-external` |
+
+### Refresh verification commands
+
+| Command | Result | Evidence boundary |
+|---|---|---|
+| `pnpm test` in `remark-relgeo/` | PASS, 16/16 | Fence override, source/metadata/position preservation, mixed-block determinism, sheet selection, invalid metadata, option validation, fallback, and package boundary. |
+| `/opt/homebrew/bin/pnpm build` in `remark-relgeo/` | PASS | ESM/CJS and declaration output for the preview package. |
+| `pnpm lint` in `remark-relgeo/` | PASS | Preview TypeScript source/type boundary. |
+| `pnpm test` in `remark-relgeo-hl/` | PASS, 10 Vitest tests + 1 Node boundary test | Explicit fence mapping, lexical fallback, token-service fallback/strict behavior, option validation, and package boundary. |
+| `/opt/homebrew/bin/pnpm build` in `remark-relgeo-hl/` | PASS | ESM/CJS and declaration output for the highlighter package. |
+| `pnpm lint` in `remark-relgeo-hl/` | PASS | Highlighter TypeScript source/type boundary. |
+| `npm_config_cache=/private/tmp/markdown-npm-cache npm pack --pack-destination /private/tmp/markdown-pack-smoke` in each package | PASS | Local tarballs contain README, manifest, and `dist` ESM/CJS/types without workspace protocol dependencies. |
+| Fresh temporary `npm install` from both local tarballs | NOT VERIFIED; environment resolver hung and was interrupted | No registry or deployment claim; clean external consumer remains unverified. |
+
+The refresh does not promote `MD-SSR-004` to implemented because the clean
+consumer install did not complete. Generated `dist` and temporary pack files
+remain outside the tracked root change set; no generated/cache/release-only
+artifact is intentionally added to the workspace repository.

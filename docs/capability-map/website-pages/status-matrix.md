@@ -1,6 +1,6 @@
 # Website and Pages capability status matrix
 
-**Tanggal:** 2026-10-30  
+**Tanggal:** 2026-11-04
 **Boundary:** expected website/Pages catalog versus implementation audit evidence  
 **Status dokumen:** downstream capability-first view; this document does not implement a gap
 
@@ -30,6 +30,23 @@ that implementation exists.
 **Coverage:** 15 expected IDs, 15 matrix rows, 0 missing, 0 duplicate, 0
 extra; 4 `✔️`, 11 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`, 0 `⚠️`.
 
+## P0/P1 triage handoff
+
+The implementation-closability decision is recorded in the [gap backlog](./implementation-gap-backlog.md#p0p1-implementation-closability-triage).
+At the 2026-11-04 triage, eight P0/P1 rows are selected for local
+implementation or fail-closed build/contract work: `WEB-PAGE-003`, `004`,
+`005`, `007`, `009`, `010`, `011`, and `012`. Three remaining P0/P1 rows are
+retained as evidence-only follow-ups: `WEB-PAGE-013` requires a GitHub Actions
+and Pages run, `WEB-PAGE-014` requires reachable public probes, and the P1
+portion of `WEB-PAGE-015` requires deployment/CI provenance evidence. Their
+owners, source-of-truth paths, acceptance tests, and initial statuses are
+defined in the linked table.
+
+This triage does not change the status symbols below. Public deployment,
+external crawler/browser evidence, and physical VoiceOver/TalkBack/mobile AT
+remain separate boundaries; unavailable or deferred evidence is not converted
+into an implementation failure or a local pass.
+
 ## Capability-first matrix
 
 | ID | Capability / user outcome | Status | Evidence | Gap / limitation | Owner | Dependency | Risk | Next action |
@@ -45,10 +62,10 @@ extra; 4 `✔️`, 11 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`, 0 `⚠️`.
 | `WEB-PAGE-009` | Usable responsive layout for navigation, code/spec reading, and handoffs | `🌗` | `verified-local` source/build contract; current viewport matrix `unverified` | Built gate covers 640/899/900px breakpoints, containment, and focus styles; native Chrome rendered the local docs route, but the full matrix was unavailable on this host | website + Playground | CSS breakpoints, browser matrix, hosted artifact | M | Run current 640/899/900px browser matrix and capture overflow/focus evidence when a stable runner is available |
 | `WEB-PAGE-010` | Keyboard, landmarks, names, focus, state, code semantics, and reduced-motion accessibility | `🌗` | `verified-local` static shell plus native Chrome AX smoke; physical AT `deferred-external` | English/Indonesian docs landmarks, labelled search, active locale, skip-link focus, and localized no-result state were observed; full route traversal and physical AT remain incomplete | website + Playground | browser AX tree, keyboard path, AT hosts | H | Extend browser AX/keyboard audit across the full route matrix; separately reopen physical AT decision |
 | `WEB-PAGE-011` | Crawlable metadata, canonical/base-aware URLs, alternates, and sitemap | `🌗` | `verified-local` with deployment env; crawler `unverified-public` | Bare build defaults to `https://example.com`; no external crawler evidence | website | `RELGEO_DOCS_SITE_URL`, Astro config, Pages URL | H | Verify deployed canonical/hreflang/sitemap URLs and run a route/content crawler when Pages is reachable |
-| `WEB-PAGE-012` | Reproducible generated artifact with pinned spec/Playground inputs and provenance | `🌗` | `verified-local` assembled artifact and revision parity | Root pointer, baseline, Pages pins, and assembled artifact are synchronized locally; CI/deployed parity remains unverified | website + root | approved child revision, baseline sync, Pages artifact assertion | H | Retain the synchronized tuple in CI and archive the resulting deployment evidence |
+| `WEB-PAGE-012` | Reproducible generated artifact with pinned spec/Playground inputs and provenance | `🌗` | `verified-local` direct builds and fail-closed gate; current artifact parity `unverified` | Current website/Playground/spec heads differ from baseline/Pages pins, so the assembled artifact gate rejects the current provenance report; CI/deployed parity remains unverified | website + root | approved child revision, baseline sync, Pages artifact assertion | H | Align the approved tuple, rerun strict provenance and artifact gates, then archive deployment evidence |
 | `WEB-PAGE-013` | GitHub Pages deployment of reviewed artifact at configured base path | `🌗` | `observed-local`; current CI/deploy `unverified-public` | Workflow exists, but current run and synchronized inputs are not evidenced | website + root | Pages workflow, pinned inputs, GitHub Actions result | H | Run canonical workflow for one synchronized revision set |
 | `WEB-PAGE-014` | Repeatable artifact, route, asset, and public smoke signal after deployment | `🌗` | local gates pass; public `environment-unavailable` | DNS blocked all 13 public probes; current reliability remains unverified | root + website | deployment reachability, smoke script, artifact gate | H | Re-run 13-route smoke and archive result for deployed artifact |
-| `WEB-PAGE-015` | Honest capability, contract/package/application/deployment version status | `🌗` | `verified-local` for provenance; deployment `unverified-public` | Frozen fields/tuple are explicit and synchronized by the local provenance/artifact gate; deployment revision remains a separate claim | website + spec + root | status pages, child versions, frozen tuple, integration baseline | H | Preserve separate fields and attach CI/deployment evidence when available |
+| `WEB-PAGE-015` | Honest capability, contract/package/application/deployment version status | `🌗` | `verified-local` for explicit claims; provenance/deployment `unverified-public` | Frozen fields and baseline/Pages references are explicit, but current child revisions drift from them; deployment revision remains a separate claim | website + spec + root | status pages, child versions, frozen tuple, integration baseline | H | Preserve separate fields, align/review the tuple, and attach CI/deployment evidence when available |
 
 ## Decision and handoff notes
 

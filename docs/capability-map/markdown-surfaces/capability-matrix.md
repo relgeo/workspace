@@ -1,6 +1,6 @@
 # Markdown surfaces capability matrix
 
-> **Coverage statement — 2026-11-03.** This matrix covers `remark-relgeo` and
+> **Coverage statement — 2026-11-04.** This matrix covers `remark-relgeo` and
 > `remark-relgeo-hl` source/test/package boundaries plus the official website
 > consumer, using plugin source, tests, manifests, core/language-service/spec
 > inputs, and Astro build evidence. It inventories preview/embed and source
@@ -16,7 +16,7 @@
 |---|---|
 | Surfaces | @relgeo/remark-relgeo and @relgeo/remark-relgeo-hl |
 | Audit owner | Plugin repositories + official Astro docs-site consumer |
-| Audit date | 2026-11-03 |
+| Audit date | 2026-11-04 |
 | Source of truth | Plugin source/tests/manifests, language-service token API, core/spec contracts, docs-site config/content/assertions |
 | Evidence freshness | Local package/site checks passed against workspace-linked dependencies. Registry-only installation, publish, and clean cross-repository consumer parity are not verified. |
 
@@ -34,7 +34,40 @@
 not verified is an evidence state for checks not run in this audit; it is not a
 status symbol.
 
-## Capability inventory
+## Current reconciliation overlay — 2026-11-04
+
+The inventory and priority notes below preserve the 2026-11-03 broad-surface
+snapshot for audit history. This overlay is the current status for the selected
+implementation tranche and downstream consumer boundary; it is aligned with
+the status matrix, reconciliation, implementation audit, and coverage handoff.
+
+| Current status | Count |
+|---|---:|
+| Implemented | 23 |
+| Partial | 14 |
+| Broken | 0 |
+| Absent | 0 |
+| Not applicable | 1 |
+| Partial rows with unverified external evidence | 3 |
+
+| Current row group | Status | Evidence boundary |
+|---|---|---|
+| `MD-FENCE-001`, `MD-FENCE-002`, `MD-FENCE-003` | ✔️ implemented / verified-local | Fence defaults/overrides, source and metadata preservation, and mixed-block determinism pass package and shared-pipeline checks. |
+| `MD-PREVIEW-002` | ✔️ implemented / verified-local | Canonical model preview, sheet selection, metadata validation, tolerant placeholder, and strict failure pass focused tests and conformance. |
+| `MD-HL-004` | ✔️ implemented / verified-local | Explicit service opt-out and service failure preserve readable source in `pre > code`; strict behavior is tested. |
+| `MD-OPT-001` | ✔️ implemented / verified-local | README/types/runtime validation agree on defaults, known invalid values, unknown keys, and safe reuse. |
+| `MD-DIAG-003` | ✔️ implemented / verified-local | Runtime warning retains valid preview in tolerant mode and strict mode remains explicit. |
+| `MD-SSR-004` | 🌗 partial / unverified-external | Local build, package boundary, and `npm pack` pass; clean temporary consumer install and registry parity remain unverified. |
+| `MD-SSR-003`, `MD-REL-002` | 🌗 partial / unverified-external | Astro/local ordering and package metadata are observed; generic-host and registry/public verification remain external follow-ups. |
+
+Current consumer evidence is local: remark-relgeo 16/16 tests,
+remark-relgeo-hl 10 Vitest plus 1 Node package-boundary test, shared conformance
+298/298 across 23 fixtures, and the Astro consumer with 0 diagnostics and 138
+pages. The full integration runner requires Node 24+ and is environment
+unavailable on the current Node 22.23.2 host; no CI, registry, deployment, or
+public claim is inferred.
+
+## Historical capability inventory — 2026-11-03
 
 | Capability | Status | Evidence | Gap / limitation | Consumer | Dependency | Next action |
 |---|---:|---|---|---|---|---|
@@ -58,7 +91,7 @@ status symbol.
 | Registry parity with workspace consumer | ⚠️ | Workspace plugin/site are 0.5.0 but core/language-service source are 0.5.1; site lockfile records 0.5.0 while local node_modules symlink to workspace sources | Local site pass is not clean registry-only proof | npm users and published docs site | Package release/version synchronization | Add clean install/package-consumer evidence and reconcile version line |
 | Raw SVG/PNG asset production from Markdown plugin | ➖ | remark-relgeo emits an image data URI; plans exclude general export formats | General asset pipeline is outside plugin contract | Site asset pipeline | Renderer/export strategy | Do not expand without a concrete consumer requirement |
 
-## Priority and dependency order
+## Historical priority and dependency order
 
 1. **P1 — verify release boundary:** run clean package pack/install smoke and
    reconcile local workspace 0.5.1 dependencies with the site lockfile's 0.5.0
@@ -68,7 +101,7 @@ status symbol.
 3. **P2 — add generic unified integration evidence:** prove the AST transforms
    through an actual remark/rehype pipeline outside current synthetic-tree tests.
 
-## Conclusion
+## Historical conclusion
 
 The Markdown surfaces are real and consumed by the official site. Preview/embed
 and highlighting now have focused package tests, delegated canonical semantics,

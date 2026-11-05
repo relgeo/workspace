@@ -1,6 +1,6 @@
 # Markdown Surfaces Implementation-Gap Backlog
 
-**Date:** 2026-10-30
+**Date:** 2026-11-04
 **Status:** candidate goal/task register; selected rows may record `✔️` only
 after focused implementation and fresh audit evidence; the register itself is
 not completion evidence
@@ -52,12 +52,69 @@ must remain readable when preview rendering is unavailable.
 | --- | ---: |
 | Expected implementation-gap rows | 27 |
 | Candidate implementation tasks | 27 |
-| `✔️` tasks with fresh local evidence | 9 |
-| `🌗` tasks | 18 |
+| `✔️` tasks with fresh local evidence | 15 |
+| `🌗` tasks | 12 |
 | `❌` tasks | 0 |
 | `⚠️` tasks | 0 |
 | Missing source IDs | 0 |
 | Duplicate source IDs | 0 |
+
+## Triage — P0/P1 implementation closure (2026-11-04)
+
+This tranche separates changes that can be implemented and tested inside the
+workspace from claims that require an external host or release boundary. A row
+is **selected** only when its owner can change package/docs/test behavior and
+prove the acceptance assertion without registry publication, production
+deployment, or physical accessibility infrastructure. `Initial status` is the
+observed status before this triage; it is not completion evidence.
+
+| ID | Priority | Triage disposition | Owner | Source of truth | Acceptance test / evidence target | Initial status | Next action |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `MD-FENCE-001` | P1 | **Implemented — verified-local** | `remark-relgeo` + `remark-relgeo-hl` owners | Package READMEs/terminology plus `spec/id` naming policy | Alias matrix proves package defaults (`relgeo`/`rg`), explicit overrides, unrelated fences, and non-target isolation | `implemented / verified-local` | Keep alias matrix regression |
+| `MD-FENCE-002` | P1 | **Implemented — verified-local** | Both plugin owners | Unified mdast/hast code-node contract and both plugin transforms | Focused AST tests preserve source, whitespace/metadata, position, fallback text, and adjacent nodes | `implemented / verified-local` | Keep source-preservation regression |
+| `MD-FENCE-003` | P1 | **Implemented — verified-local** | Both plugin owners | Deterministic transform contract in the maturation plan and plugin visitors | Two identical runs over mixed and repeated blocks preserve order, isolate failures, and leave non-RelGeo blocks unchanged | `implemented / verified-local` | Keep multi-block conformance regression |
+| `MD-PREVIEW-002` | P1 | **Implemented — verified-local** | `remark-relgeo` + renderer owner | `spec/id/presentation/25-views-sheets.md`, renderer sheet API, and `remark-relgeo` option API | Default model output, explicit sheet/profile/unit behavior, canonical sheet/view definitions, invalid metadata, and strict failure are tested | `implemented / verified-local` | Keep presentation projection regression |
+| `MD-HL-004` | P1 | **Implemented — verified-local** | `remark-relgeo-hl` + language-service owner | Language-service lexical token contract and highlighter package API | Invalid/incomplete source remains readable without renderer/core; explicit service opt-out and service failure have bounded fallback | `implemented / verified-local` | Keep lexical fallback regression |
+| `MD-DIAG-003` | P1 | **Closed — already implemented** | `remark-relgeo` + core owners | Core runtime diagnostic contract, fixture 14, and package regression tests | Tolerant mode retains valid preview with structured `RUNTIME_CONSTRAINT_VIOLATION`; strict mode fails explicitly | `implemented / verified-local` | No implementation action; retain regression evidence |
+| `MD-OPT-001` | P1 | **Implemented — verified-local** | Each package owner | Package README/types plus `docs/compatibility-matrix.json` | Public option table, defaults, immutability, unknown-key behavior, and invalid-value diagnostics match runtime tests | `implemented / verified-local` | Keep option validation and reuse regressions |
+| `MD-SSR-003` | P1 | **External verification — not an implementation blocker** | Package + website owners | Documented unified/remark ordering contract and generic-host fixture | A clean standalone remark-parse → plugin → remark-rehype → rehype-stringify run proves ordering on an alternate host | `partial / unverified-external` | Keep as `MD-VERIFY-001`; run when a generic host is available |
+| `MD-SSR-004` | P0 | **Selected — implementation-closable; local pack verified** | Both package owners | Package `package.json` exports/types, package READMEs, and compatibility matrix | Local `npm pack` plus package-boundary tests pass; fresh temporary consumer must resolve documented ESM/CJS/types without workspace-relative dependencies | `partial / unverified-external` | Retry clean consumer when npm resolver is available; registry publication remains separate evidence |
+
+The selected set was seven rows: `MD-FENCE-001`, `MD-FENCE-002`,
+`MD-FENCE-003`, `MD-PREVIEW-002`, `MD-HL-004`, `MD-OPT-001`, and
+`MD-SSR-004`. Six now have fresh local implementation evidence;
+`MD-SSR-004` remains partial pending a clean temporary consumer. `MD-DIAG-003`
+is retained for traceability but is not an open gap. `MD-SSR-003` is retained as
+an external verification follow-up. The
+release/registry-only `MD-REL-002` and deployed/public or physical AT checks
+remain evidence/deferred work and are not silently promoted into implementation
+tasks by this triage.
+
+## Contract and acceptance lock — selected tranche (2026-11-04)
+
+This is the pre-implementation contract for the seven selected rows. The
+normative compatibility boundary is RelGeo DSL `0.5`, package line `0.5.x`,
+with package versions and release order governed by
+[`docs/compatibility-matrix.json`](../../compatibility-matrix.json). No row
+introduces DSL semantics, a standalone Markdown renderer, or an unrecorded
+public option. The contract uses the inventory protocol's separation of
+implementation, evidence, parity, and scope; external or public evidence is
+never inferred from a local pass.
+
+| ID | Locked success behavior | Locked failure / edge behavior | Expected evidence | Normative source of truth |
+| --- | --- | --- | --- | --- |
+| `MD-FENCE-001` | Keep package defaults documented and stable: `remark-relgeo` targets `relgeo`, `remark-relgeo-hl` targets `rg`; an explicit non-empty `fence` option may select one supported identifier; only the matching plugin transforms the node. | Unknown, empty, or non-target fence identifiers remain untouched; `relgeo` and `rg` in one document are independently isolated by the package-specific default/explicit fence contract. | Alias matrix covering both defaults, explicit overrides, unrelated fences, and mixed-fence AST output. | Package READMEs and development plans; `spec/id` terminology; expected catalog naming row; [`INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) Markdown boundary. |
+| `MD-FENCE-002` | A matching code node preserves source bytes, info metadata, positions when present, and surrounding node order; highlighter fallback keeps the original source copyable. | Empty source, CRLF/trailing newline, unknown metadata, missing position, and adjacent non-target nodes do not cause source loss or document-wide mutation. | Real remark parse → plugin → rehype fixture with deep AST/HTML assertions for value, metadata, whitespace, positions, and neighbors. | Unified mdast/hast contract; both plugin transforms; expected catalog preservation row; inventory protocol test/fixture requirements. |
+| `MD-FENCE-003` | Repeated transforms with identical source/options produce the same ordered semantic AST projection; every target block is isolated and non-RelGeo blocks retain their order/content. | A malformed target block, duplicate target block, or mixed-language block cannot change another block's output; no global mutable state may leak between plugin invocations. | Two-run mixed-block fixture with normalized AST comparison plus per-block failure-isolation assertions. | Maturation-plan deterministic-build rule; plugin visitor boundary; website build contract; inventory protocol evidence/parity axes. |
+| `MD-PREVIEW-002` | Default preview remains the canonical model preview with `padding=0`; `profile`, `sheet`, and `unit` metadata pass through explicitly, and `sheet` selects the renderer's canonical `sheetId`. Views are selected only through the DSL sheet/view definitions. | Missing/unknown sheet or invalid presentation metadata yields the existing contextual diagnostic and tolerant placeholder; strict mode throws. No standalone plugin `view` option is added to the `0.5.x` contract. | Model and sheet fixtures assert default output, metadata pass-through, selected sheet output, missing-sheet tolerant output, and strict failure. | [`spec/id/presentation/25-views-sheets.md`](../../../spec/id/presentation/25-views-sheets.md); renderer `RenderOptions`; `remark-relgeo` README/source; compatibility matrix `0.5` policy. |
+| `MD-HL-004` | Highlighting operates on source/lexical token projection only; when the token service is available it emits semantic spans, while the independent fallback emits readable `pre > code` source without requiring core or renderer. | Invalid/incomplete source never claims preview success; token-service absence/throw produces source-preserving fallback and diagnostic, while `failurePolicy: 'strict'` remains the explicit throw path. | Tests inject missing/throwing service and invalid source, assert no core/renderer dependency, preserved lines/text, bounded diagnostic, and strict behavior. | `remark-relgeo-hl/DEVELOPMENT-PLAN.md` source-first and no-renderer boundary; highlighter README/source; language-service lexical contract; inventory protocol package/consumer boundary. |
+| `MD-OPT-001` | The documented option set, defaults, and instance reuse are stable: preview `{ fence: 'relgeo', classPrefix: 'relgeo-preview', failurePolicy: 'tolerant' }`; highlighter `{ fence: 'rg', classPrefix: 'relgeo-hl', failurePolicy: 'tolerant' }`; optional hooks/services remain caller-supplied. Reusing one plugin instance does not mutate its configuration. | Invalid known values (`failurePolicy`, empty fence/class prefix, or malformed injected hook/service) fail deterministically at configuration; unknown keys are ignored and never forwarded to core/renderer. Content failures still follow tolerant/strict policy and existing diagnostic DTOs. | README/type option tables, runtime validation tests, unknown-key tests, default assertions, and two-document same-instance regression. | Package `src/index.ts` option interfaces/defaults; package READMEs; compatibility matrix same-line/patch policy; expected catalog option row. |
+| `MD-SSR-004` | A local packed `0.5.x` package consumed from a fresh temporary project resolves documented ESM, CJS, and TypeScript exports for both Markdown plugins without workspace-relative dependencies. | Missing `dist`, broken `exports`/`types`, or workspace-relative dependency causes the clean consumer check to fail with actionable evidence; registry publication/install parity remains a separate `MD-REL-002` external check. | Package build/lint/tests, `npm pack`, temporary consumer import/type smoke, and package manifest inspection at the recorded checkout. | Both package `package.json` export/type/file lists; package READMEs; compatibility matrix package boundary, version policy, and release order; inventory protocol delivery evidence separation. |
+
+These assertions are acceptance contracts, not implementation evidence. Any
+implementation that changes a public option name, default, diagnostic shape,
+fence mapping, or compatibility line must update the applicable source of truth
+and reconciliation record before the implementation is promoted.
 
 ## Priority and scope register
 
@@ -100,18 +157,18 @@ dependency, acceptance evidence, risk, and next action for the same task ID.
 
 | Candidate task | Expected ID | Source status | Owner | Dependency | Acceptance test / evidence target | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `MD-TASK-001` shared fence alias contract | `MD-FENCE-001` | 🌗 | both plugin owners | terminology/spec naming | Both plugins accept the agreed aliases, skip non-RelGeo fences, and pass alias matrix tests | P1 wrong fence surface | Decide alias set and add tests |
-| `MD-TASK-002` source/metadata preservation fixtures | `MD-FENCE-002` | 🌗 | both plugin owners | unified mdast/hast contract | Real remark/rehype fixtures preserve info, whitespace, source fallback, and adjacent nodes | P1 source loss/copy regression | Add pipeline fixture suite |
-| `MD-TASK-003` mixed-block determinism | `MD-FENCE-003` | 🌗 | both plugin owners | visitor isolation; deterministic build | Repeated mixed RelGeo/non-RelGeo blocks preserve order and isolated output across two builds | P1 cross-block contamination | Add multi-block conformance fixture |
-| `MD-TASK-004` preview presentation option contract | `MD-PREVIEW-002` | 🌗 | remark-relgeo + renderer owner | views/sheets/profile spec | Tests prove default model output and explicit supported sheet/view/profile behavior | P1 author selects a view that is ignored | Define option schema and fixtures |
+| `MD-TASK-001` shared fence alias contract | `MD-FENCE-001` | ✔️ | both plugin owners | terminology/spec naming | Package defaults remain `relgeo` for preview and `rg` for highlighting; explicit supported overrides, unrelated fences, and mixed-fence isolation pass alias matrix tests | P1 wrong fence surface | Closed with package-level matrix tests |
+| `MD-TASK-002` source/metadata preservation fixtures | `MD-FENCE-002` | ✔️ | both plugin owners | unified mdast/hast contract | Focused AST fixtures preserve info, whitespace, source, position, fallback, and adjacent nodes | P1 source loss/copy regression | Closed with preservation regression |
+| `MD-TASK-003` mixed-block determinism | `MD-FENCE-003` | ✔️ | both plugin owners | visitor isolation; deterministic build | Repeated mixed RelGeo/non-RelGeo blocks preserve order and isolated output across two builds | P1 cross-block contamination | Closed with multi-block conformance fixture |
+| `MD-TASK-004` preview presentation option contract | `MD-PREVIEW-002` | ✔️ | remark-relgeo + renderer owner | views/sheets/profile spec | Tests prove default model output, explicit sheet/profile/unit behavior, canonical view selection through sheet definitions, and typed missing-sheet failure | P1 author selects a view that is ignored | Closed with presentation projection and fixtures |
 | `MD-TASK-005` clean preview wrapper integration | `MD-PREVIEW-004` | ✔️ | remark-relgeo + website | rehype unwrap helper | Built HTML has the intended wrapper without `pre > div`; surrounding Markdown assertions pass | P1 structural/a11y defect | Closed with Astro unwrap fix and built-output assertion |
 | `MD-TASK-006` highlighter service-failure fallback | `MD-HL-002` | ✔️ | remark-relgeo-hl + language-service | token service error boundary | Injected token-service failure returns original source/safe code block and transform succeeds | P0 docs build crash | Closed with fallback and failure-injection test |
-| `MD-TASK-007` lexical fallback isolation | `MD-HL-004` | 🌗 | remark-relgeo-hl + language-service | lexical token contract | Invalid/incomplete source remains readable without renderer/core resolution; service failure has bounded fallback | P1 highlighter depends on semantic service availability | Define an independent lexical fallback mode and fixture; retain the verified service-failure fallback |
+| `MD-TASK-007` lexical fallback isolation | `MD-HL-004` | ✔️ | remark-relgeo-hl + language-service | lexical token contract | Invalid/incomplete source remains readable without renderer/core resolution; independent fallback has no semantic-success claim; service failure has bounded fallback | P1 highlighter depends on semantic service availability | Closed with source-preserving lexical fallback and fixture |
 | `MD-TASK-008` structured Markdown diagnostic DTO | `MD-DIAG-001` | ✔️ | both plugins + spec/core | error model; block location | Output exposes stable code, severity, message, and source/block location with serialization tests | P1 failures not traceable | Closed with plugin diagnostic payload tests |
 | `MD-TASK-009` actionable diagnostic fallback | `MD-DIAG-002` | ✔️ | remark-relgeo + website | diagnostic DTO; host UI | Invalid preview produces structured payload plus readable source/fallback and website assertion | P1 reader cannot recover | Closed with fallback projection and host assertions |
 | `MD-TASK-010` non-fatal preview diagnostics | `MD-DIAG-003` | ✔️ | remark-relgeo + core | runtime diagnostics API | Runtime warning fixture returns valid preview plus diagnostic without dropping output | P1 useful preview disappears | Closed with `RUNTIME_CONSTRAINT_VIOLATION`, retained preview image, and strict/tolerant regression tests |
 | `MD-TASK-011` strict/tolerant policy option | `MD-DIAG-004` | ✔️ | remark-relgeo + build owner | error policy; build gate | Strict mode fails deterministically; tolerant mode emits fallback/diagnostic; defaults documented | P1 implicit build behavior | Closed with `failurePolicy` option and tests |
-| `MD-TASK-012` option schema and invalid-value validation | `MD-OPT-001` | 🌗 | both package owners | public API docs; compatibility policy | README/types/defaults match runtime; unknown and invalid options have tested behavior | P1 undocumented integration drift | Publish option table and tests |
+| `MD-TASK-012` option schema and invalid-value validation | `MD-OPT-001` | ✔️ | both package owners | public API docs; compatibility policy | README/types/defaults match runtime; invalid known values fail deterministically; unknown keys are ignored and not forwarded; same instance is reusable | P1 undocumented integration drift | Closed with option docs, validation, and reuse tests |
 | `MD-TASK-013` version/view/profile pass-through | `MD-OPT-002` | 🌗 | remark-relgeo + spec/core | version/presentation APIs | Supported version/profile/view/sheet combinations are explicit; future version has stable error projection | P1 wrong preset/migration messaging | Decide supported option surface |
 | `MD-TASK-014` safe output and asset configuration | `MD-OPT-003` | 🌗 | both package owners + website | asset policy; sanitizer boundary | Class/output customization is bounded, asset/base strategy is explicit, and custom hook safety is tested | P0 unsafe/non-portable output | Extend the bounded custom-hook rejection into the agreed sanitizer/asset policy |
 | `MD-TASK-015` caller-selected fallback policy | `MD-OPT-004` | ✔️ | remark-relgeo | diagnostic policy; build owner | `failurePolicy` selects tolerant fallback or strict failure and focused tests prove both paths | P1 CI policy cannot be chosen | Closed by the shared `MD-TASK-011` policy implementation; keep regression coverage |
@@ -126,7 +183,7 @@ dependency, acceptance evidence, risk, and next action for the same task ID.
 | `MD-TASK-024` website provenance/version assertions | `MD-WEB-003` | ✔️ | website + spec/package owners | compatibility metadata; release process | Build fails or reports when site provenance/version line disagrees with package/matrix | P1 site overclaims capability | Closed with plugin markers and localized build assertions |
 | `MD-TASK-025` public route/readability evidence | `MD-WEB-004` | 🌗 | website owner | route/base; accessibility QA | EN/ID routes, public smoke, responsive technical surface, and scheduled AT checks are recorded | P1 public readers see regressions | Run public smoke; schedule mobile/AT |
 | `MD-TASK-026` independent package documentation and smoke | `MD-REL-001` | 🌗 | each package owner | release docs; clean consumer | Fresh consumer follows README ordering/options/errors; package smoke and docs checks pass | P1 adopters use incomplete API | Complete docs and temporary consumer |
-| `MD-TASK-027` reproducible package export surface | `MD-SSR-004` | 🌗 | both package owners | pack/install; release metadata | Fresh consumer resolves ESM/CJS/types and follows documented exports without workspace-relative dependencies | P0 published consumer cannot install/use API | Run clean pack/install temporary consumer and add regression |
+| `MD-TASK-027` reproducible package export surface | `MD-SSR-004` | 🌗 | both package owners | pack/install; release metadata | Local packed fresh consumer resolves ESM/CJS/types for both plugins without workspace-relative dependencies; registry parity remains separate | P0 published consumer cannot install/use API | Run clean pack/install temporary consumer and add regression |
 
 ## External verification follow-ups
 

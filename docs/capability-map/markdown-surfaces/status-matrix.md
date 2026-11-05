@@ -1,6 +1,6 @@
 # Markdown Surfaces Status Matrix
 
-> **Coverage statement — 2026-10-30.** This is the capability-first downstream
+> **Coverage statement — 2026-11-04.** This is the capability-first downstream
 > view of all 38 expected Markdown plugin capabilities. Rows and statuses come
 > from the [expected-versus-observed reconciliation](./reconciliation.md);
 > discovery detail remains in the [implementation audit](./implementation-audit.md).
@@ -9,6 +9,7 @@
 
 Owner surface: `remark-relgeo` + `remark-relgeo-hl` and the official website consumer
 Compatibility line: RelGeo DSL `0.5.x` / package line `0.5.0`
+Current evidence refresh: local package/conformance/Astro consumer checks on 2026-11-04; registry, deployed, and Node 24 gate remain separate evidence boundaries.
 Policy evidence: [maturation master plan](../../MATURATION-MASTER-PLAN.md) · [compatibility matrix](../../compatibility-matrix.json)
 
 ## Status and evidence legend
@@ -33,22 +34,22 @@ accessibility validation. Editing this matrix never closes an implementation gap
 
 | ID / capability | Status | Evidence | Gap / limitation | Owner | Dependency | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `MD-FENCE-001` Recognize RelGeo fences and aliases | 🌗 | partial-local | `relgeo` and `rg` are split between packages; no shared alias contract | both plugins | naming policy; spec terminology | P1 fences render as plain text or wrong surface | Decide exact alias set and add matrix test |
-| `MD-FENCE-002` Preserve source, whitespace, metadata, and boundaries | 🌗 | partial-local | Full remark/rehype source-preservation path is not directly tested | both plugins | unified mdast/hast contract | P1 source fallback or copy behavior can drift | Add real pipeline fixtures for metadata and whitespace |
-| `MD-FENCE-003` Handle mixed/multiple blocks deterministically | 🌗 | partial-local | No dedicated multi-block ordering/isolation test | both plugins | visitor isolation; deterministic build | P1 one block can affect another | Add mixed-language and repeated-block fixtures |
+| `MD-FENCE-001` Recognize RelGeo fences and aliases | ✔️ | verified-local | Package defaults remain `relgeo` for preview and `rg` for highlighting; explicit overrides and non-target isolation pass focused tests | both plugins | naming policy; spec terminology | P1 fence mapping can regress | Keep alias matrix regression |
+| `MD-FENCE-002` Preserve source, whitespace, metadata, and boundaries | ✔️ | verified-local | Focused AST tests preserve exact source, metadata, position, and surrounding nodes; highlighter fallback preserves source | both plugins | unified mdast/hast contract | P1 source fallback or copy behavior can drift | Keep preservation regression |
+| `MD-FENCE-003` Handle mixed/multiple blocks deterministically | ✔️ | verified-local | Repeated mixed target/non-target/malformed blocks produce identical transformed trees and preserve order/isolation | both plugins | visitor isolation; deterministic build | P1 one block can affect another | Keep multi-block determinism regression |
 | `MD-PREVIEW-001` Render valid fences as previews | ✔️ | verified-local | Only current mdast/HTML consumer path is directly exercised | remark-relgeo | core; renderer-SVG | P1 host-specific integration drift | Add one generic host smoke fixture |
-| `MD-PREVIEW-002` Default model preview with explicit sheet/view path | 🌗 | partial-local | Profile/sheet/unit pass through; view selection and full presentation contract are absent | remark-relgeo | presentation spec; renderer sheet API | P1 output may not match author-selected view | Define supported preview options and tests |
+| `MD-PREVIEW-002` Default model preview with explicit sheet/view path | ✔️ | verified-local | Default model preview, canonical sheet selection, metadata pass-through, invalid metadata fallback, and strict failure are covered; view selection remains canonical DSL sheet/view behavior | remark-relgeo | presentation spec; renderer sheet API | P1 output may not match author-selected view | Keep presentation projection regression |
 | `MD-PREVIEW-003` Reuse canonical semantics | ✔️ | verified-local | Cross-version/registry parity is not independently verified | core + renderer-SVG boundary | compileRelGeo; renderToSVG | P1 Markdown can diverge from CLI/Playground | Add cross-consumer parity fixture |
 | `MD-PREVIEW-004` Preserve surrounding Markdown structure | ✔️ | verified-local | Website rehype assembly unwraps the preview wrapper; surrounding Markdown remains intact in the built consumer | remark-relgeo + website | rehype unwrap contract | P1 invalid/undesirable structure and a11y impact | Keep wrapper and built-output regression assertion |
 | `MD-HL-001` Highlight RelGeo source | ✔️ | verified-local | Token completeness follows language-service coverage | remark-relgeo-hl | language-service token API | P1 vocabulary drift | Keep token fixtures tied to spec vocabulary |
 | `MD-HL-002` Preserve readable invalid source without crash | ✔️ | verified-local | Injected language-service throw now returns source-preserving fallback with structured diagnostic | remark-relgeo-hl | service error handling | P0 docs build can fail on service failure | Keep fallback and failure regression test |
 | `MD-HL-003` Stable token classes, whitespace, and line breaks | ✔️ | verified-local | Class/token rename compatibility is not versioned | remark-relgeo-hl + website CSS | token DTO; CSS contract | P1 styling/copy regressions | Add output snapshot and class compatibility policy |
-| `MD-HL-004` Isolate highlighting from semantic resolution | 🌗 | partial-local | Service failure now has a bounded source-preserving fallback; no independent lexical fallback mode | remark-relgeo-hl + language-service | lexical contract; tolerant tokenization | P1 invalid source loses semantic highlighting | Define bounded lexical fallback and test it |
+| `MD-HL-004` Isolate highlighting from semantic resolution | ✔️ | verified-local | Explicit service opt-out emits source-preserving lexical `pre > code` without core/renderer; service failure and strict behavior are tested | remark-relgeo-hl + language-service | lexical contract; tolerant tokenization | P1 invalid source loses semantic highlighting | Keep lexical fallback regression |
 | `MD-DIAG-001` Structured diagnostic code/severity/location | ✔️ | verified-local | Preview and highlighter failures serialize stable code, severity, message, phase, and fenced-block/source location | plugin + spec/core | error model; block context DTO | P1 failures cannot be traced/actioned | Keep DTO serialization tests aligned with the core vocabulary |
 | `MD-DIAG-002` Actionable diagnostics with readable fallback | ✔️ | verified-local | Preview errors expose structured diagnostics plus visible fallback; highlighter errors preserve readable source | remark-relgeo + website | diagnostic DTO; host presentation | P1 reader/build owner lacks recovery context | Keep built-output and fallback assertions |
-| `MD-DIAG-003` Preserve valid preview with non-fatal diagnostics | ❌ | verified-local | No path returns preview plus runtime diagnostic | remark-relgeo + core | runtime diagnostic API | P1 useful preview disappears on warning | Define tolerant runtime result and fixture |
+| `MD-DIAG-003` Preserve valid preview with non-fatal diagnostics | ✔️ | verified-local | Tolerant runtime path retains the valid preview and serializes the runtime diagnostic; strict mode remains explicit | remark-relgeo + core | runtime diagnostic API | P1 useful preview could regress on warning | Keep runtime-warning fixture and strict/tolerant regression |
 | `MD-DIAG-004` Separate tolerant and strict policy | ✔️ | verified-local | `failurePolicy` is documented with tolerant default and strict deterministic failure | remark-relgeo | error policy; build gate | P1 build behavior is implicit | Keep strict/tolerant regression tests |
-| `MD-OPT-001` Document option schema/defaults/immutability | 🌗 | partial-local | Options exist but invalid/unknown values are not diagnosed exhaustively | each package | public API docs; compatibility policy | P1 integrators rely on undocumented behavior | Publish option table and invalid-option tests |
+| `MD-OPT-001` Document option schema/defaults/immutability | ✔️ | verified-local | README/types document defaults and validation; invalid known values fail deterministically and unknown keys are ignored/not forwarded | each package | public API docs; compatibility policy | P1 integrators rely on undocumented behavior | Keep option validation and reuse regressions |
 | `MD-OPT-002` Pass version/profile/view/sheet selection | 🌗 | partial-local | No plugin version/view option; future version becomes generic placeholder | remark-relgeo | spec version; presentation APIs | P1 wrong preset or unclear migration path | Decide supported option surface and test unsupported versions |
 | `MD-OPT-003` Configure controlled output and classes | 🌗 | partial-local | No asset/base strategy; custom SVG hook has bounded unsafe-pattern rejection, not a general sanitizer | both plugins | asset policy; sanitizer boundary | P1 unsafe or non-portable output | Extend the bounded custom-hook rejection into the agreed sanitizer/asset policy |
 | `MD-OPT-004` Configure diagnostic/fallback policy | ✔️ | verified-local | `failurePolicy` exposes documented tolerant fallback versus strict failure behavior | remark-relgeo | diagnostic policy; build owner | P1 CI and docs behavior cannot be chosen | Keep the option contract aligned with the diagnostic tests |
@@ -76,13 +77,13 @@ accessibility validation. Editing this matrix never closes an implementation gap
 
 | Matrix state | Count | Interpretation |
 | --- | ---: | --- |
-| `✔️` | 16 | Implemented on the audited boundary. |
-| `🌗` | 20 | Partial implementation or contract/evidence coverage. |
+| `✔️` | 23 | Implemented on the audited boundary. |
+| `🌗` | 14 | Partial implementation or contract/evidence coverage. |
 | `⚠️` | 0 | No confirmed broken row remains in the selected implementation boundary. |
-| `❌` | 1 | Non-fatal runtime diagnostic preservation remains absent and outside this tranche. |
+| `❌` | 0 | No expected capability remains absent on the audited boundary. |
 | `➖` | 1 | Static embed has no plugin-owned interaction controls. |
 | `⏸️` | 0 | No expected row is currently held by a scope decision. |
-| Evidence-only partial rows | 2 | `MD-SSR-003` and `MD-REL-002` remain `unverified-external` in the separate evidence column. |
+| Evidence-only partial rows | 2 | `MD-SSR-003` and `MD-REL-002` remain `unverified-external` in the separate evidence column; `MD-SSR-004` remains an implementation candidate because its clean pack/install boundary is locally actionable. |
 
 The [implementation-gap backlog](./implementation-gap-backlog.md)
 contains one candidate task for each implementation gap among the `🌗`, `❌`,

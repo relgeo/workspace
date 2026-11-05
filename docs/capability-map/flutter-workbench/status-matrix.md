@@ -1,6 +1,6 @@
 # Flutter Workbench — Capability Status Matrix
 
-**Tanggal:** 2026-10-31
+**Tanggal:** 2026-11-04
 **Baseline:** Flutter desktop authoring workbench; RelGeo DSL `0.5.x` boundary
 
 **Expected catalog:** [`expected-capability-catalog.md`](./expected-capability-catalog.md)
@@ -45,6 +45,45 @@ implementasi. `Status`, `Evidence`, dan `Scope` adalah dimensi yang berbeda.
 Current count: **44 `✔️` · 17 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`**.
 Runtime/native evidence yang belum tersedia tetap ditulis pada kolom Evidence;
 hal itu tidak otomatis menjadi `❌`.
+
+## P0/P1 triage checkpoint — 2026-11-04
+
+The canonical disposition is recorded in the [implementation-gap backlog
+triage](./implementation-gap-backlog.md#p0p1-triage-disposition--2026-11-04).
+The matrix status is unchanged by triage. The selected implementation-closable
+rows are `DOC-08`, `IO-01`, `IO-02`, `EDIT-04`, `CONTRACT-01`, `CONTRACT-02`,
+`CONTRACT-03`, `CANVAS-03`, `CANVAS-04`, `CMD-03`, `A11Y-01`, `A11Y-02`, and
+`WINDOW-01`; each has an owner, source of truth, acceptance target, and initial
+status in the backlog.
+
+`CANVAS-05` and `VIEW-05` are implemented at the Flutter boundary and retain
+evidence-only host follow-up. `PLAT-01` through `PLAT-04` are target-host or
+provenance evidence work, not source implementation blockers. Native picker,
+forced relaunch, AT, OS shortcut, window-manager, and unavailable-host results
+remain `unverified`; mobile, custom title bar, raw SVG presentation parity,
+publishing, signing, and deployment remain explicit scope boundaries.
+
+Acceptance behavior for the selected rows is locked in the [backlog contract
+matrix](./implementation-gap-backlog.md#contract-and-acceptance-lock--2026-11-04);
+the matrix symbols remain unchanged until those tests/evidence pass.
+
+## Current verification overlay — 2026-11-05
+
+The latest local evidence is attached to the existing rows without changing
+their status symbols:
+
+| Evidence boundary | Result | Matrix interpretation |
+| --- | --- | --- |
+| Flutter focused Workbench regression/conformance | **PASS — 135 tests** | Supports local source/test evidence for `DOC-08`, `IO-02`, `EDIT-04`, `CONTRACT-01`, `CANVAS-04`, and the existing UI/consumer rows. Native host evidence remains separate. |
+| Core Runtime consumer | **PASS — 489 tests** | Supports the shared diagnostic/contract boundary locally; does not establish public or clean-checkout parity. |
+| Geometry consumer | **PASS — 91 tests** | Supports the shared type/geometry boundary locally. |
+| MCP contract package | **PASS — 42 tests** | Supports protocol/schema/dispatch package behavior; Flutter desktop HTTP transport is separate. |
+| Flutter full suite | **PARTIAL — 326 passed, 1 failed** | Existing HTTP MCP failure at `test/mcp_server_io_test.dart:134`; no focused Workbench regression was observed. |
+| Native host, packaged artifact, CI/public | **NOT VERIFIED** | SDK cache write failure and unavailable target hosts prevent launch/picker/AT/install claims. |
+
+Current count remains **44 `✔️` · 17 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` ·
+0 `⚠️`**. The remaining partial rows and next actions below are unchanged and
+remain the handoff for the next goal.
 
 ## Matrix
 

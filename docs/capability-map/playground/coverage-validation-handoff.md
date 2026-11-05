@@ -1,6 +1,6 @@
 # Playground coverage validation and handoff
 
-**Validation date:** 2026-10-30
+**Validation date:** 2026-11-04
 
 **Scope:** Playground expected catalog, implementation audit, reconciliation,
 capability matrices, backlog, source/tests, and available local verification.
@@ -11,7 +11,9 @@ production-ready, publicly verified, or fully device-accessible.
 ## Current result
 
 The 37 expected capability IDs are represented one-to-one in the current
-audit, reconciliation, and capability matrices:
+reconciliation, capability matrix, and status matrix. The implementation audit
+is intentionally scoped to the six local/browser implementation rows, while
+the backlog records the selected rows and their follow-up tasks:
 
 | Status | Count | Meaning at this checkpoint |
 | --- | ---: | --- |
@@ -26,12 +28,18 @@ physical-device evidence to verified status.
 
 | Check | Result | Boundary or limitation |
 | --- | --- | --- |
-| `pnpm test` in `playground/` | PASS — 17 files / 102 tests | Unit tests live in `playground/src/__tests__`; `playground/test` is not present. Theme, viewport, keyboard, persistence, worker, and existing helper contracts are covered. |
+| `pnpm test` in `playground/` | PASS — 17 files / 107 tests | Unit tests live in `playground/src/__tests__`; `playground/test` is not present. Theme, viewport, keyboard, persistence, worker, and existing helper contracts are covered. |
+| `pnpm exec vitest run src/__tests__/worker.test.ts src/__tests__/keyboard-commands.test.ts src/__tests__/view-state.test.ts src/__tests__/playground-status.test.ts src/__tests__/persistence.test.ts src/__tests__/theme.test.ts` in `playground/` | PASS — 6 files / 50 tests | Focused lifecycle, worker negative/recovery, viewport, persistence, keyboard, and theme contracts pass. |
 | `pnpm build` in `playground/` | PASS | TypeScript and Vite production build completed; only a non-blocking chunk-size warning was emitted. |
-| `pnpm run audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, focus, responsive, reduced-motion, forced-colors, theme, and inline-style contracts pass. |
-| `pnpm run lint` in `playground/` | PASS | Current Playground source is lint-clean when run independently. |
+| `pnpm audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, focus, responsive, reduced-motion, forced-colors, theme, and inline-style contracts pass. |
+| `pnpm lint` in `playground/` | PASS | Current Playground source is lint-clean when run independently. |
+| `pnpm conformance:fixtures` at workspace root | PASS — 298 assertions across 23 fixtures | Active 0.5 conformance, negative diagnostics, runtime errors, serialization replay, renderer, language-service, highlighting, preview, and CLI consumer checks pass. |
 | `pnpm test:e2e` in `playground/` | NOT VERIFIED — environment unavailable | Playwright failed before page creation because the preview server could not bind `127.0.0.1:4173` (`EPERM`). This is not a source or test failure. |
-| Documentation integrity | PASS | 37 IDs are present in each row-based record; reconciliation counts are 34/3/0; active links target the current audit; `git diff --check` passes. |
+| `pnpm --filter relgeo-docs-site build` in workspace root | PASS | Docs site build completed and generated the local static site used for artifact assembly. |
+| `pnpm run provenance:pages` in `relgeo.github.io/` | NOT VERIFIED — pin drift | The checked-out Playground `47fd715…` differs from the Pages workflow pin `c7cec4b…`; the checked-out `spec` also differs from its Pages pin. This is delivery/release evidence, not a local Playground source failure. |
+| `pnpm run playground:artifact:check` at workspace root | NOT VERIFIED — baseline drift | Source and assembled artifact were assembled, but the checker rejected the child revision because the integration baseline still pins `c7cec4b…`, not the current local `47fd715…`. |
+| `pnpm run test:pages-artifact` in `relgeo.github.io/` | NOT VERIFIED — provenance mismatch | Route/assets were assembled, but the Pages assertion correctly rejected unsynchronized input provenance caused by the pin drift above. |
+| Documentation integrity | PASS | Reconciliation, capability matrix, and status matrix each contain the same 37 IDs; the implementation audit contains the six active local/browser rows; selected backlog IDs and follow-up tasks are present; `git diff --check` passes. |
 
 ## Completed implementation handoff
 
@@ -69,6 +77,10 @@ risk, and next action; none is silently marked complete.
   local preview server bind receives `EPERM` before page creation.
 - Hosted Pages parity and public smoke are not claimed; they remain the
   separate `PG-DELIVERY-001` follow-up and do not block this local goal.
+- Local artifact assembly was performed, but provenance checks remain
+  unverified because the current checkout differs from the immutable Pages and
+  integration-baseline pins (`playground` `47fd715…` vs `c7cec4b…`; `spec`
+  also has pin drift). No release or deployment was performed.
 - Native VoiceOver/TalkBack, browser AX-tree traversal, physical handset/touch,
   and platform-specific device evidence remain deferred or unavailable as
   marked. They are not converted into implementation failures.

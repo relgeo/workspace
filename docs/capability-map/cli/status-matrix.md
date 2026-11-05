@@ -1,6 +1,6 @@
 # RelGeo CLI Status Matrix
 
-> **Coverage statement — 2026-11-03.** This is the capability-first downstream
+> **Coverage statement — 2026-11-04.** This is the capability-first downstream
 > view of all 35 expected CLI IDs. Statuses are taken from the
 > [expected-versus-observed reconciliation](./reconciliation.md);
 > discovery details remain in the [implementation audit](./implementation-audit.md).
@@ -13,7 +13,7 @@
 | Compatibility line | RelGeo DSL `0.5`; package `@relgeo/cli@0.5.0` |
 | Policy evidence | [Maturation master plan](../../MATURATION-MASTER-PLAN.md) · [compatibility matrix](../../compatibility-matrix.json) · [npm release guard](../../plans/03-npm-release-guard.md) |
 | Status | 35 expected rows joined; matrix is a downstream status view |
-| Bounded selection | [CLI bounded in-scope selection](./in-scope-selection.md): 11 actionable rows; statuses remain intake evidence until re-audited |
+| Bounded selection | [CLI bounded in-scope selection](./in-scope-selection.md): 11 actionable rows; current statuses are reconciled against the latest implementation audit |
 
 ## Status and evidence legend
 
@@ -37,10 +37,11 @@ not establish current Node 24, registry, CI, cross-OS, or public-package proof.
 | Expected catalog rows | 35 |
 | Matrix rows | 35 |
 | Missing / duplicate / extra IDs | 0 / 0 / 0 |
-| Status counts | 30 `✔️`, 3 `🌗`, 0 `❌`, 0 `⚠️`, 2 `⏸️` held/deferred |
-| Implementation-gap candidates | 3: profile/unit/selector breadth and release verification; watch and daemon rows remain held by scope |
+| Status counts | 32 `✔️`, 1 `🌗`, 0 `❌`, 0 `⚠️`, 2 `⏸️` held/deferred |
+| Implementation-gap candidates | 1: release verification; watch and daemon rows remain held by scope |
+| P0/P1 triage disposition | `CLI-RENDER-002` and `CLI-RENDER-003` are implementation-closed with source/test/fixture evidence; 13 other P0/P1 rows remain implementation-closed/regression-only; `CLI-PACK-004` is evidence-only (Node 24/registry/CI/release environment) |
 | Active implementation tranche | 11 selected rows from the intake record (7 `🌗`, 2 `❌`, 2 `⚠️` at selection time); no `➖` or `⏸️` row selected. Current statuses above reflect post-implementation evidence. |
-| Current evidence refresh | Audit §6 records the 2026-11-03 CLI revalidation (36/36), typecheck, build, conformance (298/298), and boundary probes; Node 24, CI, registry, cross-OS, and TTY evidence remain explicitly unverified |
+| Current evidence refresh | Audit §6 records the 2026-11-04 CLI revalidation (38/38), typecheck, build, CLI pack boundary (8 files), compatibility audit (10/10), conformance (298/298), and consumer probes; Node 24, CI, registry, cross-OS, and TTY evidence remain explicitly unverified |
 
 ## Capability-first matrix
 
@@ -58,8 +59,8 @@ not establish current Node 24, registry, CI, cross-OS, or public-package proof.
 | `CLI-VALID-001` `validate` document validation | `✔️` | Audit §5; `check`/`validate`, tests, conformance fixtures | Warning/phase semantics are not fully formalized | `relgeo/cli` + core/spec | resolver and diagnostic model | M: CI interpretation can drift | Preserve validation fixture and error-code checks |
 | `CLI-VALID-002` `check` compatibility alias | `✔️` | Audit §3/§5; Commander alias and help probe | Alias wording is not versioned | `relgeo/cli` | command compatibility policy | L: script migration ambiguity | Keep alias help and behavior regression-tested |
 | `CLI-RENDER-001` Resolve/compile/render workflow | `✔️` | Audit §5; compile pipeline; conformance 298/298 | Published runtime not verified | `relgeo/cli` + core/renderer | parser, resolver, renderer | M: package/runtime drift | Keep CLI compile in shared conformance gate |
-| `CLI-RENDER-002` Profile, parameter, and unit selection | `🌗` | Audit §5; options and one override test; fixture coverage | Combination and invalid-option coverage is narrow | `relgeo/cli` + core/spec | evaluator, profiles, units | P1 reproducibility errors | Add profile/param/unit success and failure matrix |
-| `CLI-RENDER-003` Sheet/view targeting | `🌗` | Audit §5; `--sheet`, sheet-capable fixtures, and missing-sheet smoke regression | Valid selector matrix and broader invalid-selector coverage remain incomplete | `relgeo/cli` + renderer | sheet/view semantics | P1 wrong artifact or unclear failure | Add valid/invalid selector matrix |
+| `CLI-RENDER-002` Profile, parameter, and unit selection | `✔️` | Audit §5/§6; v0.5 fixture and 38-test option matrix | Delegated evaluator semantics remain owned by core/spec | `relgeo/cli` + core/spec | evaluator, profiles, units | M: future option additions can drift | Retain profile/typed-override/unit regressions |
+| `CLI-RENDER-003` Sheet/view targeting | `✔️` | Audit §5/§6; v0.5 fixture, selector tests, and no-artifact failure | Renderer output breadth remains separately bounded | `relgeo/cli` + renderer | sheet/view semantics | M: future selector additions can drift | Retain valid/invalid selector regressions |
 | `CLI-OUT-001` JSON resolved-scene output | `✔️` | Audit §5; JSON test and scene assertions | No independently versioned CLI JSON schema | core + `relgeo/cli` | resolved-scene contract | P1 downstream schema drift | Define compatibility note and representative snapshots |
 | `CLI-OUT-002` SVG rendering output | `✔️` | Audit §5; SVG test; exact fixture comparisons | Renderer option breadth is intentionally bounded | renderer + `relgeo/cli` | renderer semantics | M: missing option assumptions | Document exposed option mapping |
 | `CLI-OUT-003` Dependency graph output | `✔️` | Audit §5; graph test and parsed output | Graph schema has no separate compatibility document | core + `relgeo/cli` | graph extraction | M: automation relies on implicit shape | Add graph schema note or snapshot |
@@ -76,9 +77,9 @@ not establish current Node 24, registry, CI, cross-OS, or public-package proof.
 | `CLI-AUTO-002` Watch/rebuild workflow | `⏸️` | Audit §3/§5; scope-held one-shot boundary | No source/config watch command by explicit lifecycle decision | `relgeo/cli` | watch lifecycle and failure recovery | P2/P1 iterative workflows need wrappers | Keep held until bounded watch contract is approved |
 | `CLI-AUTO-003` Stable scripting streams | `✔️` | Audit §5; stream separation, JSON diagnostics, no-color, and CI tests | CI/TTY cross-host behavior remains unverified | `relgeo/cli` | diagnostics/config modes | P1 pipelines may parse noise | Retain local stream probes |
 | `CLI-AUTO-004` Optional long-running/JSON-RPC daemon boundary | `⏸️` | Audit §4/§5; no approved protocol or implementation | Held pending separate protocol decision | future CLI/protocol owner | scope decision; daemon security model | P2 premature protocol fragmentation | Keep held; create implementation work only after decision |
-| `CLI-PACK-001` Executable package and `relgeo` binary | `✔️` | Audit §5; bin/dist/metadata and local binary run | Fresh registry install not executed | `relgeo/cli` + release owner | Node runtime; npm boundary | M: install path can drift | Run clean-install smoke under Node >=24 |
-| `CLI-PACK-002` Reproducible build and tarball boundary | `✔️` | Audit §6; release audit 106/106; tarball 8 files | Default cache attempt was environment-limited; scoped rerun passed | `relgeo/cli` + release guard | package files and release script | M: accidental files in package | Keep pack boundary in release guard |
-| `CLI-PACK-003` Compatibility/version policy | `✔️` | Audit §6; CLI-specific compatibility rows pass; matrix/release order | Root gate currently has unrelated core/playground/Flutter failures; registry evidence remains separate | workspace + `relgeo/cli` | compatibility matrix; package metadata | M: cross-package line drift | Keep compatibility check as publish prerequisite |
+| `CLI-PACK-001` Executable package and `relgeo` binary | `✔️` | Audit §5; bin/dist/metadata, local binary run, and CLI pack dry-run with 8 files | Fresh registry install and Node >=24 consumer run are not verified | `relgeo/cli` + release owner | Node runtime; npm boundary | M: install path can drift | Run clean-install smoke under Node >=24 |
+| `CLI-PACK-002` Reproducible build and tarball boundary | `✔️` | Audit §6; current CLI `npm pack --dry-run --json` exposes 8 allowlisted files; prior scoped release audit passed | Repository-wide current release audit is environment/workspace-limited; no publish claim | `relgeo/cli` + release guard | package files and release script | M: accidental files in package | Keep pack boundary in release guard |
+| `CLI-PACK-003` Compatibility/version policy | `✔️` | Audit §6; compatibility audit 10/10 and CLI-specific matrix rows pass | Full integration gate stops at Node >=24 preflight on this host; registry evidence remains separate | workspace + `relgeo/cli` | compatibility matrix; package metadata | M: cross-package line drift | Keep compatibility check as publish prerequisite |
 | `CLI-PACK-004` Release verification and recovery boundary | `🌗` | Audit §5/§6; preflight/pack/registry verifier scripts | Current registry/public and Node 24 proof unverified | release owner + `relgeo/cli` | npm registry; canonical Node | P1 partial publish/recovery failure | Run registry consumer proof and record forward-fix evidence |
 | `CLI-PACK-005` Cross-surface conformance consumption | `✔️` | Audit §6; conformance 298/298 across 23 fixtures | Fixture set is declared, not exhaustive CLI option coverage | workspace + `relgeo/cli` | fixture provenance; spec/core semantics | M: untested option regressions | Add fixtures only when capabilities are promoted |
 

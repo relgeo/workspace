@@ -1,6 +1,6 @@
 # Website and Pages Expected-versus-Observed Reconciliation
 
-**Reconciliation date:** 2026-11-03
+**Reconciliation date:** 2026-11-04
 **Expected source:** [`website-pages/expected-capability-catalog.md`](./expected-capability-catalog.md)  
 **Observed source:** [`website-pages/implementation-audit.md`](./implementation-audit.md)  
 **Policy sources:** [`MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), [`REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`05-public-docs-and-playground-hardening.md`](../../plans/05-public-docs-and-playground-hardening.md), [`integration-baseline.json`](../../integration-baseline.json)  
@@ -9,6 +9,11 @@
 **Downstream views:** [status matrix](./status-matrix.md) ·
 [implementation-gap backlog](./implementation-gap-backlog.md) ·
 [coverage validation and handoff](./coverage-validation-handoff.md)
+
+**Current consumer-boundary checkpoint (2026-11-04):** website and Playground
+local consumers pass their direct build/test assertions. The current checked-out
+website/Playground/spec revisions do not match the recorded baseline and Pages
+pins, so strict provenance and assembled-artifact parity remain unverified.
 
 ## 1. Reconciliation rule
 
@@ -73,7 +78,50 @@ Playground build/test, provenance reporting, and combined artifact assertions
 on 2026-10-30) support the evidence column only. They do not change public,
 CI, deployment, or device evidence states.
 
-## 3. One-to-one reconciliation register
+## 3. Contract lock for selected P0/P1 gaps — 2026-11-04
+
+This register locks the acceptance boundary before implementation work. It is
+derived from the expected catalog, the selected rows in the [implementation-gap
+backlog](./implementation-gap-backlog.md#p0p1-implementation-closability-triage),
+the [compatibility matrix](../../compatibility-matrix.json), and the
+[inventory protocol](../INVENTORY-PROTOCOL.md). It does not add a public DSL,
+package, or runtime contract.
+
+### Compatibility and ownership guardrails
+
+- The active language contract remains DSL `0.5`; public package compatibility
+  remains `0.5.x`, and the website consumer remains `relgeo.github.io` `0.5.0`
+  on compatibility line `0.5`.
+- `spec/id` remains the normative source for language meaning. The website
+  owns presentation, editorial navigation, browser-facing page quality,
+  metadata, and Pages artifact assembly; Playground, CLI, and Markdown plugin
+  behavior remains owned by those consumers.
+- A website acceptance pass is local evidence only. CI/canonical, deployed,
+  public, and physical-AT evidence must remain separate and use `not verified`
+  or `deferred-external` when unavailable. A breaking language-contract change
+  would require the compatibility matrix's next line and a decision record;
+  none is introduced by this tranche.
+
+### Locked acceptance register
+
+| ID / owner | Contract boundary and source of truth | Success behavior | Failure / edge behavior | Expected evidence |
+| --- | --- | --- | --- | --- |
+| `WEB-PAGE-003` — website docs/information architecture | Deterministic localized topic index only; catalog row and `claim-locale-provenance-contract.md`; `relgeo.github.io/src/pages/[lang]/docs/index.astro` | Render topic context and direct route links; filtering updates live result status and exposes a useful no-result state. | Empty, whitespace, or unmatched queries remain explicit no-result states; route links stay local/base-safe. Query/server search and runtime semantic search are not implied. | `relgeo.github.io`: `pnpm build && pnpm test`; built-output assertions for index/filter/status/no-result. Browser interaction remains separately unverified. |
+| `WEB-PAGE-004` — website editorial owner + spec owner | Locale presentation and mirror disclosure; `spec/id` remains normative; `src/content.config.ts`, `src/lib/i18n.ts`, and `LanguageStatusNotice.astro` | `/id` and `/en` preserve equivalent route context where available; `/en` clearly identifies the language-spec surface as an editorial mirror and links users to `/id`. | Missing English normative parity must not be rendered or described as a translation; an unsupported/missing locale or content entry must retain an explicit status/route error rather than silently changing semantic source. | `relgeo.github.io`: `pnpm check && pnpm build && pnpm test`; generated route and mirror-disclosure assertions. Translation parity remains a separate reviewed spec decision. |
+| `WEB-PAGE-005` — website docs owner + spec/editorial reviewers | Editorial docs/reference route coverage; `relgeo.github.io/src/content/docs/{id,en}/` and localized route templates; normative meaning stays in `spec/id`. | Declared onboarding, capability, use-case, CLI, Playground, Markdown, status, docs, and spec surfaces are reachable, and English editorial content is distinguishable from the authoritative reference. | A missing locale entry or internal target must fail the locale-coverage/link acceptance or expose an explicit status affordance; no route may imply complete bilingual normative parity from a shell alone. | `relgeo.github.io`: `pnpm build && pnpm test` plus locale-coverage/internal-link assertions on generated output. The checker/report is local evidence, not public crawl evidence. |
+| `WEB-PAGE-007` — website handoff owner; child runtimes retain behavior ownership | Website discovery/copy, configured base-path links, Markdown `rg`/`relgeo` distinction, and assembled Playground artifact; `playground`/plugins remain behavior sources. | Relevant docs/CTA links resolve under the configured base path; assembled artifact contains the Playground entry and the documented `edit → resolve → preview → inspect` handoff. | Out-of-base/broken links, missing entrypoint, missing artifact markers, or misleading source/preview claims fail the local gate; hosted Playground interaction is not inferred. | Website build + Playground build + assembled `pnpm run test:pages-artifact`; hosted browser smoke is `unverified-public`. |
+| `WEB-PAGE-009` — website layout owner; Playground owns workbench layout | Browser responsive contract in `relgeo.github.io/src/styles/site.css` and `assert-built-output.mjs`; physical-device behavior is out of this acceptance boundary. | At 640/899/900px thresholds, content/code columns can shrink, narrow navigation remains usable/contained, and focus styles remain visible without page-level horizontal overflow. | Clipping, accidental wrapping, body-level overflow, or lost focus styles fail the source/build gate; missing viewport runner evidence is `not verified`, not a product failure. | `relgeo.github.io`: `pnpm build && pnpm run test:responsive-accessibility`; named 640/899/900px browser matrix when a stable runner is available. |
+| `WEB-PAGE-010` — website accessibility owner; Playground owns workbench controls | Browser accessibility shell in `DocsLayout.astro`, `accessibility.css`, and built assertions; physical VoiceOver/TalkBack/mobile AT is explicitly deferred. | Representative routes expose landmarks, names, active locale/navigation state, keyboard order, visible focus, reduced-motion behavior, and equivalent non-pointer access. | Missing label/landmark/focus/state, unusable keyboard path, or a localized no-result state without announcement fails the browser acceptance; physical-AT absence remains `deferred-external`. | `relgeo.github.io`: `pnpm build && pnpm run test:responsive-accessibility` plus representative browser AX/keyboard checks. No physical-AT pass is inferred. |
+| `WEB-PAGE-011` — website/build owner | Deployment-aware static metadata and crawlability in `astro.config.mjs`, `DocsLayout.astro`, and `sitemap.xml.ts`; public URL configuration is the source for emitted origin/base. | With `RELGEO_DOCS_SITE_URL=https://relgeo.github.io`, generated canonical, alternates, sitemap, and rendered HTML use the configured base and remain crawlable. | Public-gate builds fail closed on placeholder/invalid site URL; missing external crawler or search-engine evidence remains `unverified-public`, not a local implementation defect. | `RELGEO_DOCS_SITE_URL=https://relgeo.github.io pnpm build && pnpm test`; generated metadata/sitemap inspection. External crawler remains separate. |
+| `WEB-PAGE-012` — website deployment owner + root integration owner | Reproducible local artifact/provenance join across root baseline, website, `spec/id`, Playground, Pages pins, and assembled `dist`; `docs/integration-baseline.json` and provenance/artifact scripts are authoritative. | For one synchronized tuple, provenance reports no mismatches and the assembled artifact contains expected routes/assets and Playground provenance. | Revision drift, missing pinned input, stale provenance, standalone-site artifact without required Playground, or mismatch fails closed; local pass does not claim CI/Pages/public parity. | `relgeo.github.io`: `pnpm provenance:check`; `RELGEO_PLAYGROUND_ROOT=../playground RELGEO_SPEC_ROOT=../spec pnpm provenance:pages`; assembled `pnpm run test:pages-artifact`. |
+
+The acceptance register intentionally keeps the selected rows partial where
+their broader outcome depends on external evidence or a separate decision.
+Implementation may close only the named local boundary; a new public contract
+requires updating its authoritative source first and then revisiting the
+catalog, reconciliation, matrix, and backlog together.
+
+## 4. One-to-one reconciliation register
 
 | ID | Reconciliation result | Implementation status | Evidence status | Scope / owner decision | Observed finding and audit trace |
 | --- | --- | --- | --- | --- | --- |
@@ -88,12 +136,12 @@ CI, deployment, or device evidence states.
 | `WEB-PAGE-009` | `🌗` responsive source/build contract passes; complete viewport matrix is unverified | `implemented` | `verified-local` for CSS/build contract; current matrix `unverified` | In scope for browser web; physical handset behavior remains a deferred evidence boundary | Built gate asserts 640/899/900px breakpoints, containment, and narrow navigation; native Chrome rendered the local docs route, but the complete viewport matrix was unavailable on this host. Audit §4 row `WEB-PAGE-009`; `src/styles/site.css`; `assert-built-output.mjs`. |
 | `WEB-PAGE-010` | `🌗` accessibility shell and representative AX smoke pass; complete interaction/AT evidence is incomplete | `partial` | `verified-local` for static plus native Chrome AX smoke; `deferred-external` for physical AT | In scope for browser accessibility; VoiceOver/TalkBack/mobile AT are explicitly deferred evidence | Skip link, landmarks, labels, focus, `aria-current`, reduced motion, and localized search states pass. English/Indonesian docs AX smoke verified labelled landmarks and keyboard skip-link focus; full traversal and physical AT remain open. Audit §4 row `WEB-PAGE-010`; `DocsLayout.astro`; accessibility styles/assertions. |
 | `WEB-PAGE-011` | `🌗` metadata/sitemap exist; deployment URL correctness depends on configuration | `partial` | `verified-local` with deployment env; external crawl `unverified-public` | In scope; website owns metadata and crawlable static content | Canonical, alternates, descriptions, social metadata, icons, and sitemap are generated. Bare build defaults to `https://example.com`; no external crawler was available. Audit §4 row `WEB-PAGE-011`; `astro.config.mjs`; sitemap output. |
-| `WEB-PAGE-012` | `🌗` local artifact assembly and provenance parity pass; deployment parity is unverified | `implemented` | `verified-local` for assembled artifact and revision parity; current Pages run `unverified` | In scope; website workflow assembles artifact; root coordinates pinned inputs | The frozen local tuple is website `6eb2e24`, spec `b96ba3b2`, Playground `c7cec4b5`; root baseline, workflow pins, child heads, and assembled artifact are synchronized locally. Audit §4–§6; artifact assertions and integration baseline. |
-| `WEB-PAGE-013` | `🌗` Pages workflow exists; current deployment execution/parity is unverified | `implemented` | `observed-local`; current CI/public deployment `unverified-public` | In scope; website owns Pages workflow, root owns revision coordination | Workflow pins Node/pnpm, Playground/spec, builds, uploads, deploys, and smoke-tests; local inputs are synchronized, but no current workflow result was queried. Audit §4–§6; `.github/workflows/pages.yml`. |
+| `WEB-PAGE-012` | `🌗` local artifact assembly contract exists; current provenance parity is not synchronized | `implemented` | `verified-local` for fail-closed gate and direct builds; current artifact parity `unverified` | In scope; website workflow assembles artifact; root coordinates pinned inputs | The current website `1b9bb92f`, spec `f4fecf21`, and Playground `47fd7158` differ from the recorded baseline/Pages references (`6eb2e241`, `b96ba3b2`, `c7cec4b5`). The artifact gate rejects the unsynchronized report. Audit §4–§6; provenance/artifact assertions and integration baseline. |
+| `WEB-PAGE-013` | `🌗` Pages workflow exists; current deployment execution/parity is unverified | `implemented` | `observed-local`; current CI/public deployment `unverified-public` | In scope; website owns Pages workflow, root owns revision coordination | Workflow pins Node/pnpm, Playground/spec, builds, uploads, deploys, and smoke-tests; no current workflow run was queried, and the checked-out inputs do not match the workflow pins. Audit §4–§6; `.github/workflows/pages.yml`. |
 | `WEB-PAGE-014` | `🌗` release gates exist; public reliability signal is unavailable in this environment | `implemented` | `unverified-public`; `environment-unavailable` | In scope as recurring evidence; root/workflow owns gates, public deployment owns runtime observation | Artifact/built-output assertions pass locally and the smoke script declares 13 routes. The current smoke stopped at `/` after `fetch failed`; a direct curl confirmed HTTP 000/curl exit 6 because `relgeo.github.io` could not resolve. Audit §4–§5; `scripts/smoke-public-site.mjs`. |
-| `WEB-PAGE-015` | `🌗` status/version copy is explicit; deployment consistency evidence is incomplete | `partial` | `verified-local` for synchronized provenance; deployment `unverified-public` | In scope; website editorial surface owns claims, child repos and baseline own facts | Current Capabilities and Language Status distinguish DSL/package/application/source/deployment concepts; the frozen tuple is explicit and locally synchronized. CI/deployment/public evidence remains separate. Audit §4 and §6; status pages, claim contract, integration baseline. |
+| `WEB-PAGE-015` | `🌗` status/version copy is explicit; deployment consistency evidence is incomplete | `partial` | `verified-local` for explicit claims; current provenance synchronization and deployment `unverified-public` | In scope; website editorial surface owns claims, child repos and baseline own facts | Current Capabilities and Language Status distinguish DSL/package/application/source/deployment concepts. The baseline/Pages tuple is explicit, but current child revisions drift from it; CI/deployment/public evidence remains separate. Audit §4 and §6; status pages, claim contract, integration baseline. |
 
-## 4. Gaps that are not status substitutions
+## 5. Gaps that are not status substitutions
 
 These observations must not be used to collapse a missing implementation into a
 non-applicable result or to treat unavailable evidence as a product pass:
@@ -103,10 +151,10 @@ non-applicable result or to treat unavailable evidence as a product pass:
 | DNS could not resolve `relgeo.github.io` during the public probe | Evidence is `environment-unavailable` / `unverified-public`; it does not make a capability `❌`, and it does not prove public reliability. |
 | Physical screen-reader, mobile assistive-technology, and handset evidence was not run | The evidence is `deferred-external` under the documented scope decision; the browser accessibility capability remains in scope. |
 | Website does not own CLI, Playground, plugin, or normative spec execution | This is an ownership boundary. The website capability remains reconciled against its routing, presentation, and handoff obligations. |
-| Local frozen source tuple and integration baseline are synchronized | This proves local revision parity only; it does not prove a Pages run, deployed artifact, or public-host reliability. |
+| Historical frozen source tuple and integration baseline were synchronized | That historical local result does not establish parity for the current checked-out revisions, nor prove a Pages run, deployed artifact, or public-host reliability. |
 | `WEB-PAGE-003` has a deterministic index/filter/no-result baseline but no query/server search | The implementation status remains partial: local discovery behavior is evidenced, but the broader query-search outcome and browser interaction evidence are not claimed. |
 
-## 5. Handoff conclusion
+## 6. Handoff conclusion
 
 The join is complete: all 15 expected catalog IDs have exactly one
 reconciliation row, with zero missing, extra, or duplicate IDs. Four expected

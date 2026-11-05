@@ -1,6 +1,6 @@
 # CLI Coverage Validation and Handoff
 
-**Tanggal validasi:** 2026-11-03
+**Tanggal validasi:** 2026-11-04
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog
 **Required context:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)
 
@@ -16,13 +16,13 @@ Klaim yang aman:
 - implementation audit mencatat discovery source dan membandingkan **35/35 ID**;
 - reconciliation dan status matrix masing-masing memiliki **35 row**, tanpa
   missing, extra, atau duplicate ID;
-- matrix retains **30 `✔️`, 3 `🌗`, 0 `❌`, and 0 `⚠️`**; two `⏸️` rows
+- matrix retains **32 `✔️`, 1 `🌗`, 0 `❌`, and 0 `⚠️`**; two `⏸️` rows
   (watch/rebuild and daemon/JSON-RPC) remain held by scope and `➖` hanya
   dipakai untuk boundary non-CLI;
 - backlog mempertahankan **17 candidate implementation task records** from
-  the intake tranche; **4 remain non-green** in the current matrix (three
-  partial rows and one held row), while the one-shot implementation rows carry
-  fresh local evidence;
+  the intake tranche; **3 remain non-green** in the current matrix (one
+  partial release-evidence row and two held scope rows), while the selected
+  render rows carry fresh source, fixture, and local test evidence;
 - dokumentasi ini, matrix, dan backlog tidak memperbaiki implementasi atau
   mengubah gap menjadi selesai.
 
@@ -34,7 +34,7 @@ Klaim yang aman:
 | [CLI implementation audit](./implementation-audit.md) | Observed source, executable, command/help, tests, fixtures, consumers, package, docs, runtime, and release evidence | Discovery coverage §2; 35/35 IDs; status, evidence tier, parity, scope, and limitations recorded |
 | [CLI expected-versus-observed reconciliation](./reconciliation.md) | One-to-one join expected-versus-observed | 35/35 rows; no missing/extra/duplicate; implementation/evidence/scope separated |
 | [CLI status matrix](./status-matrix.md) | Capability-first reporting view | 35 rows; complete status legend; evidence, gap, owner, dependency, risk, next action |
-| [CLI implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 17 task records retained from intake; 4 remain non-green in the current matrix (three partial, one held), and each record has explicit scope, priority, owner, dependency, acceptance evidence, risk, and next action |
+| [CLI implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 17 task records retained from intake; 3 remain non-green in the current matrix (one partial, two held), and each record has explicit scope, priority, owner, dependency, acceptance evidence, risk, and next action |
 | [CLI bounded in-scope selection](./in-scope-selection.md) | Bounded intake for the next implementation tranche | 11 selected rows with owner, source path, contract boundary, and acceptance behavior; no `➖` or `⏸️` row selected |
 | [CLI capability matrix](./capability-matrix.md) | Boundary-oriented command/output inventory | Companion view; reconciliation remains the expected-set source |
 
@@ -46,7 +46,7 @@ Klaim yang aman:
 | Required discovery categories recorded | PASS | Audit §2 covers source, test, fixture, consumer/command, package/delivery, docs/roadmap, delegated contract, runtime/config/platform, and ownership boundaries. |
 | Capability-family coverage | PASS | Audit §5 and the matrix cover all 35 IDs across discovery/input/inspection (9), validation/rendering/output (9), diagnostics/exits/errors (6), configuration/automation/scripting (6), and packaging/compatibility/delivery (5). |
 | Expected IDs represented | PASS | Catalog, reconciliation, and status matrix each contain 35 unique CLI IDs. |
-| Post-implementation status join | PASS | Expected catalog, audit, and status matrix agree on all 35 symbols; all 17 backlog capability rows retain explicit current status, including 30 `✔️`, three `🌗`, and two held `⏸️` rows. |
+| Post-implementation status join | PASS | Expected catalog, audit, and status matrix agree on all 35 symbols; all 17 backlog capability rows retain explicit current status, including 32 `✔️`, one `🌗`, and two held `⏸️` rows. |
 | One reconciliation per expected ID | PASS | 35 expected = 35 reconciled; missing/extra/duplicate = 0. |
 | Matrix is capability-first | PASS | Rows are keyed by expected capability ID and user capability, not by source module or test file. |
 | Full status legend | PASS | Matrix explains `✔️`, `🌗`, `❌`, `➖`, `⏸️`, `⚠️`, and `?`; `?` remains an evidence limitation rather than an implementation result. |
@@ -54,7 +54,7 @@ Klaim yang aman:
 | Scope decisions preserved | PASS | Catalog and audit retain `in scope`, `boundary only`, `expected-but-missing`, `held`, and `not applicable`; UI/editor/delegated semantics are not converted into CLI absence. |
 | Implementation versus evidence separated | PASS | Local passing tests do not promote Node 24, CI, registry, cross-OS, or public evidence; absent expected implementation remains `❌`. |
 | Limitation stated | PASS | Audit and matrix record Node 22 local runtime versus Node >=24 requirement, current CI/public registry absence, cross-OS/TTY limits, bounded fixture coverage, and historical evidence limits. |
-| Current evidence refresh retained | PASS | Audit §6 and the matrix checkpoint record the current 36/36 CLI revalidation, typecheck, build, conformance 298/298, and direct boundary probes without promoting them to Node 24, CI, registry, or public evidence. |
+| Current evidence refresh retained | PASS | Audit §6 and the matrix checkpoint record the current 38/38 CLI revalidation, typecheck, build, compatibility audit 10/10, conformance 298/298, and direct boundary probes without promoting them to Node 24, CI, registry, or public evidence. |
 | Remaining questions recorded | PASS | §5 retains only the unresolved canonical-runtime/registry and long-running protocol decisions; one-shot input, config, diagnostics, and stream rules are frozen in the backlog contract. |
 | Backlog scope and priority explicit | PASS | The backlog has dedicated scope and `P0`/`P1`/`P2` fields; held, not-applicable, and environment-only findings remain outside candidate implementation tasks. |
 | Required paths resolve | PASS | `docs/capability-map`, [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), compatibility matrix, and release plan are present and linked. |
@@ -103,14 +103,14 @@ backlog row:
 ## 6. Implementation handoff
 
 Implementation remains a separate goal/task concern. The backlog retains 17
-intake records; the one-shot rows now have source, focused-test, and audit
-evidence. Three partial rows remain for render-option breadth and release
-verification, while watch/rebuild remains held.
+intake records; the selected render rows now have source, focused-test,
+fixture, and audit evidence. The current matrix retains one partial release
+verification row, while watch/rebuild and daemon/JSON-RPC remain held.
 
 Recommended follow-up order is:
 
-1. expand profile/unit and sheet/view selector matrices (`CLI-TASK-005`,
-   `CLI-TASK-006`);
+1. retain the profile/unit and sheet/view selector regressions and expand them
+   only when new public options are approved;
 2. run canonical Node >=24 and registry/recovery verification when that
    environment is available (`CLI-TASK-017`);
 3. retain `CLI-TASK-015` and the daemon/JSON-RPC boundary as held until a
@@ -126,11 +126,27 @@ any implementation goal.
 | Boundary | Recorded state |
 | --- | --- |
 | Root repository | `/Users/agusmade/projects/relgeo-workspace`, observed root revision `1cfa865`; working tree contains the CLI capability documentation changes and other pre-existing workspace changes. |
-| CLI repository boundary | `cli/`, observed CLI revision `7a6c0ce` (`v0.5.0` submodule baseline); working tree changes are in `src/index.ts`, `src/__tests__/cli.test.ts`, `README.md`, and `docs/README.md`. |
+| CLI repository boundary | `cli/`, observed CLI revision `7a6c0ce` (`v0.5.0` submodule baseline); working tree changes are in `src/index.ts`, `src/__tests__/cli.test.ts`, and `src/__tests__/fixtures/render-options-v05.yaml`. |
 | Commit boundary | No commit, tag, push, npm publication, or registry mutation was created or assumed by this handoff. The evidence describes the current working tree relative to the recorded revisions. |
-| Reproducible local evidence | CLI tests 36/36; explicit TypeScript analyzer; CJS/ESM build; conformance 298/298; `git diff --check`. |
+| Reproducible local evidence | CLI tests 38/38; stdin/path-precedence and structured-diagnostic probes; deterministic JSON serialization/provenance and CI-stream probes; SVG fixture rendering; explicit TypeScript analyzer; CJS/ESM build; compatibility audit 10/10; conformance 298/298; `git diff --check`. |
 | Environment-limited evidence | The local integration gate stopped at its Node >=24 preflight because the environment provides Node 22.23.2. Node 24 CI, registry install, cross-OS/TTY, and public-package evidence remain `?`/not verified. |
 | Scope exclusions | No npm/pub.dev publication, production deployment, deferred daemon/JSON-RPC host, browser UI, or mobile platform service was used as a prerequisite. |
+
+### 7.1 Current verification commands
+
+The following commands were run against the current working tree on
+2026-11-04. Passing results are local evidence only; the Node 22 engine warning
+does not establish canonical Node >=24 or public-package parity.
+
+| Command | Observed result | Evidence covered |
+| --- | --- | --- |
+| `pnpm test` from `cli/` | `38 passed (38)` | Focused unit, negative, precedence, structured diagnostic, config, selector, output, no-color, CI, and regression tests |
+| `pnpm run conformance:fixtures` from the root | `298 passed, 0 failed across 23 fixtures` | Shared fixture rendering, invalid/runtime diagnostics, resolved-scene serialization, provenance, and consumer surfaces |
+| `pnpm run compatibility:audit` from the root | `10 passed, 0 warnings, 0 failed` | Active compatibility line `0.5`, parser/version policy, and observed source inventory |
+| `pnpm exec tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --esModuleInterop --skipLibCheck src/index.ts` from `cli/` | exit `0` | CLI source typecheck |
+| `pnpm build` from `cli/` | CJS and ESM build success | Executable build boundary |
+| `node --input-type=module` inline probe from the root | exit `0` | Stdin/path precedence, JSON `FILE_NOT_FOUND` envelope, CI quiet streams, deterministic canonical serialization/provenance, and SVG fixture rendering |
+| `git diff --check` and `git -C cli diff --check` | exit `0` | Patch whitespace integrity |
 
 ## 8. Required evidence index
 

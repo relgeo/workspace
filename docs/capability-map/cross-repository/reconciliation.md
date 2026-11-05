@@ -1,10 +1,10 @@
 # Expected-versus-Observed Cross-Repository Orchestration Reconciliation
 
-> **Current-state note — 2026-11-03:** The 2026-10-30 verifier observations are historical. Current child gitlinks are observable, but child worktrees contain unrelated local modifications, so no clean-baseline claim is made. The 2026-10-09 integration manifest differs from 11 of 12 current gitlinks. This shell has Node `22.23.2` and pnpm `10.33.3`; the declared Node `24+` gate therefore records `environment-unavailable` and strict current verification was not promoted. Flutter CI/release and core package evidence are recorded in the current audit overlay; they do not make the stale root manifest current.
+> **Current-state note — 2026-11-05:** The 2026-10-30 verifier observations are historical. Current child gitlinks are observable, but child worktrees contain unrelated local modifications, so no clean-baseline claim is made. The 2026-10-09 integration manifest differs from 11 of 12 current gitlinks. This shell has Node `22.23.2` and pnpm `10.33.3`; the declared Node `24+` gate therefore records `environment-unavailable` and strict current verification was not promoted. Current root boundary fixtures and shared conformance pass, while local/public integration stop before stages at the Node prerequisite. Flutter CI/release and core package evidence are recorded in the current audit overlay; they do not make the stale root manifest current.
 
 **Status:** reconciliation selesai; setiap expected capability memiliki tepat satu hasil
 
-**Tanggal:** 2026-11-03
+**Tanggal:** 2026-11-05
 
 **Expected source:** [Expected Cross-Repository Orchestration Capability Catalog](./expected-capability-catalog.md)
 
@@ -69,6 +69,30 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 | `deferred` | 0 | `deferred-scope` | 0 |
 | `not-applicable` | 0 | **Total** | **39** |
 
+### 2.1 Current consumer-boundary checkpoint — 2026-11-05
+
+This checkpoint records the current root orchestration boundary without
+promoting unavailable external evidence. Local fixture and conformance results
+are separate from CI/public claims, and the reconciliation symbols above remain
+unchanged.
+
+| Boundary | Result | Evidence class / limitation |
+| --- | --- | --- |
+| `pnpm run public-boundary:contract:test` | **PASS** | Local fixture evidence for safe entries and fail-closed unsafe path/content handling. |
+| `pnpm run bootstrap:contract:test` | **PASS** | Local bootstrap report and public-boundary consumer contract. |
+| `pnpm run orchestration:contract:test` | **PASS** | Local blocker/retry/sync/decision-gate contract evidence. |
+| `pnpm run child-ci:contract:test` | **PASS** | Static validated-child-CI synchronization policy; no live provider dispatch. |
+| `pnpm run integration:evidence:test` | **PASS** | Local current-revision evidence join and historical-evidence rejection. |
+| `pnpm run conformance:fixtures` | **298 passed, 0 failed across 23 fixtures** | Local shared downstream parser/renderer/service/CLI/preview/highlighting path. |
+| `node scripts/run-integration-gate.mjs --local --report=/private/tmp/relgeo-consumer-local-boundary.json` | **Exit 2 / environment-unavailable** | Host Node `22.23.2`; runner requires Node `24+` and stops before consumer stages. |
+| `node scripts/run-integration-gate.mjs --public --report=/private/tmp/relgeo-consumer-public-boundary.json` | **Exit 2 / environment-unavailable** | Same Node prerequisite; no registry/deployment/public consumer result is inferred. |
+| Current CI/public consumer evidence | **NOT VERIFIED** | Historical CI/public records remain scoped to their recorded revisions. |
+
+The current local result is “no regression observed” for the selected root
+orchestration consumers. Fresh/isolated package installation, live CI
+dispatch, registry, deployed artifact, and public-host checks remain
+unverified or deferred until their prerequisites are available.
+
 ## 3. One-to-one expected-versus-observed join
 
 | ID | Expected capability | Scope decision | Implementation status | Evidence status | Reconciliation | Audit trace | Gap / next action |
@@ -107,7 +131,7 @@ Implementation status dan evidence status pada seluruh join tetap mengikuti audi
 | `ORCH-OPS-002` | Blocker classification and dependency propagation | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Shared taxonomy and dependency-impact fields are present; live provider propagation remains follow-up evidence. |
 | `ORCH-OPS-003` | Bounded retry and rerun policy | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Bounded transient retry, retry budget, attempt links, first-failure retention, and deterministic non-retry fixture pass; verify a live transient CI case later. |
 | `ORCH-OPS-004` | Cancellation, concurrency, and idempotent replay | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-OPS-004](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Add duplicate-dispatch and cancellation-race fixture or document provider-level limits. |
-| `ORCH-OPS-005` | Human decision boundary | `IN` | `partial` | `verified-static` | `🌗` | [Audit §4 — ORCH-OPS-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Policy is documented but not enforced by a central decision gate/tool. |
+| `ORCH-OPS-005` | Human decision boundary | `IN` | `partial` | `verified-static` | `🌗` | [Audit §4 — ORCH-OPS-005](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Local `evaluateDecisionGate()` and release-preflight enforcement are verified-static; provider-side scope/release enforcement and a current canonical decision record remain unobserved. |
 | `ORCH-PUB-001` | Secret and private-path exclusion | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-001](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Run a complete artifact-by-artifact secret scan as follow-up evidence. |
 | `ORCH-PUB-002` | No sibling-source leakage in public consumers | `IN` | `implemented` | `unverified-runtime` | `🌗` | [Audit §4 — ORCH-PUB-002](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Public gate remains unavailable until Node 24/network/browser prerequisites exist. |
 | `ORCH-PUB-003` | Least-privilege CI and credential-free checkout | `IN` | `implemented` | `verified-static` | `✔️` | [Audit §4 — ORCH-PUB-003](./implementation-audit.md#4-expected-versus-observed-implementation-gap-map) | Root workflow policy, child-CI policy, credential-free checkout, bounded timeout/concurrency, and permission assertions pass; provider-side PR/dispatch remains follow-up evidence. |

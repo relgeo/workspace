@@ -1,8 +1,8 @@
 # Website and Pages implementation-gap backlog
 
-**Tanggal:** 2026-11-03
+**Tanggal:** 2026-11-04
 **Boundary:** candidate implementation, provenance, decision, and verification work for website/Pages gaps  
-**Status dokumen:** candidate follow-up handoff; local implementation evidence is recorded, but creating or updating this backlog does not close any implementation gap
+**Status dokumen:** candidate follow-up handoff with a P0/P1 implementation-closability triage; local implementation evidence is recorded, but creating or updating this backlog does not close any implementation gap
 
 This backlog is derived from the [status matrix](./status-matrix.md)
 and traces each `❌`/`🌗` result to the [expected catalog](./expected-capability-catalog.md),
@@ -27,6 +27,58 @@ silently removed because a local check passed.
 
 **Coverage:** 11 candidate tasks for 0 `❌` and 11 `🌗` matrix rows; 4 `✔️`
 rows have no implementation-gap task. No task is marked complete.
+
+## P0/P1 implementation-closability triage — 2026-11-04
+
+This is the current triage of every P0/P1 candidate row below, including the
+P1 portion of `WEB-PAGE-015`. **Implementation-closable** means the remaining
+work can be changed and tested at the website/workspace boundary without
+requiring a production deployment, a GitHub Actions run, public DNS, or
+physical assistive-technology hosts. It does not mean that the whole
+capability is already `✔️`; local implementation and external evidence remain
+separate dimensions.
+
+Rows marked **selected** are the implementation tranche for this checkout.
+Rows marked **evidence-only** remain in the backlog so their external boundary
+is explicit, but they must not be treated as proof of a missing local
+implementation. The initial status is the status-matrix symbol at triage time.
+
+### Implementation-closable gaps selected for the website tranche
+
+| Candidate / expected ID | Priority | Initial status | Owner | Source of truth | Acceptance test | Triage disposition |
+| --- | --- | --- | --- | --- | --- | --- |
+| `GAP-WEB-003-SEARCH-001` / `WEB-PAGE-003` | `P1` | `🌗` partial | `relgeo.github.io` docs/information-architecture owner | [`expected-capability-catalog.md`](./expected-capability-catalog.md) row `WEB-PAGE-003`; [`claim-locale-provenance-contract.md`](./claim-locale-provenance-contract.md); `relgeo.github.io/src/pages/[lang]/docs/index.astro`; `relgeo.github.io/scripts/assert-built-output.mjs` | `pnpm build && pnpm test` from `relgeo.github.io` must assert the localized topic index, direct links, live result status, filtering, and explicit no-result state. Query/server search and browser interaction are separate follow-ups. | **Selected implementation gap.** Keep the deterministic local baseline; do not silently expand the contract to query/server search. |
+| `GAP-WEB-004-LOCALE-001` / `WEB-PAGE-004` | `P1` | `🌗` partial | Website editorial owner with `spec` owner | Catalog row `WEB-PAGE-004`; [`claim-locale-provenance-contract.md`](./claim-locale-provenance-contract.md); `relgeo.github.io/src/content.config.ts`; `relgeo.github.io/src/lib/i18n.ts`; `spec/id/` | `pnpm check && pnpm build && pnpm test` must prove `/id` and `/en` retain route context and the English language-spec surface explicitly identifies itself as an editorial mirror of normative `spec/id`. | **Selected implementation gap.** Content/loader changes are local; English normative parity remains a separately reviewed spec/content decision. |
+| `GAP-WEB-005-REFERENCE-001` / `WEB-PAGE-005` | `P1` | `🌗` partial | `relgeo.github.io` docs owner with spec/editorial reviewers | Catalog row `WEB-PAGE-005`; `relgeo.github.io/src/content/docs/{id,en}/`; localized docs/spec route templates; [`implementation-audit.md`](./implementation-audit.md) §2–§4 | `pnpm build && pnpm test` (including `pnpm run test:content-integrity`) must show reviewed content or an explicit status affordance for every declared English docs/spec route, with locale parity and internal-link checks, without claiming bilingual normative parity. | **Selected implementation gap.** The local integrity gate is implemented; English normative parity remains partial and owned by the spec/editorial review path. |
+| `GAP-WEB-007-HANDOFF-001` / `WEB-PAGE-007` | `P1` | `🌗` partial | Website handoff owner with Playground/plugin owners for their behavior | Catalog row `WEB-PAGE-007`; `relgeo.github.io/src/content/docs/{id,en}/playground.md`; `markdown-surfaces.md`; `.github/workflows/pages.yml`; assembled artifact contract | Website build plus Playground build, artifact assembly, and `pnpm run test:pages-artifact` must prove configured-base-path links, Playground entry markers, and documented `edit → resolve → preview → inspect`/`rg` vs `relgeo` handoff. Hosted interaction is external evidence only. | **Selected implementation gap.** Implement/verify the local handoff and artifact boundary; do not claim hosted runtime parity. |
+| `GAP-WEB-009-RESPONSIVE-001` / `WEB-PAGE-009` | `P1` | `🌗` partial | Website layout owner; Playground owns workbench layout | Catalog row `WEB-PAGE-009`; `relgeo.github.io/src/styles/site.css`; `relgeo.github.io/scripts/assert-built-output.mjs`; Plan 05 browser matrix | `pnpm build && pnpm run test:responsive-accessibility` must keep 640/899/900px breakpoints, shrinkable article/code columns, narrow-navigation containment, and focus styles green; a browser viewport matrix is recorded separately when a stable runner exists. | **Selected implementation gap.** Local CSS/build contract is in scope; physical-device behavior and unavailable browser-runner evidence are not inferred. |
+| `GAP-WEB-010-A11Y-001` / `WEB-PAGE-010` | `P1` | `🌗` partial | Website accessibility owner; Playground owns workbench controls | Catalog row `WEB-PAGE-010`; `relgeo.github.io/src/layouts/DocsLayout.astro`; `relgeo.github.io/src/styles/accessibility.css`; `relgeo.github.io/scripts/assert-built-output.mjs` | `pnpm build && pnpm run test:responsive-accessibility` plus representative browser AX/keyboard checks must cover landmarks, names, active locale, visible focus, reading order, reduced motion, and non-pointer access. | **Selected implementation gap.** Browser accessibility is active; physical VoiceOver/TalkBack/mobile AT is explicitly scope-deferred evidence. |
+| `GAP-WEB-011-SEO-001` / `WEB-PAGE-011` | `P1` | `🌗` partial | `relgeo.github.io` website/build owner | Catalog row `WEB-PAGE-011`; `relgeo.github.io/astro.config.mjs`; `relgeo.github.io/src/pages/sitemap.xml.ts`; `relgeo.github.io/src/layouts/DocsLayout.astro` | `RELGEO_DOCS_REQUIRE_PUBLIC_URL=1 RELGEO_DOCS_SITE_URL=https://relgeo.github.io pnpm build && pnpm test` plus the negative placeholder-URL gate must emit base-aware canonical, hreflang, and sitemap URLs with crawlable HTML. External crawler verification remains separate. | **Selected implementation gap.** Deployment-aware local metadata and the fail-closed URL gate are implementation work; public crawler evidence is not. |
+| `GAP-WEB-012-ARTIFACT-001` / `WEB-PAGE-012` | `P0` | `🌗` partial | Website deployment owner with root integration owner | Catalog row `WEB-PAGE-012`; [`docs/integration-baseline.json`](../../integration-baseline.json); `relgeo.github.io/scripts/assert-input-provenance.mjs`; `relgeo.github.io/scripts/assert-pages-artifact.mjs`; `.github/workflows/pages.yml` | `pnpm provenance:check`, `RELGEO_PLAYGROUND_ROOT=../playground RELGEO_SPEC_ROOT=../spec pnpm provenance:pages`, and assembled `pnpm run test:pages-artifact` must fail closed on revision drift and pass for one synchronized local tuple. | **Selected implementation gate.** The fail-closed gate is present, but current child HEADs differ from baseline/Pages pins, so this checkout does not claim provenance closure; no child checkout was reset. |
+
+### Remaining P0/P1 rows accounted for but not selected as local implementation gaps
+
+| Candidate / expected ID | Priority | Initial status | Owner | Source of truth | Acceptance test / evidence target | Triage disposition |
+| --- | --- | --- | --- | --- | --- | --- |
+| `GAP-WEB-013-PAGES-001` / `WEB-PAGE-013` | `P0` | `🌗` partial | Website deployment owner + root integration owner | `relgeo.github.io/.github/workflows/pages.yml`; [`docs/integration-baseline.json`](../../integration-baseline.json); Pages artifact contract | Canonical GitHub Actions workflow must complete build, upload, deploy, and post-deploy smoke for one synchronized tuple, with run URL and artifact revision archived. | **Evidence-only.** Workflow implementation exists locally; execution/parity requires GitHub Actions and Pages state. |
+| `GAP-WEB-014-SMOKE-001` / `WEB-PAGE-014` | `P1` | `🌗` partial | Root release owner + website workflow owner | `relgeo.github.io/scripts/smoke-public-site.mjs`; Pages deployment URL; artifact assertions | The 13 declared route/asset probes must return expected statuses/content markers for the same deployed revision as the artifact assertion; DNS/network failures remain environment-unavailable. | **Evidence-only.** Public reachability and reliability cannot be closed from this checkout. |
+| `GAP-WEB-015-STATUS-001` / `WEB-PAGE-015` | `P1/P2` | `🌗` partial | Website editorial owner + spec/package/root owners | [`claim-locale-provenance-contract.md`](./claim-locale-provenance-contract.md); status pages; child revisions; [`docs/integration-baseline.json`](../../integration-baseline.json) | Compare public DSL/package/application/source/deployment fields against the synchronized tuple and current deployment evidence; never collapse them into one generic version claim. | **Evidence-only follow-up.** Local claim/provenance implementation is present; deployment/CI evidence remains external. |
+
+### Triage accounting
+
+| Check | Result |
+| --- | ---: |
+| P0/P1 candidate rows reviewed | 11 |
+| Selected implementation-closable rows | 8 (`WEB-PAGE-003`, `004`, `005`, `007`, `009`, `010`, `011`, `012`) |
+| Evidence-only rows retained | 3 (`WEB-PAGE-013`, `014`, `015`) |
+| Whole rows scope-deferred | 0 |
+| Selected rows with owner, source of truth, acceptance test, and initial status | 8/8 |
+
+The physical VoiceOver/TalkBack/mobile AT boundary under `WEB-PAGE-010` is
+scope-deferred evidence, not a whole-row deferral and not a local
+implementation prerequisite. No status symbol changes as a result of this
+triage. The locked success, failure/edge, and evidence contract for the eight
+selected rows is recorded in the [reconciliation contract lock](./reconciliation.md#contract-lock-for-selected-p0p1-gaps--2026-11-04).
 
 ## Candidate goal G-WEB-01 — Close search and reference wayfinding
 
@@ -54,7 +106,7 @@ version/provenance claims; does not rewrite the normative DSL contract owned by
 | --- | --- | --- | --- | --- | --- |
 | `GAP-WEB-004-LOCALE-001` align English language-spec behavior with declared policy | `WEB-PAGE-004` | P1 | decision + content/loader implementation | The current local presentation must say that `/en` is an editorial mirror of `spec/id`, not a translated normative contract, link to the Indonesian language spec, and avoid any full-parity implication; built-output assertions pass. | Preserve the frozen disclosure; only replace it after a separately reviewed `spec/en` translation proves parity for the declared surface. |
 | `GAP-WEB-005-REFERENCE-001` complete bilingual docs/reference parity for the declared surface | `WEB-PAGE-005` | P1 | content + verification | Generated English docs/spec routes have usable content or an explicit status affordance, while the authoritative `spec/id` source and English editorial mirror remain distinguishable. Full bilingual normative reference parity remains partial. | Inventory and review missing English reference content, then add locale-coverage/internal-link checks before changing the `🌗` status. |
-| `GAP-WEB-015-STATUS-001` enforce capability/version/provenance consistency in public claims | `WEB-PAGE-015` | P1/P2 | provenance + test | Public claims use separate DSL/package/application/source/deployment fields and the frozen tuple `website=6eb2e241…`, `spec=b96ba3b2…`, `playground=c7cec4b5…`. The root baseline, Pages pins, and assembled-artifact gate now synchronize this tuple locally. | Retain the gate and update claims only when the corresponding CI, deployment, or public evidence is available; do not collapse those evidence boundaries into the local pass. |
+| `GAP-WEB-015-STATUS-001` enforce capability/version/provenance consistency in public claims | `WEB-PAGE-015` | P1/P2 | provenance + test | Public claims use separate DSL/package/application/source/deployment fields and the governed reference tuple `website=6eb2e241…`, `spec=b96ba3b2…`, `playground=c7cec4b5…`; current checked-out revisions differ, so no synchronized current tuple is claimed. | Retain the gate, reconcile the approved tuple, and update claims only when corresponding CI, deployment, or public evidence is available; do not collapse those boundaries into a local pass. |
 
 ## Candidate goal G-WEB-03 — Close Playground artifact and Pages provenance
 
@@ -68,7 +120,7 @@ their repositories.
 | Candidate task | Expected ID | Priority | Work type | Acceptance test / evidence target | Next action |
 | --- | --- | --- | --- | --- | --- |
 | `GAP-WEB-007-HANDOFF-001` verify hosted Playground link/embed handoff for the reviewed artifact | `WEB-PAGE-007` | P1 | integration + runtime verification | Docs/CTA links resolve at the configured base path; Playground entry loads, and a browser smoke covers edit → resolve → preview → inspect or the documented handoff boundary; Markdown source/preview assertions remain green. | Build the selected Playground revision with the website, run artifact assertions, then execute hosted browser smoke. |
-| `GAP-WEB-012-ARTIFACT-001` synchronize generated artifact provenance | `WEB-PAGE-012` | P0 | provenance + build gate | The local 138-page build, provenance report, and combined artifact assertion pass for the synchronized website/spec/Playground tuple; the strict gate fails closed if the root baseline, child checkout, workflow pin, or assembled artifact drifts. | Retain the synchronized tuple in CI and archive the Pages run before publishing; do not infer public deployment parity from the local artifact pass. |
+| `GAP-WEB-012-ARTIFACT-001` synchronize generated artifact provenance | `WEB-PAGE-012` | P0 | provenance + build gate | The local 138-page build and direct consumer builds pass; for one synchronized website/spec/Playground tuple the provenance report and combined artifact assertion must also pass. The current strict gate fails closed on baseline/Pages drift. | Reconcile the approved tuple, rerun strict provenance and artifact assertions, then retain the synchronized result in CI and archive the Pages run before publishing. Do not infer public deployment parity from local builds. |
 | `GAP-WEB-013-PAGES-001` prove canonical Pages deployment for synchronized inputs | `WEB-PAGE-013` | P0 | deployment verification | Canonical Pages workflow completes build, artifact upload, deploy, and post-deploy smoke for the same website/spec/Playground revisions; run URL and artifact revision are archived. | Trigger or observe the canonical workflow after pin synchronization and retain its run evidence. |
 | `GAP-WEB-014-SMOKE-001` establish current public reliability evidence | `WEB-PAGE-014` | P1 | runtime verification | All declared route/asset probes return expected statuses and content markers; artifact assertions and public smoke reference the same deployment revision, with DNS/network failures recorded separately. The 2026-11-03 attempt stopped at `/` after `fetch failed`, and direct curl recorded DNS resolution failure, so no public defect is inferred. | Rerun the 13-route smoke when `relgeo.github.io` resolves and attach the result to the release evidence. |
 

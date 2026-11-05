@@ -1,6 +1,6 @@
 # RelGeo geometry capability matrix
 
-> **Coverage statement — 2026-11-03.** This matrix covers `geometry/` source
+> **Coverage statement — 2026-11-04.** This matrix covers `geometry/` source
 > and public boundary through geometry tests, core/renderer consumers, shared
 > fixtures, package metadata, and compatibility evidence. It inventories
 > primitives, curves, transforms, intersections, boolean operations, numeric
@@ -10,7 +10,7 @@
 > row is not evidence of absence.
 > See [inventory protocol](../INVENTORY-PROTOCOL.md) for status axes and evidence tiers.
 
-Status dokumen: audit baseline, 2026-10-29  
+Status dokumen: audit baseline, refreshed 2026-11-04
 Surface: `geometry/`  
 Owner: `relgeo/geometry`  
 Compatibility line: `0.5.x`  
@@ -59,6 +59,24 @@ Evidence log: [geometry/archive/implementation-audit-legacy.md](./archive/implem
 | Unsupported/degenerated input policy and numeric error bounds | `🌗` | local error tests cover several invalid operations; `GeometryError` exists; no single policy catalog found | No complete public numeric/error contract for all degeneracy, sampling, or non-finite inputs | core, renderer, CLI | error mapping and spec error model | Add geometry error catalog and cross-consumer negative fixtures |
 | Geometry provenance/version wording | `✔️` | `geometry/src/intersection.ts`; `geometry/src/__tests__/intersection.test.ts`; package/compatibility line is 0.5 | Package-local provenance and unsupported-operation wording now match the active line; consumer-specific message snapshots remain separate | core, CLI, docs | package version policy | Keep the regression assertion and refresh consumer snapshots only when their contracts require it |
 | Geometry package lint/build and registry artifact verification | `🌗` | `pnpm lint`, `pnpm test`, `pnpm build` pass locally; conformance 298/298 | Local package artifact is verified under detected Node `v22.23.2`; root Node >=24 and fresh registry install remain not verified | npm consumers | Node/pnpm toolchain | Re-run package boundary under Node >=24 and release registry gate |
+
+## Current verification handoff — 2026-11-04
+
+The bounded implementation and consumer evidence was refreshed without
+promoting any partial row to complete:
+
+| Boundary | Current evidence | Qualification / next action |
+| --- | --- | --- |
+| `geometry/` | 5 files, 91 tests; lint and build pass | Local Node 22 evidence; rerun under Node 24 for canonical package/release claims. |
+| `core/` | 48 files, 488 tests; lint and build pass | Local consumer/replay evidence; cross-runtime and host parity remain unverified. |
+| `renderer-svg/` | 7 files, 92 tests; build pass | Local semantic projection evidence; Flutter semantic parity remains unverified. |
+| `cli/` | 36 tests; build pass | Local validation/serialization boundary; public package install remains unverified. |
+| Shared fixtures | 298/298 across 23 fixtures | Workspace fixture-pass; not a Flutter/native or public-registry claim. |
+| Playground / docs site | Playground 104 tests/build pass; docs site 138 pages, 0 diagnostics, output assertions pass | Local consumer artifacts only; assembled provenance is qualified because current Playground revision differs from the pinned baseline. |
+
+The integration gate, public registry, CI-current, Node 24, and Flutter/native
+host checks remain `not-verified` or environment-unavailable as recorded in
+the [reconciliation](./reconciliation.md) and [coverage handoff](./coverage-validation-handoff.md).
 
 ## Priority order
 

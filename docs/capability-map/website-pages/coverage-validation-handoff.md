@@ -1,13 +1,13 @@
 # Website and Pages coverage validation and handoff
 
-**Tanggal validasi:** 2026-10-30  
+**Tanggal validasi:** 2026-11-04
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
 **Required context:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)
 
 ## 1. Hasil validasi
 
 Artefak website/Pages siap untuk review manusia sebagai baseline, evidence map,
-selected local implementation evidence, dan implementation handoff. Validasi ini **tidak** menyatakan website,
+current P0/P1 implementation-closability triage, dan implementation handoff. Validasi ini **tidak** menyatakan website,
 Playground handoff, Pages deployment, public runtime, responsive behavior,
 accessibility, atau English reference surface lengkap.
 
@@ -23,11 +23,17 @@ Klaim yang aman:
   dan 0 `⚠️`**;
 - backlog memiliki **11 candidate task** untuk tepat seluruh 0 `❌` dan 11
   `🌗` row, dengan owner/dependency, acceptance test atau evidence target, dan
-  next action;
-- audit §5 memiliki fresh local checkpoint pada 2026-10-30: website build
-  menghasilkan 138 halaman, `pnpm check` bersih, `pnpm test` lulus, Playground
-  build/test lulus (16 file, 99 test), dan combined Pages artifact assertion
-  lulus;
+  next action; triage P0/P1 memilih 8 row untuk pekerjaan implementation/local
+  contract dan memisahkan 3 row sebagai evidence-only;
+- audit §5 memiliki historical local checkpoint pada 2026-10-30; current
+  verification checkpoint pada 2026-11-04 menghasilkan website build 138
+  halaman, `pnpm check` bersih, website `pnpm test` lulus, explicit
+  SEO/accessibility and content-integrity assertions lulus, serta Playground
+  build/test lulus (17 file, 107 test);
+- current provenance and assembled Pages artifact gates fail closed because
+  the checked-out website/Playground/spec revisions do not match the recorded
+  baseline and Pages pins; public smoke is environment-unavailable because the
+  configured public host did not become reachable;
 - documentation and matrix updates do not close a gap by themselves; selected
   source/config changes are only credited where the audit records focused
   local evidence, and local evidence is not promoted to current CI, public, or
@@ -42,7 +48,8 @@ Klaim yang aman:
 | [Reconciliation](./reconciliation.md) | One-to-one expected-versus-observed join dengan implementation/evidence/scope terpisah | 15/15 rows; missing/extra/duplicate = 0 |
 | [Status matrix](./status-matrix.md) | Capability-first compact view dengan status, evidence, gap, owner, dependency, risk, dan next action | 15 rows; full status legend; 4 `✔️`, 11 `🌗`, 0 `❌` |
 | [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate goals/tasks untuk gap implementasi, decision, provenance, dan verification | 11 tasks cover exactly all `❌`/`🌗` IDs; no task is marked complete |
-| [Website bounded in-scope selection](./in-scope-selection.md) | Bounded intake for the next implementation tranche | 6 selected rows with owner, source path, contract boundary, and acceptance behavior; no `➖` or `⏸️` row selected |
+| [Website bounded in-scope selection](./in-scope-selection.md) | Historical 2026-10-30 intake record | 6 historical selected rows; superseded for current P0/P1 selection by the backlog triage |
+| [P0/P1 backlog triage](./implementation-gap-backlog.md#p0p1-implementation-closability-triage) | Current implementation-closability and evidence boundary | 11 P0/P1 rows reviewed; 8 selected local rows and 3 evidence-only rows, each selected row with owner/source/acceptance/initial status |
 | [Historical website matrix](./capability-matrix.md) | Prior inventory retained as historical evidence | Tidak digunakan sebagai source expected set; status matrix baru adalah downstream view dari catalog/audit/reconciliation |
 
 ## 3. Checklist coverage dan integrity
@@ -121,7 +128,7 @@ in [`claim-locale-provenance-contract.md`](./claim-locale-provenance-contract.md
 | --- | --- | --- |
 | `Q-WEB-001` | Kapan browser evidence untuk deterministic docs/spec index dijalankan; query/server search tetap di luar baseline kecuali ada product change? | `WEB-PAGE-003`, `GAP-WEB-003-SEARCH-001` |
 | `Q-WEB-002` | Kapan English reference content dapat direview untuk parity tanpa menghapus editorial-mirror disclosure? | `WEB-PAGE-004`, `005`, `015`; `GAP-WEB-004-LOCALE-001` |
-| `Q-WEB-003` | Kapan frozen tuple website `6eb2e24`, spec `b96ba3b2`, Playground `c7cec4b5` direkonsiliasi ke integration baseline dan artifact? | `WEB-PAGE-007`, `012`, `013`, `014`; `GAP-WEB-012-ARTIFACT-001` |
+| `Q-WEB-003` | Kapan current checked-out tuple direkonsiliasi ke integration baseline dan Pages pins (`website 6eb2e24`, `spec b96ba3b2`, `Playground c7cec4b5`) sebelum artifact dipromosikan? | `WEB-PAGE-007`, `012`, `013`, `014`; `GAP-WEB-012-ARTIFACT-001` |
 | `Q-WEB-004` | Kapan current canonical Pages workflow, deployed URL, dan public smoke dapat dijalankan pada host yang reachable? | `WEB-PAGE-001`, `007`, `011`–`014`; `GAP-WEB-013-PAGES-001`, `GAP-WEB-014-SMOKE-001` |
 | `Q-WEB-005` | Browser viewport/AX/keyboard evidence mana yang diwajibkan sekarang, dan kapan physical VoiceOver/TalkBack/mobile Safari dibuka kembali? | `WEB-PAGE-009`, `010`; `GAP-WEB-009-RESPONSIVE-001`, `GAP-WEB-010-A11Y-001` |
 | `Q-WEB-006` | Apakah deployment URL placeholder harus menjadi hard build failure dan seberapa luas crawler internal-link/SEO gate-nya? | `WEB-PAGE-001`, `011`; `WEB-PAGE-001` route-crawl follow-up and `GAP-WEB-011-SEO-001` |
@@ -140,8 +147,11 @@ backlog proposes, but does not start or complete, these workstreams:
 4. **`G-WEB-04`** close responsive, browser accessibility, and SEO evidence
    (`WEB-PAGE-009`, `010`, `011`).
 
-The selected tranche has produced source/config changes and named executable
+The earlier selected tranche produced source/config changes and named executable
 local evidence for `WEB-PAGE-003`, `004`, `005`, `010`, `011`, and `012`.
+The current P0/P1 triage expands the implementation handoff to include the
+local handoff and responsive contracts for `WEB-PAGE-007` and `WEB-PAGE-009`,
+while retaining `WEB-PAGE-013`, `014`, and `015` as evidence-only follow-ups.
 The 11 candidate tasks remain visible because partial rows still require the
 follow-up evidence or decisions named by their acceptance boundaries. No task
 is promoted to complete, and this handoff does not claim the website/Pages
@@ -151,27 +161,33 @@ surface is complete.
 
 ### Changed repository boundary
 
-Evidence was refreshed from the current uncommitted worktree. The root
-workspace is at `2ff198d7284d4ef947e21ea1cbedd88a66b6d977`; the frozen website
-child is at `6eb2e241b76a5f226644300f5cbe9814c342cd08`; the frozen Playground
-child is at `c7cec4b505f290beccac911ef97786c8f6b0a534`; and the spec child is at
-`b96ba3b23de202227eade06614635ef6717df516`. No commit was created for this
-handoff, and unrelated pre-existing worktree changes were preserved. The
-integration baseline records the frozen website/spec/Playground tuple, and the
-local provenance plus assembled-artifact gates pass for that synchronized set.
-CI, Pages deployment, and public-host evidence remain unverified.
+Evidence was refreshed from the current uncommitted worktree. The observed
+child revisions are website
+`1b9bb92f18b1f6d187b6ccdfd8995aaf8cecc4ef`, Playground
+`47fd71583f4950467f63d56ad67feb24526ccb5a`, and spec
+`f4fecf2153ad2d960f36eda96a6a593d5aed30b7`. The recorded baseline/Pages
+references remain website `6eb2e241b76a5f226644300f5cbe9814c342cd08`,
+Playground `c7cec4b505f290beccac911ef97786c8f6b0a534`, and spec
+`b96ba3b23de202227eade06614635ef6717df516`. No child checkout was reset, no
+baseline or workflow pin was changed, and unrelated pre-existing worktree
+changes were preserved. This revision mismatch is why the strict provenance
+and assembled Pages artifact gates are not claimed as passing.
 
 ### Reproducible evidence boundary
 
-- Website: `pnpm check`, deployment-configured `pnpm build`, `pnpm test`,
-  `pnpm provenance:check`, and `pnpm provenance:pages` were run for the frozen
-  contract. `pnpm run test:pages-artifact` also passes against the assembled
-  Playground `dist/`.
-- Playground: `pnpm build` and `pnpm test` (16 test files, 99 tests).
-- Provenance: `pnpm provenance:check` and `pnpm provenance:pages` report
-  `synchronized: true` with no mismatches for the frozen tuple; the combined
-  artifact gate also passes. A current CI/Pages run and public deployment smoke
-  remain unverified.
+- Website: configured `pnpm build` produced 138 pages; `pnpm check`, `pnpm
+  test`, `pnpm run test:responsive-accessibility`, and `pnpm
+  run test:content-integrity` passed. The strict `pnpm provenance:check` and
+  `RELGEO_PLAYGROUND_ROOT=../playground RELGEO_SPEC_ROOT=../spec pnpm
+  provenance:pages` commands fail closed on the revision mismatches above.
+- Playground: `pnpm build` and `pnpm test` passed (17 test files, 107 tests).
+- Artifact/public boundary: the Playground `dist/` was assembled into the
+  website output, but `pnpm run test:pages-artifact` correctly rejects the
+  unsynchronized Pages provenance report. `RELGEO_PUBLIC_SITE_URL=https://relgeo.github.io
+  node scripts/smoke-public-site.mjs` was attempted and could not reach the
+  public host (`fetch failed`); no public smoke pass is claimed.
+- Provenance: the non-strict Pages report was generated for diagnostics only;
+  it records `synchronized: false` and must not be treated as release evidence.
 - Root integration: `node scripts/run-integration-gate.mjs --local` was
   environment-unavailable at its Node 24 preflight because the environment has
   Node 22.23.2.

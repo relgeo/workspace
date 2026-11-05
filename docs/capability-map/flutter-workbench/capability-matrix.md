@@ -50,6 +50,21 @@ expected IDs by [`reconciliation.md`](./reconciliation.md); the current local
 tranche adds document recovery, dependency graph, and object-selection evidence
 there without deleting the aggregate rows or their host/runtime qualifiers.
 
+## Current verification overlay — 2026-11-05
+
+The current local implementation tranche was verified at
+`flutter@9816b477`, with direct consumer observations at `core@3d9112d`,
+`geometry@395019d`, and `mcp@670121e`. Focused Flutter Workbench tests passed
+`135`, Core passed `489`, Geometry passed `91`, and the MCP contract package
+passed `42`. These are local working-tree observations; they do not replace
+clean-checkout, CI, public-install, or native-host evidence.
+
+The complete Flutter suite reached `326` passing tests and one existing failure
+at `test/mcp_server_io_test.dart:134` in the desktop HTTP MCP transport. The
+failure is kept separate from the changed parameter/import/diagnostic boundary;
+the MCP package-level suite remains green. The status authority therefore
+remains `44 ✔️ · 17 🌗`, with no row promoted or downgraded by this overlay.
+
 ## Status legend
 
 | Status | Meaning in this matrix |

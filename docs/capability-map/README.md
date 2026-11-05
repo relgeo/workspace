@@ -41,10 +41,10 @@ sama.
 
 | Surface | Matrix | Status cepat | Boundary utama / catatan |
 | --- | --- | --- | --- |
-| Spec | [expected catalog](./language-specification/expected-capability-catalog.md) · [status matrix](./language-specification/status-matrix.md) · [implementation audit](./language-specification/implementation-audit.md) | expected baseline → audit input | `spec/id/` normatif; expected rows are defined before implementation comparison and retain expected-but-missing capabilities. |
+| Spec | [capability matrix](./language-specification/capability-matrix.md) · [expected catalog](./language-specification/expected-capability-catalog.md) · [status matrix](./language-specification/status-matrix.md) · [implementation audit](./language-specification/implementation-audit.md) | expected baseline → audit input | `spec/id/` normatif; the capability matrix is a compatibility entry point and the status matrix remains the canonical 53-row view. |
 | Geometry | [status matrix](./geometry/status-matrix.md) | `✔️` bounded library / `🌗` expansion | Primitive/boolean tested; query expansion dan provenance wording memiliki gap. |
 | Core runtime | [status matrix](./core-runtime/status-matrix.md) | `✔️` bounded runtime / `⚠️` error catalog | Parser, resolver, graph, evaluator, diagnostics; error-code typing perlu direkonsiliasi. |
-| Renderer-SVG | [capability matrix](./renderer-svg/capability-matrix.md) | `✔️` bounded renderer / `⚠️` escaping | Capability matrix adalah view canonical surface ini; SVG output tested; escaping masih defect terkonfirmasi. |
+| Renderer-SVG | [status matrix](./renderer-svg/status-matrix.md) · [capability matrix](./renderer-svg/capability-matrix.md) | `✔️` bounded renderer / `🌗` presentation | Status matrix is the canonical status view; the detailed capability matrix and backlog preserve renderer evidence and bounded gaps. |
 | Language service | [matrix](./language-service/capability-matrix.md) | `✔️` local API / `🌗` host parity | Diagnostics/schema/completion/token tersedia; LSP runtime dan API docs memiliki gap. |
 | CLI | [status matrix](./cli/status-matrix.md) | `✔️` local commands / `⚠️` format edge | `info`, `compile`, `check/validate` tersedia; registry/Node 24 belum diverifikasi. |
 | Markdown plugins | [matrix](./markdown-surfaces/capability-matrix.md) | `✔️` bounded transforms / `🌗` fallback | Preview/highlight tersedia; fallback language-service dan registry evidence terbatas. |
@@ -105,10 +105,10 @@ the legend `✔️ 🌗 ❌ ➖ ⏸️ ⚠️`.
 
 | Surface | Expected catalog | Audit | Canonical status/capability view | Deliberate exception |
 | --- | --- | --- | --- | --- |
-| Language specification | `language-specification/expected-capability-catalog.md` | `language-specification/implementation-audit.md` | `language-specification/status-matrix.md` | Normative contract remains in `spec/id/`; no second capability matrix is maintained. |
+| Language specification | `language-specification/expected-capability-catalog.md` | `language-specification/implementation-audit.md` | `language-specification/status-matrix.md` | `language-specification/capability-matrix.md` is a compatibility entry point; the status matrix remains canonical and the normative contract remains in `spec/id/`. |
 | Geometry | `geometry/expected-capability-catalog.md` | `geometry/implementation-audit.md` | `geometry/status-matrix.md` | `geometry/capability-matrix.md` is retained as historical baseline. |
 | Core runtime | `core-runtime/expected-capability-catalog.md` | `core-runtime/implementation-audit.md` | `core-runtime/status-matrix.md` | `core-runtime/capability-matrix.md` is retained as historical baseline. |
-| Renderer-SVG | `renderer-svg/expected-capability-catalog.md` | `renderer-svg/implementation-audit.md` | `renderer-svg/capability-matrix.md` | This surface uses `capability-matrix.md` as its current view; no duplicate status matrix. |
+| Renderer-SVG | `renderer-svg/expected-capability-catalog.md` | `renderer-svg/implementation-audit.md` | `renderer-svg/status-matrix.md` | `renderer-svg/capability-matrix.md` is retained as the detailed capability-first compatibility view. |
 | Language service | `language-service/expected-capability-catalog.md` | `language-service/implementation-audit.md` | `language-service/status-matrix.md` | `language-service/capability-matrix.md` is retained as historical baseline. |
 | CLI | `cli/expected-capability-catalog.md` | `cli/implementation-audit.md` | `cli/status-matrix.md` | `cli/capability-matrix.md` is retained as historical baseline. |
 | Markdown surfaces | `markdown-surfaces/expected-capability-catalog.md` | `markdown-surfaces/implementation-audit.md` | `markdown-surfaces/status-matrix.md` | `markdown-surfaces/capability-matrix.md` is retained as historical baseline. |

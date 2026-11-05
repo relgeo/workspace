@@ -1,6 +1,6 @@
 # Language Specification Capability Status Matrix
 
-**Tanggal:** 2026-10-30
+**Tanggal:** 2026-11-04
 **Baseline:** RelGeo DSL `0.5`
 **Expected catalog:** [`language-specification/expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Implementation audit:** [`language-specification/implementation-audit.md`](./implementation-audit.md)
@@ -54,11 +54,24 @@ evidence, public/browser evidence, and native-host evidence remain
 `not verified` where stated by the audit. This limits the verification claim;
 it does not remove an expected capability from the matrix.
 
+## P0/P1 triage handoff
+
+The implementation-closability decision is recorded in the [gap backlog](./implementation-gap-backlog.md#p0p1-implementation-closability-triage).
+At the 2026-11-04 triage, all eight P0/P1 candidate rows were considered
+implementation-closable from the current checkout: `GAP-001` (`LANG-002`,
+`DOC-003`, `TYPE-001`, `TYPE-002`, `VER-003`), `GAP-002` (`DECL-001`,
+`DECL-004`, `EVAL-002`), `GAP-003`, `GAP-007`, `GAP-008`, `GAP-009`,
+`GAP-011`, and `GAP-013`. Their owners, normative sources, focused acceptance
+tests, and initial statuses are defined in that linked table. This selection
+does not change any matrix status and does not make release, deployment,
+Node-24 CI, browser/native-host evidence, or deferred scope a local
+implementation prerequisite.
+
 ## Matrix
 
 | ID | Capability | Status | Evidence | Gap / finding | Owner | Dependency | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `LANG-001` | Text-first YAML authoring | `✔️` | core parser; conformance 260/260 | Grammar catalog tidak generated | `relgeo/spec` | parser consumers | Drift vocabulary | Pertahankan parser/fixture checks |
+| `LANG-001` | Text-first YAML authoring | `✔️` | core parser; conformance 298/298 | Grammar catalog tidak generated | `relgeo/spec` | parser consumers | Drift vocabulary | Pertahankan parser/fixture checks |
 | `LANG-002` | Relational/deterministic semantics | `🌗` | spec core; checked vocabulary catalog; graph/resolver tests | Active relation-first vocabulary/drift boundary is frozen; negative no-solver boundary and full syntax map remain incomplete | `relgeo/spec` + `core` | graph, validator | False parity claim | Add contract/drift fixture coverage |
 | `DOC-001` | Root document sections | `✔️` | parser/validator; fixture 10 | Generated section schema absent | `relgeo/spec` | core parser | Section drift | Tambah section contract check |
 | `DOC-002` | Scene/unit/viewport configuration | `✔️` | scene/unit tests | Combination coverage terbatas | `relgeo/spec` + `core` | units, renderer | Viewport mismatch | Tambah scene conformance cases |

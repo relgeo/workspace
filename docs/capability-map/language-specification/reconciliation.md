@@ -1,6 +1,6 @@
 # Language Specification Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-10-30
+**Tanggal:** 2026-11-04
 **Join source expected:** [`language-specification/expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Join source observed:** [`language-specification/implementation-audit.md`](./implementation-audit.md)
 **Required context:** [`MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), [`REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md)
@@ -24,6 +24,48 @@ Contract handoff frozen for this tranche:
 These sources are the normative and checked contract handoff. The capability
 rows below remain an observed implementation/release view; they must not be
 promoted to `implemented` merely because the contract is now explicit.
+
+## 0. Contract and acceptance lock
+
+**Lock date:** 2026-11-04. This section turns the selected P0/P1 triage into
+observable acceptance boundaries before implementation work proceeds. It does
+not add vocabulary, alter public behavior, or promote any matrix status. The
+active public compatibility contract remains RelGeo DSL `0.5.x`, as recorded in
+[`docs/compatibility-matrix.json`](../../compatibility-matrix.json): active
+`0.5`, omitted version default `0.5`, supported legacy `0.4`, unsupported future
+versions, and patch-compatible changes staying on the same compatibility line.
+The normative source remains `spec/id`; the compatibility matrix is the release
+policy, not a second semantic source of truth.
+
+The acceptance records use the inventory protocol's four axes and evidence
+separation: implementation behavior, evidence tier/environment, parity result,
+and scope. Local commands or fixtures are implementation evidence only; they do
+not become CI, public, browser, native-host, or registry evidence by
+implication. An unavailable environment remains `not verified`, and a held
+promotion/scope decision remains `held`/deferred rather than being converted to
+an implementation failure.
+
+| Gap / selected IDs | Contract boundary and success behavior | Failure / edge behavior that must be explicit | Expected evidence before a status change |
+| --- | --- | --- | --- |
+| `GAP-001` — `LANG-002`, `DOC-003`, `TYPE-001`, `TYPE-002`, `VER-003` | Relation-first evaluation follows the dependency graph and produces deterministic results; the checked projection agrees with normative root fields, scalar/structured types, aliases, and document-status labels. Editorial vocabulary remains informative and does not introduce DSL fields. | Unknown/circular references and invalid typed expressions produce stable diagnostics; general constraint solving and statement-level control flow remain outside v0.5; vocabulary/catalog drift fails the check rather than silently changing a consumer. | `pnpm run language-spec:check`; core graph/resolver tests; negative no-solver/control-flow and drift fixtures; language-service schema/completion comparison. |
+| `GAP-002` — `DECL-001`, `DECL-004`, `EVAL-002` plus `TYPE-001` runtime coercion | Parameters accept declared defaults, shorthand, and supported structured values; the selected profile overrides parameters only; evaluation order is parameters → profiles → constants → derived; explicit units normalize to `scene.unit` and contextual unitless numbers follow the type contract. | Missing/invalid values, invalid unit syntax, incompatible coercion, or illegal arithmetic fail with the documented structured diagnostic; profiles cannot override constants or act as styling; fixture-16 promotion remains decision-gated until explicitly promoted. | Shared parameter/profile/unit fixture (fixture 16 or an approved replacement); core, CLI, language-service, and Flutter projections; `pnpm conformance:fixtures`; record the promotion decision separately from local pass/fail. |
+| `GAP-003` — `GEO-001`–`GEO-005` | Supported 2D primitives, modes, anchors, closed-shape/topology cases, and geometry operations resolve with stable identity and semantic geometry; resolved JSON/SVG assertions compare meaning, not renderer-specific bytes. | Degenerate or invalid geometry returns the applicable stable error; unsupported pairs/features are rejected; topology/boolean expansion beyond the approved v0.5 boundary is not inferred from a passing local fixture. | Geometry contract fixtures and package tests; core/renderer semantic snapshots; `pnpm conformance:fixtures`; explicit negative cases for degenerate, unsupported, and topology boundaries. |
+| `GAP-007` — `QUERY-002` | Path/transform queries return the normative typed result (`point`, `vector`, or `frame2d`) with the documented parameter domain, canonical intersection ordering, and tolerance policy; `toWorld`/`toLocal` preserve the coordinate-space contract. | Out-of-domain parameters, empty/multiple intersections without a selector, invalid selectors, unsupported pairs, non-finite/degenerate inputs, or unsupported targets produce the named diagnostic rather than a guessed result. | Query-domain/tolerance fixture table; `geometry/src/__tests__/intersection.test.ts` and focused query tests; core conformance and resolved-value assertions; consumer parity marked separately from local evidence. |
+| `GAP-008` — `CON-001`, `CON-002` | Constraints run after geometry resolution as validation only; supported equal/parallel/perpendicular/tangent/alignment checks emit stable violation payloads and do not mutate geometry or dependency graph. | Structural/reference errors remain hard failures; a failed post-resolve constraint yields `CONSTRAINT_VIOLATION`/documented violation behavior, not geometry repair or an implicit solver; conflicting constraints remain diagnosable. | One shared fixture per constraint kind; before/after resolved-scene comparison proving no mutation; core diagnostics plus CLI/language-service mapping and conformance evidence. |
+| `GAP-009` — `PRES-001`, `PRES-002` | Valid dimension and annotation objects preserve semantic text, role, identity, geometry, and placement through the renderer; supported presentation attributes are serialized according to the v0.5 presentation contract. | Hostile text/metadata is XML-escaped; unknown metadata is not raw markup; invalid presentation input is diagnosed or safely omitted according to the existing contract. No input may create element/attribute names, handlers, `<script>`, `<foreignObject>`, or executable URLs. | v0.5 hostile-input fixture; renderer security/dimension/annotation tests; local CLI and Markdown semantic snapshots; all-host/browser/native evidence remains a separate promotion gate. |
+| `GAP-011` — `DIAG-001`, `DIAG-002`, `ERR-001` | Every public parser/validator/resolver/core/CLI/language-service boundary exposes `{code, phase, severity, message}` plus stable optional path/object/range fields; `editor` may recover, while `validate`/`compile` remain strict and deterministic. | Raw `Error`, stack, or locale-dependent text cannot cross a public boundary; unknown internal codes map to `UNKNOWN_ERROR`; strict failures produce no compile output; constraint diagnostics remain post-resolve and non-mutating; diagnostic ordering is deterministic. | Raw-throw inventory; core structured-diagnostic tests; tolerant/validate/compile fixtures; CLI and language-service mapping tests; `pnpm conformance:fixtures`; canonical/host evidence reported separately. |
+| `GAP-013` — `SER-002` | SVG is a semantic projection on compatibility line 0.5: geometry, role, identity, and placement remain stable while safe text/attribute escaping is applied. Semantic comparison is required; byte-identical SVG is not. | Literal executable markup, event handlers, unsafe URLs, quote-breaking attributes, and `<foreignObject>` from input are forbidden; escaping must not silently delete the data or alter semantic geometry. | Renderer security and semantic-output fixtures; CLI/Markdown snapshots; conformance runner; browser/Playground/native-host parity remains `not verified` until independently run. |
+
+### Contract-change gate
+
+No public contract change is proposed by this lock. Any future change to the
+success/failure behavior above must first update its normative `spec/id` chapter
+and the matching acceptance fixture, then classify the compatibility impact
+against [`docs/compatibility-matrix.json`](../../compatibility-matrix.json):
+`patch-compatible` only for same-line compatible behavior; a breaking language
+contract requires a decision record and the next compatibility line (for
+example `0.6.x`). A package publish, deployment, or host-only evidence result
+cannot by itself alter the language contract.
 
 ## 1. Aturan rekonsiliasi
 
@@ -188,10 +230,10 @@ being silently joined as language capabilities.
 
 ## 5. Evidence and scope boundaries
 
-- Local results: conformance `260/260`, core `427/427`, language-service `66/66`,
-  CLI `9/9`, Playground `93/93`, website check `0 errors/0 warnings/0 hints`,
-  Playground build, website build `138 pages`, and Flutter `302` tests. Node
-  commands emitted a Node `22.23.2` versus required `>=24` warning.
+- Current local results: conformance `298/298`, core `469/469`, language-service
+  `82/82`, CLI `36/36`, Playground `104/104`, website build `138 pages`, and
+  Flutter `302` tests. Node commands emitted a Node `22.23.2` versus required
+  `>=24` warning.
 - Local results are not promoted to canonical CI, registry, public Pages,
   browser E2E, native/device Flutter, or MCP transport/runtime evidence. MCP
   test execution was environment-blocked by Dart/package/host-write failures.

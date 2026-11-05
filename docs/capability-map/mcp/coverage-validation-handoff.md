@@ -1,13 +1,22 @@
 # RelGeo MCP — Coverage Validation and Implementation Handoff
 
-**Date:** 2026-10-31
+**Date:** 2026-11-05
 **Validation target:** MCP agent authoring and desktop-connected workflow
 **Validation status:** 68 expected rows are joined to current MCP/Flutter
-implementation evidence; full-spec retrieval, desktop loopback HTTP, and
-opt-in document editing are implemented. Live edit interoperability and
-packaged-app MCP smoke remain unverified.
+implementation evidence; the pure-Dart contract/fixture suite and selected
+offline, bridge, and HTTP consumer tests pass. Live client interoperability,
+loopback socket execution in this managed runner, and packaged-app MCP smoke
+remain unverified or environment-gated.
 
-> **Current-checkout handoff (2026-10-31):** MCP `b4561c0` and Flutter
+> **Verification run (2026-11-05):** 44 MCP Dart tests and Dart analysis pass.
+> The dependency-free stdio fixture and remote-bind guard pass. Flutter's
+> offline snapshot loader, Workbench bridge, and MCP HTTP integration test pass
+> with the checked-in bundle. The full transport harness reaches the HTTP
+> phase but cannot bind `127.0.0.1` in this managed runner (`Operation not
+> permitted`, exit 2); this is recorded as environment-gated, not a parity
+> failure.
+
+> **Historical checkout handoff (2026-10-31):** MCP `b4561c0` and Flutter
 > `60ec760` provide full-spec retrieval, bundled offline corpus, loopback
 > HTTP, active-document tools/resources, lifecycle controls, and permission-
 > gated bounded edits. MCP/Flutter integration tests cover those paths; Flutter
@@ -51,7 +60,7 @@ silently converted into either implementation or failure.
 | Flutter document/session/editor bridge | `flutter/lib/src/mcp/`, `flutter/lib/src/ui/cad_workbench.dart`, document session, editor controller, file service | Active snapshot, revision/identity, bounded apply, dirty state, undo, token scope, server lifecycle, dialog configuration, and save isolation are covered by source/tests. | Connected-client status and packaged-app interaction remain unverified. |
 | UI/routes/menus/commands | `flutter/lib/src/ui/cad_workbench.dart`, Workbench command/menu and MCP dialog | Workbench MCP dialog exposes permission selection, endpoint/token, copy configuration, Enable and Disable. | Native dialog smoke and connected-client count/status remain open. |
 | Configuration and platform services | `mcp/pubspec.yaml`, `flutter/pubspec.yaml`, `flutter/lib/src/mcp/`, `flutter/lib/src/ui/cad_workbench.dart`, window-host/platform-channel files, CI workflow files | Path dependency, embedded server host, file/save separation, host lifecycle, and CI configuration were inspected. | Packaged app/client configuration still needs manual smoke. |
-| Tests and fixtures | `mcp/test/*.dart`, `flutter/test/mcp_server_io_test.dart`, Flutter CI | 32 MCP Dart tests and Flutter HTTP integration tests cover retrieval, loopback, auth scopes, resource/tool calls, stale/applied edits, dirty state and undo; Flutter CI passed on `60ec760`. | Live ChatGPT Desktop edit and release-bundle MCP smoke are not verified. |
+| Tests and fixtures | `mcp/test/*.dart`, `flutter/test/mcp_server_io_test.dart`, Flutter CI | 44 MCP Dart tests plus selected Flutter snapshot, bridge, and HTTP integration tests cover retrieval, loopback, auth scopes, resource/tool calls, stale/applied edits, dirty state and undo; historical Flutter CI remains scoped to its recorded revision. | Live ChatGPT Desktop edit and release-bundle MCP smoke are not verified. |
 | Runtime and environment evidence | MCP Dart suite, Flutter HTTP integration suite, Flutter CI/release runs | Current source tests, CI `41184291670`, and draft release workflow `41184693233` are recorded in audit §5. | Live client/Inspector, cross-host validation, and packaged MCP runtime proof remain open. |
 | Requirements and operational documentation | `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, `docs/capability-map/README.md`, `docs/capability-map/INVENTORY-PROTOCOL.md`, `docs/mcp/01-04`, `docs/plans/01-cross-repo-integration-gate.md`, `mcp/README.md` | Ownership, evidence discipline, contract, security, transport, conformance, and delivery requirements were checked. | Documentation confirms requirements and limitations; it does not close implementation gaps. |
 
@@ -89,17 +98,17 @@ the complete 68-row catalog.
 | Catalog → current audit | `PASS: 68/68` | Zero missing, extra, or duplicate IDs; audit §2 snapshot/coverage plus the reconciliation and matrix row join. |
 | Catalog → reconciliation | `PASS: 68/68` | One row per expected ID; `mcp/reconciliation.md` §1–§2. |
 | Reconciliation → actionable matrix | `PASS: 68/68` | Matrix contains 68 user-meaningful rows with required action columns. |
-| Active gap → backlog | `PASS: 34/34` | 24 `🌗` + 10 `❌` + 0 `⚠️` assigned once to `MCP-T01`–`MCP-T11`. |
+| Active gap → backlog | `PASS: 23/23` | 20 `🌗` + 3 `❌` + 0 `⚠️` implementation/evidence rows assigned once to `MCP-T01`–`MCP-T11`; 2 deferred rows remain separate. |
 | Deferred rows retained | `PASS: 2` | `WF-02` and `DEL-01` remain `⏸️` decision-gated follow-ups, not silently removed. |
-| Implemented rows retained | `PASS: 32` | `✔️` rows remain in reconciliation and matrix; they are not counted as active gap tasks. |
+| Implemented rows retained | `PASS: 43` | `✔️` rows remain in reconciliation and matrix; they are not counted as active gap tasks. |
 | Required status vocabulary | `PASS` | Matrix uses only `✔️`, `🌗`, `❌`, `⚠️`, and `⏸️` for in-scope rows; evidence state is separate. |
 | Documentation-only boundary | `PASS` | Catalog, audit, matrix, backlog, runbooks, and this handoff are explicitly not implementation evidence. |
 | Required context links | `PASS` | MCP, integrated consumers, `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, and `docs/capability-map` are linked or named above. |
 
 ## 5. Current result and evidence limitations
 
-The current matrix distribution is 32 `✔️`, 24 `🌗`, 10 `❌`, 0 `⚠️`, and 2
-`⏸️`. Evidence state remains independent: three rows are `not-verified`; no
+The current matrix distribution is 43 `✔️`, 20 `🌗`, 3 `❌`, 0 `⚠️`, and 2
+`⏸️`. Evidence state remains independent: four rows are `not-verified`; no
 current row is marked `environment-unavailable`. Local, absence, and scope
 evidence are recorded separately in the audit and matrix.
 
@@ -111,12 +120,33 @@ The following limitations remain open and are not inferred failures:
 2. No live Inspector run against the current server has been recorded;
    `DEL-03` remains `not-verified` for client interoperability.
 3. Cross-host deterministic validation and cancellation/stop race evidence are
-   missing; `VAL-03` and `CXL-02` remain `not-verified`.
+   missing; `VAL-03`, `CXL-02`, and `DEL-04` remain `not-verified`.
 4. Flutter CI `41184291670` built/tests all three platforms, and release workflow
    `41184693233` created v1.0.1 draft artifacts with verified checksums. Runtime
    MCP smoke from those packaged apps has not been done.
 5. `docs/integration-baseline.json` still has its 2026-10-09 child pointers;
    current child commits are not covered by a refreshed root integration run.
+
+### 5.1 Current behavior verification (2026-11-05)
+
+These are the exact commands run against the current checkout. The command
+paths are absolute to make the evidence reproducible in the managed runner;
+the equivalent relative commands are shown elsewhere in this handoff.
+
+| Command | Result | Evidence boundary |
+| --- | --- | --- |
+| `cd /Users/agusmade/projects/relgeo-workspace/mcp && /Users/agusmade/development/flutter/bin/cache/dart-sdk/bin/dart --suppress-analytics test` | **PASS** — 44 tests | Pure-Dart schema, serialization/provenance, dispatcher, ranking, completion bounds, document/session, cancellation, and regression coverage. |
+| `cd /Users/agusmade/projects/relgeo-workspace/mcp && /Users/agusmade/development/flutter/bin/cache/dart-sdk/bin/dart --suppress-analytics analyze` | **PASS** — no issues | Dart static analysis for the MCP package. |
+| `cd /Users/agusmade/projects/relgeo-workspace/mcp && /Users/agusmade/development/flutter/bin/cache/dart-sdk/bin/dart --suppress-analytics run tool/run_transport_conformance.dart --stdio-only` | **PASS** | Protocol fixture over stdio, invalid-argument handling, and remote-bind guard. |
+| `cd /Users/agusmade/projects/relgeo-workspace/mcp && /Users/agusmade/development/flutter/bin/cache/dart-sdk/bin/dart --suppress-analytics run tool/run_transport_conformance.dart` | **ENVIRONMENT-GATED** — exit 2 | Stdio and remote-bind checks pass; HTTP fixture cannot bind `127.0.0.1` (`SocketException: Operation not permitted`). |
+| `cd /Users/agusmade/projects/relgeo-workspace/flutter && /Users/agusmade/development/flutter/bin/flutter test --no-pub test/spec_snapshot_loader_test.dart` | **PASS** — 6 tests | Offline bundled snapshot retrieval, manifest/path safety, bilingual intent, no-result behavior, section bounds, and provenance. |
+| `cd /Users/agusmade/projects/relgeo-workspace/flutter && /Users/agusmade/development/flutter/bin/flutter test --no-pub test/workbench_agent_bridge_test.dart` | **PASS** — 3 tests | Flutter bridge revision guard, undoable edit transaction, and document identity reset. |
+| `cd /Users/agusmade/projects/relgeo-workspace/flutter && /Users/agusmade/development/flutter/bin/flutter test --no-pub test/mcp_server_io_test.dart` | **PASS** — 1 test | Desktop MCP HTTP consumer boundary: bearer auth, protocol metadata, origin guard, read-only denial, stale revision, and applied undoable edit. |
+
+The HTTP integration test retains an explicit missing post-initialize
+`MCP-Protocol-Version` rejection assertion. Valid requests in the same fixture
+now send the negotiated header, matching the transport contract; no server
+security check was relaxed.
 
 ## 6. Unresolved questions
 
@@ -184,7 +214,7 @@ candidate task complete until its acceptance evidence is directly available.
 | Flutter child | `60ec76042b369659e4d048b2a53ea3a66a384de3` |
 | Flutter quality/build CI | [run `41184291670`](https://github.com/relgeo/flutter/actions/runs/41184291670), success |
 | Desktop release workflow | [run `41184693233`](https://github.com/relgeo/flutter/actions/runs/41184693233), draft v1.0.1 |
-| MCP test evidence | 32 Dart tests plus Flutter loopback HTTP integration coverage, recorded in current audit |
+| MCP test evidence | 44 Dart tests plus offline snapshot, bridge, and Flutter loopback HTTP integration coverage, recorded in current audit |
 | Human client evidence | Read-only MCP/spec usage observed in ChatGPT Desktop; new write/edit flow still pending |
 
 The current source, tests, and artifact claims are child-revision scoped. They do

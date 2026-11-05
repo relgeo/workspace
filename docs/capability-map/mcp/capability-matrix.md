@@ -4,7 +4,7 @@
 **Observed evidence:** [current implementation audit](./implementation-audit.md)
 **Reconciliation:** [expected-versus-observed register](./reconciliation.md)
 **Scope:** RelGeo agent authoring and desktop-connected MCP workflow, DSL `0.5.x`
-**Matrix date:** 2026-11-03
+**Matrix date:** 2026-11-05
 
 ## Reading this matrix
 
@@ -14,7 +14,7 @@ local, absent, defective, deferred, or environment-limited the observation is.
 Contract, documentation, fixture, or host-boundary evidence is not promoted to
 production delivery evidence.
 
-> **Current evidence note (2026-11-03):** This 68-row matrix includes the
+> **Current evidence note (2026-11-05):** This 68-row matrix includes the
 > post-full-spec pure-Dart adapter slice: bounded examples, completion,
 > validation, diagnostics, explanation, render, diagnostic-catalog/cache,
 > workflow, review, and cancellation contracts. Local MCP tests cover these
@@ -22,7 +22,10 @@ production delivery evidence.
 > guarded edit, stop/revoke, disconnect, permission, and safe-token paths where
 > the managed runner permits them. Core/language-service/renderer production
 > composition, packaged MCP smoke, and live Inspector/client interoperability
-> remain explicitly unverified or unresolved below.
+> remain explicitly unverified or unresolved below. The current consumer
+> refresh also passes MCP package analysis/tests and the selected Flutter
+> snapshot, bridge, and HTTP integration tests; CI/public/Inspector/packaged
+> host evidence remains separate.
 
 | Status | Meaning |
 | --- | --- |
@@ -33,7 +36,7 @@ production delivery evidence.
 | `⏸️` | Intentionally roadmap- or decision-gated; the expected row remains. |
 | `➖` | Not applicable only where the boundary is explicitly out of scope. |
 
-The matrix contains 68 expected rows: 43 `✔️`, 19 `🌗`, 4 `❌`, 2 `⏸️`, and
+The matrix contains 68 expected rows: 43 `✔️`, 20 `🌗`, 3 `❌`, 2 `⏸️`, and
 0 `⚠️`. Four `🌗` rows have `not-verified` evidence; no current row is marked
 `environment-unavailable`. Source ownership and integration boundaries
 come from `mcp/`, `spec/id/`, `core/`, `language-service/`, `renderer-svg/`,
@@ -49,7 +52,7 @@ come from `mcp/`, `spec/id/`, `core/`, `language-service/`, `renderer-svg/`,
 | `REF-01` | List and read normative spec index/rules by `ruleId`. | `✔️` | `verified-local` | Search result section IDs resolve to complete normative Markdown sections; spec index/section resources are exposed. | MCP resource layer | Diagnostics catalog and remote cache are separate gaps. | Bundled spec index and resource bridge. | Keep full-section retrieval, URI allowlist, and auth tests. |
 | `REF-02` | Request one targeted syntax rule without a spec dump. | `✔️` | `verified-local` | `relgeo_get_syntax_rule` resolves a requested rule ID from the full spec index with provenance. | MCP tool + `spec/id` | Only the bundled normative corpus is supported. | Spec index, syntax rules, and provenance metadata. | Keep exact rule lookup and provenance tests. |
 | `EX-01` | Find or retrieve a relevant explanatory example. | `✔️` | `verified-local` | Typed `getExamples` owner callback, bounded query/exampleId/maxResults, example provenance, and desktop fixture examples. | MCP adapter + examples owner | The checked-in desktop examples remain a small illustrative catalog. | Versioned examples source. | Keep bounded owner fixture and provenance checks. |
-| `EX-02` | Select a small, valid, bounded example for the intent. | `❌` | `verified-absence` | No ranking, minimal-example policy, or fixture | MCP authoring owner | No ranking/minimal-example policy implementation. | Example catalog, validation. | Define and implement minimal-example selection. |
+| `EX-02` | Select a small, valid, bounded example for the intent. | `🌗` | `verified-local` | Deterministic relevance/minimal-source ranking and bounded output are implemented; semantic validity and a production examples catalog remain owner boundaries. | MCP workflow + examples owner | Owner validity and production catalog are not wired into the adapter. | Example catalog, validation. | Keep ranking/provenance tests; connect owner validity/catalog when available. |
 
 ## Completion, validation, diagnostics, and workflow
 

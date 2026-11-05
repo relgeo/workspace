@@ -50,6 +50,24 @@ selection/close behavior. Existing selected `🌗` rows remain partial unless
 their full acceptance contract is separately satisfied; no `➖` or `⏸️` item was
 activated by this tranche.
 
+## Implementation refresh — 2026-11-05
+
+Two source-level acceptance slices were implemented without changing the
+public DSL/API or compatibility line:
+
+| Capability | Source change | Direct evidence | Honest result |
+|---|---|---|---|
+| `CANVAS-04` | `WorkbenchParameterSpec.accepts` now rejects non-finite, unknown, invalid-bound, and out-of-range overrides; `WorkbenchDocumentController` sanitizes initial, profile, and programmatic overrides before exposing them to recompilation. | `flutter/test/workbench_document_settings_test.dart`; `flutter/test/workbench_document_controller_test.dart`; focused run: 12 controller/settings tests passed. | **Partial implementation strengthened**: the editor envelope is bounded; full evaluator/profile parity remains open. |
+| `IO-02` | `FilePickerWorkbenchFileService.openDocumentAtPath` now rejects unsupported recent-file extensions before reading; `.relgeo`, `.yaml`, and `.yml` remain the active import boundary. | `flutter/test/workbench_file_service_test.dart`; focused file-service run: 5 tests passed. | **Partial implementation strengthened**: unsupported recent imports are a no-op; native picker and broader diagnostic promotion remain unverified. |
+| `EDIT-04` / `CONTRACT-01` | Flutter `ConstraintViolation` now carries the Core/Geometry diagnostic metadata (`severity`, `origin`, `expected`, `actual`); constraint processing decorates every violation with the active `error`/`constraint` contract and the `0.001` tolerance. | `flutter/test/constraints_diagnostics_test.dart`; `flutter/test/shared_v05_conformance_test.dart`; targeted run: 5 tests passed. | **Partial implementation strengthened**: current-pointer diagnostic projection now matches the active shared fixture; broader diagnostic vocabulary and all-consumer promotion remain open. |
+
+Validation at the current child checkout: `flutter analyze --no-pub` passed with
+no issues; the focused controller/settings/file-service run passed 17 tests and
+the diagnostic/shared-conformance run passed 5 tests.
+`dart format` could not run because the managed Flutter SDK attempted to write
+`flutter/bin/cache/engine.stamp` and received `Operation not permitted`; this
+is an environment limitation and not treated as a source failure.
+
 ## Audit metadata
 
 | Field | Value |

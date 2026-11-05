@@ -6,12 +6,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   BLOCKER_CLASSES,
+  DECISION_STATES,
   DEPENDENCY_STATUSES,
   createEvidenceEnvelope,
+  evaluateDecisionGate,
   runWithBoundedAttemptsSync,
 } from "./orchestration-contract.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const preflightSource = fs.readFileSync(path.join(root, "scripts", "run-release-preflight.mjs"), "utf8");
+assert.match(preflightSource, /evaluateDecisionGate/);
+assert.match(preflightSource, /release decision record approval/);
 
 const sleeps = [];
 let transientAttempts = 0;
@@ -96,6 +101,27 @@ assert.deepEqual(BLOCKER_CLASSES, [
   "pending-human-decision",
 ]);
 assert.deepEqual(DEPENDENCY_STATUSES, ["ready", "blocked", "not-run", "none"]);
+assert.deepEqual(DECISION_STATES, ["not-required", "approved", "pending", "rejected", "stale"]);
+
+assert.deepEqual(evaluateDecisionGate({ required: true, status: "approved" }), {
+  allowed: true,
+  decisionState: "approved",
+  dependencyStatus: "ready",
+  decisionRequired: false,
+  decisionNeeded: false,
+  blockerClass: null,
+  retryable: false,
+});
+for (const status of ["not-required", "pending", "rejected", "stale"]) {
+  const decision = evaluateDecisionGate({ required: true, status });
+  assert.equal(decision.allowed, false);
+  assert.equal(decision.decisionState, status);
+  assert.equal(decision.dependencyStatus, "blocked");
+  assert.equal(decision.blockerClass, "pending-human-decision");
+  assert.equal(decision.retryable, false);
+  assert.equal(decision.decisionRequired, true);
+  assert.equal(decision.decisionNeeded, true);
+}
 
 const syncWorkflow = fs.readFileSync(
   path.join(root, ".github", "workflows", "sync-validated-submodule-after-ci.yml"),

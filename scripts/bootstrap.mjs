@@ -6,6 +6,7 @@ import process from "node:process";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createEvidenceEnvelope, classifyFailure } from "./orchestration-contract.mjs";
+import { inspectPublicEntries } from "./public-boundary.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const requiredNodeMajor = 24;
@@ -136,8 +137,27 @@ const report = {
   currentHistoricalRule: "Only this report's exact root/child revisions are current; later checkout changes make it historical.",
 };
 
+const publicBoundary = inspectPublicEntries(
+  [{ path: "bootstrap-report.json" }],
+  { contents: [{ path: "bootstrap-report.json", content: JSON.stringify(report) }] },
+);
+steps.push({
+  id: "public-boundary:report",
+  command: "public-boundary-v1",
+  passed: publicBoundary.passed,
+  exitCode: publicBoundary.passed ? 0 : 1,
+  ...(publicBoundary.passed ? {} : {
+    blocker: classifyFailure({ blockerClass: "target-defect" }),
+  }),
+});
+report.publicBoundary = publicBoundary;
+if (!publicBoundary.passed) {
+  report.outcome = "failed";
+  report.limitations.push("public boundary scan rejected the generated bootstrap report");
+}
+
 fs.mkdirSync(path.dirname(reportPath), { recursive: true });
 fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n");
 console.log(`Bootstrap ${report.outcome}: ${submodules.length} submodule(s) reported`);
 console.log("Report written; its evidence omits the local report path.");
-process.exitCode = passed ? 0 : toolchainReady ? 1 : 2;
+process.exitCode = report.outcome === "passed" ? 0 : toolchainReady ? 1 : 2;

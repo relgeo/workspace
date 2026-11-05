@@ -6,8 +6,75 @@
 
 **Observed source:** [Renderer-SVG implementation audit](./implementation-audit.md)
 
+**Status view:** [Renderer-SVG status matrix](./status-matrix.md)
+
 **Compatibility line:** RelGeo DSL `0.5.x`
 **Status:** join selesai; setiap expected ID memiliki tepat satu hasil rekonsiliasi
+
+## 0. Contract and acceptance lock
+
+**Lock date:** 2026-11-04. This section freezes the implementation boundary
+for the six renderer-local P0/P1 rows selected by the triage. It is an
+acceptance contract, not an implementation claim and not a public API change.
+The shared `GAP-009` and `GAP-013` rows consume the same presentation and safe
+serialization rules below; `SVG-INTEG-002` remains browser/consumer evidence
+only.
+
+The active compatibility source is
+[`docs/compatibility-matrix.json`](../../compatibility-matrix.json): contract
+line `0.5`, public package family `0.5.x`, active parser version `0.5`, and
+renderer release order after `core`. The inventory rules in
+[`INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) remain binding: status,
+evidence, parity, and scope are separate axes; local evidence cannot be
+promoted to CI/public evidence; and `not verified` is not a target failure.
+No public option, semantic schema field, error code, or compatibility version
+may change under this lock without first updating its normative source of truth
+and the focused acceptance fixture.
+
+| Selected ID | Owner / normative source of truth | Success behavior | Failure / edge behavior | Acceptance evidence expected |
+| --- | --- | --- | --- | --- |
+| `SVG-SCENE-003` | `relgeo/renderer-svg` with CLI/Playground context owners; `spec/id/presentation/25-views-sheets.md`, catalog §2.2, `renderer-svg/src/types.ts` and `index.ts` | Default and physical render contexts emit valid root `width`/`height`, `viewBox`, and `preserveAspectRatio`; changing context never changes semantic object identity, order, or geometry. | Invalid numeric render options fail with `SVGRenderError(INVALID_RENDER_OPTIONS)`; empty/zero-size scene fallback stays valid and deterministic; non-px physical conversion is explicit and does not mutate `ResolvedScene`. Browser print/layout remains host-owned. | Focused renderer sizing/origin/physical tests, active v0.5 fixture 10, semantic projection comparison, and shared conformance. |
+| `SVG-STYLE-002` | `relgeo/renderer-svg`; `spec/id/presentation/22-dimension.md`, `23-annotation.md`, Decision 08 §11, `renderer-svg/src/escape.ts` and `utils.ts` | Text, arrows, multiline labels, fallback font/size/baseline, and dynamic style attributes serialize deterministically at the renderer boundary. | Omitted presentation values use bounded fallback; hostile text/font/fill/metadata remain escaped content or attribute values and cannot create `<script>`, `foreignObject`, or `on*` attributes. Exact font metrics/wrapping are not cross-runtime contract. | `security.test.ts`, presentation-escaping fixture, renderer suite, no-executable-markup assertions, and semantic projection invariants. |
+| `SVG-DIM-001` | `relgeo/renderer-svg` + core dimension owner; `spec/id/presentation/22-dimension.md`, `renderer-svg/src/primitives.ts`, fixture `v05-presentation-escaping` | Linear, radius, diameter, and angular dimensions preserve resolved kind, target references, endpoints/values, extension/leader placement, label order, and default `dimension` role without changing model geometry. | Missing optional placement uses stable renderer fallback; hostile label/font/fill values are escaped; style or wording changes cannot alter semantic measurement. Resolver meaning and measurement are never recomputed by renderer. | Dimension-kind renderer tests, semantic projection assertions, hostile-input fixture, conformance, and local CLI/Markdown snapshots where available. |
+| `SVG-ANNOT-001` | `relgeo/renderer-svg` + Playground consumer; `spec/id/presentation/23-annotation.md`, `renderer-svg/src/primitives.ts`, fixtures 02/06 and presentation-escaping fixture | Target-only, placed, leader, and multiline annotations preserve target/leader endpoints, placement, line order, and annotation-layer semantics while leaving geometry unchanged. | Missing placement gets stable target-based fallback; hostile text/font/fill values remain escaped and cannot add executable SVG nodes/attributes. DOM mounting and exact metrics remain consumer/runtime boundaries. | Annotation renderer tests, semantic projection checks, fixtures 02/06 and hostile-input fixture, no-executable-markup assertions; browser smoke is separate. |
+| `SVG-SHEET-001` | `relgeo/renderer-svg` + core/CLI; `spec/id/presentation/25-views-sheets.md`, renderer `renderSheet`, fixtures 02/03/09 | An active v0.5 sheet emits page background/border, selected view placement and scale, title block, standard/custom dimensions, and stable SVG sizing without mutating resolved model geometry. | Unknown `sheetId` fails with `MISSING_SHEET`; a sheet placement referencing a missing view fails with `MISSING_VIEW`; invalid sheet structure remains an upstream core diagnostic. No silent skip or model fallback is allowed. | Active v0.5 sheet fixture plus renderer and CLI selected-sheet/negative tests; legacy fixtures remain historical evidence until promoted. |
+| `SVG-DET-001` | `relgeo/renderer-svg` + core/parity; `spec/id/core/05-semantic-guarantees.md` §5.7, `spec/id/geometry/19-collections.md`, `renderer-svg/src/semantic.ts`, fixture manifest `semanticSerialization` | Public projection uses schema `relgeo.svg-semantic`, schema version `1`, compatibility line `0.5`, tolerance `1e-6`, stable object order/IDs/kinds/topology/endpoints, and normalized finite numbers. Repeated local replay yields equal semantic output. | Non-finite semantic numbers fail canonical serialization; array semantic order is preserved; raw SVG byte/whitespace/attribute-order/font equality is explicitly not acceptance criteria. Node >=24, Flutter, and cross-host runs remain separate evidence. | `semantic_projection.test.ts`, active fixture 10 JSON/projection replay, conformance, and a repeated-process comparator over the locked fields. |
+
+## 0.1 Consumer and artifact boundary verification — 2026-11-04
+
+The current worktree was checked across the downstream boundaries named by the
+integration gate. Results below are local evidence only; historical CI/public
+records are not reused as current-pointer evidence.
+
+| Boundary | Command / artifact | Result | Evidence classification and limit |
+| --- | --- | --- | --- |
+| Renderer package | `npm pack --dry-run --json` in `renderer-svg/` | PASS — `@relgeo/renderer-svg@0.5.0`, 9 files | Local pack boundary; registry install/public release not verified |
+| CLI consumer | `pnpm --filter @relgeo/cli test` | PASS — 36 tests | Local downstream consumer evidence |
+| Markdown consumers | `pnpm --filter @relgeo/remark-relgeo test`; `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 9 and 6 tests | Local preview/highlighting evidence |
+| Playground consumer | `pnpm --filter relgeo-playground test`; `pnpm --filter relgeo-playground build` | PASS — 104 tests and production build | Local worker/build evidence; browser E2E remains unavailable because preview-server bind returned `EPERM` |
+| Shared fixture boundary | `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | Local fixture, serialization/provenance, CLI, Markdown, and preview evidence |
+| Website artifact | `pnpm run check`, `pnpm run build`, `pnpm run test` in `relgeo.github.io/` | PASS — 0 Astro diagnostics; 138 pages built; built-output assertions passed | Local docs artifact; deployed/public smoke not verified |
+| Cross-repo integration runner | `pnpm run integration:gate -- --local` | ENVIRONMENT UNAVAILABLE — exit 2 before stages because host Node is 22.23.2 and runner requires Node >=24 | Does not establish consumer parity failure; canonical CI evidence remains tied to its recorded revision |
+
+The renderer, CLI, Playground, Markdown, fixture, and website checks do not
+show a downstream consumer regression in the selected local scope. Public
+registry, fresh isolated install, canonical CI, browser, and native/Flutter
+boundaries remain separate evidence classes.
+
+### Shared presentation and serialization mappings
+
+`GAP-009` is satisfied at the renderer boundary only when the dimension and
+annotation rows above preserve both semantic placement and escaped dynamic
+presentation values. `GAP-013` is satisfied at the renderer boundary only when
+the safe serialization assertions cover every dynamic text/style/metadata path
+that enters SVG. These mappings do not promote the language-specification rows
+or close Playground/browser/public evidence by documentation alone.
+
+The lock intentionally preserves the existing public surface: `RenderOptions`,
+`SVGRenderErrorCode`, and `SVGSemanticProjection` remain unchanged. Any future
+field, error-code, or tolerance change must update the referenced `spec/id/`
+source, compatibility review, fixture expectation, and the corresponding
+renderer tests before implementation is considered valid.
 
 ## 1. Tujuan dan aturan join
 
@@ -91,7 +158,7 @@ expected row.
 | `SVG-STYLE-002` | Text, font, arrow, multiline, and annotation presentation fallback. | `🌗 partial` | `partial` | `verified-local` | Typography/fallbacks are exercised safely; exact metrics and cross-runtime typography remain surface-specific. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-META-001` | Inspection-safe projection of selected resolved metadata. | `✔️ implemented` | `implemented` | `verified-local` | Role/intent/preset/label map to data attributes; promotion remains boundary-only. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-META-002` | Metadata remains non-authoritative for geometry and identity. | `✔️ implemented` | `implemented` | `partial-local` | Metadata is downstream by design; no dedicated mutation/snapshot invariant test. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
-| `SVG-DIM-001` | Linear, radius, diameter, and angular dimension projection. | `🌗 partial` | `partial` | `verified-local` | Dimension kinds, endpoints/measurements, semantic placement, and hostile presentation escaping are covered by the 90-test renderer suite; typography and exhaustive consumer placement remain partial. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
+| `SVG-DIM-001` | Linear, radius, diameter, and angular dimension projection. | `🌗 partial` | `partial` | `verified-local` | Dimension kinds, endpoints/measurements, semantic placement, and hostile presentation escaping are covered by the 95-test renderer suite; typography and exhaustive consumer placement remain partial. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-ANNOT-001` | Target, leader, placement, multiline, and fallback annotation projection. | `🌗 partial` | `partial` | `verified-local` | Annotation target/leader/placement projection and hostile presentation escaping are covered by semantic/output tests; exact metrics and broader consumer evidence remain partial. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-SHEET-001` | Page border, view placement/scale, title block, and sheet sizing. | `🌗 partial` | `partial` | `partial-local` | Sheet layout works, but most direct evidence is legacy 0.4. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-SHEET-002` | Missing/unknown sheet and view selection fails explicitly. | `✔️ implemented` | `implemented` | `verified-local` | Typed missing-sheet/view failures replace model fallback and silent view skips; renderer and CLI regressions pass. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
@@ -100,11 +167,19 @@ expected row.
 | `SVG-SEC-001` | XML/text/attribute escaping prevents executable SVG markup. | `✔️ implemented` | `implemented` | `verified-local` | Current renderer worktree escapes dynamic dimension/annotation font/fill and hostile text/metadata values; browser E2E remains unverified. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-EXPORT-001` | SVG string export for stdout, files, docs, and lightweight web embedding. | `✔️ implemented` | `implemented` | `partial-local` | SVG string/build/tarball work locally; registry/public artifact is unverified. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-INTEG-001` | CLI compile-to-SVG and selected-sheet renderer boundary. | `✔️ implemented` | `implemented` | `verified-local` | CLI formats/options/sheet flow are tested and covered by conformance. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
-| `SVG-INTEG-002` | Playground worker → renderer → browser DOM preview and inspection hooks. | `🌗 partial` | `partial` | `partial-local; browser not-verified` | Worker/DOM/sheet/overlay wiring is covered by 102 Playground tests, build, and UX audit; Playwright could not start the preview server because binding `127.0.0.1:4173` returned `EPERM`. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
+| `SVG-INTEG-002` | Playground worker → renderer → browser DOM preview and inspection hooks. | `🌗 partial` | `partial` | `partial-local; browser not-verified` | Worker/DOM/sheet/overlay wiring is covered by 104 Playground tests and build; Playwright could not start the preview server because binding `127.0.0.1:4173` returned `EPERM`. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-INTEG-003` | Shared fixture/conformance participation across active, legacy, invalid, diagnostic, and capability cases. | `✔️ implemented` | `implemented` | `verified-local` | Root conformance covers 298 checks across all declared statuses and 23 fixtures. | `in scope` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 | `SVG-INTEG-004` | Renderer-owned semantic projection anchors for parity comparators. | `✔️ implemented` | `implemented` | `verified-local` | Public typed projection exposes schema/version, order/identity/kind, endpoints, segments, rings/holes, normalized geometry, transforms, and tolerance; cross-consumer comparator execution remains separate. | `boundary only` | [audit ID row](./implementation-audit.md#expected-catalog-id-join--current-audit) |
 
 ## 4. Findings and downstream handoff
+
+The 2026-11-04 P0/P1 implementation-closability decision is recorded in the
+[backlog triage register](./implementation-gap-backlog.md#p0p1-implementation-closability-triage)
+and summarized in the [status-matrix handoff](./status-matrix.md#p0p1-triage-handoff).
+The six open renderer-local rows are `SVG-SCENE-003`, `SVG-STYLE-002`,
+`SVG-DIM-001`, `SVG-ANNOT-001`, `SVG-SHEET-001`, and `SVG-DET-001`.
+`SVG-INTEG-002` remains browser/consumer evidence only; local fixed rows remain
+regression handoffs. This selection does not promote any reconciliation status.
 
 Confirmed implementation gaps remain explicit in the join:
 
@@ -118,8 +193,8 @@ Confirmed implementation gaps remain explicit in the join:
   hostile-value tests/conformance pass. Playground still inserts SVG through
   `dangerouslySetInnerHTML`, so browser E2E remains unverified.
 
-The current local evidence is 90/90 renderer tests, 298/298 conformance checks,
-and 102/102 Playground unit tests plus production build and UX audit. Browser
+The current local evidence is 95/95 renderer tests, 298/298 conformance checks,
+and 104/104 Playground unit tests plus production build. Browser
 E2E is explicitly `not-verified` because the permitted Playwright run could not
 bind `127.0.0.1:4173` (`EPERM`). The remaining `🌗` rows are partial implementation or evidence/consumer
 coverage, not absent capability. Browser E2E, Node >=24, registry/public

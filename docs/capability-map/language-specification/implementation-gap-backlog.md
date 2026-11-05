@@ -39,6 +39,12 @@ remain visible but are not active work in this tranche. A selected row may
 address several capability IDs, and its status is reported from the matrix
 using the status symbols below rather than being promoted by selection.
 
+The P0/P1 triage below is a wider execution handoff than that bounded tranche.
+It identifies every P0/P1 candidate that is implementation-closable in the
+current checkout, even when its work is queued behind another local dependency.
+It does not promote a matrix status, require a package release/deployment, or
+turn external-host evidence into an implementation prerequisite.
+
 ## Candidate goals/tasks
 
 | ID | Priority | Candidate goal/task | Capability IDs | Scope / work type | Owner | Dependency | Acceptance test / evidence target | Risk | Next action |
@@ -56,6 +62,40 @@ using the status symbols below rather than being promoted by selection.
 | `GAP-011` | `P0` | Normalize diagnostic/error model across runtime and consumers | `DIAG-001`, `DIAG-002`, `ERR-001` | Confirmed runtime contract defect + consumer mappings | `relgeo/core` + `language-service` + `cli` | GAP-001; parser/resolver mode contract | Resolver/validator entry points normalize uncategorized errors and focused fixtures pass; no raw errors at every public boundary and complete LS/CLI mapping remain outstanding | Broken recovery and inconsistent UX | Complete the raw evaluator/internal throw inventory and add shared phase/path/message fixtures plus consumer mapping checks |
 | `GAP-012` | `P2` | Define canonical resolved-scene JSON contract | `SER-001` | Serialization contract + CLI/fixture tests | `relgeo/spec` + `core` + `cli` | GAP-011; VER-002 | Normative JSON schema or canonicalization rule; stable identity/order/numbers/errors; CLI output and fixture snapshots pass | Unstable downstream diffs/API | Decide semantic owner versus consumer serialization contract |
 | `GAP-013` | `P0` | Fix and verify safe semantic SVG serialization | `SER-002` | Confirmed renderer security defect + regression tests | `relgeo/renderer-svg` | GAP-009; security regression harness | Dimension/annotation escaping fixed; no executable markup; local renderer, CLI, Markdown, and conformance evidence pass; broader Playground/host evidence remains incomplete | XSS/unsafe artifact or cross-renderer drift | Extend escaping regression through Playground/current-host consumers before any completion claim |
+
+## P0/P1 implementation-closability triage
+
+**Triage date:** 2026-11-04. **Decision:** select all eight P0/P1 candidate
+rows below for implementation follow-up. “Implementation-closable” means that
+the owner can make progress and run a focused local acceptance check from this
+checkout. It does not mean the capability is complete, externally verified, or
+ready for release. The initial status is copied from the status matrix at
+triage time and is intentionally unchanged by this table.
+
+The normative success/failure boundaries and evidence expectations for these
+rows are locked in [reconciliation §0](./reconciliation.md#0-contract-and-acceptance-lock).
+That lock preserves the `0.5.x` compatibility line and requires any future
+public-contract change to update `spec/id` and its acceptance fixture first.
+
+| Gap | Priority | Capability IDs | Triage decision | Owner | Normative source of truth | Acceptance test / evidence target | Initial status | External or scope-deferred boundary kept separate |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `GAP-001` | `P1` | `LANG-002`, `DOC-003`, `TYPE-001`, `TYPE-002`, `VER-003` | **Implementation-closable; queue** | `relgeo/spec` + `relgeo/workspace` | `spec/id/core/01-overview.md`, `spec/id/core/05-semantic-guarantees.md`, `spec/id/editorial-guide.md`, `spec/id/syntax/07-type-system.md`, `spec/id/presentation/26-metadata.md` | `pnpm run language-spec:check`; add/retain relation-first negative-boundary and vocabulary drift fixtures; no documentation-only closure | `🌗` / `partial` | Full object/renderer vocabulary projection and public/browser/native consumer evidence remain incomplete; registry release/deployment is not required |
+| `GAP-002` | `P1` | `DECL-001`, `DECL-004`, `EVAL-002` plus the runtime/coercion boundary of `TYPE-001` | **Implementation-closable; queue behind GAP-001** | `relgeo/core` + `cli` | `spec/id/syntax/07-type-system.md`, `spec/id/syntax/08-parameters.md`, `spec/id/syntax/11-profiles.md`, `spec/id/core/03-scene.md` | Promote a shared fixture covering defaults, structured parameters, profile override, derived placement, and unit conversion; run core/CLI/language-service/Flutter projections and `pnpm conformance:fixtures` | `🌗` / `partial` | Fixture 16 promotion is decision-gated; Node 24 CI, Flutter/native-host runtime, and package publishing are evidence gates, not local implementation blockers |
+| `GAP-003` | `P1` | `GEO-001`, `GEO-002`, `GEO-003`, `GEO-004`, `GEO-005` | **Implementation-closable; queue** | `relgeo/geometry` + `relgeo/core` | `spec/id/geometry/13-object-model.md` through `spec/id/geometry/21-constraints.md` | Add focused per-object mode/field/anchor/degenerate/topology fixtures with resolved JSON and semantic SVG assertions; run geometry/core and conformance tests | `🌗` / `partial` | Broader renderer-host parity and any future topology/scope promotion decision remain separate from the local fixture/runtime work |
+| `GAP-007` | `P1` | `QUERY-002` | **Implementation-closable; queue behind GAP-003** | `relgeo/core` + `relgeo/geometry` | `spec/id/geometry/18-anchors.md`, `spec/id/geometry/20-geometry-queries.md` | Define a tolerance/domain table and fixtures for `pointAt`, `tangentAt`, `normalAt`, `frameAt`, intersection, project, reflect, `toWorld`, and `toLocal`, including domain errors | `🌗` / `partial` | Cross-engine/browser/native numeric parity is external evidence; it must not be represented as a local implementation failure |
+| `GAP-008` | `P1` | `CON-001`, `CON-002` | **Implementation-closable; queue behind GAP-011 and GAP-007** | `relgeo/core` | `spec/id/geometry/21-constraints.md`, `spec/id/core/06-error-model.md` | Add shared equal/parallel/perpendicular/tangent/alignment fixtures; verify stable type/path/object diagnostics and no geometry mutation across runtime consumers | `🌗` / `partial` | Complete consumer parity and canonical CI evidence remain unverified; no new solver scope is implied |
+| `GAP-009` | `P1` | `PRES-001`, `PRES-002` | **Implementation-closable; queue** | `relgeo/renderer-svg` + `relgeo/core` | `spec/id/presentation/22-dimension.md`, `spec/id/presentation/23-annotation.md`, `spec/id/presentation/26-metadata.md` | Run the focused v0.5 hostile-input fixture, renderer security tests, and local CLI/Markdown semantic snapshots; cover text and dynamic presentation attributes | `🌗` / `partial` | All dimension kinds, every host, and fresh browser/native evidence are not yet exhaustive and remain evidence gaps |
+| `GAP-011` | `P0` | `DIAG-001`, `DIAG-002`, `ERR-001` | **Implementation-closable; start first** | `relgeo/core` + `language-service` + `cli` | `spec/id/core/04-evaluation-order.md`, `spec/id/core/05-semantic-guarantees.md`, `spec/id/core/06-error-model.md` | Inventory raw throws; normalize every public validator/resolver boundary; add phase/path/message fixtures and agree CLI/language-service mappings for tolerant and compile modes | `🌗` + `⚠️` / `partial` + `broken` | Canonical CI and public/native host evidence are external verification; no package release is needed to fix the runtime contract |
+| `GAP-013` | `P0` | `SER-002` | **Implementation-closable; queue with GAP-009** | `relgeo/renderer-svg` | `spec/id/presentation/22-dimension.md`, `spec/id/presentation/23-annotation.md`, `spec/id/presentation/24-drawing-roles.md`, `spec/id/presentation/26-metadata.md` | Assert hostile text/attributes cannot create executable markup, semantic geometry/roles remain stable, and focused renderer/security plus CLI/Markdown snapshots pass | `🌗` / `partial` | Playground/browser/native-host parity remains unverified; byte-for-byte SVG equality and production deployment are explicitly out of scope |
+
+The rows above are implementation follow-ups, not claims that every related
+sub-boundary is active. In particular, npm/pub.dev release, production
+deployment, current canonical CI, browser/native-host runtime, and mobile
+delivery are external or deferred evidence. Fixture 16 promotion, broader
+boolean/topology promotion, and other decision-gated boundaries stay recorded
+as deferred/unverified in the audit and are not acceptance blockers for the
+local work listed above. P2 rows (`GAP-004`, `GAP-005`, `GAP-006`, `GAP-010`,
+and `GAP-012`) remain outside this P0/P1 triage.
 
 ## Bounded active selection
 
@@ -87,6 +127,43 @@ vocabulary. `GAP-001` checks only the active root fields, scalar/structured
 parameter types, the two documented compatibility aliases, and the three
 document-status labels. All other expected vocabulary remains visible in the
 expected catalog and is out of this drift gate until a later catalog revision.
+
+### GAP-011 implementation progress
+
+On 2026-11-04, `core/src/evaluator.ts`, `core/src/resolver/index.ts`, and the
+per-object helper error
+wrappers were changed so structured errors preserve their phase, code, and path
+instead of being re-wrapped as `ResolveError`. Regression coverage now asserts
+the `validate` phase for validation and the `runtime` phase for a structured
+helper failure. The evaluator also preserves compatible structured `Error`
+callbacks, and `INVALID_COLLECTION_ACCESS` is classified as a runtime
+diagnostic. Divide and clone helper failures now also carry structured
+field-level paths. Repeat helper validation failures now carry the same stable
+codes and paths while structured evaluator errors are preserved. Collection
+access and component export failures now also carry resolver context. Local
+core, CLI, and language-service suites pass (`469/469`,
+`36/36`, and `82/82` respectively), and core TypeScript lint passes. This
+advances producer boundaries but does not close `GAP-011`: raw internal
+evaluator/helper throws outside these normalized paths and complete
+cross-consumer phase/code coverage remain open.
+
+### GAP-002 implementation progress
+
+On 2026-11-04, `core/src/validator.ts` was changed to validate each profile
+override against the declared parameter contract. Unknown profile keys now
+produce `UNKNOWN_FIELD` at the profile value path, and incompatible values for
+typed parameters produce `TYPE_MISMATCH` using the same validator used for
+defaults. Regression tests cover valid typed overrides, incompatible typed overrides,
+and undeclared keys while existing shorthand profile resolution remains intact.
+The core resolver now also rejects a selected profile that is absent from the
+document with `UNKNOWN_REFERENCE` at path `profile`, matching the CLI option
+boundary. A resolver regression also covers profile unit conversion feeding a
+derived value and final geometry dimensions.
+
+The focused core run passes `469/469` tests across `48` files. This is a real
+runtime and test change, but it does not close `GAP-002`: fixture-16 promotion,
+full evaluator/unit conformance, and Flutter/native consumer evidence remain
+decision-gated or unverified. The status matrix is intentionally unchanged.
 
 ### Downstream handoff boundary
 

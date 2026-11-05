@@ -16,8 +16,9 @@ browser, CLI, Playground, dokumentasi, dan export ringan
 findings remain outside the expected implementation-row count. Current
 row-level evidence, remaining gaps, owners, dependencies, and next actions are
 maintained in the [implementation audit](./implementation-audit.md),
-[reconciliation](./reconciliation.md), [capability matrix](./capability-matrix.md),
-and [implementation-gap backlog](./implementation-gap-backlog.md).
+[reconciliation](./reconciliation.md), [status matrix](./status-matrix.md),
+[capability matrix](./capability-matrix.md), and
+[implementation-gap backlog](./implementation-gap-backlog.md).
 
 ## 1. Tujuan dan aturan baca
 

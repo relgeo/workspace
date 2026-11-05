@@ -8,6 +8,7 @@ import { spawnSync } from "node:child_process";
 import {
   classifyFailure,
   createEvidenceEnvelope,
+  evaluateDecisionGate,
   runWithBoundedAttemptsSync,
 } from "./orchestration-contract.mjs";
 
@@ -144,6 +145,18 @@ function runStep(name, command, args) {
 async function checkCompletedReleaseRecord() {
   try {
     const releaseRecord = JSON.parse(await readFile(recordPath, "utf8"));
+    const decisionGate = evaluateDecisionGate({
+      required: true,
+      status: releaseRecord.decision?.approvalStatus ?? "not-required",
+    });
+    if (!decisionGate.allowed) {
+      record("release decision record approval", "failed", {
+        details: `record ${recordVersion} has decision state ${decisionGate.decisionState}; explicit maintainer approval is required`,
+        ...decisionGate,
+      });
+      console.error(`[FAIL] release decision record approval: ${decisionGate.decisionState}`);
+      return false;
+    }
     if (releaseRecord.status !== "completed") {
       record("release decision record is completed", "failed", {
         details: `record ${recordVersion} has status ${releaseRecord.status}; preflight is only valid for a completed release`,

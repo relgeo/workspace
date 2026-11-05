@@ -4,6 +4,29 @@
 **Status:** validation checkpoint selesai; surface belum dinyatakan lengkap
 **Boundary:** `relgeo/renderer-svg` pada compatibility line RelGeo DSL `0.5.x`
 
+## Current verification refresh — 2026-11-04
+
+The following checks were rerun against the current uncommitted worktree after
+the renderer-local implementation changes. They are evidence for behavior and
+consumer boundaries, not a promotion of every `🌗` capability to complete.
+
+| Command | Result | Evidence boundary |
+| --- | --- | --- |
+| `pnpm --filter @relgeo/renderer-svg test` | PASS — 7 files, 95 tests | Renderer unit, negative typed-error, security, sheet, semantic projection, and regression tests |
+| `pnpm --filter @relgeo/renderer-svg test:dist` | PASS — 1 test | Built/dist public export boundary |
+| `pnpm --filter @relgeo/cli test` | PASS — 36 tests | CLI render, sheet-selection, and error consumer boundary |
+| `pnpm --filter relgeo-playground test` | PASS — 17 files, 104 tests | Worker, preview, options, selection, and DOM-boundary unit coverage |
+| `pnpm --filter @relgeo/remark-relgeo test` | PASS — 9 tests | Markdown preview/error/safe-SVG consumer boundary |
+| `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 6 tests | Highlighting consumer boundary |
+| `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | Fixture rendering, semantic serialization/provenance, diagnostics, security, CLI, Markdown, and preview checks |
+| `pnpm --filter relgeo-playground test:e2e` | ENVIRONMENT UNAVAILABLE — preview server bind returned `EPERM` on `127.0.0.1:4173` | Browser DOM/visual execution not verified; this is not target parity failure evidence |
+
+All package commands emitted the repository engine warning because the
+available runtime is Node `22.23.2` while the repository requires Node `>=24`.
+The passing results are therefore verified-local. Browser E2E, canonical Node,
+public registry artifacts, native/Flutter, and cross-host parity remain
+separate unverified/deferred boundaries.
+
 Dokumen ini memvalidasi catalog expected, audit implementation, reconciliation,
 status matrix, dan gap backlog. Ia memeriksa coverage dan keterlacakan artefak;
 ia bukan bukti bahwa gap implementasi sudah ditutup.
@@ -35,7 +58,7 @@ behavior pada sumber tersebut sudah lengkap.
 | Discovery category | Sources / boundary checked | Current result |
 | --- | --- | --- |
 | Source/API | `renderer-svg/src` index, primitives, utils, escape, types; package/build config; core resolver; CLI; remark; Playground worker/Preview | Public API, emitters, options, escaping, resolved-scene handoff, CLI, plugin, dan worker imports inspected. |
-| Tests/fixtures | Renderer tests, core/CLI/Playground/remark tests, fixture reference/expected/manifest, conformance runner | Renderer 88/88, Playground 93/93, CLI 10/10, remark 5/5 + 3/3, conformance 260/260 across 20 fixtures. |
+| Tests/fixtures | Renderer tests, core/CLI/Playground/remark tests, fixture reference/expected/manifest, conformance runner | Current refresh: renderer 95/95, Playground 104/104, CLI 36/36, remark 9/9 + 6/6, conformance 298/298 across 23 fixtures. Historical counts remain only in dated audit sections. |
 | UI/menu/command/route | CLI info/compile/check/validate; Playground selector, toolbar, inspector, overlays, DOM insertion | Host wiring inspected; renderer owns no UI/menu/shortcut/route. Browser E2E remains not verified. |
 | Platform/security/runtime | Node entrypoints, browser worker/DOM path, dynamic HTML insertion, XML escaping, physical mode, diagnostic overlay | Local build/test and current hostile-value security checks pass; typed sheet/error handling and semantic projection are renderer-local; fresh browser/native/accessibility runtime not verified. |
 | Delivery/operations | Package scripts, dist boundary, root integration gate, release/compatibility scripts, npm pack | Build and 9-file tarball dry-run pass; registry/public/current CI not verified for this audit revision. |

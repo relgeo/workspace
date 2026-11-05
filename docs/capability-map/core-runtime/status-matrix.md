@@ -1,6 +1,6 @@
 # Core Runtime Capability Status Matrix
 
-**Tanggal:** 2026-10-31
+**Tanggal:** 2026-11-04
 **Boundary:** expected core runtime catalog versus implementation audit evidence
 **Status dokumen:** published downstream view; this document does not implement a gap
 
@@ -34,6 +34,21 @@ Current reconciliation: **38 expected IDs, 38 matrix rows, 0 missing,
 `?` tetap ditampilkan pada findings scope/evidence agar tidak disamakan dengan
 absence implementation.
 
+## P0/P1 triage handoff
+
+The 2026-11-04 triage selects all fourteen P0/P1 rows that are
+implementation-closable at a local Core or explicitly named adjacent boundary:
+`CORE-INPUT-002`, `CORE-MODEL-002`, `CORE-VALID-003`, `CORE-VALID-004`,
+`CORE-ERROR-001`, `CORE-ERROR-002`, `CORE-RESOLVE-003`, `CORE-RESOLVE-005`,
+`CORE-CONSTRAINT-002`, `CORE-DIAG-001`, `CORE-DIAG-002`, `CORE-ERROR-003`,
+`CORE-DET-002`, and `CORE-INT-002`. Their owner, normative source of truth,
+focused acceptance target, and initial status are recorded in the
+[backlog triage register](./implementation-gap-backlog.md#p0p1-implementation-closability-triage).
+This is a work-selection handoff, not a status promotion. Node `>=24`,
+registry/public artifacts, current CI, browser E2E, Flutter host evidence, and
+fixture-16 promotion remain separate `?`/`⏸️` findings; general constraint
+solving remains `➖`.
+
 ## Capability matrix
 
 | ID | Capability | Status | Evidence | Gap | Owner | Dependency | Risk | Next action |
@@ -61,7 +76,7 @@ absence implementation.
 | `CORE-RESOLVE-004` | Views, sheets, roles, metadata composition | `✔️` | Audit §4D; sheet/view/reference fixtures | Renderer styling remains outside core | core + renderer | scene projection, view policy | M | Preserve semantic view fixtures |
 | `CORE-RESOLVE-005` | Typed resolved scene and consumer-safe semantic projection | `🌗` | Audit §4D; `core/src/projection.ts` and projection tests; conformance/consumers | Versioned core projection exists; consumer migration remains open | core + spec | geometry types, serializer | H | Add consumer comparator/migration evidence |
 | `CORE-CONSTRAINT-001` | Post-resolve equality/alignment/parallel/perpendicular/tangent checks | `✔️` | Audit §4E; constraint tests/fixture | Coverage of every relation kind is narrow | core + spec | resolved geometry, tolerance | H | Add valid/invalid fixture per constraint kind |
-| `CORE-CONSTRAINT-002` | Structured violations with path, objects, expected/actual, severity | `🌗` | Audit §4E; `ConstraintViolation` tests; no severity/origin | Violation contract lacks stable severity and phase | core + geometry | diagnostic schema, consumer UX | H | Extend violation contract and snapshots |
+| `CORE-CONSTRAINT-002` | Structured violations with path, objects, expected/actual, severity | `🌗` | Audit §4E; `ConstraintViolation` tests and fixture 14 now cover severity/origin/expected/actual | Local violation schema is present; broader relation/topology and consumer parity remain open | core + geometry | diagnostic schema, consumer UX | H | Extend relation matrix and consumer comparator |
 | `CORE-DIAG-001` | Machine-readable diagnostics with code/path/context/phase | `🌗` | Audit §4E; `core/src/diagnostics.ts`, structured-error/diagnostic tests, language-service/fixture tests | Source mapping and complete raw-error coverage remain bounded | core | error catalog, source paths | P0 | Expand source-range mapping and error catalog checks |
 | `CORE-DIAG-002` | Deterministic multi-diagnostic aggregation | `🌗` | Audit §4E; `collectDiagnostics` tests and strict resolver regression | Core aggregation covers parse and independent local validation faults; broader coverage remains | core | error model, ordering policy | P1 | Expand aggregation coverage without changing strict behavior |
 | `CORE-ERROR-003` | Distinct actionable runtime error taxonomy | `⚠️` | Audit §4E; `BOOLEAN_EMPTY_RESULT` is now represented and normalized, but evaluator/raw throw-site catalog remains incomplete | Public fallback normalization prevents boundary loss, while exhaustive emitted-code/type agreement is not yet proven | core | error catalog, all throw sites | P0 | Generate/maintain emitted-code catalog and add raw-throw normalization regressions |
@@ -74,7 +89,7 @@ absence implementation.
 | `CORE-COMPAT-003` | Compatibility-line identity across package and consumers | `✔️` | Audit §4F; compatibility check 283/283 | Registry/remote release evidence not rerun | workspace + core | package metadata, CI, registry | H | Refresh public package verification |
 | `CORE-INT-001` | CLI info/compile/check integration | `✔️` | Audit §4F; CLI 9/9 and conformance | Published runtime not verified | core + CLI | command contract, filesystem boundary | M | Keep CLI command contract gate |
 | `CORE-INT-002` | Playground/language tooling edit-diagnostic-resolve-preview flow | `🌗` | Audit §4F; language-service 66/66 and worker wiring; browser E2E unverified | Consumer sequencing/accessibility evidence incomplete | core + consumers | worker, diagnostics, renderer | H | Run browser E2E and preserve core boundary |
-| `CORE-INT-003` | Shared active/legacy/invalid/runtime/capability fixtures | `✔️` | Audit §4F; conformance 260/260 across 20 fixtures | Manifest is not exhaustive spec coverage | workspace + core | fixture provenance, runner | M | Add fixture per promoted capability |
+| `CORE-INT-003` | Shared active/legacy/invalid/runtime/capability fixtures | `✔️` | Audit §4F; conformance 298/298 across 23 fixtures | Manifest is not exhaustive spec coverage | workspace + core | fixture provenance, runner | M | Add fixture per promoted capability |
 | `CORE-INT-004` | Stable semantic boundary for TS/renderer/Markdown/Flutter | `🌗` | Audit §4F; TS consumers pass; Flutter CI/host unverified | Cross-consumer parity is bounded; raw SVG/UX out of scope | core + consumer owners | shared fixtures, Flutter host | H | Refresh Flutter/canonical consumer evidence |
 
 ## Scope, deferred, and evidence findings

@@ -121,6 +121,146 @@ prerequisite, not a priority ranking. Acceptance targets deliberately include
 both tests and the evidence needed to promote a capability beyond local source
 coverage.
 
+## P0/P1 triage disposition — 2026-11-04
+
+This is the canonical triage for the remaining Flutter Workbench rows. A row is
+`implementation-closable` when its Flutter/source/contract behavior can be
+implemented and accepted with source-level, fixture, or consumer-contract
+tests available in the workspace. Native dialogs, forced process termination,
+assistive technology, target-host launch, and release infrastructure remain
+separate evidence gates; their absence is recorded as `unverified`, not as a
+failed implementation.
+
+The initial status below is the status at triage time and does not promote a
+row in the status matrix. `🌗 partial` remains the matrix status until the
+acceptance target and its evidence pass.
+
+### Selected implementation-closable rows
+
+| ID | Priority | Disposition | Owner | Source of truth | Acceptance test / evidence target | Initial status |
+| --- | --- | --- | --- | --- | --- | --- |
+| `DOC-08` | `P0` | Implement recovery contract; host relaunch is a separate gate | `relgeo/flutter` | `W02`, `MP`, [frozen contract](#frozen-authoring-contract--2026-11-03) | Recovery store tests cover dirty-draft write, missing/empty/corrupt input, `RESTORE`, `DISCARD`, and cleanup after successful lifecycle; host forced-exit/relaunch is recorded separately | `🌗 partial` |
+| `IO-01` | `P1` | Implement adapter/cancellation/identity boundary; native picker is evidence-only | `relgeo/flutter` | `W02`, `P10`, [GAP-FW-001](#candidate-goalstasks) | Injected picker tests prove Open/Save As routing, cancellation no-op, selected identity, and failure preservation; macOS/Linux/Windows dialog smoke remains unverified | `🌗 partial` |
+| `IO-02` | `P1` | Implement active RelGeo/YAML import and bounded diagnostics | `relgeo/flutter` + `relgeo/core` | `P06`, `DSL`, `P10`, [GAP-FW-001](#candidate-goalstasks) | Active `.relgeo`/`.yaml`/`.yml` fixtures cover valid import, parse failure, compile failure, and stable diagnostic codes; archive/project import is out of scope | `🌗 partial` |
+| `EDIT-04` | `P1` | Complete structured diagnostic projection | `relgeo/flutter` + `relgeo/core` | `P06`, `P10`, `DSL`, [GAP-FW-002](#candidate-goalstasks) | Fixture assertions cover code, type, message, path, phase, severity, and object context at the Flutter boundary without deriving fields from exception text | `🌗 partial` |
+| `CONTRACT-01` | `P1` | Reconcile the active DSL `0.5.x` contract on the current pointer | `relgeo/spec` + `relgeo/flutter` | `MP`, `P06`, `DSL`, [GAP-FW-002](#candidate-goalstasks) | Current-pointer shared fixtures pass in spec/core/Flutter consumers with the same expected compile status and diagnostic projection; historical runs do not count | `🌗 partial` |
+| `CONTRACT-02` | `P1` | Promote only the active semantic geometry boundary | `relgeo/spec` + `relgeo/flutter` + `relgeo/core` | `P06`, `P07`, `DSL`, [GAP-FW-002](#candidate-goalstasks) | Promoted geometry fixtures assert resolved identity/order/geometry and bounded diagnostics across the current consumers; candidate evaluator/topology surfaces remain excluded until promoted | `🌗 partial` |
+| `CONTRACT-03` | `P1` | Close semantic SVG comparator coverage; retain presentation exclusions | `relgeo/spec` + `relgeo/flutter` + `relgeo/renderer-svg` | `P07`, `D09`, `DSL`, [GAP-FW-002](#candidate-goalstasks) | Semantic SVG fixtures compare identity, primitive/path geometry, subpaths, endpoints, rings, and tolerance; raw bytes, styles, metadata, and presentation parity remain non-goals | `🌗 partial` |
+| `CANVAS-03` | `P1` | Complete active inspector field inventory and projection | `relgeo/flutter` + `relgeo/core` | `P06`, `P10`, `DSL`, [GAP-FW-003](#candidate-goalstasks) | Inventory fixtures map expected resolved object/geometry/constraint fields to inspector tabs and assert stable values for representative objects | `🌗 partial` |
+| `CANVAS-04` | `P1` | Complete bounded parameter/profile editing parity | `relgeo/flutter` + `relgeo/core` | `W02`, `DSL`, [GAP-FW-003](#candidate-goalstasks) | Conditional panel, default/profile/derived values, valid edits, unknown/non-finite rejection, and recompile/preview consistency pass in Flutter/core fixtures | `🌗 partial` |
+| `CMD-03` | `P1` | Lock host-neutral shortcut registry/map; OS mapping is evidence-only | `relgeo/flutter` | `W01`, `W02`, [GAP-FW-005](#candidate-goalstasks) | Command tests assert discoverable labels, enabled state, no duplicate/conflicting bindings in the declared map, and keyboard activation; per-OS smoke remains unverified | `🌗 partial` |
+| `A11Y-01` | `P1` | Complete Flutter focus/traversal contract; native traversal is evidence-only | `relgeo/flutter` | `P10`, `W02`, [GAP-FW-005](#candidate-goalstasks) | Widget/semantics tests cover Tab, Enter, Space, arrows, Escape, focus order, activation, and non-trapping panels; native traversal remains unverified | `🌗 partial` |
+| `A11Y-02` | `P1` | Complete semantic labels/values/states at the Flutter boundary | `relgeo/flutter` | `P10`, `W01`, `W02`, [GAP-FW-005](#candidate-goalstasks) | Semantics assertions cover role, label, value, checked/focus state, panels, theme, filters, selection, and diagnostics; VoiceOver/NVDA/AT trees remain unverified | `🌗 partial` |
+| `WINDOW-01` | `P1` | Complete host-neutral lifecycle bridge/dirty-guard contract | `relgeo/flutter` | `W02`, `P10`, [GAP-FW-005](#candidate-goalstasks) | Lifecycle tests cover clean close, dirty save/discard/cancel, quit, callback ordering, and no mutation on cancellation; native window-manager events remain unverified | `🌗 partial` |
+
+### Evidence-only or already implemented at boundary
+
+These rows remain visible because their remaining proof needs a host or current
+artifact, not because the local Flutter implementation should be restarted.
+
+| ID | Priority | Disposition | Owner | Source of truth | Acceptance test / evidence target | Initial status |
+| --- | --- | --- | --- | --- | --- | --- |
+| `CANVAS-05` | `P0` | Flutter graph boundary implemented; native AT and richer relationship evidence only | `relgeo/flutter` | `P06`, `P10`, `DSL`, [GAP-FW-004](#candidate-goalstasks) | Keep graph identity/panel regressions; add native accessibility and promoted relationship smoke when host is available | `✔️` at Flutter boundary; evidence open |
+| `VIEW-05` | `P0` | Flutter selection boundary implemented; physical pointer/keyboard evidence only | `relgeo/flutter` | `W01`, `W02`, [GAP-FW-004](#candidate-goalstasks) | Keep shared selection/empty-canvas regressions; run physical pointer and keyboard selection smoke on a target host | `✔️` at Flutter boundary; evidence open |
+| `PLAT-01` | `P1` | Target-host artifact launch/runtime evidence | `relgeo/flutter` + `relgeo/workspace` | `P10`, `MAC`, `D09` | Install/launch current macOS artifact and record picker/export/MCP/clean-exit results with checksum and source pointer | `🌗 partial` |
+| `PLAT-02` | `P1` | Target-host artifact launch/runtime evidence | `relgeo/flutter` + `relgeo/workspace` | `P10`, `D09` | Install/launch current Ubuntu/Linux artifact across declared session boundary and record runtime results with provenance | `🌗 partial` |
+| `PLAT-03` | `P1` | Target-host artifact launch/runtime evidence | `relgeo/flutter` + `relgeo/workspace` | `P10`, `D09` | Extract/launch current Windows artifact and record DLL/input/picker/MCP/clean-exit results; signing is separate | `🌗 partial` |
+| `PLAT-04` | `P1` | Refresh and join artifact provenance | `relgeo/workspace` | `MP`, `P10`, [HYGIENE-FW-001](#non-feature-hygiene-follow-ups) | Current root baseline, Flutter pointer, workflow/run, platform, architecture, checksum, and verification result join without stale revision claims | `🌗 partial` |
+
+### Explicitly excluded from this implementation tranche
+
+Mobile delivery/AT, custom title-bar implementation, raw SVG byte/presentation
+parity, pub.dev publication, signing/notarization, store distribution,
+production deployment, and unavailable target-host smoke are `deferred`,
+`not applicable`, or `unverified` evidence boundaries. They retain a next
+action where relevant and are not prerequisites for the source-level work
+listed above.
+
+## Contract and acceptance lock — 2026-11-04
+
+This section freezes the acceptance boundary for every selected P0/P1 row. It
+documents the existing public behavior and does not change the public DSL or
+package contract. The [compatibility matrix](../../compatibility-matrix.json)
+remains authoritative: active line `0.5`, public package line `0.5.x`, omitted
+version defaults to `0.5`, and a breaking language-contract change requires a
+next compatibility line and decision record. The [inventory protocol](../INVENTORY-PROTOCOL.md)
+requires implementation, evidence, parity, and scope to remain separate; the
+evidence column below therefore names host/CI/public work that cannot be
+inferred from local tests.
+
+Source aliases `MP`, `P06`, `P07`, `P10`, `W01`, `W02`, `DSL`, `D09`, and `MAC`
+resolve to the source-of-truth legend in the [expected baseline](../../plans/12-flutter-workbench-capability-baseline.md#12-source-of-truth-legend).
+Owner and initial status remain in the triage tables above.
+
+| Acceptance ID | Capability | Source of truth | Success behavior | Failure / edge behavior | Expected evidence |
+| --- | --- | --- | --- | --- | --- |
+| `FW-A01` | `DOC-08` | `W02`, `MP`, frozen authoring contract | Dirty edits produce one best-effort draft; startup offers `RESTORE` or `DISCARD`; successful New/Open/Save/Close clears the draft. | Missing, empty, or unreadable storage does not crash or mutate the active document; stale-draft handling is explicit before promotion and must not silently replace the active document; restore failure is surfaced without claiming recovery. | Recovery-store unit/widget tests; forced-exit and real relaunch remain host evidence. |
+| `FW-A02` | `IO-01` | `W02`, `P10` | Open and Save As delegate through the file-picker boundary and apply the selected identity/path. | Picker cancellation is a no-op; read/write/permission failure preserves source, identity, and dirty state; native dialog behavior is not inferred. | Injected file-service/picker tests; macOS/Linux/Windows picker smoke when hosts exist. |
+| `FW-A03` | `IO-02` | `P06`, `DSL`, `P10` | `.relgeo`, `.yaml`, and `.yml` inputs enter the active document/import path and compile against the active `0.5.x` boundary. | YAML parse failure maps to `relgeo.yaml.parse`; resolver/compiler failure maps to `relgeo.compile`; unsupported archive/project formats are not silently accepted. | Valid/invalid import fixtures and diagnostic assertions; current-pointer cross-consumer promotion is separate. |
+| `FW-A04` | `EDIT-04` | `P06`, `P10`, `DSL` | User-facing diagnostics retain bounded code/type, message, path, phase, severity, and object context where the active contract provides them. | Unknown fields remain nullable/bounded; exception text is never parsed into an invented path/phase/object claim; invalid compile preserves the last valid preview. | Flutter invalid-boundary/diagnostic tests plus shared fixture projections; full vocabulary parity remains partial until promoted. |
+| `FW-A05` | `CONTRACT-01` | `MP`, `P06`, `DSL`, compatibility matrix | Current-pointer Flutter/core/spec fixtures agree on active `0.5` compile status and bounded diagnostic projection. | Omitted version defaults to `0.5`; legacy `0.4` remains supported as declared; `0.1`–`0.3` are regression-only; future unsupported versions use `UNSUPPORTED_SPEC_VERSION`. | Current-pointer shared conformance run with exact revisions; historical evidence cannot promote the row. |
+| `FW-A06` | `CONTRACT-02` | `P06`, `P07`, `DSL` | Promoted semantic geometry fixtures preserve resolved identity, ordering, supported geometry, and bounded diagnostics across current consumers. | Unsupported evaluator/topology/degenerate surfaces remain explicit candidate or diagnostic outcomes; no full-spec parity is inferred from a passing bounded fixture. | Core/Flutter/renderer fixture and semantic projection comparators at the same pointer. |
+| `FW-A07` | `CONTRACT-03` | `P07`, `D09`, `DSL` | Semantic SVG comparison preserves object identity, primitive/path geometry, subpaths, endpoints, rings, and declared tolerance. | Raw bytes, whitespace, attribute order, styles, metadata, text metrics, viewBox policy, and overlays remain excluded unless a new decision promotes them. | Semantic SVG fixtures/comparator and renderer consumer tests; presentation evidence remains separate. |
+| `FW-A08` | `CANVAS-03` | `P06`, `P10`, `DSL` | Inspector tabs expose the active selection's supported object, geometry, value, constraint, and diagnostic fields with stable values. | No selection or unknown/unavailable fields render a bounded empty state; inspector must not fabricate values or mutate the document while inspecting. | Field-inventory fixtures plus inspector/controller/widget tests for representative resolved objects. |
+| `FW-A09` | `CANVAS-04` | `W02`, `DSL` | Parameters panel is conditional; valid parameter/profile edits update document settings, compile result, and preview consistently. | Empty parameter set hides the panel without layout failure; unknown, non-finite, or out-of-range overrides are rejected without partial mutation; reset restores declared defaults. | Parameter/profile/controller/widget fixtures in Flutter and matching core contract cases. |
+| `FW-A10` | `CMD-03` | `W01`, `W02` | Shared command registry exposes stable labels, enabled/checked state, and keyboard activation for the declared shortcut map. | Duplicate/conflicting bindings are rejected by contract; unsupported platform modifier differences are recorded rather than silently remapped. | Command/shortcut registry tests and declared-map audit; OS shortcut smoke is external evidence. |
+| `FW-A11` | `A11Y-01` | `P10`, `W02` | Required controls are reachable and activatable with Tab, Enter, Space, arrows, and Escape in the declared context. | Disabled or decorative elements are not actionable; focus does not trap in a panel; cancellation leaves focus and document state coherent. | Widget focus/semantics tests; native traversal on macOS/Linux/Windows remains unverified. |
+| `FW-A12` | `A11Y-02` | `P10`, `W01`, `W02` | Semantics expose role, label, value, checked/focus state, panel, theme, filter, selection, and diagnostic state for user-facing controls. | Dynamic state updates the semantics tree; hidden/decorative content is not exposed as an actionable control; native AT announcements are not inferred. | Flutter semantics tests and current native AX/AT tree capture when available. |
+| `FW-A13` | `WINDOW-01` | `W02`, `P10` | Clean close/quit exits; dirty close/quit invokes save/discard/cancel and follows the shared lifecycle guard. | Cancel preserves source, identity, dirty state, and recovery record; callback ordering is deterministic; host callback failure does not claim clean exit. | Lifecycle/window-host tests; native window-manager close/quit smoke is external evidence. |
+| `FW-A14` | `CANVAS-05` | `P06`, `P10`, `DSL` | Graph panel renders stable dependency identities for the active resolved document and shares selection with canvas/inspector. | Empty or unsupported relationship projection is bounded and does not invent edges; richer semantics and native AT are not inferred. | Graph model/panel tests; native accessibility and promoted relationship smoke remain open. |
+| `FW-A15` | `VIEW-05` | `W01`, `W02` | Visible-object hit testing selects one shared object identity across canvas, graph, inspector, and overlays; empty canvas clears selection. | Hidden roles are excluded; unsupported/richer geometric hit behavior remains outside this boundary; pointer evidence is not inferred from widget tests. | Selection/scene-graph/viewport widget tests; physical pointer and keyboard host smoke remain open. |
+| `FW-A16` | `PLAT-01` | `P10`, `MAC`, `D09` | Current macOS artifact installs/launches and records window, picker, export, MCP, and clean-exit results with checksum/provenance. | Launch, dependency, picker, or MCP failure is recorded as target-host evidence, not silently converted into a source parity claim; signing is separate. | Current artifact host transcript and provenance record. |
+| `FW-A17` | `PLAT-02` | `P10`, `D09` | Current Linux artifact extracts/launches on declared Wayland/X11 session and records runtime/picker/input/clean-exit results. | Missing host/session/dependency is `not verified`; it is not a target implementation failure; distribution packaging remains separate. | Ubuntu/Linux host transcript, artifact checksum, and source/workflow pointer. |
+| `FW-A18` | `PLAT-03` | `P10`, `D09` | Current Windows artifact extracts/launches with `.exe`, DLL, and data, and records input/picker/MCP/clean-exit results. | Missing host, DLL, SmartScreen, or runtime evidence is recorded as unverified; signing/installer work is out of scope here. | Windows 11 host transcript, artifact checksum, and source/workflow pointer. |
+| `FW-A19` | `PLAT-04` | `MP`, `P10`, compatibility matrix | Provenance joins current root baseline, Flutter pointer, workflow/run, SDK, OS/architecture, checksum, and verification result. | Stale or mismatched baseline is rejected from a current promotion; a checksum/build record alone cannot claim install or runtime success. | Machine-readable provenance record and current-pointer baseline/CI evidence. |
+
+### Contract-change guard
+
+No row above changes the public DSL/API contract. Any future change that alters
+accepted syntax, diagnostic meaning, semantic projection, or cross-consumer
+behavior must update the normative source first, classify the change as
+`none`, `patch-compatible`, or `breaking` in `docs/compatibility-matrix.json`,
+and attach the required decision record before implementation promotion. UI,
+host, test, and evidence-only changes may proceed within this locked boundary
+when they preserve the stated semantics.
+
+## Implementation refresh — 2026-11-05
+
+The first source-level acceptance slices are now implemented and tested:
+
+- `CANVAS-04`: parameter metadata exposes `accepts`; the document controller
+  filters unknown, non-finite, invalid-bound, and out-of-range overrides before
+  they can trigger recompilation. This is a bounded editor contract, not full
+  evaluator/profile parity.
+- `IO-02`: recent-path import rejects extensions outside `.relgeo`, `.yaml`,
+  and `.yml` without reading or mutating the active document. Native picker and
+  cross-consumer diagnostic promotion remain separate evidence.
+- `EDIT-04` / `CONTRACT-01`: Flutter constraint violations now preserve the
+  Core/Geometry metadata fields `severity`, `origin`, `expected`, and `actual`;
+  the active constraint tolerance is aligned to `0.001`. The diagnostic unit
+  test and current-pointer shared v0.5 fixture both pass without deriving
+  fields from exception text.
+
+The matrix status remains `🌗 partial` for these rows. Source and focused tests
+changed, so this is implementation evidence rather than a documentation-only
+status update. Native host evidence, full diagnostic vocabulary, and broader
+cross-consumer promotion remain open. No generated, cache, release, or publish
+artifact is part of the change.
+
+## Consumer-boundary verification refresh — 2026-11-05
+
+The selected source changes were checked against available downstream package
+boundaries: Flutter focused Workbench tests passed `135`, Core passed `489`,
+Geometry passed `91`, and the MCP contract package passed `42`. The complete
+Flutter suite reached `326` passing tests and one existing HTTP MCP transport
+failure at `test/mcp_server_io_test.dart:134`; this does not invalidate the
+focused Workbench evidence and is retained as a separate boundary issue.
+
+The remaining handoff is unchanged: `GAP-FW-001` through `GAP-FW-005` retain
+source/host/contract next actions, while `GAP-FW-006` remains artifact
+provenance and target-host evidence. No npm/pub.dev publication, production
+deployment, signing, or unavailable-host action is treated as a prerequisite.
+
 ## Candidate goals/tasks
 
 | ID | Priority | Candidate goal/task | Capability IDs | Scope | Owner | Dependency | Acceptance test / evidence target | Risk | Next action |

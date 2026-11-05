@@ -26,6 +26,47 @@ Owner: `relgeo/renderer-svg`
 Compatibility line: `0.5.x`  
 Consumer evidence: `core/`, `fixtures/`, `playground/`, `relgeo.github.io/`
 
+## Implementation refresh — 2026-11-04
+
+This refresh records source changes made for the selected P0/P1 queue; it does
+not promote a partial row to complete merely because local tests pass. The
+renderer now validates finite positive `hairlineWidth` values before SVG
+serialization, falls back from invalid point/font/arrow/line-height metrics,
+and resets traversal/debug state before every render, including sheet output.
+These changes preserve the public `0.5.x` API and the semantic projection
+schema. The existing semantic projection changes in this worktree remain
+covered by their focused projection tests.
+
+| Selected ID(s) | Implementation evidence | Current conclusion |
+| --- | --- | --- |
+| `SVG-SCENE-003`, `SVG-ERR-001` | `renderer-svg/src/index.ts`; `renderer-svg/src/__tests__/renderer.test.ts` validates invalid `hairlineWidth`, typed option failure, and renderer reuse across scene/sheet output | Local implementation/error boundary is verified; scene context and host print/browser matrix remain partial or external |
+| `SVG-STYLE-002`, `SVG-DIM-001`, `SVG-ANNOT-001`, `GAP-009`, `GAP-013` | `renderer-svg/src/primitives.ts`, `src/utils.ts`; focused regression asserts invalid presentation metrics do not emit `NaN`/`Infinity`; existing escaping tests remain green | Safe local fallback and serialization behavior is verified; exact typography and cross-consumer placement remain partial |
+| `SVG-SHEET-001` | `renderer-svg/src/index.ts`; reuse regression covers a scene → sheet → scene sequence without stale traversal state; shared sheet/CLI fixtures remain green | Renderer state boundary is verified locally; active v0.5 sheet promotion and host layout evidence remain partial |
+| `SVG-DET-001` | `renderer-svg/src/semantic.ts` and `src/__tests__/semantic_projection.test.ts`; projection normalization/topology/text anchors and repeated local checks are covered | Local semantic projection evidence is present; canonical Node >=24 and cross-host replay remain unverified |
+
+Evidence executed for this refresh:
+
+| Command | Result | Boundary |
+| --- | --- | --- |
+| `pnpm --filter @relgeo/renderer-svg test` | PASS — 7 files, 95 tests | renderer source, security, sheet, semantic, and dist-boundary tests |
+| `pnpm --filter @relgeo/renderer-svg build` | PASS — typecheck plus CJS/ESM/DTS build | package source/build boundary |
+| `pnpm --filter @relgeo/cli test` | PASS — 36 tests | CLI sheet/error consumer boundary |
+| `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | shared fixture and consumer boundary |
+| `git diff --check` | PASS | tracked-text formatting boundary |
+| `pnpm run compatibility:check` | PARTIAL — 280 passed, 3 failed outside renderer (`core` package/version drift, Playground core dependency drift, Flutter application version drift) | workspace-wide matrix check; renderer scope is not the failing boundary |
+| scoped renderer compatibility assertion | PASS — package/matrix/dependency line is `0.5.x` | renderer package contract |
+
+All package commands ran on Node `22.23.2` while the repository requires
+Node `>=24`; the results are therefore verified-local only. Browser/public
+artifact, canonical runtime, and deployment evidence remain separate and are
+not claimed by this implementation refresh.
+
+The workspace-wide compatibility command is recorded as partial rather than
+hidden: its three failures concern unrelated package/version drift in the
+already-dirty `core`, Playground, and Flutter surfaces. The scoped
+`renderer-svg` compatibility assertion passes, and no cross-repository version
+change was made for this renderer task.
+
 ## Scope, owner, source path, dan batas verifikasi
 
 Audit ini memeriksa implementasi aktual dari resolved scene ke SVG, bukan parser

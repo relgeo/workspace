@@ -1,6 +1,6 @@
 # Geometry coverage validation and handoff
 
-**Tanggal validasi:** 2026-11-03
+**Tanggal validasi:** 2026-11-04
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
 **Required context:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)
 
@@ -193,6 +193,28 @@ environments passed.
 The direct checks above do not replace registry refresh, CI, native Flutter,
 cross-platform replay, or public-contract decisions. Those limitations remain
 open under `Q-GEO-002` and `Q-GEO-006`.
+
+### 8.1 Target verification extension — 2026-11-04
+
+The implementation verification task reran the bounded local evidence against
+the current working tree. These results supersede the older counts in the
+baseline table above; the older record is retained as provenance.
+
+| Exact command | Result | Evidence qualification |
+| --- | --- | --- |
+| `pnpm test && pnpm lint && pnpm build` from `geometry/` | PASS — 5 files, 91 tests; lint/build pass | Unit, numeric tolerance, intersection, boolean normalization, and low-level error behavior; Node 22 local evidence. |
+| `pnpm test && pnpm lint && pnpm build` from `core/` | PASS — 48 files, 488 tests; lint/build pass | Consumer regression, negative diagnostics, deterministic projection/replay, collection identity, units, queries, constraints, and placement; Node 22 local evidence. |
+| `pnpm test && pnpm build` from `renderer-svg/` | PASS — 7 files, 92 tests; build pass | Semantic SVG projection, text content/anchor, closed-ring derivation, and SVG safety boundary. |
+| `pnpm test && pnpm build` from `cli/` | PASS — 36 tests; build pass | CLI validation/compile/repeated-process serialization surface; dependency links resolved after package dist builds completed. |
+| `pnpm run conformance:fixtures` from workspace root | PASS — 298/298 across 23 fixtures | Shared parse/resolve/renderer/language-service/highlighting/preview/CLI conformance, including active, legacy, invalid, runtime-error, and capability fixtures. |
+| `pnpm run compatibility:check` from workspace root | QUALIFIED — 280 passed, 3 failed | The failures are pre-existing metadata drift: core package `0.5.2` vs matrix `0.5.1`, playground core dependency `^0.5.2` vs expected `^0.5.0`, and Flutter app `1.0.1+1` vs matrix `1.0.0+1`; this verification task did not change release/config metadata. |
+| `pnpm test -- src/__tests__/intersection.test.ts src/__tests__/boolean.test.ts` from `geometry/` | PASS — Vitest executed the configured 5-file suite, 91 tests | Focused invocation covers numeric tolerance/intersection/boolean paths; package test configuration still reports the complete suite. |
+| `pnpm test -- src/__tests__/projection.test.ts src/__tests__/dependency_v03.test.ts src/__tests__/repeat_divide.test.ts src/__tests__/structured_errors.test.ts` from `core/` | PASS — Vitest executed the configured 48-file suite, 488 tests | Focused invocation covers deterministic serialization, graph/repeat identity, and structured errors; package test configuration still reports the complete suite. |
+
+Environment boundary remains explicit: Node `v22.23.2` was used while the
+workspace declares Node `>=24`; Flutter/native host replay was not rerun. The
+Node-24, Flutter, registry, CI, and cross-platform parity rows therefore stay
+`not-verified`, not failed.
 
 ## 9. Repository and commit boundary
 

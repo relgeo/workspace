@@ -44,6 +44,201 @@ lima artifact tersedia. Run ini adalah evidence canonical aktif untuk baseline
 tersebut; `Integration #151` dan report lokal tetap dipertahankan sebagai
 historical/supporting evidence.
 
+### 0.2 Core Runtime consumer checkpoint — 2026-11-04
+
+The current Core Runtime execution verified local downstream boundaries through
+the Core dist/conformance path and direct consumer suites: language-service
+`82` tests, renderer-svg `92` tests plus `1` distribution-boundary test, CLI
+`38` tests, remark-relgeo `9` tests, remark-relgeo-hl `6` tests, and shared
+conformance `298/298` assertions. Core, renderer-svg, language-service, and CLI
+were also rebuilt locally; the renderer distribution-boundary test passed. The
+CLI package dry-run exposes 8 allowlisted files. These are local E3 observations
+for the current working tree, not a fresh-clone or public-package claim.
+
+The command `pnpm run integration:gate -- --local` was also attempted on this
+host and exited `2` before any stage because the runner requires Node `>=24`
+while the host provides Node `22.23.2`. This is explicitly environment
+unavailable; it does not establish consumer parity failure. The canonical CI
+run at the top of this document remains historical evidence for its recorded
+revision and is not silently reused as current-pointer evidence.
+
+### 0.3 Renderer-SVG consumer boundary refresh — 2026-11-04
+
+The current uncommitted renderer worktree was checked against the downstream
+boundaries relevant to SVG output. These are local observations and do not
+replace the canonical CI/public evidence recorded for its historical revision.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| `renderer-svg` unit, negative, semantic, security, sheet, and dist tests | PASS — 95 renderer tests and 1 dist-boundary test | Local package evidence |
+| `renderer-svg` pack boundary | PASS — 9 files from `npm pack --dry-run --json` | Local artifact shape; no registry/public install claim |
+| CLI | PASS — 38 tests | Local downstream consumer evidence |
+| Markdown consumers | PASS — remark-relgeo 9 tests; remark-relgeo-hl 6 tests | Local preview/highlighting evidence |
+| Playground | PASS — 104 unit tests and production build | Browser E2E not verified: preview server bind returned `EPERM` on `127.0.0.1:4173` |
+| Shared fixtures | PASS — 298/298 across 23 fixtures | Local conformance and semantic serialization/provenance evidence |
+| Website | PASS — Astro check 0 diagnostics, 138 pages built, built-output assertions passed | Local artifact only; deployed/public smoke not rerun |
+| `pnpm run integration:gate -- --local` | ENVIRONMENT UNAVAILABLE — exit 2 before stages | Host Node `22.23.2`; runner requires Node `>=24`; not a consumer parity failure |
+
+No selected local downstream consumer showed a regression. Public registry,
+fresh isolated install, canonical CI, browser, and native/Flutter evidence stay
+separate and are not inferred from these local results.
+
+### 0.4 Language Service consumer-boundary refresh — 2026-11-04
+
+The current Language Service tranche was checked against its direct downstream
+consumers and package boundary. These are local E3 observations for the current
+working tree; they do not promote partial capability rows or substitute for CI
+and public evidence.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| Language Service package | PASS — 90 tests; lint and CJS/ESM/DTS build pass | Local package evidence |
+| Playground worker/consumer | PASS — 106 tests; lint and production build/provenance pass | Local consumer evidence; browser E2E/public route not rerun |
+| Markdown consumers | PASS — remark-relgeo 9 tests/build; remark-relgeo-hl 6 tests/build | Local consumer evidence; registry/public install not verified |
+| CLI | PASS — 38 tests | Local downstream consumer evidence |
+| Shared conformance | PASS — 298/298 assertions across 23 fixtures | Local CLI/service boundary; MCP semantic adapter parity remains open |
+| Language Service package artifact | PASS — `npm pack --dry-run --json` exposes 9 files for `@relgeo/language-service@0.5.1` | Local tarball shape only; no publish or registry install claim |
+| Full cross-repo gate | ENVIRONMENT UNAVAILABLE — `node scripts/run-integration-gate.mjs --local` exits 2 before stages because host Node is 22.23.2 and runner requires Node 24+ | Not a consumer parity failure |
+
+The canonical CI/public records at the top of this document remain evidence for
+their recorded revisions only. No current CI, public registry, native Flutter,
+or live-host result is inferred from these local checks.
+
+### 0.5 Markdown Plugins consumer-boundary refresh — 2026-11-04
+
+The current Markdown Plugins tranche was checked against its downstream
+consumer boundaries. These are local observations for the current working
+tree; they do not replace CI, registry, deployment, or public evidence for a
+different revision.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| `remark-relgeo` package consumer suite | PASS — 16/16 tests | Local package evidence covering fence mapping, AST/provenance preservation, preview metadata, failure policy, options, safety, and exports. |
+| `remark-relgeo-hl` package consumer suite | PASS — 10 Vitest + 1 Node package-boundary test | Local package evidence covering source-preserving fallback, strict behavior, options, and ESM/CJS/types exports. |
+| Shared Markdown/conformance consumer path | PASS — 298/298 across 23 fixtures | Local real parser/core/renderer/language-service pipeline with negative/runtime fixtures, semantic serialization replay, preview, and highlighting digest checks. |
+| Official Astro website consumer | PASS — 0 diagnostics, 138 pages, built-output assertions pass | Local downstream artifact evidence; no deployed/public URL claim. |
+| `npm pack` for both Markdown packages | PASS | Local 0.5.0 tarball shape contains only manifest, README, LICENSE, and dist ESM/CJS/types; fresh temporary npm consumer install remains unverified because the resolver hung. |
+| `pnpm run integration:gate -- --local` | ENVIRONMENT UNAVAILABLE — exit 2 before stages | Host Node is 22.23.2 while the cross-repo runner requires Node 24+; this is not a consumer parity failure. |
+| Public registry/install and deployed smoke | NOT RUN / external boundary | No network/release/deployment claim is inferred from local package or website evidence. |
+
+No selected local downstream consumer showed a regression. The required
+evidence split is therefore: package/conformance/Astro results are local,
+historical CI/public results remain scoped to their recorded revisions, and
+registry/deployed/browser-host checks remain unverified or deferred.
+
+### 0.6 Playground consumer-boundary refresh — 2026-11-04
+
+The current Playground working tree was checked at the consumer boundaries it
+owns: the worker consumes the 0.5 contract and package graph, and the website
+assembles the Playground build under `/playground/`. These are local E3
+observations for the current checkout, not fresh-clone, CI, registry, or public
+deployment evidence.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| Playground full unit regression | PASS — 17 files / 107 tests | Local consumer/source evidence |
+| Focused Playground lifecycle, worker negative/recovery, viewport, persistence, keyboard, and theme suite | PASS — 6 files / 50 tests | Local boundary evidence |
+| Playground lint, UX audit, and production build | PASS | Local source/build evidence; browser E2E remains unavailable because preview bind returns `EPERM` |
+| Shared 0.5 conformance consumer path | PASS — 298/298 across 23 fixtures | Local parser/core/renderer/language-service/highlighting/preview/CLI serialization and negative-path evidence |
+| Astro website `check`, build, and built-output assertions | PASS — 0 diagnostics and built-output assertions pass | Local downstream website consumer evidence; no public URL claim |
+| Pages artifact assembly | ASSEMBLED LOCALLY | Source and website Playground files were assembled for comparison; no deployment performed |
+| `provenance:check`, `provenance:pages`, `playground:artifact:check`, and `test:pages-artifact` | NOT VERIFIED — revision/pin drift | Current Playground `47fd715…` differs from baseline/Pages pin `c7cec4b…`; current `spec` also differs from its pin. This is an external delivery boundary mismatch, not a local consumer regression. |
+
+No local downstream consumer showed a functional regression in this refresh.
+Browser E2E, immutable-pin alignment, hosted smoke, and public artifact parity
+remain separately unverified.
+
+### 0.7 Website and Pages consumer-boundary refresh — 2026-11-04
+
+The current Website and Pages task reran the direct downstream consumer
+boundaries from the uncommitted worktree. These results are local E3 evidence;
+they do not reuse the historical CI/public records at the top of this plan.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| Website Astro consumer | PASS — `pnpm check` returned 0 errors, 0 warnings, 0 hints; configured `pnpm build` produced 138 pages; `pnpm test` and responsive/accessibility assertions passed | Local website consumer/build evidence; no deployed/public claim |
+| Playground consumer | PASS — `pnpm build` and `pnpm test` passed; 17 test files and 107 tests | Local downstream consumer evidence; Vite emitted a non-failing chunk-size warning |
+| Website content integrity | PASS — aggregate test and content-integrity assertions passed | Local locale/frontmatter/generated-route/internal-link evidence |
+| Pages artifact assembly | ASSEMBLED LOCALLY — current `playground/dist` copied under `relgeo.github.io/dist/playground` | No deployment performed; artifact promotion remains provenance-gated |
+| Strict provenance | FAIL CLOSED — current website `1b9bb92f`, Playground `47fd7158`, and spec `f4fecf21` differ from baseline/Pages references | Revision-sync boundary; not a direct consumer regression and no checkout reset was performed |
+| `pnpm run test:pages-artifact` | FAIL CLOSED — `Pages inputs must be synchronized` | Correct rejection of an artifact with `synchronized: false` provenance |
+| `pnpm run integration:gate -- --local` | ENVIRONMENT UNAVAILABLE — exit 2 before stages | Host Node `22.23.2`; cross-repo runner requires Node `>=24`; not a consumer parity failure |
+| CI, Pages deployment, and public smoke | NOT VERIFIED / external boundary | No current workflow run or reachable public host was used as local consumer evidence |
+
+The current direct consumer result is therefore “no local downstream consumer
+regression observed,” with artifact promotion and cross-repo/hosted parity
+remaining explicitly unverified.
+
+### 0.8 Flutter Workbench consumer-boundary refresh — 2026-11-05
+
+The current Flutter child checkout was checked against the direct consumers of
+the changed diagnostic/parameter/import boundary. These are local observations
+for the current working tree, not fresh-clone, CI, public-registry, or target-
+host evidence.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| Flutter focused Workbench regression/conformance set | PASS — 135 tests | Local Flutter consumer/source evidence covering recovery, file operations, negative import/diagnostic cases, current v0.5 semantic fixtures, inspector/graph/selection, lifecycle/window policy, keyboard/semantics, viewport, SVG export, and editor behavior. |
+| Flutter analyzer | PASS — no issues | Local analyzer evidence at `flutter@9816b477`; no build or host-runtime claim. |
+| Core Runtime consumer | PASS — 489 tests | Local Core package consumer evidence; it does not promote Flutter/native parity or a public package install. |
+| Geometry consumer | PASS — 91 tests | Local Geometry package consumer evidence for the shared type/contract boundary. |
+| MCP contract package | PASS — 44 tests | Local protocol/schema/dispatch consumer evidence; desktop HTTP transport is a separate Flutter integration boundary. |
+| Flutter full suite historical checkpoint | RECORDED — 326 passed, 1 failed | Earlier checkpoint before the MCP fixture correction; retained for traceability and not used as the current consumer verdict. |
+| Flutter MCP consumer boundary suite | PASS — 10 tests | Local offline snapshot, Workbench bridge, and desktop HTTP MCP integration tests pass; valid post-initialize requests include the negotiated protocol header while the missing-header rejection remains covered. |
+| Target host/runtime and packaged desktop artifact | NOT VERIFIED | `flutter devices` could not run because the managed SDK could not write `flutter/bin/cache/engine.stamp`; no macOS/Linux/Windows launch or picker claim is inferred. |
+
+The local result is therefore “no regression observed in the selected direct
+consumers.” The historical full-suite failure above is retained as a record of
+the earlier checkpoint; the current MCP consumer boundary is green after the
+fixture supplied the required post-initialize protocol header. Target-host
+runtime, current CI, public registry/install, deployment, and release-artifact
+promotion remain separate evidence classes.
+
+### 0.9 MCP protocol consumer-boundary refresh — 2026-11-05
+
+The current MCP package and its Flutter path consumer were checked at the
+protocol boundary affected by the selected MCP implementation. These are local
+E3 observations for the current working tree. They do not imply a public
+package install, fresh-clone parity, CI rerun, Inspector interoperability, or
+packaged desktop smoke.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| MCP pure-Dart package | PASS — 44 tests; analyzer reports no issues | Local package evidence for contracts, dispatch, provenance, negative paths, bounds, ranking, session, and cancellation. |
+| Flutter MCP path dependency | PASS — Flutter analyzer reports no issues | Local consumer compiles against `relgeo_mcp` through the declared `../mcp` path dependency. |
+| Offline snapshot projection | PASS — 6 tests | Local Flutter asset-bundle consumer evidence for the pinned 34-file snapshot, path safety, no-results, section bounds, and provenance. |
+| Workbench bridge projection | PASS — 3 tests | Local identity/revision guard and undoable edit consumer evidence. |
+| Desktop MCP HTTP projection | PASS — 1 test | Local loopback consumer evidence for auth, protocol metadata, origin guard, read-only denial, stale revision, applied edit, dirty state, and undo. |
+| CI, public registry/install, Inspector/client, packaged target host | NOT VERIFIED / external boundary | No current public/CI/Inspector/packaged-host result is inferred from local passes. |
+
+No selected local MCP consumer showed a current regression. The HTTP fixture
+still explicitly rejects a missing `MCP-Protocol-Version` after initialization;
+valid follow-up requests now provide that negotiated header. This is a test
+fixture correction, not a relaxation of the server boundary.
+
+### 0.10 Root orchestration boundary refresh — 2026-11-05
+
+The current root-only orchestration changes were checked at their direct
+consumer and evidence boundaries. These are local E3 observations; they do not
+replace child-package, CI, registry, deployment, or public-host evidence.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| Public-boundary contract | PASS — `pnpm run public-boundary:contract:test` | Local fixture evidence that clean entries pass and unsafe paths/content fail closed. |
+| Bootstrap/evidence consumer | PASS — `pnpm run bootstrap:contract:test` | Local report-schema and public-boundary integration evidence. |
+| Orchestration decision/retry consumer | PASS — `pnpm run orchestration:contract:test` | Local contract evidence for blocker taxonomy, bounded retry, sync checkout, and decision-gate behavior. |
+| Child-CI synchronization policy consumer | PASS — `pnpm run child-ci:contract:test` | Static workflow/metadata boundary evidence; no provider dispatch or synchronization PR was performed. |
+| Evidence reconciliation consumer | PASS — `pnpm run integration:evidence:test` | Current-revision joins are accepted and historical evidence is rejected for promotion. |
+| Shared downstream conformance path | PASS — `pnpm run conformance:fixtures` (`298` passed, `0` failed across `23` fixtures) | Local parser/core/renderer/language-service/CLI/preview/highlighting serialization and negative-path evidence. |
+| Local integration gate | ENVIRONMENT UNAVAILABLE — exit `2` before stages | Node `22.23.2` is below the declared `>=24` prerequisite; no consumer parity failure is inferred. |
+| Public integration gate | ENVIRONMENT UNAVAILABLE — exit `2` before stages | Same Node prerequisite; no registry, deployment, or public consumer claim is made. |
+| Current CI / public host | NOT VERIFIED | Historical CI/public records remain scoped to their recorded revisions and are not reused as current-pointer evidence. |
+
+No selected local consumer boundary showed a regression from the root
+orchestration changes. Consumer, CI, and public evidence remain explicitly
+separate; a supported Node 24 checkout is required before promoting the full
+integration gate.
+
 ## 1. Tujuan
 
 Membuat satu gate yang dapat dijalankan dari checkout bersih untuk membuktikan bahwa repository-repository RelGeo bekerja sebagai satu dependency graph publik.

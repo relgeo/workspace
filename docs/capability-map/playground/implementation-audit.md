@@ -12,7 +12,7 @@ view is [status-matrix.md](./status-matrix.md). The archived log is historical
 evidence and must not be read as proof of current CI, registry, deployment, or
 runtime status.
 
-## Current audit checkpoint — 2026-11-03
+## Current audit checkpoint — 2026-11-04
 
 The current checkout was audited against all 37 expected catalog IDs using the
 Playground source, focused tests, UX contract script, production build, and
@@ -48,7 +48,7 @@ The following findings are based on the current `playground/src` and
 and the static UX contract audit. `playground/test` is not present; it is not
 treated as a failed implementation because the repository's unit-test path is
 `playground/src/__tests__`. The source evidence is from Playground submodule
-revision `c7cec4b505f290beccac911ef97786c8f6b0a534` plus uncommitted working-tree changes in the listed source,
+revision `47fd71583f4950467f63d56ad67feb24526ccb5a` plus uncommitted working-tree changes in the listed source,
 test, E2E, and UX-audit files; it is not evidence of a committed or hosted
 artifact.
 
@@ -56,32 +56,36 @@ artifact.
 | --- | --- | --- | --- | --- |
 | `PG-THEME-001` | **Implemented locally; browser verification pending.** The Playground initializes `system`, follows `prefers-color-scheme`, exposes explicit light/dark overrides, and persists the selection in browser-local storage when available. | `src/theme.ts`; `src/main.tsx`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/styles/tokens.css`; `src/__tests__/theme.test.ts`; `e2e/playground.spec.ts` | `partial-local` | Unit and static source evidence cover the contract; the browser assertion remains unavailable because the Playwright preview server could not bind. |
 | `PG-LIFE-002` | **Implemented locally; browser verification pending.** `bootstrapPhase` distinguishes opening/restoring/empty/ready/error, status metadata exposes `LOADING`, and bootstrap interaction is gated; browser-visible transition coverage is not observed. | `src/App.tsx`; `src/playground-status.ts`; `src/__tests__/playground-status.test.ts`; `e2e/playground.spec.ts` | `partial-local` | E2E could not start because the preview server bind was denied; browser behavior remains environment-limited. |
-| `PG-CANVAS-005` | **Implemented locally; browser verification pending.** A dedicated camera-only reset sets the zoom/pan baseline and requests fit without changing source; browser proof of file/dirty/selection preservation is unavailable. | `src/view-state.ts`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/components/Preview.tsx`; `src/__tests__/view-state.test.ts`; `e2e/playground.spec.ts` | `partial-local` | Unit/source evidence confirms the separation; E2E is not verified. |
-| `PG-KEY-001` | **Implemented locally; browser verification pending.** A centralized Mod+Alt command map covers file, viewport, diagnostics, sidebar, and surface actions with editable-field safety. | `src/keyboard-commands.ts`; `src/__tests__/keyboard-commands.test.ts`; `docs/KEYBOARD-SHORTCUTS.md`; `src/App.tsx`; `e2e/playground.spec.ts` | `partial-local` | Browser execution is environment-limited; native/browser-reserved-key behavior is not promoted beyond source/unit evidence. |
-| `PG-A11Y-001` | **Partial.** Landmarks, labels, ARIA states, live diagnostics, focus return/traps, and source/preview navigation are implemented and pass the static contract audit; native AT traversal is not verified. | `scripts/audit-ux-contract.mjs`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/components/Inspector.tsx`; `src/components/Sidebar.tsx`; `src/components/Editor.tsx` | `partial-local` | VoiceOver/TalkBack and device/browser AX evidence remain deferred-device, not absent implementation. |
+| `PG-CANVAS-005` | **Implemented locally; browser verification pending.** A dedicated camera-only reset sets the zoom/pan baseline without requesting fit-to-content, so the fit effect cannot overwrite the deterministic reset; browser proof of file/dirty/selection preservation is unavailable. | `src/view-state.ts`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/components/Preview.tsx`; `src/__tests__/view-state.test.ts`; `e2e/playground.spec.ts` | `partial-local` | Unit/source evidence confirms the separation; E2E is not verified. |
+| `PG-KEY-001` | **Implemented locally; browser verification pending.** A centralized Mod+Alt command map covers file, viewport, diagnostics, sidebar, and surface actions; IME composition and AltGraph text-entry chords are explicitly excluded from command handling. | `src/keyboard-commands.ts`; `src/__tests__/keyboard-commands.test.ts`; `docs/KEYBOARD-SHORTCUTS.md`; `src/App.tsx`; `e2e/playground.spec.ts` | `partial-local` | Browser execution is environment-limited; native/browser-reserved-key behavior is not promoted beyond source/unit evidence. |
+| `PG-A11Y-001` | **Partial.** Landmarks, labels, ARIA states, atomic live status/diagnostics, focus return/traps, and source/preview navigation are implemented and pass the static contract audit; native AT traversal is not verified. | `scripts/audit-ux-contract.mjs`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/components/Inspector.tsx`; `src/components/Sidebar.tsx`; `src/components/Editor.tsx` | `partial-local` | VoiceOver/TalkBack and device/browser AX evidence remain deferred-device, not absent implementation. |
 | `PG-A11Y-002` | **Implemented locally; device verification pending.** Reduced-motion, focus/forced-colors fallback, minimum targets, and non-gesture controls are present and pass the static audit. | `src/index.css`; `src/styles/tokens.css`; `src/preview-toolbar.ts`; `scripts/audit-ux-contract.mjs`; `e2e/mobile-playground.spec.ts` | `deferred-device` | Physical handset/touch evidence remains deferred; static/source evidence does not prove device parity. |
 
 | Evidence | Result | Interpretation |
 | --- | --- | --- |
-| `pnpm test` in `playground/` | PASS — 17 files / 104 tests | Unit, worker, persistence, preview, helper, theme, bootstrap, keyboard-command, and viewport contracts are green. Tests live under `src/__tests__`; no `playground/test` directory exists. |
+| `pnpm test` in `playground/` | PASS — 17 files / 107 tests | Unit, worker, persistence, preview, helper, theme, bootstrap, keyboard-command, and viewport contracts are green. Tests live under `src/__tests__`; no `playground/test` directory exists. |
 | `pnpm build` in `playground/` | PASS — TypeScript and Vite production build | The local production artifact is buildable; Vite emitted only a chunk-size warning, not a build failure. This is not hosted parity evidence. |
-| `pnpm run audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, focus, responsive, reduced-motion, forced-colors, and inline-style contract checks pass. |
-| `pnpm run lint` in `playground/` | PASS | Current Playground source is lint-clean. |
+| `pnpm audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, atomic status announcements, focus, responsive, reduced-motion, forced-colors, and inline-style contract checks pass. |
+| `pnpm lint` in `playground/` | PASS | Current Playground source is lint-clean. |
 | `pnpm exec playwright test --list` in `playground/` | PASS — 16 tests discovered | Startup, accessibility, keyboard/focus, theme, persistence, and mobile cases are present in the E2E surface. |
-| `pnpm exec playwright test playground.spec.ts -g "exposes named landmarks\|applies the browser system preference"` in `playground/` | NOT VERIFIED — environment unavailable | The Playwright preview server failed before page creation while binding `127.0.0.1:4173` with `EPERM`; this does not establish a Playground implementation failure. |
-| `pnpm run playground:artifact:check` at workspace root | PASS | The fresh source/assembled artifact has matching all-file digests; child revision `c7cec4b…` matches the Pages workflow pin while baseline drift remains reported. |
-| `pnpm run test:pages-artifact` in `relgeo.github.io/` | PASS | The assembled Pages artifact has valid route/title/assets and Playground provenance. |
+| `pnpm exec playwright test playground.spec.ts -g "exposes the keyboard command surface and camera-only viewport reset"` in `playground/` | NOT VERIFIED — environment unavailable | The Playwright preview server failed before page creation while binding `127.0.0.1:4173` with `EPERM`; this does not establish a Playground implementation failure. |
+| `pnpm run playground:artifact:check` at workspace root | NOT VERIFIED — baseline drift | Source and assembled files were prepared, but the checker rejected child revision `47fd715…` because the integration baseline and Pages pin still use `c7cec4b…`. |
+| `pnpm run test:pages-artifact` in `relgeo.github.io/` | NOT VERIFIED — provenance mismatch | The assembled Pages artifact was present, but the assertion rejected unsynchronized input provenance caused by the immutable pin drift. |
+
+### Implementation delta — 2026-11-04
 
 The selected implementation now has local source/test evidence for the system,
 light, and dark theme contract (`theme.ts`, `theme.test.ts`, and the theme
 selector in `Navbar.tsx`), an explicit bootstrap phase (`App.tsx` and
 `playground-status.ts`), a camera-only viewport reset (`view-state.ts`, `App.tsx`,
-and `view-state.test.ts`), the centralized keyboard command map
-(`keyboard-commands.ts` and `keyboard-commands.test.ts`), and web
-input-tolerance additions (minimum file-action targets and forced-colors focus
-fallback in `index.css`). Browser assertions for these paths are present in
+and `view-state.test.ts`) that no longer triggers fit-to-content, the centralized
+keyboard command map with IME/AltGraph safety (`keyboard-commands.ts`,
+`keyboard-commands.test.ts`, and `App.tsx`), and web input-tolerance additions
+(atomic status announcements, minimum file-action targets, and forced-colors
+focus fallback). Browser assertions for these paths are present in
 `playground/e2e/playground.spec.ts`, but remain not verified until the Playwright
-server can bind successfully.
+server can bind successfully. The worker readiness/recovery fields and tests
+remain backward-compatible additions to the worker response contract.
 
 The accepted theme contract is fixed for the implementation task: initial
 `system` mode follows `prefers-color-scheme`, explicit `light` and `dark`
@@ -92,8 +96,9 @@ overrides are supported, and browser-local persistence is used where available.
 The catalog/reconciliation now records `34` implemented (`✔️`), `3` partial
 (`🌗`), and `0` absent (`❌`). The remaining active debt is limited to
 `PG-LIFE-002`, `PG-A11Y-001`, and `PG-DELIVERY-001`; implementation/source
-evidence is present for the first two and the local artifact is verified for
-the third. Browser traversal, hosted smoke, and public parity remain evidence
+evidence is present for the first two, while the third has a locally assembled
+artifact whose provenance checks are currently blocked by baseline/Pages pin
+drift. Browser traversal, hosted smoke, and public parity remain evidence
 follow-ups; `PG-DELIVERY-001` is not a release prerequisite for this goal.
 
 The audit does not promote browser E2E, current CI, public Pages parity,

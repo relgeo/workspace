@@ -11,6 +11,7 @@ import {
   createEvidenceEnvelope,
   runWithBoundedAttemptsSync,
 } from "./orchestration-contract.mjs";
+import { inspectPublicEntries } from "./public-boundary.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDir, "..");
@@ -329,15 +330,8 @@ function runPackBoundaryStage(packageName, cwd) {
     try {
       const packReport = JSON.parse(result.stdout);
       const files = packReport.flatMap((entry) => entry.files ?? []);
-      const invalidFiles = files
-        .map((entry) => entry.path)
-        .filter((entry) =>
-          typeof entry !== "string" ||
-          path.isAbsolute(entry) ||
-          entry.startsWith("../") ||
-          /(^|\/)(node_modules|\.git|\.local|private|scratch|tmp)(\/|$)/.test(entry) ||
-          /(^|\/)(\.env(?:\..*)?|[^/]+\.(pem|key|secret))$/i.test(entry),
-        );
+      const boundary = inspectPublicEntries(files.map((entry) => ({ path: entry.path })));
+      const invalidFiles = boundary.violations.map((entry) => entry.path);
       if (invalidFiles.length > 0) {
         passed = false;
         error = "forbidden pack entries detected";

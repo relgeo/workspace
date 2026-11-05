@@ -15,7 +15,48 @@ The bounded active selection for the current capability-debt tranche is
 [in-scope-selection.md](./in-scope-selection.md). That record is a scope
 decision only; it does not replace the audit evidence or promote any status.
 
-## Current audit refresh — 2026-11-03
+## Implementation update — 2026-11-04
+
+This update records source and test changes made after the 2026-11-03 audit
+refresh. The changes are additive and keep the default structural/editor path
+backward-compatible:
+
+- `RelGeoLanguageService.analyzeMetadata()` now produces bounded object ID,
+  declared-type, and reference-shaped (`from`/`through`/`to`/`target`/`use`)
+  entries with exact UTF-16 source ranges and `targetId`, carried by the frozen
+  protocol/provenance envelope. It intentionally does not claim resolved
+  geometry values; core remains the semantic authority.
+- `DocumentAnalysisRequest.validationTarget` is optional. Omitted or
+  `structural` retains the previous structural readiness behavior; explicit
+  `semantic` and `resolve-ready` targets run core-backed resolution diagnostics
+  before emitting the corresponding readiness state.
+- `language-service/src/__tests__/protocol.test.ts` adds metadata range,
+  incomplete-source, reference-shaped metadata, and semantic/resolve-ready
+  acceptance cases. The focused suite is now 89/89; lint and ESM/CJS/DTS build
+  also pass.
+- Completion recovery now handles a one-edit object-field typo such as `fro:`
+  with a narrow replacement range for `from`, while leaving ordinary expression
+  completion ranges unchanged. The same hover path now provides bounded
+  syntax/field documentation from the active completion catalog when parsing or
+  resolution is incomplete. The focused service suite is now 89/89.
+- `createResultIdentity()` now adds a minimal producer provenance entry when a
+  host omits provenance: `source: language-service` with the result spec
+  version. Caller-supplied provenance remains authoritative and unchanged. A
+  serialization regression test covers this additive default; the service suite
+  is now 90/90.
+- `playground/src/worker.ts` now exposes additive readiness and recovery fields
+  on the worker response. Empty input is `partial`, parse/resolve failures are
+  `invalid`, a successful resolve is `resolve-ready`, and a success following
+  `invalid` or `partial` is `recovered`; the existing structural render payload
+  remains unchanged. Playground tests cover the error, partial, recovery, and
+  stable paths; the package suite is now 106/106 with lint and production build
+  passing.
+
+The affected reconciliation rows remain `🌗` until the dependent verification
+and reconciliation tasks confirm broader producer/consumer coverage. This is
+implementation evidence, not a status promotion.
+
+## Current audit refresh — 2026-11-04
 
 This refresh rechecked the selected language-service boundary and the local
 consumers that directly import it. It records implementation evidence for the
@@ -24,11 +65,12 @@ browser/public, or native-host delivery evidence.
 
 | Boundary | Fresh evidence | Result | Limit that remains visible |
 | --- | --- | --- | --- |
-| `language-service/` | `npm test && npm run lint && npm run build` in `language-service/` | PASS — 2 files, 82 tests; type-check and ESM/CJS/DTS build pass | No packed/registry/public artifact proof. |
-| `remark-relgeo-hl/` | `npm test` in `remark-relgeo-hl/` | PASS — 1 file, 3 tests | Normal tokenization path is covered; injected service-failure fallback is not proven. |
-| `playground/` | `npm test && npm run lint && npm run build` in `playground/` | PASS — 17 files, 102 tests; lint and production bundle build pass | Browser E2E, deployed/public bundle, and current CI are not verified here. |
-| Workspace conformance | `node scripts/run-conformance-fixtures.mjs` from the workspace root | PASS — 260 checks across 20 fixtures | This is local fixture evidence; release publication, current CI, and external-host execution remain unverified. |
-| Source consumer wiring | `playground/src/components/Editor.tsx`, `playground/src/worker.ts`, `playground/src/App.tsx`, `mcp/lib/src/contract/mcp_schema.dart`, `mcp/lib/src/adapter/local_dispatch.dart` | Playground editor helpers send document/version/request identity to typed diagnostics/completion/hover adapters; MCP completion/validation echo identity; 34 MCP tests pass | Playground request ordering and core-backed semantic producer wiring remain host/adapter work; browser/public execution is not verified. |
+| `language-service/` | `npm test && npm run lint && npm run build` in `language-service/` | PASS — 2 files, 90 tests; type-check and ESM/CJS/DTS build pass | No packed/registry/public artifact proof. |
+| `remark-relgeo-hl/` | `npm test && npm run lint && npm run build` in `remark-relgeo-hl/` | PASS — 1 file, 6 tests; type-check and package build pass | Normal tokenization path is covered; injected service-failure fallback is not proven. |
+| `remark-relgeo/` and `cli/` | `npm test && npm run lint && npm run build` in `remark-relgeo/`; `npm test` in `cli/` | PASS — 9 Markdown tests and 36 CLI tests; package checks pass for remark-relgeo | Failure fallback and public install remain separate evidence boundaries. |
+| `playground/` | `npm test && npm run lint && npm run build` in `playground/` | PASS — 17 files, 106 tests; lint and production bundle build pass | Browser E2E, deployed/public bundle, and current CI are not verified here. |
+| Workspace conformance | `node scripts/run-conformance-fixtures.mjs` from the workspace root | PASS — 298 assertions across 23 fixtures | This is local fixture evidence; release publication, current CI, and external-host execution remain unverified. |
+| Source consumer wiring | `playground/src/components/Editor.tsx`, `playground/src/worker.ts`, `playground/src/App.tsx`, `mcp/lib/src/contract/mcp_schema.dart`, `mcp/lib/src/adapter/local_dispatch.dart` | Playground editor helpers send document/version/request identity to typed diagnostics/completion/hover adapters; MCP completion/validation echo identity; prior local MCP snapshot covered 34 tests | Playground request ordering and core-backed semantic producer wiring remain host/adapter work; current Dart rerun and browser/public execution are not verified. |
 
 ### Selected capability findings
 
@@ -38,12 +80,13 @@ browser/public, or native-host delivery evidence.
 | `LS-DIAG-002` | `🌗` | `src/service.ts#getDiagnostics` now projects core `collectDiagnostics` output and preserves bounded independent validation errors; 75 service tests pass. | Tolerant aggregation is implemented for the bounded path, but broad incomplete-source recovery remains partial. |
 | `LS-SCHEMA-002` | `🌗` | `getSchemaDriftReport()` compares active root sections, object types, object fields, parameters, views, sheets, and presentation catalogs; clean baseline and mutation tests pass. | The baseline is code-owned and deterministic; a generated comparison against every active spec rule is still future evidence. |
 | `LS-COMP-002` | `🌗` | `getCompletions()` now returns bounded object-reference items for expression and object contexts, with type detail and exact replacement edits. | Full AST/semantic-index context remains outside this bounded implementation. |
-| `LS-COMP-003` | `🌗` | Partial completion tests cover blank lines, quoted IDs, incomplete expressions, and a `typ:` key typo recovery path. | The recovery contract is bounded; all parser-error shapes are not claimed. |
-| `LS-RANGE-001` | `🌗` | Diagnostics use core source ranges; tokens retain offsets; completion items carry replacement ranges; hover results carry word ranges. | Metadata/semantic-inspection range coverage remains outside this selected implementation. |
+| `LS-COMP-003` | `🌗` | Partial completion tests cover blank lines, quoted IDs, incomplete expressions, `typ:`, and one-edit object-field typo recovery paths. | The recovery contract is bounded; all parser-error shapes are not claimed. |
+| `LS-HOVER-001` | `🌗` | `getHover()` returns resolved object/property values with exact ranges and bounded syntax/field documentation from the active completion catalog when source is incomplete. | Complete keyword/type/enum documentation provenance and broader incomplete-source coverage remain open. |
+| `LS-RANGE-001` | `🌗` | Diagnostics use core source ranges; tokens retain offsets; completion items carry replacement ranges; hover results carry word ranges; bounded metadata and reference-shaped entries now carry exact ranges. | Broader semantic-index range coverage and host rendering remain open. |
 | `LS-RANGE-002` | `🌗` | `analyzeNavigation()` returns a definition and bounded references for one object relation with stable document ID and exact UTF-16 ranges; protocol test passes. | Broader semantic relations and the Playground source-jump action remain open. |
 | `LS-INCR-001` | `🌗` | `analysis.ts` reports changed range, changed-line budget, inspected line/code-unit counts, and an explicit full-document semantic fallback; protocol test passes. | Core dependency semantics are not incremental, so this is measured bounded planning rather than incremental parsing. |
 | `LS-INCR-002` | `🌗` | `analyzeDocument()` returns serializable protocol/document/version/request identity, and helper tests reject mismatched responses. | Playground still owns worker ordering; a full host adapter migration is not claimed. |
-| `LS-VERS-002` | `🌗` | `src/protocol.ts` freezes protocol `0.2`, spec `0.5`, optional source revision/provenance, and JSON serialization; family DTO tests cover diagnostics, validation, completion, hover, metadata, navigation, and analysis. | All producers and downstream worker/MCP adapters still need propagation evidence. |
+| `LS-VERS-002` | `🌗` | `src/protocol.ts` freezes protocol `0.2`, spec `0.5`, and JSON serialization; all result families carry caller provenance or a minimal language-service producer provenance default. | Source revision and downstream worker/MCP propagation evidence remain open. |
 | `LS-PROTO-002` | `🌗` | MCP typed DTOs accept optional editor identity and validation readiness/recovery fields, echo identity at dispatch, and preserve legacy JSON; the 34-test Dart suite passes. | Packaged/cross-host transport and core-backed language-service producer wiring remain open. |
 
 ### Other status boundaries confirmed
@@ -77,13 +120,13 @@ Implementation note: these local changes are evidence for the dependent
 reconciliation task. This audit does not silently rewrite the matrix or remove
 candidate rows from the backlog.
 
-## Reproducible evidence and handoff — 2026-11-03
+## Reproducible evidence and handoff — 2026-11-04
 
 The following commands reproduce the recorded local evidence from the stated
 working directory boundaries:
 
 ```text
-(cd language-service && npm test && npm run lint && npm run build)
+(cd language-service && npm test && npm run lint && npm run build)  # 90/90
 (cd remark-relgeo-hl && npm test)
 (cd playground && npm test && npm run lint && npm run build)
 node scripts/run-conformance-fixtures.mjs
@@ -93,10 +136,12 @@ git diff --check
 git -C language-service diff --check
 ```
 
-Observed results are language-service `82/82` tests plus type-check and
-ESM/CJS/DTS build, Markdown highlighter `3/3` tests, Playground `102/102`
-tests plus lint/build, MCP `34/34` tests, and a zero-difference active-spec
-drift report. The commands use
+Observed results for this refresh are language-service `90/90` tests plus
+type-check and ESM/CJS/DTS build, Markdown highlighter `6/6` tests, remark-relgeo
+`9/9` tests, CLI `36/36` tests, Playground `106/106` tests plus lint/build, and
+a zero-difference active-spec drift report. The earlier MCP `34/34` snapshot is
+retained as historical support evidence; the current Dart rerun was
+environment-unavailable. The commands use
 the local workspace and do not require npm publication, a registry install,
 production deployment, a pub.dev artifact, or a deferred MCP/Flutter host.
 
@@ -120,8 +165,8 @@ before any release-boundary conclusion is drawn.
 The backlog and reconciliation retain the remaining `🌗`, `❌`, `➖`, and
 `⏸️` rows. In particular, broader semantic navigation (`LS-RANGE-002`), the
 measured full-document fallback in incremental analysis (`LS-INCR-001`), result provenance (`LS-VERS-002`), broader incomplete
-source/recovery coverage, full active-spec drift generation, metadata ranges,
-Markdown failure fallback, and the held MCP/desktop adapters remain open or
+source/recovery coverage, broader semantic metadata/provenance producers, full
+active-spec drift generation, Markdown failure fallback, and the held MCP/desktop adapters remain open or
 deferred. Registry/public artifact, current CI, browser/public, Node 24, and
 native-host evidence remain not verified; these limitations do not change an
 implementation status and are not prerequisites for this goal.

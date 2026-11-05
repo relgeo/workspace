@@ -1,9 +1,10 @@
-# Website and Pages bounded in-scope selection
+# Website and Pages bounded in-scope selection (historical intake)
 
 **Date:** 2026-10-30  
 **Task:** `select-and-bound-in-scope-capability-debt--1183688132`  
-**Status:** bounded active selection; selection is not implementation or
-completion evidence  
+**Status:** historical 2026-10-30 intake; superseded for current P0/P1
+closability by the [2026-11-04 backlog triage](./implementation-gap-backlog.md#p0p1-implementation-closability-triage);
+selection is not implementation or completion evidence
 **Owner boundary:** `relgeo.github.io` owns website presentation, editorial
 navigation, browser-facing accessibility, metadata, and Pages artifact
 assembly. `spec/id` owns normative DSL meaning; `spec/en`, Playground,
@@ -12,12 +13,17 @@ or separate verification owners where named below.
 
 ## Decision
 
-This tranche selects six actionable gaps from the expected capability catalog,
+This historical tranche selected six actionable gaps from the expected capability catalog,
 implementation audit, status/reconciliation view, and implementation-gap
 backlog. It is bounded to website-local discovery, language/reference
 coverage, browser accessibility evidence, deployment-aware metadata, and local
 artifact provenance. The selection can be implemented or verified without a
 production deployment change.
+
+It is retained as an audit record of the earlier intake. The current triage
+also selects `WEB-PAGE-007` and `WEB-PAGE-009`, and accounts for every P0/P1
+candidate row in the backlog; use that triage for current implementation
+selection and evidence/deferred boundaries.
 
 The selection does not include the already-green navigation/orientation rows
 (`WEB-PAGE-002` and `WEB-PAGE-008`) as new debt. It also does not turn public

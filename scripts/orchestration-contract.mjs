@@ -33,6 +33,14 @@ export const DEPENDENCY_STATUSES = Object.freeze([
   "none",
 ]);
 
+export const DECISION_STATES = Object.freeze([
+  "not-required",
+  "approved",
+  "pending",
+  "rejected",
+  "stale",
+]);
+
 export const DEFAULT_RETRY_POLICY = Object.freeze({
   maxAttempts: 2,
   backoffMs: 250,
@@ -101,6 +109,50 @@ export function classifyFailure({
     remediation: remediationFor(isTransient ? "transient" : "target-defect"),
     decisionRequired: false,
     decisionNeeded: false,
+  };
+}
+
+/**
+ * Central promotion/scope decision gate. It reuses the existing public-safe
+ * blocker fields so callers remain backward-compatible with current reports.
+ */
+export function evaluateDecisionGate({
+  required = false,
+  status = "not-required",
+} = {}) {
+  if (!DECISION_STATES.includes(status)) {
+    throw new Error("Unknown decision state: " + status);
+  }
+  if (!required) {
+    return {
+      allowed: true,
+      decisionState: status,
+      dependencyStatus: "none",
+      decisionRequired: false,
+      decisionNeeded: false,
+      blockerClass: null,
+      retryable: false,
+    };
+  }
+  if (status === "approved") {
+    return {
+      allowed: true,
+      decisionState: status,
+      dependencyStatus: "ready",
+      decisionRequired: false,
+      decisionNeeded: false,
+      blockerClass: null,
+      retryable: false,
+    };
+  }
+  return {
+    allowed: false,
+    decisionState: status,
+    dependencyStatus: "blocked",
+    ...classifyFailure({
+      blockerClass: "pending-human-decision",
+      decisionRequired: true,
+    }),
   };
 }
 

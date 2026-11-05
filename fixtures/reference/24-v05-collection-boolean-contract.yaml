@@ -1,0 +1,76 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Collection and Boolean Contract
+  description: Active core fixture for boolean topology and repeat collection identity/order.
+
+objects:
+  left:
+    type: rect
+    size: [20, 20]
+    place:
+      topLeft: [0, 0]
+
+  right:
+    type: rect
+    size: [20, 20]
+    place:
+      topLeft: [10, 0]
+
+  merged:
+    type: boolean
+    operation: union
+    shapes: [left, right]
+
+  symmetricDifference:
+    type: boolean
+    operation: xor
+    shapes: [left, right]
+    result:
+      mode: multi
+
+  guide:
+    type: line
+    from: [0, 50]
+    to: [100, 50]
+
+  alongMarks:
+    type: repeat
+    along:
+      target: guide
+      count: 3
+      spacing: uniform-t
+    item:
+      type: circle
+      radius: 1
+
+  gridMarks:
+    type: repeat
+    grid:
+      rows: 2
+      cols: 2
+      pitch: [10, 15]
+    item:
+      type: circle
+      radius: 1
+
+  polarOrigin:
+    type: point
+    at: [0, 0]
+
+  polarMarks:
+    type: repeat
+    polar:
+      count: 3
+      center: polarOrigin
+      radius: 5
+    item:
+      type: circle
+      radius: 1
+
+  eachMarks:
+    type: repeat
+    each: [[0, 0], [10, 10]]
+    item:
+      type: circle
+      radius: 1

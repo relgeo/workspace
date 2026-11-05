@@ -1,6 +1,6 @@
 # RelGeo CLI Implementation-Gap Backlog
 
-**Tanggal:** 2026-11-04
+**Tanggal:** 2026-11-05
 **Status:** candidate goal/task register with a bounded active tranche; no row
 here counts as implementation
 **Source:** [CLI status matrix](./status-matrix.md) and
@@ -24,15 +24,59 @@ records post-implementation status for selected rows.
 - `⚠️` is a confirmed defect or contract mismatch and needs a regression test even when part of the capability already exists.
 - Acceptance evidence should include the relevant CLI command, fixture or test, exit/stream behavior, and the canonical environment limitation where applicable.
 
+### Expected-ID disposition register
+
+This register is the backlog's one-to-one coverage join with the frozen
+expected catalog. The candidate-task tables below add historical task detail;
+they do not replace or shrink this 35-ID register.
+
+| Expected ID | Disposition | Owner / reason |
+| --- | --- | --- |
+| `CLI-DISC-001` | `implementation` | `relgeo/cli`; command discovery is implemented and locally probed. |
+| `CLI-DISC-002` | `implementation` | `relgeo/cli`; help and usage behavior is implemented; wording snapshots remain optional evidence. |
+| `CLI-DISC-003` | `implementation` | `relgeo/cli` + workspace; version/compatibility disclosure is implemented. |
+| `CLI-INIT-001` | `implementation` | `relgeo/cli` + spec; bounded starter workflow is implemented and tested. |
+| `CLI-OPEN-001` | `implementation` | `relgeo/cli`; named open is bounded metadata inspection, not an editor. |
+| `CLI-IN-001` | `implementation` | `relgeo/cli`; file acquisition and path-aware errors are implemented. |
+| `CLI-IN-002` | `implementation` | `relgeo/cli`; stdin pipeline and empty-input behavior are implemented. |
+| `CLI-IN-003` | `implementation` | `relgeo/cli`; precedence and strict UTF-8 boundary are implemented. |
+| `CLI-INSPECT-001` | `implementation` | `relgeo/cli` + core/spec; inspection transport is implemented, semantics delegated. |
+| `CLI-VALID-001` | `implementation; delegated semantics` | `relgeo/cli` + core/spec; validation orchestration is implemented. |
+| `CLI-VALID-002` | `implementation` | `relgeo/cli`; compatibility alias is implemented. |
+| `CLI-RENDER-001` | `implementation; delegated semantics` | `relgeo/cli` + core/renderer; orchestration is implemented. |
+| `CLI-RENDER-002` | `implementation; delegated semantics` | `relgeo/cli` + core/spec; option forwarding is closed by fixture/tests. |
+| `CLI-RENDER-003` | `implementation; delegated semantics` | `relgeo/cli` + renderer/spec; selector transport is closed by fixture/tests. |
+| `CLI-OUT-001` | `implementation; delegated semantics` | `relgeo/cli` + core; JSON transport is implemented. |
+| `CLI-OUT-002` | `implementation; delegated semantics` | `relgeo/cli` + renderer; SVG invocation/output boundary is implemented. |
+| `CLI-OUT-003` | `implementation; delegated semantics` | `relgeo/cli` + core; graph transport is implemented. |
+| `CLI-OUT-004` | `implementation` | `relgeo/cli`; deterministic stdout/file output is implemented. |
+| `CLI-DIAG-001` | `implementation; delegated semantics` | `relgeo/cli` + spec/core; diagnostic transport is implemented. |
+| `CLI-DIAG-002` | `implementation` | `relgeo/cli`; human diagnostics presentation is implemented. |
+| `CLI-DIAG-003` | `implementation` | `relgeo/cli`; machine-readable diagnostics envelope is implemented. |
+| `CLI-EXIT-001` | `implementation` | `relgeo/cli`; exit taxonomy is implemented and tested. |
+| `CLI-ERR-001` | `implementation; delegated semantics` | `relgeo/cli` + core/renderer; strict dispatch and semantic errors are separated. |
+| `CLI-ERR-002` | `implementation` | `relgeo/cli`; strict option/parameter rejection is implemented. |
+| `CLI-CONFIG-001` | `implementation` | `relgeo/cli`; config sources and precedence are implemented. |
+| `CLI-CONFIG-002` | `implementation` | `relgeo/cli`; noninteractive environment controls are implemented. |
+| `CLI-AUTO-001` | `implementation` | `relgeo/cli` + workspace; one-shot automation is implemented, canonical runtime is separate evidence. |
+| `CLI-AUTO-002` | `explicit deferred` | `relgeo/cli` + product owner; document watch/rebuild awaits lifecycle scope. |
+| `CLI-AUTO-003` | `implementation` | `relgeo/cli`; stable streams and no-color behavior are implemented. |
+| `CLI-AUTO-004` | `explicit deferred` | CLI/protocol owners; daemon/JSON-RPC awaits protocol and security scope. |
+| `CLI-PACK-001` | `implementation; environment-limited evidence` | `relgeo/cli` + release owner; local package boundary is implemented, registry proof is separate. |
+| `CLI-PACK-002` | `implementation` | `relgeo/cli` + release guard; build/pack boundary is locally verified. |
+| `CLI-PACK-003` | `implementation; environment-limited evidence` | workspace + `relgeo/cli`; compatibility is implemented, canonical integration is separate evidence. |
+| `CLI-PACK-004` | `evidence-only; explicit deferred` | release owner + workspace; Node 24/registry/CI/recovery proof is unavailable and is not an implementation dependency. |
+| `CLI-PACK-005` | `implementation; delegated semantics` | workspace + `relgeo/cli`; conformance consumption is locally verified. |
+
 ## Bounded active implementation tranche
 
-The active tranche is deliberately limited to eleven rows that can be
+The historical tranche was deliberately limited to eleven rows that could be
 implemented and verified at the `relgeo/cli` repository boundary without npm
-publication or a new protocol decision. The contract-freeze task has now
-resolved `open`, config, and one-shot automation behavior at this boundary;
-document watch/rebuild remains explicitly held. The rows below retain the
-original intake selection metadata, while the current frozen status is recorded
-in the contract table that follows.
+publication or a new protocol decision. The contract-freeze task resolved
+`open`, config, and one-shot automation behavior at this boundary; document
+watch/rebuild remains explicitly held. The rows below retain the original
+intake selection metadata, while current status is recorded as regression
+evidence rather than an open implementation gap.
 
 ## Frozen command and configuration contract — 2026-11-03
 
@@ -47,7 +91,7 @@ The active CLI contract is now tested at the package boundary:
 | Noninteractive | `NO_COLOR`, `RELGEO_NO_COLOR`, and truthy `CI` disable styling; CI suppresses progress; JSON diagnostics remain one envelope on stderr. | `cli/src/index.ts`; `cli/src/__tests__/cli.test.ts` |
 | Watch/rebuild | Not implemented in the one-shot CLI. It is held pending a separate lifecycle decision for debounce, recovery, shutdown, and streams. Package build `dev` watch is not document watch. | `cli/docs/README.md`; expected capability catalog `CLI-AUTO-002` |
 
-## P0/P1 triage decision — 2026-11-04
+## P0/P1 triage decision — 2026-11-05
 
 This is the current triage of every P0/P1 row in the candidate-task table
 below. “Implementation-closable” means the remaining gap can be changed and
@@ -56,12 +100,12 @@ as a follow-up and must not be used to claim that the implementation is
 missing. Rows already at `✔️` are not reopened as gaps; their acceptance tests
 remain regression evidence.
 
-### Implementation-closable gaps selected for the next CLI tranche
+### Historical implementation-closable gaps (now closed)
 
 | Candidate / expected ID | Priority | Initial status | Owner | Source of truth | Acceptance test | Triage disposition |
 | --- | --- | --- | --- | --- | --- | --- |
-| `CLI-TASK-005` / `CLI-RENDER-002` profile, parameter, and unit selection | `P1` | `🌗` partial | `relgeo/cli` for option parsing/forwarding; `@relgeo/core` + `spec/` for evaluation and unit semantics | `docs/capability-map/cli/expected-capability-catalog.md` (`CLI-RENDER-002`); `docs/capability-map/cli/status-matrix.md`; `docs/capability-map/cli/reconciliation.md`; `cli/src/index.ts`; `cli/src/__tests__/cli.test.ts` | `compile` and `check` cover profile selection, numeric/string/boolean overrides, target units, valid combinations, and unknown names; invalid intent exits non-zero and is not silently ignored. | **Selected implementation gap.** Expand the option/fixture matrix without duplicating core/spec semantics. |
-| `CLI-TASK-006` / `CLI-RENDER-003` sheet/view selector validation | `P1` | `🌗` partial | `relgeo/cli` for selector mapping/failure transport; `@relgeo/renderer-svg` + `spec/` for sheet/view availability and render semantics | `docs/capability-map/cli/expected-capability-catalog.md` (`CLI-RENDER-003`); `docs/capability-map/cli/status-matrix.md`; `docs/capability-map/cli/reconciliation.md`; `cli/src/index.ts`; `cli/src/__tests__/cli.test.ts` | A valid `--sheet`/`--view` SVG selection matches its fixture; missing or invalid selectors exit non-zero with a stable diagnostic and do not emit a misleading artifact. | **Selected implementation gap.** Complete valid/invalid selector coverage at the CLI transport boundary. |
+| `CLI-TASK-005` / `CLI-RENDER-002` profile, parameter, and unit selection | `P1` | `✔️` implemented | `relgeo/cli` for option parsing/forwarding; `@relgeo/core` + `spec/` for evaluation and unit semantics | `docs/capability-map/cli/expected-capability-catalog.md` (`CLI-RENDER-002`); `docs/capability-map/cli/status-matrix.md`; `docs/capability-map/cli/reconciliation.md`; `cli/src/index.ts`; `cli/src/__tests__/cli.test.ts` | `compile` and `check` cover profile selection, numeric/string/boolean overrides, target units, valid combinations, and unknown names; invalid intent exits non-zero and is not silently ignored. | **Implementation closed.** Retain the option/fixture matrix without duplicating core/spec semantics. |
+| `CLI-TASK-006` / `CLI-RENDER-003` sheet/view selector validation | `P1` | `✔️` implemented | `relgeo/cli` for selector mapping/failure transport; `@relgeo/renderer-svg` + `spec/` for sheet/view availability and render semantics | `docs/capability-map/cli/expected-capability-catalog.md` (`CLI-RENDER-003`); `docs/capability-map/cli/status-matrix.md`; `docs/capability-map/cli/reconciliation.md`; `cli/src/index.ts`; `cli/src/__tests__/cli.test.ts` | A valid `--sheet`/`--view` SVG selection matches its fixture; missing or invalid selectors exit non-zero with a stable diagnostic and do not emit a misleading artifact. | **Implementation closed.** Retain valid/invalid selector coverage at the CLI transport boundary. |
 
 ### Remaining P0/P1 rows accounted for but not selected as open gaps
 
@@ -69,17 +113,17 @@ remain regression evidence.
 | --- | --- | --- | --- |
 | `P0` | `✔️` implemented | `CLI-TASK-011` / `CLI-ERR-001`; `CLI-TASK-012` / `CLI-ERR-002` | Implementation-closed. Keep strict-format, strict-option, and strict-parameter regressions; do not create duplicate implementation work. |
 | `P1` | `✔️` implemented | `CLI-TASK-001`–`CLI-TASK-004`, `CLI-TASK-007`–`CLI-TASK-010`, `CLI-TASK-013`, `CLI-TASK-014`, `CLI-TASK-016` | Implementation-closed. Preserve their existing owner/source/acceptance records and rerun focused regressions when the selected render-option work changes shared dispatch or streams. |
-| `P1` | `🌗` partial | `CLI-TASK-017` / `CLI-PACK-004` | **Evidence-only follow-up, not an implementation gap.** Node >=24, clean registry/staging install, current CI, and partial-publish recovery evidence require the canonical release environment and release owner. No package-publication action is part of this tranche. |
+| `P1` | `⏸️` deferred/evidence-only | `CLI-TASK-017` / `CLI-PACK-004` | **Evidence-only follow-up, not an implementation gap.** Node >=24, clean registry/staging install, current CI, and partial-publish recovery evidence require the canonical release environment and release owner. No package-publication action is part of this tranche. |
 
-The accounting is therefore `16` P0/P1 candidate rows: `2` selected
-implementation gaps, `13` implementation-closed rows retained for regression,
-and `1` evidence-only release row. The held `CLI-TASK-015` / `CLI-AUTO-002`
+The accounting is therefore `16` P0/P1 candidate rows: `0` open
+implementation gaps, `15` implementation-closed rows retained for regression,
+and `1` evidence-only/deferred release row. The held `CLI-TASK-015` / `CLI-AUTO-002`
 watch lifecycle is P2 and scope-deferred; `CLI-AUTO-004` is also held pending
 a separate protocol decision. Neither is an implementation prerequisite for
 the selected rows.
 
 The detailed contract lock for the selected rows is recorded in the
-[CLI reconciliation](./reconciliation.md#contract-lock-for-selected-render-gaps--2026-11-04).
+[CLI reconciliation](./reconciliation.md#historical-contract-lock-for-selected-render-gaps--2026-11-05).
 That record is the acceptance source for implementation: success behavior,
 failure/edge behavior, stable diagnostic/exit expectations, and evidence scope
 must remain within the existing `0.5.x` command contract.
@@ -112,7 +156,7 @@ The following candidate rows remain visible but are outside this tranche:
 | contract-frozen | `CLI-TASK-013` / `CLI-CONFIG-001` config file and precedence | `✔️` | `relgeo/cli` | `.relgeo.json`, explicit config, environment, flags, and `--no-config` are frozen and tested. |
 | contract-frozen | `CLI-TASK-014` / `CLI-CONFIG-002` noninteractive environment controls | `✔️` | `relgeo/cli` | `NO_COLOR`, `CI`, `RELGEO_*`, and stream behavior are frozen and tested. |
 | held | `CLI-TASK-015` / `CLI-AUTO-002` document watch/rebuild | `⏸️` | `relgeo/cli` | Explicitly outside one-shot scope pending a lifecycle decision. |
-| not selected | `CLI-TASK-017` / `CLI-PACK-004` release registry and canonical-runtime proof | `🌗` | release owner + `relgeo/cli` | Explicitly excluded by the goal: no npm publication or registry dependency is required for this implementation tranche. |
+| evidence-only/deferred | `CLI-TASK-017` / `CLI-PACK-004` release registry and canonical-runtime proof | `⏸️` | release owner + workspace | Expected release evidence remains visible, but Node 24/registry/CI/recovery proof is outside the implementation boundary; no npm publication is required. |
 
 `➖` boundaries and the held `⏸️` daemon/JSON-RPC row remain outside the
 backlog and are not candidates for this tranche. Their statuses are preserved;
@@ -121,8 +165,8 @@ selection does not promote them to implementation work.
 | Check | Result |
 | --- | --- |
 | Intake candidate task records | 17 |
-| Current non-green task records | 2 (1 partial, 1 held) |
-| Current `🌗` tasks | 1 |
+| Current non-green task records | 2 (1 evidence-only/deferred, 1 held) |
+| Current `🌗` tasks | 0 |
 | Current `❌` tasks | 0 |
 | Current `⚠️` defect tasks | 0 |
 | Evidence-backed selected task records | 13 one-shot rows; current evidence is local and Node 24/registry-limited |
@@ -158,7 +202,7 @@ Priority bands are implementation ordering guidance, not completion status:
 | `CLI-TASK-014` Noninteractive environment controls | `CLI-CONFIG-002` | `✔️` | `implemented` | `P1` | `relgeo/cli` | no-color/CI contract; diagnostics mode | CI/no-color environment and flags suppress prompts/color/progress noise; stdout remains machine data and stderr remains diagnostics across commands | P1 terminal ambient state can change scripts | Retain CI/stream regression |
 | `CLI-TASK-015` Document watch/rebuild lifecycle | `CLI-AUTO-002` | `⏸️` | `held` | `P2` | `relgeo/cli` | separate watcher/debounce model; failure recovery decision | One-shot CLI explicitly does not watch source/config or keep a rebuild session alive; lifecycle tests await a separate scope decision | P2/P1 iterative workflows need wrappers | Keep held; do not infer watch from package build `dev` |
 | `CLI-TASK-016` Stable scripting streams and no-color mode | `CLI-AUTO-003` | `✔️` | `implemented` | `P1` | `relgeo/cli` | `CLI-TASK-009`; no-color/progress policy | For JSON/SVG/graph, stdout contains only requested data; progress/diagnostics go to stderr; explicit no-color/CI mode is tested for `info`, `check`, and `compile` | P1 pipelines may parse human noise | Retain stream snapshots |
-| `CLI-TASK-017` Release registry and canonical-runtime proof | `CLI-PACK-004` | `🌗` | `in scope` | `P1` | release owner + `relgeo/cli` | Node >=24; registry access; release guard | Clean packed/install consumer smoke runs under Node >=24, current release guard, and a registry or staging package; partial-publish recovery/forward-fix evidence is recorded without claiming publish success | P1 release confidence is local-only | Run the canonical package verification when environment is available |
+| `CLI-TASK-017` Release registry and canonical-runtime proof | `CLI-PACK-004` | `⏸️` | `evidence-only/deferred` | `P1` | release owner + workspace | Node >=24; registry access; release guard | Clean packed/install consumer smoke runs under Node >=24, current release guard, and a registry or staging package; partial-publish recovery/forward-fix evidence is recorded without claiming publish success | P1 release confidence is environment-limited, not an implementation gap | Run canonical package verification when the release environment and owner are available; do not publish as part of this goal |
 
 ## Scope and evidence follow-ups
 

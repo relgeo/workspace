@@ -1,6 +1,6 @@
 # RelGeo CLI expected-versus-observed reconciliation
 
-> **Coverage statement — 2026-11-04.** This document is a one-to-one join of
+> **Coverage statement — 2026-11-05.** This document is a one-to-one join of
 > the 35 expected capability IDs in the CLI catalog with the observed rows in
 > the CLI implementation audit. It does not add observed-only capabilities,
 > remove expected rows, or convert an absent implementation into `➖` merely
@@ -24,6 +24,7 @@
 | Implementation status | `implemented`, `partial`, `broken`, `absent`, `deferred`, `not applicable` | What exists at the CLI boundary, independent of test strength. |
 | Evidence status | `verified-local`, `local-conformance`, `partial-local`, `mismatch-confirmed`, `verified-absence`, `scope-held`, `environment-limited` | How the observation was established and what remains unverified. |
 | Scope decision | `in scope`, `expected-but-missing`, `boundary only`, `held`, `not applicable` | Whether CLI is expected to own the behavior. |
+| Disposition | `implementation`, `delegated`, `evidence-only`, `explicit deferred` | The closure treatment for each expected row; delegated semantics do not erase the CLI transport/orchestration row. |
 
 Important distinction:
 
@@ -39,6 +40,13 @@ Important distinction:
 - `⏸️ deferred` records a held protocol boundary while preserving the expected
   row and its traceability.
 
+Disposition is explicit for every row in the one-to-one register: the 32
+`implemented` rows are `implementation` at the CLI boundary (with delegated
+semantic ownership called out where applicable), `CLI-AUTO-002` and
+`CLI-AUTO-004` are `explicit deferred`, and `CLI-PACK-004` is `evidence-only`
+with an explicit deferred release boundary owned by the release/workspace
+owner. No expected ID is removed, merged, or relabeled as not applicable.
+
 ## 2. Coverage validation
 
 | Check | Result |
@@ -48,12 +56,12 @@ Important distinction:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 32 implemented, 1 partial, 0 broken, 0 absent, 2 deferred |
+| Result counts | 32 implemented, 0 partial, 0 broken, 0 absent, 3 deferred |
 | Implementation/evidence/scope columns present on every row | Yes |
 | Audit trace present on every row | Yes; each trace points to the corresponding audit ID and evidence section |
-| Current evidence refresh | Yes; audit §6 records the 2026-11-04 CLI revalidation (38/38), typecheck, build, CLI pack boundary (8 files), conformance (298/298), and consumer checks; Node 24/CI/registry/cross-OS evidence remains separate and unverified |
+| Current evidence refresh | Yes; audit §6 records the 2026-11-05 CLI revalidation (38/38), typecheck, build, CLI pack boundary (8 files), conformance (298/298), and consumer checks; Node 24/CI/registry/cross-OS evidence remains separate and unverified |
 
-## Contract lock for selected render gaps — 2026-11-04
+## Historical contract lock for selected render gaps — 2026-11-05
 
 This lock records the existing CLI boundary before implementation work. It does
 not add a command or option, change diagnostic/exit-code meaning, or move the
@@ -134,9 +142,9 @@ evidence.
 | ID | Reconciliation result | Implementation status | Evidence status | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `CLI-PACK-001` | `✔️ implemented` | `implemented` | `environment-limited` | `in scope`; npm binary/package boundary | Audit §5 `CLI-PACK-001`; binary/dist/package metadata; registry install unverified |
-| `CLI-PACK-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; release guard owns tarball boundary | Audit §6 `CLI-PACK-002`; prior scoped release audit 106/106; current CLI pack boundary 8 files; consumer refresh §5 |
-| `CLI-PACK-003` | `✔️ implemented` | `implemented` | `environment-limited` | `in scope`; CLI package/version compatibility; root cross-repo gate remains outside CLI | Audit §6 `CLI-PACK-003`; CLI-specific compatibility rows pass; root gate has unrelated core/playground/Flutter failures |
-| `CLI-PACK-004` | `🌗 partial` | `partial` | `environment-limited` | `in scope`; manual release/recovery exists, current registry proof absent | Audit §5/§6 `CLI-PACK-004`; release scripts; Node24/public registry unverified |
+| `CLI-PACK-002` | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; release guard owns tarball boundary | Audit §6 `CLI-PACK-002`; current CLI pack boundary 8 files; repository-wide audit has one unrelated core version mismatch; consumer refresh §5 |
+| `CLI-PACK-003` | `✔️ implemented` | `implemented` | `environment-limited` | `in scope`; CLI package/version compatibility; root cross-repo gate remains outside CLI | Audit §6 `CLI-PACK-003`; CLI-specific compatibility rows pass; root gate has five unrelated spec/core/Playground/Flutter mismatches |
+| `CLI-PACK-004` | `⏸️ deferred` | `deferred` | `environment-limited` | `evidence-only`; release owner/workspace owns Node 24, registry, CI, and recovery proof; no publication dependency | Audit §5/§6 `CLI-PACK-004`; release scripts exist, but Node24/public registry/recovery evidence is unavailable in this environment |
 | `CLI-PACK-005` | `✔️ implemented` | `implemented` | `local-conformance` | `in scope`; workspace owns fixture orchestration, spec owns semantics | Audit §6 `CLI-PACK-005`; conformance 298/298, exact CLI output/error checks |
 
 ## 4. Scope and evidence findings kept separate
@@ -149,10 +157,10 @@ These findings qualify the join but do not replace any of its 35 expected rows.
 | Independent parser, resolver, geometry, or SVG semantic implementation | Scope | `➖ not-applicable` as a CLI-owned implementation; CLI rows remain assessed at invocation/output boundary. |
 | Flutter/mobile runtime service | Scope | `➖ not-applicable`; accepted project scope keeps Flutter separate and mobile deferred. |
 | Node 24, current CI, fresh registry install, cross-OS/TTY behavior | Evidence | `? unverified` limitation only; no locally observed implementation row is converted into `❌` or promoted to E4/E5. |
-| Default release audit with repository npm cache | Evidence/environment | `? unverified` for that attempt because npm cache permissions caused `EPERM`; scoped temporary cache rerun passed and is the valid local pack evidence. |
+| Release audit with repository npm cache | Evidence/environment | `? unverified` for the default attempt because npm cache permissions caused `EPERM`; scoped temporary-cache rerun completed the CLI pack checks but reported one unrelated core version mismatch. |
 | Historical master-plan and CI/public claims | Evidence freshness | Historical context only; they do not upgrade current local evidence. |
 
-## 5. Consumer and integration boundary refresh — 2026-11-04
+## 5. Consumer and integration boundary refresh — 2026-11-05
 
 This refresh checks the selected CLI rows at the downstream boundaries that are
 available in the current checkout. It separates local package/conformance
@@ -161,20 +169,25 @@ public result is reused as current-pointer proof.
 
 | Boundary | Result | Evidence class and limitation |
 | --- | --- | --- |
-| CLI package tarball | PASS — `npm pack --dry-run --json` reports `@relgeo/cli@0.5.0` with 8 files: `LICENSE`, `README.md`, `bin/relgeo.js`, four `dist/*` files, and `package.json` | Local E2 package boundary; no publish or registry install claim |
+| CLI package tarball | PASS — `npm pack --dry-run --json` reports `@relgeo/cli@0.5.0` with 8 files, and a local `npm pack --pack-destination ...` produced the same tarball boundary: `LICENSE`, `README.md`, `bin/relgeo.js`, four `dist/*` files, and `package.json` | Local E2 package boundary; no publish or registry install claim; no credential/cache/log/development-only path was listed |
 | Shared downstream fixture consumers | PASS — `pnpm run conformance:fixtures` reports 298 passed, 0 failed across 23 fixtures, including exact CLI SVG/error output and semantic serialization/provenance assertions | Local E3 cross-surface/conformance evidence |
+| Compatibility matrix gate | WORKSPACE-LIMITED — `pnpm run compatibility:check` reports 278 passed, 5 failed: spec revision pin, core package/baseline version, Playground core dependency range, and Flutter application version | CLI-specific compatibility rows pass; these failures belong to workspace/package-owner alignment and are not CLI implementation failures |
+| Strict baseline gate | PASS — `pnpm run verify:baseline:strict` reports 85 passed, 0 failed | Current gitlinks, clean child checkouts, package metadata, and baseline identity are internally consistent; this does not make the separate compatibility mismatches green |
 | Current full local integration gate | ENVIRONMENT UNAVAILABLE — `pnpm run integration:gate -- --local` exits 2 before stages because the host provides Node 22.23.2 and the runner requires Node 24+ | Not a consumer parity failure; package/consumer stages did not execute through this runner |
-| Repository-wide release audit | ENVIRONMENT/WORKSPACE-LIMITED — `pnpm run release:audit` records 63 passed and 8 failed; failures include npm cache `EPERM`/log-write errors and a separate core version mismatch outside the selected CLI rows | Not used as a CLI consumer failure; the scoped CLI pack result above is the applicable local artifact evidence |
+| Playground/Pages artifact handoff | ENVIRONMENT/WORKSPACE-LIMITED — `pnpm run playground:artifact:check` detects local Playground revision `fad88630f2fcac77e78045e78550e3b05c3ef5db` versus Pages pin `c7cec4b505f290beccac911ef97786c8f6b0a534`; `test:pages-artifact` also lacks generated `relgeo-provenance.json` | Owner is workspace + Playground/website release assembly; this is not a CLI/core/renderer contract mismatch and does not create a CLI capability gap |
+| Repository-wide release audit | ENVIRONMENT/WORKSPACE-LIMITED — scoped-cache `pnpm run release:audit` records 105 passed and 1 failed; the failure is the separate `core` package-version mismatch outside the selected CLI rows | Not used as a CLI consumer failure; the CLI pack checks pass, while the default cache attempt remains separately limited by `EPERM` |
+| Clean temporary consumer smoke | ENVIRONMENT UNAVAILABLE — local tarball creation and `npm init -y` succeeded, but local dependency installation did not complete and was stopped with exit `130`; the consumer binary was not executed | No clean installed-package claim; fresh consumer verification remains owned by the release environment/owner and does not block CLI implementation closure |
 | Canonical CI and public registry | Not rerun for this working tree | Historical records in [`docs/plans/01-cross-repo-integration-gate.md`](../../plans/01-cross-repo-integration-gate.md) remain revision-bound; current CI/public evidence is unverified |
 
-Conclusion for the selected CLI boundary: no local downstream consumer
-regression was observed. The implementation and fixture changes remain
-compatible with the active `0.5.x` package shape, while the unavailable Node
-24, CI, registry, and cross-OS environments remain explicitly deferred.
+Conclusion for the selected CLI boundary: local source, build, pack, and
+fixture evidence remains green, but no clean installed-package consumer result
+is claimed because dependency installation was unavailable in this
+environment. The unavailable Node 24, CI, registry, recovery, and cross-OS
+environments remain explicitly deferred.
 
 ## 6. Handoff
 
-The reconciliation records the source/test/fixture implementation closure for
-the two selected render-option rows and still does not claim Node 24, registry,
-CI, or cross-OS parity. The remaining partial row is release verification,
-while watch/rebuild and daemon/JSON-RPC remain explicitly held by scope.
+The reconciliation records source/test/fixture implementation closure for all
+one-shot CLI rows and still does not claim Node 24, registry, CI, or cross-OS
+parity. `CLI-PACK-004` is evidence-only with an explicit deferred release
+boundary; watch/rebuild and daemon/JSON-RPC remain explicitly held by scope.

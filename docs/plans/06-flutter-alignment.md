@@ -1,5 +1,27 @@
 # Sub-rencana Tahap 6 — Flutter Contract Alignment
 
+## 0A. Semantic projection contract refresh — 2026-11-05
+
+The shared fixture manifest now publishes a separate SVG semantic contract:
+`relgeo.svg-semantic` version `1`, compatibility line `0.5`, absolute numeric
+tolerance `1e-6`, and preserved semantic array order. TypeScript compares the
+structured projection with `compareSVGSemanticReplay`; SVG presentation bytes,
+whitespace, style, viewBox, and attribute order remain excluded from parity.
+
+The new collection/boolean fixture 24 is included in the TypeScript
+separate-process replay harness. It remains `core`-only in the manifest until a
+writable Flutter host runs the same shared fixture through the Dart resolver and
+SVG semantic projection. This is an explicit `not-verified` boundary, not a
+Flutter parity claim or a reason to promote the fixture surface.
+
+Geometry closure handoff 2026-11-05: the direct focused Flutter conformance
+test passes 4/4 for fixtures 10/14/15/16, while the full
+`pnpm flutter:conformance` wrapper remains not verified because the SDK
+attempted to write `engine.stamp` outside the workspace. Accordingly
+`GEO-PARITY-001` and `GEO-PARITY-002` remain explicit `⏸️ evidence-held` rows;
+fixture 24 is not promoted on Flutter and raw SVG bytes are not used as parity
+evidence.
+
 **Status implementasi:** parsial; fondasi alignment dan runner tersedia. **Status keputusan:** Flutter non-publishable, stable 3.41.9, dan target desktop macOS/Linux/Windows disetujui; mobile ditunda. **Status evidence:** canonical GitHub Actions run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) pada root `328c869` lulus seluruh job Flutter dan desktop. Promotion boolean/intersection sudah diterapkan pada fixture 15 untuk boundary contract terbatas; evaluator/unit dan presentation expansion tetap terbuka.
 
 Pekerjaan lanjutan untuk dua gap tersebut dipecah ke [Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity](./07-flutter-capability-promotion-and-svg-parity.md). Detail checkpoint lama di bawah bersifat historical.

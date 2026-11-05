@@ -11,6 +11,7 @@ const fixtures = [
   "reference/10-v05-relational-baseline.yaml",
   "reference/15-v05-boolean-intersection-candidate.yaml",
   "reference/16-v05-evaluator-units-candidate.yaml",
+  "reference/24-v05-collection-boolean-contract.yaml",
 ];
 const coreEntry = pathToFileURL(resolve(root, "core/dist/index.mjs")).href;
 const rendererEntry = pathToFileURL(resolve(root, "renderer-svg/dist/index.mjs")).href;
@@ -50,4 +51,4 @@ for (const relativeFixture of fixtures) {
   console.log(`PASS ${relativeFixture}: separate-process semantic replay`);
 }
 
-console.log(`Renderer semantic replay passed for ${fixtures.length} canonical fixtures.`);
+console.log(`Renderer semantic replay passed for ${fixtures.length} canonical fixtures; comparison uses semantic tolerance and preserves semantic order.`);

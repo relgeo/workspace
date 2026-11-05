@@ -1,10 +1,10 @@
 # Geometry Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-11-04
+**Tanggal:** 2026-11-05
 
 **Expected source:** [Expected Geometry Capability Catalog](./expected-capability-catalog.md)
 
-**Observed source:** [Geometry implementation audit evidence](./archive/implementation-audit-legacy.md)
+**Observed source:** [Geometry implementation audit evidence](./implementation-audit.md)
 
 **Status:** join selesai; local bounded geometry evidence direkonsiliasi; host parity tetap qualified
 
@@ -36,9 +36,9 @@ Tiga dimensi sengaja dipisahkan:
 
 Setiap row memakai tepat satu result di atas. `not-verified` bukan result
 implementasi; ia adalah kualifikasi evidence/verification yang dicatat di
-kolom terpisah. Bila ada sebagian implementation atau snapshot evidence tetapi
-contract/evidence belum lengkap, result tetap `🌗 partial` dan kolom evidence
-memuat `not-verified` atau `source-only` sesuai temuan.
+kolom terpisah. Result `⏸️ deferred` hanya dipakai untuk keputusan scope atau
+evidence gate yang ditulis eksplisit; ia tidak mengubah missing implementation
+menjadi green.
 
 | Status evidence | Arti |
 | --- | --- |
@@ -49,10 +49,11 @@ memuat `not-verified` atau `source-only` sesuai temuan.
 
 **Hasil absence check:** 40/40 expected rows memiliki minimal satu observed
 implementation atau consumer boundary pada audit. Jadi jumlah row `❌ absent`
-saat ini adalah **0**. Ini bukan klaim parity penuh: 23 row `🌗 partial`
-memuat behavior, boundary, contract, atau evidence yang belum lengkap; satu di
-Host-owned rows tetap memiliki evidence `not-verified`; ini tidak menurunkan
-bounded local implementation yang sudah memiliki test/fixture pass.
+saat ini adalah **0**. Snapshot sebelum closure adalah 17 `✔️` dan 23 `🌗`;
+setelah source/test/fixture closure menjadi 35 `✔️` dan 5 `⏸️`. Lima hold
+tersebut adalah dua keputusan scope boolean dan tiga evidence/host gates yang
+tetap `not-verified` pada boundary yang tidak tersedia; bukan implementasi
+yang dipromosikan lewat dokumentasi.
 
 `⏸️ deferred` dan `➖ not-applicable` muncul pada findings scope/ownership,
 bukan sebagai penghapus expected capability. Jika audit berikutnya menemukan
@@ -68,10 +69,11 @@ hasilnya diubah menjadi `❌ absent`, bukan `➖`.
 | Missing expected IDs | 0 |
 | Extra observed-only IDs | 0 |
 | Duplicate reconciliation IDs | 0 |
-| `✔️ implemented` | 17 |
-| `🌗 partial` | 23 |
+| `✔️ implemented` | 35 |
+| `🌗 partial` | 0 |
 | `❌ absent` | 0 |
-| `⚠️ broken`, `⏸️ deferred`, `➖ not-applicable` as row result | 0; recorded as separate audit findings where applicable |
+| `⏸️ deferred/held` | 5; two scope-held and three evidence-held |
+| `⚠️ broken`, `➖ not-applicable` as row result | 0 |
 
 Normalization note: `GEO-QUERY-004`, `GEO-NUM-001/002/003`,
 `GEO-DET-002`, dan `GEO-SER-001/002` kini `✔️ implemented` pada bounded local
@@ -89,20 +91,23 @@ tidak menambah atau menghapus expected ID.
 
 ## 2.1 Triage handoff — task `triage-remaining-geometry-gaps--9052928134`
 
-Reconciliation mengesahkan initial status `🌗 partial` untuk seluruh row yang
-dipilih; keputusan triage hanya menetapkan jalur tindak lanjut. Detail owner,
-source of truth, acceptance test, dan next action ada di [implementation-gap
-backlog](./implementation-gap-backlog.md#triage-decision--task-triage-remaining-geometry-gaps--9052928134).
+Reconciliation awal mengesahkan 23 row `🌗 partial`; implementation dan
+verification pass berikutnya menutup 18 row lokal dan mengubah lima row
+non-green menjadi hold eksplisit. Detail owner, source of truth, acceptance
+test, dan evidence ada di [implementation-gap
+backlog](./implementation-gap-backlog.md#complete-40-id-closure-route-register).
 
 | Jalur tindak lanjut | Jumlah | IDs |
 | --- | ---: | --- |
-| Implementation-closable | 17 | `GEO-OBJ-001`, `GEO-PRIM-003/004/005`, `GEO-MEASURE-002/004`, `GEO-XFORM-002`, `GEO-PLACE-001/002`, `GEO-COLL-001..005`, `GEO-QUERY-001/002`, `GEO-CONSTRAINT-001` |
+| Implemented from initial partial set | 18 | `GEO-OBJ-001`, `GEO-PRIM-003/004/005`, `GEO-MEASURE-002/004`, `GEO-XFORM-002`, `GEO-PLACE-001/002`, `GEO-ANCH-002`, `GEO-COLL-001..005`, `GEO-QUERY-001/002`, `GEO-CONSTRAINT-001` |
 | External-evidence-only | 3 | `GEO-DET-001`, `GEO-PARITY-001/002` |
 | Scope-deferred | 2 | `GEO-BOOLEAN-001/002` broader topology/promotion |
 
-`GEO-MEASURE-002` tetap implementation-closable pada bounded TypeScript/core
-unit contract; kebutuhan Flutter parity tidak mengubah status implementasi
-lokal dan tetap menjadi evidence follow-up.
+`GEO-MEASURE-002` ditutup pada bounded TypeScript/core unit contract;
+kebutuhan Flutter parity tetap menjadi evidence follow-up terpisah. Dua
+boolean rows tetap `⏸️ scope-held`, sedangkan tiga cross-surface rows tetap
+`⏸️ evidence-held` karena host/runtime evidence belum tersedia. Total akhir
+adalah 35 bounded implementations dan 5 explicit holds.
 
 ## 2.2 Contract lock handoff — task `lock-geometry-contracts-and-acceptance--9052928134`
 
@@ -121,27 +126,80 @@ matrix requires a success case, failure/edge case, and expected evidence for
 all 22 triaged rows, while external-evidence-only and scope-deferred rows stay
 qualified rather than becoming implementation blockers.
 
+## 2.3 Complete closure classification
+
+The reconciliation join is 40 rows, and this closure classification is also a
+40-row one-to-one register. It makes the next proof explicit without changing
+the implementation result, evidence qualifier, or scope decision above.
+
+| ID | Closure route | Success / failure boundary to verify | Closure owner and evidence |
+| --- | --- | --- | --- |
+| `GEO-OBJ-001` | bounded implementation | Identity resolves once; duplicate, unknown reference, and cycle paths are stable | core + geometry; graph fixtures and projection replay |
+| `GEO-PRIM-001` | bounded implementation | Point/line construction and invalid input remain typed and deterministic | geometry + core; fixtures 10/15 |
+| `GEO-PRIM-002` | bounded implementation | Rect/circle/ellipse and ClosedShape/holes remain normalized | geometry + core; fixtures 10/15 |
+| `GEO-PRIM-003` | bounded implementation | Curve endpoints/length/intersections pass; degenerate control data rejects | geometry + core; curve tests and shared fixture |
+| `GEO-PRIM-004` | bounded implementation | Open/closed chains, holes, text labels project semantically; malformed paths reject | core + renderer-svg; semantic fixture |
+| `GEO-PRIM-005` | bounded implementation | Component/clone scope and exports remain isolated; collisions reject | core; scope fixtures and replay |
+| `GEO-MEASURE-001` | bounded implementation | Typed dimensions accept valid values and reject incompatible uses | spec + core; type negative tests |
+| `GEO-MEASURE-002` | bounded implementation | Supported unit literals normalize equivalently; malformed/wrong-context values reject | spec + core; fixture 16 and evaluator tests |
+| `GEO-MEASURE-003` | bounded implementation | Expressions remain deterministic, side-effect free, and type-safe | core; evaluator tests |
+| `GEO-MEASURE-004` | bounded implementation | Defaults/derived values follow dependency order; cycles/scope leaks reject | core + spec; parameter fixtures |
+| `GEO-MEASURE-005` | bounded implementation | Validation preserves stable code and document path by failure class | core + spec; fixtures 11–13/17–18 |
+| `GEO-XFORM-001` | bounded implementation | Ordered transforms preserve result identity and origin rules | geometry + core; transform tests |
+| `GEO-XFORM-002` | bounded implementation | Chained operations and split preserve identity/order; invalid finite values reject | core + geometry; operation/split fixture |
+| `GEO-PLACE-001` | bounded implementation | Anchor/offset/inside/margin placement succeeds or emits explicit conflict errors | core; placement matrix |
+| `GEO-PLACE-002` | bounded implementation | point/path/frame placement shares frame semantics; domain/degenerate cases reject | core + geometry; frame fixture |
+| `GEO-ANCH-001` | bounded implementation | Standard anchors retain stable type and coordinate semantics | spec + core; fixture 10 |
+| `GEO-ANCH-002` | bounded implementation | Custom/result anchors remain addressable and serializable | core + geometry; anchor/renderer fixture |
+| `GEO-COLL-001` | bounded implementation | All repeat modes produce ordered members and stable context | core; five-mode fixture |
+| `GEO-COLL-002` | bounded implementation | Along policies/offsets/endpoints are deterministic; conflicting policies reject | core + spec; open/closed edge fixtures |
+| `GEO-COLL-003` | bounded implementation | Pitch/gap and over-constraint policy is explicit and stable | core; grid fixtures |
+| `GEO-COLL-004` | bounded implementation | Divide/split selectors, count, order, and identity are stable | core + geometry; collection snapshots |
+| `GEO-COLL-005` | bounded implementation | Repeated evaluation preserves collection order and IDs | core; replay harness |
+| `GEO-QUERY-001` | bounded implementation | Measurement queries return finite typed values; unsupported targets reject | core + spec; query matrix |
+| `GEO-QUERY-002` | bounded implementation | Path/vector queries honor `[0,1]` and degenerate rules | core + geometry; curve query fixture |
+| `GEO-QUERY-003` | bounded implementation | v0.5 spatial-query overloads retain typed target boundaries | core + spec; evaluator tests |
+| `GEO-QUERY-004` | bounded implementation | Supported pairs/selectors/order/errors are deterministic | geometry + core; contract fixture and fixture 15 |
+| `GEO-QUERY-005` | bounded implementation | `frameAt`/`tAtLength` remain stable read-only traversal surfaces | core + geometry; frame tests |
+| `GEO-CONSTRAINT-001` | bounded implementation | Four relation kinds validate or report stable violations, including degeneracy | core + spec; relation matrix |
+| `GEO-CONSTRAINT-002` | bounded implementation | Post-resolve violation keeps scene and stable code/path; no solver | core + spec; fixture 14 |
+| `GEO-BOOLEAN-001` | scope-held | Fixture 15 intersect/subtract is active; union/xor/topology needs promotion decision | geometry + core; fixture 15 and decision record |
+| `GEO-BOOLEAN-002` | scope-held | Empty/multipart/single/multi errors remain explicit; no silent coercion | core + geometry; fixtures 15/19/20 |
+| `GEO-NUM-001` | bounded implementation | Operation-specific tolerance boundaries remain stable; no universal epsilon claim | geometry + spec; tolerance tests |
+| `GEO-NUM-002` | bounded implementation | Supported winding/holes normalization is canonical and stable | geometry + core; normalization tests and fixture 15 |
+| `GEO-NUM-003` | bounded implementation | Selected invalid inputs expose stable codes and caller paths | geometry + core; negative tests |
+| `GEO-DET-001` | evidence-held | Repeated process and named Node 24/Flutter/host runs match scenes/diagnostics | core + parity; replay evidence |
+| `GEO-DET-002` | bounded implementation | Local canonical replay preserves IDs/order/anchors/paths | core + spec; projection/CLI replay |
+| `GEO-SER-001` | bounded implementation | Versioned semantic projection preserves identity, geometry, collections, diagnostics | core + CLI; projection and snapshots |
+| `GEO-SER-002` | bounded implementation | Numeric/order/undefined serialization rules are canonical | spec + core; manifest and CLI/projection tests |
+| `GEO-PARITY-001` | evidence-held | Reviewed fixtures match TypeScript/Flutter semantically | core + Flutter; shared comparator and host |
+| `GEO-PARITY-002` | evidence-held | SVG semantic tree/geometry/anchors match; presentation bytes are excluded | renderer-svg + Flutter; semantic comparator |
+
+This register freezes closure boundaries without claiming that an unavailable
+host or deferred boolean promotion has passed. A future `❌` or `⚠️` result must
+reuse the same ID and row, never narrow the expected set.
+
 ## 3. One-to-one reconciliation register
 
 ### A. Object model dan primitives
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
-| `GEO-OBJ-001` | `🌗 partial` | `partial` | `local-pass` | IN; types in geometry, graph/topological evaluation in core | Audit §3A `GEO-OBJ-001`; `geometry/src/types.ts`, `core/src/graph.ts` |
+| `GEO-OBJ-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; identity/duplicate/cycle/order behavior is closed on TypeScript/core surfaces; cross-runtime replay is separate | Audit §3A; graph/parser tests; core 507 tests |
 | `GEO-PRIM-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN; geometry primitives resolved by core and consumed by renderer | Audit §3A `GEO-PRIM-001`; fixture 10/15 |
 | `GEO-PRIM-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN; rect/circle/ellipse active on bounded consumer paths | Audit §3A `GEO-PRIM-002`; fixture 10/15/16 |
-| `GEO-PRIM-003` | `🌗 partial` | `partial` | `local-pass` | IN; primitive construction exists, sampled downstream operations remain bounded | Audit §3A `GEO-PRIM-003`; `core/src/resolver/primitives/shapes.ts` |
-| `GEO-PRIM-004` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN; core/renderer own high-level construction and rendering | Audit §3A `GEO-PRIM-004`; fixture 10 |
-| `GEO-PRIM-005` | `🌗 partial` | `partial` | `local-pass` | IN; composition semantics are core-owned, not geometry-package-owned | Audit §3A `GEO-PRIM-005`; fixtures 5–7 |
+| `GEO-PRIM-003` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; curve construction/length/endpoints/supported intersections and degeneracy are closed locally | Audit §3A; geometry/core curve tests |
+| `GEO-PRIM-004` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; path/holes/text semantic projection is closed on core/renderer fixtures; cross-surface expansion is separate | Audit §3A; renderer semantic tests; fixtures 10/15/24 |
+| `GEO-PRIM-005` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; group/clone/component scope and identity are closed on core/fixture surfaces | Audit §3A; component/clone/reference tests |
 
 ### B. Dimensions, units, dan evaluator
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `GEO-MEASURE-001` | `✔️ implemented` | `implemented` | `local-pass` | IN; type/evaluator contract is core/spec-owned | Audit §3B `GEO-MEASURE-001`; `spec/id/syntax/07-type-system.md` |
-| `GEO-MEASURE-002` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; bounded TypeScript/core unit contract is implementation-closable, cross-surface parity remains external evidence | Audit §3B `GEO-MEASURE-002`; fixture 16 |
+| `GEO-MEASURE-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; TypeScript/core unit literals, conversion, target units, and invalid literals are closed; Flutter parity is separate | Audit §3B; fixture 16; core 507 tests |
 | `GEO-MEASURE-003` | `✔️ implemented` | `implemented` | `local-pass` | IN; expression evaluator is core-owned and tested | Audit §3B `GEO-MEASURE-003`; `core/src/evaluator.ts` |
-| `GEO-MEASURE-004` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; evaluator/unit parity is not fully active | Audit §3B `GEO-MEASURE-004`; fixture 16 |
+| `GEO-MEASURE-004` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; defaults, derived ordering/cycles, and component-local scope are closed on core fixtures | Audit §3B; derived/component tests; fixture 16 |
 | `GEO-MEASURE-005` | `✔️ implemented` | `implemented` | `fixture-pass` | IN; validator and negative fixture diagnostics are active | Audit §3B `GEO-MEASURE-005`; fixtures 11–13/17–18 |
 
 ### C. Transforms, placement, dan anchors
@@ -149,45 +207,45 @@ qualified rather than becoming implementation blockers.
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `GEO-XFORM-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN; transform pipeline is shared low-level/core behavior | Audit §3C `GEO-XFORM-001`; `geometry/src/transforms.ts` |
-| `GEO-XFORM-002` | `🌗 partial` | `partial` | `local-pass` | IN; operation objects are core-dispatched; full cross-surface matrix absent | Audit §3C `GEO-XFORM-002`; split/operation tests |
-| `GEO-PLACE-001` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; `inside` and conflict variants lack active shared coverage | Audit §3C `GEO-PLACE-001`; fixture 10 |
-| `GEO-PLACE-002` | `🌗 partial` | `partial` | `local-pass` | IN; point/path/frame placement exists, broader parity is not promoted | Audit §3C `GEO-PLACE-002`; `frame_placement.test.ts` |
+| `GEO-XFORM-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; operation ordering, recursive split lowering, identity, and finite-value errors are closed | Audit §3C; operation/split tests; core 507 tests |
+| `GEO-PLACE-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; anchor/offset/inside/margin and conflict diagnostics are closed on core fixtures | Audit §3C; placement tests; core 507 tests |
+| `GEO-PLACE-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; point/path/frame endpoint, tangent/normal, orientation, and invalid domain behavior are closed | Audit §3C; frame placement tests; core 507 tests |
 | `GEO-ANCH-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN; standard anchors appear in active relational baseline | Audit §3C `GEO-ANCH-001`; fixture 10 |
-| `GEO-ANCH-002` | `🌗 partial` | `partial` | `local-pass` | IN; custom anchors exist but cross-consumer snapshots are incomplete | Audit §3C `GEO-ANCH-002`; `group_custom_anchors.test.ts` |
+| `GEO-ANCH-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; custom and operation-result anchors resolve and remain addressable on core/fixture surfaces | Audit §3C; custom-anchor/clone/sheet tests |
 
 ### D. Collections
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
-| `GEO-COLL-001` | `🌗 partial` | `partial` | `local-pass` | IN; core repeat and examples exist, full mode matrix lacks shared fixture | Audit §3D `GEO-COLL-001`; `core/src/resolver/primitives/repeat.ts` |
-| `GEO-COLL-002` | `🌗 partial` | `partial` | `local-pass` | IN WITH BOUNDARY; along modes and frame context exist, edge policies incomplete | Audit §3D `GEO-COLL-002`; repeat-along example |
-| `GEO-COLL-003` | `🌗 partial` | `partial` | `local-pass` | IN; grid behavior exists but no complete cross-consumer contract | Audit §3D `GEO-COLL-003`; core repeat/grid tests |
-| `GEO-COLL-004` | `🌗 partial` | `partial` | `local-pass` | IN; divide/split exist, public collection semantics remain core-owned | Audit §3D `GEO-COLL-004`; `geometry/src/split.ts` |
-| `GEO-COLL-005` | `🌗 partial` | `partial` | `local-pass` | IN; stable ordering appears in tested paths, universal replay absent | Audit §3D `GEO-COLL-005`; collection/intersection ordering tests |
+| `GEO-COLL-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; five repeat modes, order, child identity, and context are closed on core/fixture surfaces | Audit §3D; repeat tests; fixture 24 |
+| `GEO-COLL-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; along distribution, offsets, endpoints, frame context, and invalid policies are closed locally | Audit §3D; repeat-along/frame tests; fixture 24 |
+| `GEO-COLL-003` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; grid pitch/gap, auto-layout, exclusivity, and negative validation are closed locally | Audit §3D; grid tests; fixture 24 |
+| `GEO-COLL-004` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; divide/split order, count, selectors, first/last, and identity are closed locally | Audit §3D; divide/split tests; fixture 24 |
+| `GEO-COLL-005` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; same-input collection order/IDs replay deterministically; cross-runtime is separate evidence | Audit §3D; projection tests; four-process replay |
 
 ### E. Queries dan intersections
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
-| `GEO-QUERY-001` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN; high-level query service is core-owned, geometry provides low-level utilities | Audit §3E `GEO-QUERY-001`; `core/src/evaluator.ts` |
-| `GEO-QUERY-002` | `🌗 partial` | `partial` | `local-pass` | IN; queries exist, but broad path/tolerance coverage is incomplete | Audit §3E `GEO-QUERY-002`; evaluator/frame tests |
+| `GEO-QUERY-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; supported distance/length/perimeter/area/bbox/extents including holes/boolean results are closed locally | Audit §3E; evaluator/boolean tests; fixture 24 |
+| `GEO-QUERY-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; endpoint/domain, curve sampling, tangent/normal, degenerate, and invalid-target behavior are closed locally | Audit §3E; tangent/frame/query tests |
 | `GEO-QUERY-003` | `✔️ implemented` | `implemented` | `local-pass` | IN WITH BOUNDARY; v0.5 overload boundaries are tested | Audit §3E `GEO-QUERY-003`; evaluator tests |
-| `GEO-QUERY-004` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; supported pair/selector matrix, deterministic ordering, and invalid/empty/multiple errors are frozen; sampled broader pairs remain outside promotion | Audit §3E `GEO-QUERY-004`; geometry contract fixture/intersection tests; conformance 298/298 |
+| `GEO-QUERY-004` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; supported pair/selector matrix, deterministic ordering, and invalid/empty/multiple errors are frozen; sampled broader pairs remain outside promotion | Audit §3E `GEO-QUERY-004`; geometry contract fixture/intersection tests; conformance 345/345 |
 | `GEO-QUERY-005` | `✔️ implemented` | `implemented` | `local-pass` | IN; core frame/length parameter queries directly tested | Audit §3E `GEO-QUERY-005`; `frame_placement.test.ts` |
 
 ### F. Constraints
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
-| `GEO-CONSTRAINT-001` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN; constraint evaluation and diagnostics are core-owned | Audit §3F `GEO-CONSTRAINT-001`; `core/src/resolver/constraints.ts` |
+| `GEO-CONSTRAINT-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; valid/invalid equal, parallel, perpendicular, tangent, and degenerate diagnostics are closed on core/fixtures | Audit §3F; constraint tests; fixtures 14/24 |
 | `GEO-CONSTRAINT-002` | `✔️ implemented` | `implemented` | `fixture-pass` | IN WITH BOUNDARY; post-resolve violation, no general solver | Audit §3F `GEO-CONSTRAINT-002`; fixture 14 |
 
 ### G. Boolean operations
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
-| `GEO-BOOLEAN-001` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; engine has four ops, active evidence is rectangle intersect/subtract | Audit §3G `GEO-BOOLEAN-001`; `geometry/src/boolean/` and fixture 15 |
-| `GEO-BOOLEAN-002` | `🌗 partial` | `partial` | `fixture-pass` | IN WITH BOUNDARY; empty/multipart errors active, broader topology deferred/candidate | Audit §3G `GEO-BOOLEAN-002`; fixtures 15/19/20 |
+| `GEO-BOOLEAN-001` | `⏸️ held` | `scope-held` | `local-pass` + `fixture-pass` | Approved rectangle/holes union/xor/intersect/subtract boundary is executable; non-rectangle topology promotion requires a decision | Audit §3G; geometry/core boolean tests; fixtures 15/24 |
+| `GEO-BOOLEAN-002` | `⏸️ held` | `scope-held` | `local-pass` + `fixture-pass` | Approved holes, empty, multipart, and single/multi errors are explicit; broader topology/result-mode expansion requires a decision | Audit §3G; boolean tests; fixtures 15/19/20/24 |
 
 ### H. Numerical robustness dan deterministic behavior
 
@@ -196,17 +254,17 @@ qualified rather than becoming implementation blockers.
 | `GEO-NUM-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; low-level tolerance policy and boundary tests are frozen; no universal DSL epsilon claim | Audit §3H `GEO-NUM-001`; intersection/path/split tests; geometry lint/test/build |
 | `GEO-NUM-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; supported rings normalize winding/holes; broader boolean topology remains deferred | Audit §3H `GEO-NUM-002`; `normalizeClosedShape.ts`; boolean tests; fixture 15 |
 | `GEO-NUM-003` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; selected low-level invalid branches expose stable package codes; core maps public paths | Audit §3H `GEO-NUM-003`; error tests; fixtures 19/20 |
-| `GEO-DET-001` | `🌗 partial` | `partial` | `local-pass` + `fixture-pass` | IN; deterministic behavior observed locally, Node 24/Flutter/cross-platform unverified | Audit §3H `GEO-DET-001`; conformance snapshots |
-| `GEO-DET-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; stable local identity/order/path replay comparator is active; cross-runtime replay remains separate | Audit §3H `GEO-DET-002`; `core/src/projection.ts`; core/CLI tests; conformance 298/298 |
+| `GEO-DET-001` | `⏸️ held` | `evidence-held` | `local-pass` + `fixture-pass` + `not-verified` | Local repeated-process determinism is verified; Node 24, full Flutter wrapper, and cross-platform replay are environment-bound | Audit §3H; four-process replay; integration gate qualifier |
+| `GEO-DET-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; stable local identity/order/path replay comparator is active; cross-runtime replay remains separate | Audit §3H `GEO-DET-002`; `core/src/projection.ts`; core/CLI tests; conformance 345/345 |
 
 ### I. Serialization dan semantic parity
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `GEO-SER-001` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; versioned canonical projection is consumed by core/CLI; Flutter parity remains unverified | Audit §3I `GEO-SER-001`; `core/src/projection.ts`; `cli/src/index.ts`; CLI tests |
-| `GEO-SER-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; numeric/order/undefined rules and replay comparator are executable locally; cross-version/host proof remains unverified | Audit §3I `GEO-SER-002`; manifest; projection/CLI tests; conformance 298/298 |
-| `GEO-PARITY-001` | `🌗 partial` | `partial` | `fixture-pass` + `not-verified` | IN WITH BOUNDARY; fixture 15 bounded active, fixture 16 candidate, current Flutter blocked | Audit §3I `GEO-PARITY-001`; Flutter shared conformance |
-| `GEO-PARITY-002` | `🌗 partial` | `partial` | `source-only` + `not-verified` | IN WITH BOUNDARY; semantic SVG only, not raw bytes/style/viewBox | Audit §3I `GEO-PARITY-002`; Flutter SVG projection |
+| `GEO-SER-002` | `✔️ implemented` | `implemented` | `local-pass` + `fixture-pass` | IN WITH BOUNDARY; numeric/order/undefined rules and replay comparator are executable locally; cross-version/host proof remains unverified | Audit §3I `GEO-SER-002`; manifest; projection/CLI tests; conformance 345/345 |
+| `GEO-PARITY-001` | `⏸️ held` | `evidence-held` | `fixture-pass` + `not-verified` | Flutter fixtures 10/14/15/16 pass directly; fixture 24 and full wrapper remain environment/contract-bound | Audit §3I; Flutter focused test; wrapper qualifier |
+| `GEO-PARITY-002` | `⏸️ held` | `evidence-held` | `fixture-pass` + `not-verified` | TypeScript semantic SVG schema/tolerance/order and fixtures 15/16 Flutter assertions pass; fixture 24 Flutter projection/full host surface remain unverified; raw bytes excluded | Audit §3I; renderer comparator/replay; Flutter focused test |
 
 ## 4. Scope findings kept separate from capability results
 
@@ -216,7 +274,7 @@ were implementation absence:
 | Finding | Scope/evidence status | Reconciliation handling |
 | --- | --- | --- |
 | Stale `v0.3` provenance/error wording | `✔️ resolved locally` | The package wording and unsupported-pair message now use the DSL `0.5` boundary; regression coverage remains in the geometry test suite. |
-| Broader boolean union/xor/non-rectangle topology | `⏸️ deferred` | Keep `GEO-BOOLEAN-001/002` as `🌗 partial`; do not turn deferred expansion into `➖` or remove it. |
+| Broader boolean union/xor/non-rectangle topology | `⏸️ deferred` | `GEO-BOOLEAN-001/002` are now explicit `⏸️` scope holds; no expected row is removed or merged. |
 | Geometry-owned UI routes, shortcuts, platform file service | `➖ not-applicable` to geometry package | Keep UI/product behavior in consumer audit; do not mark product capability absent. |
 | Current Flutter probe and Node 24/canonical registry | `not-verified` evidence | Keep parity/determinism evidence qualified; do not downgrade implementation to absent solely from unavailable environment. |
 
@@ -242,13 +300,13 @@ runner is `fixture-pass`, and the canonical integration runner was
 
 | Boundary / command | Result | Evidence class and limitation |
 | --- | --- | --- |
-| `pnpm test && pnpm lint && pnpm build` from `geometry/` | PASS — 5 files, 91 tests | `local-workspace`; low-level package, tolerance/intersection/boolean, lint, and build evidence. |
-| `pnpm test && pnpm lint && pnpm build` from `core/` | PASS — 48 files, 488 tests | `local-workspace`; resolver, query, collection, placement, constraints, deterministic projection, and build evidence. |
-| `pnpm test && pnpm build` from `renderer-svg/` | PASS — 7 files, 92 tests | `local-workspace`; semantic SVG projection and build evidence. |
-| `pnpm test && pnpm build` from `cli/` | PASS — 36 tests | `local-workspace`; downstream validation/compile and repeated-process serialization boundary. |
+| `pnpm test && pnpm lint && pnpm build` from `geometry/` | PASS — 5 files, 93 tests | `local-workspace`; low-level package, tolerance/intersection/boolean, lint, and build evidence. |
+| `pnpm test && pnpm lint && pnpm build` from `core/` | PASS — 48 files, 507 tests | `local-workspace`; resolver, query, collection, placement, constraints, deterministic projection, and build evidence. |
+| `pnpm test && pnpm build` from `renderer-svg/` | PASS — 7 files, 104 tests | `local-workspace`; semantic SVG projection and build evidence. |
+| `pnpm test && pnpm build` from `cli/` | PASS — 38 tests | `local-workspace`; downstream validation/compile and repeated-process serialization boundary. |
 | `pnpm run build && pnpm run test` from `playground/` | PASS — 104 tests and fresh Vite build | `local-workspace`; browser consumer build/provenance generated locally, but no browser E2E or public deployment claim. |
 | `pnpm run build && pnpm run check && pnpm run test` from `relgeo.github.io/` | PASS — 138 pages, 0 Astro diagnostics, built-output assertions pass | `local-workspace`; website consumer renders and validates locally, without deployment/public-route evidence. |
-| `pnpm run conformance:fixtures` from workspace root | PASS — 298/298 across 23 fixtures | `fixture-pass`; shared workspace surfaces, not Flutter/native or public registry evidence. |
+| `pnpm run conformance:fixtures` from workspace root | PASS — 345/345 across 24 fixtures | `fixture-pass`; shared workspace surfaces, not Flutter/native or public registry evidence. |
 | `pnpm run integration:gate -- --local --report=.local/geometry-consumer-integration-local.json` | BLOCKED — exit 2 before consumer stages | `environment-unavailable`; report classifies the declared Node 24 prerequisite as blocked with no human decision required. |
 | `pnpm run playground:artifact:check` after local Playground→website assembly | QUALIFIED — failed baseline child-revision assertion | `local-workspace`; assembled files exist, but current Playground `c7cec4b…` differs from baseline pin `47fd715…`; no artifact/public claim is promoted. |
 | Public registry / CI / Flutter consumer boundary | NOT VERIFIED | No current public or native-host claim is made; historical CI/public records in `docs/plans/01-cross-repo-integration-gate.md` remain historical and do not bind this dirty working tree. |
@@ -267,9 +325,9 @@ Published downstream views:
    ID and keeps implementation, evidence, scope, owner, dependency, risk, and
    next action visible;
 2. [Geometry implementation-gap backlog](./implementation-gap-backlog.md)
-   derives every current `🌗` row into a candidate task and keeps resolved
-   corrective work, deferred `⏸️`, ownership `➖`, and `not-verified` evidence
-   follow-ups separate;
+   retains the historical `🌗`/`❌` candidate routes and current maintenance,
+   deferred `⏸️`, ownership `➖`, and `not-verified` evidence follow-ups
+   separately;
 3. any future `❌ absent` row must remain explicit in both views;
 4. `docs/compatibility-matrix.json` remains compatibility/release policy, not
    a replacement for this ID-level join.

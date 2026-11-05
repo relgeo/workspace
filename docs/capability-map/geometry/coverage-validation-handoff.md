@@ -1,6 +1,27 @@
 # Geometry coverage validation and handoff
 
-**Tanggal validasi:** 2026-11-04
+## Verification refresh — 2026-11-05
+
+Focused package and consumer verification was rerun from the current checkout
+after the core resolver diagnostic boundary was corrected. The serial build
+order is intentional because package DTS/build outputs are shared by downstream
+workspace links.
+
+| Command | Result | Boundary / qualifier |
+| --- | --- | --- |
+| `pnpm --filter @relgeo/geometry test -- --run && pnpm --filter @relgeo/geometry lint` | PASS — 5 files, 93 tests | Geometry package tests and TypeScript boundary |
+| `pnpm --filter @relgeo/core test -- --run && pnpm --filter @relgeo/core lint && pnpm --filter @relgeo/core build` | PASS — 48 files, 507 tests | Core resolver, diagnostics, type boundary, and DTS build |
+| `pnpm --filter @relgeo/renderer-svg test -- --run && pnpm --filter @relgeo/renderer-svg lint` | PASS — 7 files, 104 tests | Renderer semantic projection and type boundary |
+| `pnpm --filter @relgeo/cli test -- --run` | PASS — 1 file, 38 tests | CLI consumer after serial dependency build |
+| `pnpm --filter @relgeo/geometry build && pnpm --filter @relgeo/core build && pnpm --filter @relgeo/renderer-svg build && pnpm --filter @relgeo/cli build` | PASS | Serial package build order; Node 22.23.2 engine warning retained |
+| `pnpm conformance:fixtures` | PASS — 345 checks across 24 fixtures | Shared fixture manifest, snapshots, CLI, renderer, diagnostics |
+| `node scripts/run-renderer-semantic-replay.mjs` | PASS — 4 separate-process fixtures | Semantic replay covers fixtures 10, 15, 16, and 24; raw SVG bytes excluded |
+| `flutter test test/shared_v05_conformance_test.dart` | PASS — 4 tests | Direct focused Flutter semantic conformance for fixtures 10/14/15/16 |
+| `pnpm flutter:conformance` | NOT VERIFIED — wrapper blocked by SDK `engine.stamp` permission outside workspace | Direct focused test remains separate evidence; no full Flutter promotion claimed |
+| `pnpm integration:gate -- --local` | NOT VERIFIED — requires Node 24+, checkout has Node 22.23.2 | Environment limitation, not target parity failure |
+| Geometry one-to-one register check | PASS — expected/audit/reconciliation/backlog/matrix each 40 rows, 40 unique IDs | No catalog truncation or row merging detected |
+
+**Tanggal validasi:** 2026-11-05
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
 **Required context:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)
 
@@ -18,11 +39,11 @@ Klaim yang aman:
   evidence pada boundary yang diperiksa;
 - reconciliation, status matrix, dan catalog masing-masing memiliki **40 row**
   tanpa missing, extra, atau duplicate ID;
-- matrix memuat **17 `✔️`, 23 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`, dan 0 `⚠️`**;
-  evidence qualifier `not-verified` tetap dipisahkan dari implementation
-  status dan tidak menjadi row status tersendiri;
-- setiap 23 row `🌗` memiliki satu candidate task di backlog dengan owner,
-  dependency, acceptance test/evidence target, dan next action;
+- snapshot sebelum closure memuat **17 `✔️`, 23 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`,
+  dan 0 `⚠️`**; current status menjadi **35 `✔️`, 0 `🌗`, 0 `❌`, 0 `⚠️`,
+  dan 5 `⏸️`**;
+- seluruh 23 row yang berubah memiliki source/test/fixture/evidence route di
+  closure report dan complete register di bawah;
 - dokumentasi ini dan backlog tidak menutup gap implementasi atau mempromosikan
   local evidence menjadi canonical/public/native-host evidence.
 
@@ -39,7 +60,7 @@ implementation/consumer behavior, ID tersebut wajib dipertahankan dan diberi
 | [Implementation audit](./archive/implementation-audit-legacy.md) | Observed source, test, consumer, command/UI, runtime, fixture, dan docs evidence | Coverage ledger tersedia; 40/40 expected IDs diaudit; limitations eksplisit |
 | [Reconciliation](./reconciliation.md) | Join satu-ke-satu expected-versus-observed | 40/40 rows; no missing/extra/duplicate; implementation/evidence/scope terpisah |
 | [Status matrix](./status-matrix.md) | Reporting view capability-first | 40 rows; kolom status/evidence/gap/owner/dependency/risk/next action lengkap |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 23/23 remaining `🌗` rows memiliki task; bounded serialization/replay evidence dan `FIX-GEO-PROVENANCE-001` memiliki local fix evidence |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks and closure routes | 18 initial `🌗` rows have source/test closure; five explicit holds retain owner, dependency, and evidence/scope boundary |
 | [Historical geometry matrix](./capability-matrix.md) | Historical inventory dan evidence lama | Dipertahankan sebagai historical input, bukan source expected list |
 
 ## 3. Checklist coverage dan integrity
@@ -125,6 +146,100 @@ evidence.
 | Documentation and ownership | `docs/REPOSITORY-MAP.md`, master plan, capability-map ledger, geometry specs/plans | Reviewed; documentation is evidence/context, not feature implementation |
 | Runtime evidence | package/core/renderer tests, lint/build, fixture conformance, Flutter probe | Reviewed; Flutter probe and canonical Node-24 evidence remain not verified |
 
+## 4. Closure report and complete 40-ID handoff
+
+### Before/after closure report — 2026-11-05
+
+The initial snapshot was 17 implemented and 23 partial rows. The verified
+closure pass added source/test/fixture evidence for 18 rows. Two boolean rows
+remain `⏸️ scope-held`, and three cross-surface rows remain `⏸️ evidence-held`:
+they are explicit boundaries, not documentation-only promotions. The table
+lists every changed ID exactly once.
+
+| ID | Before → after | Source/test/fixture evidence | Cross-surface impact / remaining boundary |
+| --- | --- | --- | --- |
+| `GEO-OBJ-001` | `🌗` → `✔️` | `core/src/graph.ts`; duplicate/cycle/projection tests; conformance 345/345 | Core identity/order closed; Node 24/host replay remains under `GEO-DET-001`. |
+| `GEO-PRIM-003` | `🌗` → `✔️` | Geometry curve/intersection tests; core curve/query tests; geometry 93 + core 507 | Supported curve boundary closed; broader consumer pair enumeration remains outside promotion. |
+| `GEO-PRIM-004` | `🌗` → `✔️` | Core path/holes/text tests; renderer semantic tests; fixtures 10/15/24 | Semantic projection closed locally; Flutter fixture 24 remains held. |
+| `GEO-PRIM-005` | `🌗` → `✔️` | Core component/clone/sheet/namespace tests | Local scope and identity closed; public/host release evidence is separate. |
+| `GEO-MEASURE-002` | `🌗` → `✔️` | `core/src/evaluator.ts`; unit/fixture 16 tests; conformance 345/345 | Bounded TypeScript/core units closed; Flutter parity remains `GEO-PARITY-001`. |
+| `GEO-MEASURE-004` | `🌗` → `✔️` | Core parameter/derived dependency and cycle tests; fixture 16 | Core local-scope contract closed; consumer parity remains separately qualified. |
+| `GEO-XFORM-002` | `🌗` → `✔️` | Operation/split/reverse tests in geometry/core; finite-value diagnostics | Operation-result identity/order closed on tested surfaces. |
+| `GEO-PLACE-001` | `🌗` → `✔️` | Core placement conflict/inside/margin tests; fixture evidence | Rect-only `inside` and anchor placement boundary closed. |
+| `GEO-PLACE-002` | `🌗` → `✔️` | Core frame/path placement and tangent/normal tests | Endpoint/degenerate policy closed locally. |
+| `GEO-ANCH-002` | `🌗` → `✔️` | Core custom-anchor/clone/sheet tests; projection/renderer assertions | Named/result anchors remain addressable on local semantic surfaces. |
+| `GEO-COLL-001` | `🌗` → `✔️` | `core/src/repeat.ts`; repeat-mode tests; fixture 24 | Collection modes/order/context closed locally. |
+| `GEO-COLL-002` | `🌗` → `✔️` | Along distribution/frame/endpoint policy tests; fixture 24 | Conflict and edge policies are deterministic on core. |
+| `GEO-COLL-003` | `🌗` → `✔️` | Grid pitch/gap/auto-layout negative tests; fixture 24 | Over-constraint diagnostics closed locally. |
+| `GEO-COLL-004` | `🌗` → `✔️` | Divide/split/index/selector tests; fixture 24 | Ordering and result identity closed on core/geometry. |
+| `GEO-COLL-005` | `🌗` → `✔️` | Projection tests plus four-process semantic replay | Local repeat IDs/order closed; cross-runtime remains `GEO-DET-001`. |
+| `GEO-QUERY-001` | `🌗` → `✔️` | Evaluator/boolean measurement tests; fixture 24 | Supported finite query results and invalid targets closed locally. |
+| `GEO-QUERY-002` | `🌗` → `✔️` | Curve endpoint/domain/tangent/normal/frame tests | Degenerate and out-of-range behavior closed on tested surfaces. |
+| `GEO-CONSTRAINT-001` | `🌗` → `✔️` | `core/src/resolver/constraints.ts`; relation diagnostics; fixtures 14/24 | Post-resolve validator boundary closed; no general solver claimed. |
+| `GEO-BOOLEAN-001` | `🌗` → `⏸️` | Geometry/core boolean tests; fixture 15 and fixture 24 conformance | Scope-held: rectangle/holes boundary is executable; union/xor/non-rectangle promotion awaits decision. |
+| `GEO-BOOLEAN-002` | `🌗` → `⏸️` | Empty/multipart/single/multi diagnostics; fixtures 15/19/20/24 | Scope-held: broader topology/result-mode matrix remains explicit. |
+| `GEO-DET-001` | `🌗` → `⏸️` | Four-process replay; conformance 345/345 | Evidence-held: Node 24, full Flutter wrapper, and host replay unavailable. |
+| `GEO-PARITY-001` | `🌗` → `⏸️` | Direct Flutter focused test 4/4 for fixtures 10/14/15/16 | Evidence-held: wrapper/fixture 24 Flutter execution not verified. |
+| `GEO-PARITY-002` | `🌗` → `⏸️` | Semantic SVG comparator/replay; Flutter semantic assertions | Evidence-held: fixture 24 Flutter/full host projection not verified; raw SVG bytes excluded. |
+
+### Complete 40-ID closure route register
+
+This is the handoff view of the frozen catalog. It deliberately includes
+bounded implementation and explicit scope/evidence-held rows so the next owner
+cannot narrow execution to only the current P0/P1 selection. Each expected ID
+appears once in this handoff register and carries a testable boundary.
+
+Complete route totals are 35 bounded implementations and five explicit holds
+(two scope-held and three evidence-held). This preserves all 40 expected IDs
+and is broader than the historical 17-row triage subset.
+
+| ID | Status | Handoff class | Closure evidence to obtain or preserve |
+| --- | --- | --- | --- |
+| `GEO-OBJ-001` | `✔️` | bounded implementation | Graph identity, duplicate/cycle diagnostics, and canonical replay fixture |
+| `GEO-PRIM-001` | `✔️` | bounded implementation | Point/line fixture 10/15 and typed rejection tests |
+| `GEO-PRIM-002` | `✔️` | bounded implementation | Rect/circle/ellipse ClosedShape and holes normalization fixtures |
+| `GEO-PRIM-003` | `✔️` | bounded implementation | Curve endpoint/length/intersection and degeneracy fixture |
+| `GEO-PRIM-004` | `✔️` | bounded implementation | Open/closed path, holes, chaining, labels, and semantic renderer fixture |
+| `GEO-PRIM-005` | `✔️` | bounded implementation | Component/clone/export local-scope and namespace diagnostics |
+| `GEO-MEASURE-001` | `✔️` | bounded implementation | Typed-dimension valid/invalid matrix |
+| `GEO-MEASURE-002` | `✔️` | bounded implementation | Unit normalization/conversion, fixture 16, malformed-context negatives |
+| `GEO-MEASURE-003` | `✔️` | bounded implementation | Deterministic evaluator expression tests |
+| `GEO-MEASURE-004` | `✔️` | bounded implementation | Parameter/default/derived-cycle and component-local scope fixture |
+| `GEO-MEASURE-005` | `✔️` | bounded implementation | Invalid fixture code/path assertions |
+| `GEO-XFORM-001` | `✔️` | bounded implementation | Ordered transform semantic snapshot |
+| `GEO-XFORM-002` | `✔️` | bounded implementation | Chained operation/split identity and finite-value negatives |
+| `GEO-PLACE-001` | `✔️` | bounded implementation | Anchor/offset/inside/margin conflict matrix |
+| `GEO-PLACE-002` | `✔️` | bounded implementation | point/path/frame endpoint and degenerate fixture |
+| `GEO-ANCH-001` | `✔️` | bounded implementation | Standard-anchor fixture and stable types |
+| `GEO-ANCH-002` | `✔️` | bounded implementation | Custom/result-anchor serialization and renderer fixture |
+| `GEO-COLL-001` | `✔️` | bounded implementation | Five repeat-mode shared conformance fixture |
+| `GEO-COLL-002` | `✔️` | bounded implementation | Along policy, offset, endpoint, and conflict edge matrix |
+| `GEO-COLL-003` | `✔️` | bounded implementation | Grid pitch/gap and over-constraint fixtures |
+| `GEO-COLL-004` | `✔️` | bounded implementation | Divide/split order, count, selector, and identity snapshots |
+| `GEO-COLL-005` | `✔️` | bounded implementation | Repeat ID/order replay harness plus host follow-up |
+| `GEO-QUERY-001` | `✔️` | bounded implementation | Measurement coverage by supported primitive and invalid target |
+| `GEO-QUERY-002` | `✔️` | bounded implementation | Curve/path endpoint, domain, and tangent/normal fixture |
+| `GEO-QUERY-003` | `✔️` | bounded implementation | v0.5 overload and wrong-target negatives |
+| `GEO-QUERY-004` | `✔️` | bounded implementation | Supported pair/selector contract and fixture 15 |
+| `GEO-QUERY-005` | `✔️` | bounded implementation | Frame/tLength tests reused by repeat consumer |
+| `GEO-CONSTRAINT-001` | `✔️` | bounded implementation | Four relation valid/invalid/degenerate fixture matrix |
+| `GEO-CONSTRAINT-002` | `✔️` | bounded implementation | Fixture 14 violation path/code snapshots |
+| `GEO-BOOLEAN-001` | `⏸️` | scope-held | Fixture 15 intersect/subtract; promotion decision for union/xor/topology |
+| `GEO-BOOLEAN-002` | `⏸️` | scope-held | Fixtures 15/19/20; deferred broader result-mode matrix |
+| `GEO-NUM-001` | `✔️` | bounded implementation | Operation-specific tolerance tests |
+| `GEO-NUM-002` | `✔️` | bounded implementation | Winding/holes normalization and fixture 15 |
+| `GEO-NUM-003` | `✔️` | bounded implementation | Stable low-level error-code negatives |
+| `GEO-DET-001` | `⏸️` | evidence-held | Repeated-process, Node 24, Flutter, and host replay evidence |
+| `GEO-DET-002` | `✔️` | bounded implementation | Local projection/CLI replay comparator |
+| `GEO-SER-001` | `✔️` | bounded implementation | Versioned core/CLI semantic projection snapshots |
+| `GEO-SER-002` | `✔️` | bounded implementation | Manifest numeric/order/undefined serialization checks |
+| `GEO-PARITY-001` | `⏸️` | evidence-held | Reviewed fixture 15/16 TypeScript–Flutter semantic comparator |
+| `GEO-PARITY-002` | `⏸️` | evidence-held | Semantic SVG tree/geometry/anchor host comparison |
+
+The handoff preserves `not-verified` host limitations and deferred scope as
+separate evidence classes. Neither class is a success claim or a removal from
+the expected catalog.
+
 ## 5. Unresolved questions
 
 These questions remain open and must not be silently resolved by the backlog or
@@ -194,19 +309,19 @@ The direct checks above do not replace registry refresh, CI, native Flutter,
 cross-platform replay, or public-contract decisions. Those limitations remain
 open under `Q-GEO-002` and `Q-GEO-006`.
 
-### 8.1 Target verification extension — 2026-11-04
+### 8.1 Historical target verification extension — superseded
 
-The implementation verification task reran the bounded local evidence against
-the current working tree. These results supersede the older counts in the
-baseline table above; the older record is retained as provenance.
+The implementation verification task reran bounded local evidence before the
+final closure slice. The record is retained as provenance; the current rerun is
+recorded below.
 
 | Exact command | Result | Evidence qualification |
 | --- | --- | --- |
-| `pnpm test && pnpm lint && pnpm build` from `geometry/` | PASS — 5 files, 91 tests; lint/build pass | Unit, numeric tolerance, intersection, boolean normalization, and low-level error behavior; Node 22 local evidence. |
-| `pnpm test && pnpm lint && pnpm build` from `core/` | PASS — 48 files, 488 tests; lint/build pass | Consumer regression, negative diagnostics, deterministic projection/replay, collection identity, units, queries, constraints, and placement; Node 22 local evidence. |
-| `pnpm test && pnpm build` from `renderer-svg/` | PASS — 7 files, 92 tests; build pass | Semantic SVG projection, text content/anchor, closed-ring derivation, and SVG safety boundary. |
-| `pnpm test && pnpm build` from `cli/` | PASS — 36 tests; build pass | CLI validation/compile/repeated-process serialization surface; dependency links resolved after package dist builds completed. |
-| `pnpm run conformance:fixtures` from workspace root | PASS — 298/298 across 23 fixtures | Shared parse/resolve/renderer/language-service/highlighting/preview/CLI conformance, including active, legacy, invalid, runtime-error, and capability fixtures. |
+| `pnpm test && pnpm lint && pnpm build` from `geometry/` | PASS — 5 files, 91 tests; lint/build pass | Superseded local package evidence; Node 22 local evidence. |
+| `pnpm test && pnpm lint && pnpm build` from `core/` | PASS — 48 files, 488 tests; lint/build pass | Superseded local core evidence; Node 22 local evidence. |
+| `pnpm test && pnpm build` from `renderer-svg/` | PASS — 7 files, 92 tests; build pass | Superseded semantic SVG evidence. |
+| `pnpm test && pnpm build` from `cli/` | PASS — 36 tests; build pass | Superseded CLI evidence. |
+| `pnpm run conformance:fixtures` from workspace root | PASS — 298/298 across 23 fixtures | Superseded shared fixture evidence. |
 | `pnpm run compatibility:check` from workspace root | QUALIFIED — 280 passed, 3 failed | The failures are pre-existing metadata drift: core package `0.5.2` vs matrix `0.5.1`, playground core dependency `^0.5.2` vs expected `^0.5.0`, and Flutter app `1.0.1+1` vs matrix `1.0.0+1`; this verification task did not change release/config metadata. |
 | `pnpm test -- src/__tests__/intersection.test.ts src/__tests__/boolean.test.ts` from `geometry/` | PASS — Vitest executed the configured 5-file suite, 91 tests | Focused invocation covers numeric tolerance/intersection/boolean paths; package test configuration still reports the complete suite. |
 | `pnpm test -- src/__tests__/projection.test.ts src/__tests__/dependency_v03.test.ts src/__tests__/repeat_divide.test.ts src/__tests__/structured_errors.test.ts` from `core/` | PASS — Vitest executed the configured 48-file suite, 488 tests | Focused invocation covers deterministic serialization, graph/repeat identity, and structured errors; package test configuration still reports the complete suite. |
@@ -215,6 +330,22 @@ Environment boundary remains explicit: Node `v22.23.2` was used while the
 workspace declares Node `>=24`; Flutter/native host replay was not rerun. The
 Node-24, Flutter, registry, CI, and cross-platform parity rows therefore stay
 `not-verified`, not failed.
+
+### 8.2 Current local verification — 2026-11-05
+
+The current checkout was rerun after the Geometry closure changes:
+
+| Exact command | Result |
+| --- | --- |
+| `pnpm test` from `geometry/` | PASS — 5 files, 93 tests |
+| `pnpm test` from `core/` | PASS — 48 files, 507 tests |
+| `pnpm test` from `renderer-svg/` | PASS — 7 files, 104 tests |
+| `pnpm test` from `cli/` | PASS — 1 file, 38 tests |
+| `pnpm run conformance:fixtures` from workspace root | PASS — 345/345 across 24 fixtures |
+
+These are local Node `v22.23.2` results. They support the bounded TypeScript
+closure only; Node 24, Flutter/native-host, CI, registry, and cross-platform
+parity remain separate evidence boundaries.
 
 ## 9. Repository and commit boundary
 

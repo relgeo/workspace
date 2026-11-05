@@ -1,0 +1,317 @@
+{
+  "unit": "px",
+  "autoSize": true,
+  "padding": 20,
+  "objects": {
+    "left": {
+      "id": "left",
+      "type": "rect",
+      "x": 0,
+      "y": 0,
+      "width": 20,
+      "height": 20
+    },
+    "right": {
+      "id": "right",
+      "type": "rect",
+      "x": 10,
+      "y": 0,
+      "width": 20,
+      "height": 20
+    },
+    "merged": {
+      "id": "merged",
+      "type": "boolean",
+      "operation": "union",
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 30,
+          "y": 0
+        },
+        {
+          "x": 30,
+          "y": 20
+        },
+        {
+          "x": 0,
+          "y": 20
+        }
+      ],
+      "segments": [
+        {
+          "type": "line",
+          "x1": 0,
+          "y1": 0,
+          "x2": 30,
+          "y2": 0
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 0,
+          "x2": 30,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 20,
+          "x2": 0,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 0,
+          "y1": 20,
+          "x2": 0,
+          "y2": 0
+        }
+      ],
+      "holes": []
+    },
+    "symmetricDifference": {
+      "id": "symmetricDifference",
+      "type": "boolean",
+      "operation": "xor",
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 10,
+          "y": 0
+        },
+        {
+          "x": 10,
+          "y": 20
+        },
+        {
+          "x": 0,
+          "y": 20
+        },
+        {
+          "x": 20,
+          "y": 0
+        },
+        {
+          "x": 30,
+          "y": 0
+        },
+        {
+          "x": 30,
+          "y": 20
+        },
+        {
+          "x": 20,
+          "y": 20
+        }
+      ],
+      "segments": [
+        {
+          "type": "line",
+          "x1": 0,
+          "y1": 0,
+          "x2": 10,
+          "y2": 0
+        },
+        {
+          "type": "line",
+          "x1": 10,
+          "y1": 0,
+          "x2": 10,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 10,
+          "y1": 20,
+          "x2": 0,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 0,
+          "y1": 20,
+          "x2": 0,
+          "y2": 0
+        },
+        {
+          "type": "line",
+          "x1": 20,
+          "y1": 0,
+          "x2": 30,
+          "y2": 0
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 0,
+          "x2": 30,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 20,
+          "x2": 20,
+          "y2": 20
+        },
+        {
+          "type": "line",
+          "x1": 20,
+          "y1": 20,
+          "x2": 20,
+          "y2": 0
+        }
+      ],
+      "holes": []
+    },
+    "guide": {
+      "id": "guide",
+      "type": "line",
+      "x1": 0,
+      "y1": 50,
+      "x2": 100,
+      "y2": 50
+    },
+    "alongMarks": {
+      "id": "alongMarks",
+      "type": "collection",
+      "children": [
+        "alongMarks[0]",
+        "alongMarks[1]",
+        "alongMarks[2]"
+      ]
+    },
+    "gridMarks": {
+      "id": "gridMarks",
+      "type": "collection",
+      "children": [
+        "gridMarks[0,0]",
+        "gridMarks[0,1]",
+        "gridMarks[1,0]",
+        "gridMarks[1,1]"
+      ]
+    },
+    "polarOrigin": {
+      "id": "polarOrigin",
+      "type": "point",
+      "x": 0,
+      "y": 0,
+      "meta": {}
+    },
+    "polarMarks": {
+      "id": "polarMarks",
+      "type": "collection",
+      "children": [
+        "polarMarks[0]",
+        "polarMarks[1]",
+        "polarMarks[2]"
+      ]
+    },
+    "eachMarks": {
+      "id": "eachMarks",
+      "type": "collection",
+      "children": [
+        "eachMarks[0]",
+        "eachMarks[1]"
+      ]
+    },
+    "alongMarks[0]": {
+      "id": "alongMarks[0]",
+      "type": "circle",
+      "cx": 0,
+      "cy": 50,
+      "radius": 1
+    },
+    "alongMarks[1]": {
+      "id": "alongMarks[1]",
+      "type": "circle",
+      "cx": 50,
+      "cy": 50,
+      "radius": 1
+    },
+    "alongMarks[2]": {
+      "id": "alongMarks[2]",
+      "type": "circle",
+      "cx": 100,
+      "cy": 50,
+      "radius": 1
+    },
+    "gridMarks[0,0]": {
+      "id": "gridMarks[0,0]",
+      "type": "circle",
+      "cx": 0,
+      "cy": 0,
+      "radius": 1
+    },
+    "gridMarks[0,1]": {
+      "id": "gridMarks[0,1]",
+      "type": "circle",
+      "cx": 10,
+      "cy": 0,
+      "radius": 1
+    },
+    "gridMarks[1,0]": {
+      "id": "gridMarks[1,0]",
+      "type": "circle",
+      "cx": 0,
+      "cy": 15,
+      "radius": 1
+    },
+    "gridMarks[1,1]": {
+      "id": "gridMarks[1,1]",
+      "type": "circle",
+      "cx": 10,
+      "cy": 15,
+      "radius": 1
+    },
+    "polarMarks[0]": {
+      "id": "polarMarks[0]",
+      "type": "circle",
+      "cx": 5,
+      "cy": 0,
+      "radius": 1
+    },
+    "polarMarks[1]": {
+      "id": "polarMarks[1]",
+      "type": "circle",
+      "cx": -2.499999999999999,
+      "cy": 4.330127018922194,
+      "radius": 1
+    },
+    "polarMarks[2]": {
+      "id": "polarMarks[2]",
+      "type": "circle",
+      "cx": -2.500000000000002,
+      "cy": -4.330127018922193,
+      "radius": 1
+    },
+    "eachMarks[0]": {
+      "id": "eachMarks[0]",
+      "type": "circle",
+      "cx": 0,
+      "cy": 0,
+      "radius": 1
+    },
+    "eachMarks[1]": {
+      "id": "eachMarks[1]",
+      "type": "circle",
+      "cx": 10,
+      "cy": 10,
+      "radius": 1
+    }
+  },
+  "bbox": {
+    "x": -3.500000000000002,
+    "y": -5.330127018922193,
+    "width": 104.5,
+    "height": 56.33012701892219
+  },
+  "violations": []
+}

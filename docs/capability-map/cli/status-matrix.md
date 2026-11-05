@@ -1,6 +1,6 @@
 # RelGeo CLI Status Matrix
 
-> **Coverage statement — 2026-11-04.** This is the capability-first downstream
+> **Coverage statement — 2026-11-05.** This is the capability-first downstream
 > view of all 35 expected CLI IDs. Statuses are taken from the
 > [expected-versus-observed reconciliation](./reconciliation.md);
 > discovery details remain in the [implementation audit](./implementation-audit.md).
@@ -23,7 +23,7 @@
 | `🌗` | Partial implementation, coverage, result shape, or delivery evidence. |
 | `❌` | Expected CLI capability was searched and is absent; it remains an explicit implementation gap. |
 | `➖` | Not applicable to CLI because another surface owns the behavior. |
-| `⏸️` | Deferred or held by an explicit scope/protocol decision. |
+| `⏸️` | Deferred or held by an explicit scope/protocol/evidence decision. |
 | `⚠️` | Confirmed defect or contract mismatch at the CLI boundary. |
 | `?` | Evidence limitation only; it is not an implementation status and never replaces `❌`. |
 
@@ -37,11 +37,11 @@ not establish current Node 24, registry, CI, cross-OS, or public-package proof.
 | Expected catalog rows | 35 |
 | Matrix rows | 35 |
 | Missing / duplicate / extra IDs | 0 / 0 / 0 |
-| Status counts | 32 `✔️`, 1 `🌗`, 0 `❌`, 0 `⚠️`, 2 `⏸️` held/deferred |
-| Implementation-gap candidates | 1: release verification; watch and daemon rows remain held by scope |
+| Status counts | 32 `✔️`, 0 `🌗`, 0 `❌`, 0 `⚠️`, 3 `⏸️` held/deferred |
+| Implementation-gap candidates | 0; `CLI-PACK-004` is evidence-only/deferred release proof, while watch and daemon rows remain held by scope |
 | P0/P1 triage disposition | `CLI-RENDER-002` and `CLI-RENDER-003` are implementation-closed with source/test/fixture evidence; 13 other P0/P1 rows remain implementation-closed/regression-only; `CLI-PACK-004` is evidence-only (Node 24/registry/CI/release environment) |
-| Active implementation tranche | 11 selected rows from the intake record (7 `🌗`, 2 `❌`, 2 `⚠️` at selection time); no `➖` or `⏸️` row selected. Current statuses above reflect post-implementation evidence. |
-| Current evidence refresh | Audit §6 records the 2026-11-05 consumer revalidation: CLI 38/38, build, conformance 298/298, and renderer semantic replay boundary; Node 24, CI, registry, cross-OS, and TTY evidence remain explicitly unverified |
+| Active implementation tranche | 11 historical intake rows; all are now implementation-closed with source/test/fixture evidence. No `➖` or `⏸️` row is treated as implementation work. |
+| Current evidence refresh | Audit §6 records the 2026-11-05 CLI 38/38, typecheck, build, pack-boundary, and conformance 298/298 checks; clean installed-package consumer, Node 24, CI, registry, cross-OS, TTY, and Playground/Pages revision/provenance handoff evidence remain explicitly unverified and are not implementation prerequisites |
 
 ## Capability-first matrix
 
@@ -78,9 +78,9 @@ not establish current Node 24, registry, CI, cross-OS, or public-package proof.
 | `CLI-AUTO-003` Stable scripting streams | `✔️` | Audit §5; stream separation, JSON diagnostics, no-color, and CI tests | CI/TTY cross-host behavior remains unverified | `relgeo/cli` | diagnostics/config modes | P1 pipelines may parse noise | Retain local stream probes |
 | `CLI-AUTO-004` Optional long-running/JSON-RPC daemon boundary | `⏸️` | Audit §4/§5; no approved protocol or implementation | Held pending separate protocol decision | future CLI/protocol owner | scope decision; daemon security model | P2 premature protocol fragmentation | Keep held; create implementation work only after decision |
 | `CLI-PACK-001` Executable package and `relgeo` binary | `✔️` | Audit §5; bin/dist/metadata, local binary run, and CLI pack dry-run with 8 files | Fresh registry install and Node >=24 consumer run are not verified | `relgeo/cli` + release owner | Node runtime; npm boundary | M: install path can drift | Run clean-install smoke under Node >=24 |
-| `CLI-PACK-002` Reproducible build and tarball boundary | `✔️` | Audit §6; current CLI `npm pack --dry-run --json` exposes 8 allowlisted files; prior scoped release audit passed | Repository-wide current release audit is environment/workspace-limited; no publish claim | `relgeo/cli` + release guard | package files and release script | M: accidental files in package | Keep pack boundary in release guard |
+| `CLI-PACK-002` Reproducible build and tarball boundary | `✔️` | Audit §6; current CLI `npm pack --dry-run --json` and local tarball expose 8 allowlisted files | Repository-wide current release audit has one unrelated core version mismatch; no publish claim | `relgeo/cli` + release guard | package files and release script | M: accidental files in package | Keep pack boundary in release guard |
 | `CLI-PACK-003` Compatibility/version policy | `✔️` | Audit §6; compatibility audit 10/10 and CLI-specific matrix rows pass | Full integration gate stops at Node >=24 preflight on this host; registry evidence remains separate | workspace + `relgeo/cli` | compatibility matrix; package metadata | M: cross-package line drift | Keep compatibility check as publish prerequisite |
-| `CLI-PACK-004` Release verification and recovery boundary | `🌗` | Audit §5/§6; preflight/pack/registry verifier scripts | Current registry/public and Node 24 proof unverified | release owner + `relgeo/cli` | npm registry; canonical Node | P1 partial publish/recovery failure | Run registry consumer proof and record forward-fix evidence |
+| `CLI-PACK-004` Release verification and recovery boundary | `⏸️` | Audit §5/§6; preflight/pack/registry verifier scripts | Evidence-only/deferred: current registry/public, Node 24, CI, and recovery proof are unverified | release owner + workspace | npm registry; canonical Node; release records | P1 release evidence boundary, not an implementation gap | Run canonical package verification when the release environment/owner is available; do not publish as part of this goal |
 | `CLI-PACK-005` Cross-surface conformance consumption | `✔️` | Audit §6; conformance 298/298 across 23 fixtures | Fixture set is declared, not exhaustive CLI option coverage | workspace + `relgeo/cli` | fixture provenance; spec/core semantics | M: untested option regressions | Add fixtures only when capabilities are promoted |
 
 ## Scope and evidence findings

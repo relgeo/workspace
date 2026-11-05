@@ -1,5 +1,21 @@
 # Sub-Rencana 07 — Flutter Capability Promotion dan SVG Semantic Parity
 
+## 0A. Semantic comparator refresh — 2026-11-05
+
+The shared SVG contract is now explicit in `fixtures/manifest.json`: schema
+`relgeo.svg-semantic` v1, compatibility line `0.5`, numeric comparison within
+`1e-6`, and preserved semantic array order. The TypeScript replay harness also
+covers fixture 24 (collection/boolean) across separate processes. This proves
+local deterministic renderer projection only; fixture 24 remains core-only and
+Flutter remains `not-verified` until the same shared fixture can run on a
+writable Flutter host. Raw SVG bytes are not used as the parity contract.
+
+The 2026-11-05 geometry closure keeps both parity rows explicitly
+`⏸️ evidence-held`: direct Flutter focused conformance is 4/4 for fixtures
+10/14/15/16, but the full wrapper is blocked by the SDK cache write boundary and
+fixture 24 has no Flutter projection evidence. This preserves the semantic
+comparator contract without claiming full TypeScript/Flutter parity.
+
 **Status keputusan:** boundary boolean/intersection disetujui sebagai promotion pertama; evaluator/unit menunggu. **Status implementasi:** fixture 15 dan capability matrix sudah dipromosikan pada scope contract terbatas; fixture 16 evaluator/unit tetap capability/candidate. **Status evidence:** canonical GitHub Actions run 37832260326 pada root 328c869 lulus seluruh enam job.
 **Tanggal mulai:** 2026-09-18  
 **Status terakhir diperiksa:** 2026-10-09

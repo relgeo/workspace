@@ -1,6 +1,6 @@
 # RelGeo CLI implementation and evidence audit
 
-> **Audit coverage statement — 2026-11-04.** This audit compares the expected
+> **Audit coverage statement — 2026-11-05.** This audit compares the expected
 > IDs in [cli/expected-capability-catalog.md](./expected-capability-catalog.md)
 > with the current CLI source, executable/package boundary, command/help output,
 > tests, shared fixtures, consumer scripts, documentation, release metadata, and
@@ -21,7 +21,7 @@
 | Field | Value |
 | --- | --- |
 | Surface | `relgeo/cli` executable and `@relgeo/cli@0.5.0` package |
-| Audit date | 2026-11-04 |
+| Audit date | 2026-11-05 |
 | Expected baseline | 35 IDs in `cli/expected-capability-catalog.md` |
 | Owner boundary | `relgeo/cli` owns command orchestration, I/O, diagnostics presentation, exit behavior, automation boundary, and packaging; `spec/`, `@relgeo/core`, and `@relgeo/renderer-svg` own delegated semantics |
 | Local runtime | Node `22.23.2`, pnpm `10.33.3`; repository requires Node `>=24`, so this local result is not canonical Node 24 evidence |
@@ -154,9 +154,9 @@ is based on negative source/command discovery, not merely on a missing test.
 | `CLI-AUTO-003` | `implemented` | E2 | confirmed at local boundary | in scope | Compile data stays on stdout and progress/diagnostics on stderr; JSON diagnostics, `--no-color`, and `CI` stream behavior are tested. Cross-OS/TTY remains unverified. |
 | `CLI-AUTO-004` | `deferred` | E0/E1 | not assessed | held | Catalog holds daemon/JSON-RPC as a future bounded decision; no implementation or approved protocol contract. |
 | `CLI-PACK-001` | `implemented` | E1/E2 | partial | in scope | `bin/relgeo.js`, bin metadata, CJS/ESM dist, and local binary run work; fresh registry install not executed. |
-| `CLI-PACK-002` | `implemented` | E2 | confirmed | in scope | `NPM_CONFIG_CACHE=/private/tmp/relgeo-cli-npm-cache pnpm run release:audit` passes `106/106`; CLI tarball has 8 declared public entries. |
-| `CLI-PACK-003` | `implemented` | E3 | confirmed at CLI rows | in scope | The CLI-specific compatibility rows pass; the current root gate has three unrelated failures in core/playground/Flutter, so cross-repo compatibility is not claimed green. |
-| `CLI-PACK-004` | `partial` | E1/E2 | partial | in scope | Manual preflight, pack, registry verifier, and forward-fix planner exist; current registry/public verification and Node 24 run are unverified. |
+| `CLI-PACK-002` | `implemented` | E2 | confirmed | in scope | Current CLI pack checks pass and the tarball has 8 declared public entries; the repository-wide release audit is environment/workspace-limited by one unrelated core version mismatch. |
+| `CLI-PACK-003` | `implemented` | E3 | confirmed at CLI rows | in scope | The CLI-specific compatibility rows pass; the current root gate has five unrelated workspace failures in the spec revision pin, core package/baseline version, Playground core range, and Flutter application version, so cross-repo compatibility is not claimed green. |
+| `CLI-PACK-004` | `deferred` | E1/E2 | not assessed | evidence-only / deferred boundary | Manual preflight, pack, registry verifier, and forward-fix planner exist; Node 24, registry/public verification, and release-owner recovery evidence remain environment work, not a CLI implementation gap. |
 | `CLI-PACK-005` | `implemented` | E3 | confirmed for declared fixtures | in scope | `conformance:fixtures` passes `298/298` across 23 fixtures, including exact CLI SVG and runtime-error status/code assertions; not exhaustive CLI-option coverage. |
 
 ### Status roll-up
@@ -164,10 +164,10 @@ is based on negative source/command discovery, not merely on a missing test.
 | Status | Count | IDs / interpretation |
 | --- | ---: | --- |
 | `implemented` | 32 | Discovery/version, init/open, file and stdin input, inspect, validate, render options, outputs, diagnostics/error handling, config, automation, packaging, compatibility, and fixture participation at bounded scope. |
-| `partial` | 1 | Package release evidence remains environment-limited. |
+| `partial` | 0 | No expected CLI capability remains partially implemented at the stated boundary. |
 | `broken` | 0 | No selected CLI error path remains a confirmed contract mismatch after strict dispatch and option validation. |
 | `absent` | 0 | No expected CLI capability is absent at the one-shot boundary. |
-| `deferred` | 2 | `CLI-AUTO-002` watch/rebuild and `CLI-AUTO-004` daemon/JSON-RPC remain held for separate scope/protocol decisions. |
+| `deferred` | 3 | `CLI-AUTO-002` watch/rebuild and `CLI-AUTO-004` daemon/JSON-RPC remain held by scope/protocol decisions; `CLI-PACK-004` is an evidence-only release boundary owned by the release/workspace owner. |
 | `not-applicable` | 0 expected IDs | UI/editor/parser/Flutter boundaries are reported separately in §4; they are not expected CLI IDs. |
 | `unverified` | 0 expected IDs | Unverified is an evidence axis: Node 24, CI/public registry, and cross-OS claims remain unverified even where local implementation is present. |
 
@@ -180,16 +180,18 @@ is based on negative source/command discovery, not merely on a missing test.
 | `pnpm exec tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --esModuleInterop --skipLibCheck src/index.ts` in `cli/` | PASS — no diagnostics | Direct TypeScript analyzer check; the package has no standalone `tsconfig.json`, so the effective CLI compiler settings were supplied explicitly. |
 | `/opt/homebrew/bin/pnpm build` in `cli/` | PASS — CJS/ESM output | Current-checkout source-to-dist package build. |
 | `pnpm run conformance:fixtures` | PASS — `298 passed, 0 failed across 23 fixtures` | Root cross-surface fixture evidence; CLI checks are exact for declared paths. Node 22 emitted an engine warning because canonical Node is >=24. |
-| `pnpm run compatibility:check` | NOT VERIFIED for the CLI handoff — current workspace run reported `280 passed, 3 failed`; failures are outside the CLI rows (`core` package version, `playground` → `core` dependency range, and Flutter application version) | The CLI-specific matrix/dependency checks passed in the same run, but the root compatibility gate cannot be claimed green for this dirty cross-repo workspace. |
+| `pnpm run compatibility:check` | WORKSPACE-LIMITED — current run reported `278 passed, 5 failed`; failures are outside the CLI rows (spec revision pin, core package/baseline version, Playground → core dependency range, and Flutter application version) | The CLI-specific matrix/dependency checks passed in the same run, but the root compatibility gate cannot be claimed green for this cross-repo workspace. |
+| `pnpm run verify:baseline:strict` | PASS — `85 passed, 0 failed` | Strict baseline confirms gitlink/checkouts and package metadata are internally consistent for the current workspace; it does not override the compatibility matrix mismatches. |
 | `pnpm run compatibility:audit` | PASS — `10 passed, 0 warnings, 0 failed` | Compatibility behavior and active/legacy version inventory remain coherent. |
-| `node scripts/run-integration-gate.mjs --local` | NOT VERIFIED — gate requires Node `>=24`; local runtime is Node `22.23.2` | Integration consumer gate was not executed beyond its runtime preflight; this is an environment limitation, not evidence of a CLI implementation failure. |
-| `NPM_CONFIG_CACHE=/private/tmp/relgeo-cli-npm-cache pnpm run release:audit` | PASS — `106 passed, 0 failed` | Local tarball/package metadata boundary for all seven npm packages, including CLI. |
-| `NPM_CONFIG_CACHE=/private/tmp/relgeo-cli-npm-cache npm pack --dry-run --json` in `cli/` | PASS — 8 files, `@relgeo/cli@0.5.0` | Direct CLI tarball evidence; no secret/private material observed in listed entries. |
+| `pnpm run integration:gate -- --local` | NOT VERIFIED — gate requires Node `>=24`; local runtime is Node `22.23.2` | Integration consumer gate was not executed beyond its runtime preflight; this is an environment limitation, not evidence of a CLI implementation failure. |
+| `NPM_CONFIG_CACHE=/private/tmp/relgeo-cli-npm-cache pnpm run release:audit` | ENVIRONMENT/WORKSPACE-LIMITED — `105 passed, 1 failed`; the only failure is the unrelated `core` package-version matrix check | The CLI package checks in the same audit pass; this is not a CLI implementation failure and no publish was attempted. |
+| `npm pack --dry-run --json` in `cli/` | PASS — 8 files, `@relgeo/cli@0.5.0` | Direct CLI tarball evidence; listed entries contain only `LICENSE`, `README.md`, `bin/relgeo.js`, `dist/*`, and `package.json`; no credential/cache/log/development-only paths were present. |
+| Local tarball + temporary consumer smoke (`npm pack --pack-destination ...`, `npm init -y`, local `npm install`, binary `--version`) | NOT VERIFIED — local pack and consumer initialization succeeded, but dependency installation did not complete in this environment and was stopped after no progress; the installed binary was not claimed as executed | Fresh consumer evidence remains deferred; the attempts used temporary cache/log directories and did not publish or mutate the registry. |
 | CLI help/version/alias probes | PASS | Command discovery, version, and `validate` alias behavior. |
 | CLI negative probes for stdin/watch/unknown format/malformed param, plus init/open/config boundary probes | PASS for expected observations: stdin succeeds, watch remains absent by scope, and invalid format/parameter values exit `2`; init/open/config behave according to the frozen one-shot contract | Direct evidence for the selected input and strict-validation contracts; watch remains scope-held while init/open/config are implemented. |
-| Current-checkout revalidation on 2026-11-04: `pnpm test` in `cli/` | PASS — 1 file, 38 tests | Reconfirms the package evidence, including v0.5 profile/typed overrides/units, CLI sheet validation, valid sheet selection, no-artifact failure, init/open/config, stdin/encoding, output failure, JSON diagnostics, no-color/CI, unknown-option, and overwrite coverage; watch/rebuild and cross-shell/TTY remain out of scope/unverified. |
+| Current-checkout revalidation on 2026-11-05: `pnpm test` in `cli/` | PASS — 1 file, 38 tests | Reconfirms the package evidence, including v0.5 profile/typed overrides/units, CLI sheet validation, valid sheet selection, no-artifact failure, init/open/config, stdin/encoding, output failure, JSON diagnostics, no-color/CI, unknown-option, and overwrite coverage; watch/rebuild and cross-shell/TTY remain out of scope/unverified. |
 | Current-checkout boundary probes: built CLI help/version, stdin, init/open, config, unknown format/parameter, JSON usage error, and watch | PASS for expected observations | Reconfirms implemented one-shot behavior and held watch boundary on local Node `22.23.2`, not Node 24/canonical evidence. |
-| Default `pnpm run release:audit` | FAIL — all 7 pack stages blocked by npm cache `EPERM` root-owned files | Environment blocker only; rerun with scoped temporary cache passed. |
+| Default `pnpm run release:audit` | FAIL — the repository npm cache is root-owned and cannot be written; a scoped-cache rerun completed the pack checks but exposed the unrelated `core` version mismatch | Environment/workspace limitation only; no registry mutation or publication was performed. |
 
 ## 7. Gaps, risks, and handoff
 
@@ -214,7 +216,9 @@ is based on negative source/command discovery, not merely on a missing test.
   `not-applicable`, not missing CLI work.
 
 This audit has been reconciled against the expected catalog, status matrix, and
-implementation-gap backlog. Future updates should preserve the distinction
-between implementation status, evidence tier, parity, scope, and environment
-availability; the remaining backlog is the handoff for unresolved or partial
-work.
+implementation-gap backlog. Every expected ID has an explicit disposition:
+implementation at the CLI boundary, delegated semantic ownership where noted,
+or an explicit deferred/evidence-only boundary with an owner and reason.
+Future updates should preserve the distinction between implementation status,
+evidence tier, parity, scope, and environment availability; no remaining
+`🌗`, `❌`, or `⚠️` row is inferred from the current CLI evidence.

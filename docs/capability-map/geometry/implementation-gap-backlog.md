@@ -1,19 +1,19 @@
 # Geometry implementation-gap backlog
 
-**Tanggal:** 2026-11-04
+**Tanggal:** 2026-11-05
 **Status:** candidate goal/task register; implemented bounded rows are retained as handoff evidence, not as broader parity claims
 **Source:** [geometry status matrix](./status-matrix.md)
 
 The expected catalog, audit, matrix, and this backlog are synchronized for the
-2026-11-04 evidence refresh: 40 expected IDs, 17 `✔️`, 23 `🌗`, and 0 `❌`.
-The candidate rows below preserve owner, dependency, acceptance evidence, and
-next action for the remaining partial or unverified work, while selected
-bounded rows retain their local implementation handoff status; `➖` and `⏸️`
-scope findings remain excluded from active implementation.
+2026-11-05 closure refresh: 40 expected IDs, 35 `✔️`, 0 `🌗`, 0 `❌`, and 5
+explicit `⏸️` holds. The historical 17/23 snapshot remains visible below;
+current route rows preserve owner, dependency, acceptance evidence, and the
+remaining scope/evidence boundary.
 
-Backlog ini menurunkan setiap capability berstatus `🌗` atau `❌` menjadi
-kandidat pekerjaan yang dapat ditugaskan. Status `❌` saat ini berjumlah nol,
-tetapi aturan retention tetap eksplisit: expected ID yang benar-benar tidak
+Backlog ini mempertahankan setiap capability yang pernah berstatus `🌗` atau
+`❌` sebagai kandidat pekerjaan yang dapat ditugaskan, sekaligus menyimpan
+maintenance route untuk capability yang sudah tertutup. Status `❌` saat ini
+berjumlah nol, tetapi aturan retention tetap eksplisit: expected ID yang benar-benar tidak
 memiliki implementation/consumer behavior harus masuk ke backlog dengan status
 `❌`, bukan dihapus atau dipetakan menjadi `➖`. Evidence `not-verified`
 dipisahkan sebagai verification task, bukan implementation claim. Pada reconciliation saat ini
@@ -100,24 +100,24 @@ dan **2 scope-deferred**.
 | `GEO-XFORM-002` | P1 | core + geometry | `spec/id/geometry/15-composition-objects.md` §15.4; operation resolver; `geometry/src/split.ts` | Chained mirror/rotate/scale/translate/reverse/split memiliki result identity, reference, dan snapshot stabil | `🌗 partial` | Tambahkan operation-chain fixture |
 | `GEO-PLACE-001` | P1 | core | `spec/id/geometry/17-placement.md`; anchors/bbox/placement diagnostics | Scalar/point/multi-anchor, offset, inside/margin, dan conflict menghasilkan result/error eksplisit | `🌗 partial` | Tambahkan placement conflict matrix |
 | `GEO-PLACE-002` | P1 | core + geometry | `spec/id/geometry/17-placement.md`; `frameAt`, tangent/normal, transform contract | `on.point`, `on.path`, dan `on.frame` setuju pada point/orientation untuk fixture yang sama | `🌗 partial` | Extend frame placement fixture |
-| `GEO-COLL-001` | P1 | core | `spec/id/geometry/19-collections.md`; `core/src/resolver/primitives/repeat.ts` | Linear/each/grid/polar/along masing-masing lulus shared conformance dengan index/context stabil | `🌗 partial` | Tambahkan lima mode cases |
+| `GEO-COLL-001` | P1 | core | `spec/id/geometry/19-collections.md`; `core/src/resolver/primitives/repeat.ts`; fixture 24 | Core fixture now exercises each/grid/polar/along with stable child identity; cross-consumer replay remains open | `🌗 partial` | Add consumer replay evidence |
 | `GEO-COLL-002` | P1 | core + spec | `spec/id/geometry/19-collections.md`; path length/frame policy | Uniform length/t, fixed distance, offsets, endpoint, frame, dan conflict policy memiliki expected result/error | `🌗 partial` | Tulis edge-policy table dan fixture |
 | `GEO-COLL-003` | P1 | core | `spec/id/geometry/19-collections.md`; repeat/grid resolver | Pitch/gap exclusivity, auto-layout, dan over-constraint diagnostics lulus negative fixtures | `🌗 partial` | Tambahkan grid validation fixtures |
 | `GEO-COLL-004` | P1 | core + geometry | `spec/id/geometry/16-collection-objects.md`, `19-collections.md`; `geometry/src/split.ts` | Divide/split mempertahankan traversal order, count, first/last, selector, dan result identity | `🌗 partial` | Tambahkan collection snapshots |
 | `GEO-COLL-005` | P1 | core | `spec/id/core/05-semantic-guarantees.md`; deterministic resolver/projection | Repeated-process replay menghasilkan collection order dan repeat IDs yang identik | `🌗 partial` | Tambahkan replay harness |
-| `GEO-QUERY-001` | P1 | core + spec | `spec/id/geometry/20-geometry-queries.md`; `core/src/evaluator.ts` | Distance/length/perimeter/area/bbox/extents lulus untuk setiap supported primitive dan invalid target | `🌗 partial` | Bangun query coverage fixture |
+| `GEO-QUERY-001` | P1 | core + spec | `spec/id/geometry/20-geometry-queries.md`; `core/src/evaluator.ts`; fixture 24 | Boolean perimeter/bbox and hole-aware area/perimeter are executable; complete primitive matrix remains open | `🌗 partial` | Extend supported primitive/query matrix |
 | `GEO-QUERY-002` | P1 | core + geometry | `spec/id/geometry/20-geometry-queries.md`; path sampling/frame semantics | Midpoint/polar/angleBetween/pointAt/tangentAt/normalAt lulus endpoint, curve, dan out-of-range cases | `🌗 partial` | Tambahkan curve query fixture |
-| `GEO-CONSTRAINT-001` | P1 | core + spec | `spec/id/geometry/21-constraints.md`; `core/src/resolver/constraints.ts` | Valid/invalid equal, parallel, perpendicular, dan tangent menghasilkan violation code/path stabil | `🌗 partial` | Tambahkan empat relation fixtures |
+| `GEO-CONSTRAINT-001` | P1 | core + spec | `spec/id/geometry/21-constraints.md`; `core/src/resolver/constraints.ts`; `core/src/__tests__/constraints_diagnostics.test.ts` | Valid relation matrix plus invalid/degenerate diagnostics are stable in core | `🌗 partial` | Add consumer/tolerance evidence |
 
 ### External evidence-only atau scope-deferred
 
 | ID | Priority | Decision | Owner / source of truth | Acceptance evidence | Initial status | Next action |
 | --- | --- | --- | --- | --- | --- | --- |
 | `GEO-DET-001` | P1 | external-evidence-only | core + parity; `spec/id/core/05-semantic-guarantees.md`; canonical fixtures | Repeated process plus Node 24/Flutter/host replay menghasilkan semantic snapshots dan diagnostics identik | `🌗 partial` | Jalankan saat runtime/host tersedia; tidak menjadi blocker local implementation |
-| `GEO-PARITY-001` | P0 | external-evidence-only | core + Flutter; `fixtures/manifest.json`; `docs/plans/06-flutter-alignment.md` dan `07-flutter-capability-promotion-and-svg-parity.md` | Reviewed fixtures 15/16 dibandingkan pada TypeScript dan Flutter untuk geometry, diagnostics, dan ordering | `🌗 partial` | Restore Flutter SDK/host probe; jangan mengubah status local tanpa evidence |
-| `GEO-PARITY-002` | P0 | external-evidence-only | renderer-svg + Flutter; semantic SVG policy pada `docs/plans/06-flutter-alignment.md` | Semantic SVG tree/geometry cocok lintas consumer; raw bytes/style/viewBox tetap di luar contract | `🌗 partial` | Tambahkan semantic SVG assertions saat consumer host tersedia |
-| `GEO-BOOLEAN-001` | P0 | scope-deferred | geometry + core; `spec/id/geometry/16-collection-objects.md`; fixture 15 boundary | Union/xor/non-rectangle topology baru dapat diuji setelah promotion decision; fixture 15 intersect/subtract tetap active | `🌗 partial` | Tunggu keputusan scope/promotion; jangan membuat implementation task sekarang |
-| `GEO-BOOLEAN-002` | P0 | scope-deferred | core + geometry; `spec/id/core/06-error-model.md`; fixtures 15/19/20 | Broader single/multi topology matrix baru dapat dikunci setelah keputusan boolean expansion | `🌗 partial` | Pertahankan empty/multipart evidence dan catat sebagai deferred |
+| `GEO-PARITY-001` | P0 | external-evidence-only | core + Flutter; `fixtures/manifest.json`; `docs/plans/06-flutter-alignment.md` dan `07-flutter-capability-promotion-and-svg-parity.md` | Reviewed fixtures 15/16 dibandingkan pada TypeScript dan Flutter untuk geometry, diagnostics, dan ordering; fixture 24 belum dipromosikan ke Flutter | `🌗 partial` | Review collection/repeat projection fixture 24, lalu jalankan Flutter conformance; jangan mengubah status global hanya dari local TypeScript replay |
+| `GEO-PARITY-002` | P0 | external-evidence-only | renderer-svg + Flutter; manifest SVG semantic contract; semantic SVG policy pada `docs/plans/06-flutter-alignment.md` | Semantic SVG tree/geometry compares with schema v1, 1e-6 tolerance, and preserved order; raw bytes/style/viewBox tetap di luar contract | `🌗 partial` | Tambahkan semantic SVG assertions saat consumer host tersedia; fixture 24 TypeScript replay sudah lokal |
+| `GEO-BOOLEAN-001` | P0 | geometry + core | `spec/id/geometry/16-collection-objects.md`; fixtures 15/24; geometry/core boolean tests | Union/xor rectangle topology is executable locally; non-rectangle and cross-consumer promotion remains separately deferred | `🌗 partial` | Preserve deferred boundary and add only approved topology |
+| `GEO-BOOLEAN-002` | P0 | core + geometry | `spec/id/core/06-error-model.md`; fixtures 15/19/20/24 | Empty/multipart/single/multi and holes are executable locally; broader topology matrix remains deferred | `🌗 partial` | Preserve explicit result-mode errors and deferred boundary |
 
 ## Locked contract and acceptance matrix — task `lock-geometry-contracts-and-acceptance--9052928134`
 
@@ -224,9 +224,68 @@ public-registry, Flutter/native-host, and cross-runtime evidence remain
 `not-verified` with next actions recorded in the coverage handoff and
 reconciliation.
 
-No `➖` or `⏸️` item is an active implementation task. No current expected
-capability is `❌`; if a later audit finds a true absence, its unchanged ID and
-`❌` status must be added explicitly before it can be selected.
+No `➖` item is an active implementation task. The five `⏸️` rows are explicit
+scope/evidence holds, not a way to hide implementation gaps. No current
+expected capability is `❌`; if a later audit finds a true absence, its
+unchanged ID and `❌` status must be added explicitly before it can be selected.
+
+## Complete 40-ID closure route register
+
+The triage and locked acceptance tables above are detailed work views. This
+register is the backlog's complete one-to-one handoff: bounded rows are kept as
+maintenance evidence, source-closed rows are marked implemented,
+cross-surface evidence holds remain explicit, and boolean expansion remains an
+explicit scope boundary. Every expected ID is present once in this register;
+none is removed, merged, or silently downgraded. Its complete route totals are
+35 bounded implementations and five explicit holds (two scope-held and three
+evidence-held); the earlier 17-row triage is retained only as a before snapshot.
+
+| ID | Current status | Closure route | Backlog handoff / testable boundary |
+| --- | --- | --- | --- |
+| `GEO-OBJ-001` | `✔️` | bounded implementation | Graph identity/duplicate/cycle fixture and canonical replay |
+| `GEO-PRIM-001` | `✔️` | bounded implementation | Maintain point/line fixture and typed rejection tests |
+| `GEO-PRIM-002` | `✔️` | bounded implementation | Maintain ClosedShape/holes fixture and normalization tests |
+| `GEO-PRIM-003` | `✔️` | bounded implementation | Curve endpoint/length/intersection and degeneracy fixture |
+| `GEO-PRIM-004` | `✔️` | bounded implementation | Open/closed path, holes, chaining, and label semantic fixture |
+| `GEO-PRIM-005` | `✔️` | bounded implementation | Component/clone/export scope and namespace diagnostics |
+| `GEO-MEASURE-001` | `✔️` | bounded implementation | Maintain typed-dimension negative matrix |
+| `GEO-MEASURE-002` | `✔️` | bounded implementation | Unit normalization/conversion, fixture 16, malformed-context negatives |
+| `GEO-MEASURE-003` | `✔️` | bounded implementation | Maintain deterministic evaluator expression tests |
+| `GEO-MEASURE-004` | `✔️` | bounded implementation | Parameter/default/derived-cycle and local-scope fixture |
+| `GEO-MEASURE-005` | `✔️` | bounded implementation | Maintain invalid fixture code/path assertions |
+| `GEO-XFORM-001` | `✔️` | bounded implementation | Maintain ordered transform semantic snapshot |
+| `GEO-XFORM-002` | `✔️` | bounded implementation | Chained operation/split identity and finite-value negatives |
+| `GEO-PLACE-001` | `✔️` | bounded implementation | Anchor/offset/inside/margin conflict matrix |
+| `GEO-PLACE-002` | `✔️` | bounded implementation | point/path/frame endpoint and degenerate fixture |
+| `GEO-ANCH-001` | `✔️` | bounded implementation | Maintain standard-anchor fixture 10 coverage |
+| `GEO-ANCH-002` | `✔️` | bounded implementation | Custom/result-anchor serialization and renderer fixture |
+| `GEO-COLL-001` | `✔️` | bounded implementation | Five repeat-mode shared conformance fixture |
+| `GEO-COLL-002` | `✔️` | bounded implementation | Along policy, offset, endpoint, and conflict edge matrix |
+| `GEO-COLL-003` | `✔️` | bounded implementation | Grid pitch/gap and over-constraint success/negative fixtures |
+| `GEO-COLL-004` | `✔️` | bounded implementation | Divide/split order, count, selector, and identity snapshots |
+| `GEO-COLL-005` | `✔️` | bounded implementation | Repeat ID/order replay harness and host follow-up |
+| `GEO-QUERY-001` | `✔️` | bounded implementation | Measurement query coverage by supported primitive and invalid target |
+| `GEO-QUERY-002` | `✔️` | bounded implementation | Curve/path endpoint, domain, and tangent/normal fixture |
+| `GEO-QUERY-003` | `✔️` | bounded implementation | Maintain v0.5 overload and wrong-target negatives |
+| `GEO-QUERY-004` | `✔️` | bounded implementation | Preserve supported pair/selector contract and fixture 15 |
+| `GEO-QUERY-005` | `✔️` | bounded implementation | Reuse frame/tLength checks in repeat consumer |
+| `GEO-CONSTRAINT-001` | `✔️` | bounded implementation | Four relation valid/invalid/degenerate fixture matrix |
+| `GEO-CONSTRAINT-002` | `✔️` | bounded implementation | Maintain fixture 14 violation path/code snapshots |
+| `GEO-BOOLEAN-001` | `⏸️` | scope-held | Preserve fixture 15; require promotion decision for union/xor/topology |
+| `GEO-BOOLEAN-002` | `⏸️` | scope-held | Preserve fixtures 15/19/20; defer broader result-mode matrix |
+| `GEO-NUM-001` | `✔️` | bounded implementation | Maintain operation-specific tolerance tests |
+| `GEO-NUM-002` | `✔️` | bounded implementation | Maintain winding/holes normalization and fixture 15 |
+| `GEO-NUM-003` | `✔️` | bounded implementation | Maintain stable low-level error-code negatives |
+| `GEO-DET-001` | `⏸️` | evidence-held | Named repeated-process, Node 24, Flutter, and host replay evidence |
+| `GEO-DET-002` | `✔️` | bounded implementation | Maintain local projection/CLI replay comparator |
+| `GEO-SER-001` | `✔️` | bounded implementation | Maintain versioned core/CLI semantic projection snapshots |
+| `GEO-SER-002` | `✔️` | bounded implementation | Maintain manifest numeric/order/undefined serialization checks |
+| `GEO-PARITY-001` | `⏸️` | evidence-held | Reviewed fixture 15/16 TypeScript–Flutter semantic comparator |
+| `GEO-PARITY-002` | `⏸️` | evidence-held | Semantic SVG tree/geometry/anchor host comparison |
+
+The route register records the verified current status. `not-verified` and
+deferred scope remain visible qualifiers and are never treated as green
+implementation evidence.
 
 ## Priority and sequencing index
 
@@ -241,11 +300,18 @@ the index is the review order, not a claim that any task has been started.
 | `P1` | `GAP-GEO-OBJ-001`; `GAP-GEO-PRIM-003`; `GAP-GEO-PRIM-004`; `GAP-GEO-PRIM-005`; `GAP-GEO-XFORM-002`; `GAP-GEO-PLACE-001`; `GAP-GEO-PLACE-002`; `GAP-GEO-COLL-001`; `GAP-GEO-COLL-002`; `GAP-GEO-COLL-003`; `GAP-GEO-COLL-004`; `GAP-GEO-COLL-005`; `GAP-GEO-QUERY-001`; `GAP-GEO-QUERY-002`; `GAP-GEO-CONSTRAINT-001`; `GAP-GEO-DET-001` | Close remaining high-value gaps in identity, bounded primitive/placement/collection/query/constraint behavior, plus the separate determinism evidence gate. |
 | `P2` | `GAP-GEO-ANCH-002` | Expand custom-anchor coverage after shared contract foundations are stable. |
 
-The index contains one candidate ID for every current `🌗`/`❌` row plus the
-confirmed defect. `VERIFY-GEO-SER-002` is intentionally omitted from the
+The index contains one candidate ID for every historical `🌗`/`❌` row plus the
+confirmed defect. Current `⏸️` rows remain explicit in the closure route register.
+`VERIFY-GEO-SER-002` is intentionally omitted from the
 implementation priority index because it is evidence-only follow-up.
 
-## Candidate goal G-01 — Close object, primitive, transform, placement, anchor semantics
+## Historical candidate goals retained for traceability
+
+The candidate goals below are the pre-closure planning view. They remain useful
+for provenance and future expansion, but they are not the current status or an
+assertion that the rows are still `🌗`.
+
+### Candidate goal G-01 — Close object, primitive, transform, placement, anchor semantics
 
 **Owner:** geometry + core  
 **Dependency:** object graph, typed diagnostics, path/frame contract  
@@ -262,7 +328,7 @@ implementation priority index because it is evidence-only follow-up.
 | `GAP-GEO-PLACE-002` close path/frame placement parity | `🌗` — bounded local slice implemented | core + geometry | frameAt, tangent/normal, transforms | `on.point`, `on.path`, and `on.frame` agree on point/orientation across consumers | Extend frame fixture on Node 24/native consumer boundary |
 | `GAP-GEO-ANCH-002` close custom/result anchors | `🌗` | core + geometry | component scope, operation results | Custom anchors serialize and render with stable names after component and operation use | Add anchor snapshot |
 
-## Candidate goal G-02 — Promote dimensions, collections, queries, constraints
+### Candidate goal G-02 — Promote dimensions, collections, queries, constraints
 
 **Owner:** spec + core  
 **Dependency:** evaluator, typed dimensions, path traversal, diagnostics  
@@ -282,7 +348,7 @@ implementation priority index because it is evidence-only follow-up.
 | `GAP-GEO-QUERY-004` publish intersection pair/selector contract | `✔️ locally implemented` | geometry + core | intersection algorithms, selectors, boolean contract | Supported pair table, selector errors, deterministic first/last/nearest/farthest/index, and single/multi results pass | Preserve bounded pair matrix; do not promote deferred pairs |
 | `GAP-GEO-CONSTRAINT-001` complete relation validation | `🌗` — bounded local slice implemented | core + spec | resolved geometry, tolerance | equal/parallel/perpendicular/tangent valid and invalid fixtures emit stable violations | Add complete relation-kind fixture matrix and consumer evidence |
 
-## Candidate goal G-03 — Harden boolean, numeric, deterministic, and serialization contracts
+### Candidate goal G-03 — Harden boolean, numeric, deterministic, and serialization contracts
 
 **Owner:** geometry + core  
 **Dependency:** polygon clipping, normalization, error model, canonical serializer  
@@ -300,16 +366,16 @@ implementation priority index because it is evidence-only follow-up.
 | `GAP-GEO-SER-001` publish canonical scene serialization | `✔️ locally implemented` | core + parity | serializer, semantic comparator | All resolved scene fields and ordering have a documented canonical representation consumed consistently by core/CLI | Preserve core/CLI contract; Flutter parity remains not-verified |
 | `GAP-GEO-SER-002` establish canonical numeric/order contract | `✔️ locally implemented` | spec + core | serializer schema, fixtures, consumer review | Define canonical numeric/order semantics and add an executable replay serializer test; documentation alone does not close the gap | Preserve local contract; keep Node 24/Flutter/registry evidence separate |
 
-## Candidate goal G-04 — Close semantic parity evidence
+### Candidate goal G-04 — Close semantic parity evidence
 
 **Owner:** core + Flutter/renderer consumers  
 **Dependency:** shared fixture promotion, Flutter SDK/host, semantic comparator  
-**Risk:** high; current host evidence is unavailable for Flutter
+**Risk:** high; fixture 24 collection/repeat projection is not yet verified on Flutter
 
 | Candidate task | Source status | Owner | Dependency | Acceptance test / evidence target | Next action |
 | --- | --- | --- | --- | --- | --- |
-| `GAP-GEO-PARITY-001` promote TypeScript/Flutter semantic geometry | `🌗` | core + Flutter | Flutter SDK/host, shared fixtures | Reviewed fixtures 15/16 run in both runtimes and compare semantic geometry, diagnostics, and ordering | Re-run Flutter conformance on writable SDK host |
-| `GAP-GEO-PARITY-002` prove semantic SVG projection | `🌗` | renderer-svg + Flutter | SVG serializer, semantic comparator | SVG semantic tree/geometry matches across consumers; raw bytes/style/viewBox remain explicitly out of contract | Add semantic SVG assertions |
+| `GAP-GEO-PARITY-001` promote TypeScript/Flutter semantic geometry | `🌗` | core + Flutter | Flutter SDK/host, shared fixtures | Reviewed fixtures 15/16 run in both runtimes and compare semantic geometry, diagnostics, and ordering; fixture 24 remains core-only | Review and run fixture 24 conformance on Flutter |
+| `GAP-GEO-PARITY-002` prove semantic SVG projection | `🌗` | renderer-svg + Flutter | SVG serializer, semantic comparator | SVG semantic tree/geometry matches across consumers; comparator uses 1e-6 tolerance and raw bytes/style/viewBox remain explicitly out of contract | Add fixture 24 semantic SVG assertions on Flutter |
 
 ## Confirmed defect and verification follow-ups
 

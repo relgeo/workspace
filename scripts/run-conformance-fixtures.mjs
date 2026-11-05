@@ -91,7 +91,15 @@ check(manifest.semanticSerialization?.compatibilityLine === manifest.compatibili
 check(manifest.semanticSerialization?.numberPrecision === 12, "fixture manifest declares 12-decimal numeric normalization");
 check(manifest.semanticSerialization?.negativeZero === 0, "fixture manifest declares negative-zero normalization");
 check(manifest.semanticSerialization?.replayComparator === "@relgeo/core.compareResolvedSceneReplay", "fixture manifest declares the core replay comparator");
-check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 23, "fixture manifest contains the expected 23-entry baseline set");
+check(manifest.svgSemanticSerialization?.schema === "relgeo.svg-semantic", "fixture manifest declares the SVG semantic schema");
+check(manifest.svgSemanticSerialization?.schemaVersion === 1, "fixture manifest declares the SVG semantic schema version");
+check(manifest.svgSemanticSerialization?.compatibilityLine === manifest.compatibilityLine, "fixture manifest pins SVG semantics to the active compatibility line");
+check(manifest.svgSemanticSerialization?.tolerance === 0.000001, "fixture manifest declares the SVG semantic tolerance");
+check(manifest.svgSemanticSerialization?.semanticArrayOrder === "preserved", "fixture manifest preserves SVG semantic array order");
+check(manifest.svgSemanticSerialization?.replayComparator === "@relgeo/renderer-svg.compareSVGSemanticReplay", "fixture manifest declares the SVG replay comparator");
+check(manifest.svgSemanticSerialization?.numericComparison === "absolute-difference-within-tolerance", "fixture manifest declares tolerant numeric SVG comparison");
+check(manifest.svgSemanticSerialization?.presentationBytes === "excluded-from-parity-contract", "fixture manifest excludes presentation bytes from SVG parity");
+check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 24, "fixture manifest contains the expected 24-entry baseline set");
 
 const fixtureIds = new Set();
 const fixturePaths = new Set();

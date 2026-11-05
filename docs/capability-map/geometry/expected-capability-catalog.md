@@ -113,10 +113,10 @@ dipromosikan, atau belum dapat diverifikasi tetap dipertahankan sebagai row
 expected. Status di katalog ini adalah snapshot yang disinkronkan; ia tidak
 menghapus row atau menggantikan downstream evidence.
 
-Snapshot 2026-11-03: 40 expected IDs, 17 `✔️`, 23 `🌗`, 0 `❌`, dan tidak ada
-row hasil join berstatus `➖`, `⏸️`, atau `⚠️`. Scope findings yang berstatus
-`➖`/`⏸️` tetap dicatat pada audit dan matrix, bukan dipromosikan menjadi
-implementation rows.
+Snapshot sebelum closure: 40 expected IDs, 17 `✔️`, 23 `🌗`, 0 `❌`. Current
+closure snapshot 2026-11-05: 35 `✔️`, 0 `🌗`, 0 `❌`, 5 `⏸️`, dan 0 `⚠️`.
+The five holds are explicit boolean scope and cross-surface evidence
+boundaries; they do not remove or merge expected rows.
 
 | Kode | Requirement / keputusan | Evidence |
 | --- | --- | --- |
@@ -157,11 +157,12 @@ bukan cross-runtime atau host parity:
 | `GAP-GEO-DET-002` | Stable identity, dependency/order, selector result order, operation anchors, collection order, dan error paths | `core/src/projection.ts` replay comparator + deterministic fixture/replay assertions | Node-24, Flutter, registry, dan host replay proof |
 | `GAP-GEO-SER-001/002` | Versioned semantic projection, explicit order arrays, sorted map keys, finite 12-decimal numbers, `-0 → 0`, undefined omission | `core/src/projection.ts`, `cli/src/index.ts`, `fixtures/manifest.json`, dan projection/CLI tests | Raw SVG bytes/style parity dan cross-runtime promotion |
 
-The active boolean evidence remains limited to fixture 15's approved
-`intersect`/`subtract` boundary. `union`, `xor`, and broader non-rectangle
-topology remain deferred even when low-level engine methods exist. Likewise,
-Flutter and other host-owned parity rows remain evidence dependencies, not
-implicit acceptance of this local contract freeze.
+The active boolean evidence includes fixture 15's approved `intersect`/`subtract`
+boundary and fixture 24's bounded rectangle/holes `union`/`xor` contract.
+Broader non-rectangle topology and consumer promotion remain explicitly held,
+even when low-level engine methods exist. Likewise, Flutter and other
+host-owned parity rows remain evidence dependencies, not implicit acceptance of
+this local contract freeze.
 
 ### 3.3 Triage boundary for remaining gaps — 2026-11-04
 
@@ -173,16 +174,83 @@ evidence, or deferred scope.
 
 | Triage outcome | IDs | Initial status |
 | --- | --- | --- |
-| Implementation-closable | `GEO-OBJ-001`, `GEO-PRIM-003`, `GEO-PRIM-004`, `GEO-PRIM-005`, `GEO-MEASURE-002`, `GEO-MEASURE-004`, `GEO-XFORM-002`, `GEO-PLACE-001/002`, `GEO-COLL-001..005`, `GEO-QUERY-001/002`, `GEO-CONSTRAINT-001` | `🌗` partial |
-| External-evidence-only | `GEO-DET-001`, `GEO-PARITY-001`, `GEO-PARITY-002` | `🌗` partial |
-| Scope-deferred | `GEO-BOOLEAN-001`, `GEO-BOOLEAN-002` broader topology/promotion | `🌗` partial |
+| Implemented from initial partial set | `GEO-OBJ-001`, `GEO-PRIM-003/004/005`, `GEO-MEASURE-002/004`, `GEO-XFORM-002`, `GEO-PLACE-001/002`, `GEO-ANCH-002`, `GEO-COLL-001..005`, `GEO-QUERY-001/002`, `GEO-CONSTRAINT-001` | `✔️` bounded implementation |
+| Evidence-held | `GEO-DET-001`, `GEO-PARITY-001`, `GEO-PARITY-002` | `⏸️` evidence-held; `not-verified` host/runtime |
+| Scope-held | `GEO-BOOLEAN-001`, `GEO-BOOLEAN-002` broader topology/promotion | `⏸️` scope-held |
 
 The backlog table supplies the owner, source of truth, acceptance test, and
 next action for each ID. In particular, `GEO-MEASURE-002` is locally
 implementation-closable for the bounded TypeScript/core unit contract; Flutter
 parity is a separate external-evidence follow-up.
 
+### 3.4 Complete closure route register — frozen 2026-11-05
+
+The table below is the closure contract for the complete expected set. It is a
+one-to-one register: every expected ID appears exactly once in this register,
+including rows that are already bounded or intentionally held at a scope
+boundary. `implementation-closable` identifies work that can produce a source
+change and executable regression evidence on this checkout; it does not mark
+the work complete. `cross-surface / evidence-only` requires a named consumer,
+runtime, or host comparison. `explicit scope boundary` preserves an expected
+capability while holding expansion behind a decision. No route removes or
+merges an expected ID.
+
+| ID | Current status | Closure route | Testable closure boundary | Required evidence / owner |
+| --- | --- | --- | --- | --- |
+| `GEO-OBJ-001` | `✔️` | `bounded implementation` | Unique identity, duplicate/unknown reference, canonical cycle path, and stable topological order | Core graph fixtures and projection replay; core + geometry contract |
+| `GEO-PRIM-001` | `✔️` | `bounded implementation` | Typed point/line construction, endpoint and invalid-input behavior remain stable | Fixtures 10/15 and geometry/core tests; geometry + core |
+| `GEO-PRIM-002` | `✔️` | `bounded implementation` | Rect/circle/ellipse, anchors, holes, and ClosedShape normalization remain stable | Fixtures 10/15 and boolean normalization tests; geometry + core |
+| `GEO-PRIM-003` | `✔️` | `bounded implementation` | Arc/quadratic/cubic endpoints, traversal/length, supported intersections, and degenerate rejection | Curve unit/core tests and reviewed shared fixture; geometry + core |
+| `GEO-PRIM-004` | `✔️` | `bounded implementation` | Open/closed path chaining, holes, text/label semantics, and stable renderer projection | Core + renderer semantic fixture with success and malformed-input cases |
+| `GEO-PRIM-005` | `✔️` | `bounded implementation` | Group/clone/component local scope, exports, namespace identity, and scope-error paths | Component/clone scope fixtures and repeated projection; core |
+| `GEO-MEASURE-001` | `✔️` | `bounded implementation` | Typed dimensions/records reject incompatible uses without broad coercion | Type-system negative tests; spec + core |
+| `GEO-MEASURE-002` | `✔️` | `bounded implementation` | `mm`, `cm`, `m`, `in`, `px` normalization/conversion plus malformed and wrong-context rejection | Fixture 16, evaluator tests, semantic snapshots; spec + core |
+| `GEO-MEASURE-003` | `✔️` | `bounded implementation` | Arithmetic, comparison, logic, math, and formatting remain deterministic and type-safe | Evaluator tests; core |
+| `GEO-MEASURE-004` | `✔️` | `bounded implementation` | Defaults/overrides, constants, derived dependency order/cycles, and local scope are stable | Parameter/derived fixtures and cycle diagnostics; core + spec |
+| `GEO-MEASURE-005` | `✔️` | `bounded implementation` | Structural, schema, reference, expression, dependency, and geometry failures retain code/path | Invalid fixtures 11–13/17–18 and validator tests; core + spec |
+| `GEO-XFORM-001` | `✔️` | `bounded implementation` | Ordered translate/rotate/scale/mirror with explicit/default origin is deterministic | Transform tests and semantic snapshot; geometry + core |
+| `GEO-XFORM-002` | `✔️` | `bounded implementation` | Operation result identity, chained lowering, reverse/split behavior, and invalid finite-value handling are stable | Operation-chain and split fixtures/tests; core + geometry |
+| `GEO-PLACE-001` | `✔️` | `bounded implementation` | Scalar/point/multi-anchor placement, offset, rect-only `inside`, margin, and conflicts are explicit | Placement conflict matrix and diagnostic assertions; core |
+| `GEO-PLACE-002` | `✔️` | `bounded implementation` | `on.point`, `on.path`, `on.frame`, parameter domain, tangent/normal, and orientation agree | Frame placement fixture with endpoint/degenerate cases; core + geometry |
+| `GEO-ANCH-001` | `✔️` | `bounded implementation` | Standard point/scalar/direction/primitive anchors retain stable types and coordinates | Fixture 10 plus anchor tests; spec + core |
+| `GEO-ANCH-002` | `✔️` | `bounded implementation` | Custom named anchors and operation-result bbox anchors serialize and remain addressable | Custom-anchor and renderer serialization fixture; core + geometry |
+| `GEO-COLL-001` | `✔️` | `bounded implementation` | Linear/each/grid/polar/along produce ordered members with stable index/context | One reviewed shared fixture per repeat mode; core |
+| `GEO-COLL-002` | `✔️` | `bounded implementation` | Uniform length/t, fixed distance, offsets, endpoint and frame policies reject conflicts explicitly | Open/closed path edge-policy fixtures; core + spec |
+| `GEO-COLL-003` | `✔️` | `bounded implementation` | Grid pitch/gap exclusivity, finite spacing, auto-layout, and over-constraint diagnostics are stable | Grid success/negative fixtures; core |
+| `GEO-COLL-004` | `✔️` | `bounded implementation` | Divide/split count, traversal order, indexing, first/last, selectors, and result identity are stable | Collection snapshots and split boundary tests; core + geometry |
+| `GEO-COLL-005` | `✔️` | `bounded implementation` | Repeated evaluation preserves collection order and repeat identity in canonical projection | Replay harness and repeat-ID fixture; core |
+| `GEO-QUERY-001` | `✔️` | `bounded implementation` | Distance/length/perimeter/area/bbox/extents return typed finite values, including holes | Query fixture for supported primitives and invalid targets; core + spec |
+| `GEO-QUERY-002` | `✔️` | `bounded implementation` | Midpoint/polar/angleBetween/pointAt/tangentAt/normalAt enforce domain and degeneracy rules | Curve endpoint/out-of-range fixture; core + geometry |
+| `GEO-QUERY-003` | `✔️` | `bounded implementation` | v0.5 closest/project/reflect/world-space overloads retain typed target boundaries | Evaluator positive/negative tests; core + spec |
+| `GEO-QUERY-004` | `✔️` | `bounded implementation` | Supported intersection pairs, selectors, ordering, deduplication, and empty/multiple errors are deterministic | Geometry contract fixture, intersection tests, fixture 15; geometry + core |
+| `GEO-QUERY-005` | `✔️` | `bounded implementation` | `frameAt` and `tAtLength` provide stable read-only frame/traversal values | Frame placement tests and repeat consumer checks; core + geometry |
+| `GEO-CONSTRAINT-001` | `✔️` | `bounded implementation` | Equal/parallel/perpendicular/tangent valid and invalid relations emit stable post-resolve results | Four-relation fixture matrix with degenerate cases; core + spec |
+| `GEO-CONSTRAINT-002` | `✔️` | `bounded implementation` | Structured violation preserves resolved scene, stable path/code, and no-general-solver policy | Fixture 14 and diagnostic snapshots; core + spec |
+| `GEO-BOOLEAN-001` | `⏸️` | `scope-held` | Active boundary remains ClosedShape intersect/subtract on approved fixture 15; union/xor/non-rectangle expansion requires a decision | Fixture 15 plus promotion decision; geometry + core |
+| `GEO-BOOLEAN-002` | `⏸️` | `scope-held` | Active single/multi, empty, and multipart errors remain explicit; broader topology is not silently coerced | Fixtures 15/19/20 plus decision record; core + geometry |
+| `GEO-NUM-001` | `✔️` | `bounded implementation` | Per-operation tolerance and boundary behavior remain stable without a universal cross-runtime epsilon claim | Tolerance/intersection/split/path tests; geometry + spec |
+| `GEO-NUM-002` | `✔️` | `bounded implementation` | Supported rings canonicalize winding, cleanup, and holes consistently | Normalization/boolean tests and fixture 15; geometry + core |
+| `GEO-NUM-003` | `✔️` | `bounded implementation` | Selected invalid/degenerate inputs expose stable package codes and caller path mapping | Geometry negative tests, fixtures 19/20; geometry + core |
+| `GEO-DET-001` | `⏸️` | `evidence-held` | Same source yields identical scene/diagnostics across repeated process and available Node 24/Flutter/host runs | Canonical replay on named runtimes; core + parity owners |
+| `GEO-DET-002` | `✔️` | `bounded implementation` | Local canonical replay preserves IDs, dependency/order arrays, anchors, collections, and error paths | Core/CLI replay tests and conformance 345/345; core + spec |
+| `GEO-SER-001` | `✔️` | `bounded implementation` | Versioned semantic projection preserves identity/type, geometry, anchors, collections, and diagnostics | Core projection, CLI output, expected snapshots; core + CLI |
+| `GEO-SER-002` | `✔️` | `bounded implementation` | 12-decimal finite numbers, `-0 → 0`, sorted keys, preserved semantic arrays, and omitted undefined fields are stable | Manifest, projection/CLI tests, conformance 345/345; spec + core |
+| `GEO-PARITY-001` | `⏸️` | `evidence-held` | Reviewed fixtures 15/16 compare TypeScript and Flutter geometry, diagnostics, and ordering semantically | Shared fixture comparator plus available Flutter host; core + Flutter |
+| `GEO-PARITY-002` | `⏸️` | `evidence-held` | TypeScript/Flutter SVG semantic tree, geometry, and anchors agree; raw bytes/style/viewBox are excluded | Semantic SVG comparator and host evidence; renderer-svg + Flutter |
+
+The frozen route register is intentionally broader than the current backlog
+selection: 35 rows are bounded implementations and five are explicit holds
+(two scope-held and three evidence-held). The earlier 17-row triage is retained
+as a before snapshot and does not constrain this complete catalog. Unavailable
+host evidence stays `not-verified` rather than being relabeled as failure or
+success.
+
 ## 4. Expected capability catalog
+
+The requirement rows below preserve the original expected-catalog status
+snapshot for audit provenance. The authoritative current status is the
+one-to-one closure route register in §3.4, which records the 2026-11-05
+35-implemented/5-held result without deleting or merging any expected row.
 
 ### A. Object model dan primitives
 
@@ -233,7 +301,7 @@ parity is a separate external-evidence follow-up.
 | `GEO-QUERY-001` | Measurement queries: `distance`, `length`, `perimeter`, `area`, `bbox`, `width`, `height`, `minX`, `maxX`, `minY`, `maxY` | Pengguna dapat mengukur dan menurunkan layout dari geometry dunia yang sudah resolved | `R-RELATE`, `R-DRAW` | **IN**; bbox adalah `bbox2d` record, bukan object placeable; perimeter boleh deterministic approximation | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.1–20.8; `spec/id/syntax/07-type-system.md` | `🌗` |
 | `GEO-QUERY-002` | Point/vector/path queries: `midpoint`, `polar`, `angleBetween`, `pointAt`, `tangentAt`, `normalAt` | Pengguna dapat membuat titik turunan dan orientasi lokal pada lintasan | `R-RELATE`, `R-PARAM` | **IN**; `angleBetween` v0.5 hanya point-to-point; `t` berada pada `[0,1]` | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.7–20.13 | `🌗` |
 | `GEO-QUERY-003` | Spatial queries `closestPoint`, `project`, `reflect`, `toWorld`, `toLocal` | Pengguna dapat mengaitkan titik ke garis/objek dan berpindah antar coordinate space | `R-RELATE` | **IN WITH BOUNDARY**; target overload dibatasi sesuai v0.5 type contract | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.14–20.17 | `✔️` |
-| `GEO-QUERY-004` | Parametric intersection query dengan selector `first`, `last`, `nearest`, `farthest`, `index` dan single/multi result context | Pengguna dapat membuat crossing point, split point, atau memilih intersection deterministically | `R-BOOL`, `R-RELATE`, `R-COLLECTION` | **IN WITH BOUNDARY**; bounded pair/selector/error matrix is executable; broader sampled pairs remain outside promotion | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.18; `spec/id/core/06-error-model.md` §6.2; geometry contract fixture; conformance 298/298 | `✔️` |
+| `GEO-QUERY-004` | Parametric intersection query dengan selector `first`, `last`, `nearest`, `farthest`, `index` dan single/multi result context | Pengguna dapat membuat crossing point, split point, atau memilih intersection deterministically | `R-BOOL`, `R-RELATE`, `R-COLLECTION` | **IN WITH BOUNDARY**; bounded pair/selector/error matrix is executable; broader sampled pairs remain outside promotion | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.18; `spec/id/core/06-error-model.md` §6.2; geometry contract fixture; conformance 345/345 | `✔️` |
 | `GEO-QUERY-005` | `frameAt` dan `tAtLength` sebagai surface orientasi/distribusi lintasan | `on.frame` dan `repeat.along` dapat berbagi semantics frame dan length traversal | `R-RELATE`, `R-COLLECTION` | **IN**; frame read-only dengan point/angle/tangent/normal | `relgeo/spec`; `spec/id/geometry/20-geometry-queries.md` §20.19–20.20 | `✔️` |
 
 ### F. Constraints dan diagnostics
@@ -258,14 +326,14 @@ parity is a separate external-evidence follow-up.
 | `GEO-NUM-002` | Winding-independent closed-shape normalization dan stable holes/even-odd semantics | Bentuk clockwise/counter-clockwise menghasilkan area/offset/holes yang setara | `R-BOOL`, `R-ROBUST` | **IN WITH BOUNDARY**; supported normalization is canonical; broader topology promotion remains deferred | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.5; `normalizeClosedShape.ts`; boolean tests; fixture 15 | `✔️` |
 | `GEO-NUM-003` | Degenerate geometry, invalid radius/path/join/offset/tangent/split detection dengan error code stabil | Author mendapat kegagalan yang jelas daripada geometry korup atau hasil diam-diam | `R-ROBUST`, `R-CONTRACT` | **IN WITH BOUNDARY**; selected low-level invalid input branches expose stable codes; public path mapping remains core-owned | `relgeo/spec`; `spec/id/core/06-error-model.md` §6.2–§6.9; geometry/core negative tests | `✔️` |
 | `GEO-DET-001` | Deterministic resolution independent of platform, parse order, time, randomness, dan global mutable state | Input source yang sama selalu menghasilkan scene dan diagnostics yang sama | `R-ROBUST`, `R-CONTRACT` | **IN**; resolver harus pure terhadap document context | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.1, `12-expressions.md` §12.8 | `🌗` |
-| `GEO-DET-002` | Stable object identity, dependency ordering, operation result anchors, collection order, dan error paths | Reference, indexing, snapshots, dan reviewer navigation tidak berubah-ubah | `R-RELATE`, `R-COLLECTION`, `R-ROBUST` | **IN WITH BOUNDARY**; local canonical replay comparator covers ordered semantic snapshots; cross-runtime replay remains separate | `relgeo/spec`; `core/src/projection.ts`; core/CLI replay tests; conformance 298/298 | `✔️` |
+| `GEO-DET-002` | Stable object identity, dependency ordering, operation result anchors, collection order, dan error paths | Reference, indexing, snapshots, dan reviewer navigation tidak berubah-ubah | `R-RELATE`, `R-COLLECTION`, `R-ROBUST` | **IN WITH BOUNDARY**; local canonical replay comparator covers ordered semantic snapshots; cross-runtime replay remains separate | `relgeo/spec`; `core/src/projection.ts`; core/CLI replay tests; conformance 345/345 | `✔️` |
 
 ### I. Serialization dan semantic parity
 
 | ID | Capability | User outcome | Dasar requirement | Scope decision | Owner / source of truth | Status verifikasi |
 | --- | --- | --- | --- | --- | --- | --- |
 | `GEO-SER-001` | Resolved scene serialization yang mempertahankan object identity/type, primitive/path geometry, anchors/properties, collections, dan diagnostics | CLI, inspector, renderer, dan downstream tooling dapat membaca hasil resolve tanpa mengulang semantics | `R-CONTRACT`, `R-PARITY` | **IN WITH BOUNDARY**; versioned canonical semantic projection consumed by core/CLI, without claiming Flutter parity | `relgeo/spec`; `spec/id/core/05-semantic-guarantees.md` §5.7; `core/src/projection.ts`; `cli/src/index.ts`; CLI tests | `✔️` |
-| `GEO-SER-002` | Stable geometry serialization ordering and canonical numeric representation | Snapshot/review diff menunjukkan perubahan semantics, bukan noise akibat order atau float formatting | `R-ROBUST`, `R-CONTRACT` | **IN WITH BOUNDARY**; finite numbers dibulatkan 12 desimal, map keys diurutkan, array semantic mempertahankan order; tidak mengklaim cross-runtime parity | `fixtures/manifest.json`; `spec/id/core/05-semantic-guarantees.md` §5.7; `core/src/projection.ts`; projection/CLI tests; conformance 298/298 | `✔️` |
+| `GEO-SER-002` | Stable geometry serialization ordering and canonical numeric representation | Snapshot/review diff menunjukkan perubahan semantics, bukan noise akibat order atau float formatting | `R-ROBUST`, `R-CONTRACT` | **IN WITH BOUNDARY**; finite numbers dibulatkan 12 desimal, map keys diurutkan, array semantic mempertahankan order; tidak mengklaim cross-runtime parity | `fixtures/manifest.json`; `spec/id/core/05-semantic-guarantees.md` §5.7; `core/src/projection.ts`; projection/CLI tests; conformance 345/345 | `✔️` |
 | `GEO-PARITY-001` | Shared fixture semantic parity antara TypeScript consumers dan Flutter untuk object/primitive/path geometry | Input DSL yang sama memberi geometry semantics yang dapat dibandingkan lintas consumer | `R-PARITY`, `R-CONTRACT` | **IN WITH BOUNDARY**; fixture 15 boolean/intersection active pada boundary disetujui; fixture 16 evaluator/unit tetap capability/candidate | `relgeo/workspace` untuk `fixtures/manifest.json` dan expected snapshots; `docs/plans/06-flutter-alignment.md`, `07-flutter-capability-promotion-and-svg-parity.md` | `🌗` |
 | `GEO-PARITY-002` | Semantic SVG projection parity untuk object/primitive/path geometry dengan tolerance | Preview dan renderer berbeda platform tetap dapat dinilai setara secara geometry | `R-PARITY`, `R-ROBUST` | **IN WITH BOUNDARY**; compare semantic anchors/object paths; raw SVG bytes, style, viewBox, dan full presentation bukan contract aktif | `relgeo/workspace` + `relgeo/flutter` evidence policy; `docs/plans/06-flutter-alignment.md` §2, §6; `docs/plans/07-flutter-capability-promotion-and-svg-parity.md` §2–§7 | `🌗` |
 

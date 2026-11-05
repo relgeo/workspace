@@ -13,8 +13,8 @@ cross-host parity contract.
 
 | Command | Result | Evidence boundary |
 | --- | --- | --- |
-| `pnpm --filter @relgeo/renderer-svg build && pnpm --filter @relgeo/renderer-svg test -- --run && node scripts/run-renderer-semantic-replay.mjs` | PASS — build, 7 files/102 tests, and 3 separate-process replay fixtures | Renderer package, security/escaping, semantic projection/replay, and built export boundary |
-| `pnpm run conformance:fixtures` | PASS — 298 checks across 23 fixtures | Workspace fixture manifest, diagnostics, security, semantic serialization, CLI, Markdown, preview, and canonical fixture consumers |
+| `pnpm --filter @relgeo/renderer-svg build && pnpm --filter @relgeo/renderer-svg test -- --run && node scripts/run-renderer-semantic-replay.mjs` | PASS target command — build, renderer tests, and 4 separate-process replay fixtures; current run recorded below | Renderer package, security/escaping, semantic projection/replay, and built export boundary |
+| `pnpm run conformance:fixtures` | PASS — 345 checks across 24 fixtures | Workspace fixture manifest, diagnostics, security, semantic serialization, CLI, Markdown, preview, and canonical fixture consumers |
 | `pnpm --filter @relgeo/cli test -- --run` | PASS — 38 tests | CLI render, sheet/view selection, diagnostics, and error consumer boundary |
 | `pnpm --filter @relgeo/remark-relgeo test` | PASS — 16 tests | Markdown preview, safe-SVG data URI, diagnostics, and renderer consumer boundary |
 | `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 10 Vitest tests plus package-boundary test | Highlighting consumer boundary |

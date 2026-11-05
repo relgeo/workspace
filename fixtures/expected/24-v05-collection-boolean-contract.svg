@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-23.500000000000004 -25.33012701892219 144.5 96.33012701892218" width="100%" style="display: block;" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arrow-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="red" />
+    </marker>
+    <marker id="arrow-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="green" />
+    </marker>
+  </defs>
+  
+    <rect x="0" y="0" width="20" height="20" id="left" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <rect x="10" y="0" width="20" height="20" id="right" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 0 0 L 30 0 L 30 20 L 0 20 L 0 0 Z"  id="merged" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 0 0 L 10 0 L 10 20 L 0 20 L 0 0 Z M 20 0 L 30 0 L 30 20 L 20 20 L 20 0 Z"  id="symmetricDifference" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="50" x2="100" y2="50" id="guide" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <g id="alongMarks" data-role="final"  >
+    <title>alongMarks</title>
+    <circle cx="0" cy="50" r="1" id="alongMarks[0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="50" cy="50" r="1" id="alongMarks[1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="100" cy="50" r="1" id="alongMarks[2]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    <g id="gridMarks" data-role="final"  >
+    <title>gridMarks</title>
+    <circle cx="0" cy="0" r="1" id="gridMarks[0,0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="10" cy="0" r="1" id="gridMarks[0,1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="0" cy="15" r="1" id="gridMarks[1,0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="10" cy="15" r="1" id="gridMarks[1,1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    <path d="M -1.187153453011358 0 L 1.187153453011358 0 M 0 -1.187153453011358 L 0 1.187153453011358" id="polarOrigin" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <g id="polarMarks" data-role="final"  >
+    <title>polarMarks</title>
+    <circle cx="5" cy="0" r="1" id="polarMarks[0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="-2.499999999999999" cy="4.330127018922194" r="1" id="polarMarks[1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="-2.500000000000002" cy="-4.330127018922193" r="1" id="polarMarks[2]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    <g id="eachMarks" data-role="final"  >
+    <title>eachMarks</title>
+    <circle cx="0" cy="0" r="1" id="eachMarks[0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="10" cy="10" r="1" id="eachMarks[1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    
+    
+  
+</svg>

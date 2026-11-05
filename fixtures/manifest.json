@@ -36,6 +36,16 @@
     "semanticArrayOrder": "preserved",
     "replayComparator": "@relgeo/core.compareResolvedSceneReplay"
   },
+  "svgSemanticSerialization": {
+    "schema": "relgeo.svg-semantic",
+    "schemaVersion": 1,
+    "compatibilityLine": "0.5",
+    "tolerance": 0.000001,
+    "semanticArrayOrder": "preserved",
+    "replayComparator": "@relgeo/renderer-svg.compareSVGSemanticReplay",
+    "numericComparison": "absolute-difference-within-tolerance",
+    "presentationBytes": "excluded-from-parity-contract"
+  },
   "cliContractCoverage": {
     "input": {
       "pathPrecedence": "explicit path wins over unrelated stdin",
@@ -331,6 +341,41 @@
         "editorObjectIds": ["panel", "secondary"],
         "editorFallbackSize": [0, 0],
         "multiDiagnosticCount": 2
+      }
+    },
+    {
+      "id": "v05-collection-boolean-contract",
+      "path": "reference/24-v05-collection-boolean-contract.yaml",
+      "contractVersion": "0.5",
+      "status": "capability",
+      "surfaces": ["core"],
+      "expectedObjectIds": [
+        "left",
+        "right",
+        "merged",
+        "symmetricDifference",
+        "guide",
+        "alongMarks",
+        "gridMarks",
+        "polarOrigin",
+        "polarMarks",
+        "eachMarks"
+      ],
+      "expectedObjectTypes": {
+        "merged": "boolean",
+        "symmetricDifference": "boolean",
+        "alongMarks": "repeat",
+        "gridMarks": "repeat",
+        "polarMarks": "repeat",
+        "eachMarks": "repeat"
+      },
+      "expectedOutputPath": "expected/24-v05-collection-boolean-contract.svg",
+      "expectedResolvedPath": "expected/24-v05-collection-boolean-contract.json",
+      "coreContract": {
+        "kind": "collection-boolean",
+        "booleanOperations": ["union", "xor"],
+        "repeatModes": ["along", "grid", "polar", "each"],
+        "stableChildIdentity": true
       }
     }
   ]

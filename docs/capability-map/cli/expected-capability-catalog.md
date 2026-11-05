@@ -92,6 +92,14 @@ The `Status verifikasi` column uses the shared current-result symbols: `✔️`
 implemented, `🌗` partial, `❌` absent, and `⏸️` held/deferred. Detailed evidence,
 parity, and environment limits remain in the audit and reconciliation.
 
+Disposition is kept separate from implementation evidence: an expected row is
+`implementation` when the CLI boundary is implemented, `explicit deferred`
+when a scope/protocol decision holds it, and `evidence-only` when the remaining
+work is canonical release/environment proof owned by the release/workspace
+owner. `CLI-PACK-004` remains in the frozen expected set, but its current goal
+disposition is `evidence-only` with an explicit deferred boundary; it is not an
+implementation gap and does not authorize npm publication.
+
 | ID | Capability | User outcome | Dasar requirement | Scope decision | Owner / source of truth | Status verifikasi |
 | --- | --- | --- | --- | --- | --- | --- |
 | `CLI-DISC-001` | Command discovery and command list | User can discover the CLI, its commands, aliases, and option groups from the terminal. | `REQ-JOURNEY`, `REQ-COMMANDS`, `REQ-TASK-SCOPE` | `EXPECTED-IN` | `relgeo/cli`; command contract and package docs | `✔️` |
@@ -127,7 +135,7 @@ parity, and environment limits remain in the audit and reconciliation.
 | `CLI-PACK-001` | Executable package and `relgeo` binary | Package consumer can install `@relgeo/cli` and invoke the declared `relgeo` binary from a clean environment. | `REQ-RELEASE`, `REQ-JOURNEY` | `EXPECTED-IN` | `relgeo/cli/package.json`; npm package boundary | `✔️` |
 | `CLI-PACK-002` | Reproducible build and declared tarball boundary | Maintainer can build the CLI and pack only declared public files plus required metadata/docs/license. | `REQ-RELEASE` | `EXPECTED-IN` | `docs/plans/03-npm-release-guard.md`; package manifest and release guard | `✔️` |
 | `CLI-PACK-003` | Compatibility/version policy | CLI package version, dependency ranges, DSL line, and breaking-change behavior remain aligned with the cross-repo matrix. | `REQ-RELEASE`, `REQ-SURFACE`, `REQ-DSL` | `EXPECTED-IN` | `docs/compatibility-matrix.json`; `spec/`; package manifest | `✔️` |
-| `CLI-PACK-004` | Release verification and recovery boundary | Release operator can test, pack, verify registry consumers, stop safely, and use forward-fix records after a partial publish. | `REQ-RELEASE` | `EXPECTED-IN` | `docs/plans/03-npm-release-guard.md`; workspace release scripts/records | `🌗` |
+| `CLI-PACK-004` | Release verification and recovery boundary | Release operator can test, pack, verify registry consumers, stop safely, and use forward-fix records after a partial publish. | `REQ-RELEASE` | `EXPECTED-IN` | `docs/plans/03-npm-release-guard.md`; workspace release scripts/records; release owner | `⏸️` |
 | `CLI-PACK-005` | Cross-surface conformance consumption | CLI participates in shared fixture/integration gates with exact output/error assertions without becoming the owner of DSL semantics. | `REQ-CONFORMANCE`, `REQ-SURFACE` | `EXPECTED-IN` | `fixtures/` runner and workspace integration gate; `spec/` remains semantic authority | `✔️` |
 
 ## 5. Expected non-goals and explicit boundaries

@@ -42,11 +42,11 @@ sama.
 | Surface | Matrix | Status cepat | Boundary utama / catatan |
 | --- | --- | --- | --- |
 | Spec | [capability matrix](./language-specification/capability-matrix.md) · [expected catalog](./language-specification/expected-capability-catalog.md) · [status matrix](./language-specification/status-matrix.md) · [implementation audit](./language-specification/implementation-audit.md) | expected baseline → audit input | `spec/id/` normatif; the capability matrix is a compatibility entry point and the status matrix remains the canonical 53-row view. |
-| Geometry | [status matrix](./geometry/status-matrix.md) | `✔️` bounded library / `🌗` expansion | Primitive/boolean tested; query expansion dan provenance wording memiliki gap. |
+| Geometry | [status matrix](./geometry/status-matrix.md) · [closure handoff](./geometry/coverage-validation-handoff.md) | `35 ✔️ / 5 ⏸️` bounded closure | 18 implementation rows closed with source/test/fixture evidence; two boolean scope holds and three host/parity evidence holds remain explicit. |
 | Core runtime | [status matrix](./core-runtime/status-matrix.md) | `✔️` bounded runtime / `⚠️` error catalog | Parser, resolver, graph, evaluator, diagnostics; error-code typing perlu direkonsiliasi. |
 | Renderer-SVG | [status matrix](./renderer-svg/status-matrix.md) · [capability matrix](./renderer-svg/capability-matrix.md) | `33 ✔️` closure boundary / external evidence qualifiers | Status matrix is the canonical status view; browser, Node >=24, public, and host parity limitations remain evidence qualifiers rather than renderer capability gaps. |
 | Language service | [matrix](./language-service/capability-matrix.md) | `✔️` local API / `🌗` host parity | Diagnostics/schema/completion/token tersedia; LSP runtime dan API docs memiliki gap. |
-| CLI | [status matrix](./cli/status-matrix.md) | `✔️` local commands / `⚠️` format edge | `info`, `compile`, `check/validate` tersedia; registry/Node 24 belum diverifikasi. |
+| CLI | [status matrix](./cli/status-matrix.md) | `32 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️ / 3 ⏸️` closure boundary | One-shot commands, strict options, diagnostics, selectors, streams, fixtures, and local package boundary are closed; `CLI-AUTO-002`, `CLI-AUTO-004`, and `CLI-PACK-004` remain explicitly held/deferred, while Node 24/registry/CI/public evidence is separate. |
 | Markdown plugins | [matrix](./markdown-surfaces/capability-matrix.md) | `✔️` bounded transforms / `🌗` fallback | Preview/highlight tersedia; fallback language-service dan registry evidence terbatas. |
 | Playground | [capability matrix](./playground/capability-matrix.md) | `🌗` browser IDE / delivery evidence | Core editor/preview/persistence flows are implemented; compact desktop toolbar changes (file actions menu, single-row toolbar, dot-only preview status) are in Playground `c7cec4b`. Hosted smoke and physical-device/accessibility evidence remain separate. |
 | Website/Pages | [matrix](./website-pages/capability-matrix.md) | `✔️` static artifact / `🌗` public | Astro/spec/Markdown/SEO shell tersedia; pin, public smoke, dan AT checks belum current. |
@@ -246,9 +246,10 @@ are explicitly labeled so they cannot be mistaken for current evidence.
   evidence, and scope status.
 - [CLI status matrix](./cli/status-matrix.md) — capability-first downstream view
   with status, evidence, gap, owner, dependency, risk, and next action.
-- [CLI implementation-gap backlog](./cli/implementation-gap-backlog.md) — one
-  candidate task for every `🌗`, `❌`, and `⚠️` CLI gap; documentation does not
-  count as implementation.
+- [CLI implementation-gap backlog](./cli/implementation-gap-backlog.md) — the
+  one-to-one disposition register retains every expected ID; no open
+  implementation gap remains, while explicit deferred/evidence follow-ups are
+  retained and documentation does not count as implementation.
 - [CLI coverage validation and handoff](./cli/coverage-validation-handoff.md) —
   validates coverage, IDs, links, legends, evidence classes, scope decisions,
   limitations, unresolved questions, and the separate implementation handoff.

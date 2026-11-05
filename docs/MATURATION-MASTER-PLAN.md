@@ -93,6 +93,24 @@ so this shell makes no clean-baseline or current-parity claim.
 - Untuk integrasi lintas-repository, canonical evidence tetap run `37832260326`
   pada root `328c869` (Flutter `ea8e754`), dengan enam job sukses dan lima
   artifact. Run itu tetap menjadi bukti bagi revision tersebut.
+
+### Geometry closure handoff — 2026-11-05
+
+The geometry capability closure was reconciled against the complete 40-ID
+catalog. The before snapshot was 17 `✔️` and 23 `🌗`; the current bounded
+status is 35 `✔️`, 0 `🌗`, 0 `❌`, 0 `⚠️`, and 5 explicit `⏸️` holds. Eighteen
+rows moved through source/test/fixture evidence; two boolean topology rows are
+scope-held, while determinism and TypeScript/Flutter/SVG parity rows are
+evidence-held because Node 24, the full Flutter wrapper, and writable host
+projection were unavailable.
+
+The complete one-to-one register and before/after evidence are in the
+[geometry closure handoff](./capability-map/geometry/coverage-validation-handoff.md).
+Executed evidence includes geometry 93 tests, core 507 tests, renderer 104
+tests, CLI 38 tests, serial package builds, conformance 345/345 across 24
+fixtures, four-process semantic replay, and direct Flutter focused conformance
+4/4. `pnpm integration:gate -- --local` remains not verified on Node 22.23.2
+against the Node 24 requirement; this is not a green parity claim.
 - Flutter `60ec760` telah lulus native CI run `41184291670` pada macOS, Ubuntu,
   dan Windows. Release workflow `41184693233` membuat draft v1.0.1 dengan
   artifact ketiga platform, checksum, dan manifest; arsip diunduh dan checksum
@@ -162,6 +180,32 @@ attempted the declared public routes but stopped at `/` after `fetch failed`;
 direct `curl` returned HTTP 000, curl exit 6, `Could not resolve host`.
 Statusnya `environment-unavailable` / `unverified-public`, bukan kegagalan
 source lokal atau bukti bahwa deployment publik rusak.
+
+### 0.4 CLI capability closure handoff — 2026-11-05
+
+The CLI closure is now reconciled against the frozen 35-ID expected catalog.
+Before the final release-boundary disposition, the CLI matrix counted `32 ✔️`,
+`1 🌗`, `0 ❌`, `0 ⚠️`, and `2 ⏸️`; the changed row is `CLI-PACK-004`, moved
+from partial release evidence to an explicit `⏸️` evidence-only/deferred
+boundary. The final count is `32 ✔️`, `0 🌗`, `0 ❌`, `0 ⚠️`, and `3 ⏸️`:
+`CLI-AUTO-002` watch/rebuild, `CLI-AUTO-004` daemon/JSON-RPC, and
+`CLI-PACK-004` Node 24/registry/CI/recovery proof.
+
+The CLI source-of-truth remains `cli/src/index.ts` with regression coverage in
+`cli/src/__tests__/`, shared consumer evidence in `fixtures/`, and the canonical
+status/reconciliation/backlog views in
+[`docs/capability-map/cli/`](./capability-map/cli/status-matrix.md). Current
+local evidence is CLI `38/38`, build/typecheck, package tarball audit with eight
+allowlisted files, and conformance `298/298`. `verify:baseline:strict` is green
+at `85/85`; the current compatibility check is workspace-limited at `278/5`
+because of unrelated spec/core/Playground/Flutter alignment mismatches, and the
+integration gate is unavailable before stages on Node `22.23.2` versus required
+Node `>=24`. No npm publish, release candidate, or public-package claim is a
+dependency of CLI implementation closure.
+
+Downstream handoff: release/workspace owns the deferred package evidence;
+workspace + Playground/website owners own the separate child-revision and
+Pages-provenance alignment. Neither boundary reopens a CLI implementation gap.
 
 ## 1. Tujuan dokumen
 
@@ -541,7 +585,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 2 — Contract versioning dan compatibility matrix
 
-**Status implementasi:** Selesai untuk policy, matrix, dan release-decision guard. **Status verifikasi:** compatibility checker lulus `283/283`; canonical CI terbaru adalah run `37832260326`. Skenario partial release tidak dijalankan sengaja karena tidak perlu membuat release gagal demi membuktikan recovery policy. Publish automation terpisah dan sengaja ditunda di Tahap 3.
+**Status implementasi:** Selesai untuk policy, matrix, dan release-decision guard. **Status verifikasi:** current workspace compatibility check `278 passed, 5 failed` pada alignment rows spec/core/Playground/Flutter yang berada di luar CLI; CLI-specific rows pass dan `verify:baseline:strict` `85 passed, 0 failed`. Local integration gate unavailable sebelum stages karena host Node `22.23.2` dan runner memerlukan Node `>=24`. Skenario partial release tidak dijalankan sengaja karena tidak perlu membuat release gagal demi membuktikan recovery policy. Publish automation dan current CLI release evidence tetap terpisah serta ditunda sesuai owner/environment boundary.
 
 **Tujuan:** membuat hubungan versi antara spec dan semua consumer menjadi eksplisit.
 
@@ -586,8 +630,8 @@ menjadikannya checklist overdue.
 
 - [x] ada satu release checklist seragam;
 - [x] tarball tidak memuat test, source privat, path lokal, atau file tak diinginkan;
-- [x] semua package yang dirilis dapat di-install oleh consumer bersih;
-- [x] hasil post-publish dicatat untuk baseline `0.5.0`;
+- [~] semua package yang dirilis dapat di-install oleh consumer bersih; current CLI consumer installation dan canonical Node >=24 evidence belum tersedia pada host ini;
+- [~] hasil post-publish historis baseline `0.5.0` tercatat, tetapi current CLI release verification/recovery tetap evidence-only/deferred dan bukan implementation dependency;
 - [x] release dapat dihentikan dengan aman di antara package tanpa membuat status membingungkan;
 - [x] release preflight read-only menggabungkan clean-tree check, strict baseline, compatibility check, release decision record, tarball audit, dan local integration gate;
 - [~] automated publishing sengaja ditunda sampai dua siklus manual tambahan pascakeputusan; belum memenuhi prasyarat.
@@ -622,7 +666,7 @@ menjadikannya checklist overdue.
 - [x] local Playground browser smoke mengonsumsi fixture runtime-diagnostic dan memperlihatkan diagnostic yang diharapkan;
 - [x] direct public Playground browser smoke mengonsumsi fixture runtime-diagnostic dan memperlihatkan diagnostic yang diharapkan;
 - [x] ownership fixture standalone dicatat machine-readable: canonical di root workspace, child repository tetap standalone;
-- [x] package dan consumer TypeScript tervalidasi pada checkout temporary dengan public registry;
+- [~] package dan consumer TypeScript memiliki historical/public-registry evidence, tetapi verifikasi consumer CLI saat ini dan registry/public-package proof tetap evidence-only/deferred pada CLI-PACK-004;
 - [x] compatibility behavior inventory untuk parser, regression tests, fallback, dan example version naming tersimpan di audit terpisah;
 - [x] Pages artifact assertion memverifikasi bundle Playground membawa editor label, state `READY`, tab `Errors`, dan pesan runtime diagnostic;
 - [x] automated browser smoke Playground untuk runtime diagnostic dan mobile surface switcher tersedia serta lulus lokal;

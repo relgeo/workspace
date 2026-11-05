@@ -113,6 +113,7 @@ different revision.
 
 | Boundary | Result | Classification / limitation |
 | --- | --- | --- |
+
 | `remark-relgeo` package consumer suite | PASS — 16/16 tests | Local package evidence covering fence mapping, AST/provenance preservation, preview metadata, failure policy, options, safety, and exports. |
 | `remark-relgeo-hl` package consumer suite | PASS — 10 Vitest + 1 Node package-boundary test | Local package evidence covering source-preserving fallback, strict behavior, options, and ESM/CJS/types exports. |
 | Shared Markdown/conformance consumer path | PASS — 298/298 across 23 fixtures | Local real parser/core/renderer/language-service pipeline with negative/runtime fixtures, semantic serialization replay, preview, and highlighting digest checks. |
@@ -125,6 +126,27 @@ No selected local downstream consumer showed a regression. The required
 evidence split is therefore: package/conformance/Astro results are local,
 historical CI/public results remain scoped to their recorded revisions, and
 registry/deployed/browser-host checks remain unverified or deferred.
+
+### 0.6a Core Runtime canonical fixture refresh — 2026-11-05
+
+The current Core closure fixture tranche expanded the root manifest from 24 to
+27 entries. The new invalid fixtures cover operation-target compatibility,
+reverse-target compatibility, and turtle-forward validation. The conformance
+runner now enforces declared Core diagnostic `code`, `phase`, and `path` for
+invalid fixtures and replays CLI/language-service code preservation where those
+surfaces are listed. This is a local workspace evidence update, not a status
+promotion or a public/CI claim.
+
+The resulting one-to-one Core Runtime closure mapping is maintained in the
+[Core Runtime closure report](../capability-map/core-runtime/closure-report-2026-11-05.md)
+and [Core Runtime handoff](../capability-map/core-runtime/coverage-validation-handoff.md);
+the local `401/401` fixture result is evidence for that boundary only.
+
+| Boundary | Result | Classification / limitation |
+| --- | --- | --- |
+| Shared Core/consumer fixtures | PASS — `401/401` checks across 27 fixtures | Includes semantic serialization/replay, numeric/unit candidate output, ordering/determinism, invalid/runtime diagnostics, CLI, language-service, Markdown, renderer, and highlighting projections. |
+| Structured invalid diagnostic assertions | PASS — fixtures 13, 21, 23, 25–27 assert code/phase/path; CLI replay is asserted for fixtures 25–27 | Core remains the semantic owner; consumer outputs are projection evidence. |
+| Presentation parity | Bounded — SVG snapshots remain reviewable outputs, while semantic replay/tolerance remains the parity contract | Raw SVG byte equality is not used as the sole parity proof. |
 
 ### 0.6 Playground consumer-boundary refresh — 2026-11-04
 

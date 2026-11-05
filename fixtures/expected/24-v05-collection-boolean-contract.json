@@ -75,101 +75,11 @@
     },
     "symmetricDifference": {
       "id": "symmetricDifference",
-      "type": "boolean",
-      "operation": "xor",
-      "points": [
-        {
-          "x": 0,
-          "y": 0
-        },
-        {
-          "x": 10,
-          "y": 0
-        },
-        {
-          "x": 10,
-          "y": 20
-        },
-        {
-          "x": 0,
-          "y": 20
-        },
-        {
-          "x": 20,
-          "y": 0
-        },
-        {
-          "x": 30,
-          "y": 0
-        },
-        {
-          "x": 30,
-          "y": 20
-        },
-        {
-          "x": 20,
-          "y": 20
-        }
-      ],
-      "segments": [
-        {
-          "type": "line",
-          "x1": 0,
-          "y1": 0,
-          "x2": 10,
-          "y2": 0
-        },
-        {
-          "type": "line",
-          "x1": 10,
-          "y1": 0,
-          "x2": 10,
-          "y2": 20
-        },
-        {
-          "type": "line",
-          "x1": 10,
-          "y1": 20,
-          "x2": 0,
-          "y2": 20
-        },
-        {
-          "type": "line",
-          "x1": 0,
-          "y1": 20,
-          "x2": 0,
-          "y2": 0
-        },
-        {
-          "type": "line",
-          "x1": 20,
-          "y1": 0,
-          "x2": 30,
-          "y2": 0
-        },
-        {
-          "type": "line",
-          "x1": 30,
-          "y1": 0,
-          "x2": 30,
-          "y2": 20
-        },
-        {
-          "type": "line",
-          "x1": 30,
-          "y1": 20,
-          "x2": 20,
-          "y2": 20
-        },
-        {
-          "type": "line",
-          "x1": 20,
-          "y1": 20,
-          "x2": 20,
-          "y2": 0
-        }
-      ],
-      "holes": []
+      "type": "collection",
+      "children": [
+        "symmetricDifference[0]",
+        "symmetricDifference[1]"
+      ]
     },
     "guide": {
       "id": "guide",
@@ -221,6 +131,42 @@
         "eachMarks[0]",
         "eachMarks[1]"
       ]
+    },
+    "symmetricDifference[0]": {
+      "id": "symmetricDifference[0]",
+      "type": "boolean",
+      "operation": "xor",
+      "points": [
+        { "x": 0, "y": 0 },
+        { "x": 10, "y": 0 },
+        { "x": 10, "y": 20 },
+        { "x": 0, "y": 20 }
+      ],
+      "segments": [
+        { "type": "line", "x1": 0, "y1": 0, "x2": 10, "y2": 0 },
+        { "type": "line", "x1": 10, "y1": 0, "x2": 10, "y2": 20 },
+        { "type": "line", "x1": 10, "y1": 20, "x2": 0, "y2": 20 },
+        { "type": "line", "x1": 0, "y1": 20, "x2": 0, "y2": 0 }
+      ],
+      "holes": []
+    },
+    "symmetricDifference[1]": {
+      "id": "symmetricDifference[1]",
+      "type": "boolean",
+      "operation": "xor",
+      "points": [
+        { "x": 20, "y": 0 },
+        { "x": 30, "y": 0 },
+        { "x": 30, "y": 20 },
+        { "x": 20, "y": 20 }
+      ],
+      "segments": [
+        { "type": "line", "x1": 20, "y1": 0, "x2": 30, "y2": 0 },
+        { "type": "line", "x1": 30, "y1": 0, "x2": 30, "y2": 20 },
+        { "type": "line", "x1": 30, "y1": 20, "x2": 20, "y2": 20 },
+        { "type": "line", "x1": 20, "y1": 20, "x2": 20, "y2": 0 }
+      ],
+      "holes": []
     },
     "alongMarks[0]": {
       "id": "alongMarks[0]",

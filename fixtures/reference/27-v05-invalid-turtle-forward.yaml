@@ -1,0 +1,14 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 invalid turtle forward distance
+  description: A relative line forward distance must be finite and positive.
+
+objects:
+  shape:
+    type: path
+    segments:
+      - line:
+          from: [0, 0]
+          direction: right
+          forward: 0

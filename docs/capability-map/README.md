@@ -43,7 +43,7 @@ sama.
 | --- | --- | --- | --- |
 | Spec | [capability matrix](./language-specification/capability-matrix.md) · [expected catalog](./language-specification/expected-capability-catalog.md) · [status matrix](./language-specification/status-matrix.md) · [implementation audit](./language-specification/implementation-audit.md) | expected baseline → audit input | `spec/id/` normatif; the capability matrix is a compatibility entry point and the status matrix remains the canonical 53-row view. |
 | Geometry | [status matrix](./geometry/status-matrix.md) · [closure handoff](./geometry/coverage-validation-handoff.md) | `35 ✔️ / 5 ⏸️` bounded closure | 18 implementation rows closed with source/test/fixture evidence; two boolean scope holds and three host/parity evidence holds remain explicit. |
-| Core runtime | [status matrix](./core-runtime/status-matrix.md) | `✔️` bounded runtime / `⚠️` error catalog | Parser, resolver, graph, evaluator, diagnostics; error-code typing perlu direkonsiliasi. |
+| Core runtime | [status matrix](./core-runtime/status-matrix.md) · [closure report](./core-runtime/closure-report-2026-11-05.md) | `38 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️` bounded local closure | Parser, resolver, graph, evaluator, diagnostics, and consumer contract are closed within the declared local boundary; Node 24/CI/registry/browser evidence remains separately qualified. |
 | Renderer-SVG | [status matrix](./renderer-svg/status-matrix.md) · [capability matrix](./renderer-svg/capability-matrix.md) | `33 ✔️` closure boundary / external evidence qualifiers | Status matrix is the canonical status view; browser, Node >=24, public, and host parity limitations remain evidence qualifiers rather than renderer capability gaps. |
 | Language service | [matrix](./language-service/capability-matrix.md) | `✔️` local API / `🌗` host parity | Diagnostics/schema/completion/token tersedia; LSP runtime dan API docs memiliki gap. |
 | CLI | [status matrix](./cli/status-matrix.md) | `32 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️ / 3 ⏸️` closure boundary | One-shot commands, strict options, diagnostics, selectors, streams, fixtures, and local package boundary are closed; `CLI-AUTO-002`, `CLI-AUTO-004`, and `CLI-PACK-004` remain explicitly held/deferred, while Node 24/registry/CI/public evidence is separate. |
@@ -52,7 +52,7 @@ sama.
 | Website/Pages | [matrix](./website-pages/capability-matrix.md) | `✔️` static artifact / `🌗` public | Astro/spec/Markdown/SEO shell tersedia; pin, public smoke, dan AT checks belum current. |
 | Flutter | [status matrix](./flutter-workbench/status-matrix.md) | `44 ✔️ / 17 🌗 / 0 ❌` pada declared 61-ID workbench boundary | Desktop release workflow `41184693233` produced v1.0.1 draft bundles/checksums for macOS, Linux, and Windows; Flutter CI `41184291670` passed. Target-device launch/MCP smoke and publishing remain pending. |
 | MCP | [capability matrix](./mcp/capability-matrix.md) | `32 ✔️ / 24 🌗 / 10 ❌ / 2 ⏸️` | Full v0.5 spec search, desktop loopback HTTP, active-document read, and opt-in bounded edit are implemented locally; ChatGPT Desktop write round-trip and packaged MCP smoke remain unverified. |
-| Cross-repository | [status matrix](./cross-repository/status-matrix.md) | baseline manifest stale; integration gate not rerun | All current child checkouts match root gitlinks, but 11 of 12 gitlinks differ from the 2026-10-09 manifest snapshot. Current root integration verification is pending. |
+| Cross-repository | [status matrix](./cross-repository/status-matrix.md) | baseline regenerated; integration gate not rerun | The manifest is being synchronized with the current child gitlinks in this closure commit. Root integration verification remains a separate follow-up. |
 
 Detail evidence, owner, consumer, gap, dan next action tetap berada di matrix
 masing-masing; [reconciliation register](./RECONCILIATION-REGISTER.md) menjelaskan
@@ -107,7 +107,7 @@ the legend `✔️ 🌗 ❌ ➖ ⏸️ ⚠️`.
 | --- | --- | --- | --- | --- |
 | Language specification | `language-specification/expected-capability-catalog.md` | `language-specification/implementation-audit.md` | `language-specification/status-matrix.md` | `language-specification/capability-matrix.md` is a compatibility entry point; the status matrix remains canonical and the normative contract remains in `spec/id/`. |
 | Geometry | `geometry/expected-capability-catalog.md` | `geometry/implementation-audit.md` | `geometry/status-matrix.md` | `geometry/capability-matrix.md` is retained as historical baseline. |
-| Core runtime | `core-runtime/expected-capability-catalog.md` | `core-runtime/implementation-audit.md` | `core-runtime/status-matrix.md` | `core-runtime/capability-matrix.md` is retained as historical baseline. |
+| Core runtime | `core-runtime/expected-capability-catalog.md` | `core-runtime/implementation-audit.md` | `core-runtime/status-matrix.md` | `core-runtime/capability-matrix.md` remains the detailed compatibility view; the status matrix is the canonical reconciled view. |
 | Renderer-SVG | `renderer-svg/expected-capability-catalog.md` | `renderer-svg/implementation-audit.md` | `renderer-svg/status-matrix.md` | `renderer-svg/capability-matrix.md` is retained as the detailed capability-first compatibility view. |
 | Language service | `language-service/expected-capability-catalog.md` | `language-service/implementation-audit.md` | `language-service/status-matrix.md` | `language-service/capability-matrix.md` is retained as historical baseline. |
 | CLI | `cli/expected-capability-catalog.md` | `cli/implementation-audit.md` | `cli/status-matrix.md` | `cli/capability-matrix.md` is retained as historical baseline. |
@@ -187,8 +187,9 @@ are explicitly labeled so they cannot be mistaken for current evidence.
 - [Core runtime status matrix](./core-runtime/status-matrix.md) — capability-first
   downstream view with evidence, gap, owner, dependency, risk, and next action.
 - [Core runtime implementation-gap backlog](./core-runtime/implementation-gap-backlog.md)
-  — one candidate task for every `❌`/`🌗`/`⚠️` expected capability; documentation
-  does not count as implementation.
+  — historical candidate tasks and their closure records; the current declared
+  local boundary has zero actionable `❌`/`🌗`/`⚠️` rows, and documentation does
+  not count as implementation.
 - [Core runtime coverage validation and handoff](./core-runtime/coverage-validation-handoff.md)
   — final ID/link/legend/evidence/scope/limitation validation and separate
   implementation handoff; it does not claim the runtime surface is complete.

@@ -111,6 +111,15 @@ tests, CLI 38 tests, serial package builds, conformance 345/345 across 24
 fixtures, four-process semantic replay, and direct Flutter focused conformance
 4/4. `pnpm integration:gate -- --local` remains not verified on Node 22.23.2
 against the Node 24 requirement; this is not a green parity claim.
+
+### Core Runtime closure handoff — 2026-11-05
+
+The Core Runtime local closure is reconciled at `38 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️`
+for the 38-ID catalog. The one-to-one source/test/evidence mapping, bounded
+consumer contract, explicit fixture-16 hold, and external Node/CI/browser/
+registry evidence boundaries are recorded in the [Core Runtime closure report](./capability-map/core-runtime/closure-report-2026-11-05.md)
+and [coverage-validation handoff](./capability-map/core-runtime/coverage-validation-handoff.md).
+This is a local closure statement, not a release or public-artifact claim.
 - Flutter `60ec760` telah lulus native CI run `41184291670` pada macOS, Ubuntu,
   dan Windows. Release workflow `41184693233` membuat draft v1.0.1 dengan
   artifact ketiga platform, checksum, dan manifest; arsip diunduh dan checksum

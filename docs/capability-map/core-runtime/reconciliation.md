@@ -1,6 +1,6 @@
 # Core Runtime Expected-versus-Observed Reconciliation
 
-**Tanggal:** 2026-11-04
+**Tanggal:** 2026-11-05
 
 **Expected source:** [Expected Core Runtime Capability Catalog](./expected-capability-catalog.md)
 
@@ -12,7 +12,9 @@
 [compatibility matrix](../../compatibility-matrix.json),
 [contract-versioning plan](../../plans/02-contract-versioning.md)
 
-**Status:** join selesai; setiap expected ID memiliki tepat satu row
+**Status:** join selesai; setiap expected ID memiliki tepat satu row; local
+closure status is `38 ✔️`, with residual external evidence separated from
+implementation status in the closure report.
 
 ## 0. P0/P1 implementation-closability triage handoff
 
@@ -31,6 +33,11 @@ capability sudah selesai atau evidence eksternal sudah tersedia. Node `>=24`,
 registry/public artifact, current CI, browser E2E, Flutter host, dan fixture-16
 promotion tetap dipisahkan sebagai `? unverified`/`⏸️ deferred`. General
 constraint solving dan automatic geometry mutation tetap `➖ not-applicable`.
+
+The complete current audit retained the P2 cross-consumer candidate
+`CORE-INT-004`; its local TS/Markdown/Playground/Flutter semantic contract is
+now closed. Flutter host/CI evidence remains external and does not reopen the
+Core capability row.
 
 ## 1. Aturan rekonsiliasi
 
@@ -60,10 +67,10 @@ Tiga dimensi tetap terpisah:
 
 Aturan penting: `❌` berarti absence implementation pada expected boundary; ia
 berbeda dari `?` (evidence belum tersedia), `⏸️` (ditunda), dan `➖`
-(not-applicable). Pada current join `CORE-DIAG-002` adalah `🌗` karena core
-memiliki bounded `collectDiagnostics` aggregation; `CORE-ERROR-003` kini
-`⚠️` karena covered public normalization belum menghilangkan drift pada
-emitted-code/type agreement dan remaining internal throw paths.
+(not-applicable). Pada current join seluruh 38 expected rows berada pada
+`✔️` local contract closure. Node 24, browser/host CI, registry, dan fixture-16
+promotion tetap dipisahkan sebagai evidence/scope findings dan tidak mengubah
+implementation status.
 
 ## 2. Coverage dan hasil join
 
@@ -74,21 +81,34 @@ emitted-code/type agreement dan remaining internal throw paths.
 | Missing expected IDs | 0 |
 | Extra observed-only IDs in join | 0 |
 | Duplicate reconciliation IDs | 0 |
-| `✔️ implemented` | 23 |
-| `🌗 partial` | 14 |
+| `✔️ implemented` | 38 |
+| `🌗 partial` | 0 |
 | `❌ absent` | 0 |
-| `⚠️ broken` | 1 |
+| `⚠️ broken` | 0 |
 | `? unverified` as row result | 0; limitations remain in evidence columns and findings |
 | `⏸️ deferred` / `➖ not-applicable` as row result | 0; kept separate from expected implementation rows |
 
 The 38 expected IDs are the complete key set from the catalog. `CORE-GAP-*`
 items in the audit are gap records, not additional capability rows.
 
+Current evidence checkpoint for the join: Core `ea74c9e` passes 49 files/537
+tests, Core lint, and build; language-service passes 90 tests, renderer-svg 104
+tests, CLI 38 tests, and the root conformance runner passes 401/401 checks
+across 27 fixtures. These are local workspace results. Node `>=24`, registry,
+remote CI, browser E2E, and Flutter-host evidence remain unverified and are not
+converted into `❌`.
+
 Evidence authority for this join is the current audit and its discovery report,
 with normative and provenance context from the master plan, compatibility
 matrix, contract-versioning plan, repository map, capability inventory protocol,
 DSL spec, and fixture manifest. Historical
 matrices are not used to add or remove expected IDs.
+
+The frozen closure contract for all actionable rows is
+[`spec/id/core/07-closure-contracts.md`](../../../spec/id/core/07-closure-contracts.md).
+It is normative for input/output, diagnostic phases/codes, edge behavior, and
+v0.5 compatibility; this reconciliation remains the observed implementation
+and evidence join.
 
 Required source boundary for this reconciliation:
 
@@ -101,14 +121,19 @@ Required source boundary for this reconciliation:
 
 ## 3. One-to-one reconciliation register
 
+The audit trace labels retained in older rows use `§4A`–`§4F`; they map to
+the current audit register sections `§A`–`§F` in
+[implementation-audit.md](./implementation-audit.md). They are provenance
+labels, not additional rows or a second status source.
+
 ### A. Input pipeline and semantic model
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `CORE-INPUT-001` | `✔️ implemented` | `implemented` | `verified-local` + parser tests | `IN`; source ingestion is core-owned and version-aware | Audit §4A; `core/src/parser.ts:144–267` |
-| `CORE-INPUT-002` | `🌗 partial` | `partial` | `partial-local`; no public source-range AST | `IN`; structured parse is core-owned, source-location depth remains bounded | Audit §4A; `core/src/parser.ts`, `core/src/types.ts` |
+| `CORE-INPUT-002` | `✔️ implemented` | `implemented` | `verified-local`; semantic document and best-effort source ranges | `IN`; public AST ownership is explicitly outside the v0.5 boundary | Audit §4A; `core/src/parser.ts`, `core/src/types.ts` |
 | `CORE-MODEL-001` | `✔️ implemented` | `implemented` | `verified-local` + parser/section tests | `IN`; normative document sections remain semantically distinct | Audit §4A; `core/src/types.ts:576–590` |
-| `CORE-MODEL-002` | `🌗 partial` | `partial` | `partial-local`; broad `any`/error union remains | `IN`; identity, namespaces, and scope are core contract | Audit §4A; `core/src/types.ts:15–90,492–518,645–651` |
+| `CORE-MODEL-002` | `✔️ implemented` | `implemented` | `verified-local`; recursive public semantic values and aliases | `IN`; resolver-internal/generated-schema typing is maintenance | Audit §4A; `core/src/types.ts`, component/inherit tests |
 | `CORE-MODEL-003` | `✔️ implemented` | `implemented` | `verified-local` + unit/resolver tests | `IN`; scene policy controls resolution context | Audit §4A; `core/src/types.ts:15–24`, `core/src/resolver/index.ts:46–87` |
 
 ### B. Validation and error recovery
@@ -117,10 +142,10 @@ Required source boundary for this reconciliation:
 | --- | --- | --- | --- | --- | --- |
 | `CORE-VALID-001` | `✔️ implemented` | `implemented` | `verified-local` + parser/validator tests | `IN`; invalid structure cannot be silently reinterpreted | Audit §4B; `core/src/parser.ts`, `core/src/validator.ts:94–129` |
 | `CORE-VALID-002` | `✔️ implemented` | `implemented` | `verified-local` + evaluator/parameter tests | `IN`; typed value and expression validation is core-owned | Audit §4B; `core/src/validator.ts`, `core/src/evaluator.ts` |
-| `CORE-VALID-003` | `🌗 partial` | `partial` | `verified-local-bounded`; public reference failures normalize, broader raw internal paths remain | `IN`; reference and dependency legality are core-owned | Audit §4B; `core/src/validator.ts`, `core/src/resolver/eval-context.ts`, semantic-contract fixture test |
-| `CORE-VALID-004` | `🌗 partial` | `partial` | `partial-local`; combination coverage bounded | `IN`; topology and degenerate-input checks remain required | Audit §4B; `core/src/validator.ts:650–1430` |
-| `CORE-ERROR-001` | `🌗 partial` | `partial` | `verified-local` for bounded tolerant cases | `IN WITH BOUNDARY`; recovery must not imply compile success | Audit §4B; `core/src/parser.ts:99–104`, `tolerant_resolver.test.ts` |
-| `CORE-ERROR-002` | `🌗 partial` | `partial` | `verified-local-bounded` + invalid fixture/conformance and CLI projection | `IN`; strict compile/check must preserve failure phase | Audit §4B; `core/src/resolver/index.ts`, `cli/src/index.ts` |
+| `CORE-VALID-003` | `✔️ implemented` | `implemented` | `verified-local`; reference/scope failures retain code/path/object context | `IN`; dependency visualization remains consumer-owned | Audit §4B; validator, resolver context, graph, semantic-contract fixtures |
+| `CORE-VALID-004` | `✔️ implemented` | `implemented` | `verified-local`; topology/operation negatives and fixtures 25–27 | `IN`; supported v0.5 topology boundary is executable; future combinations are additive | Audit §4B; validator, geometry topology, Boolean/path fixtures |
+| `CORE-ERROR-001` | `✔️ implemented` | `implemented` | `verified-local-bounded`; tolerant resolver, incomplete fixture, Flutter boundary | `IN WITH BOUNDARY`; recovery never implies compile success | Audit §4B; parser editor mode and tolerant resolver tests |
+| `CORE-ERROR-002` | `✔️ implemented` | `implemented` | `verified-local`; invalid/runtime fixtures, CLI, conformance | `IN`; strict phases/codes/paths are preserved | Audit §4B; parser/validator/resolver modes and CLI |
 
 ### C. Dependency graph, evaluator, and units
 
@@ -139,35 +164,35 @@ Required source boundary for this reconciliation:
 | --- | --- | --- | --- | --- | --- |
 | `CORE-RESOLVE-001` | `✔️ implemented` | `implemented` | `verified-local` + resolver/fixture tests | `IN`; supported object semantics are core-resolved | Audit §4D; `core/src/resolver/objects.ts:80–138` |
 | `CORE-RESOLVE-002` | `✔️ implemented` | `implemented` | `verified-local` + placement/anchor tests | `IN`; placement and world/local semantics are core-owned | Audit §4D; `core/src/resolver/index.ts:50–87`, `primitives/utils.ts` |
-| `CORE-RESOLVE-003` | `🌗 partial` | `partial` | `verified-local-bounded` + fixtures 19/20/22 and semantic-contract tests | `IN WITH BOUNDARY`; repeat/boolean/empty-collection topology coverage remains bounded | Audit §4D; `core/src/resolver/primitives/{repeat,divide,operation,shapes}.ts` |
+| `CORE-RESOLVE-003` | `✔️ implemented` | `implemented` | `verified-local`; fixtures 19/20/22/24–27 and semantic-contract tests | `IN WITH BOUNDARY`; active v0.5 result modes and invalid targets are closed; broader topology is additive | Audit §4D; repeat/divide/operation/shapes resolvers |
 | `CORE-RESOLVE-004` | `✔️ implemented` | `implemented` | `verified-local` + sheet/view/reference fixtures | `IN WITH BOUNDARY`; SVG styling stays renderer-owned | Audit §4D; `core/src/resolver/index.ts:174–327` |
-| `CORE-RESOLVE-005` | `🌗 partial` | `partial` | `verified-local` for versioned projection; consumer migration remains open | `IN`; semantic projection is core-owned, renderer formatting remains separate | Audit §4D; `core/src/projection.ts`, `core/src/resolver/index.ts` |
+| `CORE-RESOLVE-005` | `✔️ implemented` | `implemented` | `verified-local`; versioned projection/replay and consumer comparators | `IN`; renderer formatting remains separate and host replay is external evidence | Audit §4D; `core/src/projection.ts`, resolver export |
 
 ### E. Constraints, diagnostics, and failure semantics
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `CORE-CONSTRAINT-001` | `✔️ implemented` | `implemented` | `verified-local` + constraint fixture | `IN WITH BOUNDARY`; post-resolve validation, not general solving | Audit §4E; `core/src/resolver/constraints.ts:43–186` |
-| `CORE-CONSTRAINT-002` | `🌗 partial` | `partial` | `verified-local-bounded`; fixture 14 and focused tests now prove severity/origin/expected-actual fields, while broader relation/topology coverage remains open | `IN`; structured violations remain distinct from exceptions | Audit §4E; `geometry/src/types.ts:311–328`, `core/src/resolver/constraints.ts`, semantic-contract fixture test |
-| `CORE-DIAG-001` | `🌗 partial` | `partial` | `verified-local-bounded` + normalized core/consumer fixture tests; source-range coverage remains bounded | `IN`; stable codes/paths are public contract | Audit §4E; `core/src/errors.ts`, `diagnostics.ts`, parser/validator/resolver boundaries |
-| `CORE-DIAG-002` | `🌗 partial` | `partial` | `verified-local-bounded` + aggregation tests | `IN`; core owns deterministic aggregation; broader fault coverage remains | Audit §4E; `core/src/diagnostics.ts`, `core/src/__tests__/diagnostics.test.ts` |
-| `CORE-ERROR-003` | `⚠️ broken` | `broken` | `verified-local-bounded`; registered mappings now cover additional raw evaluator/resolver phrases, but evaluator raw throws and emitted-code/spec/type agreement remain open | `IN`; distinct actionable error taxonomy is required | Audit §4E; `core/src/types.ts`, `core/src/errors.ts`, evaluator/raw throw sites |
+| `CORE-CONSTRAINT-002` | `✔️ implemented` | `implemented` | `verified-local`; fixture 14, focused tests, conformance, Flutter diagnostic test | `IN`; structured violations remain distinct from exceptions; new relations are additive | Audit §4E; geometry violation fields and Core constraint emission |
+| `CORE-DIAG-001` | `✔️ implemented` | `implemented` | `verified-local`; normalized core/consumer fixtures, source ranges, catalog assertion, raw-throw inventory | `IN`; stable codes/paths are public contract; deep ranges remain bounded | Audit §4E; errors, diagnostics, parser/validator/resolver boundaries |
+| `CORE-DIAG-002` | `✔️ implemented` | `implemented` | `verified-local`; deterministic aggregation tests | `IN`; core owns ordering/dedupe/truncation; new adapter faults are additive | Audit §4E; diagnostics and focused tests |
+| `CORE-ERROR-003` | `✔️ implemented` | `implemented` | `verified-local`; normative catalog assertion, structured errors, runtime fixtures, raw-throw inventory | `IN`; future emitted codes require catalog/type/normalizer/fixture update | Audit §4E; types, errors, evaluator/resolver boundaries |
 
 ### F. Determinism, public API, compatibility, and integration
 
 | ID | Reconciliation result | Status implementasi | Status evidence | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- |
 | `CORE-DET-001` | `✔️ implemented` | `implemented` | `verified-local-bounded`; canonical Node 24 unverified | `IN`; determinism is a core guarantee | Audit §4F; `core/src/resolver/index.ts:132–143`, graph/resolver tests |
-| `CORE-DET-002` | `🌗 partial` | `partial` | `partial-local`; numeric/diagnostic ordering is distributed | `IN`; stable identity/order/tolerance policy is required | Audit §4F; `core/src/graph.ts:802–845`, constraints `EPSILON` |
+| `CORE-DET-002` | `✔️ implemented` | `implemented` | `verified-local`; projection/replay, graph, collection, diagnostic, conformance comparators | `IN`; Node 24/cross-platform replay remains external evidence | Audit §4F; projection, graph, diagnostics |
 | `CORE-API-001` | `✔️ implemented` | `implemented` | `verified-local` + build/consumer imports | `IN`; public API is narrower than internals | Audit §4F; `core/src/index.ts`, `core/package.json` |
 | `CORE-API-002` | `✔️ implemented` | `implemented` | `verified-local` + renderer/CLI/consumer tests | `IN`; renderer formatting is outside core ownership | Audit §4F; `core/src/index.ts`, renderer/CLI call sites |
 | `CORE-COMPAT-001` | `✔️ implemented` | `implemented` | `verified-local` + parser/conformance/compatibility | `IN`; active DSL line is explicit | Audit §4F; `core/src/parser.ts:5–32`, compatibility matrix |
 | `CORE-COMPAT-002` | `✔️ implemented` | `implemented` | `verified-local` + legacy/future fixture tests | `IN WITH BOUNDARY`; legacy support does not reinterpret future syntax | Audit §4F; parser constants and fixture manifest |
 | `CORE-COMPAT-003` | `✔️ implemented` | `implemented` | `verified-local` + compatibility check; registry unverified | `IN`; DSL compatibility line is separate from package version | Audit §4F; compatibility matrix/package metadata |
 | `CORE-INT-001` | `✔️ implemented` | `implemented` | `verified-local` + CLI tests/conformance | `IN WITH BOUNDARY`; CLI owns flags/filesystem, core owns semantics | Audit §4F; `cli/src/index.ts:22–241` |
-| `CORE-INT-002` | `🌗 partial` | `partial` | `partial-local` + language-service/worker tests; browser E2E unverified | `IN WITH BOUNDARY`; UI/worker/accessibility remain consumer-owned | Audit §4F; language-service and `playground/src/worker.ts` |
-| `CORE-INT-003` | `✔️ implemented` | `implemented` | `verified-local` + 23-fixture / 298-check conformance | `IN`; fixture provenance is evidence, not implementation substitute | Audit §4F; `scripts/run-conformance-fixtures.mjs`, `fixtures/manifest.json` |
-| `CORE-INT-004` | `🌗 partial` | `partial` | `partial-local`; TypeScript consumers pass, Flutter CI unverified | `IN WITH BOUNDARY`; semantic parity only, not raw SVG/UX parity | Audit §4F; renderer/CLI/Markdown/Flutter boundary evidence |
+| `CORE-INT-002` | `✔️ implemented` | `implemented` | `verified-local`; language-service 90, Playground 107, conformance, Flutter recovery tests | `IN WITH BOUNDARY`; browser E2E/accessibility remain consumer evidence | Audit §4F; language-service and `playground/src/worker.ts` |
+| `CORE-INT-003` | `✔️ implemented` | `implemented` | `verified-local` + 27-fixture / 401-check conformance, including structured invalid contract assertions | `IN`; fixture provenance is evidence, not implementation substitute | Audit §4F/§F; `scripts/run-conformance-fixtures.mjs`, `fixtures/manifest.json` |
+| `CORE-INT-004` | `✔️ implemented` | `implemented` | `verified-local`; TS/renderer/Markdown/Playground/Flutter tests and conformance | `IN WITH BOUNDARY`; semantic parity only, not raw SVG/UX or host CI | Audit §4F; cross-surface semantic boundary evidence |
 
 ### 3.1 Frozen diagnostic and semantic contract join
 
@@ -180,13 +205,13 @@ of truth, executable acceptance evidence, and current evidence status.
 
 | ID | Owner | Source of truth | Acceptance evidence | Status / trace |
 | --- | --- | --- | --- | --- |
-| `CORE-VALID-003` | `relgeo/core` | `spec/id/core/06-error-model.md`; composition/placement/query specs | Unknown reference, private export, invalid target/query, and dependency negatives assert stable code/path/object context | `🌗 verified-local-bounded`; public normalization covered, raw internal paths remain; Audit §4B |
-| `CORE-ERROR-002` | `relgeo/core` + CLI | `spec/id/core/06-error-model.md`; `cli/README.md` | Strict parse/validate/resolve/runtime/constraint fixtures preserve phase and CLI consumes core code | `🌗 verified-local-bounded`; release/host evidence not included; Audit §4B |
-| `CORE-RESOLVE-003` | `relgeo/core` + geometry | collection-object and collection specs; `05-semantic-guarantees.md` | Fixtures 19/20/22 plus semantic-contract tests assert identity, ordering, empty/multipart mode failures, and editor fallback | `🌗 verified-local-bounded`; broader topology matrix remains open; Audit §4D |
-| `CORE-CONSTRAINT-002` | `relgeo/core` + geometry | `06-error-model.md`; constraints spec | `v05-runtime-align-violation` plus focused test asserts path/order, retained scene, and repeat determinism | `🌗 partial-local`; fields are present locally, while relation/topology and consumer coverage remain open; Audit §4E |
-| `CORE-DIAG-001` | `relgeo/core` | `06-error-model.md`; catalog §4.1 shared fields | Structured-error/parser/validator/resolver/runtime/constraint tests assert code, message, phase, severity, path/context/range rules | `🌗 verified-local-bounded`; normalization exists, raw/source-range coverage bounded; Audit §4E |
-| `CORE-DIAG-002` | `relgeo/core` | `05-semantic-guarantees.md`, `06-error-model.md` | `collectDiagnostics` tests assert phase→range→path→code→message order, dedupe, truncation, repeatability, and strict equivalence | `🌗 verified-local-bounded`; broader fault coverage open; Audit §4E |
-| `CORE-ERROR-003` | `relgeo/core` | `06-error-model.md`; fixture IDs 13, 17–20, 22 | Covered emitted-code/type inventory, raw-throw normalization, and runtime fixtures prove distinct actionable codes | `⚠️ broken`; `BOOLEAN_EMPTY_RESULT` is normalized, but remaining internal/non-prefixed throw inventory and emitted-code/spec/type agreement stay open; Audit §4E |
+| `CORE-VALID-003` | `relgeo/core` | `spec/id/core/06-error-model.md`; composition/placement/query specs | Unknown reference, private export, invalid target/query, and dependency negatives assert stable code/path/object context | `✔️ verified-local-bounded`; public boundary is closed; consumer visualization remains separate; Audit §4B |
+| `CORE-ERROR-002` | `relgeo/core` + CLI | `spec/id/core/06-error-model.md`; `cli/README.md` | Strict parse/validate/resolve/runtime/constraint fixtures preserve phase and CLI consumes core code | `✔️ verified-local-bounded`; release/host evidence remains external; Audit §4B |
+| `CORE-RESOLVE-003` | `relgeo/core` + geometry | collection-object and collection specs; `05-semantic-guarantees.md` | Fixtures 19/20/22/24–27 plus semantic-contract tests assert identity, ordering, empty/multipart mode failures, and editor fallback | `✔️ verified-local-bounded`; active v0.5 topology/result boundary is closed; Audit §4D |
+| `CORE-CONSTRAINT-002` | `relgeo/core` + geometry | `06-error-model.md`; constraints spec | `v05-runtime-align-violation`, focused tests, conformance, and Flutter diagnostic test assert path/order, retained scene, and repeat determinism | `✔️ verified-local-bounded`; new relation kinds are additive; Audit §4E |
+| `CORE-DIAG-001` | `relgeo/core` | `06-error-model.md`; catalog §4.1 shared fields | Structured-error/parser/validator/resolver/runtime/constraint tests assert code, message, phase, severity, path/context/range rules and catalog membership | `✔️ verified-local-bounded`; deep range precision remains bounded by contract; Audit §4E |
+| `CORE-DIAG-002` | `relgeo/core` | `05-semantic-guarantees.md`, `06-error-model.md` | `collectDiagnostics`/`aggregateDiagnostics` tests assert phase→range→path→code→message order, dedupe, truncation, repeatability, and strict equivalence | `✔️ verified-local-bounded`; new adapter fault classes are additive; Audit §4E |
+| `CORE-ERROR-003` | `relgeo/core` | `06-error-model.md`, `07-closure-contracts.md`; fixture IDs 13, 17–20, 22 | Normative catalog assertion, coded evaluator internals, structured validator/resolver boundaries, runtime fixtures, and raw-throw inventory | `✔️ verified-local-bounded`; future codes require catalog/type/normalizer/fixture update; Audit §4E |
 
 Frozen global rules: public diagnostics require `code`, `message`, `phase`, and
 `severity`; document-origin failures require a canonical path. Aggregated
@@ -222,7 +247,7 @@ corresponding normative source-of-truth update and acceptance fixture.
 | `CORE-VALID-004` — `relgeo/core` + geometry | Valid closed paths, supported operation modes, dimensions, offsets, repeats, and annotations pass validation without changing semantic intent. | Open/degenerate paths, invalid holes, unsupported modes, invalid dimensions/offsets, and topology violations fail before corrupting scene output with stable diagnostics. | `path_holes.test.ts`, `boolean.test.ts`, `repeat_divide.test.ts`, `split.test.ts`, validator negatives, and negative fixture matrix. | `spec/id/geometry/14-geometry-objects.md`, `16-collection-objects.md`, `21-constraints.md` |
 | `CORE-ERROR-001` — `relgeo/core` + Playground | Tolerant editor mode returns bounded partial diagnostics/recovery and keeps stable editable identities while the source is incomplete. | Unsupported recovery remains explicit; tolerant output never claims strict compile/resolve success and never silently mutates source meaning. | `core/src/__tests__/tolerant_resolver.test.ts`, `semantic_contract_fixtures.test.ts`, `diagnostics.test.ts`; browser recovery evidence is separately labeled. | `spec/id/core/05-semantic-guarantees.md`; `spec/id/core/06-error-model.md`; `playground/README.md` |
 | `CORE-ERROR-002` — `relgeo/core` + CLI | Strict parse, validate, resolve, runtime, and constraint failures retain distinct phases/codes and CLI projection remains deterministic. | Compile/check does not recover silently; unsupported version, missing field, reference, cycle, runtime, and constraint failures preserve their phase and exit policy. | `validation_modes.test.ts`, `structured_errors.test.ts`, semantic fixtures, CLI tests, and shared conformance failure cases. | `spec/id/core/06-error-model.md`; `cli/README.md`; `fixtures/manifest.json` |
-| `CORE-RESOLVE-003` — `relgeo/core` + geometry | Repeat/divide/split/boolean results preserve declared identity, semantic order, holes/topology boundaries, and explicit single/multi result modes. | Empty or multipart `single` outcomes, invalid collection access, and invalid operation modes return distinct actionable runtime errors; no automatic topology repair. | `repeat_divide.test.ts`, `split.test.ts`, `boolean.test.ts`, semantic-contract tests, and runtime fixtures 15/19/20/22. | `spec/id/geometry/16-collection-objects.md`, `19-collections.md`; `spec/id/core/05-semantic-guarantees.md` |
+| `CORE-RESOLVE-003` — `relgeo/core` + geometry | Repeat/divide/split/boolean results preserve declared identity, semantic order, holes/topology boundaries, and explicit single/multi result modes. | Empty or multipart `single` outcomes, invalid collection access, and invalid operation modes return distinct actionable runtime errors; v0.5 Boolean `multi` is an ordered collection; no automatic topology repair. | `repeat_divide.test.ts`, `split.test.ts`, `boolean.test.ts`, semantic-contract tests, and runtime fixtures 15/19/20/22/24. | `spec/id/geometry/16-collection-objects.md`, `19-collections.md`; `spec/id/core/05-semantic-guarantees.md` |
 | `CORE-RESOLVE-005` — `relgeo/core` + geometry | Versioned semantic projection exposes schema metadata, canonical keys/order/numbers, typed objects, bounds, values, violations, views, and sheets. | Missing/unstable fields, order, or numeric normalization fails the projection comparator; consumers may not redefine core semantics or silently drop contract fields. | `core/src/__tests__/projection.test.ts`, CLI/renderer comparator tests, and projection/conformance fixtures. | `core/README.md`; `spec/id/core/05-semantic-guarantees.md`; fixture resolved-scene expectations |
 | `CORE-CONSTRAINT-002` — `relgeo/core` + geometry | Post-resolve violations retain the resolved scene and expose stable constraint path, involved objects, severity, origin, expected/actual context, and declaration order. | Invalid relations produce `CONSTRAINT_VIOLATION` results without geometry mutation; general solving and automatic repair remain out of scope. | `constraints_diagnostics.test.ts`, `semantic_contract_fixtures.test.ts`, and `v05-runtime-align-violation` valid/invalid fixtures. | `spec/id/core/06-error-model.md`; `spec/id/geometry/21-constraints.md` |
 | `CORE-DIAG-001` — `relgeo/core` | Every public diagnostic has required `code`, non-empty `message`, `phase`, `severity`, and applicable path/object/dependency/range context. | Raw internal failures are normalized at the public boundary with a documented fallback and retained context; no consumer invents semantic codes. | `structured_errors.test.ts`, `diagnostics.test.ts`, parser/validator/resolver/runtime/constraint fixtures, and emitted-code/raw-throw inventory. | `spec/id/core/06-error-model.md`; expected catalog §4.1 shared fields |
@@ -237,7 +262,32 @@ public, browser, or native-host runs remain `not verified` rather than changing
 the implementation result. A row can move status only after the stated success
 and failure/edge behavior is tested and the matrix/reconciliation are re-audited.
 
-### 3.3 Historical local consumer verification — 2026-11-03
+### 3.3 Current checkout evidence checkpoint — 2026-11-05
+
+This is the current local evidence used by the one-to-one join above. Earlier
+consumer checkpoints below are retained as historical traceability only.
+
+| Command | Result | Boundary checked |
+| --- | --- | --- |
+| `pnpm --dir core test` | **PASS — 49 files, 537 tests** | Current Core source at submodule `ea74c9e`; public-boundary, aggregation, graph-context, Boolean dependency closure, evaluator taxonomy, closed-shape Boolean operand validation, ellipse-hole normalization, cyclic-clone guard, ellipse/Boolean collection traversal, v0.5 Boolean collection/validation regressions, v0.5 validator semantic-code preservation, projection compatibility rejection, split target validation, static invalid-offset rejection, normative error-catalog/scale/mirror/hole boundaries, inherit type conflict, repeat-along length failures, and turtle path-segment commands are included. |
+| `pnpm --dir core run lint` | **PASS** | Current Core TypeScript declarations and implementation. |
+| `pnpm --dir core run build` | **PASS** | Current CJS/ESM/declaration package build; local only. |
+| `pnpm --dir language-service test` | **PASS — 2 files, 90 tests** | Diagnostic/editor consumer boundary. |
+| `pnpm --dir renderer-svg test` | **PASS — 7 files, 104 tests** | Semantic renderer consumer boundary. |
+| `pnpm --dir cli test` | **PASS — 1 file, 38 tests** | CLI semantic/error projection boundary. |
+| `node scripts/run-conformance-fixtures.mjs` | **PASS — 401 passed, 0 failed across 27 fixtures** | Core, CLI, language-service, renderer, Markdown, highlighting, preview, snapshot, runtime projections, and structured invalid diagnostics. |
+| `pnpm run compatibility:check` | **PASS — 283 passed, 0 failed** | Pinned spec revision, Core/package metadata, Playground dependency range, and Flutter application metadata are synchronized. |
+| `pnpm run spec:snapshot:check` | **PASS — 35 Markdown files** | Flutter's checked-in v0.5 spec projection matches `spec/id`, including `core/07-closure-contracts.md`. |
+| `flutter test` | **PASS — 327 tests** | Flutter semantic projection, diagnostics, shared fixtures, graph/evaluator, and rendering boundary. |
+| `pnpm run integration:evidence:test` | **PASS** | Joined integration evidence binds current revisions and rejects stale historical evidence. |
+| Normative error-model catalog assertion | **PASS — Core closure contract test** | `closure_contracts.test.ts` compares all normative error-model codes to `REL_GEO_ERROR_CODES`; production raw-throw inventory is clean. |
+
+The local process used Node `22.23.2`; Node `>=24`, registry/public artifact,
+remote CI, browser E2E, and Flutter-host evidence remain `? unverified`. No
+status was promoted or downgraded solely because those environments were not
+available.
+
+### 3.4 Historical local consumer verification — 2026-11-03
 
 This earlier workspace verification is retained for traceability. It is
 superseded by the fresh 2026-11-04 consumer checkpoint in §3.4; its lower test
@@ -259,11 +309,11 @@ registry/public-artifact, current CI, browser E2E, Flutter host, or deployment
 claim is made. The earlier SuClos reconnect/network failure is orchestration
 evidence only and does not establish target parity or target failure.
 
-### 3.4 Consumer and integration-boundary checkpoint — 2026-11-04
+### 3.5 Historical consumer and integration-boundary checkpoint — 2026-11-04
 
-These fresh local consumer commands ran against the current Core workspace
-boundary and passed. They are local E3 evidence, not CI or public-package
-evidence:
+These commands were recorded before the current 2026-11-05 checkpoint. They are
+retained for traceability only; the current counts are in §3.3. They are local
+E3 evidence, not CI or public-package evidence:
 
 | Command | Result | Consumer boundary |
 | --- | --- | --- |

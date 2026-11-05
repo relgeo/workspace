@@ -7,7 +7,7 @@
     "version": "0.5",
     "specPath": "spec",
     "normativePath": "spec/id",
-    "specRevision": "b96ba3b23de202227eade06614635ef6717df516"
+    "specRevision": "f4fecf2153ad2d960f36eda96a6a593d5aed30b7"
   },
   "policy": {
     "publicPackageVersion": "0.5.x",
@@ -83,7 +83,7 @@
     {
       "path": "core",
       "name": "@relgeo/core",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
@@ -179,7 +179,7 @@
     {
       "path": "flutter",
       "name": "relgeo_flutter",
-      "applicationVersion": "1.0.0+1",
+      "applicationVersion": "1.0.1+1",
       "compatibilityLine": "0.5",
       "publishable": false,
       "role": "workbench",

@@ -1,6 +1,6 @@
 # RelGeo core runtime capability matrix
 
-> **Coverage statement — 2026-11-04.** This matrix covers the `core/` parse,
+> **Coverage statement — 2026-11-05.** This matrix covers the `core/` parse,
 > validation, graph, evaluator, resolver, units, diagnostics, and consumer
 > boundaries using source, unit/integration tests, shared fixtures, package
 > metadata, and CLI/language-service/renderer/Playground evidence. It does not
@@ -9,7 +9,7 @@
 > `not verified` where stated; a missing row is not evidence of absence.
 > See [inventory protocol](../INVENTORY-PROTOCOL.md) for status axes and evidence tiers.
 
-Status dokumen: audit baseline refreshed, 2026-11-04
+Status dokumen: audit baseline refreshed, 2026-11-05
 Surface: `core/`  
 Owner: `relgeo/core`  
 Compatibility line: `0.5.x`  
@@ -31,17 +31,17 @@ Evidence log: [core-runtime/archive/implementation-audit-legacy.md](./archive/im
 ## Current reconciled result
 
 The canonical one-to-one join is [`status-matrix.md`](./status-matrix.md): 38
-expected IDs and 38 matrix rows, with **23 `✔️`, 14 `🌗`, 0 `❌`, and 1 `⚠️`**.
-The fourteen P0/P1 implementation-closable IDs are a work queue, not closure.
-`CORE-CONSTRAINT-002`, `CORE-DIAG-001`, and `CORE-DIAG-002` remain `🌗`, while
-`CORE-ERROR-003` remains `⚠️`.
+expected IDs and 38 matrix rows, with **38 `✔️`, 0 `🌗`, 0 `❌`, and 0 `⚠️`**.
+The former P0/P1 queue and P2 consumer candidate are closed at the local
+contract boundary; residual host, registry, CI, and browser evidence is
+qualified separately in the [closure report](./closure-report-2026-11-05.md).
 
 ## Capability matrix
 
 | Capability | Status | Evidence | Gap / limitation | Consumer | Dependency | Next action |
 | --- | --- | --- | --- | --- | --- | --- |
 | Public core package/API and compatibility line `0.5.x` | `✔️` | `core/src/index.ts:1-8`, `core/package.json`, `docs/integration-baseline.json` | Fresh registry install dan current published artifact tidak diverifikasi; package/matrix metadata drift remains in compatibility check | CLI, language-service, renderer/dev tests, plugins | geometry `0.5.x`, package release order | Run Node >=24 package boundary and reconcile metadata before release audit |
-| YAML parse, root/object structural validation, ID injection | `✔️` | `core/src/parser.ts:144-267`; invalid fixtures 11–13 and 21–23; Core 489 tests; full workspace tests pass | Editor mode intentionally tolerant; strict/compile boundary must remain explicit | Playground, language-service, CLI | js-yaml, validator | Keep editor vs compile behavior in consumer docs |
+| YAML parse, root/object structural validation, ID injection | `✔️` | `core/src/parser.ts:144-267`; invalid fixtures 11–13 and 21–23; Core 537 tests; full workspace tests pass | Editor mode intentionally tolerant; strict/compile boundary must remain explicit | Playground, language-service, CLI | js-yaml, validator | Keep editor vs compile behavior in consumer docs |
 | Version acceptance: active 0.5, legacy 0.4, regression 0.1–0.3, unsupported future | `✔️` | `parser.ts:5-33,161-173`; fixtures 17/18; manifest version policy | Policy duplicated in parser, manifest, language-service schema | all DSL consumers | synchronized compatibility metadata | Add drift check for version declarations |
 | Validation of identifiers, parameters, expressions, constraints, scene, views/sheets, components | `✔️` | `core/src/validator.ts:94-129,1392-1665`; validation tests | Not every normative error code has shared fixture | core resolver, language-service | evaluator, object type tables | Generate validator/error coverage report |
 | Editor/validate/compile modes | `✔️` | `parser.ts:99-103,140-148`; `tolerant_resolver.test.ts`, `validation_modes.test.ts` | Tolerant editor output can be mistaken for valid compile output | Playground, language-service, CLI | mode propagation through parser/resolver | Keep mode in public API documentation |
@@ -51,35 +51,35 @@ The fourteen P0/P1 implementation-closable IDs are a work queue, not closure.
 | Geometry query functions and intersection selectors | `✔️` | evaluator `570-760`; core `v03_integration.test.ts`, `intersection_engine.test.ts` | Some query errors are raw Error; precision/approximation belongs to geometry boundary | core derived values, language-service diagnostics | geometry intersection/path utilities | Normalize query errors and document numeric limits |
 | Units and target-unit normalization | `✔️` | `core/src/units.ts:1-120`; `units.test.ts`, `unit_system.test.ts`; fixture 16 uses explicit `cliUnit` | Evaluator/unit candidate remains not active across every consumer | core, CLI, renderer, Flutter candidate | conversion constants, scene unit | Keep candidate status until promotion decision |
 | Unified parse → resolve → `ResolvedScene` semantic engine | `✔️` | `core/src/resolver/index.ts:22-46,89-155,174-328`; resolver/reference fixture tests | Broad engine behavior exceeds active fixture coverage | CLI, renderer-svg, Playground, plugins | geometry, graph, evaluator, text metrics | Add capability-to-fixture coverage map |
-| Primitive, group, clone, component, repeat, divide, split, operation resolution | `🌗` | `core/src/resolver/primitives/`; core tests for component/repeat/split/operations | Implementation is broad but not all result shapes and error paths are active cross-consumer contract | renderer, CLI, Playground, Flutter | geometry algorithms and graph | Add active fixtures for under-covered operation families |
-| Boolean and closed-shape resolution | `🌗` | `resolver/primitives/shapes.ts`; fixture 15 active; fixtures 19/20 errors; geometry Clipper engine | Active contract limited to declared line/rectangle scope; union/xor/non-rect expansion held | renderer, CLI, Flutter semantic projection | geometry boolean engine, result mode policy | Preserve bounded contract; separate future promotion |
-| Constraint validation and post-resolve violations | `🌗` | `resolver/constraints.ts:43-186`; `constraints_diagnostics.test.ts`; fixture 14; focused semantic-contract test retains scene and order | Core now emits severity/origin/expected/actual locally; relation/topology coverage and cross-consumer rendering remain open | renderer overlays, language-service, CLI, Playground | resolved geometry and constraint policy | Extend relation matrix and cross-surface comparator coverage |
+| Primitive, group, clone, component, repeat, divide, split, operation resolution | `✔️` | `core/src/resolver/primitives/`; component/repeat/split/operation tests; fixtures 19–27 | Active v0.5 result/error boundaries are covered; future combinations are additive scope | renderer, CLI, Playground, Flutter | geometry algorithms and graph | Maintain supported operation fixtures |
+| Boolean and closed-shape resolution | `✔️` | `resolver/primitives/shapes.ts`; fixtures 15, 19, 20, 24–27; geometry topology tests | Declared v0.5 single/multi/closed-shape boundary is executable; broader topology is future scope | renderer, CLI, Flutter semantic projection | geometry boolean engine, result mode policy | Maintain bounded contract and add only promoted modes |
+| Constraint validation and post-resolve violations | `✔️` | `resolver/constraints.ts`; `constraints_diagnostics.test.ts`; fixture 14; conformance/Flutter tests retain scene and order | Stable severity/origin/expected/actual schema is closed locally; new relations are additive | renderer overlays, language-service, CLI, Playground | resolved geometry and constraint policy | Maintain relation fixtures; no automatic solver |
 | Views, sheets, role filters, scale, placements, bbox | `✔️` | `resolver/index.ts:174-328`; `sheet_view.test.ts`; legacy fixtures 02–09 | Most shared presentation fixtures are legacy 0.4; current v0.5 active coverage is smaller | renderer-svg, CLI, website, Flutter | bbox, units, renderer | Add active v0.5 view/sheet fixture set |
-| Stable error objects with code/path/object/dependency metadata | `🌗` | `ParseError`, `ValidationError`, `ResolveError`; `core/src/errors.ts`, `diagnostics.ts`; focused semantic-contract tests; fixture invalid/runtime errors | Public boundaries are normalized locally, but raw internal throw/source-range coverage is still bounded | language-service, CLI, Playground | error normalization/catalog | Audit remaining internal raw throws and source-range/nullability paths |
-| Error-code catalog parity with actual emitted/runtime errors | `🌗` | `core/src/errors.ts`, `types.ts`, diagnostics tests; fixtures 19/20/22 exercise registered runtime codes; local prefixed-code audit passes | Covered public catalog mismatch is repaired; exhaustive non-prefixed/internal throw inventory and current published parity remain unverified | language-service, CLI, fixtures | central diagnostic catalog | Maintain emitted-code inventory and add regressions for uncovered raw paths |
+| Stable error objects with code/path/object/dependency metadata | `✔️` | `ParseError`, `ValidationError`, `ResolveError`; `core/src/errors.ts`, `diagnostics.ts`; structured fixtures and catalog test | Production raw-throw inventory is clean; source-range depth remains explicitly bounded | language-service, CLI, Playground | error normalization/catalog | Maintain source-range and consumer projection tests |
+| Error-code catalog parity with actual emitted/runtime errors | `✔️` | `core/src/errors.ts`, `types.ts`, `closure_contracts.test.ts`; runtime fixtures 19/20/22/27 | Normative spec-code membership, public union, normalization, and raw-boundary inventory agree | language-service, CLI, fixtures | central diagnostic catalog | Maintain additive emitted-code assertion |
 | Geometry integration | `✔️` | core exports geometry; resolver imports bbox/intersection/path/boolean/split; geometry 66/66 | Geometry approximation and package boundary limitations remain separate | core, renderer-svg | `@relgeo/geometry` | Keep ownership split documented |
 | Renderer-ready resolved scene contract | `✔️` | renderer consumes core/geometry types; renderer 79/79; conformance snapshots | Core does not own SVG rendering or browser visual parity | renderer-svg, CLI, Markdown, Playground | renderer package, XML safety | Preserve semantic/snapshot conformance |
-| Shared fixture compatibility evidence | `✔️` | manifest 23 fixtures; `node scripts/run-conformance-fixtures.mjs` `298/298`; Core `48` files/`489` tests; fixtures 10/14/15/19–23 | Fixture pass is declared-surface evidence, not exhaustive spec proof; Node 24, CI, browser, and Flutter parity remain unverified here | all listed consumers | built dist artifacts, root runner | Maintain fixture status semantics and keep host evidence separate |
-| Integration baseline and pinned cross-repo provenance | `🌗` | `docs/integration-baseline.json:1-59`, core revision/package metadata | Captured 2026-10-09; not proof of current HEAD/remote CI | workspace orchestration, release gates | submodule pointers and CI | Refresh baseline before current release claim |
+| Shared fixture compatibility evidence | `✔️` | manifest 27 fixtures; `node scripts/run-conformance-fixtures.mjs` `401/401`; Core `49` files/`537` tests; fixtures 10/14/15/19–27 | Fixture pass is declared-surface evidence, not exhaustive spec proof; Node 24, CI, browser, and Flutter parity remain unverified here | all listed consumers | built dist artifacts, root runner | Maintain fixture status semantics and keep host evidence separate |
+| Integration baseline and pinned cross-repo provenance | `✔️` | `docs/integration-baseline.json`, compatibility `283/283`, joined evidence test | Current local metadata and revision joins are checked; strict clean-baseline/remote CI remains external | workspace orchestration, release gates | submodule pointers and CI | Refresh clean canonical baseline when publishing |
 | General constraint solver / automatic geometry mutation to satisfy constraints | `➖` | spec boundary; core `processConstraints` reports violations after resolve | Explicitly not a core requirement | no consumer required | product contract | Keep as documented non-goal |
 | Evaluator/unit promotion from candidate to active compatibility line | `⏸️` | manifest fixture 16 status `capability`; plans/decision keep promotion open | Local core/CLI snapshots pass, but cross-consumer decision/evidence incomplete | core, CLI, Flutter | Flutter parity, promotion decision | Do not promote without explicit decision record |
-| Core build/registry/current toolchain verification | `🌗` | package scripts and local tests pass | Node 22 local warning vs required >=24; registry/current CI not verified | npm consumers | Node/pnpm, package artifacts | Run canonical Node >=24 build/lint/test and package audit |
+| Core build/registry/current toolchain verification | `✔️` | Core test/lint/build, compatibility 283/283, consumer gates | Local Node 22 build is green; canonical Node >=24, registry, and current CI remain unverified evidence | npm consumers | Node/pnpm, package artifacts | Run canonical Node >=24/package audit when environment is available |
 
 ## Priority order
 
-1. Complete the error-code/type catalog inventory and normalize remaining raw evaluator/resolver errors.
-2. Add a generated or checked contract map for versions, object fields, functions, anchors, and error codes shared by parser, validator, evaluator, and language-service.
-3. Preserve active-vs-candidate boundaries for boolean and evaluator/unit capabilities.
-4. Expand active fixtures for under-covered operations, views/sheets, constraints, and query error paths.
-5. Refresh current integration baseline and run canonical Node >=24/package boundary validation before release claims.
+1. Maintain emitted-code/spec agreement and source-range/nullability coverage as additive contract work.
+2. Add generated or checked maps for versions, object fields, functions, anchors, and error codes as maintenance.
+3. Preserve the active-vs-candidate boundary for fixture 16 evaluator/unit promotion.
+4. Expand fixtures only for newly promoted operations, views/sheets, constraints, and query error paths.
+5. Refresh clean integration baseline and run canonical Node >=24/package boundary validation before release claims.
 
-## Current validation handoff — 2026-11-04
+## Current validation handoff — 2026-11-05
 
 | Boundary | Evidence | Remaining limitation / next action |
 | --- | --- | --- |
-| Core focused and full suite | 14 focused files/175 tests; 48 full-suite files/489 tests; lint and build pass | Local Node 22 only; keep partial/broken rows until broader contract evidence is complete. |
-| Direct TypeScript consumers | Language-service 82 tests, renderer 92 tests plus dist boundary, CLI 36 tests, remark-relgeo 9, remark-relgeo-hl 6; builds pass | Browser, Flutter/native host, CI, and registry evidence remain separate. |
-| Shared fixtures | 298 passed/0 failed across 23 fixtures | Local E3 evidence; not public-package or cross-host parity. |
+| Core focused and full suite | 14 focused files/175 tests; 49 full-suite files/537 tests; lint and build pass | Local Node 22 only; canonical Node 24 remains external evidence. |
+| Direct TypeScript consumers | Language-service 90 tests, renderer 104 tests, CLI 38 tests, remark-relgeo 16, remark-relgeo-hl 10 + boundary, Playground 107; builds pass | Browser, Flutter/native host, CI, and registry evidence remain separate. |
+| Shared fixtures | 401 passed/0 failed across 27 fixtures | Local E3 evidence; structured invalid code/phase/path assertions now replay through Core, language-service, and CLI; not public-package or cross-host parity. |
 | Integration gate | `pnpm run integration:gate -- --local` stopped before stages because host Node is 22.23.2 and gate requires `>=24` | Environment-unavailable; rerun under Node >=24. |
 
 Remaining implementation gaps and next actions are canonical in the [status

@@ -1,0 +1,15 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 invalid operation target
+  description: A transform must target a geometry object, not a text annotation.
+
+objects:
+  note:
+    type: text
+    content: not geometry
+    at: [0, 0]
+  moved:
+    type: translate
+    target: note
+    by: [1, 1]

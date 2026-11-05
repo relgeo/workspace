@@ -1,0 +1,13 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 invalid reverse target
+  description: Reverse requires a target with a reversible traversal surface.
+
+objects:
+  point:
+    type: point
+    at: [0, 0]
+  reversed:
+    type: reverse
+    target: point

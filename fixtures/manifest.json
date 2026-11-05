@@ -254,6 +254,7 @@
       "coreContract": {
         "kind": "reference-failure",
         "phase": "parse",
+        "code": "UNKNOWN_IDENTIFIER",
         "path": "objects.broken.center"
       }
     },
@@ -309,7 +310,7 @@
       "coreContract": {
         "kind": "reference-failure",
         "phase": "parse",
-        "code": "INVALID_EXPRESSION",
+        "code": "UNKNOWN_IDENTIFIER",
         "path": "objects.marker.at[0]"
       }
     },
@@ -341,6 +342,48 @@
         "editorObjectIds": ["panel", "secondary"],
         "editorFallbackSize": [0, 0],
         "multiDiagnosticCount": 2
+      }
+    },
+    {
+      "id": "v05-invalid-operation-target",
+      "path": "reference/25-v05-invalid-operation-target.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service", "cli"],
+      "expectedDiagnostic": "translate target",
+      "coreContract": {
+        "kind": "operation-target-boundary",
+        "phase": "parse",
+        "code": "INVALID_OPERATION_TARGET",
+        "path": "objects.moved.target"
+      }
+    },
+    {
+      "id": "v05-invalid-reverse-target",
+      "path": "reference/26-v05-invalid-reverse-target.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service", "cli"],
+      "expectedDiagnostic": "reverse target",
+      "coreContract": {
+        "kind": "reverse-target-boundary",
+        "phase": "parse",
+        "code": "INVALID_REVERSE_TARGET",
+        "path": "objects.reversed.target"
+      }
+    },
+    {
+      "id": "v05-invalid-turtle-forward",
+      "path": "reference/27-v05-invalid-turtle-forward.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service", "cli"],
+      "expectedDiagnostic": "Relative line forward",
+      "coreContract": {
+        "kind": "turtle-forward-boundary",
+        "phase": "parse",
+        "code": "INVALID_TURTLE_FORWARD",
+        "path": "objects.shape.segments[0].line.forward"
       }
     },
     {

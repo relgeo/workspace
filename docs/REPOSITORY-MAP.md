@@ -34,6 +34,14 @@ Inventory wajib mencakup `spec`, `geometry`, `core`, `renderer-svg`,
 Status implementation, evidence, parity, dan scope dilaporkan terpisah;
 evidence lokal, CI/canonical, dan public tidak dipromosikan satu sama lain.
 
+Core Runtime closure evidence untuk checkout 2026-11-05 berada pada
+[`core-runtime/closure-report-2026-11-05.md`](./capability-map/core-runtime/closure-report-2026-11-05.md),
+[`core-runtime/status-matrix.md`](./capability-map/core-runtime/status-matrix.md),
+dan [`core-runtime/coverage-validation-handoff.md`](./capability-map/core-runtime/coverage-validation-handoff.md).
+The reported `38 ✔️` rows are bounded local Core/consumer contracts; fixture
+promotion, host/runtime, CI, registry, and public-artifact evidence remain
+explicitly scoped findings.
+
 Expected Markdown Plugins capability catalog berada di
 [`docs/capability-map/markdown-surfaces/expected-capability-catalog.md`](./capability-map/markdown-surfaces/expected-capability-catalog.md).
 Katalog ini mendefinisikan target user, workflow integrasi/command package,

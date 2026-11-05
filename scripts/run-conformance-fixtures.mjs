@@ -99,7 +99,7 @@ check(manifest.svgSemanticSerialization?.semanticArrayOrder === "preserved", "fi
 check(manifest.svgSemanticSerialization?.replayComparator === "@relgeo/renderer-svg.compareSVGSemanticReplay", "fixture manifest declares the SVG replay comparator");
 check(manifest.svgSemanticSerialization?.numericComparison === "absolute-difference-within-tolerance", "fixture manifest declares tolerant numeric SVG comparison");
 check(manifest.svgSemanticSerialization?.presentationBytes === "excluded-from-parity-contract", "fixture manifest excludes presentation bytes from SVG parity");
-check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 24, "fixture manifest contains the expected 24-entry baseline set");
+check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 27, "fixture manifest contains the expected 27-entry baseline set");
 
 const fixtureIds = new Set();
 const fixturePaths = new Set();
@@ -146,7 +146,7 @@ for (const fixture of manifest.fixtures ?? []) {
 const activeFixtures = manifest.fixtures.filter((fixture) => fixture.status === "active");
 check(activeFixtures.length >= 1, "fixture manifest has at least one active baseline fixture");
 const invalidFixtures = manifest.fixtures.filter((fixture) => fixture.status === "invalid");
-check(invalidFixtures.length === 7, "fixture manifest has the seven invalid diagnostic fixtures");
+check(invalidFixtures.length === 10, "fixture manifest has the ten invalid diagnostic fixtures");
 const runtimeDiagnosticFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-diagnostic");
 check(runtimeDiagnosticFixtures.length === 1, "fixture manifest has one runtime-diagnostic fixture");
 const runtimeErrorFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-error");
@@ -174,9 +174,30 @@ for (const fixture of manifest.fixtures) {
     }
     check(Boolean(parseError), `${fixture.id}: parser rejects the invalid fixture`);
     check(parseError?.message.includes(fixture.expectedDiagnostic), `${fixture.id}: parser reports the expected diagnostic`);
+    const coreContract = fixture.coreContract ?? {};
+    const expectedCode = coreContract.code ?? coreContract.strictCode;
+    const expectedPath = coreContract.path ?? coreContract.strictPath;
+    if (expectedCode) check(parseError?.code === expectedCode, `${fixture.id}: parser emits structured code ${expectedCode}`);
+    if (coreContract.phase) check(parseError?.phase === coreContract.phase, `${fixture.id}: parser emits phase ${coreContract.phase}`);
+    if (expectedPath) check(parseError?.path === expectedPath, `${fixture.id}: parser emits path ${expectedPath}`);
 
     const diagnostics = new languageService.RelGeoLanguageService().getDiagnostics(source);
-    check(diagnostics.some((diagnostic) => diagnostic.message.includes(fixture.expectedDiagnostic)), `${fixture.id}: language service exposes the expected diagnostic`);
+    const matchingDiagnostic = diagnostics.find((diagnostic) => diagnostic.message.includes(fixture.expectedDiagnostic));
+    check(Boolean(matchingDiagnostic), `${fixture.id}: language service exposes the expected diagnostic`);
+    if (expectedCode) check(matchingDiagnostic?.code === expectedCode, `${fixture.id}: language service preserves code ${expectedCode}`);
+    if (fixture.surfaces?.includes("cli")) {
+      const invalidCli = spawnSync(process.execPath, cliCompileArgs(fixturePath, fixture), {
+        cwd: root,
+        encoding: "utf8",
+        env: process.env,
+      });
+      const invalidCliOutput = `${invalidCli.stdout}\n${invalidCli.stderr}`;
+      check(invalidCli.status !== 0, `${fixture.id}: CLI rejects the invalid fixture`);
+      check(
+        invalidCliOutput.includes(fixture.expectedDiagnostic) || (expectedCode && invalidCliOutput.includes(expectedCode)),
+        `${fixture.id}: CLI exposes the expected structured diagnostic`
+      );
+    }
     continue;
   }
 

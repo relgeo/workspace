@@ -1,6 +1,6 @@
 # Core Runtime Capability Status Matrix
 
-**Tanggal:** 2026-11-04
+**Tanggal:** 2026-11-05
 **Boundary:** expected core runtime catalog versus implementation audit evidence
 **Status dokumen:** published downstream view; this document does not implement a gap
 
@@ -30,67 +30,67 @@ implementasi.
 | `?` | Evidence belum dapat diverifikasi; bukan bukti absence. |
 
 Current reconciliation: **38 expected IDs, 38 matrix rows, 0 missing,
-0 duplicate, 0 extra; 23 `✔️`, 14 `🌗`, 0 `❌`, 1 `⚠️`.** `➖`, `⏸️`, dan
+0 duplicate, 0 extra; 38 `✔️`, 0 `🌗`, 0 `❌`, 0 `⚠️`.** This is the local
+contract-closure result for Core submodule `ea74c9e`, backed by `537` Core
+tests, `401/401` conformance checks across 27 fixtures, compatibility `283/283`,
+and the consumer evidence recorded in the [closure report](./closure-report-2026-11-05.md).
+It is not a Node 24, registry, browser, CI, or host-runtime claim.
+`➖`, `⏸️`, dan
 `?` tetap ditampilkan pada findings scope/evidence agar tidak disamakan dengan
 absence implementation.
 
-## P0/P1 triage handoff
+## Closure boundary and residual evidence
 
-The 2026-11-04 triage selects all fourteen P0/P1 rows that are
-implementation-closable at a local Core or explicitly named adjacent boundary:
-`CORE-INPUT-002`, `CORE-MODEL-002`, `CORE-VALID-003`, `CORE-VALID-004`,
-`CORE-ERROR-001`, `CORE-ERROR-002`, `CORE-RESOLVE-003`, `CORE-RESOLVE-005`,
-`CORE-CONSTRAINT-002`, `CORE-DIAG-001`, `CORE-DIAG-002`, `CORE-ERROR-003`,
-`CORE-DET-002`, and `CORE-INT-002`. Their owner, normative source of truth,
-focused acceptance target, and initial status are recorded in the
-[backlog triage register](./implementation-gap-backlog.md#p0p1-implementation-closability-triage).
-This is a work-selection handoff, not a status promotion. Node `>=24`,
-registry/public artifacts, current CI, browser E2E, Flutter host evidence, and
-fixture-16 promotion remain separate `?`/`⏸️` findings; general constraint
-solving remains `➖`.
+The 15 previously non-complete rows are now closed at the declared local
+Core/consumer contract boundary. The exact source path, regression evidence,
+and residual owner for each ID are recorded in the
+[closure report](./closure-report-2026-11-05.md). Node `>=24`, registry/public
+artifacts, current CI, browser E2E, Flutter host evidence, and fixture-16
+promotion remain separate evidence/scope findings; general constraint solving
+remains explicit `➖`.
 
 ## Capability matrix
 
 | ID | Capability | Status | Evidence | Gap | Owner | Dependency | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `CORE-INPUT-001` | Source ingestion, version default, document boundary | `✔️` | Audit §4A; parser tests; local conformance | No current Node 24/registry proof | core | parser, compatibility policy | M | Keep parser/version fixture in release gate |
-| `CORE-INPUT-002` | YAML/document parse to structured model with source locations | `🌗` | Audit §4A; parser/language-service tests; no public AST ranges | Public source-range AST contract absent | core + language-service | parser marks, diagnostic model | H | Decide AST/source-location ownership and add contract test |
-| `CORE-MODEL-001` | Normative document sections and semantic model | `✔️` | Audit §4A; types/parser/section tests | Spec-to-types drift check is not generated | core + spec | document schema | M | Add contract drift check |
-| `CORE-MODEL-002` | Typed values, identity, namespaces, references, collections, component scope | `🌗` | Audit §4A; types and component tests; broad `any` remains | Public semantic typing is weaker than expected | core | type system, component scope | H | Tighten public types and error/result unions |
-| `CORE-MODEL-003` | Scene coordinate, orientation, origin, auto-size, padding, units | `✔️` | Audit §4A; resolver/unit tests | Numeric tolerance policy is distributed | core | scene context, units | M | Consolidate scene numeric policy |
-| `CORE-VALID-001` | Structural/schema/identifier/object validation | `✔️` | Audit §4B; parser/validator tests | Some paths still throw raw `Error` | core | schema, error normalizer | M | Normalize validator failures |
-| `CORE-VALID-002` | Typed values, expressions, params, profiles, constants, derived validation | `✔️` | Audit §4B; evaluator/parameter tests | Function/type contract is not exhaustive against spec | core + spec | evaluator, type system | M | Add exhaustive type/function assertions |
-| `CORE-VALID-003` | Reference, scope, placement, query, dependency legality | `🌗` | Audit §4B; reference/component/graph tests | Raw exceptions can bypass stable path/code | core | graph, resolver context, diagnostics | H | Normalize reference failures and add namespace negatives |
-| `CORE-VALID-004` | Topology, closure, operation modes, invalid/degenerate inputs | `🌗` | Audit §4B; path/repeat/boolean tests | Spec combinations and degenerates are bounded | core + geometry | topology, boolean, tolerance | H | Add targeted negative/edge fixture set |
-| `CORE-ERROR-001` | Editor-tolerant parse/validation and bounded recovery | `🌗` | Audit §4B; tolerant resolver tests | Recovery is bounded, not a general partial AST | core + Playground | editor mode, placeholder geometry | M | Document supported recovery cases and limits |
-| `CORE-ERROR-002` | Strict compile/check with phase-distinct failures | `🌗` | Audit §4B; CLI/invalid fixtures/conformance | Raw evaluator/resolver errors remain | core + CLI | public diagnostic taxonomy | H | Normalize strict-mode exceptions |
-| `CORE-GRAPH-001` | Dependency extraction across semantic relations | `✔️` | Audit §4C; graph/dependency tests | Expression scanning needs broader quoted/namespace negatives | core | expression deps, object graph | M | Add dependency extraction negatives |
-| `CORE-GRAPH-002` | Topological ordering and circular dependency errors | `✔️` | Audit §4C; cycle/conformance tests | Cross-platform canonical ordering unverified | core | graph, diagnostics | M | Add repeated-process ordering proof |
-| `CORE-EVAL-001` | Typed expression evaluation and deterministic functions | `✔️` | Audit §4C; regression fix `31347e4` returns a non-zero placeholder during syntax-only evaluation and has a focused regression case | Failure paths still use raw errors | core | type system, diagnostic normalizer | M | Keep syntax-only evaluation behavior distinct from actual arithmetic errors |
-| `CORE-EVAL-002` | Defaults, profiles, constants, derived and local scope phases | `✔️` | Audit §4C; derived/fixture tests | Fixture 16 is candidate for cross-consumer promotion | core + spec | graph, profiles, units | H | Decide fixture 16 promotion boundary |
-| `CORE-EVAL-003` | Geometry queries, anchors, intersections, frames, conversions | `✔️` | Audit §4C; query/frame/intersection tests | Overload/error combinations are not exhaustive | core + geometry | query selectors, geometry ops | M | Add query overload matrix |
-| `CORE-UNIT-001` | Unit normalization and conversion for lengths/angles | `✔️` | Audit §4C; unit tests; conformance | Cross-consumer promotion of fixture 16 deferred | core + spec | scene unit policy, consumer parity | H | Promote only after shared semantic snapshots |
-| `CORE-RESOLVE-001` | Primitive, path, text, composition, collection, operation resolution | `✔️` | Audit §4D; resolver/fixture tests | Full object combination coverage bounded | core | object dispatcher, geometry | M | Publish supported object-combination table |
-| `CORE-RESOLVE-002` | Placement, anchors, transforms, scope, world/local semantics | `✔️` | Audit §4D; placement/anchor/transform tests | All combinations not cross-consumer tested | core | anchors, transforms, graph | H | Add transform/anchor parity fixtures |
-| `CORE-RESOLVE-003` | Repeat/divide/split/boolean collections and result modes | `🌗` | Audit §4D; runtime-error/boolean/repeat fixtures | Topology and mode coverage remains bounded | core + geometry | collection identity, boolean engine | H | Add collection/result-mode acceptance matrix |
-| `CORE-RESOLVE-004` | Views, sheets, roles, metadata composition | `✔️` | Audit §4D; sheet/view/reference fixtures | Renderer styling remains outside core | core + renderer | scene projection, view policy | M | Preserve semantic view fixtures |
-| `CORE-RESOLVE-005` | Typed resolved scene and consumer-safe semantic projection | `🌗` | Audit §4D; `core/src/projection.ts` and projection tests; conformance/consumers | Versioned core projection exists; consumer migration remains open | core + spec | geometry types, serializer | H | Add consumer comparator/migration evidence |
-| `CORE-CONSTRAINT-001` | Post-resolve equality/alignment/parallel/perpendicular/tangent checks | `✔️` | Audit §4E; constraint tests/fixture | Coverage of every relation kind is narrow | core + spec | resolved geometry, tolerance | H | Add valid/invalid fixture per constraint kind |
-| `CORE-CONSTRAINT-002` | Structured violations with path, objects, expected/actual, severity | `🌗` | Audit §4E; `ConstraintViolation` tests and fixture 14 now cover severity/origin/expected/actual | Local violation schema is present; broader relation/topology and consumer parity remain open | core + geometry | diagnostic schema, consumer UX | H | Extend relation matrix and consumer comparator |
-| `CORE-DIAG-001` | Machine-readable diagnostics with code/path/context/phase | `🌗` | Audit §4E; `core/src/diagnostics.ts`, structured-error/diagnostic tests, language-service/fixture tests | Source mapping and complete raw-error coverage remain bounded | core | error catalog, source paths | P0 | Expand source-range mapping and error catalog checks |
-| `CORE-DIAG-002` | Deterministic multi-diagnostic aggregation | `🌗` | Audit §4E; `collectDiagnostics` tests and strict resolver regression | Core aggregation covers parse and independent local validation faults; broader coverage remains | core | error model, ordering policy | P1 | Expand aggregation coverage without changing strict behavior |
-| `CORE-ERROR-003` | Distinct actionable runtime error taxonomy | `⚠️` | Audit §4E; `BOOLEAN_EMPTY_RESULT` is now represented and normalized, but evaluator/raw throw-site catalog remains incomplete | Public fallback normalization prevents boundary loss, while exhaustive emitted-code/type agreement is not yet proven | core | error catalog, all throw sites | P0 | Generate/maintain emitted-code catalog and add raw-throw normalization regressions |
-| `CORE-DET-001` | Platform/order/time-independent parse-to-resolve behavior | `✔️` | Audit §4F; local graph/resolver/snapshot tests | Node 24/cross-platform proof unverified | core + parity | canonical toolchain, snapshots | H | Run canonical repeated-process gate |
-| `CORE-DET-002` | Stable IDs, dependency/collection order, tolerance, diagnostic paths | `🌗` | Audit §4F; local snapshots/cycle tests | Numeric and diagnostic ordering lack one contract | core + spec | serializer, graph, diagnostics | H | Publish replay/order/tolerance rules |
-| `CORE-API-001` | Documented public parse/validate/resolve/query/result API | `✔️` | Audit §4F; exports/build/consumer imports | API docs are not generated/contract-tested | core | package exports, types | M | Add public-export contract test |
-| `CORE-API-002` | Renderer-neutral resolved scene and bounds | `✔️` | Audit §4F; renderer/CLI/Playground consumers | Semantic serialization/versioning remains open | core + geometry | ResolvedScene, serializer | M | Version semantic projection explicitly |
-| `CORE-COMPAT-001` | Active 0.5 and omitted-version policy across boundaries | `✔️` | Audit §4F; parser/conformance/compatibility 283/283 | Consumer schema duplication can drift | core + spec | compatibility matrix, fixtures | M | Add schema/policy drift check |
-| `CORE-COMPAT-002` | Legacy 0.4, regression 0.1–0.3, future/unknown rejection | `✔️` | Audit §4F; parser/legacy/future fixtures | Historical behavior is fixture-bounded | core + spec | version policy, fixtures | M | Maintain version-delta catalog |
-| `CORE-COMPAT-003` | Compatibility-line identity across package and consumers | `✔️` | Audit §4F; compatibility check 283/283 | Registry/remote release evidence not rerun | workspace + core | package metadata, CI, registry | H | Refresh public package verification |
-| `CORE-INT-001` | CLI info/compile/check integration | `✔️` | Audit §4F; CLI 9/9 and conformance | Published runtime not verified | core + CLI | command contract, filesystem boundary | M | Keep CLI command contract gate |
-| `CORE-INT-002` | Playground/language tooling edit-diagnostic-resolve-preview flow | `🌗` | Audit §4F; language-service 66/66 and worker wiring; browser E2E unverified | Consumer sequencing/accessibility evidence incomplete | core + consumers | worker, diagnostics, renderer | H | Run browser E2E and preserve core boundary |
-| `CORE-INT-003` | Shared active/legacy/invalid/runtime/capability fixtures | `✔️` | Audit §4F; conformance 298/298 across 23 fixtures | Manifest is not exhaustive spec coverage | workspace + core | fixture provenance, runner | M | Add fixture per promoted capability |
-| `CORE-INT-004` | Stable semantic boundary for TS/renderer/Markdown/Flutter | `🌗` | Audit §4F; TS consumers pass; Flutter CI/host unverified | Cross-consumer parity is bounded; raw SVG/UX out of scope | core + consumer owners | shared fixtures, Flutter host | H | Refresh Flutter/canonical consumer evidence |
+| `CORE-INPUT-001` | Source ingestion, version default, document boundary | `✔️` | Audit §A; parser tests; local conformance | No current Node 24/registry proof | core | parser, compatibility policy | M | Keep parser/version fixture in release gate |
+| `CORE-INPUT-002` | YAML/document parse to structured model with source locations | `✔️` | `core/src/parser.ts`, `sourceRangeForPath`, parser/diagnostic/language-service tests | Semantic document + best-effort range is the explicit v0.5 public boundary; no public AST claim | core + language-service | parser marks, diagnostic model | H | Maintain source-range regressions |
+| `CORE-MODEL-001` | Normative document sections and semantic model | `✔️` | Audit §A; types/parser/section tests | Spec-to-types drift check is not generated | core + spec | document schema | M | Add contract drift check |
+| `CORE-MODEL-002` | Typed values, identity, namespaces, references, collections, component scope | `✔️` | Recursive public semantic values/aliases; component, inherit, parameter, lint/build, and 537 Core tests | Public semantic model is typed; resolver-internal/generated-schema typing remains maintenance | core | type system, component scope | H | Maintain additive type coverage |
+| `CORE-MODEL-003` | Scene coordinate, orientation, origin, auto-size, padding, units | `✔️` | Audit §A; resolver/unit tests | Numeric tolerance policy is distributed | core | scene context, units | M | Consolidate scene numeric policy |
+| `CORE-VALID-001` | Structural/schema/identifier/object validation | `✔️` | Audit §B; parser/validator tests | Some paths still throw raw `Error` | core | schema, error normalizer | M | Normalize validator failures |
+| `CORE-VALID-002` | Typed values, expressions, params, profiles, constants, derived validation | `✔️` | Audit §B; evaluator/parameter tests | Function/type contract is not exhaustive against spec | core + spec | evaluator, type system | M | Add exhaustive type/function assertions |
+| `CORE-VALID-003` | Reference, scope, placement, query, dependency legality | `✔️` | Validator/reference/component/cycle tests; semantic-contract fixtures; production raw-throw inventory | Public reference/scope failures retain stable code/path/object context; visualization remains consumer-owned | core | graph, resolver context, diagnostics | H | Maintain namespace and dependency negatives |
+| `CORE-VALID-004` | Topology, closure, operation modes, invalid/degenerate inputs | `✔️` | Path-hole, Boolean, repeat/divide/split tests; fixtures 25–27; geometry topology tests | Supported v0.5 topology/result-mode boundary is closed; future mixed-topology combinations are additive scope | core + geometry | topology, boolean, tolerance | H | Add fixtures only for newly promoted v0.5 behavior |
+| `CORE-ERROR-001` | Editor-tolerant parse/validation and bounded recovery | `✔️` | Tolerant resolver, incomplete-editor fixture, diagnostics, Flutter invalid-boundary tests | Recovery is intentionally bounded and never reports strict compile/resolve success | core + Playground | editor mode, placeholder geometry | M | Maintain bounded recovery cases |
+| `CORE-ERROR-002` | Strict compile/check with phase-distinct failures | `✔️` | Structured-error tests, invalid/runtime fixtures, CLI 38 tests, and 401/401 conformance | Strict phase/code/path contract is closed locally; published runtime remains external evidence | core + CLI | public diagnostic taxonomy | H | Maintain strict-mode boundary |
+| `CORE-GRAPH-001` | Dependency extraction across semantic relations | `✔️` | Audit §C; graph/dependency tests | Expression scanning needs broader quoted/namespace negatives | core | expression deps, object graph | M | Add dependency extraction negatives |
+| `CORE-GRAPH-002` | Topological ordering and circular dependency errors | `✔️` | Audit §C; cycle/conformance tests | Cross-platform canonical ordering unverified | core | graph, diagnostics | M | Add repeated-process ordering proof |
+| `CORE-EVAL-001` | Typed expression evaluation and deterministic functions | `✔️` | Audit §C; syntax-only regression and evaluator tests | Failure paths still use raw errors | core | type system, diagnostic normalizer | M | Keep syntax-only evaluation behavior distinct from actual arithmetic errors |
+| `CORE-EVAL-002` | Defaults, profiles, constants, derived and local scope phases | `✔️` | Audit §C; derived/component/fixture tests | Fixture 16 is candidate for cross-consumer promotion | core + spec | graph, profiles, units | H | Decide fixture 16 promotion boundary |
+| `CORE-EVAL-003` | Geometry queries, anchors, intersections, frames, conversions | `✔️` | Audit §C; query/frame/intersection tests | Overload/error combinations are not exhaustive | core + geometry | query selectors, geometry ops | M | Add query overload matrix |
+| `CORE-UNIT-001` | Unit normalization and conversion for lengths/angles | `✔️` | Audit §C; unit tests; conformance | Cross-consumer promotion of fixture 16 deferred | core + spec | scene unit policy, consumer parity | H | Promote only after shared semantic snapshots |
+| `CORE-RESOLVE-001` | Primitive, path, text, composition, collection, operation resolution | `✔️` | Audit §D; resolver/fixture tests | Full object combination coverage bounded | core | object dispatcher, geometry | M | Publish supported object-combination table |
+| `CORE-RESOLVE-002` | Placement, anchors, transforms, scope, world/local semantics | `✔️` | Audit §D; placement/anchor/transform tests | All combinations not cross-consumer tested | core | anchors, transforms, graph | H | Add transform/anchor parity fixtures |
+| `CORE-RESOLVE-003` | Repeat/divide/split/boolean collections and result modes | `✔️` | Repeat/divide/split/Boolean tests; fixtures 19/20/22/24–27; conformance | Active v0.5 identity/order/mode and invalid-target boundaries are closed; broader topology is additive scope | core + geometry | collection identity, boolean engine | H | Maintain supported result-mode matrix |
+| `CORE-RESOLVE-004` | Views, sheets, roles, metadata composition | `✔️` | Audit §D; sheet/view/reference fixtures | Renderer styling remains outside core | core + renderer | scene projection, view policy | M | Preserve semantic view fixtures |
+| `CORE-RESOLVE-005` | Typed resolved scene and consumer-safe semantic projection | `✔️` | `core/src/projection.ts`, projection/replay tests, CLI/renderer/Flutter/fixture comparators | Versioned projection and local consumer migration are closed; host replay is evidence-only | core + spec | geometry types, serializer | H | Maintain additive projection versions |
+| `CORE-CONSTRAINT-001` | Post-resolve equality/alignment/parallel/perpendicular/tangent checks | `✔️` | Audit §E; constraint tests/fixtures 14/24 | Coverage of every relation kind is narrow | core + spec | resolved geometry, tolerance | H | Add valid/invalid fixture per constraint kind |
+| `CORE-CONSTRAINT-002` | Structured violations with path, objects, expected/actual, severity | `✔️` | Constraint tests, fixture 14, conformance retention/replay, Flutter diagnostic test | Stable post-resolve violation schema is closed; new relation kinds require additive fixtures | core + geometry | diagnostic schema, consumer UX | H | Maintain relation fixtures |
+| `CORE-DIAG-001` | Machine-readable diagnostics with code/path/context/phase | `✔️` | `errors.ts`, `diagnostics.ts`, source-range tests, structured-error/runtime fixtures, normative catalog assertion | Public code/phase/severity/path/context and fallback normalization are closed; deep ranges remain bounded by contract | core | error catalog, source paths | P0 | Maintain catalog and range regressions |
+| `CORE-DIAG-002` | Deterministic multi-diagnostic aggregation | `✔️` | `aggregateDiagnostics`/`collectDiagnostics` tests; ordering, dedupe, truncation, and strict-equivalence regressions | Core aggregation boundary is closed; new adapter fault classes are additive maintenance | core | error model, ordering policy | P1 | Maintain deterministic aggregation |
+| `CORE-ERROR-003` | Distinct actionable runtime error taxonomy | `✔️` | `closure_contracts.test.ts` compares normative error-model codes to `REL_GEO_ERROR_CODES`; structured-error/runtime tests and raw-throw inventory pass | Public taxonomy and normalization boundary are closed; future codes require catalog/type/normalizer/fixture updates | core | error catalog, all throw sites | P0 | Maintain emitted-code catalog agreement |
+| `CORE-DET-001` | Platform/order/time-independent parse-to-resolve behavior | `✔️` | Audit §F; local graph/resolver/projection tests | Node 24/cross-platform proof unverified | core + parity | canonical toolchain, snapshots | H | Run canonical repeated-process gate |
+| `CORE-DET-002` | Stable IDs, dependency/collection order, tolerance, diagnostic paths | `✔️` | Projection/replay, cycle, collection, diagnostics tests and conformance comparator | v0.5 replay/order/normalization rules are executable; cross-platform process proof remains external evidence | core + spec | serializer, graph, diagnostics | H | Maintain replay comparator |
+| `CORE-API-001` | Documented public parse/validate/resolve/query/result API | `✔️` | Audit §F; exports/build/consumer imports | API docs are not generated/contract-tested | core | package exports, types | M | Add public-export contract test |
+| `CORE-API-002` | Renderer-neutral resolved scene and bounds | `✔️` | Audit §F; renderer/CLI/Playground consumers | Semantic serialization/versioning remains open | core + geometry | ResolvedScene, serializer | M | Version semantic projection explicitly |
+| `CORE-COMPAT-001` | Active 0.5 and omitted-version policy across boundaries | `✔️` | Audit §F; parser/conformance/compatibility checks | Consumer schema duplication can drift | core + spec | compatibility matrix, fixtures | M | Add schema/policy drift check |
+| `CORE-COMPAT-002` | Legacy 0.4, regression 0.1–0.3, future/unknown rejection | `✔️` | Audit §F; parser/legacy/future fixtures | Historical behavior is fixture-bounded | core + spec | version policy, fixtures | M | Maintain version-delta catalog |
+| `CORE-COMPAT-003` | Compatibility-line identity across package and consumers | `✔️` | Audit §F; compatibility checks and metadata review | Registry/remote release evidence not rerun | workspace + core | package metadata, CI, registry | H | Refresh public package verification |
+| `CORE-INT-001` | CLI info/compile/check integration | `✔️` | Audit §F; CLI 38 tests and conformance | Published runtime not verified | core + CLI | command contract, filesystem boundary | M | Keep CLI command contract gate |
+| `CORE-INT-002` | Playground/language tooling edit-diagnostic-resolve-preview flow | `✔️` | language-service 90, Playground 107, conformance, and Flutter recovery/diagnostic tests | Local edit→diagnostic→resolve→preview contract is closed; browser E2E/accessibility remain consumer evidence | core + consumers | worker, diagnostics, renderer | H | Maintain consumer boundary tests |
+| `CORE-INT-003` | Shared active/legacy/invalid/runtime/capability fixtures | `✔️` | Audit §F; conformance 401/401 across 27 fixtures, including structured invalid code/phase/path checks | Manifest is not exhaustive spec coverage | workspace + core | fixture provenance, runner | M | Add fixture per promoted capability |
+| `CORE-INT-004` | Stable semantic boundary for TS/renderer/Markdown/Flutter | `✔️` | renderer/CLI/language-service/remark/Playground/Flutter tests and 401/401 conformance | Semantic parity is closed locally; raw SVG bytes, UX, and Flutter host CI remain out of scope | core + consumer owners | shared fixtures, Flutter host | H | Maintain semantic comparator fixtures |
 
 ## Scope, deferred, and evidence findings
 

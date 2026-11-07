@@ -1,6 +1,6 @@
 # Website and Pages coverage validation and handoff
 
-**Tanggal validasi:** 2026-11-04
+**Tanggal validasi:** 2026-11-07
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
 **Required context:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)
 
@@ -19,21 +19,20 @@ Klaim yang aman:
   evidence pada boundary yang diperiksa;
 - reconciliation dan status matrix memiliki **15/15 row** tanpa missing,
   extra, atau duplicate ID;
-- status matrix mempertahankan **4 `✔️`, 11 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`,
+- status matrix mempertahankan **6 `✔️`, 9 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`,
   dan 0 `⚠️`**;
-- backlog memiliki **11 candidate task** untuk tepat seluruh 0 `❌` dan 11
+- backlog memiliki **10 candidate task** untuk tepat seluruh 0 `❌` dan 10
   `🌗` row, dengan owner/dependency, acceptance test atau evidence target, dan
   next action; triage P0/P1 memilih 8 row untuk pekerjaan implementation/local
   contract dan memisahkan 3 row sebagai evidence-only;
 - audit §5 memiliki historical local checkpoint pada 2026-10-30; current
-  verification checkpoint pada 2026-11-04 menghasilkan website build 138
+  verification checkpoint pada 2026-11-07 menghasilkan website build 141
   halaman, `pnpm check` bersih, website `pnpm test` lulus, explicit
   SEO/accessibility and content-integrity assertions lulus, serta Playground
-  build/test lulus (17 file, 107 test);
-- current provenance and assembled Pages artifact gates fail closed because
-  the checked-out website/Playground/spec revisions do not match the recorded
-  baseline and Pages pins; public smoke is environment-unavailable because the
-  configured public host did not become reachable;
+  build/test lulus (17 file, 112 test);
+- current provenance and assembled Pages artifact gates pass for the
+  synchronized local website/Playground/spec tuple; CI/deployed/public smoke
+  remains external and the configured public host was not reached;
 - documentation and matrix updates do not close a gap by themselves; selected
   source/config changes are only credited where the audit records focused
   local evidence, and local evidence is not promoted to current CI, public, or
@@ -46,8 +45,8 @@ Klaim yang aman:
 | [Expected catalog](./expected-capability-catalog.md) | Daftar expected dari user journey, target pengguna, workflow, DSL/source-of-truth, roadmap, dan scope decision sebelum audit | 15 unique IDs; seluruh row memiliki outcome, requirement basis, scope, owner/source of truth, dan verification status awal |
 | [Implementation audit](./implementation-audit.md) | Observed source/content/route/UI/command/config/runtime/fixture/docs evidence | Discovery coverage tercatat; 15/15 expected IDs dibandingkan; public and device limits explicit |
 | [Reconciliation](./reconciliation.md) | One-to-one expected-versus-observed join dengan implementation/evidence/scope terpisah | 15/15 rows; missing/extra/duplicate = 0 |
-| [Status matrix](./status-matrix.md) | Capability-first compact view dengan status, evidence, gap, owner, dependency, risk, dan next action | 15 rows; full status legend; 4 `✔️`, 11 `🌗`, 0 `❌` |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate goals/tasks untuk gap implementasi, decision, provenance, dan verification | 11 tasks cover exactly all `❌`/`🌗` IDs; no task is marked complete |
+| [Status matrix](./status-matrix.md) | Capability-first compact view dengan status, evidence, gap, owner, dependency, risk, dan next action | 15 rows; full status legend; 6 `✔️`, 9 `🌗`, 0 `❌` |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate goals/tasks untuk gap implementasi, decision, provenance, dan verification | 9 open tasks cover exactly all `❌`/`🌗` IDs; the local Playground handoff is closed and hosted follow-up remains separate |
 | [Website bounded in-scope selection](./in-scope-selection.md) | Historical 2026-10-30 intake record | 6 historical selected rows; superseded for current P0/P1 selection by the backlog triage |
 | [P0/P1 backlog triage](./implementation-gap-backlog.md#p0p1-implementation-closability-triage) | Current implementation-closability and evidence boundary | 11 P0/P1 rows reviewed; 8 selected local rows and 3 evidence-only rows, each selected row with owner/source/acceptance/initial status |
 | [Historical website matrix](./capability-matrix.md) | Prior inventory retained as historical evidence | Tidak digunakan sebagai source expected set; status matrix baru adalah downstream view dari catalog/audit/reconciliation |
@@ -66,7 +65,7 @@ Klaim yang aman:
 | Scope decisions preserved | PASS | Semua 15 row in scope; ownership boundaries, physical AT deferral, and website-versus-child-runtime ownership remain explicit rather than being converted to `➖`. |
 | Limitations stated | PASS | English spec placeholder/parity, absent query search, no current CI/deployment result, DNS failure, incomplete viewport matrix, representative native Chrome AX smoke, and deferred physical AT are recorded. |
 | Unresolved questions recorded | PASS | §5 lists search baseline, English policy, pin synchronization, public/CI evidence, browser/AT evidence, SEO URL gating, and internal-link crawl questions. |
-| Gap backlog coverage | PASS | 11 candidate tasks cover all 11 non-green rows; each task has work type and acceptance evidence. |
+| Gap backlog coverage | PASS | 9 open candidate tasks cover all 9 non-green rows; each task has work type and acceptance evidence. `WEB-PAGE-007` is locally closed with hosted interaction retained as external evidence. |
 | Required paths resolve | PASS | `docs/capability-map`, `docs/REPOSITORY-MAP.md`, and `docs/MATURATION-MASTER-PLAN.md` are linked/readable; website/source and plan evidence are linked by the audit/catalog. |
 | Implementation closure claims | PASS | Matrix/backlog explicitly state that documentation does not implement or close a gap. |
 
@@ -128,7 +127,7 @@ in [`claim-locale-provenance-contract.md`](./claim-locale-provenance-contract.md
 | --- | --- | --- |
 | `Q-WEB-001` | Kapan browser evidence untuk deterministic docs/spec index dijalankan; query/server search tetap di luar baseline kecuali ada product change? | `WEB-PAGE-003`, `GAP-WEB-003-SEARCH-001` |
 | `Q-WEB-002` | Kapan English reference content dapat direview untuk parity tanpa menghapus editorial-mirror disclosure? | `WEB-PAGE-004`, `005`, `015`; `GAP-WEB-004-LOCALE-001` |
-| `Q-WEB-003` | Kapan current checked-out tuple direkonsiliasi ke integration baseline dan Pages pins (`website 6eb2e24`, `spec b96ba3b2`, `Playground c7cec4b5`) sebelum artifact dipromosikan? | `WEB-PAGE-007`, `012`, `013`, `014`; `GAP-WEB-012-ARTIFACT-001` |
+| `Q-WEB-003` | Kapan synchronized local tuple (`website 33d7f969`, `spec 26ff532`, `Playground efb7396c`) memperoleh CI/Pages/public evidence? | `WEB-PAGE-007`, `012`, `013`, `014`; `GAP-WEB-012-ARTIFACT-001` hosted follow-up |
 | `Q-WEB-004` | Kapan current canonical Pages workflow, deployed URL, dan public smoke dapat dijalankan pada host yang reachable? | `WEB-PAGE-001`, `007`, `011`–`014`; `GAP-WEB-013-PAGES-001`, `GAP-WEB-014-SMOKE-001` |
 | `Q-WEB-005` | Browser viewport/AX/keyboard evidence mana yang diwajibkan sekarang, dan kapan physical VoiceOver/TalkBack/mobile Safari dibuka kembali? | `WEB-PAGE-009`, `010`; `GAP-WEB-009-RESPONSIVE-001`, `GAP-WEB-010-A11Y-001` |
 | `Q-WEB-006` | Apakah deployment URL placeholder harus menjadi hard build failure dan seberapa luas crawler internal-link/SEO gate-nya? | `WEB-PAGE-001`, `011`; `WEB-PAGE-001` route-crawl follow-up and `GAP-WEB-011-SEO-001` |

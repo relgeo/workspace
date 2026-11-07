@@ -116,15 +116,17 @@ Journey produk yang menjadi kerangka katalog:
 
 ### 3.1 Active task evidence contract
 
-The active tranche freezes the three partial capabilities below. The required
-states and evidence are intentionally explicit so later implementation audits
-cannot collapse lifecycle, accessibility, or delivery into one generic pass.
+The active tranche freezes three distinct closure boundaries below. The
+required states and evidence are intentionally explicit so later audits cannot
+collapse lifecycle, accessibility, or delivery into one generic pass. The
+final disposition is 35 local `✔️` rows plus two explicit `⏸️` host/deployment
+holds; no expected row is removed or merged.
 
 | ID | Required behavior/state | Evidence required | Boundary preserved |
 | --- | --- | --- | --- |
-| `PG-LIFE-002` | `loading` while bootstrap is pending; `empty` when no local files exist; `ready` once the workspace/example is usable; `error` when bootstrap storage cannot be opened. Interaction is gated during `loading`. | Source state model, unit coverage for all four states, and delayed browser startup trace. | Resolver `resolving` and parser/storage failures remain distinct states. |
-| `PG-A11Y-001` | Landmarks, names, roles, selected/expanded/pressed/value, focus return/trap, live error announcements, and source/preview navigation. | Static contract audit, DOM/keyboard browser evidence, and separately labeled native AT evidence. | Web semantics are in scope; VoiceOver/TalkBack/device proof is not inferred. |
-| `PG-DELIVERY-001` | Hosted `/playground/` serves the tested build from one traceable child revision. | Revision/build fingerprint, route/title/asset comparison, hosted smoke/share run, and limitation record. | Local build success does not equal public parity. |
+| `PG-LIFE-002` | `loading` while bootstrap is pending; `empty` when no local files exist; `ready` once the workspace/example is usable; `error` when bootstrap storage cannot be opened. Interaction is gated during `loading`. | Source state model and unit coverage close the local implementation boundary; delayed browser startup trace remains explicit evidence follow-up because the runner cannot bind. | Resolver `resolving` and parser/storage failures remain distinct states. |
+| `PG-A11Y-001` | Landmarks, names, roles, selected/expanded/pressed/value, focus return/trap, live error announcements, and source/preview navigation. | Static contract audit and source/unit evidence pass; supported-browser DOM/keyboard and native AT/device evidence are an explicit `⏸️` host hold. | Web semantics are in scope; VoiceOver/TalkBack/device proof is not inferred. Owner: Playground UI/accessibility; dependency: bind-capable browser and native AT/device hosts. |
+| `PG-DELIVERY-001` | Hosted `/playground/` serves the tested build from one traceable child revision. | Local revision/build fingerprint, route/title/asset comparison, strict provenance, and assembled artifact checks pass; hosted smoke/share remains an explicit `⏸️` hold. | Local build success does not equal public parity. Owner: Playground + Pages delivery; dependency: hosted Pages workflow/public host. |
 
 The accepted theme contract remains unchanged: `system` follows
 `prefers-color-scheme`, explicit `light`/`dark` overrides remain available,

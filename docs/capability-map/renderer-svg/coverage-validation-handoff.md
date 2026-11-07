@@ -148,7 +148,7 @@ checkout boundaries:
 | --- | --- | --- |
 | Workspace root | Git `HEAD` `73040b83ebb16f9da8e30a08053697751ed18c09`; uncommitted worktree | Renderer and consumer capability documentation plus the local verification commands listed above. |
 | `renderer-svg/` | Submodule `HEAD` `8cd2e06c5a8de5a85918ef82fc2aa3291f1ad493`; uncommitted source/test changes | Typed render errors, semantic projection API, escaping regressions, renderer tests/build, and replay comparator. |
-| Downstream consumer boundaries | CLI `8f57709fd56a43eaef27e5b1320a5af713f67125`; remark-relgeo `50866756c4b50adac64a2acdb4692300aa7871be`; remark-relgeo-hl `6d109a96a265f64b8934e13e4d9e1e1ae1e8b028`; Playground `fad88630f2fcac77e78045e78550e3b05c3ef5db`; website `33d7f969c9f73ea6c25bff3062ac92132699b8b1` | Consumer tests/builds and capability-map alignment were checked at these local revisions. |
+| Downstream consumer boundaries | CLI `8f57709fd56a43eaef27e5b1320a5af713f67125`; remark-relgeo `50866756c4b50adac64a2acdb4692300aa7871be`; remark-relgeo-hl `6d109a96a265f64b8934e13e4d9e1e1ae1e8b028`; Playground `fad88630f2fcac77e78045e78550e3b05c3ef5db`; website `c5ca17f06476fd2beeb4a48e971265a0e57495c7` | Consumer tests/builds and capability-map alignment were checked at these local revisions. |
 | External delivery/runtime | Not invoked | No npm/pub.dev publication, production deployment, registry install, Flutter/native host, or deferred external platform was used as a prerequisite. |
 
 The renderer-scope changes include `src/types.ts`, `src/primitives.ts`,

@@ -51,7 +51,7 @@ environment; it is not a status symbol.
 | Sitemap generation | ✔️ | sitemap.xml.ts; current build 84 loc entries; assertion covers root and localized routes | No deployed HTTP or search-engine ingestion evidence | Crawlers and navigation tools | Astro site URL; content collections | Verify deployed sitemap after Pages publish |
 | Accessibility static contract | 🌗 | Skip link, landmarks, labels, focus/reduced motion CSS, active states; built gate and representative native Chrome AX smoke pass | No full route traversal, screen-reader/device session, or full WCAG audit | Keyboard/AT users | Browser/AT runtime | Extend current browser accessibility and manual AT review |
 | Link/route integrity across all generated pages | 🌗 | Selected route assertions, generated route inventory, sitemap | No exhaustive internal-link crawl; Markdown source relative links are not all checked after rewrite | All readers | Astro routes/content links | Add static internal-link crawler before release if required |
-| Pages reproducible input pins | 🌗 | Workflow and baseline identify Playground `c7cec4b5` and spec `b96ba3b2`, but current observed heads are Playground `47fd7158`, spec `f4fecf21`, and website `1b9bb92f`; strict gates fail closed on that drift | Current CI/Pages execution and public deployment remain unverified | Release/integration owners | GitHub Actions checkout and baseline sync | Align the approved tuple or update it through the governed baseline process, then rerun strict provenance and artifact gates |
+| Pages reproducible input pins | ✔️ | Workflow and baseline identify the synchronized local tuple: website `33d7f969`, Playground `efb7396c`, and spec `26ff5327`; strict workspace/Pages-input and assembled artifact gates pass | Current CI/Pages execution and public deployment remain unverified | Release/integration owners | GitHub Actions checkout and baseline sync | Preserve the tuple; archive CI/deployment and public smoke evidence when available |
 | Public deployed site smoke | 🌗 | `smoke-public-site.mjs` declares 13 route/asset probes; the 2026-11-03 run failed at `/` after `fetch failed`, and direct `curl` returned HTTP 000/curl exit 6 because DNS could not resolve the host | Current public reliability is unverified and environment-unavailable; no public defect is inferred from the DNS failure | Public deployment consumers | GitHub Pages URL/network | Re-run all declared probes when `relgeo.github.io` resolves and archive status for the current revision |
 | Custom domain or non-Pages hosting | ➖ | README and workflow target GitHub Pages; site/base env vars are configurability hooks | No current requirement/evidence for another host | None in current target | Separate deployment decision | Do not infer support from configurable site/base variables |
 | Website as normative language source | ➖ | DocsLayout footer and docs index say language spec remains contract source; loader consumes spec | Website intentionally does not own semantic authority | Implementers and maintainers | spec repository | Preserve source-of-truth boundary |
@@ -78,10 +78,10 @@ environment; it is not a status symbol.
 The website is a functioning static presentation layer with direct normative
 spec ingestion, localized navigation, Markdown plugin integration, SEO shell,
 sitemap, and a reproducible Pages workflow. The strongest current evidence is a
-fresh 138-page build, built-output assertions, Astro check, and direct
-Website/Playground consumer tests. Current provenance/artifact parity is not
-claimed because the checked-out revisions drift from the recorded baseline and
-Pages pins. The English spec is not translated, the Playground artifact exists
-only after workflow assembly, and the current public probe is
+fresh 141-page build, built-output assertions, Astro check, and direct
+Website/Playground consumer tests. Current local provenance/artifact parity is
+verified for the synchronized tuple and assembled artifact. The English spec
+is not translated, the Playground artifact exists only after workflow assembly,
+and the current public probe is
 environment-unavailable because DNS could not resolve the host. Those deployment
 and language boundaries remain explicit in the matrix.

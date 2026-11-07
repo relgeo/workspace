@@ -1,25 +1,27 @@
 # Playground coverage validation and handoff
 
-**Validation date:** 2026-11-04
+**Validation date:** 2026-11-07
 
 **Scope:** Playground expected catalog, implementation audit, reconciliation,
 capability matrices, backlog, source/tests, and available local verification.
 
-This is an evidence handoff, not a claim that the Playground is complete,
-production-ready, publicly verified, or fully device-accessible.
+This is an evidence handoff for the approved local closure boundary. It is not
+a claim that the Playground is production-ready, publicly hosted-verified, or
+fully device-accessible.
 
 ## Current result
 
 The 37 expected capability IDs are represented one-to-one in the current
 reconciliation, capability matrix, and status matrix. The implementation audit
-is intentionally scoped to the six local/browser implementation rows, while
-the backlog records the selected rows and their follow-up tasks:
+joins the full catalog, while the backlog records the three remaining
+host/deployment evidence follow-ups:
 
 | Status | Count | Meaning at this checkpoint |
 | --- | ---: | --- |
-| `✔️ implemented` | 34 | Implemented at the Playground source boundary with the evidence qualification shown in the records. |
-| `🌗 partial` | 3 | `PG-LIFE-002`, `PG-A11Y-001`, and `PG-DELIVERY-001` retain incomplete behavior or verification boundaries. |
+| `✔️ implemented` | 35 | Implemented at the Playground source boundary with the evidence qualification shown in the records; `PG-LIFE-002` is closed locally. |
+| `🌗 partial` | 0 | No partial row remains in the approved closure boundary. |
 | `❌ absent` | 0 | No selected capability is currently absent at the inspected source boundary. |
+| `⏸️ held` | 2 | `PG-A11Y-001` requires browser/native hosts; `PG-DELIVERY-001` requires hosted Pages smoke/parity. |
 
 The status count does not promote unavailable browser, hosted, native AT, or
 physical-device evidence to verified status.
@@ -28,18 +30,19 @@ physical-device evidence to verified status.
 
 | Check | Result | Boundary or limitation |
 | --- | --- | --- |
-| `pnpm test` in `playground/` | PASS — 17 files / 107 tests | Unit tests live in `playground/src/__tests__`; `playground/test` is not present. Theme, viewport, keyboard, persistence, worker, and existing helper contracts are covered. |
-| `pnpm exec vitest run src/__tests__/worker.test.ts src/__tests__/keyboard-commands.test.ts src/__tests__/view-state.test.ts src/__tests__/playground-status.test.ts src/__tests__/persistence.test.ts src/__tests__/theme.test.ts` in `playground/` | PASS — 6 files / 50 tests | Focused lifecycle, worker negative/recovery, viewport, persistence, keyboard, and theme contracts pass. |
+| `pnpm test` in `playground/` | PASS — 17 files / 112 tests | Unit tests live in `playground/src/__tests__`; `playground/test` is not present. Bootstrap lifecycle, worker identity/recovery, accessibility helpers, theme, viewport, keyboard, persistence, and consumer contracts are covered. |
 | `pnpm build` in `playground/` | PASS | TypeScript and Vite production build completed; only a non-blocking chunk-size warning was emitted. |
 | `pnpm audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, focus, responsive, reduced-motion, forced-colors, theme, and inline-style contracts pass. |
 | `pnpm lint` in `playground/` | PASS | Current Playground source is lint-clean when run independently. |
-| `pnpm conformance:fixtures` at workspace root | PASS — 298 assertions across 23 fixtures | Active 0.5 conformance, negative diagnostics, runtime errors, serialization replay, renderer, language-service, highlighting, preview, and CLI consumer checks pass. |
-| `pnpm test:e2e` in `playground/` | NOT VERIFIED — environment unavailable | Playwright failed before page creation because the preview server could not bind `127.0.0.1:4173` (`EPERM`). This is not a source or test failure. |
+| `pnpm conformance:fixtures` at workspace root | PASS — 677 assertions across 33 fixtures | Active 0.5 conformance, negative diagnostics, runtime errors, serialization replay, renderer, language-service, highlighting, preview, and CLI consumer checks pass. |
+| `pnpm exec playwright test --list` in `playground/` | PASS — 17 tests discovered | Delayed bootstrap, theme, file, viewport, accessibility, mobile, and authoring cases are present in the browser suite. |
+| `pnpm exec playwright test` in `playground/` | NOT VERIFIED — environment unavailable | Playwright failed before page creation because the preview server could not bind `127.0.0.1:4173` (`EPERM`). This is not a source or test failure. |
 | `pnpm --filter relgeo-docs-site build` in workspace root | PASS | Docs site build completed and generated the local static site used for artifact assembly. |
-| `pnpm run provenance:pages` in `relgeo.github.io/` | NOT VERIFIED — pin drift | The checked-out Playground `47fd715…` differs from the Pages workflow pin `c7cec4b…`; the checked-out `spec` also differs from its Pages pin. This is delivery/release evidence, not a local Playground source failure. |
-| `pnpm run playground:artifact:check` at workspace root | NOT VERIFIED — baseline drift | Source and assembled artifact were assembled, but the checker rejected the child revision because the integration baseline still pins `c7cec4b…`, not the current local `47fd715…`. |
-| `pnpm run test:pages-artifact` in `relgeo.github.io/` | NOT VERIFIED — provenance mismatch | Route/assets were assembled, but the Pages assertion correctly rejected unsynchronized input provenance caused by the pin drift above. |
-| Documentation integrity | PASS | Reconciliation, capability matrix, and status matrix each contain the same 37 IDs; the implementation audit contains the six active local/browser rows; selected backlog IDs and follow-up tasks are present; `git diff --check` passes. |
+| `rsync -az --delete playground/dist/ relgeo.github.io/dist/playground/ && (cd relgeo.github.io && pnpm provenance:check && RELGEO_PLAYGROUND_ROOT=../playground RELGEO_SPEC_ROOT=../spec pnpm provenance:pages && pnpm run test:pages-artifact) && pnpm playground:artifact:check` | PASS | Local assembled artifact, route/title/base path, asset manifest/digests, child revisions, Pages workflow pins, and integration baseline agree for Playground `efb7396…`, website `33d7f96…`, spec `26ff532…`, and root `b3d9a4a…`. Hosted public parity remains separate. |
+| `pnpm compatibility:check` at workspace root | PASS — 289/289 | Root compatibility rows, package metadata, spec revision, consumer pins, and the synchronized Playground/Pages tuple pass. |
+| `pnpm verify:baseline` at workspace root | NOT VERIFIED — dirty worktree | The verifier reports expected dirty child worktrees and existing manifest-vs-gitlink drift; this is a clean-checkout limitation, not a Playground capability failure. |
+| `pnpm integration:gate -- --local` at workspace root | NOT VERIFIED — toolchain unavailable | The gate stops before stages because the host is Node `22.23.2` while the gate requires Node `>=24`; no integration result is inferred. |
+| Documentation integrity | PASS | The five Playground closure artifacts each contain the same 37 IDs; capability and status matrices each have 37 rows with 0 `🌗`/`❌`/`⚠️` and 2 explicit `⏸️` holds; affected cross-surface rows and `git diff --check` pass. |
 
 ## Completed implementation handoff
 
@@ -61,15 +64,16 @@ separate human decision task is required for this contract.
 
 ## Remaining actionable handoff
 
-The [implementation-gap backlog](./implementation-gap-backlog.md) contains
-exactly the three remaining candidate rows. Each has an owner, evidence target,
-risk, and next action; none is silently marked complete.
+The [implementation-gap backlog](./implementation-gap-backlog.md) retains three
+follow-up records for the two host/deployment holds and one local evidence
+trace. Each has an owner, evidence target, risk, and next action; none is
+silently promoted to browser, native, or hosted verification.
 
 | Candidate | Capability | Owner | Current evidence | Next action |
 | --- | --- | --- | --- | --- |
-| `PG-TASK-002` | `PG-LIFE-002` startup/loading state | Playground lifecycle owner | `partial-local`; source distinguishes opening/restoring/ready/error, but browser transition and interaction-gating behavior are not observed | Run delayed bootstrap/restore/first-resolve browser checks and refine the visible state if needed. |
-| `PG-TASK-005` | `PG-A11Y-001` web accessibility semantics evidence | Playground UI/accessibility owner | `partial-local`; static UX/ARIA/focus contracts pass, browser traversal and native AT remain unavailable | Run supported-browser AX/keyboard checks; record native VoiceOver/TalkBack separately if that scope opens. |
-| `PG-TASK-007` | `PG-DELIVERY-001` hosted artifact consistency | Playground + Pages delivery owner | `environment-limited`; local build and `/playground/` base pass, hosted parity is unverified | If delivery verification is separately authorized, compare the hosted artifact with the tested revision and run public smoke. It is not a prerequisite for local capability closure. |
+| `PG-TASK-002` | `PG-LIFE-002` startup/loading state | Playground lifecycle owner | `verified-local`; source distinguishes opening/restoring/ready/error, 112 unit tests pass, and browser discovery includes delayed gating; execution is not verified because preview binding returns `EPERM` | Run delayed bootstrap/restore/first-resolve browser checks on a bind-capable host; this is evidence follow-up, not an implementation gap. |
+| `PG-TASK-005` | `PG-A11Y-001` web accessibility semantics evidence | Playground UI/accessibility owner | `⏸️ host-unverified`; static UX/ARIA/focus contracts pass, browser traversal and native AT remain unavailable | Run supported-browser AX/keyboard checks, then record native VoiceOver/TalkBack/device evidence separately when hosts are available. |
+| `PG-TASK-007` | `PG-DELIVERY-001` hosted artifact consistency | Playground + Pages delivery owner | `⏸️ hosted-unverified`; local route/title/base/manifest/digest/provenance checks pass, hosted parity is unverified | Compare the hosted artifact with the tested revision and run public smoke when Pages is reachable. It is not a prerequisite for local capability closure. |
 
 ## Explicitly deferred or unavailable evidence
 
@@ -77,10 +81,9 @@ risk, and next action; none is silently marked complete.
   local preview server bind receives `EPERM` before page creation.
 - Hosted Pages parity and public smoke are not claimed; they remain the
   separate `PG-DELIVERY-001` follow-up and do not block this local goal.
-- Local artifact assembly was performed, but provenance checks remain
-  unverified because the current checkout differs from the immutable Pages and
-  integration-baseline pins (`playground` `47fd715…` vs `c7cec4b…`; `spec`
-  also has pin drift). No release or deployment was performed.
+- Local artifact assembly and strict provenance checks pass for the synchronized
+  tuple recorded above. Hosted Pages parity and public smoke remain unverified;
+  no release or deployment was performed.
 - Native VoiceOver/TalkBack, browser AX-tree traversal, physical handset/touch,
   and platform-specific device evidence remain deferred or unavailable as
   marked. They are not converted into implementation failures.

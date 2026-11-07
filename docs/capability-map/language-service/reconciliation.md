@@ -1,24 +1,24 @@
 # Language-Service Expected-versus-Observed Reconciliation
 
-> **Coverage statement — 2026-11-04.** Dokumen ini adalah join satu-per-satu
+> **Coverage statement — 2026-11-07.** Dokumen ini adalah join satu-per-satu
 > antara seluruh 33 ID pada katalog expected dan baris observasi pada audit
 > implementasi current. Ia tidak menambah capability baru, tidak menghapus
 > expected row, dan tidak mengubah capability absent menjadi unverified hanya
 > karena evidence delivery belum tersedia.
 
-Tanggal rekonsiliasi: 2026-11-04
+Tanggal rekonsiliasi: 2026-11-07
 Owner: relgeo/language-service  
 Expected source: [language-service expected capability catalog](./expected-capability-catalog.md)  
 Observed source: [language-service implementation audit evidence](./implementation-audit.md)
 Policy sources: [maturation master plan](../../MATURATION-MASTER-PLAN.md), [compatibility matrix](../../compatibility-matrix.json)
 
-Audit revisions joined in this reconciliation: workspace
-`1231dadb5ff6902593cb81665f76699bf0548bbb`, language-service
-`39c06dd8505d480672b0953d523f3675a7f30075`, Playground
-`59a42ae925cf0c21541bc19ccac39f5061b35439`, and Markdown highlighter
-`507ad18fe1b8c91eb3a48e365b5290cd02b049b8`. Current local evidence includes
-90 language-service tests with lint/build, 298/298 shared conformance
-assertions, 9 remark-relgeo tests, 6 remark-relgeo-hl tests, 106 Playground
+Audit revisions joined in this reconciliation: workspace evidence capture
+`b3d9a4a798cdf63af1ec86b45a05edef7c133a86`, language-service
+`ae23ede99b59498a72b5838c06be6a26cf5ece82`, Playground
+`c263920146a7ba28fe76561df25d1174b289663b`, and Markdown highlighter
+`6d109a96a265f64b8934e13e4d9e1e1ae1e8b028`. Current local evidence includes
+91 language-service tests with lint/build, 298/298 shared conformance
+assertions, 9 remark-relgeo tests, 6 remark-relgeo-hl tests, 112 Playground
 tests with lint/build, and 36 CLI tests. MCP's earlier 34-test local snapshot
 remains historical support evidence; the current Dart rerun was environment
 unavailable. Node 24, registry, current CI, browser/public, and native-host
@@ -31,7 +31,7 @@ implementation status, evidence status, and scope decision below remain the
 authority for capability state.
 
 Current audit-entry refresh: language-service and Playground test/lint/build
-commands were rerun locally with results of 90/90 and 106/106; Markdown
+commands were rerun locally with results of 91/91 and 112/112; Markdown
 consumers pass 9/9 and 6/6, CLI passes 36/36, the workspace conformance runner
 passes 298/298 assertions across 23 fixtures, and the active-spec drift checker
 reports zero root/object differences. The implementation task repaired the local
@@ -46,17 +46,21 @@ validation readiness, document/version/request identity, optional source
 revision/provenance, typed DTOs for diagnostics/validation/completion/hover/
 metadata/navigation/analysis, and the exact stale-result guard. This is a
 contract and local serialization evidence; it does not promote absent
-navigation or host-owned ordering to implemented.
+navigation or host-owned session storage to implemented. The Playground worker
+now also carries the frozen analysis envelope and exact identity guard; this
+closes the local `LS-INCR-002` and `LS-REC-001` adapter boundaries while
+`LS-CONS-001` is closed at the local Playground consumer boundary; browser and
+public evidence remain separate follow-up boundaries.
 
-## Consumer-boundary verification refresh — 2026-11-04
+## Consumer-boundary verification refresh — 2026-11-07
 
 The current downstream checks preserve the separation between implementation,
 local consumer evidence, and external delivery evidence:
 
 | Boundary | Result | Evidence class / limitation |
 | --- | --- | --- |
-| Language Service package | PASS — 90 tests, lint, and CJS/ESM/DTS build | verified-local; Node 22 checkout, while repository metadata requests Node 24+ |
-| Playground worker/consumer | PASS — 106 tests, lint, production build, and build provenance | local consumer evidence; browser/public route not verified |
+| Language Service package | PASS — 91 tests, lint, and CJS/ESM/DTS build | verified-local; Node 22 checkout, while repository metadata requests Node 24+ |
+| Playground worker/consumer | PASS — 112 tests, lint, production build, and build provenance | local consumer evidence; browser/public route not verified |
 | Markdown consumers | PASS — remark-relgeo 9 tests/build and remark-relgeo-hl 6 tests/build | local consumer evidence; registry/public install not verified |
 | CLI consumer | PASS — 36 tests | local consumer evidence |
 | Shared conformance | PASS — 298/298 assertions across 23 fixtures | local conformance; does not prove MCP semantic adapter parity |
@@ -65,7 +69,7 @@ local consumer evidence, and external delivery evidence:
 
 Canonical CI, public registry, browser/public Playground, native Flutter, and
 live-client evidence remain separate. The local consumer passes do not change
-the reconciliation status of partial rows such as LS-CONS-001 through
+the reconciliation status of partial rows such as LS-CONS-002 through
 LS-CONS-004, nor do they close the remaining semantic MCP or host-boundary
 gaps.
 
@@ -119,15 +123,15 @@ Makna penting:
 | LS-DOC-002 | 🌗 partial | partial | verified-local | In scope; update-to-analysis flow exists but no explicit service session lifecycle. | [audit LS-DOC-002](./archive/implementation-audit-legacy.md#ls-doc-002) |
 | LS-DOC-003 | ➖ not-applicable | not applicable | verified-local at host boundary | Boundary-only; active document identity, dirty state, and session belong to host/MCP/Playground. | [audit LS-DOC-003](./archive/implementation-audit-legacy.md#ls-doc-003) |
 | LS-INCR-001 | 🌗 partial | partial | verified-local bounded implementation | Local edits produce a measured changed range/line budget, while analysis explicitly reports a full-document semantic fallback because core dependencies are not incremental. | [current audit](./implementation-audit.md#selected-capability-findings) |
-| LS-INCR-002 | 🌗 partial | partial | verified-local bounded implementation | Boundary integration; service identity is serializable, while Playground still owns ordering enforcement. | [current audit](./implementation-audit.md#selected-capability-findings) |
+| LS-INCR-002 | ✔️ implemented | implemented | verified-local bounded implementation | Service identity and exact Playground worker ordering guard are covered by serialization and wrong-identity fixtures; browser/public delivery remains separate. | [current audit](./implementation-audit.md#selected-capability-findings) |
 | LS-VERS-001 | ✔️ implemented | implemented | verified-local | In scope; active/legacy/future acceptance vocabulary is locally tested. | [audit LS-VERS-001](./archive/implementation-audit-legacy.md#ls-vers-001) |
 | LS-VERS-002 | 🌗 partial | partial | verified-local contract evidence | Shared result envelope now carries protocol/spec version and optional source revision/provenance; remaining producers/consumer integration still require closure. | [protocol contract](./protocol-contract.md) |
 | LS-PROTO-001 | 🌗 partial | partial | verified-local | Unified DTO envelope and family adapters are frozen; no official LSP server/transport and not every producer is implemented. | [protocol contract](./protocol-contract.md) |
 | LS-PROTO-002 | 🌗 partial | partial | verified-local + MCP local runtime | MCP local transport and permission boundary are implemented; semantic DTO round-trip and packaged/cross-host evidence remain open. | [audit LS-PROTO-002](./archive/implementation-audit-legacy.md#ls-proto-002) |
-| LS-REC-001 | 🌗 partial | partial | verified-local | In scope for actionable analysis results; host recovery state/action is incomplete. | [audit LS-REC-001](./archive/implementation-audit-legacy.md#ls-rec-001) |
+| LS-REC-001 | ✔️ implemented | implemented | verified-local | Invalid/partial/recovered/stable states are propagated through the worker analysis envelope; browser presentation and host-owned preview retention remain separate. | [current audit](./implementation-audit.md#selected-capability-findings) |
 | LS-REC-002 | ➖ not-applicable | not applicable | verified-local at consumer boundary | Boundary-only; retaining last valid preview is a Playground/host responsibility. | [audit LS-REC-002](./archive/implementation-audit-legacy.md#ls-rec-002) |
 | LS-REC-003 | 🌗 partial | partial | verified-local | Boundary integration; language and storage/share/runtime error origins are not one canonical taxonomy. | [audit LS-REC-003](./archive/implementation-audit-legacy.md#ls-rec-003) |
-| LS-CONS-001 | 🌗 partial | partial | local source/unit verified; browser not verified | In scope as consumer delivery; Playground source/unit path exists, fresh browser/public path is unverified. | [audit LS-CONS-001](./archive/implementation-audit-legacy.md#ls-cons-001) |
+| LS-CONS-001 | ✔️ implemented | implemented | verified-local; browser/public not verified | In scope as local consumer delivery; exact editor/worker identity and analysis-envelope paths are tested. Browser/public execution remains an external evidence follow-up, not an open source gap. | [current audit](./implementation-audit.md#selected-capability-findings) |
 | LS-CONS-002 | 🌗 partial | partial | local verified; public/registry not verified | In scope as Markdown consumer; normal path works, failure-preserving fallback is incomplete. | [audit LS-CONS-002](./archive/implementation-audit-legacy.md#ls-cons-002) |
 | LS-CONS-003 | 🌗 partial | partial | MCP local runtime; semantic integration incomplete | Full-spec lookup/resources are callable; core-backed validation, completion, diagnostics mapping, and rendering are not integrated. | [current audit](./implementation-audit.md#selected-capability-findings) |
 | LS-CONS-004 | 🌗 partial | partial | local Flutter/MCP integration; live client not verified | Active source/revision/dirty state and guarded edit are supported; ChatGPT Desktop write round-trip and language-service session API remain open. | [current audit](./implementation-audit.md#selected-capability-findings) |
@@ -142,7 +146,7 @@ Makna penting:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 9 implemented, 22 partial, 0 absent, 0 broken, 0 deferred, 2 not-applicable |
+| Result counts | 10 implemented, 21 partial, 0 absent, 0 broken, 0 deferred, 2 not-applicable |
 | Evidence/scope columns present on every row | Yes |
 | Audit trace present on every row | Yes |
 

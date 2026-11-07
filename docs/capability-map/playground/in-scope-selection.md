@@ -3,7 +3,8 @@
 **Date:** 2026-10-30  
 **Task:** `bound-playground-scope-and-accepted-contracts--0832112674`  
 **Status:** bounded active selection; this record is not implementation or
-completion evidence  
+completion evidence; selected symbols below are a historical intake snapshot
+and the final status is authoritative in `status-matrix.md`
 **Owner boundary:** `relgeo/playground` owns the browser IDE workflow,
 presentation, persistence interaction, and web accessibility surface. `spec/`,
 core, language-service, and renderer packages remain semantic owners where the
@@ -20,8 +21,10 @@ commands, and web accessibility/tolerance evidence.
 The selection has no deployment, Pages, package-publication, or release
 prerequisite. `PG-DELIVERY-001` remains a separate hosted-artifact
 verification follow-up and is not active implementation in this tranche. The
-selection preserves the audited status symbols; no row is promoted to `✔️` by
-this document.
+selection preserves the audited status symbols from the 2026-10-30 intake; no
+row is promoted to `✔️` by this document. The 2026-11-07 closure overlay is 35
+local `✔️` rows, with `PG-A11Y-001` and `PG-DELIVERY-001` as explicit `⏸️`
+host/deployment holds; see the final matrix and closure register.
 
 ## Evidence and selection inputs
 
@@ -33,14 +36,14 @@ this document.
 | [Implementation-gap backlog](./implementation-gap-backlog.md) | Supplies the candidate task IDs, owners, dependencies, and acceptance targets. |
 | [`playground/`](../../../playground/) | Source, focused tests, UX contract audit, and browser E2E boundary for the selected work. |
 
-## Bounded active selection
+## Bounded active selection — historical intake snapshot
 
 Each row maps one backlog candidate to one expected capability. The source of
 truth includes the expected row, the observed audit/reconciliation record, and
 the backlog candidate. Dependencies are sequencing constraints, not additional
 scope.
 
-| Selected task / expected ID | Current status | Owner | Source of truth | Observed implementation / test paths | Contract boundary | Explicit acceptance behavior |
+| Selected task / expected ID | Intake status (2026-10-30) | Owner | Source of truth | Observed implementation / test paths | Contract boundary | Explicit acceptance behavior |
 | --- | --- | --- | --- | --- | --- | --- |
 | `PG-TASK-001` — theme preference (`PG-THEME-001`) | `❌` | `relgeo/playground` UI/product owner | [Catalog `PG-THEME-001`](./expected-capability-catalog.md); [reconciliation row](./reconciliation.md); [backlog row](./implementation-gap-backlog.md) | [`playground/src/styles/tokens.css`](../../../playground/src/styles/tokens.css); [`playground/src/index.css`](../../../playground/src/index.css); [`playground/src/App.tsx`](../../../playground/src/App.tsx); [`playground/src/__tests__/`](../../../playground/src/__tests__/) | Playground owns the user-visible mode control, token application, and browser-local preference. The accepted contract is initial `system` following browser/OS `prefers-color-scheme`, with explicit `light`/`dark` overrides and browser-local persistence where available; DSL/render semantics do not change. | A keyboard-reachable theme control applies the accepted system/light/dark contract to editor, canvas, controls, diagnostics, focus, and status; the preference survives reload where storage is available; contrast/focus checks and unit/browser tests pass. |
 | `PG-TASK-002` — explicit startup/loading state (`PG-LIFE-002`) | `🌗` | `relgeo/playground` lifecycle owner | [Catalog `PG-LIFE-002`](./expected-capability-catalog.md); [reconciliation row](./reconciliation.md); [backlog row](./implementation-gap-backlog.md) | [`playground/src/App.tsx`](../../../playground/src/App.tsx); [`playground/src/playground-status.ts`](../../../playground/src/playground-status.ts); [`playground/src/indexeddb-persistence.ts`](../../../playground/src/indexeddb-persistence.ts); [`playground/e2e/playground.spec.ts`](../../../playground/e2e/playground.spec.ts) | Playground owns visible bootstrap phases and interaction gating. IndexedDB, shared-hash parsing, examples, and worker resolve remain inputs; loading must not be represented as an unexplained empty workspace. | First load visibly distinguishes bootstrap, restore, resolving, ready, and failure; delayed persistence/example fixtures prove the status and gating transitions; browser smoke records the transitions without losing source or focus. |
@@ -76,7 +79,7 @@ the evidence target that requires it.
 
 No `➖` or `⏸️` item is treated as active implementation work.
 
-## Status accounting
+## Status accounting — historical intake snapshot
 
 | Check | Result |
 | --- | ---: |
@@ -91,3 +94,7 @@ No `➖` or `⏸️` item is treated as active implementation work.
 Changing this record or the backlog is not implementation evidence. Each
 selected row requires focused source/test evidence and a fresh audit,
 reconciliation, and status-matrix review before its symbol changes.
+
+The selected symbols and counts above intentionally remain as the dated intake
+record. They must not be read as the current closure result; the final
+status-matrix table and closure register are the sole row-level status sources.

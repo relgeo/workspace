@@ -39,7 +39,7 @@ matrix lama sebagai sumber enumerasi expected:
 | [Implementation audit evidence](./archive/implementation-audit-legacy.md) | Discovery coverage S/T/C/P/D/O, source/test/consumer evidence, status, limitation, and gap map | PASS — 33/33 expected IDs mapped; local evidence limits retained |
 | [Expected-versus-observed reconciliation](./reconciliation.md) | One-to-one join with separate implementation, evidence, and scope dimensions | PASS — 33 rows; no missing, extra, or duplicate ID |
 | [Current status matrix](./status-matrix.md) | Capability-first reporting view with status, evidence, gap, owner, dependency, risk, and next action | PASS — 33 rows and all required decision columns |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate handoff for partial, absent, and confirmed broken implementation work | PASS — 23 tracked tasks for 22 partial and 0 absent rows, with one closed local row retained |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate handoff for partial, absent, and confirmed broken implementation work | PASS — 23 tracked tasks for 21 partial and 0 absent rows, with two closed local rows retained |
 | [Historical capability matrix](./capability-matrix.md) | Historical evidence only; not the expected catalog source | PASS — retained and explicitly labeled historical in the current index |
 | [Repository map](../../REPOSITORY-MAP.md) | Repository ownership and language-service/consumer boundary | PASS — language-service, Playground, Markdown, MCP, and Flutter owners are distinct |
 | [Maturation master plan](../../MATURATION-MASTER-PLAN.md) | Product journey, layer ownership, roadmap, canonical evidence, and scope context | PASS — claims remain qualified by evidence freshness |
@@ -59,7 +59,7 @@ matrix lama sebagai sumber enumerasi expected:
 | Audit trace links | 33/33 | Every reconciliation row links to its current audit ID |
 | Required artifact links | PASS | Catalog, audit, reconciliation, current matrix, backlog, repository map, master plan, and compatibility matrix are linked |
 
-The counts are deliberately not a completeness claim. The 2026-11-04 reconciliation updates the matrix to 9 implemented, 22 partial,
+The counts are deliberately not a completeness claim. The 2026-11-07 reconciliation updates the matrix to 10 implemented, 21 partial,
 0 absent, 2 not-applicable, 0 deferred, and 0 broken. The backlog tracks 23
 rows (22 open tasks and one locally closed row retained for evidence); creating
 or editing those tasks does not change implementation status.
@@ -105,7 +105,7 @@ the source tree.
 | Versioning/provenance | LS-VERS-001–002 | 2 | 1 ✔️ · 1 🌗 | [LS-VERS-001](./archive/implementation-audit-legacy.md#ls-vers-001) |
 | Editor protocol | LS-PROTO-001–002 | 2 | 2 🌗 | [LS-PROTO-001](./archive/implementation-audit-legacy.md#ls-proto-001) |
 | Error recovery | LS-REC-001–003 | 3 | 2 🌗 · 1 ➖ | [LS-REC-001](./archive/implementation-audit-legacy.md#ls-rec-001) |
-| Consumer integration | LS-CONS-001–005 | 5 | 1 ✔️ · 4 🌗 | [LS-CONS-001](./archive/implementation-audit-legacy.md#ls-cons-001) |
+| Consumer integration | LS-CONS-001–005 | 5 | 2 ✔️ · 3 🌗 | [LS-CONS-001](./implementation-audit.md#selected-capability-findings) |
 
 The category counts sum to 33 and the status summaries sum to the matrix
 totals. A category's ✔️ entry means bounded implementation evidence on the
@@ -214,7 +214,7 @@ not implementation evidence.
 The language-service coverage map and handoff are **structurally validated**
 for the 33-ID catalog and inspected source/evidence boundary. The
 language-service surface is **not declared complete**: the status matrix still
-contains 22 partial, 0 absent, 0 broken, 0 deferred, and 2 not-applicable rows,
+contains 21 partial, 0 absent, 0 broken, 0 deferred, and 2 not-applicable rows,
 and delivery evidence limitations remain explicit. Future implementation must
 proceed as separate goals from the candidate backlog, with status re-audited
 after each accepted change.

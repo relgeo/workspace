@@ -7,7 +7,7 @@
     "version": "0.5",
     "specPath": "spec",
     "normativePath": "spec/id",
-    "specRevision": "dc47343c9f4da7275fcb1563d5c5815647917760",
+    "specRevision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
     "rendererSemanticProjection": {
       "schema": "relgeo.svg-semantic",
       "schemaVersion": 1,

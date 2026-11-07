@@ -56,6 +56,24 @@ The affected reconciliation rows remain `🌗` until the dependent verification
 and reconciliation tasks confirm broader producer/consumer coverage. This is
 implementation evidence, not a status promotion.
 
+## Implementation update — 2026-11-07
+
+The Playground worker now consumes the frozen language-service result envelope
+without making the service stateful. Each worker request carries a host-owned
+`documentId`, monotonic document `version`, and numeric worker `requestId`; each
+response echoes that identity and includes a serializable `analysis` result with
+protocol/spec version, UTF-16 diagnostics ranges, readiness, recovery state, and
+producer provenance. Playground applies a response only when all three worker
+identity fields match the active request. The editor's synchronous diagnostics,
+completion, and hover adapters also call `acceptCurrentDocumentAnalysis()` and
+drop mismatched results.
+
+Focused worker fixtures cover JSON round-trip identity/ranges/provenance,
+invalid-to-recovered propagation, and wrong-document/version/request rejection.
+This closes the local `LS-INCR-002` and `LS-REC-001` adapter boundary. Browser,
+public bundle, registry, and cross-host transport evidence remains separate and
+is not inferred from these tests.
+
 ## Current audit refresh — 2026-11-04
 
 This refresh rechecked the selected language-service boundary and the local
@@ -65,12 +83,12 @@ browser/public, or native-host delivery evidence.
 
 | Boundary | Fresh evidence | Result | Limit that remains visible |
 | --- | --- | --- | --- |
-| `language-service/` | `npm test && npm run lint && npm run build` in `language-service/` | PASS — 2 files, 90 tests; type-check and ESM/CJS/DTS build pass | No packed/registry/public artifact proof. |
+| `language-service/` | `npm test && npm run lint && npm run build` in `language-service/` | PASS — 2 files, 91 tests; type-check and ESM/CJS/DTS build pass | No packed/registry/public artifact proof. |
 | `remark-relgeo-hl/` | `npm test && npm run lint && npm run build` in `remark-relgeo-hl/` | PASS — 1 file, 6 tests; type-check and package build pass | Normal tokenization path is covered; injected service-failure fallback is not proven. |
 | `remark-relgeo/` and `cli/` | `npm test && npm run lint && npm run build` in `remark-relgeo/`; `npm test` in `cli/` | PASS — 9 Markdown tests and 36 CLI tests; package checks pass for remark-relgeo | Failure fallback and public install remain separate evidence boundaries. |
-| `playground/` | `npm test && npm run lint && npm run build` in `playground/` | PASS — 17 files, 106 tests; lint and production bundle build pass | Browser E2E, deployed/public bundle, and current CI are not verified here. |
+| `playground/` | `pnpm test && pnpm lint && pnpm build` in `playground/` | PASS — 17 files, 112 tests; lint and production bundle build pass | Browser E2E, deployed/public bundle, and current CI are not verified here. |
 | Workspace conformance | `node scripts/run-conformance-fixtures.mjs` from the workspace root | PASS — 298 assertions across 23 fixtures | This is local fixture evidence; release publication, current CI, and external-host execution remain unverified. |
-| Source consumer wiring | `playground/src/components/Editor.tsx`, `playground/src/worker.ts`, `playground/src/App.tsx`, `mcp/lib/src/contract/mcp_schema.dart`, `mcp/lib/src/adapter/local_dispatch.dart` | Playground editor helpers send document/version/request identity to typed diagnostics/completion/hover adapters; MCP completion/validation echo identity; prior local MCP snapshot covered 34 tests | Playground request ordering and core-backed semantic producer wiring remain host/adapter work; current Dart rerun and browser/public execution are not verified. |
+| Source consumer wiring | `playground/src/components/Editor.tsx`, `playground/src/worker.ts`, `playground/src/App.tsx`, `playground/src/worker-sequencing.ts`, `mcp/lib/src/contract/mcp_schema.dart`, `mcp/lib/src/adapter/local_dispatch.dart` | Playground editor drops mismatched typed diagnostics/completion/hover results; worker echoes exact document/version/request identity and serialized language-service analysis; MCP completion/validation echo identity | Core-backed semantic producer wiring remains host/adapter work; current Dart rerun and browser/public execution are not verified. |
 
 ### Selected capability findings
 
@@ -85,7 +103,7 @@ browser/public, or native-host delivery evidence.
 | `LS-RANGE-001` | `🌗` | Diagnostics use core source ranges; tokens retain offsets; completion items carry replacement ranges; hover results carry word ranges; bounded metadata and reference-shaped entries now carry exact ranges. | Broader semantic-index range coverage and host rendering remain open. |
 | `LS-RANGE-002` | `🌗` | `analyzeNavigation()` returns a definition and bounded references for one object relation with stable document ID and exact UTF-16 ranges; protocol test passes. | Broader semantic relations and the Playground source-jump action remain open. |
 | `LS-INCR-001` | `🌗` | `analysis.ts` reports changed range, changed-line budget, inspected line/code-unit counts, and an explicit full-document semantic fallback; protocol test passes. | Core dependency semantics are not incremental, so this is measured bounded planning rather than incremental parsing. |
-| `LS-INCR-002` | `🌗` | `analyzeDocument()` returns serializable protocol/document/version/request identity, and helper tests reject mismatched responses. | Playground still owns worker ordering; a full host adapter migration is not claimed. |
+| `LS-INCR-002` | `✔️` local boundary | `analyzeDocument()` returns serializable identity and the Playground worker now echoes and guards `documentId`/`version`/`requestId` as a complete tuple; worker sequencing fixtures reject wrong-document, stale-version, and out-of-order responses. | Browser/public bundle execution remains unverified; the stateless service does not own host sessions. |
 | `LS-VERS-002` | `🌗` | `src/protocol.ts` freezes protocol `0.2`, spec `0.5`, and JSON serialization; all result families carry caller provenance or a minimal language-service producer provenance default. | Source revision and downstream worker/MCP propagation evidence remain open. |
 | `LS-PROTO-002` | `🌗` | MCP typed DTOs accept optional editor identity and validation readiness/recovery fields, echo identity at dispatch, and preserve legacy JSON; the 34-test Dart suite passes. | Packaged/cross-host transport and core-backed language-service producer wiring remain open. |
 
@@ -93,8 +111,13 @@ browser/public, or native-host delivery evidence.
 
 - `LS-TOKEN-001` remains `✔️`: the token service is consumed by
   `remark-relgeo-hl`, and the focused Markdown test passes.
-- `LS-CONS-001` remains `🌗`: Playground source wiring and unit tests are
-  present; browser/public execution remains unverified.
+- `LS-REC-001` is `✔️` at the local service/worker boundary: invalid, partial,
+  recovered, and stable analysis states are serialized through the worker;
+  browser presentation and host-owned preview retention remain separate.
+- `LS-CONS-001` is `✔️` at the local Playground consumer boundary: source
+  wiring, exact identity guards, worker analysis serialization, and unit tests
+  are present; browser/public execution remains an explicit external evidence
+  follow-up and is not inferred.
 - `LS-CONS-002` remains `🌗`: normal Markdown highlighting passes, but the
   source-preserving fallback on language-service failure is not implemented.
 - `LS-RANGE-002` and `LS-INCR-001` are now explicit `🌗` bounded rows: a
@@ -126,7 +149,7 @@ The following commands reproduce the recorded local evidence from the stated
 working directory boundaries:
 
 ```text
-(cd language-service && npm test && npm run lint && npm run build)  # 90/90
+(cd language-service && npm test && npm run lint && npm run build)  # 91/91
 (cd remark-relgeo-hl && npm test)
 (cd playground && npm test && npm run lint && npm run build)
 node scripts/run-conformance-fixtures.mjs
@@ -136,9 +159,9 @@ git diff --check
 git -C language-service diff --check
 ```
 
-Observed results for this refresh are language-service `90/90` tests plus
+Observed results for this refresh are language-service `91/91` tests plus
 type-check and ESM/CJS/DTS build, Markdown highlighter `6/6` tests, remark-relgeo
-`9/9` tests, CLI `36/36` tests, Playground `106/106` tests plus lint/build, and
+`9/9` tests, CLI `36/36` tests, Playground `112/112` tests plus lint/build, and
 a zero-difference active-spec drift report. The earlier MCP `34/34` snapshot is
 retained as historical support evidence; the current Dart rerun was
 environment-unavailable. The commands use
@@ -147,14 +170,15 @@ production deployment, a pub.dev artifact, or a deferred MCP/Flutter host.
 
 ### Changed repository boundary
 
-The evidence was collected against these revisions and working-tree states:
+The current 2026-11-07 evidence was collected against these revisions and
+working-tree states:
 
 | Boundary | Revision | Working-tree boundary |
 | --- | --- | --- |
-| Workspace root | `1cfa86553d7adb18179c6b3e1a33618a179b1414` | Current language-service docs and the language-service/Playground gitlinks are uncommitted working-tree changes. |
-| `language-service/` | `39c06dd8505d480672b0953d523f3675a7f30075` | README, service/completion/index/tests, and new protocol/schema-drift sources are modified or untracked. |
-| `playground/` | `59a42ae925cf0c21541bc19ccac39f5061b35439` | A working-tree test change is present; this audit does not attribute or overwrite it. |
-| `remark-relgeo-hl/` | `507ad18fe1b8c91eb3a48e365b5290cd02b049b8` | Clean at evidence capture. |
+| Workspace root | `b3d9a4a798cdf63af1ec86b45a05edef7c133a86` | Capability-map and baseline updates are the reviewed root working-tree changes. |
+| `language-service/` | `ae23ede99b59498a72b5838c06be6a26cf5ece82` | Clean at evidence capture; the Playground consumer contract is the affected downstream boundary. |
+| `playground/` | `c263920146a7ba28fe76561df25d1174b289663b` | Source and test changes implement the worker identity/analysis-envelope contract; browser/public execution remains separate. |
+| `remark-relgeo-hl/` | `6d109a96a265f64b8934e13e4d9e1e1ae1e8b028` | Clean at evidence capture. |
 
 These revisions are checkout anchors, not release or commit claims. The
 working-tree changes must be reviewed and committed by the repository owner

@@ -2,6 +2,20 @@
 
 # Playground implementation audit
 
+## Delivery provenance update — 2026-11-07
+
+The locally actionable `PG-DELIVERY-001` boundary is now synchronized and
+verified. The Playground build emits explicit base-path, title, asset-manifest,
+asset-digest, and file-digest provenance. The Pages assertion compares that
+manifest with the assembled `/playground/` entrypoint and joins it to strict
+workspace and Pages-input provenance.
+
+The verified local tuple is Playground `c263920146a7ba28fe76561df25d1174b289663b`,
+website `c5ca17f06476fd2beeb4a48e971265a0e57495c7`, and spec
+`26ff53278d77d916b0e0e6c26ca9ab496232fbc0`. Hosted Pages execution, deployed
+revision, and public smoke/share remain an explicit `⏸️` delivery hold owned by
+the Pages/Playground delivery owners; local parity is not hosted parity.
+
 This is the canonical audit entry point for the Playground surface.
 
 The dated evidence log retained from the previous flat layout is
@@ -12,13 +26,16 @@ view is [status-matrix.md](./status-matrix.md). The archived log is historical
 evidence and must not be read as proof of current CI, registry, deployment, or
 runtime status.
 
-## Current audit checkpoint — 2026-11-04
+## Current audit checkpoint — 2026-11-07
 
-The current checkout was audited against all 37 expected catalog IDs using the
+The current checkout (`playground` child revision
+`c263920146a7ba28fe76561df25d1174b289663b`) was audited against all 37 expected catalog IDs using the
 Playground source, focused tests, UX contract script, production build, and
 available browser evidence. The one-to-one implementation findings remain in
 [reconciliation.md](./reconciliation.md); the bounded active implementation
 selection is recorded in [in-scope-selection.md](./in-scope-selection.md).
+The row-level source/evidence/closure join is recorded in
+[closure-register.md](./closure-register.md).
 
 ## Task-bound gap selection
 
@@ -48,31 +65,30 @@ The following findings are based on the current `playground/src` and
 and the static UX contract audit. `playground/test` is not present; it is not
 treated as a failed implementation because the repository's unit-test path is
 `playground/src/__tests__`. The source evidence is from Playground submodule
-revision `47fd71583f4950467f63d56ad67feb24526ccb5a` plus uncommitted working-tree changes in the listed source,
-test, E2E, and UX-audit files; it is not evidence of a committed or hosted
-artifact.
+revision `c263920146a7ba28fe76561df25d1174b289663b`; the generated build is
+local evidence and is not evidence of a hosted artifact.
 
 | ID | Implementation finding | Source/test evidence | Evidence status | Limitation or interpretation |
 | --- | --- | --- | --- | --- |
 | `PG-THEME-001` | **Implemented locally; browser verification pending.** The Playground initializes `system`, follows `prefers-color-scheme`, exposes explicit light/dark overrides, and persists the selection in browser-local storage when available. | `src/theme.ts`; `src/main.tsx`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/styles/tokens.css`; `src/__tests__/theme.test.ts`; `e2e/playground.spec.ts` | `partial-local` | Unit and static source evidence cover the contract; the browser assertion remains unavailable because the Playwright preview server could not bind. |
-| `PG-LIFE-002` | **Implemented locally; browser verification pending.** `bootstrapPhase` distinguishes opening/restoring/empty/ready/error, status metadata exposes `LOADING`, and bootstrap interaction is gated; browser-visible transition coverage is not observed. | `src/App.tsx`; `src/playground-status.ts`; `src/__tests__/playground-status.test.ts`; `e2e/playground.spec.ts` | `partial-local` | E2E could not start because the preview server bind was denied; browser behavior remains environment-limited. |
+| `PG-LIFE-002` | **Implemented locally; browser observation held separately.** `bootstrapPhase` distinguishes opening/restoring/empty/ready/error, bootstrap storage failure is surfaced as `ERROR`, status metadata exposes `LOADING`, and bootstrap interaction is gated. A delayed-bootstrap browser test asserts the loading gate and first interactive transition, but cannot execute in this environment. | `src/App.tsx`; `src/playground-status.ts`; `src/indexeddb-persistence.ts`; `src/__tests__/playground-status.test.ts`; `e2e/playground.spec.ts` | `verified-local` | The targeted E2E could not start because the preview server bind was denied; this is an explicit browser evidence follow-up, not an open source gap. |
 | `PG-CANVAS-005` | **Implemented locally; browser verification pending.** A dedicated camera-only reset sets the zoom/pan baseline without requesting fit-to-content, so the fit effect cannot overwrite the deterministic reset; browser proof of file/dirty/selection preservation is unavailable. | `src/view-state.ts`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/components/Preview.tsx`; `src/__tests__/view-state.test.ts`; `e2e/playground.spec.ts` | `partial-local` | Unit/source evidence confirms the separation; E2E is not verified. |
 | `PG-KEY-001` | **Implemented locally; browser verification pending.** A centralized Mod+Alt command map covers file, viewport, diagnostics, sidebar, and surface actions; IME composition and AltGraph text-entry chords are explicitly excluded from command handling. | `src/keyboard-commands.ts`; `src/__tests__/keyboard-commands.test.ts`; `docs/KEYBOARD-SHORTCUTS.md`; `src/App.tsx`; `e2e/playground.spec.ts` | `partial-local` | Browser execution is environment-limited; native/browser-reserved-key behavior is not promoted beyond source/unit evidence. |
-| `PG-A11Y-001` | **Partial.** Landmarks, labels, ARIA states, atomic live status/diagnostics, focus return/traps, and source/preview navigation are implemented and pass the static contract audit; native AT traversal is not verified. | `scripts/audit-ux-contract.mjs`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/components/Inspector.tsx`; `src/components/Sidebar.tsx`; `src/components/Editor.tsx` | `partial-local` | VoiceOver/TalkBack and device/browser AX evidence remain deferred-device, not absent implementation. |
+| `PG-A11Y-001` | **Implemented web semantics; host evidence held.** Landmarks, labels, ARIA states, atomic live status/diagnostics, focus return/traps, and source/preview navigation are implemented and pass the static contract audit; supported-browser traversal cannot execute here and native AT is separately held. | `scripts/audit-ux-contract.mjs`; `src/App.tsx`; `src/components/Navbar.tsx`; `src/components/Inspector.tsx`; `src/components/Sidebar.tsx`; `src/components/Editor.tsx`; `e2e/playground.spec.ts`; `e2e/mobile-playground.spec.ts` | `verified-local; host-unverified` | `⏸️` hold owned by the Playground UI/accessibility owner: the browser runner cannot bind and no native AT/device host is available. These evidence boundaries are not inferred from source or test discovery. |
 | `PG-A11Y-002` | **Implemented locally; device verification pending.** Reduced-motion, focus/forced-colors fallback, minimum targets, and non-gesture controls are present and pass the static audit. | `src/index.css`; `src/styles/tokens.css`; `src/preview-toolbar.ts`; `scripts/audit-ux-contract.mjs`; `e2e/mobile-playground.spec.ts` | `deferred-device` | Physical handset/touch evidence remains deferred; static/source evidence does not prove device parity. |
 
 | Evidence | Result | Interpretation |
 | --- | --- | --- |
-| `pnpm test` in `playground/` | PASS — 17 files / 107 tests | Unit, worker, persistence, preview, helper, theme, bootstrap, keyboard-command, and viewport contracts are green. Tests live under `src/__tests__`; no `playground/test` directory exists. |
+| `pnpm test` in `playground/` | PASS — 17 files / 112 tests | Unit, worker, persistence, preview, helper, theme, bootstrap, keyboard-command, viewport, and worker-contract tests are green. Tests live under `src/__tests__`; no `playground/test` directory exists. |
 | `pnpm build` in `playground/` | PASS — TypeScript and Vite production build | The local production artifact is buildable; Vite emitted only a chunk-size warning, not a build failure. This is not hosted parity evidence. |
 | `pnpm audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, atomic status announcements, focus, responsive, reduced-motion, forced-colors, and inline-style contract checks pass. |
 | `pnpm lint` in `playground/` | PASS | Current Playground source is lint-clean. |
-| `pnpm exec playwright test --list` in `playground/` | PASS — 16 tests discovered | Startup, accessibility, keyboard/focus, theme, persistence, and mobile cases are present in the E2E surface. |
-| `pnpm exec playwright test playground.spec.ts -g "exposes the keyboard command surface and camera-only viewport reset"` in `playground/` | NOT VERIFIED — environment unavailable | The Playwright preview server failed before page creation while binding `127.0.0.1:4173` with `EPERM`; this does not establish a Playground implementation failure. |
-| `pnpm run playground:artifact:check` at workspace root | NOT VERIFIED — baseline drift | Source and assembled files were prepared, but the checker rejected child revision `47fd715…` because the integration baseline and Pages pin still use `c7cec4b…`. |
-| `pnpm run test:pages-artifact` in `relgeo.github.io/` | NOT VERIFIED — provenance mismatch | The assembled Pages artifact was present, but the assertion rejected unsynchronized input provenance caused by the immutable pin drift. |
+| `pnpm exec playwright test --list` in `playground/` | PASS — 17 tests discovered | Startup, delayed bootstrap gating, accessibility, keyboard/focus, theme, persistence, and mobile cases are present in the E2E surface. |
+| `pnpm exec playwright test playground.spec.ts -g "gates the workspace while bootstrap is loading"` in `playground/` | NOT VERIFIED — environment unavailable | The Playwright preview server failed before page creation while binding `127.0.0.1:4173` with `EPERM`; this does not establish a Playground implementation failure. |
+| `pnpm run test:pages-artifact` in `relgeo.github.io/` | PASS — 3 Playground asset references checked | Assembled artifact assertion passes for the synchronized local tuple and checks route/title/base-path/manifest/digests; hosted parity remains separate. |
+| `pnpm provenance:check` and `pnpm provenance:pages` in `relgeo.github.io/` | PASS — synchronized local tuple | Workspace baseline and Pages-input provenance both report no mismatches for Playground `efb7396…`, website `33d7f96…`, and spec `26ff532…`. |
 
-### Implementation delta — 2026-11-04
+### Implementation delta — 2026-11-07 rebaseline
 
 The selected implementation now has local source/test evidence for the system,
 light, and dark theme contract (`theme.ts`, `theme.test.ts`, and the theme
@@ -93,13 +109,13 @@ overrides are supported, and browser-local persistence is used where available.
 
 ### Current status interpretation
 
-The catalog/reconciliation now records `34` implemented (`✔️`), `3` partial
-(`🌗`), and `0` absent (`❌`). The remaining active debt is limited to
-`PG-LIFE-002`, `PG-A11Y-001`, and `PG-DELIVERY-001`; implementation/source
-evidence is present for the first two, while the third has a locally assembled
-artifact whose provenance checks are currently blocked by baseline/Pages pin
-drift. Browser traversal, hosted smoke, and public parity remain evidence
-follow-ups; `PG-DELIVERY-001` is not a release prerequisite for this goal.
+The final catalog/reconciliation records `35` implemented (`✔️`), `0` partial,
+`0` absent (`❌`), and `2` explicit holds (`⏸️`): `PG-A11Y-001` for
+browser/native-host evidence and `PG-DELIVERY-001` for hosted Pages parity.
+`PG-LIFE-002` is closed at the local implementation boundary; its delayed
+browser trace remains an evidence follow-up because the runner cannot bind.
+Browser traversal, native AT, hosted smoke, and public parity remain explicitly
+unverified/held and are not inferred from source or test discovery.
 
 The audit does not promote browser E2E, current CI, public Pages parity,
 native VoiceOver/TalkBack, or physical handset evidence to verified status.

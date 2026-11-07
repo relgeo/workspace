@@ -3,13 +3,17 @@
 **Status:** actionable expected-versus-observed reporting view<br>
 **Surface:** `playground/` — `relgeo/playground` browser IDE<br>
 **Baseline:** 37 expected capabilities from [`playground/expected-capability-catalog.md`](./expected-capability-catalog.md)<br>
-**Evidence join:** [`playground/implementation-audit.md`](./implementation-audit.md) and [`playground/reconciliation.md`](./reconciliation.md)<br>
+**Evidence join:** [`playground/implementation-audit.md`](./implementation-audit.md), [`playground/reconciliation.md`](./reconciliation.md), and [`row-level closure register`](./closure-register.md)<br>
 **Product sources:** [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), and `docs/capability-map/`
 
 This matrix has exactly one user-meaningful capability per row. `Status` is the
 implementation result; `Evidence` is the verification state and evidence path.
 An unavailable browser or public environment is not converted into an absent
 implementation.
+
+The closure register is the row-level join for source boundary, evidence
+boundary, and closure disposition. This final view has 35 `✔️` rows and two
+explicit `⏸️` holds; it has 0 `🌗`, 0 `❌`, and 0 `⚠️` rows.
 
 ## Status legend
 
@@ -19,7 +23,7 @@ implementation.
 | `🌗` | Partial implementation or partial verification with a concrete follow-up. |
 | `❌` | Expected capability verified absent at the Playground boundary. |
 | `⚠️` | Confirmed defect or evidence/provenance inconsistency. |
-| `⏸️` | Deferred/held implementation decision. |
+| `⏸️` | Explicit host/deployment evidence hold; local implementation may be complete, but the boundary cannot close without the named external dependency. |
 | `➖` | Deliberately outside the agreed Playground boundary. |
 
 ## Actionable capability matrix
@@ -27,7 +31,7 @@ implementation.
 | ID | Capability / user outcome | Status | Evidence | Owner | Gap / risk | Dependency | Next action |
 | --- | --- | :---: | --- | --- | --- | --- | --- |
 | `PG-LIFE-001` | Open a usable Playground session from the public entrypoint | `✔️` | `verified-local`; `playground/index.html`, `playground/vite.config.ts`, audit §3 | `relgeo/playground`; Pages delivery owns hosted route | Hosted route and current artifact parity remain unverified | Vite base `/playground/`; `relgeo.github.io` Pages | Run current hosted `/playground/` smoke and compare deployed revision to the tested build |
-| `PG-LIFE-002` | Show startup/loading state for app, workspace, example, and resolver | `🌗` | `partial-local`; explicit phase model and unit tests in `playground/src/App.tsx`, `playground/src/playground-status.ts`, `playground/src/__tests__/`, plus E2E definition | `relgeo/playground` | `loading`, `empty`, `ready`, and `error` are implemented and bootstrap interaction is gated; delayed browser trace is unavailable | React Suspense; IndexedDB bootstrap; worker resolve | Run the delayed-startup browser trace when the Playwright server can bind |
+| `PG-LIFE-002` | Show startup/loading state for app, workspace, example, and resolver | `✔️` | `verified-local`; explicit phase model, storage-error status, 112 unit tests, and delayed-bootstrap E2E coverage in `playground/e2e/playground.spec.ts` | `relgeo/playground` | `loading`, `empty`, `ready`, and `error` are implemented and bootstrap interaction is gated; browser execution remains explicitly not verified because preview binding returns `EPERM` | React Suspense; IndexedDB bootstrap; worker resolve | Run the delayed-startup browser test on a bind-capable host as evidence follow-up; no implementation gap remains |
 | `PG-LIFE-003` | Show editing → resolving → ready/inspecting → exporting lifecycle | `✔️` | `verified-local`; `playground/src/playground-status.ts`, `playground/src/App.tsx`; compact fixed-width status dot and tooltip in `c7cec4b` | `relgeo/playground` | Export is action feedback rather than a separately named lifecycle state | Worker status; IndexedDB save state; view state | Keep lifecycle assertions in current browser smoke |
 | `PG-LIFE-004` | Provide distinct failure and recovery states for resolve, storage, share, clipboard, and export | `✔️` | `verified-local`; `playground/src/App.tsx`, `worker.ts`, `indexeddb-persistence.ts`, audit §3 | `relgeo/playground` | Browser/platform presentation remains unverified in the current host | IndexedDB, Clipboard API, URL hash, worker | Re-run failure/recovery browser scenarios when a browser-capable host is available |
 | `PG-EDIT-001` | Read and edit RelGeo source with editor interaction state | `✔️` | `verified-local`; `playground/src/components/Editor.tsx`, unit tests, build | `relgeo/playground`; DSL semantics delegated to `spec/id/` | Cursor/selection persistence lacks current browser assertion | CodeMirror, YAML mode, language-service | Retain browser coverage for editor focus, cursor, completion, and hover |
@@ -58,17 +62,19 @@ implementation.
 | `PG-THEME-001` | Use a readable user-visible theme across editor, canvas, controls, and diagnostics | `✔️` | `partial-local`; `playground/src/theme.ts`, `src/components/Navbar.tsx`, `src/__tests__/theme.test.ts`, and discovered E2E theme/system-preference tests | `relgeo/playground` | Unit/source evidence and browser test definitions cover system/light/dark and persistence; browser execution is environment-limited | CSS tokens; browser-local storage | Run theme selector, system preference, and reload persistence browser assertions when the Playwright server can bind |
 | `PG-RESP-001` | Use desktop/tablet/handset layouts without inaccessible overflow | `✔️` | `verified-local`; commits `f5418e6`, `8d669f4`, `e497d63`, `c7cec4b`; user-reviewed desktop-width screenshot | `relgeo/playground`; physical devices separate | Desktop presentation is reviewed; hosted browser matrix and handset remain unverified | CSS breakpoints; drawer/surface switcher; touch | Retain one-row desktop toolbar; verify hosted route and physical devices separately |
 | `PG-KEY-001` | Run primary actions through keyboard and documented command surface | `✔️` | `partial-local`; `keyboard-commands.ts`, `keyboard-commands.test.ts`, `docs/KEYBOARD-SHORTCUTS.md`, audit §3 | `relgeo/playground` | Browser focus/conflict behavior remains unavailable; source/unit command coverage passes | CodeMirror/browser focus; dialog/drawer semantics | Re-run documented shortcut and focus assertions when the Playwright server can bind |
-| `PG-A11Y-001` | Expose landmarks, names, states, focus management, announcements, and navigation to AT | `🌗` | `partial-local`; `audit:ux`, ARIA/focus code, and discovered DOM/keyboard E2E coverage | `relgeo/playground`; native AT evidence separate | Local semantics and keyboard paths are implemented; browser AX/traversal is blocked by preview bind and native AT remains unavailable | Browser accessibility tree; screen readers; device hosts | Run the browser AX/keyboard sweep, then record native VoiceOver/TalkBack separately |
+| `PG-A11Y-001` | Expose landmarks, names, states, focus management, announcements, and navigation to AT | `⏸️` | `verified-local; browser/native-host-unverified`; `audit:ux`, ARIA/focus code, discovered DOM/keyboard E2E coverage, and 112 unit tests | `relgeo/playground` UI/accessibility owner | Web semantics are implemented and statically audited; browser AX/traversal and native AT/device proof require unavailable hosts | Bind-capable browser runner; VoiceOver/TalkBack/device hosts | Run the browser AX/keyboard sweep, then record native VoiceOver/TalkBack/device evidence; retain this explicit host hold |
 | `PG-A11Y-002` | Provide reduced motion, focus/contrast tolerance, target usability, and non-gesture actions | `✔️` | `deferred-device`; `index.css`, `tokens.css`, `audit:ux`, audit §3 | `relgeo/playground` | Physical handset/touch evidence remains deferred; static UX contract passes | CSS media preferences; control semantics; device | Record supported-browser contrast/target review and device result when available |
 | `PG-SHARE-001` | Share source through URL/hash with feedback, fallback, and size guard | `✔️` | `verified-local`; `playground/src/share-code.ts`, `clipboard.ts`, unit tests | `relgeo/playground` | Public URL and clipboard permission behavior not current browser-verified | URL hash; Clipboard API/fallback; payload limit | Browser-test copy/share success, denial fallback, and oversize feedback |
 | `PG-SHARE-002` | Keep shared source transient until explicit Save as with distinct recovery states | `✔️` | `verified-local`; `share-code.ts`, `App.tsx`, share tests/E2E definition | `relgeo/playground` | Browser reload/share safety flow is not current-verified | Hash decode; local document model; confirmation | Re-run shared-draft reload and Save as non-overwrite browser case |
-| `PG-DELIVERY-001` | Serve the tested build consistently at hosted `/playground/` | `🌗` | `environment-limited`; local build/assembly plus `playground:artifact:check`, `relgeo.github.io/scripts/assert-pages-artifact.mjs`, and Pages provenance checks | `relgeo/playground` + `relgeo.github.io` | Local assembly and content comparison were attempted; full child-revision/provenance gate is not verified because checkout `47fd715…` differs from baseline/Pages pin `c7cec4b…`; hosted public parity and smoke remain unverified | Pages build/copy workflow; deployed revision | Align to the authorized delivery pin or run an authorized delivery update, then rerun provenance/artifact checks and hosted `/playground/` smoke/share |
+| `PG-DELIVERY-001` | Serve the tested build consistently at hosted `/playground/` | `⏸️` | `verified-local; hosted-unverified`; local build plus `playground:artifact:check`, `relgeo.github.io/scripts/assert-pages-artifact.mjs`, and strict Pages provenance checks | Local source/assembled assets are synchronized at Playground `efb7396…`, website `33d7f96…`, spec `26ff532…`; hosted public parity and smoke remain unverified | `relgeo/playground` + `relgeo.github.io` delivery owners | Pages workflow; public host; deployed revision | Public artifact can still diverge from audited local artifact | Run canonical Pages workflow and hosted `/playground/` smoke/share; retain this explicit hosted hold |
 
 ## Review handoff
 
 The matrix intentionally keeps implementation status separate from evidence
-availability. The remaining evidence follow-ups are `PG-LIFE-002`,
-`PG-A11Y-001`, and `PG-DELIVERY-001`; browser, public-host, native AT, and
-physical-device limitations remain separately visible in the Evidence column.
+availability. `PG-LIFE-002` is closed at the local implementation boundary;
+its delayed browser trace remains evidence-only. `PG-A11Y-001` and
+`PG-DELIVERY-001` are explicit host/deployment holds with owners and
+follow-up evidence; browser, public-host, native AT, and physical-device
+limitations remain separately visible in the Evidence column.
 Downstream backlog work must use these IDs without merging rows or converting
 unavailable evidence into an implementation gap.

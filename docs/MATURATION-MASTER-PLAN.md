@@ -1,6 +1,6 @@
 # RelGeo Maturation Master Plan
 
-**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; MCP sudah menjadi submodule resmi; desktop v1.0.1 tersedia sebagai draft lintas-platform; Language Specification closure locally green on the audited 53-ID boundary, with goal-level audit passed and supervisor closure pending; status diperbarui 2026-11-07
+**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; MCP sudah menjadi submodule resmi; desktop v1.0.1 tersedia sebagai draft lintas-platform; Language Specification closure locally green on the audited 53-ID boundary, with goal-level audit and supervisor closure completed; status diperbarui 2026-11-07
 **Tanggal baseline:** 2026-10-08
 **Compatibility line saat ini:** RelGeo DSL 0.5.x  
 **Pemilik keputusan:** Agus Made  
@@ -95,6 +95,28 @@ so this shell makes no clean-baseline or current-parity claim.
   pada root `328c869` (Flutter `ea8e754`), dengan enam job sukses dan lima
   artifact. Run itu tetap menjadi bukti bagi revision tersebut.
 
+### Playground closure handoff — 2026-11-07
+
+The Playground closure boundary is now reconciled against all 37 expected IDs:
+**35 `✔️` · 0 `🌗` · 0 `❌` · 0 `⚠️` · 2 explicit `⏸️` holds**. `PG-LIFE-002`
+is closed at the local source/unit boundary with explicit loading, empty, ready,
+error, and interaction-gating states. `PG-A11Y-001` is held only for the
+bind-capable browser/native AT host evidence that is unavailable here, while
+its web semantics and static UX contract pass. `PG-DELIVERY-001` is held only
+for hosted Pages smoke/parity after local route/title/asset/provenance checks
+pass. No hold is an npm, pub.dev, or production-deployment implementation
+dependency.
+
+The one-to-one expected catalog, implementation audit, capability/status
+matrices, reconciliation, backlog, and row-level closure register are linked in
+the [Playground coverage handoff](./capability-map/playground/coverage-validation-handoff.md).
+The local evidence is Playground 112 tests/lint/build/UX audit, language-service
+91 tests/lint/build, conformance 677/677, compatibility 289/289, website build
+and checks, and synchronized assembled artifact/provenance assertions. Browser
+E2E remains not verified because the preview server bind returns `EPERM`; root
+Node-24 integration and clean-baseline checks remain environment/worktree
+limitations and are not converted into Playground capability failures.
+
 ### Geometry closure handoff — 2026-11-05
 
 The geometry capability closure was reconciled against the complete 40-ID
@@ -141,8 +163,8 @@ The generated Flutter spec snapshot also matches all 35 `spec/id` Markdown
 documents and its manifest digest.
 Strict clean-checkout, Node 24 integration, Flutter runtime cache, and
 canonical CI/public/browser/native-host evidence remain `not verified` or
-environment-unavailable. The goal-level audit passed against the current local
-evidence; supervisor closure and no release claim remain separate.
+environment-unavailable. The goal-level audit and supervisor closure passed
+against the current local evidence; no release claim is implied.
 External boundaries remain separate from this local language closure: prior
 Flutter CI and release artifacts are provenance for their recorded revisions,
 not evidence for the current dirty checkout; current Flutter wrapper execution

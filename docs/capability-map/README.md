@@ -48,7 +48,7 @@ sama.
 | Language service | [matrix](./language-service/capability-matrix.md) | `✔️` local API / `🌗` host parity | Diagnostics/schema/completion/token tersedia; LSP runtime dan API docs memiliki gap. |
 | CLI | [status matrix](./cli/status-matrix.md) | `32 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️ / 3 ⏸️` closure boundary | One-shot commands, strict options, diagnostics, selectors, streams, fixtures, and local package boundary are closed; `CLI-AUTO-002`, `CLI-AUTO-004`, and `CLI-PACK-004` remain explicitly held/deferred, while Node 24/registry/CI/public evidence is separate. |
 | Markdown plugins | [matrix](./markdown-surfaces/capability-matrix.md) | `✔️` bounded transforms / `🌗` fallback | Preview/highlight tersedia; fallback language-service dan registry evidence terbatas. |
-| Playground | [capability matrix](./playground/capability-matrix.md) | `🌗` browser IDE / delivery evidence | Core editor/preview/persistence flows are implemented; compact desktop toolbar changes (file actions menu, single-row toolbar, dot-only preview status) are in Playground `c7cec4b`. Hosted smoke and physical-device/accessibility evidence remain separate. |
+| Playground | [capability matrix](./playground/capability-matrix.md) | `35 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️ / 2 ⏸️` bounded closure | Core editor/preview/persistence flows and bootstrap lifecycle are closed locally; `PG-A11Y-001` remains held for browser/native host evidence and `PG-DELIVERY-001` for hosted Pages smoke/parity. |
 | Website/Pages | [matrix](./website-pages/capability-matrix.md) | `✔️` static artifact / `🌗` public | Astro/spec/Markdown/SEO shell tersedia; pin, public smoke, dan AT checks belum current. |
 | Flutter | [status matrix](./flutter-workbench/status-matrix.md) | `44 ✔️ / 17 🌗 / 0 ❌` pada declared 61-ID workbench boundary | Desktop release workflow `41184693233` produced v1.0.1 draft bundles/checksums for macOS, Linux, and Windows; Flutter CI `41184291670` passed. Target-device launch/MCP smoke and publishing remain pending. |
 | MCP | [capability matrix](./mcp/capability-matrix.md) | `32 ✔️ / 24 🌗 / 10 ❌ / 2 ⏸️` | Full v0.5 spec search, desktop loopback HTTP, active-document read, and opt-in bounded edit are implemented locally; ChatGPT Desktop write round-trip and packaged MCP smoke remain unverified. |
@@ -315,15 +315,15 @@ are explicitly labeled so they cannot be mistaken for current evidence.
   — audited source, test, UI/command, platform, delivery, accessibility, and
   evidence audit joined to the expected catalog.
 - [Playground expected-versus-observed reconciliation](./playground/reconciliation.md)
-  — one-to-one join of all 37 expected IDs; absent implementation remains
-  explicit as `❌`, with implementation, evidence, and scope status separate.
+  — one-to-one join of all 37 expected IDs; implementation, evidence, and
+  scope status remain separate, with explicit host/deployment holds.
 - [Playground status matrix](./playground/status-matrix.md) — capability-first
   status, evidence, gap, owner, dependency, risk, and next action for all 37
   expected rows.
 - [Playground implementation-gap backlog](./playground/implementation-gap-backlog.md)
-  — seven separate candidate tasks for every `❌`/`🌗` row; acceptance
-  evidence and dependency are explicit, and documentation does not count as
-  implementation.
+  — retained follow-up records for the explicit browser/native and hosted
+  holds; acceptance evidence and dependency are explicit, and documentation
+  does not count as implementation.
 - [Playground coverage validation and handoff](./playground/coverage-validation-handoff.md)
   — validates coverage, IDs, links/paths, legends, evidence classes, scope,
   limitations, unresolved questions, and separate implementation handoff;

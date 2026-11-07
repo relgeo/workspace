@@ -75,7 +75,7 @@ Playground interaction, registry publication, or physical assistive technology.
 
 | Excluded item | Status | Reason |
 | --- | --- | --- |
-| `GAP-WEB-007-HANDOFF-001` / `WEB-PAGE-007` | `🌗` | Hosted Playground interaction and current pinned-runtime smoke cross the public/child-runtime boundary; local links and artifact assertions remain evidence inputs, not a hosted pass. |
+| `GAP-WEB-007-HANDOFF-001` / `WEB-PAGE-007` | `✔️` local / hosted follow-up | The local Playground handoff, pinned revision, route, and artifact assertions are closed; hosted interaction and current pinned-runtime smoke still cross the public/child-runtime boundary and remain explicit external evidence follow-up. |
 | `GAP-WEB-009-RESPONSIVE-001` / `WEB-PAGE-009` | `🌗` | Current viewport-matrix evidence is a separate browser-verification tranche and is not needed to bound the selected documentation, accessibility, SEO, and artifact contracts. |
 | `GAP-WEB-013-PAGES-001` / `WEB-PAGE-013` | `🌗` | Canonical Pages deployment verification requires a workflow run and deployment result; no release change is authorized by this task. |
 | `GAP-WEB-014-SMOKE-001` / `WEB-PAGE-014` | `🌗` | Public route/asset smoke is environment- and deployment-dependent; the audit correctly records DNS failure as unavailable evidence. |

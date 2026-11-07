@@ -41,12 +41,13 @@ absence implementation.
 
 ## Closure boundary and residual evidence
 
-The 15 previously non-complete rows are now closed at the declared local
+The 18 previously non-complete rows are now closed at the declared local
 Core/consumer contract boundary. The exact source path, regression evidence,
 and residual owner for each ID are recorded in the
 [closure report](./closure-report-2026-11-05.md). Node `>=24`, registry/public
-artifacts, current CI, browser E2E, Flutter host evidence, and fixture-16
-promotion remain separate evidence/scope findings; general constraint solving
+artifacts, current CI, browser E2E, and Flutter host evidence remain separate
+evidence/scope findings; fixture 16 is active at the bounded local contract;
+general constraint solving
 remains explicit `➖`.
 
 ## Capability matrix
@@ -67,9 +68,9 @@ remains explicit `➖`.
 | `CORE-GRAPH-001` | Dependency extraction across semantic relations | `✔️` | Audit §C; graph/dependency tests | Expression scanning needs broader quoted/namespace negatives | core | expression deps, object graph | M | Add dependency extraction negatives |
 | `CORE-GRAPH-002` | Topological ordering and circular dependency errors | `✔️` | Audit §C; cycle/conformance tests | Cross-platform canonical ordering unverified | core | graph, diagnostics | M | Add repeated-process ordering proof |
 | `CORE-EVAL-001` | Typed expression evaluation and deterministic functions | `✔️` | Audit §C; syntax-only regression and evaluator tests | Failure paths still use raw errors | core | type system, diagnostic normalizer | M | Keep syntax-only evaluation behavior distinct from actual arithmetic errors |
-| `CORE-EVAL-002` | Defaults, profiles, constants, derived and local scope phases | `✔️` | Audit §C; derived/component/fixture tests | Fixture 16 is candidate for cross-consumer promotion | core + spec | graph, profiles, units | H | Decide fixture 16 promotion boundary |
+| `CORE-EVAL-002` | Defaults, profiles, constants, derived and local scope phases | `✔️` | Audit §C; derived/component tests; active fixture 16; Core/CLI/Flutter-local evidence | Fixture 16 is active at the bounded local contract; canonical Node-24/CI/native-host evidence remains separate | core + spec | graph, profiles, units | H | Preserve active fixture and refresh canonical evidence |
 | `CORE-EVAL-003` | Geometry queries, anchors, intersections, frames, conversions | `✔️` | Audit §C; query/frame/intersection tests | Overload/error combinations are not exhaustive | core + geometry | query selectors, geometry ops | M | Add query overload matrix |
-| `CORE-UNIT-001` | Unit normalization and conversion for lengths/angles | `✔️` | Audit §C; unit tests; conformance | Cross-consumer promotion of fixture 16 deferred | core + spec | scene unit policy, consumer parity | H | Promote only after shared semantic snapshots |
+| `CORE-UNIT-001` | Unit normalization and conversion for lengths/angles | `✔️` | Audit §C; unit tests; active fixture 16 conformance; Flutter semantic projection | Local cross-consumer promotion of fixture 16 is recorded; canonical host evidence remains separate | core + spec | scene unit policy, consumer parity | H | Preserve shared semantic snapshots |
 | `CORE-RESOLVE-001` | Primitive, path, text, composition, collection, operation resolution | `✔️` | Audit §D; resolver/fixture tests | Full object combination coverage bounded | core | object dispatcher, geometry | M | Publish supported object-combination table |
 | `CORE-RESOLVE-002` | Placement, anchors, transforms, scope, world/local semantics | `✔️` | Audit §D; placement/anchor/transform tests | All combinations not cross-consumer tested | core | anchors, transforms, graph | H | Add transform/anchor parity fixtures |
 | `CORE-RESOLVE-003` | Repeat/divide/split/boolean collections and result modes | `✔️` | Repeat/divide/split/Boolean tests; fixtures 19/20/22/24–27; conformance | Active v0.5 identity/order/mode and invalid-target boundaries are closed; broader topology is additive scope | core + geometry | collection identity, boolean engine | H | Maintain supported result-mode matrix |

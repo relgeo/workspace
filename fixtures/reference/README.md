@@ -45,6 +45,12 @@ Fixture awal:
 25. `25-v05-invalid-operation-target.yaml` — fixture invalid untuk `INVALID_OPERATION_TARGET`
 26. `26-v05-invalid-reverse-target.yaml` — fixture invalid untuk `INVALID_REVERSE_TARGET`
 27. `27-v05-invalid-turtle-forward.yaml` — fixture invalid untuk `INVALID_TURTLE_FORWARD`
+28. `28-v05-invalid-profile-override.yaml` — fixture invalid untuk profile yang mencoba mengubah constant
+29. `29-v05-invalid-structured-type.yaml` — fixture invalid untuk structured type diagnostics
+30. `30-v05-metadata-inherit-alias.yaml` — fixture aktif untuk metadata inherit dan alias propagation
+31. `31-v05-geometry-composition-placement-query.yaml` — fixture aktif untuk geometry, composition, placement, dan query contracts
+32. `32-v05-collection-constraint-contract.yaml` — fixture aktif untuk collection, boolean, repeat, divide/split, access, dan constraint contracts
+33. `33-v05-presentation-metadata-serialization.yaml` — fixture aktif untuk dimension, annotation, roles, views/sheets, metadata, dan serialization contracts
 
 Fixture 01–09 adalah coverage presentasional dan sheet pada dokumen `v0.4` yang masih didukung runtime. Fixture 10 menjadi baseline kecil untuk contract line aktif dan target perluasan conformance lintas consumer. Manifest boleh memiliki lebih dari satu fixture `active` agar baseline relasional tetap terjaga ketika capability baru dipromosikan.
 Fixture 11 sengaja invalid: object `broken` tidak memiliki field `type`. Fixture ini harus tetap menghasilkan error parser dan diagnostics language service yang stabil.
@@ -60,6 +66,10 @@ Fixtures 25–27 adalah invalid Core boundaries baru: operation target harus
 merupakan geometry object, reverse target harus memiliki traversal yang dapat
 dibalik, dan turtle forward harus finite serta positif. Runner memeriksa code,
 phase, path, serta projection ke language-service dan CLI untuk ketiganya.
+Fixture 28 menjaga bahwa profile hanya boleh mengoverride parameter yang
+terdeklarasi; constant override ditolak dengan `UNKNOWN_FIELD` pada path
+`profiles.compact.gap` dan diproyeksikan konsisten ke Core, language service,
+dan CLI.
 Fixture 15 berstatus `active` pada scope boolean/intersection yang dikunci
 Decision Record 08 dan canonical run 37832260326; fixture 16 tetap
 `capability`/candidate untuk evaluator/unit. Promosi fixture 15 tidak

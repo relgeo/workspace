@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 840 640" width="100%" style="display: block;" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arrow-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="red" />
+    </marker>
+    <marker id="arrow-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="green" />
+    </marker>
+  </defs>
+  
+    <line x1="0" y1="0" x2="40" y2="0" id="canonical" class="role-guide" data-role="guide" data-preview-stroke="visible" data-preview-stroke-source="explicit" stroke="#334155" fill="none" stroke-width="2" opacity="0.7" stroke-dasharray="4 2" vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="10" x2="40" y2="10" id="alias" class="role-guide" data-role="guide" data-intent="inspection" data-preview-stroke="visible" data-preview-stroke-source="explicit" stroke="#334155" fill="none" stroke-width="1" opacity="1" stroke-dasharray="4 2" vector-effect="non-scaling-stroke" />
+    
+    
+  
+</svg>

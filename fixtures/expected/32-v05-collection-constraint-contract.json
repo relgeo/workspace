@@ -1,0 +1,434 @@
+{
+  "unit": "px",
+  "autoSize": true,
+  "padding": 4,
+  "objects": {
+    "edge": {
+      "id": "edge",
+      "type": "line",
+      "x1": 0,
+      "y1": 0,
+      "x2": 20,
+      "y2": 0
+    },
+    "splitPieces": {
+      "id": "splitPieces",
+      "type": "collection",
+      "children": [
+        "splitPieces[0]",
+        "splitPieces[1]"
+      ]
+    },
+    "splitHead": {
+      "id": "splitHead[0]",
+      "type": "path",
+      "segments": [
+        {
+          "type": "line",
+          "x1": 0,
+          "y1": 0,
+          "x2": 8,
+          "y2": 0
+        }
+      ],
+      "closed": false
+    },
+    "divided": {
+      "id": "divided",
+      "type": "collection",
+      "children": [
+        "divided[0]",
+        "divided[1]",
+        "divided[2]"
+      ],
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 10,
+          "y": 0
+        },
+        {
+          "x": 20,
+          "y": 0
+        }
+      ]
+    },
+    "repeatMarks": {
+      "id": "repeatMarks",
+      "type": "collection",
+      "children": [
+        "repeatMarks[0]",
+        "repeatMarks[1]",
+        "repeatMarks[2]"
+      ]
+    },
+    "gridMarks": {
+      "id": "gridMarks",
+      "type": "collection",
+      "children": [
+        "gridMarks[0,0]",
+        "gridMarks[0,1]",
+        "gridMarks[1,0]",
+        "gridMarks[1,1]"
+      ]
+    },
+    "left": {
+      "id": "left",
+      "type": "rect",
+      "x": 30,
+      "y": 0,
+      "width": 12,
+      "height": 12
+    },
+    "right": {
+      "id": "right",
+      "type": "rect",
+      "x": 36,
+      "y": 0,
+      "width": 12,
+      "height": 12
+    },
+    "union": {
+      "id": "union",
+      "type": "boolean",
+      "operation": "union",
+      "points": [
+        {
+          "x": 30,
+          "y": 0
+        },
+        {
+          "x": 48,
+          "y": 0
+        },
+        {
+          "x": 48,
+          "y": 12
+        },
+        {
+          "x": 30,
+          "y": 12
+        }
+      ],
+      "segments": [
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 0,
+          "x2": 48,
+          "y2": 0
+        },
+        {
+          "type": "line",
+          "x1": 48,
+          "y1": 0,
+          "x2": 48,
+          "y2": 12
+        },
+        {
+          "type": "line",
+          "x1": 48,
+          "y1": 12,
+          "x2": 30,
+          "y2": 12
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 12,
+          "x2": 30,
+          "y2": 0
+        }
+      ],
+      "holes": []
+    },
+    "xor": {
+      "id": "xor",
+      "type": "collection",
+      "children": [
+        "xor[0]",
+        "xor[1]"
+      ]
+    },
+    "horizontal": {
+      "id": "horizontal",
+      "type": "line",
+      "x1": 0,
+      "y1": 30,
+      "x2": 20,
+      "y2": 30
+    },
+    "horizontalOffset": {
+      "id": "horizontalOffset",
+      "type": "line",
+      "x1": 0,
+      "y1": 34,
+      "x2": 20,
+      "y2": 34
+    },
+    "vertical": {
+      "id": "vertical",
+      "type": "line",
+      "x1": 10,
+      "y1": 20,
+      "x2": 10,
+      "y2": 40
+    },
+    "tangentLine": {
+      "id": "tangentLine",
+      "type": "line",
+      "x1": -10,
+      "y1": 50,
+      "x2": 10,
+      "y2": 50
+    },
+    "tangentCircle": {
+      "id": "tangentCircle",
+      "type": "circle",
+      "cx": 0,
+      "cy": 40,
+      "radius": 10
+    },
+    "splitPieces[0]": {
+      "id": "splitPieces[0]",
+      "type": "path",
+      "segments": [
+        {
+          "type": "line",
+          "x1": 0,
+          "y1": 0,
+          "x2": 8,
+          "y2": 0
+        }
+      ],
+      "closed": false
+    },
+    "splitPieces[1]": {
+      "id": "splitPieces[1]",
+      "type": "path",
+      "segments": [
+        {
+          "type": "line",
+          "x1": 8,
+          "y1": 0,
+          "x2": 20,
+          "y2": 0
+        }
+      ],
+      "closed": false
+    },
+    "splitHead[0]": {
+      "id": "splitHead[0]",
+      "type": "path",
+      "segments": [
+        {
+          "type": "line",
+          "x1": 0,
+          "y1": 0,
+          "x2": 8,
+          "y2": 0
+        }
+      ],
+      "closed": false
+    },
+    "splitHead[1]": {
+      "id": "splitHead[1]",
+      "type": "path",
+      "segments": [
+        {
+          "type": "line",
+          "x1": 8,
+          "y1": 0,
+          "x2": 20,
+          "y2": 0
+        }
+      ],
+      "closed": false
+    },
+    "divided[0]": {
+      "id": "divided[0]",
+      "type": "point",
+      "x": 0,
+      "y": 0
+    },
+    "divided[1]": {
+      "id": "divided[1]",
+      "type": "point",
+      "x": 10,
+      "y": 0
+    },
+    "divided[2]": {
+      "id": "divided[2]",
+      "type": "point",
+      "x": 20,
+      "y": 0
+    },
+    "repeatMarks[0]": {
+      "id": "repeatMarks[0]",
+      "type": "circle",
+      "cx": 0,
+      "cy": 10,
+      "radius": 1
+    },
+    "repeatMarks[1]": {
+      "id": "repeatMarks[1]",
+      "type": "circle",
+      "cx": 5,
+      "cy": 10,
+      "radius": 1
+    },
+    "repeatMarks[2]": {
+      "id": "repeatMarks[2]",
+      "type": "circle",
+      "cx": 10,
+      "cy": 10,
+      "radius": 1
+    },
+    "gridMarks[0,0]": {
+      "id": "gridMarks[0,0]",
+      "type": "circle",
+      "cx": 0,
+      "cy": 0,
+      "radius": 1
+    },
+    "gridMarks[0,1]": {
+      "id": "gridMarks[0,1]",
+      "type": "circle",
+      "cx": 6,
+      "cy": 0,
+      "radius": 1
+    },
+    "gridMarks[1,0]": {
+      "id": "gridMarks[1,0]",
+      "type": "circle",
+      "cx": 0,
+      "cy": 7,
+      "radius": 1
+    },
+    "gridMarks[1,1]": {
+      "id": "gridMarks[1,1]",
+      "type": "circle",
+      "cx": 6,
+      "cy": 7,
+      "radius": 1
+    },
+    "xor[0]": {
+      "id": "xor[0]",
+      "type": "boolean",
+      "operation": "xor",
+      "points": [
+        {
+          "x": 30,
+          "y": 0
+        },
+        {
+          "x": 36,
+          "y": 0
+        },
+        {
+          "x": 36,
+          "y": 12
+        },
+        {
+          "x": 30,
+          "y": 12
+        }
+      ],
+      "segments": [
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 0,
+          "x2": 36,
+          "y2": 0
+        },
+        {
+          "type": "line",
+          "x1": 36,
+          "y1": 0,
+          "x2": 36,
+          "y2": 12
+        },
+        {
+          "type": "line",
+          "x1": 36,
+          "y1": 12,
+          "x2": 30,
+          "y2": 12
+        },
+        {
+          "type": "line",
+          "x1": 30,
+          "y1": 12,
+          "x2": 30,
+          "y2": 0
+        }
+      ],
+      "holes": []
+    },
+    "xor[1]": {
+      "id": "xor[1]",
+      "type": "boolean",
+      "operation": "xor",
+      "points": [
+        {
+          "x": 42,
+          "y": 0
+        },
+        {
+          "x": 48,
+          "y": 0
+        },
+        {
+          "x": 48,
+          "y": 12
+        },
+        {
+          "x": 42,
+          "y": 12
+        }
+      ],
+      "segments": [
+        {
+          "type": "line",
+          "x1": 42,
+          "y1": 0,
+          "x2": 48,
+          "y2": 0
+        },
+        {
+          "type": "line",
+          "x1": 48,
+          "y1": 0,
+          "x2": 48,
+          "y2": 12
+        },
+        {
+          "type": "line",
+          "x1": 48,
+          "y1": 12,
+          "x2": 42,
+          "y2": 12
+        },
+        {
+          "type": "line",
+          "x1": 42,
+          "y1": 12,
+          "x2": 42,
+          "y2": 0
+        }
+      ],
+      "holes": []
+    }
+  },
+  "bbox": {
+    "x": -10,
+    "y": -1,
+    "width": 58,
+    "height": 51
+  },
+  "violations": []
+}

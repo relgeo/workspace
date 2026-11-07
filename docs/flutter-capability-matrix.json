@@ -44,15 +44,15 @@
         "paths": ["flutter/lib/src/core/evaluator.dart", "flutter/lib/src/core/units.dart"],
         "symbols": ["Evaluator", "normalizeUnit"]
       },
-      "supportLevel": "partial",
-      "evidenceStatus": "partial",
+      "supportLevel": "verified",
+      "evidenceStatus": "verified",
       "evidence": {
         "localFlutterTests": true,
         "sharedFixtures": true,
         "semanticParity": true,
-        "ci": true
+        "ci": false
       },
-      "note": "The v0.5 evaluator/units capability candidate exercises length parameters, `in`/`mm` conversion, signed literals, derived placement, and preservation of non-numeric strings; its scene and SVG semantic projections pass locally and in CI. It remains capability-only until promotion."
+      "note": "Fixture 16 is active for the bounded v0.5 evaluator/units contract. It exercises length parameters, `in`/`mm` conversion, signed literals, derived placement, and preservation of non-numeric strings; scene and SVG semantic projections pass in the targeted local Flutter suite. Current Node-24/CI/native-host evidence remains a separate verification boundary."
     },
     {
       "id": "dependency-resolution",

@@ -23,6 +23,8 @@
     "compatibility:check": "node scripts/check-compatibility.mjs",
     "compatibility:audit": "node scripts/audit-compatibility-behavior.mjs",
     "language-spec:check": "node scripts/check-language-spec-vocabulary.mjs",
+    "language-spec:catalog:check": "node scripts/check-language-spec-capability-catalog.mjs",
+    "language-spec:audit:check": "node scripts/check-language-spec-audit.mjs",
     "spec:snapshot:sync": "node scripts/sync-flutter-spec-snapshot.mjs --sync",
     "spec:snapshot:check": "node scripts/sync-flutter-spec-snapshot.mjs --check",
     "spec:snapshot:test": "node scripts/test-flutter-spec-snapshot.mjs",

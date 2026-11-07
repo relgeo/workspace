@@ -146,6 +146,16 @@ kontrak publik.
 - [x] menyetujui bahwa evidence semantic projection saja belum cukup tanpa
   contract dan dokumentasi public.
 
+### 4.3.1 Amendment — fixture 16 bounded promotion (2026-11-06)
+
+Fixture 16 (`evaluator/unit`) is promoted from `capability` to `active` for
+the bounded RelGeo DSL 0.5 contract. The promotion is supported by the active
+manifest entry, Core/CLI/language-service/renderer conformance, 548 Core tests,
+39 CLI tests, 440/440 fixture assertions, and the targeted Flutter shared
+conformance test. This does not claim current Node-24 CI, native-host, or
+fresh-checkout parity; those remain separate evidence boundaries. The
+one-by-one promotion policy remains in force for later candidates.
+
 ## 5. Keputusan C — Cakupan parity SVG Flutter
 
 ### 5.1 Pilihan

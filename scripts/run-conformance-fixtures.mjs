@@ -98,8 +98,12 @@ check(manifest.svgSemanticSerialization?.tolerance === 0.000001, "fixture manife
 check(manifest.svgSemanticSerialization?.semanticArrayOrder === "preserved", "fixture manifest preserves SVG semantic array order");
 check(manifest.svgSemanticSerialization?.replayComparator === "@relgeo/renderer-svg.compareSVGSemanticReplay", "fixture manifest declares the SVG replay comparator");
 check(manifest.svgSemanticSerialization?.numericComparison === "absolute-difference-within-tolerance", "fixture manifest declares tolerant numeric SVG comparison");
+check(
+  JSON.stringify(manifest.svgSemanticSerialization?.errorCodes) === JSON.stringify(["INVALID_SEMANTIC_PROJECTION", "INVALID_SEMANTIC_REPLAY"]),
+  "fixture manifest declares stable SVG semantic error codes",
+);
 check(manifest.svgSemanticSerialization?.presentationBytes === "excluded-from-parity-contract", "fixture manifest excludes presentation bytes from SVG parity");
-check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 27, "fixture manifest contains the expected 27-entry baseline set");
+check(Array.isArray(manifest.fixtures) && manifest.fixtures.length === 33, "fixture manifest contains the expected 33-entry baseline set");
 
 const fixtureIds = new Set();
 const fixturePaths = new Set();
@@ -146,7 +150,7 @@ for (const fixture of manifest.fixtures ?? []) {
 const activeFixtures = manifest.fixtures.filter((fixture) => fixture.status === "active");
 check(activeFixtures.length >= 1, "fixture manifest has at least one active baseline fixture");
 const invalidFixtures = manifest.fixtures.filter((fixture) => fixture.status === "invalid");
-check(invalidFixtures.length === 10, "fixture manifest has the ten invalid diagnostic fixtures");
+check(invalidFixtures.length === 12, "fixture manifest has the twelve invalid diagnostic fixtures");
 const runtimeDiagnosticFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-diagnostic");
 check(runtimeDiagnosticFixtures.length === 1, "fixture manifest has one runtime-diagnostic fixture");
 const runtimeErrorFixtures = manifest.fixtures.filter((fixture) => fixture.status === "runtime-error");

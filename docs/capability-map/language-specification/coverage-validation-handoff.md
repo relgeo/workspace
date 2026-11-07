@@ -1,34 +1,44 @@
 # Language Specification Coverage Validation and Handoff
 
-**Tanggal validasi:** 2026-11-04
+**Tanggal validasi:** 2026-11-07
 **Scope:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog
 **Required context:** [`spec/id/`](../../../spec/id), [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md), [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md), [`capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md)
 
 ## 1. Handoff result
 
-Dokumentasi language-specification baseline siap untuk review manusia. Validasi
-ini **tidak** menyatakan surface implementasi lengkap. Klaim yang aman adalah:
+Dokumentasi language-specification baseline siap untuk review manusia dan
+rekonsiliasi goal-level. Validasi ini menyatakan green pada boundary lokal yang
+dibekukan; validasi ini tidak mempromosikan canonical CI, host, atau release
+parity.
 
 - expected catalog memiliki 53 capability ID;
 - audit membandingkan 53/53 ID terhadap observed source/test/fixture/consumer
   evidence;
-- status matrix now records 16 `✔️`, 36 `🌗`, and 1 `⚠️` after the selected SVG
-  escaping fix; this is partial local evidence, not a complete parity claim;
-- tidak ada current `❌` karena audit menemukan sebagian realization untuk semua
-  expected ID, tetapi ketiadaan generated machine-readable normative catalog
-  tetap dicatat sebagai structural absence;
-- 37 non-green capability diturunkan menjadi 13 candidate implementation
-  workstreams;
-- current local consumer evidence includes Playground `104/104` tests and build,
-  website Astro check/build (`138` pages), and Flutter `302` tests; this is not
-  canonical CI/public/browser/native-host evidence. MCP tests remain
-  environment-unavailable because Dart package resolution and host writes are
-  blocked.
+- status matrix now records 53 `✔️`, 0 `🌗`, and 0 `⚠️` on the audited local boundary after concrete source, regression, fixture, and consumer evidence; this is not a complete canonical parity claim;
+- `spec/id/` tetap menjadi source of truth normatif dan catalog workspace adalah
+  projection yang diperiksa; generated catalog tooling bukan boundary capability
+  terpisah dan tidak dihitung sebagai absence;
+- no remaining non-green capability ID is retained on the audited local boundary;
+- current local consumer evidence includes Core `579`, geometry `97`, renderer
+  `110`, CLI `40`, language-service `91`, remark-relgeo `18`,
+  remark-relgeo-hl `11`, Playground `108`, and conformance `677/677` across 33
+  fixtures; this is not canonical CI/public/browser/native-host evidence. MCP
+  passes through the direct Dart SDK test runner; Flutter runtime/analyze/test
+  remains environment-unavailable because the SDK cache lock/stamp is outside
+  the writable workspace.
 
-The bounded implementation tranche has started for `GAP-001`, `GAP-009`,
-`GAP-011`, and `GAP-013`. The remaining candidate backlog is still not active
-work, and no row is promoted to complete without source change, focused test,
-fixture/conformance, and evidence-target review.
+The bounded implementation tranche includes `GAP-001`, `GAP-002`, `GAP-009`,
+`GAP-011`, and `GAP-013`. Fixture 16 is active for the bounded local
+declaration/profile/evaluator/unit contract, and fixture 33 covers the
+presentation/metadata/serialization contract. All 53 capability rows are green
+on the audited local boundary; the remaining backlog records historical or
+external evidence follow-up rather than non-green capability rows.
+
+The closure report is **LOCAL GREEN — GOAL-LEVEL AUDIT PASS; SUPERVISOR CLOSURE PENDING**: the frozen matrix is
+`53 ✔️ · 0 🌗 · 0 ❌ · 0 ➖ · 0 ⏸️ · 0 ⚠️` on the audited local boundary. Strict clean-checkout, Node 24
+integration, Flutter/MCP cache, and canonical CI/public/native-host evidence are
+environment-unavailable and are not inferred from local passes. See
+[`closure-report.md`](./closure-report.md) for the before/after reconciliation.
 
 ## 2. Artefact chain
 
@@ -38,7 +48,7 @@ fixture/conformance, and evidence-target review.
 | [Implementation audit](./implementation-audit.md) | Observed source/runtime/test/fixture/consumer evidence | Discovery coverage dan per-ID evidence tercatat |
 | [Reconciliation](./reconciliation.md) | One-to-one expected-versus-observed join | 53/53 rows, no missing/extra/duplicate |
 | [Status matrix](./status-matrix.md) | Capability-first compact reporting view | 53 rows, complete status legend, gap/owner/dependency/risk/next action |
-| [Gap backlog](./implementation-gap-backlog.md) | Candidate implementation goals/tasks | 13 workstreams cover exactly 37 `🌗`/`⚠️` IDs; documentation does not close gaps |
+| [Gap backlog](./implementation-gap-backlog.md) | Historical and external-evidence follow-up | 13 workstreams are retained for traceability; 0 `🌗`/`❌`/`⚠️` rows remain on the audited local boundary |
 
 ## 3. Validation checklist
 
@@ -52,7 +62,7 @@ fixture/conformance, and evidence-target review.
 | Evidence classes separated | PASS | Audit distinguishes `direct-local`, `source+tests`, `historical/local`, `not verified`; current Playground/website/Flutter local evidence is separated from browser E2E, canonical/public/native-host evidence, and MCP transport/runtime |
 | Scope decisions preserved | PASS | Expected catalog scope/exclusions and matrix scope columns retain 2D/no-solver/mobile/Flutter decisions |
 | Limitations stated | PASS | Audit §3–§4, reconciliation §5, and this handoff record Node, CI, registry, browser, Flutter, MCP, and presentation limits |
-| Gap backlog coverage | PASS | 13 candidate workstreams cover 37/37 non-green IDs; acceptance evidence is required per workstream |
+| Gap backlog coverage | PASS | Backlog retains historical workstreams and records 0 remaining non-green capability mappings; external evidence limits remain explicit |
 | Required source paths | PASS | `docs/capability-map`, `docs/REPOSITORY-MAP.md`, and `docs/MATURATION-MASTER-PLAN.md` present and linked |
 | Implementation closure claims | PASS | Backlog explicitly prohibits documentation-only closure claims |
 
@@ -145,9 +155,10 @@ These questions remain open and must not be silently resolved by implementation:
 | `Q-006` | Capability presentation/collections mana yang masuk active 0.5 fixture set versus tetap legacy/candidate? | `COLL-*`, `PRES-*`, `META-*`, `COMP-*` |
 | `Q-007` | Evidence kapan boleh dipromosikan dari local ke canonical/public/native-host, terutama pada Node `>=24`, browser, Flutter, dan MCP transport? | all evidence tiers; no status auto-promotion |
 
-## 7. Implementation handoff
+## 7. Implementation closure handoff
 
-Implementation candidates are owned by the separate backlog, in dependency order:
+The completed implementation tranche is traceable through the separate backlog,
+in dependency order:
 
 1. vocabulary/drift contract (`GAP-001`);
 2. declarations/evaluator/unit promotion (`GAP-002`);
@@ -163,9 +174,10 @@ Implementation candidates are owned by the separate backlog, in dependency order
 12. canonical JSON serialization (`GAP-012`, after `Q-001`);
 13. safe semantic SVG serialization (`GAP-013`, after `Q-002`).
 
-The handoff is complete only as a documentation/validation deliverable. It does
-not create or start these implementation goals, does not change any capability
-status, and does not convert local evidence into release evidence.
+The implementation handoff is complete for the frozen local boundary. It does
+not convert local evidence into release evidence; Node 24, canonical CI,
+browser/native-host, Flutter wrapper, MCP transport, and publication remain
+separate verification boundaries.
 
 ## 8. Reproducible execution and remaining-gap handoff
 
@@ -210,21 +222,18 @@ not a Node-24 or canonical-CI claim. The conformance runner exercises local
 CLI, renderer, language-service, highlighting, preview, and Markdown paths,
 including safe SVG/no-executable-markup assertions.
 
-### 8.3 Remaining-gap handoff
+### 8.3 Remaining-evidence handoff
 
-The next owner actions are intentionally bounded and do not promote statuses:
+The remaining owner actions are intentionally bounded and do not reopen local
+capability statuses:
 
-1. `GAP-001` / `DOC-003`: extend the passing vocabulary check from sections,
-   types, aliases, and document status labels to object and renderer field sets.
-2. `GAP-011` / `DIAG-002`: inventory and normalize remaining exported evaluator
-   and internal raw-error paths, then add shared phase/path/message fixtures and
-   language-service/CLI mapping checks.
-3. `GAP-009` / `GAP-013`: expand dimension-kind and remaining
-   Playground/current-host consumer snapshots; retain `🌗` until that broader
-   evidence exists.
-4. Keep `GAP-002`–`GAP-008`, `GAP-010`, and `GAP-012` as visible backlog work;
-   preserve fixture 16 promotion, mobile/native delivery, canonical CI, public
-   host, browser, Flutter, and MCP transport as deferred or unverified scope.
+1. Re-run the local green-surface commands on Node `>=24` and in canonical CI
+   when that environment is available.
+2. Promote Flutter wrapper, browser/native-host, and MCP transport evidence only
+   after the corresponding host/cache boundary is available.
+3. Keep fixture 16 and fixture 33 as regression anchors when future language or
+   consumer changes are made; do not reopen a capability row from absent host
+   evidence alone.
 
 No npm/pub.dev publication, production deployment, public host, registry
 access, or deferred platform host was used or required. The remaining limits
@@ -232,63 +241,64 @@ are evidence/contract gaps, not silently converted completion claims.
 
 ## 9. Current verification checkpoint
 
-**Checkpoint date:** 2026-11-04
+**Checkpoint date:** 2026-11-07
 
 The following commands were executed from the workspace root after the current
-implementation tranche. Results are direct local evidence; this host runs Node
-`22.23.2` while the workspace declares Node `>=24`.
+implementation tranche. Results are direct local evidence; this execution used
+Node `v22.23.2` even though the repository declares Node `>=24`.
 
 | Command | Result | What it proves |
 | --- | --- | --- |
-| `pnpm --filter @relgeo/core test -- src/__tests__/diagnostics.test.ts src/__tests__/structured_errors.test.ts src/__tests__/parameter_type_validation.test.ts src/__tests__/resolver.test.ts` | PASS — 469 tests across 48 files | Focused diagnostic, structured-error, profile, resolver, negative, and backward-compatible regression coverage |
-| `pnpm --filter @relgeo/core test` | PASS — 469 tests across 48 files | Complete core regression suite |
-| `pnpm --filter @relgeo/core lint` | PASS | Core TypeScript type check |
-| `pnpm --filter @relgeo/cli test` | PASS — 36 tests | CLI consumer regression coverage |
-| `pnpm --filter @relgeo/language-service test` | PASS — 82 tests | Language-service schema/diagnostic consumer coverage |
-| `pnpm run language-spec:check` | PASS — 34 spec documents | Normative vocabulary/drift and status-label checks against `spec/id` |
-| `pnpm run conformance:fixtures` | PASS — 298 passed, 0 failed across 23 fixtures | Negative fixtures, runtime diagnostics, semantic serialization replay, SVG safety, CLI, language-service, Markdown, and preview checks |
+| `pnpm --filter @relgeo/geometry test` | PASS — 97 tests | Geometry intersection, path, boolean, split, and contract regression coverage |
+| `pnpm --filter @relgeo/core test` | PASS — 579 tests | Complete core regression suite |
+| `pnpm --filter @relgeo/cli test` | PASS — 40 tests | CLI consumer regression coverage |
+| `pnpm --filter @relgeo/language-service test` | PASS — 91 tests | Language-service schema/diagnostic consumer coverage, including object-operation vocabulary alignment |
+| `pnpm test` | PASS — all workspace test projects | Full Node consumer suite, including renderer, Markdown, Playground, and website assertions |
+| `pnpm run language-spec:check` | PASS — 35 spec documents | Normative vocabulary/drift and status-label checks against `spec/id` |
+| `pnpm run language-spec:catalog:check` | PASS — 53 expected IDs, 53 matrix IDs, 53 consumer/acceptance rows | Frozen boundary, exact one-to-one ID sets, duplicate/extra detection, owner/source fields, consumer boundaries, and measurable acceptance statements |
+| `pnpm run language-spec:audit:check` | PASS — 53 audit rows, 30 cited spec paths, 0/0 non-green backlog mappings | Audit classification, verification tier, explicit `spec/id` source paths, non-empty findings, and expected/reconciliation/matrix coverage |
+| `pnpm run conformance:fixtures` | PASS — 677 passed, 0 failed across 33 fixtures | Negative fixtures, runtime diagnostics, semantic serialization replay, SVG safety, CLI, language-service, Markdown, and preview checks; fixture 33 covers presentation/metadata/serialization behavior |
 | `git diff --check && git -C core diff --check` | PASS | Patch integrity and whitespace checks |
-| `pnpm run compatibility:check` | LIMITATION — 280 passed, 3 failed | Repository metadata drift: matrix expects core `0.5.1` but package is `0.5.2`; Playground expects `@relgeo/core ^0.5.0` but declares `^0.5.2`; Flutter application metadata also differs from the matrix. This is not a language-spec behavior failure. |
-| `pnpm run spec:snapshot:check` | UNVERIFIED — exit 1 | Flutter snapshot manifest metadata/digest differs from current `spec/id`; no sync or generated-artifact mutation was performed. |
+| `pnpm run compatibility:check` | PASS — 289/289 | Compatibility metadata and declared consumer boundaries pass for the current local checkout. This does not promote Node 24/registry/public evidence. |
+| `pnpm run spec:snapshot:test` | PASS | Spec snapshot and generated-reference consistency test passes locally; canonical host/CI evidence remains separate. |
+| `pnpm run spec:snapshot:check` | PASS — 35 Markdown files and manifest digest match | Flutter bundled spec assets are synchronized from `spec/id`; this does not prove Flutter host/runtime or MCP parity. |
+| `/Users/agusmade/development/flutter/bin/cache/dart-sdk/bin/dart --suppress-analytics test` (from `mcp/`) | PASS — all tests | Standalone MCP protocol/session/spec-index contract tests pass without the Flutter wrapper. |
 
-The two non-pass checks are recorded separately from implementation behavior:
-compatibility is repository metadata/configuration drift, while the snapshot
-result requires deliberate snapshot regeneration/reconciliation. Neither is
-claimed as a passing check, and neither is used to infer target-language parity
-failure. No Flutter, MCP transport, production host, or Node-24 canonical-CI
-execution was available in this environment.
+The strict baseline remains a separate check, and Flutter runtime/analyze/test
+is recorded as environment-unavailable below. No production host, canonical CI,
+or MCP transport execution was available in this environment.
 
 ### 9.1 Validation handoff
 
-- `GAP-002` and `GAP-011` changes have source and regression-test evidence;
-- `GAP-011` remains open for broader raw evaluator/helper inventory and complete
-  consumer diagnostic mapping;
-- fixture-16 promotion, Flutter/native parity, MCP transport, publication, and
-  deployment remain deferred or unverified;
-- no status-matrix row is promoted by this checkpoint alone.
+- Fixture 33 has source, Core regression, renderer/security, CLI/Markdown,
+  shared conformance, and canonical JSON/SVG snapshot evidence for
+  `PRES-001..004`, `META-001..002`, and `SER-001..002`.
+- Current Node-22 local evidence is available for the commands listed above;
+  canonical Node-24 CI, browser/native-host, Flutter runtime, MCP transport,
+  publication, and deployment remain separately deferred or unverified.
 
 ## 10. Downstream consumer and boundary checkpoint
 
-**Checkpoint date:** 2026-11-04. These results are direct local workspace
+**Checkpoint date:** 2026-11-06. These results are direct local workspace
 evidence. They are not canonical CI, public-registry, browser-host, native-host,
 or MCP transport evidence.
 
 | Boundary / command | Result | Interpretation |
 | --- | --- | --- |
-| `pnpm --filter @relgeo/renderer-svg test` | PASS — 90 tests across 7 files | Renderer consumer behavior and hostile-input/security regression coverage pass locally. |
+| `pnpm --filter @relgeo/renderer-svg test` | PASS — 110 tests | Renderer consumer behavior and hostile-input/security regression coverage pass locally. |
 | `pnpm --filter @relgeo/renderer-svg test:dist` | PASS — 1 dist-boundary test | Published-package-style renderer entrypoint boundary passes locally. |
 | `pnpm --filter @relgeo/renderer-svg build` | PASS | Renderer package compiles and emits local build output. |
-| `pnpm --filter @relgeo/remark-relgeo test` | PASS — 9 tests | Markdown preview consumer preserves structured diagnostics and safe fallback behavior. |
+| `pnpm --filter @relgeo/remark-relgeo test` | PASS — 16 tests | Markdown preview consumer preserves structured diagnostics and safe fallback behavior. |
 | `pnpm --filter @relgeo/remark-relgeo build` | PASS | Markdown renderer package build passes locally. |
-| `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 6 tests | Syntax-highlighting consumer regression coverage passes locally. |
+| `pnpm --filter @relgeo/remark-relgeo-hl test` | PASS — 11 tests | Syntax-highlighting consumer regression coverage passes locally. |
 | `pnpm --filter @relgeo/remark-relgeo-hl build` | PASS | Highlighting package build passes locally. |
-| `pnpm --filter relgeo-playground test` | PASS — 104 tests across 17 files | Playground consumer regression coverage passes locally. |
+| `pnpm --filter relgeo-playground test` | PASS — 108 tests | Playground consumer regression coverage passes locally. |
 | `pnpm --filter relgeo-playground lint` | PASS | Playground source lint passes locally. |
 | `pnpm --filter relgeo-playground build` | PASS | Fresh local browser artifact and provenance were generated. |
 | `pnpm --filter relgeo-docs-site check` | PASS — 0 errors, warnings, hints | Website language-spec routes and Astro types validate locally. |
 | `pnpm --filter relgeo-docs-site build` | PASS — 138 pages | Fresh local documentation artifact builds successfully. |
 | `pnpm --filter relgeo-docs-site test` | PASS | Built-output assertions pass for the website artifact. |
-| `pnpm run integration:gate -- --local --report=.local/integration-language-spec-current.json` | UNVERIFIED — blocked before stages, Node 22.23.2 < required Node 24 | The canonical local integration runner could not start; this is an environment limitation, not a consumer parity failure. |
+| `pnpm run integration:gate -- --local --report=.local/integration-language-spec-current.json` | ENVIRONMENT-UNAVAILABLE — Node `22.23.2` fails the declared `>=24` prerequisite | The command was executed and stopped before host integration; no source failure is inferred. |
 | `pnpm run flutter:conformance` | UNVERIFIED — Flutter SDK could not write `flutter/bin/cache/engine.stamp` | Flutter projection/native-host evidence is unavailable in this sandbox. |
 | `pnpm run playground:artifact:check` and `pnpm --filter relgeo-docs-site test:pages-artifact` | LIMITATION — baseline/provenance artifact pins differ from checkout; Pages provenance file is absent | The assembled artifact was created locally, but baseline reconciliation is required before this can be promoted to Pages/public evidence. |
 | `pnpm --filter relgeo-docs-site run provenance:check` | LIMITATION — strict check reports root, Playground, and spec revision mismatches | Existing integration baseline/workflow pins are stale relative to the current checkout; no baseline/config update was authorized or performed. |
@@ -313,7 +323,7 @@ placeholder `https://example.com`, causing `pnpm test` to fail in
 | `pnpm --filter relgeo-docs-site build` | PASS — 138 pages |
 | `pnpm --filter relgeo-docs-site check` | PASS — 0 errors, warnings, hints |
 | `pnpm --filter relgeo-docs-site test` | PASS — built-output assertions |
-| `pnpm test` | PASS — all 9 workspace test projects, including core 469, renderer 90, Playground 104, CLI 36, language-service 82, and Markdown consumers |
+| `pnpm test` | PASS — all workspace test projects, including core 579, renderer 110, Playground 108, CLI 40, language-service 91, and Markdown consumers |
 
 This is a source-level downstream consumer fix with local regression evidence;
 it does not alter integration baseline pins or claim public/Pages deployment

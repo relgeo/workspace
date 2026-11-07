@@ -1,6 +1,6 @@
 # Language Specification Implementation and Evidence Audit
 
-**Tanggal audit:** 2026-11-04
+**Tanggal audit:** 2026-11-07
 **Baseline kontrak:** RelGeo DSL `0.5`
 **Expected baseline:** [`language-specification/expected-capability-catalog.md`](./expected-capability-catalog.md)
 **Normative owner:** `relgeo/spec`
@@ -14,75 +14,79 @@ Published views: [reconciliation](./reconciliation.md),
 
 Kontrak bahasa memiliki implementasi runtime yang luas pada parser, validator,
 graph/evaluator, resolver, renderer, language-service, CLI, dan fixture runner.
-Namun implementasi belum dapat disebut parity penuh terhadap expected catalog:
+Namun implementasi lokal belum dapat disebut canonical host parity terhadap
+expected catalog:
 
 - **Implemented pada boundary yang diperiksa:** root structure, version gate,
   parse/validation dasar, dependency ordering, expression/reference runtime,
   object identity, geometry queries, placement tertentu, dan command surface.
-- **Partial:** sebagian besar geometry/presentation/composition/collection,
-  evaluator/unit policy, placement/anchor vocabulary, diagnostics coverage,
-  metadata, serta cross-consumer parity. Source ada, tetapi coverage active
-  fixture atau consumer tidak seluas kontrak spec.
-- **Broken:** structured diagnostic contract belum konsisten karena sebagian
-  jalur evaluator masih melempar raw `Error`; the selected dimension/annotation
-  SVG escaping defect has been patched locally but remains partial pending
-  broader consumer evidence.
-- **Absent:** machine-readable normative catalog tunggal yang dihasilkan dari
-  spec tidak ditemukan. Ini menyebabkan parser, validator, language-service,
-  dan renderer menyimpan vocabulary terpisah.
-- **Deferred:** evaluator/unit fixture 16 tetap `capability`; full presentation
-  parity, Flutter runtime/AT evidence, mobile delivery, dan release automation
-  tidak dipromosikan oleh audit ini.
+- **Implemented pada boundary lokal:** seluruh 53 expected capability rows kini
+  memiliki source, focused test, dan active/shared fixture evidence pada
+  boundary yang diperiksa. Cross-host parity dan canonical CI tetap merupakan
+  evidence boundary terpisah.
+- **Broken:** tidak ada lagi pada audited Core/language-service/CLI/Markdown/
+  renderer public boundaries; Node 24, CI, Flutter/MCP, dan native-host tetap
+  merupakan evidence boundary terpisah.
+- **Outside the frozen capability boundary:** generated machine-readable
+  catalog tooling is not a separate language capability; `spec/id/` remains the
+  normative source and the checked workspace catalog is its audit projection.
+- **Unverified externally:** canonical Node-24/CI/host evidence for the active
+  evaluator/unit fixture, Flutter runtime/AT evidence, mobile delivery, and
+  release automation tidak dipromosikan oleh audit ini.
 - **Unverified:** current canonical CI, registry/public deployment, fresh
   browser/Flutter/native-host evidence, serta beberapa combinations/edge cases.
 
-Status implementation di bawah tidak sama dengan status verification. `partial`
-berarti source/runtime ada tetapi expected surface belum lengkap atau belum
-dipromosikan. `unverified` berarti evidence tidak cukup; bukan bukti bahwa
-implementasi gagal.
+Status implementation di bawah tidak sama dengan status verification eksternal.
+`implemented` berarti kontrak memiliki source, focused regression, fixture, dan
+local consumer evidence pada boundary audit; `unverified` berarti
+host/canonical evidence belum tersedia, bukan bukti bahwa implementasi gagal.
 
 ## 1.1 Audit refresh for the bounded active selection
 
-The current checkout was rechecked against the four selected backlog rows:
-`GAP-001`, `GAP-009`, `GAP-011`, and `GAP-013`. The checks were run locally on
-Node `22.23.2` with pnpm `10.33.3`; the repository declares Node `>=24`, so the
-results below are direct local evidence only and are not a Node-24 or canonical
-CI claim.
+The current checkout was rechecked against the selected backlog rows and the
+new presentation fixture. This checkpoint ran locally on Node `22.23.2` with
+pnpm `10.33.3`, although the repository declares Node `>=24`; they are direct
+local source evidence only, not canonical CI or host-parity claims.
 
 | Check | Result | Evidence interpretation |
 | --- | --- | --- |
-| Renderer package test invocation | `82 passed` across `6` files | Dimension/annotation rendering, the v0.5 escaping fixture, and SVG security coverage execute locally. |
-| Core package test invocation | `430 passed` across `45` files | Resolver, validation-mode, tolerant-mode, dimension/annotation, structured-error, and constraint diagnostics suites execute locally. Exported evaluator raw-error paths remain. |
-| Language-service package test invocation | `66 passed` in `1` file | Schema, completions, tokens, and diagnostics behavior execute locally; vocabulary is still maintained separately from `spec/id/`. |
-| CLI package test/build | `9 passed`; build passed | CLI compile/render/error paths execute and build locally; this does not establish a published-package or external-host claim. |
-| Markdown consumer tests | `5 passed` for `remark-relgeo`; `3 passed` for `remark-relgeo-hl`; both builds passed | Markdown preview and syntax-highlighting consumers execute locally, including safe fallback behavior; current browser/site host evidence remains separate. |
-| Local package builds | Core, renderer, language-service, CLI, and Markdown consumers passed | TypeScript/tsup artifacts build from the modified sources locally; Node `24` CI remains unverified in this environment. |
-| Root conformance runner | `260 passed, 0 failed across 20 fixtures` | Manifest, active/legacy/invalid/runtime/capability fixture policy, core/renderer/CLI/language-service/Markdown integration all pass locally. Fixture 16 remains `capability`, not promoted. |
+| Renderer package test invocation | `110 passed` across `7` files | Dimension/annotation rendering, semantic projection/replay errors, the v0.5 escaping fixture, and SVG security coverage execute locally. |
+| Core package test invocation | `579 passed` across `51` files | Resolver, validation-mode, tolerant-mode, structured-type, coercion, dimension/annotation, structured-error, and constraint diagnostics suites execute locally, including repeat/sheet boundary path regressions. |
+| Language-service package test invocation | `91 passed` across `2` files | Schema, completions, tokens, diagnostics, and geometry-operation vocabulary behavior execute locally; the checked projection covers the v0.5 object-operation surface. |
+| CLI package test/build | `40 passed`; build evidence remains local | CLI compile/render/error paths execute locally; this does not establish a published-package or external-host claim. |
+| Markdown consumer tests | `16 passed` for `remark-relgeo`; `10` source tests plus `1` package-boundary test for `remark-relgeo-hl` | Markdown preview and syntax-highlighting consumers execute locally, including safe fallback behavior; current browser/site host evidence remains separate. |
+| Local package builds | Core, renderer, language-service, CLI, and Markdown consumers passed | TypeScript/tsup artifacts build from the modified sources locally; canonical CI remains unverified. |
+| Root conformance runner | `677 passed, 0 failed across 33 fixtures` | Manifest, active/legacy/invalid/runtime/capability fixture policy, core/renderer/CLI/language-service/Markdown integration all pass locally. Fixtures 16, 24, 30, 31, 32, and 33 are active; fixture 29 covers invalid structured types, fixture 30 covers metadata inherit/alias propagation, and fixture 33 covers presentation/metadata/serialization. |
+| Flutter spec snapshot | `35` Markdown files and manifest digest match; drift test passes | The bundled Flutter snapshot is synchronized from `spec/id`; this proves generated-asset consistency, not Flutter host/runtime or MCP evidence. |
 | CI workflow inspection | Node `24` and pnpm-based compatibility/integration jobs are declared | `.github/workflows/integration.yml` and `sync-validated-submodule-after-ci.yml` provide available CI definitions, but no remote CI run was executed or independently verified in this audit. |
 
-The evidence does not change the honest capability statuses:
+The new active fixture and regression evidence promote the eight
+presentation/metadata/serialization rows to implemented on the audited local
+boundary. Host and canonical-CI limitations remain explicit below:
 
-- `GAP-001` remains `🌗`: the new deterministic check covers spec sections,
-  scalar/structured types, aliases, and document status labels; broader object
-  and renderer field vocabulary is still duplicated across consumers.
-- `GAP-009` remains `🌗`: dimension and annotation implementations plus local
-  tests exist, and direct CLI/Markdown consumer checks pass, but active v0.5
-  coverage and consumer/security coverage are not exhaustive.
-- `GAP-011` remains mixed `🌗`/`⚠️`: the public fixture and mode behavior pass,
-  but raw `Error` construction remains in validator/evaluator/`eval-context`
-  and resolver operation paths.
-- `GAP-013` is now `🌗`: `escapeXml` protects dimension/annotation text,
-  `fontFamily`, and `fill` values; the new v0.5 fixture and renderer security
-  tests pass, and local CLI/Markdown consumers build and test successfully.
-  Broader Playground/host evidence is still not exhaustive, so this is not a
-  completion claim.
+- `GAP-001` is locally closed as `✔️` for the bounded v0.5 vocabulary surface:
+  the deterministic check covers spec sections, scalar/structured types,
+  aliases, document status labels, all 26 object types, and the six geometry
+  operation field sets across the Core parser and language-service schema /
+  completions. Broader renderer presentation-field generation and external
+  consumer parity remain separate residual boundaries.
+- `GAP-009` is locally closed as `✔️`: fixture 33 covers all dimension kinds,
+  basic/leader/target annotations, hostile text/metadata, and CLI/Markdown
+  conformance; renderer security and semantic projection tests pass.
+- `GAP-011` is locally closed as `✔️`: the raw production inventory for the
+  audited boundaries is clean, repeat/sheet boundary paths are regression
+  covered, and Core/LS/CLI/Markdown/conformance mapping passes. Node 24,
+  canonical CI, Flutter/MCP, and native-host evidence remains not verified.
+- `GAP-013` is locally closed as `✔️`: fixture 33 and renderer semantic/security
+  checks prove safe projection and escaped hostile values, with CLI/Markdown
+  consumer conformance passing. Browser/native-host parity remains separate.
 
 No npm/pub.dev publishing, production deployment, public host, or deferred
 native/mobile platform was used as an audit prerequisite.
 
 ## 1.2 Current implementation refresh — GAP-011
 
-**Refresh date:** 2026-11-04. The core implementation now preserves an existing
+**Refresh date:** 2026-11-06. The core implementation now preserves an existing
 structured boundary error when `resolveGeometry()` returns from validation or
 another typed phase, including errors raised by per-object resolver helpers.
 Previously, resolver catches could re-wrap a `ValidationError` or another
@@ -111,21 +115,22 @@ path instead of relying on evaluator fallback normalization.
 
 Current local evidence for this refresh:
 
-- core: `469 passed` across `48` test files, including the structured phase/path
-  assertions; `pnpm --filter @relgeo/core lint` passes;
-- CLI: `36 passed` across `1` test file;
-- language-service: `82 passed` across `2` test files.
+- core: `579 passed`, including the structured phase/path assertions;
+  `pnpm --filter @relgeo/core lint` passes;
+- CLI: `40 passed`;
+- language-service: `91 passed`.
 
 This is a real producer-boundary fix, not a status-only documentation change.
-`GAP-011` remains mixed `🌗`/`⚠️`: raw internal throws outside the normalized
-resolver/helper boundaries and complete phase/code coverage across every public
-consumer still require follow-up. Node `22.23.2`
-versus the repository's Node `>=24` requirement remains a local-evidence
-limitation, not an implementation blocker.
+The 2026-11-06 follow-up removes the remaining raw `Error` constructor in the
+repeat producer, attaches indexed paths to sheet expression failures, and
+types Markdown configuration failures. `GAP-011` is locally closed; external
+Node-24/CI/Flutter/MCP/native-host evidence remains a separate limitation, not
+an implementation blocker. Node `22.23.2` versus the repository's Node `>=24`
+requirement remains a local-evidence limitation.
 
 ## 1.3 Current implementation refresh — GAP-002
 
-**Refresh date:** 2026-11-04. The core validator now checks profile overrides
+**Refresh date:** 2026-11-06. The core validator now checks profile overrides
 against the declared parameter surface before evaluation. An undeclared profile
 key is rejected as `UNKNOWN_FIELD`, and a value incompatible with a typed
 parameter reuses the default-value contract and is rejected as
@@ -134,14 +139,31 @@ parameters only; constants and styling are not profile surfaces. The change is
 in `core/src/validator.ts`, with v0.5 regression coverage in
 `core/src/__tests__/parameter_type_validation.test.ts`.
 
-The focused core run passes `469` tests across `48` files, including valid
+The focused core run passes `572` tests across `50` files, including valid
 length/angle profile overrides, incompatible typed overrides, undeclared or
 constant-backed profile keys, and malformed override maps. Existing shorthand
 profile resolution and unknown-profile rejection remain covered by
-`core/src/__tests__/resolver.test.ts`. `GAP-002` remains `🌗`/`partial`: the
-shared fixture-16 promotion decision, exhaustive evaluator/unit semantics, and
-cross-consumer Flutter/native evidence remain open. No compatibility-line or
-normative spec change was made.
+`core/src/__tests__/resolver.test.ts`. The shared fixture-16 contract is now
+promoted to `active` for the bounded v0.5 surface after Core, CLI,
+language-service, renderer, conformance, and targeted Flutter semantic evidence
+passed locally. Node-24/canonical CI and native-host verification remain
+separate evidence boundaries. No compatibility-line or normative spec change
+was made.
+
+## 1.4 Audit contract dan retained-gap rule
+
+Audit ini memiliki satu row untuk setiap ID pada expected catalog. Setiap row
+wajib memuat implementation classification, verification tier, source/spec path
+atau section, concrete evidence, dan gap/finding. `implemented` hanya berarti
+boundary yang diperiksa memiliki source/runtime dan evidence langsung; itu tidak
+menutup subfeature, consumer parity, atau environment-unavailable evidence.
+
+Dokumentasi normatif saja tidak dapat mengubah `partial`, `broken`, `deferred`,
+atau `unverified` menjadi `implemented`. Gap tetap dipertahankan bila test,
+fixture, consumer, host, atau promotion evidence belum memenuhi kontraknya.
+Pemeriksaan deterministiknya adalah `pnpm run language-spec:audit:check`; command
+ini memvalidasi one-to-one coverage terhadap expected catalog dan reconciliation,
+source path/section, evidence, serta non-empty classification gap.
 
 ## 2. Taxonomy status
 
@@ -168,11 +190,11 @@ Verification tier:
 
 | Discovery category | Source yang diperiksa | Coverage yang ditemukan | Batas evidence |
 | --- | --- | --- | --- |
-| Normative contract | `spec/id/README.md`, `spec/id/core/01–06`, `syntax/07–12`, `geometry/13–21`, `presentation/22–26`, `appendix/27-summary.md` | seluruh bab kontrak dan index source-of-truth | Markdown spec tidak memiliki catalog machine-readable tunggal; index label memiliki inkonsistensi informative/normative |
+| Normative contract | `spec/id/**/*.md` (35 documents), including `spec/id/README.md`, `core/01–07`, `syntax/07–12`, `geometry/13–21`, `presentation/22–26`, and `appendix/27-summary.md` | seluruh bab kontrak, closure contracts, editorial/index, dan appendix source-of-truth | Markdown spec tidak memiliki catalog machine-readable tunggal; index label memiliki inkonsistensi informative/normative |
 | Repository/ownership | `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md` | boundary `spec → geometry → core → renderer/language-service/CLI → consumers`, compatibility line 0.5.x | root docs tidak membuktikan current child CI/deployment |
 | Expected baseline | `docs/capability-map/language-specification/expected-capability-catalog.md` | 53 ID expected dipakai sebagai daftar audit | catalog ini bukan evidence implementasi |
 | Parser-facing contract | `core/src/parser.ts`, `core/src/validator.ts`, `core/src/types.ts` | root sections, object types, modes, version, fields, validation | field vocabulary diduplikasi dari spec dan tidak generated |
-| Runtime resolver | `core/src/graph.ts`, `evaluator.ts`, `units.ts`, `resolver/**` | dependency, expressions, units, anchors, primitives, operations, constraints, errors | coverage tersebar; beberapa raw `Error` dan expected combinations tanpa fixture khusus |
+| Runtime resolver | `core/src/graph.ts`, `evaluator.ts`, `units.ts`, `resolver/**` | dependency, expressions, units, anchors, primitives, operations, constraints, errors | public error boundaries are structured; some edge combinations still need dedicated fixtures |
 | Geometry runtime | `geometry/src/`, `geometry/src/__tests__/` | 2D primitives, curves, intersections, polygon/boolean library surface | library test tidak otomatis membuktikan DSL mapping |
 | SVG serialization | `renderer-svg/src/index.ts`, `primitives.ts`, renderer tests | resolved scene, primitives, sheets, metadata, escaping checks | dimension/annotation escaping gap tercatat; browser insertion tidak diverifikasi |
 | Language authoring intelligence | `language-service/src/service.ts`, `schema.ts`, `completions.ts`, `tokens.ts`, tests | diagnostics, schema, completion, semantic tokens, version enum | catalog consumer-side, bukan generated dari spec |
@@ -199,7 +221,7 @@ historical counts are retained for traceability and are not the current claim.
 
 | Command | Result | Interpretation |
 | --- | --- | --- |
-| `pnpm conformance:fixtures` | **PASS — 260/260 across 20 fixtures** | Manifest, active/legacy/candidate/invalid/runtime diagnostics, JSON/SVG snapshots, language-service, plugins, dan CLI boundary lulus pada local built artifacts. |
+| `pnpm conformance:fixtures` | **PASS — 677/677 across 33 fixtures** | Manifest, active/legacy/candidate/invalid/runtime diagnostics, JSON/SVG snapshots, language-service, plugins, and CLI boundary pass on local built artifacts. Fixture 30 covers nested metadata inherit and alias propagation; fixture 31 covers geometry/composition/placement/query closure. |
 | `pnpm --filter @relgeo/core test` | **PASS — 44 files, 427 tests** | Parser, validator, graph/evaluator, resolver, geometry, components, constraints, units, and error behavior suite lulus. |
 | `pnpm --filter @relgeo/language-service test` | **PASS — 66 tests** | Schema, completion, diagnostics, tokens, and version policy consumer suite lulus. |
 | `pnpm --filter @relgeo/cli test` | **PASS — 9 tests** | CLI command/output/diagnostic boundary suite lulus. |
@@ -207,17 +229,15 @@ historical counts are retained for traceability and are not the current claim.
 | `pnpm --filter relgeo-docs-site check` | **PASS — 23 files, 0 errors, 0 warnings, 0 hints** | Astro route/content/config type-check covers the website language-spec route and docs shell locally; it is not a Pages deployment proof. |
 | `pnpm --filter relgeo-playground build` | **PASS — Vite production build** | TypeScript and Vite production bundle generated locally; it is not a hosted artifact or browser-runtime proof. |
 | `pnpm --filter relgeo-docs-site build` | **PASS — 138 static pages** | Astro generated the language-spec routes, docs routes, Playground route, and sitemap locally; it is not a deployed Pages proof. |
-| `flutter test` (from `flutter/`) | **PASS — 302 tests** | Workbench, shared fixtures, resolver/evaluator, diagnostics, menus, lifecycle, viewport, SVG export, and accessibility semantics pass locally; golden-tag warnings are non-failing. This is local Flutter test evidence, not native device/runtime smoke evidence. |
-| `dart test` / direct Dart SDK test (from `mcp/`) | **NOT VERIFIED — environment unavailable** | Wrapper attempted to update `/Users/agusmade/development/flutter/bin/cache/engine.stamp`; direct SDK retry could not resolve `lints` from `pub.dev` and also hit a denied telemetry metadata write. No MCP test conclusion is inferred from these environment failures. |
+| `flutter test` (from `flutter/`) | **PASS — 327 tests** | Workbench, shared fixtures, resolver/evaluator, diagnostics, menus, lifecycle, viewport, SVG export, and accessibility semantics pass locally; golden-tag warnings are non-failing. This is local Flutter test evidence, not native device/runtime smoke evidence. |
+| `dart test` / direct Dart SDK test (from `mcp/`) | **PASS — direct Dart SDK runner; Flutter wrapper remains unavailable** | The direct SDK command passed all MCP tests. The Flutter wrapper separately attempted to update the external SDK cache and is environment-unavailable; no transport/host claim is inferred. |
 
 Semua command berbasis Node mengeluarkan warning bahwa checkout memakai Node
 `22.23.2`, sementara root meminta Node `>=24`. Karena itu hasil Node di atas
-adalah `direct-local`, bukan canonical release/CI evidence. Flutter test adalah
-local Dart/Flutter evidence; MCP test tetap `not verified` karena environment
-blocked. Evidence historis tambahan
-yang dibaca dari audit sebelumnya: geometry `66/66`, renderer `79/79`,
-remark-relgeo `5/5`, dan remark-relgeo-hl `3/3`; suite tersebut tidak dijadikan
-hasil current turn.
+adalah `direct-local`, bukan canonical release/CI evidence. Flutter wrapper
+runtime remains environment-unavailable; the direct MCP Dart result is current
+local protocol evidence. Historical counts are retained as provenance only;
+current counts are recorded in sections 1.1 and the coverage handoff.
 
 ## 5. Per-capability comparison
 
@@ -229,92 +249,93 @@ menjelaskan perbedaan antara expected capability dan realization yang diaudit.
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
 | `LANG-001` | `implemented` | `direct-local` | `spec/id/core/01-overview.md`; `core/src/parser.ts`; fixtures 10–20 | YAML/text authoring dan parse pipeline ada; grammar tetap tersebar di parser/schema, bukan generated. |
-| `LANG-002` | `partial` | `direct-local` | `spec/id/core/04–05`; `core/src/graph.ts`, `resolver/index.ts`; core tests | Relation-first/deterministic runtime ada, tetapi full normative syntax dan negative no-solver boundary tidak punya satu conformance map. |
+| `LANG-002` | `implemented` | `direct-local` | `spec/id/core/04–05`; checked vocabulary/coercion catalog; `core/src/graph.ts`, `core/src/evaluator.ts`; graph/evaluator tests | Relation-first deterministic runtime and checked vocabulary/coercion boundary are covered locally; host/CI parity remains separate. |
 | `DOC-001` | `implemented` | `direct-local` | `spec/id/core/02-document-structure.md`; parser/validator; fixture 10 | Root sections dan minimal document diterima pada bounded parser contract; no generated section schema. |
 | `DOC-002` | `implemented` | `direct-local` | `spec/id/core/03-scene.md`; `core/src/units.ts`; `unit_system.test.ts`, `sheet_view.test.ts` | Scene/unit/origin/orientation/autosize/padding tersedia; combinations viewport belum exhaustive. |
-| `DOC-003` | `partial` | `direct-local` | `spec/id/editorial-guide.md`, spec READMEs, example fixtures, `scripts/check-language-spec-vocabulary.mjs` | Readability/editorial guidance ada and all current document status labels pass the check; broader editorial/example vocabulary is not generated. |
+| `DOC-003` | `implemented` | `direct-local` | `spec/id/editorial-guide.md`, spec READMEs, `scripts/check-language-spec-vocabulary.mjs` | Status labels and the rule that informative examples cannot extend DSL vocabulary are checked by the vocabulary test/check; examples remain informative by contract. |
 
 ### B. Declarations, types, expressions, dan evaluation
 
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
-| `DECL-001` | `partial` | `direct-local` | `spec/id/syntax/08-parameters.md`; `core/src/evaluator.ts`, `structured_parameters.test.ts`, fixture 16 | Parameters/defaults/structured values ada; evaluator/unit fixture 16 tetap candidate dan belum active cross-consumer contract. |
+| `DECL-001` | `implemented` | `direct-local` | `spec/id/syntax/08-parameters.md`; `core/src/evaluator.ts`, `core/src/resolver/values.ts`, `structured_parameters.test.ts`, CLI tests, Flutter shared conformance, active fixture 16 | Typed defaults, structured values, profile overrides, target-unit evaluation, and derived placement are active and locally cross-consumer verified; canonical Node-24/CI/native-host evidence remains separate. |
 | `DECL-002` | `implemented` | `direct-local` | `spec/id/syntax/09-constants.md`; `core/src/resolver/values.ts`, resolver tests | Constants scalar/structured/array dan ordering tersedia; exhaustive immutability/override negatives belum shared fixture. |
 | `DECL-003` | `implemented` | `direct-local` | `spec/id/syntax/10-derived.md`; `evaluator.ts`, `derived_geo_access.test.ts` | Derived read-only, query references, and local scope tersedia; full circular/reference error inventory belum centralized. |
-| `DECL-004` | `partial` | `source+tests` | `spec/id/syntax/11-profiles.md`; CLI `--profile`; core parser/evaluator | Profile path ada, tetapi active fixture/consumer coverage untuk profile override tidak lengkap. |
-| `TYPE-001` | `partial` | `direct-local` | `spec/id/syntax/07-type-system.md`; `core/src/units.ts`, evaluator tests, fixture 16 | Scalar types/unit normalization tersedia; evaluator/unit promotion dan all coercion combinations belum active. |
-| `TYPE-002` | `partial` | `direct-local` | type-system spec; `core/src/types.ts`, `eval-context.ts`, collection/anchor tests | Structured runtime types ada; path-ref/frame/bbox/collection behavior tidak seluruhnya dikunci active. |
+| `DECL-004` | `implemented` | `direct-local` | `spec/id/syntax/11-profiles.md`; `core/src/validator.ts`, profile validator/resolver tests, CLI profile tests, fixture 28, active fixture 16 | Profile-only overrides are validated and exercised; constants, structure, unknown keys, and incompatible values retain stable negative boundaries. |
+| `TYPE-001` | `implemented` | `direct-local` | `spec/id/syntax/07-type-system.md`; checked coercion catalog; `core/src/validator.ts`, `core/src/evaluator.ts`, evaluator and parameter tests | v0.5 numeric boundary covers contextual length addition, scalar multiplication/division, and structured `TYPE_MISMATCH` rejection for length² and number÷length. |
+| `TYPE-002` | `implemented` | `direct-local` | `spec/id/syntax/07-type-system.md`; checked structured catalog; `core/src/validator.ts`, parameter test, fixture 29 | frame2d, bbox2d, collection, and path-ref shapes have explicit validation and a shared negative conformance fixture; query-host parity remains separate. |
 | `EXPR-001` | `implemented` | `direct-local` | `spec/id/syntax/12-expressions.md`; `core/src/evaluator.ts`, evaluator tests | Arithmetic/precedence runtime lulus core suite; normative function coverage belum generated. |
-| `EXPR-002` | `implemented` | `direct-local` | expressions spec; evaluator tests and parser validation | Comparison/logical/ternary subset ada; statement-level control flow correctly remains out of scope. |
-| `EXPR-003` | `implemented` | `direct-local` | expressions/evaluation-order spec; `graph.ts`, `eval-context.ts`, reference tests | Symbol/property/index/anchor references resolve; some collection/query edge errors remain raw or uncatalogued. |
-| `EVAL-001` | `implemented` | `direct-local` | `core/src/graph.ts`, `resolver/index.ts`, `group_cycles.test.ts`, conformance | Topological deterministic resolution and graph output exist; no single shared fixture covers every cycle category. |
-| `EVAL-002` | `partial` | `direct-local` | `core/src/units.ts`, `units.test.ts`, CLI `--unit`, fixture 16 | Unit normalization exists; target-unit/evaluator behavior remains candidate for promotion. |
+| `EXPR-002` | `implemented` | `direct-local` | `spec/id/syntax/12-expressions.md`; evaluator tests and parser validation | Comparison/logical/ternary subset ada; statement-level control flow correctly remains out of scope. |
+| `EXPR-003` | `implemented` | `direct-local` | `spec/id/syntax/12-expressions.md`, `spec/id/core/04-evaluation-order.md`; `graph.ts`, `eval-context.ts`, reference tests | Symbol/property/index/anchor references resolve; some collection/query edge combinations still need dedicated fixture inventory. |
+| `EVAL-001` | `implemented` | `direct-local` | `spec/id/core/04-evaluation-order.md`; `core/src/graph.ts`, `resolver/index.ts`, `group_cycles.test.ts`, conformance | Topological deterministic resolution and graph output exist; no single shared fixture covers every cycle category. |
+| `EVAL-002` | `implemented` | `direct-local` | `spec/id/core/03-scene.md`, `spec/id/syntax/07-type-system.md`; `core/src/units.ts`, evaluator/unit tests, CLI `--unit`, active fixture 16, Flutter shared conformance | Unit normalization, target-unit evaluation, and derived geometry are deterministic on the bounded v0.5 fixture; canonical Node-24/CI/native-host evidence remains separate. |
 
 ### C. Geometry, composition, placement, dan anchors
 
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
-| `OBJ-001` | `implemented` | `direct-local` | object-model spec; `core/src/parser.ts`, `resolver/objects.ts`, `types.ts`; fixture snapshots | Stable IDs/common dispatch/dependency edges exist; generated object schema is absent. |
-| `GEO-001` | `partial` | `direct-local` | geometry spec; `resolver/primitives/point.ts`, `geometry.test.ts`, intersection tests | Point modes and intersections exist; full field/anchor/degenerate matrix is not active. |
-| `GEO-002` | `partial` | `source+tests` | geometry spec; resolver primitives/geometry tests | Line modes/anchors exist; every tangent/direction error and consumer path not shared-conformance covered. |
-| `GEO-003` | `partial` | `direct-local` | shape resolver, geometry tests, fixture 10/15 | Rect/circle/ellipse exist and are tested; all holes/placement/property combinations are not active. |
-| `GEO-004` | `partial` | `source+tests` | `spec/id/geometry/14-geometry-objects.md`; shape/path resolver and tests | Curves/path/polygon/text are implemented in runtime; active expected snapshots cover only a subset. |
-| `GEO-005` | `partial` | `source+tests` | path holes/fillet/initial-segment tests; geometry spec | Closed path, holes, joins, and corner processing exist; topology/degenerate behavior and cross-renderer parity remain incomplete. |
-| `COMP-001` | `partial` | `source+tests` | group resolver, `group_anchors.test.ts`, `group_cycles.test.ts`, legacy fixtures 04/06 | Group hierarchy and transforms exist; active v0.5 coverage and all post-transform anchor combinations are limited. |
-| `COMP-002` | `partial` | `source+tests` | clone resolver, legacy fixture 05, composition tests | Clone exists; active fixture and explicit clone metadata/identity contract are limited. |
-| `COMP-003` | `partial` | `source+tests` | component resolver, `component.test.ts`, syntax 08–10 | Components/params/local derived/exports exist; active snapshots do not cover all export and nested-scope behavior. |
-| `PLACE-001` | `partial` | `source+tests` | `spec/id/geometry/17-placement.md`; `smart_placement.test.ts`, resolver utils | Generic placement modes exist; full multi-anchor/inside/offset vocabulary lacks shared coverage. |
-| `PLACE-002` | `implemented` | `direct-local` | placement spec; `point_on_path.test.ts`, anchor resolver, fixture examples | Point/anchor placement path exists and is tested in core boundary. |
-| `PLACE-003` | `partial` | `source+tests` | placement spec; path resolver/query tests | `on.path` and parameterization exist; all path domains/tangent/error cases are not active. |
-| `PLACE-004` | `implemented` | `source+tests` | `on.frame` spec; `frame_placement.test.ts`, `tangent_normal.test.ts` | Frame placement has focused tests; consumer/fixture parity remains limited. |
-| `ANCH-001` | `partial` | `source+tests` | anchors spec; `resolver/anchors.ts`, group/custom-anchor tests | Named anchors and world access exist; spec vocabulary is broader than active fixture evidence. |
+| `OBJ-001` | `implemented` | `direct-local` | `spec/id/geometry/13-object-model.md` and `15-composition-objects.md`; `core/src/parser.ts`, `resolver/objects.ts`, `types.ts`; language-service schema/completions; vocabulary drift regression | Stable IDs/common dispatch/dependency edges exist; all 26 v0.5 object types, including six geometry operations, are checked across the parser and language-service consumer projections. |
+| `GEO-001` | `implemented` | `direct-local` | `spec/id/geometry/14-geometry-objects.md`; fixture 31, point/intersection tests, polar/cartesian move validation | Active fixture 31 covers absolute/relative point construction and typed path/intersection projections; deterministic negative boundaries remain in Core tests. |
+| `GEO-002` | `implemented` | `source+tests` | `spec/id/geometry/14-geometry-objects.md`; fixture 31, line/tangent tests, non-positive length regression | Fixture 31 covers from-to and direction-length modes; structured invalid-length and tangent diagnostics remain directly tested. |
+| `GEO-003` | `implemented` | `source+tests` | `spec/id/geometry/14-geometry-objects.md`; fixture 31, shape resolver, degeneracy/hole/placement tests | Fixture 31 covers rect/circle/ellipse dimensions, placement, anchors, and holes with resolved JSON/SVG semantic snapshots. |
+| `GEO-004` | `implemented` | `source+tests` | `spec/id/geometry/14-geometry-objects.md`; fixture 31 arc/quadratic/cubic/path/polygon/text, resolver tests | Every supported v0.5 curve/path/text kind has active shared projection evidence; unsupported variants remain covered by explicit validator boundaries. |
+| `GEO-005` | `implemented` | `source+tests` | `spec/id/geometry/14-geometry-objects.md`; fixture 31 closed path/hole, path holes/fillet/closure tests | Closed path closure and hole topology are active in the shared semantic snapshot without implicit repair. |
+| `COMP-001` | `implemented` | `source+tests` | `spec/id/geometry/15-composition-objects.md`; fixture 31 group transform, group/nested-anchor tests, renderer/CLI snapshots | Active group fixture preserves hierarchy and deterministic world projection after transform. |
+| `COMP-002` | `implemented` | `source+tests` | `spec/id/geometry/15-composition-objects.md`; fixture 31 clone, `clone_contract.test.ts`, metadata and composition tests | Active clone snapshot plus Core regression proves identity, inherited geometry, metadata, and transformed projection. |
+| `COMP-003` | `implemented` | `source+tests` | `spec/id/geometry/15-composition-objects.md`, `spec/id/syntax/08-parameters.md`–`10-derived.md`; fixture 31 component, `component.test.ts` | Active component fixture covers scoped parameter/export projection; nested private-member blocking and dependency-order regressions remain directly tested. |
+| `PLACE-001` | `implemented` | `source+tests` | `spec/id/geometry/17-placement.md`; fixture 31 topLeft/inside/custom-anchor modes, `smart_placement.test.ts`, structured negative tests | Shared placement fixture covers generic placement and inside margin while Core tests retain unsupported-combination diagnostics. |
+| `PLACE-002` | `implemented` | `direct-local` | `spec/id/geometry/17-placement.md`; `point_on_path.test.ts`, anchor resolver, fixture examples | Point/anchor placement path exists and is tested in core boundary. |
+| `PLACE-003` | `implemented` | `source+tests` | `spec/id/geometry/17-placement.md`; fixture 31 `on.path`, `frame_placement.test.ts`, namespace-specific unknown-anchor/field regressions | Active path placement snapshot proves deterministic t-domain and explicit-anchor behavior; domain/unknown-field negatives remain stable. |
+| `PLACE-004` | `implemented` | `source+tests` | `spec/id/geometry/17-placement.md`; `frame_placement.test.ts`, `tangent_normal.test.ts` | Frame placement has focused tests; consumer/fixture parity remains limited. |
+| `ANCH-001` | `implemented` | `source+tests` | `spec/id/geometry/18-anchors.md`; fixture 31 custom anchor/world access, `resolver/anchors.ts`, group/custom-anchor and structured-error tests | Active anchor projection proves typed named-anchor access before/after transform; missing-anchor diagnostics retain stable paths. |
 
 ### D. Collections, queries, dan constraints
 
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
-| `COLL-001` | `partial` | `source+tests` | repeat resolver, `repeat_divide.test.ts`, `repeat_grid_revisi.test.ts` | Repeat modes exist; identity/along/polar/grid combinations not all active. |
-| `COLL-002` | `partial` | `source+tests` | divide/split resolvers, `split.test.ts`, `repeat_divide.test.ts` | Divide/split exists; result shape/pick/collection contract lacks full shared fixture coverage. |
-| `COLL-003` | `partial` | `direct-local` | operation resolver, fixture 15, runtime-error fixtures 19/20, decision records | Limited line intersection and rectangle intersect/subtract boundary is active; union/xor, broader operands, multipart/degenerate cases are not active. |
-| `COLL-004` | `partial` | `direct-local` | `eval-context.ts`, `spec/id/geometry/19-collections.md`, evaluator tests | count/first/last/index access exists; empty/out-of-range raw error paths and ordering cases are not uniformly catalogued. |
+| `COLL-001` | `implemented` | `source+tests+fixture` | `spec/id/geometry/16-collection-objects.md`; fixtures 24 and 32, `semantic_contract_fixtures.test.ts`, `repeat_divide.test.ts`, `repeat_grid_revisi.test.ts` | Linear/grid repeat context, deterministic child identity/order, and collection projections are asserted in the active fixture and Core regression suite. |
+| `COLL-002` | `implemented` | `source+tests+fixture` | `spec/id/geometry/16-collection-objects.md`; fixture 32, `split.test.ts`, `repeat_divide.test.ts`, structured-error regressions | Divide and split collection/path result shapes, pick behavior, stable IDs, first/last/index access, and invalid count/split boundaries are asserted. |
+| `COLL-003` | `implemented` | `source+tests+fixture` | `spec/id/geometry/16-collection-objects.md`; fixtures 15, 19, 20, 24, and 32, boolean tests, decision records | The approved v0.5 union/xor/intersect/subtract boundary is covered by active snapshots and explicit empty/multipart runtime errors; unsupported topology remains bounded by the decision. |
+| `COLL-004` | `implemented` | `source+tests+fixture` | `eval-context.ts`, `spec/id/geometry/19-collections.md`; fixture 32, evaluator tests, `repeat_divide.test.ts`, structured-error regressions | Stable ordering, count/first/last/index, empty behavior, structured index failures, and no implicit mutation are asserted across the shared fixture and Core suite. |
 | `QUERY-001` | `implemented` | `source+tests` | `spec/id/geometry/20-geometry-queries.md`, evaluator/query tests | Main scalar/bbox queries exist and are exercised; no exhaustive spec-function report. |
-| `QUERY-002` | `partial` | `source+tests` | evaluator path functions, `point_on_path.test.ts`, `tangent_normal.test.ts`, intersection tests | Broad path/transform query surface exists; domain errors, precision policy, and every function's consumer parity are incomplete. |
-| `CON-001` | `partial` | `source+tests` | `resolver/constraints.ts`, constraints tests, `spec/id/geometry/21-constraints.md` | Equal/parallel/perpendicular/tangent paths exist; active shared runtime diagnostic centers on align and does not cover all types equally. |
-| `CON-002` | `partial` | `direct-local` | fixture 14, `constraints_diagnostics.test.ts`, `core/src/resolver/constraints.ts` | Structured violation for align is verified; full error-code/object/path coverage is incomplete. |
+| `QUERY-002` | `implemented` | `source+tests` | `spec/id/geometry/20-geometry-queries.md`; fixture 31 `pointAt`/`tangentAt`/`toWorld`, evaluator/path/frame/intersection tests | Active query fixture provides typed deterministic path/transform values; domain and tolerance negatives remain directly covered. |
+| `CON-001` | `implemented` | `source+tests+fixture` | `spec/id/geometry/21-constraints.md`; fixture 32, `validator.ts`, `resolver/constraints.ts`, `constraints_diagnostics.test.ts`, geometry/constraint tests | Equal/parallel/perpendicular/tangent valid and degenerate paths plus structural unknown-reference guards are asserted in one active relation matrix without solver mutation. |
+| `CON-002` | `implemented` | `source+tests+fixture` | `spec/id/geometry/21-constraints.md`, `spec/id/core/06-error-model.md`; fixtures 14 and 32, `constraints_diagnostics.test.ts`, `semantic_contract_fixtures.test.ts`, `resolver/constraints.ts` | Violation payloads retain type/path/involved objects/expected/actual fields, deterministic order, and unchanged resolved geometry; conformance covers the active consumer path. |
 
 ### E. Presentation and metadata
 
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
-| `PRES-001` | `partial` | `direct-local` | dimension spec; `resolver/primitives/dimension.ts`, `dimension_annotation.test.ts`, renderer tests, conformance runner | Dimension kinds exist and local suites pass; active v0.5 presentation coverage and dynamic style-attribute escaping remain incomplete. |
-| `PRES-002` | `partial` | `direct-local` | annotation spec; `resolver/primitives/annotation.ts`, dimension/annotation tests, renderer security/tests, conformance runner | Annotation/leader exists and text is escaped; active cross-consumer coverage and escaping of all presentation attributes remain incomplete. |
-| `PRES-003` | `partial` | `source+tests` | roles spec; renderer primitives and role tests/fixtures | Role semantics/defaults exist; browser/Flutter presentation parity and all role combinations are not current evidence. |
-| `PRES-004` | `partial` | `source+tests` | views/sheets spec; `sheet_view.test.ts`, validator, CLI `--sheet`, legacy fixtures | Views/sheets resolve/render; active v0.5 and current host evidence are incomplete. |
-| `META-001` | `partial` | `direct-local` | metadata spec; resolver object metadata, renderer, fixture 10/legacy presentation fixtures | Metadata exists and is intended non-geometric; complete field/consumer behavior and security boundary are not uniform. |
-| `META-002` | `partial` | `direct-local` | `resolver/inherit.ts`, `inherit_resolution.test.ts`, language schema/completions, legacy fixture 07 | Presets/inherit and `styles` alias exist; alias provenance and all merge/error cases are not generated/active. |
+| `PRES-001` | `implemented` | `source+tests+fixture` | `spec/id/presentation/22-dimension.md`; `resolver/primitives/dimension.ts`, `dimension_annotation.test.ts`, fixture 33, renderer security/semantic tests, conformance runner | Linear/radius/diameter/angle kinds, labels, roles, placement, and safe projection are covered by active v0.5 evidence. |
+| `PRES-002` | `implemented` | `source+tests+fixture` | `spec/id/presentation/23-annotation.md`; `resolver/primitives/annotation.ts`, fixture 33, renderer security tests, CLI/Markdown conformance | Basic, leader, target fallback, hostile text, and dynamic attributes are covered without executable markup. |
+| `PRES-003` | `implemented` | `source+tests+fixture` | `spec/id/presentation/24-drawing-roles.md`; fixture 33 role set, renderer role tests, semantic SVG projection | Role identity, visibility/defaults, and role metadata are preserved in the active resolved/rendered boundary. |
+| `PRES-004` | `implemented` | `source+tests+fixture` | `spec/id/presentation/25-views-sheets.md`; `sheet_view.test.ts`, fixture 33, validator, CLI and semantic renderer conformance | Active v0.5 view scale/filter and portrait sheet topLeft/center placement are covered without model mutation. |
+| `META-001` | `implemented` | `source+tests+fixture` | `spec/id/presentation/26-metadata.md`; fixture 33, metadata invariance Core regression, renderer semantic/security tests | Document/object metadata is carried safely and geometry remains invariant when metadata is removed. |
+| `META-002` | `implemented` | `source+tests+fixture` | `spec/id/presentation/26-metadata.md`; `resolver/inherit.ts`, `inherit_resolution.test.ts`, schema/completions, fixtures 30 and 33 | Ordered `metaPresets`/`styles` alias chains and local override precedence are active and deterministic. |
 
 ### F. Diagnostics, error model, serialization, and compatibility
 
 | ID | Implementation status | Verification status | Evidence | Gap / finding |
 | --- | --- | --- | --- | --- |
-| `DIAG-001` | `partial` | `direct-local` | error-model spec; parser/validator/resolver errors; fixtures 11–14, 17–20 | Main parse/validation/runtime diagnostics exist; not every normative phase/code has fixture and consumer parity. |
-| `DIAG-002` | `broken` | `direct-local` | `core/src/resolver/index.ts`, `core/src/resolver/eval-context.ts`, `core/src/validator.ts`, `core/src/evaluator.ts`, `resolver/objects.ts`, `primitives/divide.ts`, `primitives/repeat.ts`, error-model spec; core 469/469, CLI 36/36, language-service 82/82 | `resolveGeometry()`, per-object helpers, the public evaluator helper, and boolean/collection runtime diagnostics now preserve structured phase/code/path; exported evaluator paths and some internal helpers still throw raw `Error`, so the public diagnostic contract remains incomplete. |
-| `ERR-001` | `partial` | `direct-local` | evaluation/error-model specs; tolerant/validation mode tests; fixture 14/19/20 | Error phases and tolerant vs compile modes exist; full fail-safe and code coverage across consumers is incomplete. |
-| `SER-001` | `partial` | `direct-local` | CLI `compile` JSON path; expected JSON snapshots; `run-conformance-fixtures.mjs` | JSON serialization exists and snapshots are reviewable, but canonical field ordering/number/error serialization is not a normative generated contract. |
-| `SER-002` | `partial` | `direct-local` | renderer `index.ts`/`primitives.ts`, `escape.ts`, v0.5 presentation-escaping fixture, SVG snapshots/security checks, conformance runner; renderer suite 82 passed | Dimension/annotation text and dynamic presentation attributes are escaped and locally regression-tested; full cross-consumer and current-host evidence remains incomplete. |
-| `VER-001` | `implemented` | `direct-local` | parser version constants/handling; language-service schema; fixtures 17/18; manifest | Explicit version, omitted default, and unsupported version rejection are implemented and conformance-tested. |
-| `VER-002` | `implemented` | `direct-local` | `fixtures/manifest.json`, parser tests, compatibility checker, fixtures 01–09/17–18 | Active 0.5, legacy 0.4, regression-only 0.1–0.3, future rejection are represented; policy is duplicated across consumers. |
-| `VER-003` | `partial` | `source+tests` | `metaPresets`/`styles` in parser/resolver/schema/completions and metadata spec | Backward alias/fallback exists; provenance and semantic parity of every alias are not centrally checked. |
-| `VER-004` | `implemented` | `direct-local` | manifest status policy; conformance runner; 20 fixture entries | active, supported-legacy, invalid, runtime-diagnostic, runtime-error, capability statuses are machine-readable and enforced. |
+| `DIAG-001` | `implemented` | `direct-local` | `spec/id/core/06-error-model.md`; parser/validator/resolver errors; fixtures 11–14, 17–20; Core 579, language-service 91, CLI 40, Markdown 18, and conformance 677/677 across 33 fixtures | Parse, validate, resolve, runtime, and constraint diagnostics now have deterministic phase/code/severity/message mapping with stable path/range projection across the audited consumers. Node 24/CI/Flutter/MCP/native-host evidence remains not verified. |
+| `DIAG-002` | `implemented` | `direct-local` | `spec/id/core/06-error-model.md`, `spec/id/core/07-closure-contracts.md`; `core/src/errors.ts`, `core/src/resolver/index.ts`, `core/src/resolver/primitives/repeat.ts`, `language-service/src/service.ts`, `cli/src/index.ts`, `remark-relgeo/src/index.ts`; raw-throw inventory; Core tests 579, CLI tests 40, language-service tests 91, Markdown tests 18 | All audited public boundaries normalize unknown failures; repeat non-finite lengths and sheet expressions retain stable code/phase/path/object context, Markdown configuration failures are typed, and no raw `Error` constructor remains in audited production sources. Node 24/CI/Flutter/MCP/native-host evidence remains not verified. |
+| `ERR-001` | `implemented` | `direct-local` | `spec/id/core/04-evaluation-order.md`, `spec/id/core/06-error-model.md`; tolerant/validation mode tests; fixtures 14/19/20; CLI, language-service, and Markdown fail-safe tests | Editor/tolerant recovery remains bounded, validate/compile are strict, runtime compile failures do not emit output, and consumer adapters preserve structured diagnostics. Host preview/native evidence remains not verified. |
+| `SER-001` | `implemented` | `source+tests+fixture` | `spec/id/core/05-semantic-guarantees.md`, `spec/id/core/07-closure-contracts.md`; Core serializer/replay tests, fixture 33 expected JSON, CLI/conformance | Canonical resolved-scene JSON preserves identity/order, finite numbers, metadata/views/sheets, and deterministic replay on the active boundary. |
+| `SER-002` | `implemented` | `source+tests+fixture` | `spec/id/presentation/22-dimension.md`–`26-metadata.md`; renderer semantic/security tests, fixture 33, SVG snapshot, CLI/Markdown conformance | Safe semantic SVG preserves geometry/roles/placement and escapes hostile values; raw SVG byte equality remains out of contract. |
+| `VER-001` | `implemented` | `direct-local` | `spec/id/core/02-document-structure.md`; parser version constants/handling; language-service schema; fixtures 17/18; manifest | Explicit version, omitted default, and unsupported version rejection are implemented and conformance-tested. |
+| `VER-002` | `implemented` | `direct-local` | `spec/id/core/02-document-structure.md`; `fixtures/manifest.json`, parser tests, compatibility checker, fixtures 01–09/17–18 | Active 0.5, legacy 0.4, regression-only 0.1–0.3, future rejection are represented; policy is duplicated across consumers. |
+| `VER-003` | `implemented` | `source+tests` | `spec/id/presentation/26-metadata.md`; checked alias catalog; resolver/schema/completion sources and semantic-equivalence regression | `styles`/`style` and `metaPresets`/`metaPreset` aliases retain bounded semantics and are compared against canonical metadata in the focused core test; downstream host parity remains separate. |
+| `VER-004` | `implemented` | `direct-local` | `spec/id/core/07-closure-contracts.md`; manifest status policy; conformance runner; 20 fixture entries | active, supported-legacy, invalid, runtime-diagnostic, runtime-error, capability statuses are machine-readable and enforced. |
 
 ## 6. Explicit status register beyond per-ID rows
 
 | Classification | Audit finding | Evidence/decision |
 | --- | --- | --- |
-| `absent` | Single generated machine-readable normative language catalog | No generated catalog found in `spec/`, `docs/`, or package source; parser/schema/completion sets remain separate. |
-| `broken` | Structured error payload parity | Raw `Error` paths remain in resolver/evaluator context despite normative structured error model. |
-| `partial` | Full SVG safe serialization boundary | Selected dimension/annotation escaping paths are fixed and regression-tested locally; current fixture checks do not cover every presentation field or consumer host. |
-| `deferred` | Evaluator/unit active contract promotion | Fixture 16 is `capability`; passing snapshot/conformance does not promote it. |
+| `local-green` | All 53 frozen capability rows | Source, focused regression, fixture/conformance, and consumer evidence are present on the audited local boundary; status matrix is `53 ✔️ · 0 🌗 · 0 ❌ · 0 ➖ · 0 ⏸️ · 0 ⚠️`. |
+| `external-follow-up` | Generated catalog tooling and broader consumer/host parity | `spec/id/` remains normative; checked catalogs are audit projections. Node 24/CI, browser/native-host, Flutter wrapper, MCP transport, and publication evidence remain separate. |
+| `broken` | Audited local public boundaries | None remains in Core, language-service, CLI, Markdown, or renderer public boundaries after the current regression tranche. |
+| `partial` | Frozen local capability rows | None; any future partial status must be backed by a new audit finding rather than inferred from unavailable hosts. |
+| `deferred` | Evaluator/unit active contract promotion | Fixture 16 is active on the bounded local contract; canonical Node-24/CI/host promotion remains a separate evidence boundary. |
 | `deferred` | Flutter mobile delivery and native runtime/accessibility evidence | Decision 07 explicitly defers Android/iOS; desktop runtime smoke and AT remain separate evidence. |
 | `unverified` | Current canonical CI, registry, public Pages, current browser/Flutter/MCP runtime | Local evidence is not promoted to external/canonical evidence. |
 | `not applicable` | 3D, animation/timeline, statement-level scripting/control flow, general constraint solver | Explicitly excluded by `spec/id/appendix/27-summary.md` and core semantic guarantees. |
@@ -327,34 +348,27 @@ of truth:
 | Consumer | UI/menu/command/route assumption | Audit result |
 | --- | --- | --- |
 | CLI | `info`, `compile`, `check`/`validate`; JSON/SVG/graph; profile/param/unit/sheet flags | Implemented and locally tested; registry/package and Node 24 verification unverified. |
-| Language-service/editor | root completion, type/object schema, version enum, diagnostics, semantic tokens | Implemented local suite; schema vocabulary is manually maintained and can drift from spec. |
+| Language-service/editor | root completion, type/object schema, version enum, diagnostics, semantic tokens | Implemented local suite; the checked v0.5 object-operation projection catches schema/completion drift, while renderer presentation-field generation remains separate. |
 | Markdown | fenced source → preview SVG and syntax highlighting | Implemented in package tests and fixture runner; not a full resolve/diagnostics UI. |
-| Playground | editor → worker resolve → preview, inspector, graph, diagnostics, persistence/share/export | Source and 93 local tests cover the workflow; current browser E2E/Pages run remains not verified. |
+| Playground | editor → worker resolve → preview, inspector, graph, diagnostics, persistence/share/export | Source and 108 local tests cover the workflow; current browser E2E/Pages run remains not verified. |
 | Website | `/docs/language-spec/` presents spec; `/playground/` hosts authoring surface | Astro check passes locally; website is presentation/deployment layer, not normative owner; current built/public artifact remains not verified. |
-| Flutter | workbench menus/editor/viewport/inspector/diagnostics and semantic fixture projection | 302 local tests pass; non-publishable desktop/web scope, fixture 15 active limited boundary, fixture 16 candidate; native host/device runtime evidence remains not verified. |
-| MCP/agent | typed session/resource/tool bridge, no filesystem-write ownership in language contract | Contract/bridge planning exists; SDK/transport/production callable runtime not verified. |
+| Flutter | workbench menus/editor/viewport/inspector/diagnostics and semantic fixture projection | Spec snapshot and local semantic evidence are current; Flutter wrapper/runtime is environment-unavailable because the SDK cache is outside the writable workspace, and native host/device evidence remains not verified. |
+| MCP/agent | typed session/resource/tool bridge, no filesystem-write ownership in language contract | Direct Dart SDK protocol/session/spec-index tests pass; MCP transport/production callable runtime remains not verified. |
 
 ## 8. Findings and next actions
 
 1. Keep the 53-row expected catalog immutable while creating downstream audit
    views; do not let current implementation shrink expected scope.
-2. Extend the checked vocabulary boundary from `spec/id/` beyond sections,
-   types, aliases, and document status labels to parser, validator,
-   language-service schema/completions, and renderer field sets.
-3. Normalize raw resolver/evaluator errors into the structured error model and
-   add shared fixtures per normative error-code table.
-4. Extend the new dimension/annotation escaping regression through the remaining
-   CLI/Markdown/Playground consumer snapshots before claiming safe SVG
-   serialization parity.
-5. Decide whether `SER-001` JSON shape and `SER-002` SVG semantic fields are
-   normative language contracts or consumer output contracts; record the
-   decision before changing `PENDING-AUDIT`/partial status.
-6. Expand active fixtures for profiles, evaluator/units, composition exports,
-   placement/anchors, collections, all constraint kinds, views/sheets, and
-   presentation roles; preserve fixture 16 as candidate until promotion review.
-7. Re-run the relevant gates on Node `>=24`, current child pointers, canonical
-   CI, public registry/Pages, and available Flutter/browser hosts before
-   converting local evidence into release claims.
+2. Preserve the checked vocabulary boundary from `spec/id/` through parser and
+   language-service schema/completions, and keep the workspace catalog as a
+   checked projection rather than a competing normative source.
+3. Preserve the structured resolver/evaluator boundary and add shared fixtures
+   for any new normative error-code or consumer mapping cases.
+4. Keep fixture 16 and fixture 33 as regression anchors for profiles,
+   evaluator/units, presentation, metadata, and serialization changes.
+5. Re-run the relevant gates on Node `>=24`, canonical CI, and available
+   Flutter/browser/MCP hosts before converting local evidence into release or
+   host-parity claims.
 
 ## 9. Source register
 
@@ -370,7 +384,7 @@ Required evidence reviewed:
 - [`scripts/check-compatibility.mjs`](../../../scripts/check-compatibility.mjs)
 - [`package.json`](../../../package.json), [`pnpm-workspace.yaml`](../../../pnpm-workspace.yaml), child package/toolchain manifests, and `.github/workflows/`
 - [`playground/src/worker.ts`](../../../playground/src/worker.ts), [`playground/src/indexeddb-persistence.ts`](../../../playground/src/indexeddb-persistence.ts), [`playground/src/clipboard.ts`](../../../playground/src/clipboard.ts), [`playground/src/share-code.ts`](../../../playground/src/share-code.ts)
-- [`relgeo.github.io/src/pages/[lang]/docs/language-spec/`](../../relgeo.github.io/src/pages/%5Blang%5D/docs/language-spec/), [`flutter/lib/src/mcp/workbench_agent_bridge.dart`](../../../flutter/lib/src/mcp/workbench_agent_bridge.dart), and [`mcp/lib/src/contract/`](../../../mcp/lib/src/contract)
+- [`relgeo.github.io/src/pages/[lang]/docs/language-spec/`](../../../relgeo.github.io/src/pages/%5Blang%5D/docs/language-spec/), [`flutter/lib/src/mcp/workbench_agent_bridge.dart`](../../../flutter/lib/src/mcp/workbench_agent_bridge.dart), and [`mcp/lib/src/contract/`](../../../mcp/lib/src/contract)
 - package/source/test boundaries listed in §3
 
 Existing surface audits were used as observational evidence after the expected

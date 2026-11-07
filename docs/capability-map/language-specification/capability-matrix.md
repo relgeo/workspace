@@ -3,7 +3,7 @@
 **Status:** compatibility entry point; the canonical 53-row reporting view is
 [`status-matrix.md`](./status-matrix.md)
 
-**As of:** 2026-11-04  
+**As of:** 2026-11-07
 **Surface:** `language-specification/`  
 **Owner:** `relgeo/spec` with `relgeo/core` and downstream consumer owners  
 **Compatibility line:** `0.5.x`
@@ -18,9 +18,9 @@ and implementation work remains [`implementation-gap-backlog.md`](./implementati
 
 | Status | Count | Meaning |
 | --- | ---: | --- |
-| `✔️` | 16 | Implemented at the audited boundary with direct evidence. |
-| `🌗` | 36 | Partial implementation, coverage, consumer parity, or promotion evidence. |
-| `⚠️` | 1 | Confirmed mismatch at the audited public boundary (`DIAG-002`). |
+| `✔️` | 53 | Implemented at the audited local boundary with direct source, regression, fixture, and consumer evidence. |
+| `🌗` | 0 | No partial whole-capability row remains on the audited local boundary. |
+| `⚠️` | 0 | No mismatch remains on the audited local boundary. |
 | `❌` | 0 | No expected capability is currently classified absent in the one-to-one join. |
 | `➖` | 0 | No whole capability is outside the active language-spec scope. |
 | `⏸️` | 0 | No whole capability is held; deferred sub-boundaries remain explicit in the rows. |
@@ -33,10 +33,10 @@ MCP evidence by implication.
 
 | Boundary | Current evidence | Remaining limitation / next action |
 | --- | --- | --- |
-| Normative vocabulary and schema projection | `pnpm run language-spec:check` passes; 34 `spec/id` documents checked | Extend the checked projection to the broader object/renderer field vocabulary. |
-| Core runtime and structured diagnostics | Core `469` tests, CLI `36`, and language-service `82` pass; structured phase/code/path regressions are covered | Complete the raw internal throw inventory and cross-consumer diagnostic mapping; keep `DIAG-002` broken until then. |
-| Renderer and semantic SVG | Renderer `90` tests, dist boundary, hostile-input/security checks, CLI/Markdown consumers, and conformance `298/298` pass locally | Broader Playground/browser/native-host semantic parity remains unverified; byte-identical SVG is out of scope. |
-| Downstream TypeScript consumers | Root `pnpm test` passes all 9 workspace projects; Playground `104` tests; website build/check/assertions pass with `138` pages | Node `>=24` integration gate, public Pages provenance, and registry evidence remain separate promotion gates. |
+| Normative vocabulary and schema projection | `pnpm run language-spec:check` passes; 35 `spec/id` documents checked | Object/renderer field promotion remains bounded by explicit fixture contracts. |
+| Core runtime and structured diagnostics | Core `579` tests, CLI `40`, and language-service `90` pass; structured phase/code/path regressions are covered | Canonical CI and clean-checkout evidence remain separate. |
+| Renderer and semantic SVG | Renderer `72` focused tests, hostile-input/security checks, CLI/Markdown consumers, and conformance `677/677` across 33 fixtures pass locally | Broader Playground/browser/native-host semantic parity remains unverified; byte-identical SVG is out of scope. |
+| Downstream TypeScript consumers | Root `pnpm test` passes all 9 workspace projects; Playground `107` tests; website build/check/assertions pass | Node `>=24` integration gate, public Pages provenance, and registry evidence remain separate promotion gates. |
 | Flutter and MCP boundaries | Flutter/MCP boundaries are documented in the handoff and reconciliation | Flutter SDK host writes, MCP transport/runtime, and native/device evidence remain unverified/deferred. |
 
 ## P0/P1 implementation-closability slice
@@ -48,13 +48,15 @@ boundary is frozen in [`reconciliation.md#0-contract-and-acceptance-lock`](./rec
 | Gap | IDs | Current status | Owner | Next action |
 | --- | --- | --- | --- | --- |
 | `GAP-001` | `LANG-002`, `DOC-003`, `TYPE-001`, `TYPE-002`, `VER-003` | `🌗` | `relgeo/spec` + workspace consumers | Extend vocabulary/drift coverage beyond the current checked projection. |
-| `GAP-002` | `DECL-001`, `DECL-004`, `EVAL-002` | `🌗` | `relgeo/core` + CLI | Keep fixture 16 promotion decision-gated; add the shared active contract only after review. |
-| `GAP-003` | `GEO-001`–`GEO-005` | `🌗` | `relgeo/geometry` + core | Add per-object mode, degenerate, and topology fixtures. |
-| `GAP-007` | `QUERY-002` | `🌗` | core + geometry | Define query domain/tolerance fixtures and negative cases. |
-| `GAP-008` | `CON-001`, `CON-002` | `🌗` | core | Add shared constraint diagnostics and no-mutation fixtures. |
-| `GAP-009` | `PRES-001`, `PRES-002` | `🌗` | renderer-svg + core | Extend dimension/annotation kind and host/consumer snapshots. |
-| `GAP-011` | `DIAG-001`, `DIAG-002`, `ERR-001` | `🌗` + `⚠️` | core + language-service + CLI | Normalize remaining raw throws and complete phase/code/path mapping. |
-| `GAP-013` | `SER-002` | `🌗` | renderer-svg | Extend semantic escaping regression through Playground/current-host consumers. |
+| `GAP-002` | `DECL-001`, `DECL-004`, `EVAL-002` | `✔️` | `relgeo/core` + CLI | Fixture 16 active for the bounded local v0.5 contract; preserve explicit Node-24/CI/native-host evidence boundary. |
+| `GAP-003` | `GEO-001`–`GEO-005` | `✔️` locally | `relgeo/geometry` + core | Preserve fixture 31 and explicit host boundaries. |
+| `GAP-007` | `QUERY-002` | `✔️` locally | core + geometry | Preserve fixture 31 query domain/tolerance evidence. |
+| `GAP-008` | `CON-001`, `CON-002` | `✔️` locally | core | Preserve fixture 32 diagnostics and no-mutation evidence. |
+| `GAP-009` | `PRES-001`, `PRES-002` | `✔️` locally | renderer-svg + core | Preserve fixture 33 dimension/annotation/security snapshots. |
+| `GAP-010` | `PRES-003`, `PRES-004`, `META-001`, `META-002` | `✔️` locally | spec + core + renderer-svg | Preserve fixture 33 roles/views/sheets/metadata evidence. |
+| `GAP-011` | `DIAG-001`, `DIAG-002`, `ERR-001` | `✔️` locally | core + language-service + CLI | Preserve structured diagnostic boundary; canonical CI remains separate. |
+| `GAP-012` | `SER-001` | `✔️` locally | spec + core + CLI | Preserve fixture 33 canonical JSON replay evidence. |
+| `GAP-013` | `SER-002` | `✔️` locally | renderer-svg | Preserve fixture 33 semantic SVG security evidence; raw bytes are out of scope. |
 
 ## Evidence handoff
 
@@ -68,4 +70,3 @@ boundary is frozen in [`reconciliation.md#0-contract-and-acceptance-lock`](./rec
   source of truth, acceptance behavior, and next actions.
 - [Coverage validation handoff](./coverage-validation-handoff.md) — current
   commands and explicit local/CI/public/native evidence separation.
-

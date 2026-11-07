@@ -44,6 +44,7 @@
     "semanticArrayOrder": "preserved",
     "replayComparator": "@relgeo/renderer-svg.compareSVGSemanticReplay",
     "numericComparison": "absolute-difference-within-tolerance",
+    "errorCodes": ["INVALID_SEMANTIC_PROJECTION", "INVALID_SEMANTIC_REPLAY"],
     "presentationBytes": "excluded-from-parity-contract"
   },
   "cliContractCoverage": {
@@ -165,6 +166,28 @@
       "expectedResolvedPath": "expected/10-v05-relational-baseline.json"
     },
     {
+      "id": "v05-metadata-inherit-alias",
+      "path": "reference/30-v05-metadata-inherit-alias.yaml",
+      "contractVersion": "0.5",
+      "status": "active",
+      "surfaces": [
+        "core",
+        "renderer-svg",
+        "language-service",
+        "remark-relgeo-hl",
+        "remark-relgeo",
+        "cli",
+        "playground"
+      ],
+      "expectedObjectIds": ["canonical", "alias"],
+      "expectedObjectTypes": {
+        "canonical": "line",
+        "alias": "line"
+      },
+      "expectedOutputPath": "expected/30-v05-metadata-inherit-alias.svg",
+      "expectedResolvedPath": "expected/30-v05-metadata-inherit-alias.json"
+    },
+    {
       "id": "v05-runtime-align-violation",
       "path": "reference/14-v05-runtime-align-violation.yaml",
       "contractVersion": "0.5",
@@ -178,6 +201,7 @@
       ],
       "coreContract": {
         "kind": "constraint-diagnostic",
+        "capabilityIds": ["CON-001", "CON-002"],
         "phase": "constraint",
         "retainsResolvedScene": true,
         "deterministicViolationOrder": true
@@ -216,7 +240,7 @@
       "id": "v05-evaluator-units-candidate",
       "path": "reference/16-v05-evaluator-units-candidate.yaml",
       "contractVersion": "0.5",
-      "status": "capability",
+      "status": "active",
       "surfaces": ["core", "renderer-svg", "cli", "flutter"],
       "expectedObjectIds": ["panel", "center", "marker"],
       "expectedObjectTypes": {
@@ -387,11 +411,25 @@
       }
     },
     {
+      "id": "v05-invalid-profile-override",
+      "path": "reference/28-v05-invalid-profile-override.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service", "cli"],
+      "expectedDiagnostic": "may override parameters only",
+      "coreContract": {
+        "kind": "profile-override-boundary",
+        "phase": "parse",
+        "code": "UNKNOWN_FIELD",
+        "path": "profiles.compact.gap"
+      }
+    },
+    {
       "id": "v05-collection-boolean-contract",
       "path": "reference/24-v05-collection-boolean-contract.yaml",
       "contractVersion": "0.5",
-      "status": "capability",
-      "surfaces": ["core"],
+      "status": "active",
+      "surfaces": ["core", "renderer-svg", "language-service", "cli"],
       "expectedObjectIds": [
         "left",
         "right",
@@ -416,9 +454,188 @@
       "expectedResolvedPath": "expected/24-v05-collection-boolean-contract.json",
       "coreContract": {
         "kind": "collection-boolean",
+        "capabilityIds": ["COLL-001", "COLL-003"],
         "booleanOperations": ["union", "xor"],
         "repeatModes": ["along", "grid", "polar", "each"],
         "stableChildIdentity": true
+      }
+    },
+    {
+      "id": "v05-geometry-composition-placement-query",
+      "path": "reference/31-v05-geometry-composition-placement-query.yaml",
+      "contractVersion": "0.5",
+      "status": "active",
+      "surfaces": ["core", "geometry", "renderer-svg", "language-service", "cli", "remark-relgeo", "playground"],
+      "expectedObjectIds": [
+        "origin",
+        "offset",
+        "fromTo",
+        "directed",
+        "panel",
+        "disk",
+        "oval",
+        "arc",
+        "quadratic",
+        "cubic",
+        "route",
+        "outline",
+        "closedRoute",
+        "label",
+        "assembly",
+        "copy",
+        "instance",
+        "insidePanel",
+        "onRoute",
+        "atHook",
+        "queryPoint",
+        "worldPoint"
+      ],
+      "expectedObjectTypes": {
+        "origin": "point",
+        "fromTo": "line",
+        "directed": "line",
+        "panel": "rect",
+        "disk": "circle",
+        "oval": "ellipse",
+        "arc": "arc",
+        "quadratic": "quadratic",
+        "cubic": "cubic",
+        "route": "path",
+        "outline": "polygon",
+        "closedRoute": "path",
+        "label": "text",
+        "assembly": "group",
+        "copy": "clone",
+        "instance": "component",
+        "insidePanel": "rect",
+        "onRoute": "rect",
+        "atHook": "point",
+        "queryPoint": "point",
+        "worldPoint": "point"
+      },
+      "expectedOutputPath": "expected/31-v05-geometry-composition-placement-query.svg",
+      "expectedResolvedPath": "expected/31-v05-geometry-composition-placement-query.json",
+      "coreContract": {
+        "kind": "geometry-composition-placement-query",
+        "capabilityIds": ["GEO-001", "GEO-002", "GEO-003", "GEO-004", "GEO-005", "COMP-001", "COMP-002", "COMP-003", "PLACE-001", "PLACE-003", "ANCH-001", "QUERY-002"],
+        "modes": ["absolute", "relative", "from-to", "direction-length", "path", "group", "clone", "component", "inside", "on.path", "named-anchor", "pointAt", "tangentAt", "toWorld"],
+        "stableIdentityAndOrder": true,
+        "typedQueries": true
+      }
+    },
+    {
+      "id": "v05-collection-constraint-contract",
+      "path": "reference/32-v05-collection-constraint-contract.yaml",
+      "contractVersion": "0.5",
+      "status": "active",
+      "surfaces": ["core", "geometry", "renderer-svg", "language-service", "cli", "remark-relgeo", "playground"],
+      "expectedObjectIds": [
+        "edge",
+        "splitPieces",
+        "splitHead",
+        "divided",
+        "repeatMarks",
+        "gridMarks",
+        "left",
+        "right",
+        "union",
+        "xor",
+        "horizontal",
+        "horizontalOffset",
+        "vertical",
+        "tangentLine",
+        "tangentCircle"
+      ],
+      "expectedObjectTypes": {
+        "edge": "line",
+        "splitPieces": "split",
+        "divided": "divide",
+        "repeatMarks": "repeat",
+        "gridMarks": "repeat",
+        "union": "boolean",
+        "xor": "boolean"
+      },
+      "expectedOutputPath": "expected/32-v05-collection-constraint-contract.svg",
+      "expectedResolvedPath": "expected/32-v05-collection-constraint-contract.json",
+      "coreContract": {
+        "kind": "collection-constraint",
+        "capabilityIds": ["COLL-001", "COLL-002", "COLL-003", "COLL-004", "CON-001", "CON-002"],
+        "repeatModes": ["linear", "grid"],
+        "resultShapes": ["divide.collection", "split.collection", "split.path", "boolean.collection"],
+        "accessors": ["count", "first", "last", "index"],
+        "constraintRelations": ["equal", "parallel", "perpendicular", "tangent"],
+        "stableIdentityAndOrder": true,
+        "noMutation": true
+      }
+    },
+    {
+      "id": "v05-invalid-structured-type",
+      "path": "reference/29-v05-invalid-structured-type.yaml",
+      "contractVersion": "0.5",
+      "status": "invalid",
+      "surfaces": ["core", "language-service", "cli"],
+      "expectedDiagnostic": "exactly 2 coordinates",
+      "coreContract": {
+        "kind": "structured-type-boundary",
+        "phase": "parse",
+        "code": "TYPE_MISMATCH",
+        "path": "parameters.placementFrame.default.point"
+      }
+    },
+    {
+      "id": "v05-presentation-metadata-serialization",
+      "path": "reference/33-v05-presentation-metadata-serialization.yaml",
+      "contractVersion": "0.5",
+      "status": "active",
+      "surfaces": [
+        "core",
+        "renderer-svg",
+        "language-service",
+        "remark-relgeo-hl",
+        "remark-relgeo",
+        "cli",
+        "playground"
+      ],
+      "expectedObjectIds": [
+        "panel",
+        "construction",
+        "guide",
+        "centerline",
+        "hidden",
+        "circle",
+        "horizontal",
+        "vertical",
+        "linearDimension",
+        "radiusDimension",
+        "diameterDimension",
+        "angleDimension",
+        "note",
+        "leader"
+      ],
+      "expectedObjectTypes": {
+        "panel": "rect",
+        "circle": "circle",
+        "linearDimension": "dimension",
+        "radiusDimension": "dimension",
+        "diameterDimension": "dimension",
+        "angleDimension": "dimension",
+        "note": "annotation",
+        "leader": "annotation"
+      },
+      "expectedOutputPath": "expected/33-v05-presentation-metadata-serialization.svg",
+      "expectedResolvedPath": "expected/33-v05-presentation-metadata-serialization.json",
+      "cliUnit": "mm",
+      "coreContract": {
+        "kind": "presentation-metadata-serialization",
+        "capabilityIds": ["PRES-001", "PRES-002", "PRES-003", "PRES-004", "META-001", "META-002", "SER-001", "SER-002"],
+        "dimensionKinds": ["linear", "radius", "diameter", "angle"],
+        "annotationKinds": ["basic", "leader", "target-fallback"],
+        "roles": ["final", "construction", "guide", "centerline", "hidden", "dimension", "annotation"],
+        "viewAndSheetComposition": true,
+        "metadataDoesNotMutateGeometry": true,
+        "canonicalResolvedScene": true,
+        "safeSemanticSvg": true,
+        "hostileInputEscaped": true
       }
     }
   ]

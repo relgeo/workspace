@@ -78,6 +78,15 @@ check(
 );
 check(matrix.compatibilityLine === baseline.compatibilityLine, "matrix and baseline use the same compatibility line");
 check(matrix.contract.version === matrix.compatibilityLine, "contract version matches compatibility line");
+check(matrix.contract.rendererSemanticProjection?.schema === "relgeo.svg-semantic", "matrix declares the SVG semantic projection schema");
+check(matrix.contract.rendererSemanticProjection?.schemaVersion === 1, "matrix declares the SVG semantic projection schema version");
+check(matrix.contract.rendererSemanticProjection?.compatibilityLine === matrix.compatibilityLine, "matrix pins SVG semantic projection to the active compatibility line");
+check(matrix.contract.rendererSemanticProjection?.tolerance === 0.000001, "matrix declares the SVG semantic projection tolerance");
+check(
+  JSON.stringify(matrix.contract.rendererSemanticProjection?.errorCodes) === JSON.stringify(["INVALID_SEMANTIC_PROJECTION", "INVALID_SEMANTIC_REPLAY"]),
+  "matrix declares stable SVG semantic projection error codes",
+);
+check(matrix.contract.rendererSemanticProjection?.rawSvgBytesExcluded === true, "matrix excludes raw SVG bytes from semantic parity");
 check(
   matrix.contract.specRevision === baselineByPath.get(matrix.contract.specPath)?.revision,
   "matrix contract revision matches the pinned spec submodule",

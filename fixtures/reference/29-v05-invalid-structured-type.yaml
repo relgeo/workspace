@@ -1,0 +1,14 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 invalid structured parameter type
+  description: A frame2d default must contain exactly two point coordinates.
+
+parameters:
+  placementFrame:
+    type: frame2d
+    default:
+      point: [10mm]
+      angle: 0deg
+
+objects: {}

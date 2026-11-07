@@ -1,0 +1,23 @@
+{
+  "unit": "mm",
+  "autoSize": true,
+  "padding": 5.291666666666666,
+  "objects": {
+    "panel": { "id": "panel", "type": "rect", "x": 10, "y": 10, "width": 40, "height": 30, "meta": { "role": "final", "material": "aluminum", "partNo": "P-033" } },
+    "construction": { "id": "construction", "type": "line", "x1": 10, "y1": 10, "x2": 50, "y2": 40, "meta": { "role": "construction" } },
+    "guide": { "id": "guide", "type": "line", "x1": 10, "y1": 25, "x2": 50, "y2": 25, "meta": { "role": "guide", "stroke": "#334155", "strokeWidth": 1, "dash": "4 2" } },
+    "centerline": { "id": "centerline", "type": "line", "x1": 30, "y1": 10, "x2": 30, "y2": 40, "meta": { "role": "centerline" } },
+    "hidden": { "id": "hidden", "type": "line", "x1": 10, "y1": 40, "x2": 50, "y2": 10, "meta": { "role": "hidden", "visible": false } },
+    "circle": { "id": "circle", "type": "circle", "cx": 30, "cy": 25, "radius": 8, "meta": { "role": "final", "description": "<b>hole</b>" } },
+    "horizontal": { "id": "horizontal", "type": "line", "x1": 10, "y1": 10, "x2": 50, "y2": 10 },
+    "vertical": { "id": "vertical", "type": "line", "x1": 10, "y1": 10, "x2": 10, "y2": 40 },
+    "linearDimension": { "id": "linearDimension", "type": "dimension", "kind": "linear", "text": "L=40mm", "meta": { "role": "dimension" }, "from": { "x": 10, "y": 10 }, "to": { "x": 50, "y": 10 }, "offset": 5, "distance": 40 },
+    "radiusDimension": { "id": "radiusDimension", "type": "dimension", "kind": "radius", "text": "R=8mm", "meta": { "role": "dimension" }, "target": "circle", "distance": 8 },
+    "diameterDimension": { "id": "diameterDimension", "type": "dimension", "kind": "diameter", "text": "D=16mm", "meta": { "role": "dimension" }, "target": "circle", "distance": 16 },
+    "angleDimension": { "id": "angleDimension", "type": "dimension", "kind": "angle", "text": "A=90°", "meta": { "role": "dimension" }, "between": ["horizontal", "vertical"], "angle": 90 },
+    "note": { "id": "note", "type": "annotation", "text": "<script>alert(2)</script>", "meta": { "role": "annotation", "fill": "<img src=x>alert(3)", "fontSize": 10, "label": "<svg>alert(4)</svg>" }, "target": "circle", "place": { "x": 43, "y": 20, "width": 150, "height": 10 } },
+    "leader": { "id": "leader", "type": "annotation", "text": "Leader & <note>", "meta": { "role": "annotation" }, "leader": { "from": { "x": 30, "y": 25 }, "to": { "x": 60, "y": 55 } } }
+  },
+  "bbox": { "x": 10, "y": 10, "width": 40, "height": 30 },
+  "violations": []
+}

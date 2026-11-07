@@ -1,0 +1,150 @@
+version: 0.5
+
+scene:
+  unit: mm
+
+meta:
+  title: "<script>alert(1)</script>"
+  author: "A&B"
+  documentId: "presentation-contract"
+
+styles:
+  guideStyle:
+    role: guide
+    stroke: "#334155"
+    strokeWidth: 1
+    dash: "4 2"
+
+metaPresets:
+  notePreset:
+    role: annotation
+    fill: "<img src=x>alert(3)"
+    fontSize: 10
+
+objects:
+  panel:
+    type: rect
+    size: [40, 30]
+    place:
+      topLeft: [10, 10]
+    meta:
+      role: final
+      material: aluminum
+      partNo: P-033
+
+  construction:
+    type: line
+    from: [10, 10]
+    to: [50, 40]
+    meta:
+      role: construction
+
+  guide:
+    type: line
+    from: [10, 25]
+    to: [50, 25]
+    style: guideStyle
+
+  centerline:
+    type: line
+    from: [30, 10]
+    to: [30, 40]
+    meta:
+      role: centerline
+
+  hidden:
+    type: line
+    from: [10, 40]
+    to: [50, 10]
+    meta:
+      role: hidden
+      visible: false
+
+  circle:
+    type: circle
+    center: [30, 25]
+    radius: 8
+    meta:
+      role: final
+      description: "<b>hole</b>"
+
+  horizontal:
+    type: line
+    from: [10, 10]
+    to: [50, 10]
+
+  vertical:
+    type: line
+    from: [10, 10]
+    to: [10, 40]
+
+  linearDimension:
+    type: dimension
+    kind: linear
+    from: [10, 10]
+    to: [50, 10]
+    offset: 5
+    text: "L={distance}"
+
+  radiusDimension:
+    type: dimension
+    kind: radius
+    target: circle
+    text: "R={radius}"
+
+  diameterDimension:
+    type: dimension
+    kind: diameter
+    target: circle
+    text: "D={diameter}"
+
+  angleDimension:
+    type: dimension
+    kind: angle
+    between: [horizontal, vertical]
+    text: "A={angle}"
+
+  note:
+    type: annotation
+    target: circle
+    text: "<script>alert(2)</script>"
+    metaPreset: notePreset
+    meta:
+      label: "<svg>alert(4)</svg>"
+
+  leader:
+    type: annotation
+    text: "Leader & <note>"
+    leader:
+      from: circle
+      to: [60, 55]
+
+views:
+  front:
+    target: panel
+    scale: "1:1"
+    filter:
+      roles: [final, dimension, annotation]
+    meta:
+      title: "Front <view>"
+
+  detail:
+    target: circle
+    scale: "2:1"
+    meta:
+      title: "Detail & <circle>"
+
+sheets:
+  drawing:
+    size: A4
+    orientation: portrait
+    meta:
+      title: "Sheet <title>"
+      sheetNo: "S-033"
+    views:
+      - use: front
+        place:
+          topLeft: [20, 20]
+      - use: detail
+        place:
+          center: [120, 170]

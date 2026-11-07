@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 -5 66 59" width="100%" style="display: block;" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arrow-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="red" />
+    </marker>
+    <marker id="arrow-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse">
+      <path d="M 0 0 L 6 3 L 0 6 z" fill="green" />
+    </marker>
+  </defs>
+  
+    <line x1="0" y1="0" x2="20" y2="0" id="edge" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <g id="splitPieces" data-role="final"  >
+    <title>splitPieces</title>
+    <path d="M 0 0 L 8 0"  id="splitPieces[0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 8 0 L 20 0"  id="splitPieces[1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    <path d="M 0 0 L 8 0"  id="splitHead[0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <g id="divided" data-role="final"  >
+    <title>divided</title>
+    <path d="M -0.772334124585985 0 L 0.772334124585985 0 M 0 -0.772334124585985 L 0 0.772334124585985" id="divided[0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 9.227665875414015 0 L 10.772334124585985 0 M 10 -0.772334124585985 L 10 0.772334124585985" id="divided[1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 19.227665875414015 0 L 20.772334124585985 0 M 20 -0.772334124585985 L 20 0.772334124585985" id="divided[2]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    <g id="repeatMarks" data-role="final"  >
+    <title>repeatMarks</title>
+    <circle cx="0" cy="10" r="1" id="repeatMarks[0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="5" cy="10" r="1" id="repeatMarks[1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="10" cy="10" r="1" id="repeatMarks[2]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    <g id="gridMarks" data-role="final"  >
+    <title>gridMarks</title>
+    <circle cx="0" cy="0" r="1" id="gridMarks[0,0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="6" cy="0" r="1" id="gridMarks[0,1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="0" cy="7" r="1" id="gridMarks[1,0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="6" cy="7" r="1" id="gridMarks[1,1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    <rect x="30" y="0" width="12" height="12" id="left" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <rect x="36" y="0" width="12" height="12" id="right" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 30 0 L 48 0 L 48 12 L 30 12 L 30 0 Z"  id="union" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <g id="xor" data-role="final"  >
+    <title>xor</title>
+    <path d="M 30 0 L 36 0 L 36 12 L 30 12 L 30 0 Z"  id="xor[0]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 42 0 L 48 0 L 48 12 L 42 12 L 42 0 Z"  id="xor[1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+  </g>
+    <line x1="0" y1="30" x2="20" y2="30" id="horizontal" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <line x1="0" y1="34" x2="20" y2="34" id="horizontalOffset" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <line x1="10" y1="20" x2="10" y2="40" id="vertical" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <line x1="-10" y1="50" x2="10" y2="50" id="tangentLine" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <circle cx="0" cy="40" r="10" id="tangentCircle" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    <path d="M 8 0 L 20 0"  id="splitHead[1]" class="role-final" data-role="final" data-preview-stroke="visible" data-preview-stroke-source="default" stroke="black" fill="none" stroke-width="0.5" opacity="1"  vector-effect="non-scaling-stroke" />
+    
+    
+  
+</svg>

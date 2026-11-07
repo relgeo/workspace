@@ -1,0 +1,22 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 invalid profile override
+  description: A profile may override declared parameters, but not constants.
+
+parameters:
+  width:
+    type: length
+    default: 10mm
+
+constants:
+  gap: 2mm
+
+profiles:
+  compact:
+    gap: 1mm
+
+objects:
+  panel:
+    type: rect
+    size: [width, width]

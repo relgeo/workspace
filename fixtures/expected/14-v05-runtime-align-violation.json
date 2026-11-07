@@ -30,7 +30,10 @@
       "message": "Points are not aligned. Distance: 14.1421",
       "deviation": 14.142135623730951,
       "path": "constraints[0]",
-      "involvedObjects": [],
+      "involvedObjects": [
+        "first",
+        "second"
+      ],
       "visualHelper": {
         "x1": 0,
         "y1": 0,

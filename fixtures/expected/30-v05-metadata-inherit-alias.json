@@ -1,0 +1,44 @@
+{
+  "unit": "px",
+  "autoSize": true,
+  "padding": 20,
+  "objects": {
+    "canonical": {
+      "id": "canonical",
+      "type": "line",
+      "x1": 0,
+      "y1": 0,
+      "x2": 40,
+      "y2": 0,
+      "meta": {
+        "role": "guide",
+        "stroke": "#334155",
+        "strokeWidth": 2,
+        "dash": "4 2",
+        "opacity": 0.7
+      }
+    },
+    "alias": {
+      "id": "alias",
+      "type": "line",
+      "x1": 0,
+      "y1": 10,
+      "x2": 40,
+      "y2": 10,
+      "meta": {
+        "role": "guide",
+        "stroke": "#334155",
+        "strokeWidth": 1,
+        "dash": "4 2",
+        "intent": "inspection"
+      }
+    }
+  },
+  "bbox": {
+    "x": 0,
+    "y": 0,
+    "width": 800,
+    "height": 600
+  },
+  "violations": []
+}

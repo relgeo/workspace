@@ -51,7 +51,7 @@ function expectedStatus(path) {
   return "Normative";
 }
 
-const [catalogSource, documentStructure, typeSystem, metadata, parser, types, schema, completions, expectedCatalog, backlog] =
+const [catalogSource, documentStructure, typeSystem, metadata, parser, types, schema, completions, expectedCatalog, backlog, validator, evaluator, aliasParityTest, editorialGuide, manifestSource, objectModel, composition, collections, dimension, annotation] =
   await Promise.all([
     readFile(catalogPath, "utf8"),
     readFile(join(root, "spec/id/core/02-document-structure.md"), "utf8"),
@@ -63,14 +63,40 @@ const [catalogSource, documentStructure, typeSystem, metadata, parser, types, sc
     readFile(join(root, "language-service/src/completions.ts"), "utf8"),
     readFile(join(root, "docs/capability-map/language-specification/expected-capability-catalog.md"), "utf8"),
     readFile(join(root, "docs/capability-map/language-specification/implementation-gap-backlog.md"), "utf8"),
+    readFile(join(root, "core/src/validator.ts"), "utf8"),
+    readFile(join(root, "core/src/evaluator.ts"), "utf8"),
+    readFile(join(root, "core/src/__tests__/resolver.test.ts"), "utf8"),
+    readFile(join(root, "spec/id/editorial-guide.md"), "utf8"),
+    readFile(join(root, "fixtures/manifest.json"), "utf8"),
+    readFile(join(root, "spec/id/geometry/14-geometry-objects.md"), "utf8"),
+    readFile(join(root, "spec/id/geometry/15-composition-objects.md"), "utf8"),
+    readFile(join(root, "spec/id/geometry/16-collection-objects.md"), "utf8"),
+    readFile(join(root, "spec/id/presentation/22-dimension.md"), "utf8"),
+    readFile(join(root, "spec/id/presentation/23-annotation.md"), "utf8"),
   ]);
 const catalog = JSON.parse(catalogSource);
+const manifest = JSON.parse(manifestSource);
+const objectSpec = [objectModel, composition, collections, dimension, annotation].join("\n");
 
 check(catalog.catalogId === "relgeo-language-vocabulary-v0.5", "active v0.5 vocabulary catalog has a stable ID");
 check(catalog.sourceOfTruth === "spec/id", "catalog names spec/id as the semantic source of truth");
 check(catalog.catalogKind === "checked-projection", "catalog is explicitly a checked projection, not a second normative source");
 check(expectedCatalog.includes(catalog.catalogId), "expected capability catalog references the active vocabulary catalog");
 check(backlog.includes("pnpm run language-spec:check"), "implementation-gap backlog records the deterministic drift-check command");
+
+const objectTypes = catalog.objectTypes ?? [];
+check(objectTypes.length === 26 && new Set(objectTypes).size === objectTypes.length, "catalog has the complete unique v0.5 object-type vocabulary");
+for (const objectType of objectTypes) {
+  check(objectSpec.includes(`type: ${objectType}`) || objectSpec.includes(`\`${objectType}\``), `normative spec names object type ${objectType}`);
+  check(parser.includes(`  ${objectType}: new Set(`), `core parser covers object type ${objectType}`);
+  check(schema.includes(`"${objectType}"`), `language-service schema names object type ${objectType}`);
+  check(completions.includes(`label: '${objectType}'`), `language-service completions contain object type ${objectType}`);
+}
+for (const [operation, fields] of Object.entries(catalog.geometryOperationFields ?? {})) {
+  check(objectTypes.includes(operation), `catalog keeps geometry operation ${operation} inside object vocabulary`);
+  check(fields.every((field) => parser.includes(`${operation}: new Set(["${fields.join('", "')}"])`) || parser.includes(`"${field}"`)), `core parser covers ${operation} operation fields`);
+  check(completions.includes(`case '${operation}': return`) && fields.every((field) => completions.includes(`label: '${field}'`)), `language-service completions cover ${operation} operation fields`);
+}
 
 const rootCodeBlock = documentStructure.match(/```rg\n([\s\S]*?)```/)?.[1] ?? "";
 const observedRootFields = [...rootCodeBlock.matchAll(/^([A-Za-z][A-Za-z0-9]*):(?:\s.*)?$/gm)].map((match) => match[1]);
@@ -118,6 +144,38 @@ check(
   setDifference(normativeTypes, observedSchemaTypes).length === 0,
   `language-service parameter schema covers the catalog${setDifference(normativeTypes, observedSchemaTypes).length ? `; missing: ${setDifference(normativeTypes, observedSchemaTypes).join(", ")}` : ""}`,
 );
+
+const structuredContract = catalog.structuredTypeContract ?? {};
+for (const type of catalog.structuredTypes) {
+  const contract = structuredContract[type];
+  check(Boolean(contract?.shape), `structured type ${type} has a checked shape contract`);
+  check(typeSystem.includes(`### ${type}`), `structured type ${type} is documented normatively`);
+}
+check(structuredContract.frame2d?.required?.join(",") === "point,angle", "frame2d contract requires point and angle");
+check(structuredContract.bbox2d?.required?.join(",") === "minX,maxX,minY,maxY,width,height", "bbox2d contract requires the six world-space fields");
+check(structuredContract.collection?.typeField === "collection", "collection contract fixes its runtime type tag");
+check(structuredContract["path-ref"]?.shape === "non-empty-reference-string", "path-ref contract fixes a non-empty reference string");
+check(typeSystem.includes("length * length` tidak sah"), "normative type spec rejects length multiplied by length");
+check(typeSystem.includes("length / number` sah"), "normative type spec allows length divided by number");
+check(typeSystem.includes("coercion implisit ke `string`"), "normative type spec bounds implicit string coercion");
+check(
+  validator.includes('case "frame2d"') && validator.includes('case "bbox2d"') && validator.includes('case "collection"') && validator.includes('case "path-ref"'),
+  "core validator checks every structured type boundary",
+);
+check(evaluator.includes('result.type === "length" && factor.type === "length"'), "core evaluator rejects length multiplied by length");
+check(evaluator.includes('result.type === "number" && factor.type === "length"'), "core evaluator rejects number divided by length");
+check(evaluator.includes('result.type === "length" || term.type === "length"'), "core evaluator preserves contextual length addition semantics");
+check(aliasParityTest.includes("semantically equivalent") && aliasParityTest.includes("metaPresets") && aliasParityTest.includes("styles"), "core regression test covers canonical and compatibility metadata aliases");
+check(editorialGuide.includes("Label status adalah vocabulary editorial yang diperiksa"), "editorial guide makes status labels checked vocabulary");
+check(/tidak\s+boleh memperkenalkan field, type, atau semantics/.test(editorialGuide), "editorial guide forbids informative docs from extending DSL vocabulary");
+const structuredFixture = manifest.fixtures?.find((fixture) => fixture.id === "v05-invalid-structured-type");
+check(structuredFixture?.coreContract?.code === "TYPE_MISMATCH", "conformance manifest registers the structured-type negative boundary");
+check(structuredFixture?.coreContract?.path === "parameters.placementFrame.default.point", "structured-type fixture pins the diagnostic path");
+for (const [name, values] of Object.entries(catalog.coercionContract ?? {})) {
+  check(Array.isArray(values) && values.length > 0, `coercion contract ${name} is non-empty`);
+}
+check((catalog.coercionContract?.rejected ?? []).includes("length*length"), "coercion catalog retains the length*length negative boundary");
+check((catalog.coercionContract?.rejected ?? []).includes("number/length"), "coercion catalog retains the number/length negative boundary");
 
 for (const { alias, canonical } of catalog.aliases) {
   check(parser.includes(`"${alias}"`), `core parser contains compatibility alias ${alias} for ${canonical}`);

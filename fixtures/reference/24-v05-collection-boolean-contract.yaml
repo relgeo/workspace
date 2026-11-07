@@ -74,3 +74,9 @@ objects:
     item:
       type: circle
       radius: 1
+
+derived:
+  alongCount: count(alongMarks)
+  firstAlongX: first(alongMarks).cx
+  lastAlongX: last(alongMarks).cx
+  lastGridX: gridMarks[1,1].cx

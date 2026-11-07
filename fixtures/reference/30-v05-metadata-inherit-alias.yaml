@@ -1,0 +1,36 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Metadata Inherit and Alias Contract
+  description: Active fixture for deterministic preset inheritance and legacy style compatibility.
+
+styles:
+  baseGuide:
+    role: guide
+    stroke: "#334155"
+    strokeWidth: 1
+  dashedGuide:
+    inherit: baseGuide
+    dash: "4 2"
+
+metaPresets:
+  inspectionGuide:
+    inherit: dashedGuide
+    opacity: 0.7
+
+objects:
+  canonical:
+    type: line
+    from: [0, 0]
+    to: [40, 0]
+    metaPreset: inspectionGuide
+    meta:
+      strokeWidth: 2
+
+  alias:
+    type: line
+    from: [0, 10]
+    to: [40, 10]
+    style: dashedGuide
+    meta:
+      intent: inspection

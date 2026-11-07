@@ -1,0 +1,116 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Collection and Constraint Contract
+  description: Active fixture for deterministic collection shapes/access and post-resolve constraint relations.
+
+scene:
+  unit: px
+  padding: 4
+
+objects:
+  edge:
+    type: line
+    from: [0, 0]
+    to: [20, 0]
+
+  splitPieces:
+    type: split
+    target: edge
+    at: [8, 0]
+
+  splitHead:
+    type: split
+    target: edge
+    at: [8, 0]
+    pick: first
+
+  divided:
+    type: divide
+    target: edge
+    count: 3
+
+  repeatMarks:
+    type: repeat
+    count: 3
+    item:
+      type: circle
+      radius: 1
+      center: ["index * 5", 10]
+
+  gridMarks:
+    type: repeat
+    grid:
+      rows: 2
+      cols: 2
+      pitch: [6, 7]
+    item:
+      type: circle
+      radius: 1
+
+  left:
+    type: rect
+    size: [12, 12]
+    place:
+      topLeft: [30, 0]
+
+  right:
+    type: rect
+    size: [12, 12]
+    place:
+      topLeft: [36, 0]
+
+  union:
+    type: boolean
+    operation: union
+    shapes: [left, right]
+
+  xor:
+    type: boolean
+    operation: xor
+    shapes: [left, right]
+    result:
+      mode: multi
+
+  horizontal:
+    type: line
+    from: [0, 30]
+    to: [20, 30]
+
+  horizontalOffset:
+    type: line
+    from: [0, 34]
+    to: [20, 34]
+
+  vertical:
+    type: line
+    from: [10, 20]
+    to: [10, 40]
+
+  tangentLine:
+    type: line
+    from: [-10, 50]
+    to: [10, 50]
+
+  tangentCircle:
+    type: circle
+    center: [0, 40]
+    radius: 10
+
+derived:
+  repeatCount: count(repeatMarks)
+  repeatFirstX: first(repeatMarks).cx
+  repeatLastX: last(repeatMarks).cx
+  repeatIndexedX: repeatMarks[1].cx
+  splitCount: count(splitPieces)
+  splitFirstStartX: pointAt(first(splitPieces), 0).x
+  splitLastEndX: pointAt(last(splitPieces), 1).x
+  divideCount: count(divided)
+  divideMiddleX: divided[1].x
+  gridLastX: gridMarks[1,1].cx
+
+constraints:
+  - equal: [horizontal.length, horizontalOffset.length]
+  - parallel: [horizontal, horizontalOffset]
+  - perpendicular: [horizontal, vertical]
+  - tangent: [tangentLine, tangentCircle]

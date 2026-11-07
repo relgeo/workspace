@@ -1,0 +1,177 @@
+version: 0.5
+
+meta:
+  name: RelGeo v0.5 Geometry Composition Placement Query Contract
+  description: Active shared fixture for the residual geometry and composition capability boundary.
+
+scene:
+  unit: mm
+  padding: 4
+  autoSize: true
+
+components:
+  marker:
+    parameters:
+      size: 6
+    exports:
+      center: body.center
+    objects:
+      body:
+        type: rect
+        size: [size, size]
+
+objects:
+  origin:
+    type: point
+    at: [0, 0]
+
+  offset:
+    type: point
+    from: origin
+    move:
+      right: 20
+      down: 10
+
+  fromTo:
+    type: line
+    from: origin
+    to: offset
+
+  directed:
+    type: line
+    from: origin
+    direction: right
+    length: 20
+
+  panel:
+    type: rect
+    size: [30, 20]
+    place:
+      topLeft: [0, 15]
+    anchors:
+      hook: [5, 5]
+    holes:
+      - circle:
+          center: panel.center
+          radius: 3
+
+  disk:
+    type: circle
+    center: [15, 25]
+    radius: 4
+
+  oval:
+    type: ellipse
+    center: [35, 25]
+    rx: 5
+    ry: 3
+
+  arc:
+    type: arc
+    center: [50, 25]
+    radius: 5
+    startAngle: 0deg
+    endAngle: 90deg
+
+  quadratic:
+    type: quadratic
+    from: [0, 45]
+    cp: [10, 55]
+    to: [20, 45]
+
+  cubic:
+    type: cubic
+    from: [25, 45]
+    cp1: [30, 55]
+    cp2: [40, 35]
+    to: [45, 45]
+
+  route:
+    type: path
+    segments:
+      - line:
+          from: [50, 45]
+          to: [60, 45]
+      - line:
+          to: [60, 55]
+
+  outline:
+    type: polygon
+    points:
+      - [70, 15]
+      - [90, 15]
+      - [90, 30]
+      - [70, 30]
+
+  closedRoute:
+    type: path
+    closed: true
+    points:
+      - [70, 35]
+      - [90, 35]
+      - [90, 50]
+      - [70, 50]
+      - [70, 35]
+    holes:
+      - circle:
+          center: [80, 42.5]
+          radius: 2
+
+  label:
+    type: text
+    content: "Residual contract"
+    place:
+      topLeft: [0, 62]
+
+  assembly:
+    type: group
+    children: [panel, disk]
+    transform:
+      - translate: [100, 0]
+
+  copy:
+    type: clone
+    of: panel
+    transform:
+      - translate: [100, 30]
+
+  instance:
+    type: component
+    use: marker
+    params:
+      size: 8
+    place:
+      topLeft: [105, 5]
+
+  insidePanel:
+    type: rect
+    size: [10, 8]
+    place:
+      inside: panel
+      margin: 2
+
+  onRoute:
+    type: rect
+    size: [2, 2]
+    on:
+      path:
+        path: route
+        t: 0.5
+        anchor: center
+
+  atHook:
+    type: point
+    at: panel.hook
+
+  queryPoint:
+    type: point
+    at: pointAt(route, 0.5)
+
+  worldPoint:
+    type: point
+    at: toWorld(origin, assembly)
+
+derived:
+  routeMidX: pointAt(route, 0.5).x
+  routeTangentX: tangentAt(route, 0.5).x
+  fromToLength: fromTo.length

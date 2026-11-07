@@ -1,10 +1,11 @@
 # Expected Language-Specification Capability Catalog
 
-**Status:** expected baseline selesai; audit implementasi tersedia sebagai artefak downstream
+**Status:** expected baseline frozen; audit implementasi tersedia sebagai artefak downstream
 **Compatibility line:** RelGeo DSL `0.5`
 **Owner keputusan:** Agus Made
 **Owner katalog:** `relgeo/workspace`
 **Normative source utama:** `relgeo/spec`, khususnya `spec/id/`
+**Rekonsiliasi evidence terakhir:** 2026-11-06; status expected tetap `PENDING-AUDIT`
 
 Artefak turunan yang menjaga pemisahan expected-versus-observed:
 
@@ -12,6 +13,7 @@ Artefak turunan yang menjaga pemisahan expected-versus-observed:
 - [expected-versus-observed reconciliation](./reconciliation.md)
 - [status matrix](./status-matrix.md)
 - [implementation-gap backlog](./implementation-gap-backlog.md)
+- [closure report](./closure-report.md)
 
 ## 1. Tujuan dan aturan baca
 
@@ -36,16 +38,23 @@ status verifikasi.
 Audit terhadap seluruh 53 ID telah dilakukan dan join satu-ke-satu tersedia di
 [`reconciliation.md`](./reconciliation.md). Expected rows tetap `PENDING-AUDIT`
 secara sengaja; observed status saat ini berada di
-[`status-matrix.md`](./status-matrix.md): **16 `✔️` · 36 `🌗` · 0 `❌` · 0
-`➖` · 0 `⏸️` · 1 `⚠️`**.
+[`status-matrix.md`](./status-matrix.md): **53 `✔️` · 0 `🌗` · 0 `❌` · 0
+`➖` · 0 `⏸️` · 0 `⚠️`** on the audited local boundary.
 
-Bounded implementation tranche yang aktif hanya mencakup `GAP-001`, `GAP-009`,
-`GAP-011`, dan `GAP-013`. Local verification untuk tranche tersebut tercatat di
+Bounded implementation tranche yang aktif telah menutup delapan row presentation,
+metadata, dan serialization melalui fixture 33. Local verification tercatat di
 [`implementation-audit.md`](./implementation-audit.md), termasuk package tests,
-consumer tests/builds, vocabulary check, dan conformance `260/260`. Ini tidak
+consumer tests/builds, vocabulary check, dan conformance `677/677` pada 33
+fixture. Ini tidak
 mengubah expected ownership: `spec/id/` tetap normative source of truth, dan
 Node 24 CI, public/browser/native-host evidence, publishing, serta deployment
 tetap bukan prerequisite.
+
+Refresh lokal 2026-11-06 menambahkan verifikasi snapshot Flutter yang diturunkan
+langsung dari `spec/id` (`35` dokumen, digest cocok), tetapi tidak mengubah
+expected rows atau observed status. Root suite dan conformance tetap evidence
+lokal; Node 24 integration, Flutter/MCP runtime, dan canonical clean-checkout/CI
+tetap dipisahkan sebagai `not verified`.
 
 Triage lanjutan pada 2026-11-04 mencatat seluruh P0/P1 implementation-closable
 rows—termasuk `LANG-002`, `DOC-003`, `DECL-001`, `DECL-004`, dan `TYPE-001`—di
@@ -271,6 +280,83 @@ kontrak.
 | `VER-003` | Backward-compatible aliases/fallbacks dan provenance | Legacy input dapat dipertahankan tanpa mengubah meaning active contract | `R-CONTRACT`, `R-AUTHOR` | **IN terbatas**; alias hanya jika dicatat, tested, dan tidak memperluas semantics | `relgeo/spec` + decision/fixture records; `spec/id/presentation/26-metadata.md` | `PENDING-AUDIT` |
 | `VER-004` | Active/candidate/legacy/invalid/runtime-error fixture status sebagai contract promotion boundary | Maintainer dapat membedakan expected language scope dari evidence consumer yang sudah aktif | `R-CONTRACT` | **IN** sebagai compatibility/conformance governance; candidate tidak otomatis menjadi active | `fixtures/manifest.json`, `docs/decisions/07-cross-repo-open-decisions.md` | `PENDING-AUDIT` |
 
+### 4.1 Closure boundary dan acceptance contract
+
+Boundary ini dibekukan pada **53 capability ID** di atas. ID dipilih dari
+user journey, target pengguna, workflow DSL, roadmap, keputusan scope, dan
+chapter normatif `spec/id/`; status implementation tidak mempengaruhi seleksi.
+Karena itu, `🌗`, `⚠️`, `not verified`, candidate fixture, atau host yang belum
+tersedia tidak boleh dipakai untuk menghapus, menggabungkan, atau memindahkan
+ID ke luar katalog. `GAP-*` dan `CORE-*` adalah work-item/contract anchors,
+bukan capability ID tambahan.
+
+Setiap ID wajib memiliki outcome pada tabel katalog, owner/source of truth,
+consumer boundary, dan acceptance yang dapat diverifikasi. Tabel berikut adalah
+kontrak penerimaan expected; ia bukan klaim bahwa seluruh acceptance sudah lulus.
+`Consumer` menyebut boundary yang harus mengonsumsi kontrak, sedangkan
+`Acceptance terukur` menyebut assertion minimum yang harus dapat dibuktikan oleh
+fixture, test, atau conformance check.
+
+| ID | Consumer boundary | Acceptance terukur |
+| --- | --- | --- |
+| LANG-001 | parser, CLI, Markdown, Playground, language service | Fixture YAML valid diparse dan round-trip source identity tetap stabil pada semua consumer yang tersedia. |
+| LANG-002 | core resolver, CLI, language service, Playground, MCP | Dua resolve atas source dan input identik menghasilkan graph, identity, ordering, dan nilai semantic identik; solver/control-flow tidak diperkenalkan. |
+| DOC-001 | parser, schema, CLI, language service | Root-field fixture menerima tepat section yang dispesifikasikan dan menolak field/shape invalid dengan diagnostic terstruktur. |
+| DOC-002 | core scene, renderer, CLI, Playground, Markdown | Fixture unit/origin/orientation/autoSize/padding menghasilkan coordinate space dan viewport yang sama pada resolve dan render semantic. |
+| DOC-003 | spec docs, website, language service, authoring UX | Semua chapter `spec/id` memiliki status dokumen yang valid dan contoh vocabulary yang dirujuk tidak menambah field DSL tanpa perubahan normatif. |
+| DECL-001 | core evaluator, CLI, language service, Playground, Flutter | Fixture parameter default, shorthand, object, dan array menghasilkan type/value yang diharapkan; input missing/invalid mengembalikan code/path stabil. |
+| DECL-002 | core evaluator, CLI, language service | Fixture override terhadap constant gagal dan constant structured/array tetap immutable setelah profile serta derived evaluation. |
+| DECL-003 | core evaluator, graph inspector, language service, Playground | Global/local derived fixture resolve tanpa mutation; cycle atau unknown dependency menghasilkan diagnostic phase/path yang stabil. |
+| DECL-004 | core evaluator, CLI, Playground, Flutter | Profile fixture mengubah parameter yang diizinkan saja; constants dan structure tetap identik, dengan hasil yang repeatable. |
+| TYPE-001 | core types, evaluator, schema, language service, CLI, Flutter | Setiap scalar type memiliki valid/invalid fixture dan coercion/unit result yang cocok dengan `spec/id/syntax/07-type-system.md`. |
+| TYPE-002 | core types, evaluator, language service, CLI, renderer | Setiap structured type memiliki fixture value dan rejection boundary; type name, shape, dan read-only semantics cocok lintas projection. |
+| EXPR-001 | parser, evaluator, language service, CLI | Precedence fixture menghasilkan nilai referensi yang sama dan unsupported expression tidak lolos parse/validate. |
+| EXPR-002 | parser, evaluator, language service, CLI | Comparison/logical/ternary fixture lulus; statement-level `if` dan loop fixture ditolak sebagai out-of-scope. |
+| EXPR-003 | parser, graph, evaluator, language service, MCP | Symbol/property/index/anchor fixtures resolve ke target yang benar; unknown dan circular reference menunjuk path stabil. |
+| EVAL-001 | graph, resolver, CLI, Playground, MCP | Dependency graph fixture menghasilkan satu topological order deterministik dan cycle fixture gagal tanpa partial success palsu. |
+| EVAL-002 | units, evaluator, CLI, language service, Flutter | Fixture `10mm`/`1cm` dan unitless context menghasilkan normalized value yang sama dengan scene unit serta diagnostic untuk coercion invalid. |
+| OBJ-001 | core object model, renderer, CLI, language service, MCP | Object fixture mempertahankan stable ID, category, common fields, dan dependency edges tanpa identity berbasis array index. |
+| GEO-001 | core geometry, renderer, CLI, Playground, Flutter | Point mode fixture mencakup absolute/relative/expression/intersection dan menghasilkan typed point atau diagnostic yang ditentukan. |
+| GEO-002 | core geometry, renderer, CLI, Playground | Line mode fixture mencakup from-to/direction-length/tangent dan memeriksa anchors serta invalid direction secara deterministik. |
+| GEO-003 | core geometry, renderer, CLI, Markdown, Playground | Rect/circle/ellipse fixture memeriksa size/radius, placement, properties, anchors, dan hole semantics pada resolved projection. |
+| GEO-004 | core geometry, renderer, CLI, Markdown, Playground | Arc/quad/cubic/path/polygon/text fixture menghasilkan semantic geometry/text yang sesuai; unsupported variant ditolak terukur. |
+| GEO-005 | geometry topology, core, renderer, CLI | Closed-shape fixture memeriksa holes, close/join, corner, degenerate, dan invalid-topology outcomes tanpa auto-repair tersirat. |
+| COMP-001 | core composition, renderer, CLI, Playground, Flutter | Group fixture mempertahankan hierarchy dan membedakan local pre-transform dari world post-transform anchors. |
+| COMP-002 | core resolver, renderer, CLI, language service | Clone fixture membuktikan reuse tidak berbagi mutable state serta identity, transform, dan metadata tetap sesuai contract. |
+| COMP-003 | core components, evaluator, language service, Playground, MCP | Component fixture membuktikan scoped params/local derived/exports dan menolak scope leakage pada nested instance. |
+| PLACE-001 | core placement, renderer, CLI, Playground | Placement matrix fixture mencakup scalar/point/anchor/multi-anchor/inside/offset dan setiap unsupported combination menghasilkan diagnostic. |
+| PLACE-002 | core placement, renderer, CLI, Playground | `on.point` fixture menempatkan object pada point/anchor yang tepat dan mempertahankan identity. |
+| PLACE-003 | core placement, geometry queries, renderer, CLI | `on.path` fixture memeriksa `t`, anchor, offset, orientation, serta out-of-domain path parameter. |
+| PLACE-004 | core placement, geometry, renderer, Playground | `on.frame` fixture memeriksa point dan orientation `frame2d` dalam 2D tanpa mengubah source geometry. |
+| ANCH-001 | core anchors, evaluator, language service, renderer, CLI | Named/world anchor fixture memeriksa typed read-only values sebelum dan sesudah transform, termasuk missing-anchor diagnostic. |
+| COLL-001 | core collections, geometry, renderer, CLI, Playground | Repeat fixture memeriksa setiap active mode, deterministic child identity, ordering, dan repeat context. |
+| COLL-002 | core collections, geometry, CLI, Playground | Divide/split fixture memeriksa result shape, collection identity, pick/index behavior, dan invalid split input. |
+| COLL-003 | geometry boolean, core, renderer, CLI | Active boolean fixture hanya mengklaim approved v0.5 boundary; union/xor, multipart, degenerate, dan unsupported operands memiliki explicit result/diagnostic. |
+| COLL-004 | core evaluator, language service, CLI, Playground | Collection fixture memeriksa ordering, count/first/last/index, empty behavior, dan no implicit mutation. |
+| QUERY-001 | core evaluator, geometry, CLI, language service, Playground | Query fixture memeriksa distance/length/perimeter/bbox/extrema/midpoint/area dengan typed result dan tolerance yang terdokumentasi. |
+| QUERY-002 | geometry queries, placement, renderer, CLI, Playground | Path/transform fixture memeriksa domain, tolerance, canonical intersection ordering, and `toWorld`/`toLocal` result type. |
+| CON-001 | core constraints, geometry, CLI, language service, Playground | Equal/parallel/perpendicular/tangent fixtures run after resolve and emit the documented validation result without mutation. |
+| CON-002 | core diagnostics, CLI, language service, MCP, Playground | Violation fixture includes constraint path, involved objects, expected/actual, and unchanged resolved geometry before/after validation. |
+| PRES-001 | core presentation, renderer, CLI, Markdown, Playground | Dimension-kind fixture preserves semantic value, label, identity, role, and placement through semantic SVG/JSON projection. |
+| PRES-002 | core presentation, renderer, CLI, Markdown, Playground | Annotation/leader fixture preserves text and placement while hostile text is escaped and executable markup is absent. |
+| PRES-003 | spec roles, renderer, CLI, Markdown, Playground | Role fixture checks final/construction/guide/dimension/annotation visibility and default style behavior without changing role meaning. |
+| PRES-004 | core sheets/views, renderer, CLI, Markdown, Playground, Flutter | View/sheet fixture checks size, orientation, filter, placement, and title-block semantics without mutating model geometry. |
+| META-001 | core metadata, renderer, CLI, Markdown, Playground, MCP | Metadata fixture proves labels/business fields survive projection while geometry/dependency graph remains byte-independent of metadata values. |
+| META-002 | core metadata, schema, language service, CLI, Markdown | Ordered inherit/preset fixture checks merge precedence and bounded `styles/style` alias provenance. |
+| DIAG-001 | core, language service, CLI, Playground, MCP, Flutter | One fixture per diagnostic phase produces structured code, phase, severity, message, and known path/range fields in deterministic order. |
+| DIAG-002 | core, language service, CLI, Playground, MCP, Flutter | Public boundary inspection finds no raw `Error`/stack; code, path, category, message, source range, and involved-object payload are stable. |
+| ERR-001 | parser, core resolver, CLI, language service, Playground | Invalid source fails at the originating phase, strict compile emits no output, and editor mode retains only an explicitly valid last preview. |
+| SER-001 | core projection, CLI, CI, MCP, language service | Resolved-scene JSON fixture matches schema/version, field order, identity order, number normalization, and error policy exactly. |
+| SER-002 | renderer, CLI, Markdown, website, Playground, Flutter | Semantic SVG fixture preserves geometry/role/identity/placement and rejects executable markup; byte-identical SVG is not required. |
+| VER-001 | parser, core, CLI, language service, fixtures | Explicit and omitted version fixtures select active `0.5`; future version fixture fails with the registered version diagnostic. |
+| VER-002 | core, CLI, language service, all consumer adapters | Active/legacy/regression/future fixture statuses produce the declared compatibility result with no silent downgrade. |
+| VER-003 | parser, schema, language service, core metadata, CLI | Each accepted alias has normative provenance, canonical replacement, positive fixture, and negative unknown-alias behavior. |
+| VER-004 | fixture manifest, conformance runner, CI, all consumers | Every fixture has one declared status and promotion checks prevent candidate evidence from being reported as active. |
+
+The acceptance rows above are frozen alongside the ID set. A future change to
+consumer boundary or acceptance must update the normative source/fixture and
+this catalog in the same change; editing the matrix alone is insufficient.
+
 ## 5. Scope exclusions dan batas yang tidak boleh tersirat
 
 Item berikut sengaja tidak menjadi capability expected pada line ini:
@@ -303,6 +389,7 @@ bukan untuk menciptakan daftar expected:
 | `16-v05-evaluator-units-candidate` (`capability`) | evaluator, parameters, derived placement, unit conversion; candidate evidence, bukan active promotion |
 | `11–13`, `17–18` (`invalid`) | required field, YAML parse, unknown reference, unsupported future version |
 | `19–20` (`runtime-error`) | boolean empty/multipart resolution error boundaries |
+| `30-v05-metadata-inherit-alias` (`active`) | nested metadata preset inheritance, `styles`/`style` compatibility aliases, resolved JSON/SVG, language-service, Markdown, Playground, and CLI propagation |
 
 ## 7. Invariants setelah audit handoff
 

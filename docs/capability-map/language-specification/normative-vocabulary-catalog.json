@@ -63,6 +63,58 @@
     "collection",
     "path-ref"
   ],
+  "objectTypes": [
+    "point",
+    "line",
+    "rect",
+    "circle",
+    "ellipse",
+    "arc",
+    "quadratic",
+    "cubic",
+    "path",
+    "polygon",
+    "text",
+    "group",
+    "clone",
+    "component",
+    "translate",
+    "rotate",
+    "scale",
+    "mirror",
+    "reverse",
+    "split",
+    "repeat",
+    "divide",
+    "collection",
+    "boolean",
+    "dimension",
+    "annotation"
+  ],
+  "geometryOperationFields": {
+    "translate": ["target", "by"],
+    "rotate": ["target", "angle"],
+    "scale": ["target", "factor"],
+    "mirror": ["target", "axis"],
+    "reverse": ["target"],
+    "split": ["target", "at", "pick"]
+  },
+  "structuredTypeContract": {
+    "point": { "shape": "array-2-length", "required": [] },
+    "vector": { "shape": "array-2-length", "required": [] },
+    "array": { "shape": "array", "required": [] },
+    "object": { "shape": "record", "required": [] },
+    "frame2d": { "shape": "record", "required": ["point", "angle"], "optional": ["tangent", "normal"] },
+    "bbox2d": { "shape": "record", "required": ["minX", "maxX", "minY", "maxY", "width", "height"] },
+    "collection": { "shape": "record", "required": ["type", "children"], "typeField": "collection" },
+    "path-ref": { "shape": "non-empty-reference-string", "required": [] }
+  },
+  "coercionContract": {
+    "additive": ["number+number", "length+length", "length+unitless-number"],
+    "multiplicative": ["number*number", "number*length", "length*number"],
+    "divisive": ["number/number", "length/number"],
+    "rejected": ["length*length", "number/length", "length+string"]
+  },
   "aliases": [
     {
       "alias": "styles",
@@ -86,7 +138,19 @@
     "parameterTypes": "core/src/types.ts",
     "schemaRootFields": "language-service/src/schema.ts",
     "schemaParameterTypes": "language-service/src/schema.ts",
-    "completions": "language-service/src/completions.ts"
+    "completions": "language-service/src/completions.ts",
+    "validatorStructuredTypes": "core/src/validator.ts",
+    "evaluatorCoercion": "core/src/evaluator.ts",
+    "objectTypes": "core/src/parser.ts",
+    "schemaObjectTypes": "language-service/src/schema.ts",
+    "completionObjectTypes": "language-service/src/completions.ts",
+    "aliasParityTest": "core/src/__tests__/resolver.test.ts",
+    "structuredTypeFixture": "fixtures/reference/29-v05-invalid-structured-type.yaml"
+  },
+  "editorialContract": {
+    "statusSource": "spec/id",
+    "statusCheck": "scripts/check-language-spec-vocabulary.mjs",
+    "examplesCannotExtendVocabulary": true
   },
   "driftPolicy": {
     "missingNormativeEntry": "fail",

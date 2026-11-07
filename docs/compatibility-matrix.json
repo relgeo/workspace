@@ -7,7 +7,18 @@
     "version": "0.5",
     "specPath": "spec",
     "normativePath": "spec/id",
-    "specRevision": "dc47343c9f4da7275fcb1563d5c5815647917760"
+    "specRevision": "dc47343c9f4da7275fcb1563d5c5815647917760",
+    "rendererSemanticProjection": {
+      "schema": "relgeo.svg-semantic",
+      "schemaVersion": 1,
+      "compatibilityLine": "0.5",
+      "tolerance": 0.000001,
+      "errorCodes": [
+        "INVALID_SEMANTIC_PROJECTION",
+        "INVALID_SEMANTIC_REPLAY"
+      ],
+      "rawSvgBytesExcluded": true
+    }
   },
   "policy": {
     "publicPackageVersion": "0.5.x",

@@ -1,6 +1,6 @@
 # RelGeo Maturation Master Plan
 
-**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; MCP sudah menjadi submodule resmi; desktop v1.0.1 tersedia sebagai draft lintas-platform; status diperbarui 2026-10-31
+**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; MCP sudah menjadi submodule resmi; desktop v1.0.1 tersedia sebagai draft lintas-platform; Language Specification closure locally green on the audited 53-ID boundary, with goal-level audit passed and supervisor closure pending; status diperbarui 2026-11-07
 **Tanggal baseline:** 2026-10-08
 **Compatibility line saat ini:** RelGeo DSL 0.5.x  
 **Pemilik keputusan:** Agus Made  
@@ -73,7 +73,8 @@ dengan enam job lulus (`verify`, `public`, `flutter`, `flutter-macos`,
 canonical lintas-platform untuk baseline tersebut. Setelahnya, commit root
 `8fcd1db` menyelaraskan promotion fixture 15 dan dokumentasi terkait; commit
 tersebut adalah follow-up dokumentasi/promotion, bukan klaim bahwa run CI menguji
-revision root yang lebih baru. Evaluator/unit tetap candidate.
+revision root yang lebih baru. Evaluator/unit fixture 16 kini active pada
+bounded local contract; current Node-24/CI/native-host evidence tetap terpisah.
 
 ### 0.1 Status aktif — 2026-11-03
 
@@ -120,24 +121,35 @@ consumer contract, explicit fixture-16 hold, and external Node/CI/browser/
 registry evidence boundaries are recorded in the [Core Runtime closure report](./capability-map/core-runtime/closure-report-2026-11-05.md)
 and [coverage-validation handoff](./capability-map/core-runtime/coverage-validation-handoff.md).
 This is a local closure statement, not a release or public-artifact claim.
-- Flutter `60ec760` telah lulus native CI run `41184291670` pada macOS, Ubuntu,
-  dan Windows. Release workflow `41184693233` membuat draft v1.0.1 dengan
-  artifact ketiga platform, checksum, dan manifest; arsip diunduh dan checksum
-  diverifikasi. Draft belum dipublikasikan.
-- Launch smoke dari paket v1.0.1 pada macOS, Ubuntu/Linux, dan Windows 11 masih
-  menunggu. CI membuktikan build dan struktur/integritas arsip, bukan usability
-  runtime.
-- Fixture 15 `boolean/intersection` kini `active` pada boundary contract yang
-  disetujui; conformance setelah promotion tercatat `260/260`.
-- Fixture 16 `evaluator/unit` tetap `capability`/candidate dan belum menjadi
-  active contract.
-- Flutter pointer saat ini `60ec760`; Flutter CI dan draft v1.0.1 di atas
-  memvalidasi pointer tersebut. Jangan menganggap run lintas-repo historis
-  `37832260326` menguji revision ini.
-- Keyboard/VoiceOver macOS dan review aksesibilitas tetap terpisah dari launch
-  smoke lintas-OS.
-- Goal release npm tetap sengaja ditunda sampai ada dua kandidat release dengan
-  perubahan package nyata. No-op release seperti `0.5.2` tidak diperbolehkan.
+
+### Language Specification closure handoff — 2026-11-07
+
+The Language Specification closure boundary is frozen at 53 expected IDs. The
+canonical status matrix is now **53 `✔️` · 0 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️`
+· 0 `⚠️`** on the audited local boundary. The expected catalog,
+implementation audit, reconciliation, gap backlog, closure ledger, and closure
+report are linked from [`language-specification/`](./capability-map/language-specification/)
+and preserve the external/deferred evidence boundaries rather than reopening
+local capability rows.
+
+Supporting local evidence includes conformance `677/677` across 33 fixtures,
+Core `579`, geometry `97`, renderer `110`, language-service `91`, CLI `40`,
+remark-relgeo `18`, remark-relgeo-hl `11`, Playground `108`, and website
+assertions. MCP passes through the direct Dart SDK test runner. These are
+evidence for the checked local boundary only.
+The generated Flutter spec snapshot also matches all 35 `spec/id` Markdown
+documents and its manifest digest.
+Strict clean-checkout, Node 24 integration, Flutter runtime cache, and
+canonical CI/public/browser/native-host evidence remain `not verified` or
+environment-unavailable. The goal-level audit passed against the current local
+evidence; supervisor closure and no release claim remain separate.
+External boundaries remain separate from this local language closure: prior
+Flutter CI and release artifacts are provenance for their recorded revisions,
+not evidence for the current dirty checkout; current Flutter wrapper execution
+is environment-unavailable because the SDK cache is outside the writable
+workspace. Fixture 16 and fixture 33 remain active local regression anchors,
+while Node-24/CI/native-host, browser/accessibility, MCP transport, publication,
+and deployment evidence are not inferred from the local green matrix.
 
 ### 0.2 Verifikasi lokal kontrak diagnostic dan semantic — 2026-11-03
 
@@ -204,11 +216,11 @@ The CLI source-of-truth remains `cli/src/index.ts` with regression coverage in
 `cli/src/__tests__/`, shared consumer evidence in `fixtures/`, and the canonical
 status/reconciliation/backlog views in
 [`docs/capability-map/cli/`](./capability-map/cli/status-matrix.md). Current
-local evidence is CLI `38/38`, build/typecheck, package tarball audit with eight
-allowlisted files, and conformance `298/298`. `verify:baseline:strict` is green
-at `85/85`; the current compatibility check is workspace-limited at `278/5`
-because of unrelated spec/core/Playground/Flutter alignment mismatches, and the
-integration gate is unavailable before stages on Node `22.23.2` versus required
+local evidence is CLI `39/39`, build/typecheck, package tarball audit with eight
+allowlisted files, and conformance `440/440` across 29 fixtures. The strict
+baseline remains not verified because intended child worktrees are dirty; the
+current compatibility check passes `289/289`, and the integration gate is
+unavailable before stages on Node `22.23.2` versus required
 Node `>=24`. No npm publish, release candidate, or public-package claim is a
 dependency of CLI implementation closure.
 
@@ -259,7 +271,7 @@ Daftar berikut adalah indeks lengkap. `Aktif` berarti masih ada pekerjaan implem
 - [01 — Cross-Repo Integration Gate](./plans/01-cross-repo-integration-gate.md) — implementasi dan canonical refresh selesai pada run `37832260326`.
 - [02 — Contract Versioning](./plans/02-contract-versioning.md) — policy/guard selesai; skenario partial-release tidak dijalankan sengaja.
 - [03 — Release dan npm Publishing Guard](./plans/03-npm-release-guard.md)
-- [04 — Shared Conformance Fixtures](./plans/04-shared-conformance-fixtures.md) — fixture 15 active; fixture 16 evaluator/unit tetap candidate.
+- [04 — Shared Conformance Fixtures](./plans/04-shared-conformance-fixtures.md) — fixture 15 and fixture 16 evaluator/unit active pada bounded contracts; current host evidence tetap terpisah.
 - [05 — Public Docs dan Playground Hardening](./plans/05-public-docs-and-playground-hardening.md) — baseline dan browser evidence selesai; native accessibility tetap limitation.
 - [06 — Flutter Alignment](./plans/06-flutter-alignment.md) — canonical desktop/build evidence selesai; evaluator dan runtime smoke tetap terpisah.
 - [07 — Flutter Capability Promotion dan SVG Parity](./plans/07-flutter-capability-promotion-and-svg-parity.md) — promotion fixture 15 selesai pada boundary terbatas.
@@ -471,7 +483,7 @@ Status berikut menjadi titik awal, bukan pekerjaan yang harus diulang tanpa alas
 - [x] Integrasi lintas-repo memiliki gate resmi dari fresh clone yang menjalankan dependency graph publik secara penuh.
 - [x] Release order dan bump policy menjadi satu kontrak operasional pada compatibility matrix dan divalidasi oleh release-record checker; partial publish tetap harus dihentikan dan dicatat.
 - [x] Publish npm memiliki release checklist, tarball audit, registry verifier, dan public integration gate lintas-package; publish tetap manual.
-- [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; fixture 15 boolean/intersection lulus evidence Flutter canonical sebagai active, sedangkan fixture 16 evaluator/unit tetap candidate.
+- [x] Fixture conformance menjadi sumber bersama pada workspace dan diuji lintas consumer TypeScript/CLI; fixture 15 boolean/intersection dan fixture 16 evaluator/unit active pada bounded contract masing-masing, sedangkan current canonical host evidence tetap terpisah.
 - [x] GitHub Actions run `37832260326` pada root `328c869` adalah evidence lintas-repo canonical terbaru untuk package, Playground, website, public registry, dan Flutter; `Integration #151` dipertahankan sebagai historical predecessor.
 - [x] Pointer Flutter pada workspace diverifikasi melalui run canonical `37832260326` pada root `328c869`; seluruh job Flutter dan desktop lulus. Evidence local/manual lama tetap dipisahkan dari canonical record.
 - [x] npm `@relgeo/core@0.5.1` dan `@relgeo/language-service@0.5.1` dipublikasikan dan registry-verified pada 2026-09-18.
@@ -508,11 +520,12 @@ Kontrak `0.5.x` sekarang memiliki matrix, manifest, parser allowlist, language-s
 
 Guard, verifikasi registry, dan recovery planner read-only tersedia. Otomasi publish/recovery tidak sedang dikerjakan: keputusan yang diterima meminta dua siklus manual tambahan setelah keputusan 2026-09-23, baru evaluasi OIDC dan environment approval. Hingga tanggal dokumen ini, belum ada evidence dua siklus pascakeputusan tersebut; ini penundaan berprasyarat, bukan kegagalan.
 
-### Prioritas 4 — Shared conformance fixtures — fixture 15 active; evaluator tetap candidate
+### Prioritas 4 — Shared conformance fixtures — fixture 15 dan fixture 16 active pada bounded contracts
 
 Fixture dan runner lintas-consumer sudah tersedia. `boolean/intersection` pada
 fixture 15 telah menjadi active dalam boundary contract yang disetujui setelah
-canonical run 37832260326; `evaluator/unit` pada fixture 16 tetap candidate.
+canonical run 37832260326; `evaluator/unit` pada fixture 16 kini active pada
+bounded local contract setelah Core/CLI/conformance/Flutter-local evidence.
 Tidak ada keputusan untuk memperluas SVG presentation pada line 0.5.x; property
 tambahan sengaja tidak dimasukkan tanpa kebutuhan consumer.
 
@@ -649,7 +662,7 @@ menjadikannya checklist overdue.
 
 ### Tahap 4 — Shared conformance fixtures dan contract tests
 
-**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi historis:** pre-promotion checkpoint menghasilkan `253/253`, lalu fixture 15 dipromosikan dan conformance menjadi `260/260`; canonical run `37832260326` memverifikasi gate lintas-platform. **Verifikasi workspace terbaru:** 23 fixture dan `290/290` checks lulus secara lokal; ini tidak menggantikan canonical Node 24/CI/Flutter-host evidence. **Pekerjaan terkait namun terpisah:** fixture 16 evaluator/unit tetap candidate; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
+**Status implementasi:** infrastruktur fixture/runner selesai. **Status verifikasi historis:** pre-promotion checkpoint menghasilkan `253/253`, lalu fixture 15 dipromosikan; canonical run `37832260326` memverifikasi gate lintas-platform pada revision tersebut. **Verifikasi workspace terbaru:** 29 fixture dan `440/440` checks lulus secara lokal; ini tidak menggantikan canonical Node 24/CI/Flutter-host evidence. **Pekerjaan terkait namun terpisah:** fixture 16 evaluator/unit active pada bounded local contract; scope SVG presentation tambahan sengaja tidak masuk contract 0.5.x.
 
 **Tujuan:** memastikan satu bahasa dan satu scene menghasilkan perilaku konsisten pada semua surface.
 
@@ -732,7 +745,7 @@ menjadikannya checklist overdue.
 **Acceptance criteria:**
 
 - [x] Flutter menyatakan capability yang benar-benar didukung melalui README dan mapping machine-readable; evidence parity tetap parsial dan promotion pertama sudah diterapkan pada boundary contract terbatas;
-- [x] active/runtime/invalid fixture inti diverifikasi pada Flutter lokal; fixture 15 `boolean/intersection` kini active pada boundary contract terbatas, sedangkan fixture 16 evaluator/unit tetap candidate;
+- [x] active/runtime/invalid fixture inti diverifikasi pada Flutter lokal; fixture 15 `boolean/intersection` dan fixture 16 evaluator/unit kini active pada boundary contract terbatas;
 - [x] active, runtime-diagnostic, dan candidate SVG Flutter dibandingkan dengan expected SVG TypeScript pada level object/primitive/path geometry; style, viewBox, dan full SVG policy belum menjadi acceptance;
 - [x] checkout Flutter terisolasi lokal dapat menjalankan dependency resolution, analyzer non-fatal, dan test tanpa parent workspace atau absolute path operator; fixture canonical tetap opt-in melalui `RELGEO_FIXTURE_ROOT`;
 - [x] analyzer Flutter tidak lagi memiliki warning atau style lint; `dart analyze` tersisa `47 INFO` deprecation-only yang tetap dicetak oleh gate CI;

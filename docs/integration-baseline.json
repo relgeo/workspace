@@ -3,8 +3,8 @@
   "contract": "integration-baseline-v1",
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-11-07",
-  "rootRevision": "b3d9a4a798cdf63af1ec86b45a05edef7c133a86",
+  "capturedAt": "2026-11-08",
+  "rootRevision": "afe5e9f60605aa509edf040269380d9918f8ef19",
   "compatibilityLine": "0.5",
   "toolchain": {
     "node": ">=24",
@@ -28,7 +28,7 @@
     },
     {
       "path": "playground",
-      "revision": "c263920146a7ba28fe76561df25d1174b289663b",
+      "revision": "23fd02c0ba99e40d3973c0482a6177d065f8fa3e",
       "package": {
         "name": "relgeo-playground",
         "version": "0.4.0"
@@ -56,7 +56,7 @@
     },
     {
       "path": "language-service",
-      "revision": "ae23ede99b59498a72b5838c06be6a26cf5ece82",
+      "revision": "962d17a0fed048c2fb89ef239063d92dfbcfe44e",
       "package": {
         "name": "@relgeo/language-service",
         "version": "0.5.1"

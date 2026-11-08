@@ -40,17 +40,20 @@ evidence-only follow-up because the current preview server cannot bind.
 
 ## Implementation and execution evidence
 
-The closure is implementation-backed, not a matrix-only promotion:
+The closure is implementation-backed, not a matrix-only promotion. The worker
+boundary also has an explicit lifecycle owner for cancellation, timeout,
+restart, message-error recovery, and cleanup:
 
 - Bootstrap lifecycle: `playground/src/App.tsx`,
   `playground/src/playground-status.ts`, `playground/src/worker.ts`, and
-  `playground/src/indexeddb-persistence.ts`, with 17 test files and 112 unit
+  `playground/src/indexeddb-persistence.ts`, with 18 test files and 119 unit
   tests passing.
 - Accessibility boundary: `App.tsx`, `Navbar.tsx`, `Inspector.tsx`,
   `Sidebar.tsx`, `Editor.tsx`, and `scripts/audit-ux-contract.mjs`; static UX
   audit passes and browser cases are discovered. Native AT is not claimed.
 - Worker/language-service contract: document/version/request identity,
-  stale-result rejection, readiness/recovery, ranges, and provenance are
+  stale-result rejection, supersession cancellation, timeout/restart recovery,
+  cleanup, readiness/recovery, ranges, and provenance are
   covered at the worker/protocol boundary; language-service local tests/build
   pass with the affected `LS-CONS-001` row synchronized.
 - Artifact provenance: local assembled artifact and Pages assertions pass for

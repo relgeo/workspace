@@ -36,7 +36,7 @@ its delayed bootstrap browser trace is an evidence follow-up. `PG-A11Y-001`
 is an explicit `⏸️` host-evidence hold for browser traversal and separately
 labeled native AT evidence. `PG-DELIVERY-001` is an explicit hosted-only
 `⏸️` hold; its local artifact/provenance boundary is closed. The current local Playground
-checkout is `efb7396…`; `pnpm test` (112 tests), `pnpm build`, `pnpm lint`, and
+checkout is `efb7396…`; `pnpm test` (119 tests), `pnpm build`, `pnpm lint`, and
 `pnpm audit:ux` pass, while targeted browser execution is environment-limited
 by preview-server `EPERM`. No new capability ID is introduced.
 
@@ -61,7 +61,7 @@ where evidence exists and never promotes a local result to hosted parity.
 
 | ID | Bound outcome | Required evidence before closure | Explicit non-goal |
 | --- | --- | --- | --- |
-| `PG-LIFE-002` | Startup distinguishes `loading`, `empty`, `ready`, and `error`; editor, file actions, preview controls, and command shortcuts are gated while bootstrap is `loading`. | Source state model and 112 unit tests close the local implementation; delayed browser trace is recorded as not verified because the preview server cannot bind. | Do not reinterpret resolver `resolving` or storage failure as `empty`; do not change the accepted theme contract. |
+| `PG-LIFE-002` | Startup distinguishes `loading`, `empty`, `ready`, and `error`; editor, file actions, preview controls, and command shortcuts are gated while bootstrap is `loading`. | Source state model and 119 unit tests close the local implementation; delayed browser trace is recorded as not verified because the preview server cannot bind. | Do not reinterpret resolver `resolving` or storage failure as `empty`; do not change the accepted theme contract. |
 | `PG-A11Y-001` | Browser DOM/ARIA semantics expose landmarks, names, roles, selected/expanded/pressed/value states, announcements, focus return/traps, and source/preview navigation. | `playground/scripts/audit-ux-contract.mjs`; DOM/keyboard browser run; focused source/tests; native VoiceOver/TalkBack remains separately labeled as deferred or unverified. | Native AT/device evidence is not silently claimed by static source checks. |
 | `PG-DELIVERY-001` | Hosted `/playground/` is traceable to the tested child revision and assembled artifact. | Child revision, clean build output, base route/title/asset manifest comparison, hosted smoke/share run, and explicit environment/host limitation record. | A local Vite build is not public parity; Pages/network unavailability is `environment-limited`, not an implementation failure. |
 
@@ -77,7 +77,7 @@ the current boundary.
 
 | Bound row | Current evidence | Remaining boundary |
 | --- | --- | --- |
-| `PG-LIFE-002` | Explicit `loading`/`empty`/`ready`/`error` phases, bootstrap gate, storage-error status, 112 unit tests, successful build, and a delayed-startup E2E case | Local implementation is closed; browser execution is unavailable because Playwright preview binding returns `EPERM`; no browser state is claimed. |
+| `PG-LIFE-002` | Explicit `loading`/`empty`/`ready`/`error` phases, bootstrap gate, storage-error status, 119 unit tests, successful build, and a delayed-startup E2E case | Local implementation is closed; browser execution is unavailable because Playwright preview binding returns `EPERM`; no browser state is claimed. |
 | `PG-A11Y-001` | Static UX audit passes; source includes landmarks, semantic states, announcements, focus return/traps, and source/preview navigation; DOM/keyboard E2E cases are discovered | Browser AX/traversal execution and native VoiceOver/TalkBack remain unverified/deferred. |
 | `PG-DELIVERY-001` | Local build and assembled website are available; title/base-route and asset comparison were attempted, but the full child-revision/provenance gate does not pass because the checkout differs from the baseline/Pages pin | Public hosted smoke/parity is unavailable; baseline and Pages pin drift (`47fd715…` vs `c7cec4b…`) remains explicitly reported and is not rewritten. |
 
@@ -92,7 +92,7 @@ DSL or package compatibility line:
 
 | ID | Concrete implementation change | Local evidence | Remaining boundary |
 | --- | --- | --- | --- |
-| `PG-LIFE-002` | Worker responses retain backward-compatible readiness/recovery fields; bootstrap phases and gating remain explicit. | `src/worker.ts`, `src/types.ts`, `src/__tests__/worker.test.ts`, `src/__tests__/playground-status.test.ts`; `pnpm test` | Delayed browser bootstrap trace remains environment-limited. |
+| `PG-LIFE-002` | Worker responses retain backward-compatible readiness/recovery fields; bootstrap phases and gating remain explicit. | `src/worker.ts`, `src/worker-lifecycle.ts`, `src/types.ts`, `src/__tests__/worker.test.ts`, `src/__tests__/worker-lifecycle.test.ts`, `src/__tests__/playground-status.test.ts`; `pnpm test` | Delayed browser bootstrap trace remains environment-limited. |
 | `PG-CANVAS-005` | Viewport reset no longer triggers fit-to-content after setting the deterministic camera baseline. | `src/App.tsx`, `src/__tests__/view-state.test.ts`, `e2e/playground.spec.ts`; `pnpm test`, `pnpm build` | Browser preservation proof remains not verified. |
 | `PG-KEY-001` | Command dispatch ignores IME composition and AltGraph text-entry chords. | `src/keyboard-commands.ts`, `src/App.tsx`, `src/__tests__/keyboard-commands.test.ts`; `pnpm test` | Browser focus/reserved-key proof remains not verified. |
 | `PG-A11Y-001` | Status announcements are atomic and the UX audit now guards that contract. | `src/components/Navbar.tsx`, `scripts/audit-ux-contract.mjs`; `pnpm audit:ux` | DOM traversal and native AT evidence remain unverified/deferred. |

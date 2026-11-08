@@ -1,0 +1,37 @@
+{
+  "schema": "relgeo.language-service-result",
+  "schemaVersion": 1,
+  "protocolVersion": "0.2",
+  "specVersion": "0.5",
+  "positionEncoding": "utf-16",
+  "identity": {
+    "documentId": "fixture:language-service-protocol",
+    "version": 3,
+    "requestId": "request-3",
+    "sourceRevision": "sha256:fixture"
+  },
+  "diagnostic": {
+    "code": "UNKNOWN_OBJECT_TYPE",
+    "phase": "validate",
+    "severity": "error",
+    "range": {
+      "start": { "line": 2, "character": 2 },
+      "end": { "line": 2, "character": 12 }
+    },
+    "provenance": [
+      {
+        "source": "core",
+        "specVersion": "0.5",
+        "revision": "fixture-v1"
+      }
+    ]
+  },
+  "consumerDisposition": {
+    "current": true,
+    "staleWhen": [
+      "documentId differs",
+      "version differs",
+      "requestId differs"
+    ]
+  }
+}

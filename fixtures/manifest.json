@@ -47,6 +47,12 @@
     "errorCodes": ["INVALID_SEMANTIC_PROJECTION", "INVALID_SEMANTIC_REPLAY"],
     "presentationBytes": "excluded-from-parity-contract"
   },
+  "languageServiceProtocolFixture": {
+    "path": "expected/language-service-protocol.v0.5.json",
+    "schema": "relgeo.language-service-result",
+    "protocolVersion": "0.2",
+    "positionEncoding": "utf-16"
+  },
   "cliContractCoverage": {
     "input": {
       "pathPrecedence": "explicit path wins over unrelated stdin",

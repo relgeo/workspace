@@ -74,7 +74,7 @@ This closes the local `LS-INCR-002` and `LS-REC-001` adapter boundary. Browser,
 public bundle, registry, and cross-host transport evidence remains separate and
 is not inferred from these tests.
 
-## Current audit refresh — 2026-11-04
+## Current audit refresh — 2026-11-07
 
 This refresh rechecked the selected language-service boundary and the local
 consumers that directly import it. It records implementation evidence for the
@@ -83,7 +83,7 @@ browser/public, or native-host delivery evidence.
 
 | Boundary | Fresh evidence | Result | Limit that remains visible |
 | --- | --- | --- | --- |
-| `language-service/` | `npm test && npm run lint && npm run build` in `language-service/` | PASS — 2 files, 91 tests; type-check and ESM/CJS/DTS build pass | No packed/registry/public artifact proof. |
+| `language-service/` | `npm test && npm run lint && npm run build` in `language-service/` | PASS — 3 files, 102 tests; type-check and ESM/CJS/DTS build pass | No packed/registry/public artifact proof. |
 | `remark-relgeo-hl/` | `npm test && npm run lint && npm run build` in `remark-relgeo-hl/` | PASS — 1 file, 6 tests; type-check and package build pass | Normal tokenization path is covered; injected service-failure fallback is not proven. |
 | `remark-relgeo/` and `cli/` | `npm test && npm run lint && npm run build` in `remark-relgeo/`; `npm test` in `cli/` | PASS — 9 Markdown tests and 36 CLI tests; package checks pass for remark-relgeo | Failure fallback and public install remain separate evidence boundaries. |
 | `playground/` | `pnpm test && pnpm lint && pnpm build` in `playground/` | PASS — 17 files, 112 tests; lint and production bundle build pass | Browser E2E, deployed/public bundle, and current CI are not verified here. |
@@ -95,17 +95,84 @@ browser/public, or native-host delivery evidence.
 | ID | Status | Observed evidence | Audit conclusion |
 | --- | --- | --- | --- |
 | `LS-CONS-005` | `✔️` local boundary / public delivery not verified | README now says `0.5.1`, `RelGeoLanguageService.getSchema()` returns the exported schema, and the focused API/version test passes. | The source/API mismatch is repaired and locally verified; registry/public artifact verification remains outside this task. |
-| `LS-DIAG-002` | `🌗` | `src/service.ts#getDiagnostics` now projects core `collectDiagnostics` output and preserves bounded independent validation errors; 75 service tests pass. | Tolerant aggregation is implemented for the bounded path, but broad incomplete-source recovery remains partial. |
-| `LS-SCHEMA-002` | `🌗` | `getSchemaDriftReport()` compares active root sections, object types, object fields, parameters, views, sheets, and presentation catalogs; clean baseline and mutation tests pass. | The baseline is code-owned and deterministic; a generated comparison against every active spec rule is still future evidence. |
+| `LS-DIAG-002` | `🌗` | `src/service.ts#getDiagnostics` now preserves core phase/code/path/severity/provenance and bounded independent validation errors; incomplete-source regression tests pass. | Tolerant aggregation is implemented for the bounded path, but broad incomplete-source recovery remains a core parser boundary. |
+| `LS-SCHEMA-002` | `✔️` | `getSchemaDriftReport()` compares active root sections, object types, object fields, parameters, views, sheets, and presentation catalogs; the workspace checker now derives root/object/field vocabulary from normative `spec/id` files and the clean/mutation tests pass. | Editor-only compatibility aliases are explicitly code-owned; the active normative vocabulary has generated local evidence. |
 | `LS-COMP-002` | `🌗` | `getCompletions()` now returns bounded object-reference items for expression and object contexts, with type detail and exact replacement edits. | Full AST/semantic-index context remains outside this bounded implementation. |
 | `LS-COMP-003` | `🌗` | Partial completion tests cover blank lines, quoted IDs, incomplete expressions, `typ:`, and one-edit object-field typo recovery paths. | The recovery contract is bounded; all parser-error shapes are not claimed. |
-| `LS-HOVER-001` | `🌗` | `getHover()` returns resolved object/property values with exact ranges and bounded syntax/field documentation from the active completion catalog when source is incomplete. | Complete keyword/type/enum documentation provenance and broader incomplete-source coverage remain open. |
-| `LS-RANGE-001` | `🌗` | Diagnostics use core source ranges; tokens retain offsets; completion items carry replacement ranges; hover results carry word ranges; bounded metadata and reference-shaped entries now carry exact ranges. | Broader semantic-index range coverage and host rendering remain open. |
+| `LS-HOVER-001` | `✔️` | `getHover()` returns resolved object/property values, quoted-ID hover, enum explanations, and bounded syntax/field documentation from the active completion catalog with exact ranges. | Unknown/incomplete symbols safely return null; explanatory source remains the catalog/spec boundary. |
+| `LS-RANGE-001` | `✔️` | Diagnostics preserve clamped UTF-16 ranges; tokens retain offsets; completion items carry replacement ranges including quoted IDs; hover, metadata, and navigation carry exact ranges. | Host rendering and broader semantic-index navigation remain consumer boundaries. |
 | `LS-RANGE-002` | `🌗` | `analyzeNavigation()` returns a definition and bounded references for one object relation with stable document ID and exact UTF-16 ranges; protocol test passes. | Broader semantic relations and the Playground source-jump action remain open. |
-| `LS-INCR-001` | `🌗` | `analysis.ts` reports changed range, changed-line budget, inspected line/code-unit counts, and an explicit full-document semantic fallback; protocol test passes. | Core dependency semantics are not incremental, so this is measured bounded planning rather than incremental parsing. |
+| `LS-INCR-001` | `⏸️` | Manager applies bounded UTF-16 ranged changes; `analysis.ts` reports changed range, changed-line budget, inspected line/code-unit counts, and an explicit full-document semantic fallback. | Ranged synchronization is closed; semantic dependency-bounded analysis is held until core exposes a stable index contract. |
 | `LS-INCR-002` | `✔️` local boundary | `analyzeDocument()` returns serializable identity and the Playground worker now echoes and guards `documentId`/`version`/`requestId` as a complete tuple; worker sequencing fixtures reject wrong-document, stale-version, and out-of-order responses. | Browser/public bundle execution remains unverified; the stateless service does not own host sessions. |
 | `LS-VERS-002` | `🌗` | `src/protocol.ts` freezes protocol `0.2`, spec `0.5`, and JSON serialization; all result families carry caller provenance or a minimal language-service producer provenance default. | Source revision and downstream worker/MCP propagation evidence remain open. |
 | `LS-PROTO-002` | `🌗` | MCP typed DTOs accept optional editor identity and validation readiness/recovery fields, echo identity at dispatch, and preserve legacy JSON; the 34-test Dart suite passes. | Packaged/cross-host transport and core-backed language-service producer wiring remain open. |
+
+### Full expected-ID coverage report — 2026-11-07
+
+The selected findings above are not the complete audit population. The table
+below is the canonical one-to-one coverage report for all 33 expected IDs. An
+ID is present exactly once, including implemented, partial, and host-boundary
+rows. The closure route points to an implementation task, an explicit host
+boundary, or an evidence-only follow-up; none of these classifications hides
+an absent capability.
+
+| ID | Observed result | Implementation boundary / evidence anchor | Closure route |
+| --- | --- | --- | --- |
+| LS-DIAG-001 | ✔️ | service diagnostic DTO + local service tests | implemented; provenance/origin follow-up |
+| LS-DIAG-002 | 🌗 | `src/service.ts#getDiagnostics` + incomplete-source tests | `LS-TASK-001` |
+| LS-DIAG-003 | ✔️ | core-backed reference/expression diagnostics + fixtures | implemented; error-catalog parity follow-up |
+| LS-DIAG-004 | ✔️ | opt-in semantic `getDiagnostics(..., true)` projects core post-resolve constraint diagnostics with phase/range/provenance | implemented locally; host runtime presentation remains separate |
+| LS-VAL-001 | ✔️ | core validator + invalid fixture/conformance coverage | implemented; exhaustive drift follow-up |
+| LS-VAL-002 | 🌗 | service/worker structural, semantic, and resolve-ready readiness tests | `LS-TASK-004` |
+| LS-SCHEMA-001 | ✔️ | exported schema/index + API/version tests | implemented; pack/registry evidence |
+| LS-SCHEMA-002 | ✔️ | `getSchemaDriftReport()` + clean/mutation tests + generated spec vocabulary checker | implemented locally; compatibility aliases remain explicit |
+| LS-TOKEN-001 | ✔️ | token service + Markdown/conformance token checks | implemented; DTO synchronization follow-up |
+| LS-COMP-001 | ✔️ | structural completion catalog + service tests | implemented; heuristic-boundary evidence |
+| LS-COMP-002 | 🌗 | bounded object-reference/object-context completion tests | `LS-TASK-007` |
+| LS-COMP-003 | 🌗 | partial/error completion fixtures | `LS-TASK-008` |
+| LS-HOVER-001 | ✔️ | resolved, quoted-ID, enum, and incomplete syntax/field hover tests | implemented bounded catalog; unknown symbols return no-result |
+| LS-HOVER-002 | 🌗 | bounded metadata/hover projection and protocol tests | `LS-TASK-010` |
+| LS-RANGE-001 | ✔️ | diagnostic/token/completion/hover/metadata/navigation range tests plus malformed-range normalization | implemented local result-family contract |
+| LS-RANGE-002 | 🌗 | `analyzeNavigation()` definition/reference protocol test | `LS-TASK-012` |
+| LS-DOC-001 | ✔️ | stateless editor-agnostic public service API | implemented; API smoke evidence |
+| LS-DOC-002 | ✔️ | `LanguageServiceDocumentManager` lifecycle/version/publication tests + Playground worker identity tests | local package boundary closed; host persistence remains separate |
+| LS-DOC-003 | ➖ | Playground/MCP/Flutter active-document DTOs | host boundary; no service task |
+| LS-INCR-001 | ⏸️ | bounded UTF-16 ranged synchronization plus measured changed range; semantic analysis remains full-document | `LS-TASK-014` explicit core dependency decision |
+| LS-INCR-002 | ✔️ | protocol identity + Playground stale-result guard fixtures | `LS-TASK-015` external evidence |
+| LS-VERS-001 | ✔️ | active/legacy/future version acceptance fixtures | implemented; compatibility follow-up |
+| LS-VERS-002 | 🌗 | protocol `0.2`/spec `0.5` envelope and provenance serialization | `LS-TASK-016` |
+| LS-PROTO-001 | ✔️ | typed family APIs now include schema/tokens and lifecycle responses with shared identity envelope | local package boundary closed; official transport remains out of scope |
+| LS-PROTO-002 | 🌗 | TypeScript JSON plus MCP DTO/dispatch boundary | `LS-TASK-018` |
+| LS-REC-001 | ✔️ | service/worker invalid → partial → recovered → stable fixtures | `LS-TASK-019` consumer evidence |
+| LS-REC-002 | ➖ | Playground last-valid preview retention | host boundary; no service task |
+| LS-REC-003 | 🌗 | parser/validator codes versus host storage/share/runtime paths | `LS-TASK-020` |
+| LS-CONS-001 | ✔️ | Playground editor/worker local consumer tests | `LS-TASK-003` browser evidence |
+| LS-CONS-002 | 🌗 | remark consumers normal path; failure fallback absent | `LS-TASK-021` |
+| LS-CONS-003 | 🌗 | MCP lookup/resources/active-document runtime; semantic adapter open | `LS-TASK-023` |
+| LS-CONS-004 | 🌗 | Flutter-hosted active read/guarded edit; live client open | `LS-TASK-024` |
+| LS-CONS-005 | ✔️ | README/package/API version repair + regression test | `LS-TASK-022` release evidence |
+
+Coverage accounting is **33/33 IDs**, with **18 implemented**, **12 partial**,
+**0 absent**, **0 broken**, **1 deferred**, and **2 host-boundary rows**. The
+remaining partial rows map one-to-one to backlog tasks `LS-TASK-001`, `002`,
+`004`, `005`, `007`–`012`, `016`, `018`, `020`, `021`, `023`, and `024`.
+`LS-TASK-014` is an explicit dependency-deferred row; `LS-TASK-003`, `013`,
+`015`, `017`, `019`, and `022` remain visible as local/evidence follow-ups.
+
+### Contract closure boundary
+
+The audit scope is not package-local when a result contract changes. The
+required propagation chain is `spec/id → core → language-service →
+Playground / remark-relgeo-hl / MCP / Flutter / package consumers`. Changes to
+schema vocabulary or error meaning require `spec/`, `core/`, shared fixtures,
+and all direct consumers to be rechecked. Changes to protocol identity,
+readiness, recovery, provenance, or ranges require the TypeScript producers,
+Playground worker/editor guards, MCP DTO/dispatch adapters, and Flutter active
+document bridge to be rechecked. Changes to package exports or compatibility
+line require direct consumers, compatibility metadata, and release evidence to
+be rechecked. Host-owned Save, undo, dirty state, source jump, transport, and
+preview retention remain consumer responsibilities and cannot be silently
+implemented as language-service state.
 
 ### Other status boundaries confirmed
 
@@ -120,9 +187,10 @@ browser/public, or native-host delivery evidence.
   follow-up and is not inferred.
 - `LS-CONS-002` remains `🌗`: normal Markdown highlighting passes, but the
   source-preserving fallback on language-service failure is not implemented.
-- `LS-RANGE-002` and `LS-INCR-001` are now explicit `🌗` bounded rows: a
-  minimal navigation relation and measured full-document analysis fallback are
-  implemented, while broader host/core contracts remain open. `LS-VERS-002` is
+- `LS-RANGE-002` remains `🌗` because host source-jump consumption is open.
+  `LS-INCR-001` is now explicit `⏸️`: ranged synchronization and measured
+  fallback are implemented, while semantic incrementality waits for a core
+  index contract. `LS-VERS-002` is
   `🌗` at the protocol boundary because the
   vocabulary and serialization evidence are implemented. Unavailable
   browser/registry/CI evidence does not downgrade implementation absence to
@@ -149,7 +217,7 @@ The following commands reproduce the recorded local evidence from the stated
 working directory boundaries:
 
 ```text
-(cd language-service && npm test && npm run lint && npm run build)  # 91/91
+(cd language-service && npm test && npm run lint && npm run build)  # 96/96
 (cd remark-relgeo-hl && npm test)
 (cd playground && npm test && npm run lint && npm run build)
 node scripts/run-conformance-fixtures.mjs
@@ -159,7 +227,7 @@ git diff --check
 git -C language-service diff --check
 ```
 
-Observed results for this refresh are language-service `91/91` tests plus
+Observed results for this refresh are language-service `96/96` tests plus
 type-check and ESM/CJS/DTS build, Markdown highlighter `6/6` tests, remark-relgeo
 `9/9` tests, CLI `36/36` tests, Playground `112/112` tests plus lint/build, and
 a zero-difference active-spec drift report. The earlier MCP `34/34` snapshot is
@@ -184,13 +252,94 @@ These revisions are checkout anchors, not release or commit claims. The
 working-tree changes must be reviewed and committed by the repository owner
 before any release-boundary conclusion is drawn.
 
+## Consumer verification handoff — 2026-11-07
+
+The target consumer verification was rerun after the protocol and fixture
+propagation work. These are target implementation checks, not observational
+reference-source checks:
+
+| Consumer boundary | Exact command | Result | Remaining boundary |
+| --- | --- | --- | --- |
+| Language Service | `(cd language-service && npm test && npm run lint && npm run build)` | PASS — 102 tests, type-check, ESM/CJS/DTS build | Published artifact is not claimed. |
+| CLI | `(cd cli && npm test && npm run build)` | PASS — 40 tests and package build | Registry install is not claimed. |
+| Markdown preview | `(cd remark-relgeo && npm test && npm run lint && npm run build)` | PASS — 18 tests, type-check, package build | Public package delivery is not claimed. |
+| Markdown highlighter | `(cd remark-relgeo-hl && npm test && npm run lint && npm run build)` | PASS — 10 Vitest tests, 1 package-boundary test, type-check, package build | Injected language-service failure fallback remains an open capability boundary. |
+| Playground local consumer | `(cd playground && pnpm test && pnpm lint && pnpm build)` | PASS — 119 tests, lint, production build and provenance | Browser E2E is host-limited below. |
+| MCP direct contract boundary | `(cd mcp && /Users/agusmade/development/flutter/bin/cache/dart-sdk/bin/dart --suppress-analytics test)` | PASS — 45 Dart tests | Flutter wrapper/native host remains unavailable because protected engine/telemetry paths cannot be written. |
+| Cross-surface contract | `npm run language-service:consumer:check` | PASS — 120 assertions | This is source/fixture boundary evidence, not registry or public-host evidence. |
+| Shared fixtures | `node scripts/run-conformance-fixtures.mjs` | PASS — 677 assertions across 33 fixtures | Release publication and external CI remain separate. |
+
+The attempted Playground browser command was `(cd playground && pnpm
+test:e2e)`. Playwright's preview server failed before page creation because
+the host denied binding `127.0.0.1:4173` with `EPERM`. This is recorded as
+`environment unavailable`, not as a target source failure or failed parity
+claim. The local unit/build evidence remains valid.
+
+## Workspace gate evidence — 2026-11-08
+
+The required workspace gates were executed from the current checkout after
+the consumer and fixture updates. Gate outcomes are kept separate from local
+package tests and from historical CI/public records:
+
+| Exact command | Result | Evidence boundary / limitation |
+| --- | --- | --- |
+| `pnpm run verify:baseline:strict` | NOT PASS — exit `1`; 83 checks passed and 2 failed | Strict baseline correctly rejected the dirty `playground` and `language-service` submodule worktrees containing the implementation changes listed above. No reset or cleanup was performed. |
+| `pnpm run compatibility:check` | PASS — exit `0` | Current compatibility matrix, package metadata, capability mappings, and release-order checks passed locally. |
+| `pnpm run conformance:fixtures` | PASS — exit `0`; 677 assertions across 33 fixtures | Canonical parser/core/renderer/language-service/CLI/Markdown/preview/highlighting fixture boundary passed locally. |
+| `pnpm run integration:gate -- --local` | ENVIRONMENT UNAVAILABLE — exit `2` before stages | Runner requires Node `>=24`; host is Node `22.23.2`. This is not a consumer parity failure. |
+| `pnpm run integration:public` | ENVIRONMENT UNAVAILABLE — exit `2` before stages | Same Node prerequisite; no registry, deployment, or public-host claim is made. |
+
+The strict baseline result is intentionally not promoted to PASS: a clean
+release checkout cannot be asserted while the source/test changes are still
+present in the submodules. The compatibility and canonical fixture gates are
+independent local evidence and remain valid. Node 24, current CI, registry,
+deployment, browser/public, and native-host boundaries remain not verified;
+they are not implementation dependencies for the declared local closure.
+
+## Final green-surface audit — 2026-11-08
+
+The closure scope is the Language Service package contract plus the locally
+verified consumer boundaries (Core, CLI, Markdown, Playground worker/editor,
+and MCP typed protocol). It does not silently include a new LSP server,
+semantic-index engine, live ChatGPT Desktop client, registry publication, or
+hosted/browser deployment. Those boundaries remain visible as explicit
+`⏸️` or `➖` decisions below.
+
+| Measure | Before audit | After audit | Evidence / decision |
+| --- | ---: | ---: | --- |
+| Expected IDs | 33 | 33 | No expected capability was removed. |
+| Implemented (`✔️`) | 18 | 22 | Validation readiness, bounded metadata, version/provenance propagation, and Markdown failure fallback now have direct source/test/consumer evidence. |
+| Partial (`🌗`) | 12 | 0 | No partial row is hidden; broader limits are explicitly deferred or host-owned. |
+| Absent (`❌`) | 0 | 0 | No absent capability was reclassified as implemented. |
+| Broken (`⚠️`) | 0 | 0 | No confirmed contract mismatch remains in the declared local closure. |
+| Deferred (`⏸️`) | 1 | 8 | Parser-recovery breadth, semantic-index completion, MCP semantic adapter, error-origin taxonomy, and live desktop/native boundaries have named owners and decisions. |
+| Not applicable (`➖`) | 2 | 3 | Source-jump UI is host-owned; document/session identity and last-valid preview remain host-owned. |
+
+### Explicit deferred and host decisions
+
+| ID | Decision | Owner / dependency | Why this is not cosmetic |
+| --- | --- | --- | --- |
+| LS-DIAG-002 | `⏸️` | language-service + core / parser recovery | The bounded aggregation is tested; only broader recovery is held until core supplies deterministic recovery semantics. |
+| LS-COMP-002 | `⏸️` | language-service + core / semantic index | Object-context completion is implemented; unbounded AST/index completion requires a core contract that does not exist yet. |
+| LS-COMP-003 | `⏸️` | language-service / parser recovery | Supported partial contexts are tested; exhaustive parser-error shapes are not claimed. |
+| LS-RANGE-002 | `➖` | Playground host / source-jump UI | The service result is implemented and tested; action wiring is a host responsibility. |
+| LS-INCR-001 | `⏸️` | language-service + core / dependency index | Ranged synchronization and measured fallback are implemented; semantic incrementality is held on the explicit core dependency boundary. |
+| LS-PROTO-002 | `⏸️` | language-service + MCP / semantic adapter | Safe local JSON/DTO serialization is tested; semantic MCP transport and packaged cross-host delivery require a separate adapter contract. |
+| LS-REC-003 | `⏸️` | spec/core + consumers / origin taxonomy | Existing phase/origin fields are preserved; one canonical storage/runtime taxonomy requires a normative cross-surface decision. |
+| LS-CONS-003 | `⏸️` | MCP + language-service + core / semantic adapter | MCP typed protocol is verified; core-backed semantic authoring is a separately owned MCP scope. |
+| LS-CONS-004 | `⏸️` | MCP + Flutter / supported desktop host | Local guarded-edit DTOs are tested; live Desktop client and packaged native startup are unavailable in this environment. |
+| LS-DOC-003 | `➖` | Playground/MCP/Flutter host | Session identity, dirty state, and persistence are deliberately host-owned by the catalog. |
+| LS-REC-002 | `➖` | Playground host | Last-valid preview retention is deliberately a consumer/UI responsibility. |
+
+Mechanical closure assertion: the current 33-row status matrix and
+reconciliation contain `0 🌗`, `0 ❌`, and `0 ⚠️`; every `⏸️` and `➖` row has
+an owner, dependency or host boundary, evidence, and an explicit next action.
+The closure does not depend on npm/pub.dev publication, production
+deployment, or unavailable host OS/browser binding.
+
 ### Remaining-gap handoff
 
-The backlog and reconciliation retain the remaining `🌗`, `❌`, `➖`, and
-`⏸️` rows. In particular, broader semantic navigation (`LS-RANGE-002`), the
-measured full-document fallback in incremental analysis (`LS-INCR-001`), result provenance (`LS-VERS-002`), broader incomplete
-source/recovery coverage, broader semantic metadata/provenance producers, full
-active-spec drift generation, Markdown failure fallback, and the held MCP/desktop adapters remain open or
-deferred. Registry/public artifact, current CI, browser/public, Node 24, and
-native-host evidence remain not verified; these limitations do not change an
-implementation status and are not prerequisites for this goal.
+The backlog retains deferred follow-up work without presenting it as a hidden
+partial implementation. Registry/public artifact, current CI, browser/public,
+Node 24, and native-host evidence remain not verified; these are evidence
+boundaries and are not prerequisites for this local closure.

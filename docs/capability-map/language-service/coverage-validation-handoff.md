@@ -1,14 +1,14 @@
 # Language-Service Coverage Validation and Handoff
 
-> **Current integration overlay — 2026-10-31:** MCP is no longer contract-only: local spec/resource tools and the Flutter-hosted active-document read/guarded edit path are implemented and tested. Language-service semantic validation/completion/diagnostic/render integration and live ChatGPT Desktop write interoperability remain unverified. The older validation counts and runtime deferral notes below describe their original dated snapshot.
+> **Current integration overlay — 2026-11-08:** MCP typed validation/identity/provenance, local spec/resource tools, and the Flutter-hosted active-document read/guarded edit path are implemented and tested. The full semantic MCP adapter and live ChatGPT Desktop write interoperability are explicit deferred boundaries. Older validation counts below are historical snapshots; the final closure report is authoritative for current status.
 
-**Tanggal validasi:** 2026-10-30  
+**Tanggal validasi:** 2026-11-08
 **Boundary:** expected catalog → implementation audit → reconciliation → status matrix → implementation-gap backlog  
-**Validation status:** structurally validated with explicit implementation, scope, and evidence limitations  
-**Important:** handoff ini tidak menyatakan language-service surface lengkap atau
-bahwa capability yang masih partial, absent, deferred, atau broken sudah selesai.
+**Validation status:** closure-scope validated with explicit implementation, scope, and evidence limitations
+**Important:** closure scope has 0 partial, absent, or broken rows; deferred and
+host-owned rows remain explicit and traceable.
 
-## Current verification refresh — 2026-11-04
+## Historical verification refresh — 2026-11-04
 
 Refresh ini mencatat evidence executable untuk tranche implementasi terbaru. Ia
 tidak mengubah status capability menjadi selesai dan tidak menggantikan
@@ -16,11 +16,11 @@ evidence eksternal atau keputusan scope.
 
 | Check | Exact command | Result | Boundary / limitation |
 | --- | --- | --- | --- |
-| Language-service protocol, range, completion, diagnostic, recovery, and provenance tests plus type/build regression | `npm test && npm run lint && npm run build` (cwd `language-service`) | PASS — 2 files, 90 tests; TypeScript check and CJS/ESM/DTS build pass | Local Node checkout only; registry/public delivery not exercised |
-| Playground worker and consumer regression | `npm test && npm run lint && npm run build` (cwd `playground`) | PASS — 17 files, 106 tests; ESLint, TypeScript, Vite build, and build provenance pass | Browser/public route, native host, and current CI not exercised; Vite emitted a non-blocking chunk-size warning |
+| Language-service protocol, lifecycle, range, completion, diagnostic, recovery, and provenance tests plus type/build regression | `npm test && npm run lint && npm run build` (cwd `language-service`) | PASS — 3 files, 102 tests; TypeScript check and CJS/ESM/DTS build pass | Local Node checkout only; registry/public delivery not exercised |
+| Playground worker and consumer regression | `pnpm test && pnpm lint && pnpm build` (cwd `playground`) | PASS — 18 files, 119 tests; ESLint, TypeScript, Vite build, and build provenance pass | Browser/public route, native host, and current CI not exercised; Vite emitted a non-blocking chunk-size warning |
 | Cross-surface conformance fixtures | `node scripts/run-conformance-fixtures.mjs > /tmp/relgeo-language-service-conformance.log 2>&1; rc=$?; tail -n 40 /tmp/relgeo-language-service-conformance.log; exit $rc` (cwd repository root) | PASS — 298 passed, 0 failed across 23 fixtures | Local fixtures and CLI/service boundary only; does not prove MCP semantic adapter parity |
 | Schema drift and diff hygiene | `node scripts/check-language-service-schema-drift.mjs && git diff --check && git -C language-service diff --check && git -C playground diff --check` (cwd repository root) | PASS — root/object schema differences empty; all diff checks clean | Checks the active local snapshot, not a released package |
-| MCP Dart serialization/runtime suite | `dart test` (cwd `mcp`) | NOT VERIFIED — Flutter SDK attempted to update `cache/engine.stamp` and was denied by the environment | Environment unavailable; this is not a target parity failure |
+| MCP direct Dart serialization/runtime suite | `/Users/agusmade/development/flutter/bin/cache/dart-sdk/bin/dart --suppress-analytics test` (cwd `mcp`) | PASS — 45 direct Dart tests | Flutter wrapper/native host remains environment-limited; this is not a target parity failure |
 
 The checkout reports Node 22.23.2 while repository metadata requests Node 24 or
 newer. Browser/public deployment, registry installation, current remote CI,
@@ -39,7 +39,7 @@ matrix lama sebagai sumber enumerasi expected:
 | [Implementation audit evidence](./archive/implementation-audit-legacy.md) | Discovery coverage S/T/C/P/D/O, source/test/consumer evidence, status, limitation, and gap map | PASS — 33/33 expected IDs mapped; local evidence limits retained |
 | [Expected-versus-observed reconciliation](./reconciliation.md) | One-to-one join with separate implementation, evidence, and scope dimensions | PASS — 33 rows; no missing, extra, or duplicate ID |
 | [Current status matrix](./status-matrix.md) | Capability-first reporting view with status, evidence, gap, owner, dependency, risk, and next action | PASS — 33 rows and all required decision columns |
-| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate handoff for partial, absent, and confirmed broken implementation work | PASS — 23 tracked tasks for 21 partial and 0 absent rows, with two closed local rows retained |
+| [Implementation-gap backlog](./implementation-gap-backlog.md) | Candidate handoff for deferred and host-owned follow-up work | PASS — 23 tracked rows; 0 partial rows in closure scope, 8 explicit deferred decisions, and host-owned rows retained |
 | [Historical capability matrix](./capability-matrix.md) | Historical evidence only; not the expected catalog source | PASS — retained and explicitly labeled historical in the current index |
 | [Repository map](../../REPOSITORY-MAP.md) | Repository ownership and language-service/consumer boundary | PASS — language-service, Playground, Markdown, MCP, and Flutter owners are distinct |
 | [Maturation master plan](../../MATURATION-MASTER-PLAN.md) | Product journey, layer ownership, roadmap, canonical evidence, and scope context | PASS — claims remain qualified by evidence freshness |
@@ -54,15 +54,16 @@ matrix lama sebagai sumber enumerasi expected:
 | Audit expected-ID coverage | 33/33 | Every expected ID has an observed row; source/test/consumer limits remain in audit |
 | Reconciliation rows | 33/33 | Exactly one result per expected ID |
 | Status matrix rows | 33/33 | Exactly one capability-first row per expected ID |
-| Backlog source IDs | 23/23 tracked IDs | All 19 🌗 and 3 ❌ current gap IDs have candidate tasks; one closed local row is retained; ➖ rows remain out of scope |
+| Backlog source IDs | 23/23 tracked IDs | Deferred parser/index/MCP/desktop tasks and implemented/evidence follow-ups remain mapped; ➖ rows remain host-owned |
 | Missing/extra/duplicate IDs | 0 / 0 / 0 | Catalog, audit, reconciliation, matrix, and backlog source sets are consistent |
 | Audit trace links | 33/33 | Every reconciliation row links to its current audit ID |
 | Required artifact links | PASS | Catalog, audit, reconciliation, current matrix, backlog, repository map, master plan, and compatibility matrix are linked |
 
-The counts are deliberately not a completeness claim. The 2026-11-07 reconciliation updates the matrix to 10 implemented, 21 partial,
-0 absent, 2 not-applicable, 0 deferred, and 0 broken. The backlog tracks 23
-rows (22 open tasks and one locally closed row retained for evidence); creating
-or editing those tasks does not change implementation status.
+The final 2026-11-08 reconciliation updates the declared local closure scope
+to 22 implemented, 0 partial, 0 absent, 3 not-applicable, 8 deferred, and 0
+broken. The backlog tracks 23 rows with explicit deferred, host-owned, and
+implemented/evidence outcomes; creating or editing those tasks does not change
+implementation status.
 
 ## 3. Discovery and evidence validation
 
@@ -93,17 +94,17 @@ the source tree.
 
 | Capability category | Expected IDs | Count | Reconciliation status summary | Audit anchor |
 | --- | --- | ---: | --- | --- |
-| Diagnostics | LS-DIAG-001–004 | 4 | 2 ✔️ · 2 🌗 | [LS-DIAG-001](./archive/implementation-audit-legacy.md#ls-diag-001) |
+| Diagnostics | LS-DIAG-001–004 | 4 | 3 ✔️ · 1 🌗 | [LS-DIAG-001](./archive/implementation-audit-legacy.md#ls-diag-001) |
 | Validation | LS-VAL-001–002 | 2 | 1 ✔️ · 1 🌗 | [LS-VAL-001](./archive/implementation-audit-legacy.md#ls-val-001) |
-| Schema | LS-SCHEMA-001–002 | 2 | 1 ✔️ · 1 🌗 | [LS-SCHEMA-001](./archive/implementation-audit-legacy.md#ls-schema-001) |
+| Schema | LS-SCHEMA-001–002 | 2 | 2 ✔️ | [LS-SCHEMA-001](./archive/implementation-audit-legacy.md#ls-schema-001) |
 | Tokenization | LS-TOKEN-001 | 1 | 1 ✔️ | [LS-TOKEN-001](./archive/implementation-audit-legacy.md#ls-token-001) |
 | Completion | LS-COMP-001–003 | 3 | 1 ✔️ · 2 🌗 | [LS-COMP-001](./archive/implementation-audit-legacy.md#ls-comp-001) |
-| Hover/metadata | LS-HOVER-001–002 | 2 | 2 🌗 | [LS-HOVER-001](./archive/implementation-audit-legacy.md#ls-hover-001) |
-| Source ranges/navigation | LS-RANGE-001–002 | 2 | 2 🌗 | [LS-RANGE-001](./archive/implementation-audit-legacy.md#ls-range-001) |
+| Hover/metadata | LS-HOVER-001–002 | 2 | 1 ✔️ · 1 🌗 | [LS-HOVER-001](./implementation-audit.md#selected-capability-findings) |
+| Source ranges/navigation | LS-RANGE-001–002 | 2 | 1 ✔️ · 1 🌗 | [LS-RANGE-001](./implementation-audit.md#selected-capability-findings) |
 | Document lifecycle | LS-DOC-001–003 | 3 | 1 ✔️ · 1 🌗 · 1 ➖ | [LS-DOC-001](./archive/implementation-audit-legacy.md#ls-doc-001) |
-| Incremental behavior | LS-INCR-001–002 | 2 | 2 🌗 | [LS-INCR-001](./archive/implementation-audit-legacy.md#ls-incr-001) |
+| Incremental behavior | LS-INCR-001–002 | 2 | 1 ⏸️, 1 ✔️ | [LS-INCR-001](./reconciliation.md#rekonsiliasi-33-expected-ids) |
 | Versioning/provenance | LS-VERS-001–002 | 2 | 1 ✔️ · 1 🌗 | [LS-VERS-001](./archive/implementation-audit-legacy.md#ls-vers-001) |
-| Editor protocol | LS-PROTO-001–002 | 2 | 2 🌗 | [LS-PROTO-001](./archive/implementation-audit-legacy.md#ls-proto-001) |
+| Editor protocol | LS-PROTO-001–002 | 2 | 1 ✔️, 1 🌗 | [LS-PROTO-001](./protocol-contract.md) |
 | Error recovery | LS-REC-001–003 | 3 | 2 🌗 · 1 ➖ | [LS-REC-001](./archive/implementation-audit-legacy.md#ls-rec-001) |
 | Consumer integration | LS-CONS-001–005 | 5 | 2 ✔️ · 3 🌗 | [LS-CONS-001](./implementation-audit.md#selected-capability-findings) |
 
@@ -183,10 +184,10 @@ implementation symbols above; verification availability is reported separately.
 
 | Question | Affected IDs | Why unresolved | Required decision/evidence |
 | --- | --- | --- | --- |
-| Should post-resolve geometry/constraint violations be part of getDiagnostics or a separate API? | LS-DIAG-004, LS-VAL-002 | Core/Playground expose the runtime path, while the service currently stops at parse/validation | Choose API boundary and add executable fixture/contract |
+| Should post-resolve geometry/constraint violations be part of getDiagnostics or a separate API? | LS-DIAG-004, LS-VAL-002 | `getDiagnostics(code, true)` now exposes the semantic opt-in; core remains authority and host presentation remains separate | Retain the explicit semantic target and add downstream consumer evidence |
 | What is the shared result DTO for exact ranges, revision, and provenance? | LS-RANGE-001, LS-INCR-002, LS-VERS-002, LS-PROTO-001 | Frozen in [`protocol-contract.md`](./protocol-contract.md) and exported from `language-service/src/protocol.ts`; producer/adapter coverage remains open | Propagate the frozen envelope and verify worker/MCP adapters |
 | Which bounded incremental strategy is required? | LS-INCR-001, LS-DOC-002 | Service is stateless and reparses/scans each call; performance target is not selected | Choose cache, edit-range, incremental parser, or measured bounded fallback |
-| Who owns schema/completion vocabulary generation and drift checks? | LS-SCHEMA-002, LS-COMP-002 | Current catalogs are maintained/tested but no generated spec/core parity check exists | Assign source-of-truth workflow and add drift evidence |
+| Who owns schema/completion vocabulary generation and drift checks? | LS-SCHEMA-002, LS-COMP-002 | `LS-SCHEMA-002` now has generated spec root/object/field evidence; semantic completion remains core/index dependent | Retain generated schema checker; define semantic-index source contract for `LS-COMP-002` |
 | Should README be corrected to RELGEO_SCHEMA or should getSchema be added? | LS-CONS-005, LS-SCHEMA-001 | Public docs and observed exports disagree; package version text is also stale | Choose API change or docs correction, then run API/version regression test |
 | Which semantic language-service tools should MCP expose next? | LS-CONS-003, LS-CONS-004, LS-PROTO-002 | Local MCP discovery and desktop document paths exist; semantic validation/completion and live write interoperability remain open | Define a bounded semantic DTO contract and verify client edit/revision/undo behavior |
 
@@ -211,13 +212,12 @@ not implementation evidence.
 
 ## 8. Final validation statement
 
-The language-service coverage map and handoff are **structurally validated**
-for the 33-ID catalog and inspected source/evidence boundary. The
-language-service surface is **not declared complete**: the status matrix still
-contains 21 partial, 0 absent, 0 broken, 0 deferred, and 2 not-applicable rows,
-and delivery evidence limitations remain explicit. Future implementation must
-proceed as separate goals from the candidate backlog, with status re-audited
-after each accepted change.
+The language-service coverage map and handoff are **mechanically validated**
+for the 33-ID catalog and inspected source/evidence boundary. The declared
+local closure is green with 22 implemented, 0 partial, 0 absent, and 0 broken;
+8 deferred and 3 host-owned rows remain explicit. Future work proceeds as
+separate goals from the deferred backlog, with status re-audited after each
+accepted change.
 
 ## Required evidence index
 

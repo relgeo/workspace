@@ -18,7 +18,7 @@ Every result has these fields:
 {
   protocolVersion: "0.2",
   resultKind: "diagnostics" | "validation" | "completion" | "hover"
-    | "metadata" | "navigation" | "analysis",
+    | "metadata" | "navigation" | "analysis" | "schema" | "tokens",
   specVersion: string,
   documentId: string,
   version: number,
@@ -47,19 +47,30 @@ Every result has these fields:
 describe non-normative inputs or ownership. Provenance is metadata only and
 must not grant a result filesystem, network, UI, or mutation capabilities.
 
+Diagnostics are not reduced to display-only fields at this boundary. Each
+language-service diagnostic preserves the core `phase`, stable `code`,
+`path`, optional `objectId`, `origin`, `expected`/`actual`, and
+`dependencyChain`, together with a `provenance` entry identifying the core
+projection. Dependency-chain entries are exposed as
+`relatedInformation` anchors using the same bounded source range; consumers
+may render them as explanation links but must not treat them as new semantic
+results. Missing optional core fields remain absent rather than being guessed.
+
 ## Result families
 
 The TypeScript public protocol exports a DTO for each expected family:
 
 | `resultKind` | Required payload | Range/identity rule |
 | --- | --- | --- |
-| `diagnostics` | `diagnostics[]` | Diagnostic ranges use the shared UTF-16 encoding. |
+| `diagnostics` | `diagnostics[]` | Diagnostic ranges use the shared UTF-16 encoding; phase/code/severity/path/provenance are preserved and dependency chains use `relatedInformation`. |
 | `validation` | `readiness`, `recoveryState`, `diagnostics[]` | Readiness must not overclaim the evidence; recovery state describes the source sequence. |
 | `completion` | cursor `position`, `items[]` | Completion text edits carry replacement ranges. |
 | `hover` | query `position`, nullable `hover` | A non-null hover may carry a source range. |
 | `metadata` | `entries[]` | Entries may carry a source range and `targetId`. |
 | `navigation` | `locations[]` | Each location identifies a document and source range. |
 | `analysis` | `readiness`, `recoveryState`, `diagnostics[]`, `semanticTokens[]` | Aggregate worker result with the same envelope. |
+| `schema` | `schema` | Versioned schema snapshot with the same document/request identity. |
+| `tokens` | `semanticTokens[]` | Token projection with the same UTF-16 and provenance envelope. |
 
 Metadata and navigation DTOs are defined even where their producers are still
 open backlog work; defining the shape does not promote an absent capability to
@@ -96,6 +107,25 @@ The service remains stateless: the host supplies the previous state when it
 wants the `recovered` transition labeled. A result with an invalid or partial
 current readiness can never be labeled `recovered`.
 
+## Document lifecycle and synchronization
+
+The additive `LanguageServiceDocumentManager` export provides the stateful
+document boundary around the stateless `RelGeoLanguageService`:
+
+| Operation | Contract |
+| --- | --- |
+| `createDocument` / `openDocument` | Registers a non-empty `documentId`, non-negative integer version, source text, and optional provenance. Opening an already-open ID is rejected. |
+| `changeDocument` | Requires exactly `currentVersion + 1`; accepts one full replacement or ordered UTF-16 ranged changes. Invalid positions, mixed full/ranged changes, and `rangeLength` mismatches are rejected before mutation. |
+| `analyze` | Builds a request from the current snapshot, preserves identity/provenance, publishes diagnostics only for that version, and returns a monotonic response sequence. A retry with the same request ID is idempotent. |
+| `closeDocument` | Requires the current version and removes the session. Unknown or stale sessions are rejected. |
+| `complete`, `hover`, `metadata`, `navigation`, `semanticTokens`, `schema` | All editor result families use the same typed identity envelope; consumers do not need to reconstruct document/version/request metadata. |
+
+The manager clears published diagnostics when a document changes, rejects a
+stale publication, and exposes cooperative `CancellationToken` checks before
+and after analysis. Cancellation is not a semantic error and never mutates
+the document. The manager does not own Save, filesystem persistence, undo/redo,
+or remote transport; those remain host boundaries.
+
 ## Stale-result rule
 
 A host accepts a result only when all three identity fields match its current
@@ -111,6 +141,10 @@ the three-field minimum guard.
 
 The canonical implementation and JSON round-trip helpers are exported from
 [`language-service/src/protocol.ts`](../../../language-service/src/protocol.ts).
-The service's `analyzeDocument()` result is the `analysis` family; convenience
-adapters cover diagnostics, validation, completion, and hover while metadata
-and navigation remain typed boundary DTOs for their future producers.
+The lifecycle implementation and synchronization fixture are in
+[`language-service/src/document.ts`](../../../language-service/src/document.ts)
+and [`language-service/test/document-lifecycle.v0.5.json`](../../../language-service/test/document-lifecycle.v0.5.json).
+The service's `analyzeDocument()` result is the `analysis` family; the
+document manager exposes typed identity envelopes for diagnostics, validation,
+completion, hover, metadata, navigation, schema, and tokens without claiming
+that every downstream host has already consumed every family.

@@ -45,7 +45,7 @@ sama.
 | Geometry | [status matrix](./geometry/status-matrix.md) · [closure handoff](./geometry/coverage-validation-handoff.md) | `35 ✔️ / 5 ⏸️` bounded closure | 18 implementation rows closed with source/test/fixture evidence; two boolean scope holds and three host/parity evidence holds remain explicit. |
 | Core runtime | [status matrix](./core-runtime/status-matrix.md) · [closure report](./core-runtime/closure-report-2026-11-05.md) | `38 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️` bounded local closure | Parser, resolver, graph, evaluator, diagnostics, and consumer contract are closed within the declared local boundary; Node 24/CI/registry/browser evidence remains separately qualified. |
 | Renderer-SVG | [status matrix](./renderer-svg/status-matrix.md) · [capability matrix](./renderer-svg/capability-matrix.md) | `33 ✔️` closure boundary / external evidence qualifiers | Status matrix is the canonical status view; browser, Node >=24, public, and host parity limitations remain evidence qualifiers rather than renderer capability gaps. |
-| Language service | [matrix](./language-service/capability-matrix.md) | `✔️` local API / `🌗` host parity | Diagnostics/schema/completion/token tersedia; LSP runtime dan API docs memiliki gap. |
+| Language service | [status matrix](./language-service/status-matrix.md) · [closure report](./language-service/final-closure-report.md) | `22 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️ / 8 ⏸️ / 3 ➖` bounded local closure | Local editor protocol, lifecycle, diagnostics, schema, completion, hover, tokens, provenance, Playground/Markdown consumers, and typed MCP boundary are closed; parser/index/MCP semantic/Desktop host decisions remain explicit. |
 | CLI | [status matrix](./cli/status-matrix.md) | `32 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️ / 3 ⏸️` closure boundary | One-shot commands, strict options, diagnostics, selectors, streams, fixtures, and local package boundary are closed; `CLI-AUTO-002`, `CLI-AUTO-004`, and `CLI-PACK-004` remain explicitly held/deferred, while Node 24/registry/CI/public evidence is separate. |
 | Markdown plugins | [matrix](./markdown-surfaces/capability-matrix.md) | `✔️` bounded transforms / `🌗` fallback | Preview/highlight tersedia; fallback language-service dan registry evidence terbatas. |
 | Playground | [capability matrix](./playground/capability-matrix.md) | `35 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️ / 2 ⏸️` bounded closure | Core editor/preview/persistence flows and bootstrap lifecycle are closed locally; `PG-A11Y-001` remains held for browser/native host evidence and `PG-DELIVERY-001` for hosted Pages smoke/parity. |
@@ -222,6 +222,8 @@ are explicitly labeled so they cannot be mistaken for current evidence.
 - [Language-service status matrix](./language-service/status-matrix.md) —
   current capability-first view of all 33 expected IDs with status, evidence,
   gap, owner, dependency, risk, and next action.
+- [Language-service final closure report](./language-service/final-closure-report.md)
+  — before/after counts and per-ID source, evidence, owner, and scope decision.
 - [Language-service implementation audit](./language-service/implementation-audit.md) —
   source ownership, core integration, fixture/build evidence, and documentation mismatch.
 - [Language-service archived implementation audit](./language-service/archive/implementation-audit-legacy.md)

@@ -261,6 +261,26 @@ orchestration changes. Consumer, CI, and public evidence remain explicitly
 separate; a supported Node 24 checkout is required before promoting the full
 integration gate.
 
+### 0.11 Language Service closure gate capture — 2026-11-08
+
+The Language Service closure work reran the required workspace gates from the
+current checkout. These results supersede neither the baseline snapshot nor
+historical CI records; they are a current local execution record with the
+working-tree and toolchain boundaries preserved:
+
+| Exact command | Result | Boundary |
+| --- | --- | --- |
+| `pnpm run verify:baseline:strict` | NOT PASS — exit `1`; 83 passed, 2 failed | The strict check found the expected uncommitted implementation changes in `playground` and `language-service`; no cleanup or reset was performed. |
+| `pnpm run compatibility:check` | PASS — exit `0` | Current compatibility matrix and package/capability metadata. |
+| `pnpm run conformance:fixtures` | PASS — exit `0`; 677 assertions across 33 fixtures | Canonical local parser/core/renderer/language-service/CLI/Markdown/preview/highlighting path. |
+| `pnpm run integration:gate -- --local` | ENVIRONMENT UNAVAILABLE — exit `2` before stages | Host Node `22.23.2`; runner requires Node `>=24`. |
+| `pnpm run integration:public` | ENVIRONMENT UNAVAILABLE — exit `2` before stages | Same Node prerequisite; registry/deployment/public-host behavior is not claimed. |
+
+The baseline metadata in `docs/integration-baseline.json` declares Node
+`>=24` and remains the provenance reference. Compatibility and conformance
+are independently passing local evidence; the strict and integration outcomes
+are intentionally not promoted to green.
+
 ## 1. Tujuan
 
 Membuat satu gate yang dapat dijalankan dari checkout bersih untuk membuktikan bahwa repository-repository RelGeo bekerja sebagai satu dependency graph publik.

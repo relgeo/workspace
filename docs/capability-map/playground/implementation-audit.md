@@ -79,7 +79,7 @@ local evidence and is not evidence of a hosted artifact.
 
 | Evidence | Result | Interpretation |
 | --- | --- | --- |
-| `pnpm test` in `playground/` | PASS — 17 files / 112 tests | Unit, worker, persistence, preview, helper, theme, bootstrap, keyboard-command, viewport, and worker-contract tests are green. Tests live under `src/__tests__`; no `playground/test` directory exists. |
+| `pnpm test` in `playground/` | PASS — 18 files / 119 tests | Unit, worker, lifecycle, persistence, preview, helper, theme, bootstrap, keyboard-command, viewport, and worker-contract tests are green. Tests live under `src/__tests__`; no `playground/test` directory exists. |
 | `pnpm build` in `playground/` | PASS — TypeScript and Vite production build | The local production artifact is buildable; Vite emitted only a chunk-size warning, not a build failure. This is not hosted parity evidence. |
 | `pnpm audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, atomic status announcements, focus, responsive, reduced-motion, forced-colors, and inline-style contract checks pass. |
 | `pnpm lint` in `playground/` | PASS | Current Playground source is lint-clean. |
@@ -101,7 +101,11 @@ keyboard command map with IME/AltGraph safety (`keyboard-commands.ts`,
 focus fallback). Browser assertions for these paths are present in
 `playground/e2e/playground.spec.ts`, but remain not verified until the Playwright
 server can bind successfully. The worker readiness/recovery fields and tests
-remain backward-compatible additions to the worker response contract.
+remain backward-compatible additions to the worker response contract. The new
+`src/worker-lifecycle.ts` controller owns worker creation, supersession
+cancellation, timeout termination, error/message-error recovery, and disposal;
+its focused suite proves stale responses cannot update the consumer after a
+worker replacement.
 
 The accepted theme contract is fixed for the implementation task: initial
 `system` mode follows `prefers-color-scheme`, explicit `light` and `dark`

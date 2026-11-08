@@ -30,7 +30,7 @@ physical-device evidence to verified status.
 
 | Check | Result | Boundary or limitation |
 | --- | --- | --- |
-| `pnpm test` in `playground/` | PASS — 17 files / 112 tests | Unit tests live in `playground/src/__tests__`; `playground/test` is not present. Bootstrap lifecycle, worker identity/recovery, accessibility helpers, theme, viewport, keyboard, persistence, and consumer contracts are covered. |
+| `pnpm test` in `playground/` | PASS — 18 files / 119 tests | Unit tests live in `playground/src/__tests__`; `playground/test` is not present. Bootstrap lifecycle, worker identity/recovery/lifecycle, accessibility helpers, theme, viewport, keyboard, persistence, and consumer contracts are covered. |
 | `pnpm build` in `playground/` | PASS | TypeScript and Vite production build completed; only a non-blocking chunk-size warning was emitted. |
 | `pnpm audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, focus, responsive, reduced-motion, forced-colors, theme, and inline-style contracts pass. |
 | `pnpm lint` in `playground/` | PASS | Current Playground source is lint-clean when run independently. |
@@ -71,7 +71,7 @@ silently promoted to browser, native, or hosted verification.
 
 | Candidate | Capability | Owner | Current evidence | Next action |
 | --- | --- | --- | --- | --- |
-| `PG-TASK-002` | `PG-LIFE-002` startup/loading state | Playground lifecycle owner | `verified-local`; source distinguishes opening/restoring/ready/error, 112 unit tests pass, and browser discovery includes delayed gating; execution is not verified because preview binding returns `EPERM` | Run delayed bootstrap/restore/first-resolve browser checks on a bind-capable host; this is evidence follow-up, not an implementation gap. |
+| `PG-TASK-002` | `PG-LIFE-002` startup/loading state | Playground lifecycle owner | `verified-local`; source distinguishes opening/restoring/ready/error, 119 unit tests pass, and browser discovery includes delayed gating; execution is not verified because preview binding returns `EPERM` | Run delayed bootstrap/restore/first-resolve browser checks on a bind-capable host; this is evidence follow-up, not an implementation gap. |
 | `PG-TASK-005` | `PG-A11Y-001` web accessibility semantics evidence | Playground UI/accessibility owner | `⏸️ host-unverified`; static UX/ARIA/focus contracts pass, browser traversal and native AT remain unavailable | Run supported-browser AX/keyboard checks, then record native VoiceOver/TalkBack/device evidence separately when hosts are available. |
 | `PG-TASK-007` | `PG-DELIVERY-001` hosted artifact consistency | Playground + Pages delivery owner | `⏸️ hosted-unverified`; local route/title/base/manifest/digest/provenance checks pass, hosted parity is unverified | Compare the hosted artifact with the tested revision and run public smoke when Pages is reachable. It is not a prerequisite for local capability closure. |
 

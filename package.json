@@ -25,6 +25,8 @@
     "language-spec:check": "node scripts/check-language-spec-vocabulary.mjs",
     "language-spec:catalog:check": "node scripts/check-language-spec-capability-catalog.mjs",
     "language-spec:audit:check": "node scripts/check-language-spec-audit.mjs",
+    "language-service:consumer:check": "node scripts/check-language-service-consumer-contract.mjs",
+    "language-service:closure:check": "node scripts/check-language-service-closure.mjs",
     "spec:snapshot:sync": "node scripts/sync-flutter-spec-snapshot.mjs --sync",
     "spec:snapshot:check": "node scripts/sync-flutter-spec-snapshot.mjs --check",
     "spec:snapshot:test": "node scripts/test-flutter-spec-snapshot.mjs",

@@ -47,6 +47,12 @@ const headings = objectSectionFiles.flatMap((file) => {
   const content = readSpec(file);
   return [...content.matchAll(/^##\s+\d+\.\d+\s+([^\n]+)/gm)].map((entry) => ({ file, heading: entry[1] }));
 });
+const operationSpec = readSpec('geometry/15-composition-objects.md');
+const operationBlock = operationSpec.match(
+  /## 15\.4 Geometry Operation Objects[\s\S]*?```txt\n([\s\S]*?)```/,
+);
+if (!operationBlock) throw new Error('Could not locate normative geometry operation object list');
+const specOperationTypes = [...operationBlock[1].matchAll(/^([a-z][\w-]*)$/gm)].map((entry) => entry[1]);
 const specObjectTypes = sorted(headings.flatMap(({ file, heading }) => {
   const normalized = heading.toLowerCase().trim();
   if (file.endsWith('22-dimension.md')) return ['dimension'];
@@ -56,7 +62,7 @@ const specObjectTypes = sorted(headings.flatMap(({ file, heading }) => {
   if (normalized === 'geometry operation objects' || normalized === 'post-geometry transform pipeline') return [];
   if (normalized.includes('view') || normalized.includes('sheet') || normalized.includes('metadata')) return [];
   return [normalized.split(/\s+|\//)[0]];
-}));
+}).concat(specOperationTypes));
 
 const expectedRootSections = readVocabulary('rootSections');
 const expectedObjectTypes = readVocabulary('objectTypes');
@@ -69,10 +75,33 @@ const objectExtra = difference(specObjectTypes, expectedObjectTypes);
 const sourceFiles = [
   'core/02-document-structure.md',
   ...objectSectionFiles,
+  'presentation/25-views-sheets.md',
+  'presentation/26-metadata.md',
+  'syntax/08-parameters.md',
 ];
-for (const sourceFile of sourceFiles) readSpec(sourceFile);
+const sourceText = sourceFiles.map((sourceFile) => readSpec(sourceFile)).join('\n');
+const expectedFieldVocabulary = sorted([
+  ...readVocabulary('parameterFields'),
+  ...readVocabulary('viewFields'),
+  ...readVocabulary('sheetFields'),
+  ...readVocabulary('presentationFields'),
+  ...readVocabulary('objectFields'),
+]);
+const specFieldVocabulary = sorted(expectedFieldVocabulary.filter((field) => (
+  new RegExp(`(^|[^A-Za-z0-9_-])${field.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=$|[^A-Za-z0-9_-])`, 'm').test(sourceText)
+)));
+// These editor aliases/extension fields are intentionally code-owned: the
+// normative spec describes their semantic family but does not use every
+// published compatibility spelling in an example block.
+const editorOwnedFields = new Set([
+  'shapes', 'step', 'options', 'fontWeight', 'fontStyle', 'non-scaling-stroke',
+]);
+const fieldMissing = difference(
+  expectedFieldVocabulary.filter((field) => !editorOwnedFields.has(field)),
+  specFieldVocabulary,
+);
 
-const differences = { rootMissing, rootExtra, objectMissing, objectExtra };
+const differences = { rootMissing, rootExtra, objectMissing, objectExtra, fieldMissing };
 console.log(JSON.stringify({
   specVersion: '0.5',
   sourceFiles: sourceFiles.length,
@@ -80,6 +109,8 @@ console.log(JSON.stringify({
   specRootSections: specRootSections.length,
   expectedObjectTypes: expectedObjectTypes.length,
   specObjectTypes: specObjectTypes.length,
+  expectedFieldVocabulary: expectedFieldVocabulary.length,
+  specFieldVocabulary: specFieldVocabulary.length,
   differences,
 }, null, 2));
 

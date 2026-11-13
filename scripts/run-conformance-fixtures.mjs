@@ -48,6 +48,10 @@ function humanReadableHighlightSnapshot(source, semanticLines) {
     .join("\n");
 }
 
+function normalizePreviewSvg(svg) {
+  return svg.replace(/\s*<title>[\s\S]*?<\/title>\s*<desc>[\s\S]*?<\/desc>/, "");
+}
+
 function loadModule(relativePath) {
   return import(pathToFileURL(resolve(root, relativePath)).href);
 }
@@ -372,17 +376,27 @@ for (const fixture of manifest.fixtures) {
   const previewTree = fixtureTree("relgeo", source);
   remarkPreview.remarkRelgeo()(previewTree);
   const previewNode = previewTree.children[0];
-  check(previewNode.data?.hName === "div", `${fixture.id}: preview plugin emits div surface`);
-  check(previewNode.data?.hProperties?.["data-relgeo-kind"] === "preview", `${fixture.id}: preview plugin renders successfully`);
-  const previewImage = previewNode.data?.hChildren?.[0];
-  const previewSource = previewImage?.properties?.src;
-  if (typeof previewSource === "string" && previewSource.startsWith("data:image/svg+xml")) {
-    const previewSvg = decodeURIComponent(previewSource.split(",", 2)[1]);
-    const previewScene = core.compileRelGeo(source, { targetUnit: "px" });
-    const expectedPreviewSvg = renderer.renderToSVG(previewScene, { padding: 0 });
-    check(previewSvg === expectedPreviewSvg, `${fixture.id}: Markdown preview image exactly matches the preview pipeline SVG`);
+  if (fixture.coreContract?.hostileInputEscaped === true) {
+    check(previewNode.data?.hName === "div", `${fixture.id}: hostile preview is isolated in a placeholder surface`);
+    check(previewNode.data?.hProperties?.["data-relgeo-kind"] === "preview-error", `${fixture.id}: hostile preview is rejected with a classified surface`);
+    const diagnostic = JSON.parse(previewNode.data?.hProperties?.["data-relgeo-diagnostic"] ?? "{}");
+    check(diagnostic.code === "UNSAFE_PREVIEW_OUTPUT", `${fixture.id}: hostile preview reports UNSAFE_PREVIEW_OUTPUT`);
   } else {
-    check(false, `${fixture.id}: Markdown preview exposes a decodable SVG image`);
+    check(previewNode.data?.hName === "figure", `${fixture.id}: preview plugin emits accessible figure surface`);
+    check(previewNode.data?.hProperties?.["data-relgeo-kind"] === "preview", `${fixture.id}: preview plugin renders successfully`);
+    const previewImage = previewNode.data?.hChildren?.[0];
+    const previewSource = previewImage?.properties?.src;
+    if (typeof previewSource === "string" && previewSource.startsWith("data:image/svg+xml")) {
+      const previewSvg = decodeURIComponent(previewSource.split(",", 2)[1]);
+      const previewScene = core.compileRelGeo(source, { targetUnit: "px" });
+      const expectedPreviewSvg = renderer.renderToSVG(previewScene, { padding: 0 });
+      check(
+        normalizePreviewSvg(previewSvg) === normalizePreviewSvg(expectedPreviewSvg),
+        `${fixture.id}: Markdown preview image matches the preview pipeline semantic SVG`,
+      );
+    } else {
+      check(false, `${fixture.id}: Markdown preview exposes a decodable SVG image`);
+    }
   }
 
   const cli = spawnSync(process.execPath, cliCompileArgs(fixturePath, fixture), {

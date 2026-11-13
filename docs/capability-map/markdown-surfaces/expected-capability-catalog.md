@@ -1,7 +1,7 @@
 # Expected Markdown-Surfaces Capability Catalog
 
 **Status:** expected baseline untuk review maintainer; implementation comparison separate
-**Tanggal penyusunan:** 2026-10-30
+**Tanggal penyusunan:** 2026-11-13
 **Owner katalog:** `relgeo/workspace`
 **Owner capability utama:** `relgeo/remark-relgeo` dan `relgeo/remark-relgeo-hl`
 **Compatibility target:** RelGeo DSL `0.5`
@@ -35,6 +35,14 @@ linked downstream records rather than replacing the requirement rows here.
 See [implementation audit](./implementation-audit.md),
 [reconciliation](./reconciliation.md), [status matrix](./status-matrix.md),
 and [implementation-gap backlog](./implementation-gap-backlog.md).
+
+The 2026-11-13 closure boundary is frozen in the [closure-boundary
+freeze](./closure-boundary-freeze.md). Its [before-state
+snapshot](./before-state-snapshot-2026-11-13.md) preserves the exact matrix and
+backlog inputs used for this audit, while the [cross-surface impact
+register](./cross-surface-impact-register.md) records the owner and evidence
+boundary for every capability family. These records are audit scaffolding; they
+do not promote an observed status.
 
 ## Sumber enumerasi awal
 
@@ -82,7 +90,7 @@ expected oracle; they do not promote a capability or replace host evidence.
 | `SVG-INTEG-002` | Playground owns browser worker/DOM; Markdown owns SSR/remark host | fixture 10 plus runtime fixture 14; worker/Preview sources | Browser evidence and static Markdown evidence remain separate claims |
 | `GAP-009` | Renderer/core own dimension/annotation safety; Markdown verifies safe transport | presentation-escaping fixture and language-spec `GAP-009` | Escaped presentation values remain semantic text/attributes through Markdown |
 | `GAP-013` | Renderer owns safe semantic SVG serialization; host owns final sanitization policy | presentation-escaping fixture and renderer security tests | No script/event-handler/unsafe partial SVG reaches generated HTML/data URI |
-| `MD-DIAG-003` | `remark-relgeo` owns tolerant diagnostic node; core owns warning vocabulary; website owns display | runtime fixture 14 plus `remark-relgeo/test/remark-relgeo.test.mjs` | Valid preview is retained alongside structured non-fatal diagnostic; strict mode remains an explicit caller policy; package regression evidence is now recorded |
+| `SVG-DIAG-003` | `remark-relgeo` owns tolerant diagnostic node; core owns warning vocabulary; website owns display | runtime fixture 14 plus `remark-relgeo/test/remark-relgeo.test.mjs` | Valid preview is retained alongside structured non-fatal diagnostic; strict mode remains an explicit caller policy; package regression evidence is now recorded |
 
 The shared safety rule is deliberately narrow: dynamic values are XML/HTML
 escaped, the SVG boundary rejects executable markup, diagnostics serialize as
@@ -180,6 +188,20 @@ interactive recovery.
 | `MD-REL-002` | Compatibility-line and release-order conformance | Kedua package menyatakan dan mengikuti DSL `0.5.x` serta release order yang sama dengan ecosystem. | `docs/compatibility-matrix.json` package entries, version policy, release order; master plan §2.4. | In scope for integration/release contract; publish action itself remains outside this catalog. | `docs/compatibility-matrix.json`; package metadata/README are evidence targets. | Requirement confirmed; implementation audit pending |
 
 ## Expected catalog invariants
+
+### 2026-11-13 freeze handoff
+
+- The expected catalog contains exactly **38 unique `MD-*` capability IDs**;
+  fixture/owner anchors use a separate namespace and cannot create a second
+  expected row.
+- Every expected ID has one row in the [reconciliation](./reconciliation.md)
+  and one status row in the [status matrix](./status-matrix.md).
+- Every current `🌗`, `❌`, or `⚠️` row is joined to an owner, source path,
+  evidence requirement, and either an implementation task or an explicit
+  verification/scope disposition in the [closure-boundary
+  freeze](./closure-boundary-freeze.md).
+- The snapshot and register are frozen before the next implementation task;
+  editing them is not implementation evidence.
 
 Tahap audit berikutnya harus mempertahankan invariants ini:
 

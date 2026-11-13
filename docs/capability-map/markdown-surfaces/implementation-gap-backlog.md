@@ -1,6 +1,6 @@
 # Markdown Surfaces Implementation-Gap Backlog
 
-**Date:** 2026-11-04
+**Date:** 2026-11-13
 **Status:** candidate goal/task register; selected rows may record `✔️` only
 after focused implementation and fresh audit evidence; the register itself is
 not completion evidence
@@ -10,8 +10,37 @@ This backlog turns every expected capability with an implementation gap into
 one candidate implementation task: all `❌`/`⚠️` rows and the `🌗` rows whose
 audit identifies missing implementation or contract behavior. The task
 descriptions are not active SuClos goals until owner, scope, dependency, and
-acceptance evidence are approved. The two `🌗` rows whose remaining issue is
-external evidence only are verification follow-ups, not implementation gaps.
+acceptance evidence are approved. The remaining release-only `🌗` row is a
+verification follow-up, not an implementation gap.
+
+## Closure-boundary freeze handoff — 2026-11-13
+
+The before-state is preserved in the [snapshot](./before-state-snapshot-2026-11-13.md).
+The [closure-boundary freeze](./closure-boundary-freeze.md) is the authoritative
+join for the current status matrix, owner, source path, evidence requirement,
+and next closure task or explicit disposition. The [cross-surface impact
+register](./cross-surface-impact-register.md) records how those tasks cross the
+plugins, language-service, renderer, package, fixture, and website boundaries.
+
+At freeze time, the matrix has 14 `🌗`, 0 `❌`, and 0 `⚠️` rows. Each of the 14
+rows has exactly one implementation task (`MD-TASK-013`, `014`, `016`, `017`,
+`018`, `019`, `020`, `022`, `023`, `025`, `026`, `027`) or one explicit external
+verification follow-up (`MD-VERIFY-001` for `MD-SSR-003`, `MD-VERIFY-002` for
+`MD-REL-002`). This is a traceability statement, not a status promotion.
+
+## Conformance reconciliation refresh — 2026-11-13
+
+The final status matrix has 0 `🌗`, 0 `❌`, 0 `⚠️`, 10 explicit `⏸️` holds, and
+1 `➖` row. The
+conformance report and cross-surface evidence map record fresh closure evidence
+for `MD-SSR-001`, `MD-SSR-003`, `MD-SSR-004`, and `MD-A11Y-001`; those rows are
+now regression-handoff entries rather than open implementation gaps. The ten
+remaining boundaries are explicit scope holds with owner, rationale, and reopen
+condition in the final closure report. Historical freeze counts above are
+retained for before/after traceability and are not the current status.
+
+See [the shared conformance report](./conformance-report-2026-11-13.md) and
+[the cross-surface evidence map](../cross-surface/markdown-conformance-evidence-map-2026-11-13.md).
 
 ## Boundary freeze — cross-surface owner dan fixture map (2026-11-03)
 
@@ -77,8 +106,8 @@ observed status before this triage; it is not completion evidence.
 | `MD-HL-004` | P1 | **Implemented — verified-local** | `remark-relgeo-hl` + language-service owner | Language-service lexical token contract and highlighter package API | Invalid/incomplete source remains readable without renderer/core; explicit service opt-out and service failure have bounded fallback | `implemented / verified-local` | Keep lexical fallback regression |
 | `MD-DIAG-003` | P1 | **Closed — already implemented** | `remark-relgeo` + core owners | Core runtime diagnostic contract, fixture 14, and package regression tests | Tolerant mode retains valid preview with structured `RUNTIME_CONSTRAINT_VIOLATION`; strict mode fails explicitly | `implemented / verified-local` | No implementation action; retain regression evidence |
 | `MD-OPT-001` | P1 | **Implemented — verified-local** | Each package owner | Package README/types plus `docs/compatibility-matrix.json` | Public option table, defaults, immutability, unknown-key behavior, and invalid-value diagnostics match runtime tests | `implemented / verified-local` | Keep option validation and reuse regressions |
-| `MD-SSR-003` | P1 | **External verification — not an implementation blocker** | Package + website owners | Documented unified/remark ordering contract and generic-host fixture | A clean standalone remark-parse → plugin → remark-rehype → rehype-stringify run proves ordering on an alternate host | `partial / unverified-external` | Keep as `MD-VERIFY-001`; run when a generic host is available |
-| `MD-SSR-004` | P0 | **Selected — implementation-closable; local pack verified** | Both package owners | Package `package.json` exports/types, package READMEs, and compatibility matrix | Local `npm pack` plus package-boundary tests pass; fresh temporary consumer must resolve documented ESM/CJS/types without workspace-relative dependencies | `partial / unverified-external` | Retry clean consumer when npm resolver is available; registry publication remains separate evidence |
+| `MD-SSR-003` | P1 | **Locally verified host contract** | Package + website owners | Documented unified/remark ordering contract and generic-host fixture | A clean standalone remark-parse → plugin → remark-rehype → rehype-stringify run proves ordering on the declared generic host | `implemented / verified-local` | Closed by `scripts/validate-markdown-generic-host.mjs`; retain as regression evidence |
+| `MD-SSR-004` | P0 | **Implemented — verified-local** | Both package owners | Package `package.json` exports/types, package READMEs, and compatibility matrix | Packed artifacts and a fresh temporary consumer resolve documented ESM/CJS/types without workspace-relative dependencies | `implemented / verified-local` | Closed by `scripts/validate-markdown-package-boundary.mjs`; registry publication remains separate evidence |
 
 The selected set was seven rows: `MD-FENCE-001`, `MD-FENCE-002`,
 `MD-FENCE-003`, `MD-PREVIEW-002`, `MD-HL-004`, `MD-OPT-001`, and
@@ -172,7 +201,7 @@ dependency, acceptance evidence, risk, and next action for the same task ID.
 | `MD-TASK-013` version/view/profile pass-through | `MD-OPT-002` | 🌗 | remark-relgeo + spec/core | version/presentation APIs | Supported version/profile/view/sheet combinations are explicit; future version has stable error projection | P1 wrong preset/migration messaging | Decide supported option surface |
 | `MD-TASK-014` safe output and asset configuration | `MD-OPT-003` | 🌗 | both package owners + website | asset policy; sanitizer boundary | Class/output customization is bounded, asset/base strategy is explicit, and custom hook safety is tested | P0 unsafe/non-portable output | Extend the bounded custom-hook rejection into the agreed sanitizer/asset policy |
 | `MD-TASK-015` caller-selected fallback policy | `MD-OPT-004` | ✔️ | remark-relgeo | diagnostic policy; build owner | `failurePolicy` selects tolerant fallback or strict failure and focused tests prove both paths | P1 CI policy cannot be chosen | Closed by the shared `MD-TASK-011` policy implementation; keep regression coverage |
-| `MD-TASK-016` standalone SSR pipeline | `MD-SSR-001` | 🌗 | both package owners | Node runtime; unified ordering | Generic non-Astro unified/SSR fixture runs without browser globals and records output | P1 alternate host failure | Add standalone pipeline test |
+| `MD-TASK-016` standalone SSR pipeline | `MD-SSR-001` | ✔️ | both package owners | Node runtime; unified ordering | Generic non-Astro unified/SSR fixture runs without browser globals and records output | P1 alternate host failure | Closed with `scripts/validate-markdown-generic-host.mjs` and `generic-host-contract.md` |
 | `MD-TASK-017` configurable asset URL mode | `MD-ASSET-001` | 🌗 | remark-relgeo + website | Pages/base policy | Inline/default and any selected alternate asset mode produce correct local and Pages output | P1 large/alternate-host preview issue | Decide asset strategy and test |
 | `MD-TASK-018` generated-output sanitization policy | `MD-ASSET-003` | 🌗 | both plugins + renderer/host | SVG sanitizer; URL policy | Malicious source/meta/custom output cannot escape the chosen HTML/SVG boundary; security fixtures pass | P0 executable markup injection | Extend the verified rejection fixtures into a general SVG sanitizer and URL policy |
 | `MD-TASK-019` accessible preview semantics | `MD-A11Y-001` | 🌗 | remark-relgeo + website | renderer metadata; HTML contract | Generated preview has agreed role/name/description/wrapper semantics and no invalid nesting | P1 AT lacks preview context | Define semantics and assert HTML |
@@ -183,7 +212,7 @@ dependency, acceptance evidence, risk, and next action for the same task ID.
 | `MD-TASK-024` website provenance/version assertions | `MD-WEB-003` | ✔️ | website + spec/package owners | compatibility metadata; release process | Build fails or reports when site provenance/version line disagrees with package/matrix | P1 site overclaims capability | Closed with plugin markers and localized build assertions |
 | `MD-TASK-025` public route/readability evidence | `MD-WEB-004` | 🌗 | website owner | route/base; accessibility QA | EN/ID routes, public smoke, responsive technical surface, and scheduled AT checks are recorded | P1 public readers see regressions | Run public smoke; schedule mobile/AT |
 | `MD-TASK-026` independent package documentation and smoke | `MD-REL-001` | 🌗 | each package owner | release docs; clean consumer | Fresh consumer follows README ordering/options/errors; package smoke and docs checks pass | P1 adopters use incomplete API | Complete docs and temporary consumer |
-| `MD-TASK-027` reproducible package export surface | `MD-SSR-004` | 🌗 | both package owners | pack/install; release metadata | Local packed fresh consumer resolves ESM/CJS/types for both plugins without workspace-relative dependencies; registry parity remains separate | P0 published consumer cannot install/use API | Run clean pack/install temporary consumer and add regression |
+| `MD-TASK-027` reproducible package export surface | `MD-SSR-004` | ✔️ | both package owners | pack/install; release metadata | Local packed fresh consumer resolves ESM/CJS/types for both plugins without workspace-relative dependencies; registry parity remains separate | P0 published consumer cannot install/use API | Closed by `scripts/validate-markdown-package-boundary.mjs`; retain regression |
 
 ## External verification follow-ups
 
@@ -193,7 +222,7 @@ unless the observed implementation also changes.
 
 | Follow-up | Source ID | Priority | Scope | Owner | Dependency | Acceptance evidence | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `MD-VERIFY-001` generic unified/remark ordering smoke | `MD-SSR-003` | P1 | Alternate unified/remark/rehype host verification | package + website owners | standalone pipeline fixture | Fresh remark-parse → plugin ordering → remark-rehype/rehype-stringify run with documented order | P1 alternate hosts integrate incorrectly | Run and record clean-host result |
+| `MD-VERIFY-001` generic unified/remark ordering smoke | `MD-SSR-003` | P1 | Alternate unified/remark/rehype host verification | package + website owners | standalone pipeline fixture | Fresh remark-parse → plugin ordering → remark-rehype/rehype-stringify run with documented order | P1 alternate hosts integrate incorrectly | Closed by the generic host harness; retain as regression evidence |
 | `MD-VERIFY-002` clean registry/release parity | `MD-REL-002` | P0 | Published package/version/release-order verification | release/package owners | registry access; synchronized metadata | Clean pack/install or registry consumer proves version line and release order | P0 published packages drift | Run canonical release smoke |
 
 ## Handoff rules

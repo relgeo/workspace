@@ -1,6 +1,6 @@
 # Markdown surfaces capability matrix
 
-> **Coverage statement — 2026-11-04.** This matrix covers `remark-relgeo` and
+> **Coverage statement — 2026-11-13.** This matrix covers `remark-relgeo` and
 > `remark-relgeo-hl` source/test/package boundaries plus the official website
 > consumer, using plugin source, tests, manifests, core/language-service/spec
 > inputs, and Astro build evidence. It inventories preview/embed and source
@@ -16,7 +16,7 @@
 |---|---|
 | Surfaces | @relgeo/remark-relgeo and @relgeo/remark-relgeo-hl |
 | Audit owner | Plugin repositories + official Astro docs-site consumer |
-| Audit date | 2026-11-04 |
+| Audit date | 2026-11-13 |
 | Source of truth | Plugin source/tests/manifests, language-service token API, core/spec contracts, docs-site config/content/assertions |
 | Evidence freshness | Local package/site checks passed against workspace-linked dependencies. Registry-only installation, publish, and clean cross-repository consumer parity are not verified. |
 
@@ -34,7 +34,7 @@
 not verified is an evidence state for checks not run in this audit; it is not a
 status symbol.
 
-## Current reconciliation overlay — 2026-11-04
+## Current reconciliation overlay — 2026-11-13
 
 The inventory and priority notes below preserve the 2026-11-03 broad-surface
 snapshot for audit history. This overlay is the current status for the selected
@@ -43,12 +43,12 @@ the status matrix, reconciliation, implementation audit, and coverage handoff.
 
 | Current status | Count |
 |---|---:|
-| Implemented | 23 |
-| Partial | 14 |
+| Implemented | 27 |
+| Deferred by explicit scope | 10 |
 | Broken | 0 |
 | Absent | 0 |
 | Not applicable | 1 |
-| Partial rows with unverified external evidence | 3 |
+| Partial | 0 |
 
 | Current row group | Status | Evidence boundary |
 |---|---|---|
@@ -57,12 +57,12 @@ the status matrix, reconciliation, implementation audit, and coverage handoff.
 | `MD-HL-004` | ✔️ implemented / verified-local | Explicit service opt-out and service failure preserve readable source in `pre > code`; strict behavior is tested. |
 | `MD-OPT-001` | ✔️ implemented / verified-local | README/types/runtime validation agree on defaults, known invalid values, unknown keys, and safe reuse. |
 | `MD-DIAG-003` | ✔️ implemented / verified-local | Runtime warning retains valid preview in tolerant mode and strict mode remains explicit. |
-| `MD-SSR-004` | 🌗 partial / unverified-external | Local build, package boundary, and `npm pack` pass; clean temporary consumer install and registry parity remain unverified. |
-| `MD-SSR-003`, `MD-REL-002` | 🌗 partial / unverified-external | Astro/local ordering and package metadata are observed; generic-host and registry/public verification remain external follow-ups. |
+| `MD-SSR-003`, `MD-SSR-004` | ✔️ implemented / verified-local | Generic host ordering and fresh packed-consumer ESM/CJS/types checks pass; registry parity remains a separate release boundary. |
+| `MD-OPT-002`, `MD-OPT-003`, `MD-ASSET-001`, `MD-ASSET-003`, `MD-A11Y-002`, `MD-ERR-002`, `MD-ERR-003`, `MD-WEB-004`, `MD-REL-001`, `MD-REL-002` | ⏸️ deferred by explicit scope | Each row has an owner, non-blocking rationale, and reopen condition in the final closure report; no implementation absence or broken behavior is inferred. |
 
 Current consumer evidence is local: remark-relgeo 16/16 tests,
 remark-relgeo-hl 10 Vitest plus 1 Node package-boundary test, shared conformance
-298/298 across 23 fixtures, and the Astro consumer with 0 diagnostics and 138
+677/677 across 33 fixtures, and the Astro consumer with 0 diagnostics and 138
 pages. The full integration runner requires Node 24+ and is environment
 unavailable on the current Node 22.23.2 host; no CI, registry, deployment, or
 public claim is inferred.

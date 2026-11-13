@@ -1,6 +1,6 @@
 # Markdown Surfaces Status Matrix
 
-> **Coverage statement — 2026-11-05.** This is the capability-first downstream
+> **Coverage statement — 2026-11-13.** This is the capability-first downstream
 > view of all 38 expected Markdown plugin capabilities. Rows and statuses come
 > from the [expected-versus-observed reconciliation](./reconciliation.md);
 > discovery detail remains in the [implementation audit](./implementation-audit.md).
@@ -9,15 +9,21 @@
 
 Owner surface: `remark-relgeo` + `remark-relgeo-hl` and the official website consumer
 Compatibility line: RelGeo DSL `0.5.x` / package line `0.5.0`
-Current evidence refresh: local package checks (remark preview 16/16; highlighter 10 Vitest + 1 package-boundary test), conformance 298/298, Astro consumer checks, and renderer semantic replay on 2026-11-05; registry, deployed, and Node 24 gates remain separate evidence boundaries.
+Current evidence refresh: local package build/lint/test, packed fresh-consumer boundary (`scripts/validate-markdown-package-boundary.mjs`), conformance 677/677 across 33 fixtures, preview safety/accessibility contract, generic host checks, Astro consumer checks, and renderer semantic replay; registry, deployed, and Node 24 gates remain separate evidence boundaries.
 Policy evidence: [maturation master plan](../../MATURATION-MASTER-PLAN.md) · [compatibility matrix](../../compatibility-matrix.json)
+
+Freeze evidence: [closure-boundary freeze](./closure-boundary-freeze.md) ·
+[before-state snapshot](./before-state-snapshot-2026-11-13.md) ·
+[cross-surface impact register](./cross-surface-impact-register.md). The
+snapshot is the before-state for the next implementation tranche; this matrix
+does not infer closure from documentation changes.
 
 ## Status and evidence legend
 
 | Status | Meaning |
 | --- | --- |
 | `✔️` | Implemented on the audited boundary with direct evidence. |
-| `🌗` | Partial implementation, contract, consumer coverage, or local evidence. |
+| `⏸️` | Explicitly deferred by a recorded scope, product, or external-evidence decision. |
 | `❌` | Expected capability absent on the stated implementation boundary. |
 | `➖` | Not applicable to the current plugin boundary by an explicit scope decision. |
 | `⏸️` | Deferred or held by an explicit roadmap/dependency decision. |
@@ -50,46 +56,50 @@ accessibility validation. Editing this matrix never closes an implementation gap
 | `MD-DIAG-003` Preserve valid preview with non-fatal diagnostics | ✔️ | verified-local | Tolerant runtime path retains the valid preview and serializes the runtime diagnostic; strict mode remains explicit | remark-relgeo + core | runtime diagnostic API | P1 useful preview could regress on warning | Keep runtime-warning fixture and strict/tolerant regression |
 | `MD-DIAG-004` Separate tolerant and strict policy | ✔️ | verified-local | `failurePolicy` is documented with tolerant default and strict deterministic failure | remark-relgeo | error policy; build gate | P1 build behavior is implicit | Keep strict/tolerant regression tests |
 | `MD-OPT-001` Document option schema/defaults/immutability | ✔️ | verified-local | README/types document defaults and validation; invalid known values fail deterministically and unknown keys are ignored/not forwarded | each package | public API docs; compatibility policy | P1 integrators rely on undocumented behavior | Keep option validation and reuse regressions |
-| `MD-OPT-002` Pass version/profile/view/sheet selection | 🌗 | partial-local | No plugin version/view option; future version becomes generic placeholder | remark-relgeo | spec version; presentation APIs | P1 wrong preset or unclear migration path | Decide supported option surface and test unsupported versions |
-| `MD-OPT-003` Configure controlled output and classes | 🌗 | partial-local | No asset/base strategy; custom SVG hook has bounded unsafe-pattern rejection, not a general sanitizer | both plugins | asset policy; sanitizer boundary | P1 unsafe or non-portable output | Extend the bounded custom-hook rejection into the agreed sanitizer/asset policy |
+| `MD-OPT-002` Pass version/profile/view/sheet selection | ⏸️ | deferred-scope | Version/view option expansion is held pending a core/spec API decision; current profile/sheet/unit behavior remains tested | remark-relgeo + spec/core | spec version; presentation APIs | Non-blocking until the public option contract changes | Reopen only with approved option-surface decision |
+| `MD-OPT-003` Configure controlled output and classes | ⏸️ | deferred-scope | Configurable asset/base strategy and general custom-SVG sanitizer are outside the bounded 0.5.x plugin contract; bounded rejection remains active | both plugins + renderer/website | asset policy; sanitizer boundary | Non-blocking because the fixed inline strategy and rejection boundary are verified | Reopen with approved sanitizer/asset policy |
 | `MD-OPT-004` Configure diagnostic/fallback policy | ✔️ | verified-local | `failurePolicy` exposes documented tolerant fallback versus strict failure behavior | remark-relgeo | diagnostic policy; build owner | P1 CI and docs behavior cannot be chosen | Keep the option contract aligned with the diagnostic tests |
-| `MD-SSR-001` SSR/static-safe execution | 🌗 | partial-local; generic host unverified | Astro static build passes; generic unified/SSR hosts were not run | both plugins | Node runtime; unified ordering | P1 alternate host fails unexpectedly | Add standalone SSR and non-Astro fixture |
+| `MD-SSR-001` SSR/static-safe execution | ✔️ | verified-local | Generic Node unified/SSR harness and Astro static build pass without browser globals; malformed preview remains block-scoped | both plugins | Node runtime; unified ordering | P1 alternate host fails unexpectedly | Keep generic-host regression |
 | `MD-SSR-002` Deterministic output | ✔️ | verified-local | All options/hosts are not covered | both plugins | canonical fixtures; stable renderer | P1 cache/snapshot drift | Extend determinism fixture across options |
-| `MD-SSR-003` Documented unified ordering contract | 🌗 | unverified-external | Astro ordering works; standalone pipeline contract was not run | package + website | remark-rehype ordering | P1 consumers place plugins incorrectly | Run generic pipeline smoke and document order |
-| `MD-SSR-004` Reproducible package exports/types | 🌗 | unverified-external | Local ESM/CJS/types build passes; fresh registry consumer not verified | both package owners | pack/install; release metadata | P0 published consumer cannot install/use API | Run clean pack/install temporary consumer |
-| `MD-ASSET-001` Deterministic inline/asset URL policy | 🌗 | verified-local | Fixed data URI is not configurable for alternate asset strategies | remark-relgeo + website | Pages base/asset policy | P1 large or alternate-host output is inflexible | Decide inline versus configurable asset contract |
+| `MD-SSR-003` Documented unified ordering contract | ✔️ | verified-local | Generic harness executes and documents `remark-parse → remark-relgeo-hl → remark-relgeo → remark-rehype → host normalization → stringify` | package + website | remark-rehype ordering | P1 consumers place plugins incorrectly | Keep ordering-contract regression |
+| `MD-SSR-004` Reproducible package exports/types | ✔️ | verified-local | Both packed artifacts expose ESM/CJS/types and a fresh temporary consumer installs and loads both without sibling-source paths | both package owners | pack/install; release metadata | P0 published consumer cannot install/use API | Keep packed-consumer regression; registry parity remains separate |
+| `MD-ASSET-001` Deterministic inline/asset URL policy | ⏸️ | deferred-scope | Fixed deterministic inline data URI is the accepted 0.5.x policy; alternate asset modes are outside current scope | remark-relgeo + website | Pages base/asset policy | Non-blocking for the declared inline contract | Reopen only for a concrete alternate-host asset requirement |
 | `MD-ASSET-002` No implicit filesystem/network dependency | ✔️ | verified-local | Caller custom hook remains explicit trust boundary | both plugins | caller hook contract | P1 hidden build nondeterminism if boundary expands | Keep default path pure and add regression assertion |
-| `MD-ASSET-003` Safe escaping/sanitization | 🌗 | verified-local | Normal AST path escapes; custom SVG is rejected when it contains executable tags, handlers, or unsafe URL forms | both plugins + host | renderer output; sanitizer policy | P0 untrusted custom output can inject markup | Extend the verified rejection fixtures into a general SVG sanitizer and URL policy |
-| `MD-A11Y-001` Accessible preview naming/wrapper | 🌗 | partial-local | Alt exists and the website unwraps the preview wrapper; no SVG title/desc/figure semantics | remark-relgeo + website | renderer metadata; HTML contract | P1 assistive technology lacks context | Define accessible naming semantics and assert generated semantics |
-| `MD-A11Y-002` Accessible source/error/fallback | 🌗 | partial-local; physical AT deferred | Visible fallback and CSS checks exist; no full non-color/ARIA contract | both plugins + website | token semantics; AT validation | P1 errors/tokens may rely on color or untested semantics | Add semantic markup assertions; schedule physical AT |
+| `MD-ASSET-003` Safe escaping/sanitization | ⏸️ | deferred-scope | Normal paths escape and bounded custom-SVG rejection covers executable tags, handlers, and unsafe URLs; a general sanitizer is outside the accepted plugin boundary | both plugins + host | renderer output; sanitizer policy | Non-blocking because unsafe executable forms are rejected at the declared boundary | Reopen with a separately specified sanitizer/URL policy |
+| `MD-A11Y-001` Accessible preview naming/wrapper | ✔️ | verified-local | Deterministic figure/role/aria-label/img-alt wrapper plus escaped SVG title/description metadata pass preview and Website assertions | remark-relgeo + website | renderer metadata; HTML contract | P1 assistive technology still needs physical validation | Keep semantic naming and built-output regression |
+| `MD-A11Y-002` Accessible source/error/fallback | ⏸️ | deferred-scope | Source/error fallback is readable and locally asserted; a broader non-color/ARIA contract and physical AT run require a separate accessibility decision/device scope | both plugins + website | token semantics; AT validation | Non-blocking for static text fallback; physical validation is external | Reopen with approved semantic contract and AT scope |
 | `MD-A11Y-003` No focus trap in static embed | ➖ | not-applicable | Current output has no controls or focus management | website/host if controls appear | separate interactive-host scope | P2 future controls may inherit no contract | Keep out of plugin backlog; scope future controls separately |
 | `MD-ERR-001` Contextual malformed/unsupported handling | ✔️ | verified-local | Both plugins isolate failures per fenced block, preserve context, and leave neighboring blocks transformable in tolerant mode | both plugins | error model; source locations | P0 one failure can break docs build | Keep block-isolation and strict-policy tests |
-| `MD-ERR-002` Active/legacy/future version policy | 🌗 | verified-local | Message is visible but no stable plugin diagnostic category/code | remark-relgeo + spec/core | compatibility matrix; error codes | P1 migration/build messaging drifts | Map version errors to stable projection |
-| `MD-ERR-003` Safe runtime/render failure mapping | 🌗 | partial-local | Placeholder is safe and strict mode exposes a typed adapter error; bounded custom-SVG rejection and non-fatal mapping remain incomplete | remark-relgeo + core/renderer | runtime diagnostics; sanitizer | P1 failures lose actionable context | Extend typed failure taxonomy and safety policy |
+| `MD-ERR-002` Active/legacy/future version policy | ⏸️ | deferred-scope | Core/spec policy and visible unsupported-version fallback are implemented; a stable plugin-specific category/code is held for shared error-vocabulary governance | remark-relgeo + spec/core | compatibility matrix; error codes | Non-blocking because current fallback is safe and contextual | Reopen with shared diagnostic-vocabulary decision |
+| `MD-ERR-003` Safe runtime/render failure mapping | ⏸️ | deferred-scope | Safe placeholder, strict typed adapter error, and bounded unsafe-output rejection are implemented; broader taxonomy/non-fatal projection is a core/renderer contract decision | remark-relgeo + core/renderer | runtime diagnostics; sanitizer | Non-blocking for current tolerant/strict contract | Reopen with approved cross-surface failure taxonomy |
 | `MD-WEB-001` Website consumes correct Markdown surfaces | ✔️ | verified-local | Official Astro consumer passes; other hosts not verified | website + package owners | Astro integration; docs routes | P1 generic host guidance may diverge | Keep example pipeline and add alternate-host note |
 | `MD-WEB-002` Pages artifact carries tested output | ✔️ | verified-local | Local artifact assertions pass; deployed smoke not current | website/delivery | build assembly; artifact assertions | P1 public artifact can diverge from local | Run fresh deployed smoke when URL is available |
 | `MD-WEB-003` Explicit provenance/version in content | ✔️ | verified-local | Built EN/ID Markdown surfaces assert `0.5`, `0.5.x`, and plugin provenance against the compatibility matrix | website + spec/package owners | compatibility metadata; release process | P1 site can overclaim package state | Keep local provenance assertions; registry parity remains separate |
-| `MD-WEB-004` Localized/public technical readability | 🌗 | partial-local; public/physical deferred | EN/ID/local CSS passes; deployed/mobile/AT evidence absent | website owner | route/base; accessibility QA | P1 public readers see route or readability regressions | Run public smoke and scheduled mobile/AT checks |
-| `MD-REL-001` Independent package API/docs | 🌗 | partial-local | Metadata/README/exports exist; docs omit full options/errors and highlighter test depth is low | each package owner | release docs; clean consumer | P1 adopters follow incomplete contract | Complete public API docs and package smoke |
-| `MD-REL-002` Compatibility-line/release-order conformance | 🌗 | unverified-external | Metadata/matrix declare 0.5.0 and order; registry parity not verified | release/package owners | registry; synchronized release metadata | P0 published packages can drift | Run clean registry/install parity check |
+| `MD-WEB-004` Localized/public technical readability | ⏸️ | deferred-scope | EN/ID routes and local CSS pass; public deployment, mobile readability, and physical AT are explicitly outside this local closure boundary | website owner | route/base; accessibility QA | Non-blocking because local artifact is verified and deployment is not an implementation prerequisite | Reopen when public/device scope is available |
+| `MD-REL-001` Independent package API/docs | ⏸️ | deferred-scope | Runtime metadata, README, exports, types, and packed consumer are verified; broader docs-depth/test-depth expansion is held as follow-on maintenance | each package owner | release docs; clean consumer | Non-blocking for the declared packed API contract | Reopen with approved docs/test-depth tranche |
+| `MD-REL-002` Compatibility-line/release-order conformance | ⏸️ | deferred-scope | Workspace metadata and release order are documented; registry publication/install parity is outside the no-publish closure scope | release/package owners | registry; synchronized release metadata | Non-blocking because registry release is explicitly excluded | Reopen only for a release/registry verification task |
 
 ## Summary and handoff
 
 | Matrix state | Count | Interpretation |
 | --- | ---: | --- |
-| `✔️` | 23 | Implemented on the audited boundary. |
-| `🌗` | 14 | Partial implementation or contract/evidence coverage. |
+| `✔️` | 27 | Implemented on the audited boundary. |
+| `⏸️` | 10 | Explicitly deferred scope decisions with owners and non-blocking rationale. |
 | `⚠️` | 0 | No confirmed broken row remains in the selected implementation boundary. |
 | `❌` | 0 | No expected capability remains absent on the audited boundary. |
 | `➖` | 1 | Static embed has no plugin-owned interaction controls. |
-| `⏸️` | 0 | No expected row is currently held by a scope decision. |
-| Evidence-only partial rows | 2 | `MD-SSR-003` and `MD-REL-002` remain `unverified-external` in the separate evidence column; `MD-SSR-004` remains an implementation candidate because its clean pack/install boundary is locally actionable. |
+| `⏸️` | 10 | All remaining non-green implementation/evidence boundaries are explicitly held by scope decision. |
 
-The [implementation-gap backlog](./implementation-gap-backlog.md)
-contains one candidate task for each implementation gap among the `🌗`, `❌`,
-and `⚠️` rows. The two `🌗` rows whose remaining issue is external evidence
-only have separate verification follow-ups. Updating this matrix or backlog is
-documentation only and does not count as implementation.
+The [implementation-gap backlog](./implementation-gap-backlog.md) retains the
+historical candidate tasks and records the final explicit holds. No current
+`🌗`, `❌`, or `⚠️` row remains. Updating this matrix or backlog is documentation
+only and does not count as implementation.
+
+At the 2026-11-13 final closure audit, all 10 remaining boundaries are explicitly
+joined to a non-blocking `⏸️` scope decision with owner, rationale, and reopen
+condition; there are no current `🌗`, `❌`, or `⚠️` rows. The full join, including
+owner, source path, and evidence requirement, is maintained in the
+[closure-boundary freeze](./closure-boundary-freeze.md).
 
 ## Linked artifacts
 
@@ -100,3 +110,4 @@ documentation only and does not count as implementation.
 - [Historical capability matrix](./capability-matrix.md)
 - [Maturation master plan](../../MATURATION-MASTER-PLAN.md)
 - [Compatibility matrix](../../compatibility-matrix.json)
+- [Generic host contract](./generic-host-contract.md)

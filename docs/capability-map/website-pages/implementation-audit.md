@@ -1,5 +1,26 @@
 # Website and Pages Implementation Audit
 
+## Fresh consumer verification — 2026-11-13
+
+The current local Website/Pages consumer boundary was re-run after assembling
+the Playground artifact from the exact Playground revision pinned by
+`.github/workflows/pages.yml`. The main checkout was not changed; the pinned
+revision was built in a temporary detached worktree.
+
+| Check | Result | Boundary proved |
+| --- | --- | --- |
+| `npm run build` in `relgeo.github.io` | PASS; `141 page(s) built`; `Complete!` | Astro generated the localized Website/Markdown artifact. |
+| `npm test` in `relgeo.github.io` | PASS; `Docs-site built-output assertions passed.` and `Content integrity assertions passed (locale parity, frontmatter, generated routes, and internal links).` | Representative Markdown preview/highlight, safety, accessibility, route, and content fixtures pass. |
+| `npm run check` in `relgeo.github.io` | PASS; `0 errors`, `0 warnings`, `0 hints` | Website type/content diagnostics are clean. |
+| `pnpm build` in the pinned Playground worktree | PASS; `Playground build provenance written for c263920146a7ba28fe76561df25d1174b289663b (3 entry assets).` | The Pages-pinned child artifact is reproducible locally. |
+| `RELGEO_PLAYGROUND_ROOT=/private/tmp/relgeo-playground-pinned-20261113 RELGEO_SPEC_ROOT=../spec npm run provenance:pages` | PASS; `"synchronized": true`, `"mismatches": []` | Website, Playground, and spec inputs match the Pages workflow pins. |
+| `npm run test:pages-artifact` after assembling the pinned Playground output | PASS; `Pages artifact assertions passed (4 playground assets checked).` | The complete Pages artifact has the expected routes, base path, manifests, digests, runtime markers, and metadata. |
+
+This closes the local Website/Pages artifact boundary for `WEB-PAGE-007` and
+`WEB-PAGE-012`, and supplies the consumer evidence for Markdown `MD-WEB-001`
+through `MD-WEB-003`. GitHub Actions, deployed Pages, public reachability, and
+hosted interaction remain separate external boundaries.
+
 ## Artifact provenance refresh — 2026-11-07
 
 The locally actionable Playground/Pages boundary is synchronized for the

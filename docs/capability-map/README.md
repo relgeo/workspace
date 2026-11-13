@@ -304,6 +304,10 @@ are explicitly labeled so they cannot be mistaken for current evidence.
   validates coverage, IDs, links/paths, legends, evidence classes, scope,
   limitations, unresolved questions, and separate implementation handoff;
   it does not claim the Markdown surface is complete.
+- [Markdown closure-boundary freeze](./markdown-surfaces/closure-boundary-freeze.md) ·
+  [before-state snapshot](./markdown-surfaces/before-state-snapshot-2026-11-13.md) ·
+  [cross-surface impact register](./markdown-surfaces/cross-surface-impact-register.md)
+  — frozen owner, evidence, and non-green-row join for the Markdown tranche.
 - [Playground expected capability catalog](./playground/expected-capability-catalog.md)
   — expected baseline derived from user journeys, target users, product
   workflow, file/command model, DSL contract, roadmap, and scope decisions;

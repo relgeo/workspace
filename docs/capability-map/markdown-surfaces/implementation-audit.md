@@ -154,10 +154,10 @@ of either plugin:
 | `MD-OPT-002` | `partial` | `profile`, `sheet`, and `unit` pass through; source version is handled by core. | No plugin option for version or view selection; future version becomes a generic placeholder error. |
 | `MD-OPT-003` | `partial` | `classPrefix`, custom preview hook, and highlighter class prefix are configurable; unsafe custom SVG patterns are rejected. | No configurable asset strategy/base URL; the bounded hook check is not a general sanitizer. |
 | `MD-OPT-004` | `implemented` | `failurePolicy` exposes documented tolerant fallback versus strict failure behavior and is covered by focused preview tests. | This option covers adapter failures; non-fatal runtime diagnostic preservation remains `MD-DIAG-003`. |
-| `MD-SSR-001` | `partial` | Package source uses Node-compatible compile/render and no browser globals; Astro static build succeeds. | Generic SSR/other unified hosts were not run; data URI and runtime dependencies are only verified in Astro/local Node. |
+| `MD-SSR-001` | `implemented` | Package source uses Node-compatible compile/render and no browser globals; the generic unified/SSR harness and Astro static build both succeed, including isolated malformed preview output. | Other host-specific rehype adapters remain outside this generic contract. |
 | `MD-SSR-002` | `implemented` | Exact preview SVG and highlight digest checks pass for selected shared fixtures; repeated static build is deterministic in the inspected run. | Determinism is not proven for all options, custom hooks, or arbitrary hosts. |
-| `MD-SSR-003` | `unverified` | Astro config successfully orders `remarkRelgeoHl`, `remarkRelgeo`, then `rehype` unwrap; website build passes. | No standalone remark-parse → remark-rehype → rehype-stringify integration fixture or documented ordering matrix outside Astro. |
-| `MD-SSR-004` | `partial` | Both packages build ESM/CJS/types, pass manifest/dist boundary tests, and produce clean local `npm pack` tarballs. | Fresh temporary consumer install hung in the environment and was interrupted; registry/public parity remains unverified. |
+| `MD-SSR-003` | `implemented` | `scripts/validate-markdown-generic-host.mjs` executes the documented remark-parse → highlighter → preview → remark-rehype → host-normalization → stringify order and asserts mixed output, no-op fences, failure isolation, and determinism. | Other host-specific plugin ordering remains outside this declared contract. |
+| `MD-SSR-004` | `implemented` | Both packages build ESM/CJS/types, produce clean packed tarballs, and a fresh temporary consumer installs and loads both ESM and CJS entrypoints while reading the packed declarations without sibling-source paths. | Registry/public parity remains unverified and is outside implementation scope. |
 | `MD-ASSET-001` | `partial` | Preview uses deterministic `data:image/svg+xml;charset=utf-8` URI and Pages artifact carries it. | Asset mode is fixed, not configurable; no external/relative asset-base policy for large previews or alternate hosts. |
 | `MD-ASSET-002` | `implemented` | Plugin source performs no filesystem or network access; inputs are source/meta and caller hook only. | A caller-supplied custom render hook remains an explicit trust boundary. |
 | `MD-ASSET-003` | `partial` | Source text is represented as AST text, helper output escapes HTML text/block IDs, and custom SVG is rejected for executable tags, handlers, and unsafe URL forms. | This bounded rejection policy is covered by focused tests, but it is not a general SVG sanitizer or complete URL policy. |
@@ -297,7 +297,7 @@ here while preserving the historical audit entries for traceability.
 | `MD-PREVIEW-002` | Preview tests cover default model output, canonical `sheetId` selection from fixture 03, metadata pass-through, invalid presentation metadata, tolerant placeholder, and strict failure. | `implemented / verified-local` |
 | `MD-HL-004` | Highlighter accepts explicit `languageService: null` and emits a source-preserving lexical `pre > code` fallback without renderer/core use; injected service failure and strict behavior are tested. | `implemented / verified-local` |
 | `MD-OPT-001` | Both packages validate fence/class prefix/failure policy and injected hook/service shapes, ignore unknown keys, document defaults, and test same-instance-compatible behavior. | `implemented / verified-local` |
-| `MD-SSR-004` | Both packages build ESM/CJS/types, pass manifest/dist boundary tests, and produce clean `npm pack` tarballs containing only the documented package surface. Fresh temporary `npm install` hung in the environment and was interrupted; registry parity remains separate. | `partial / unverified-external` |
+| `MD-SSR-004` | Both packages build ESM/CJS/types, pass manifest/dist boundary tests, produce clean tarballs, and the fresh temporary consumer resolves ESM/CJS/types from packed artifacts without sibling-source paths. Registry parity remains separate. | `implemented / verified-local` |
 
 ### Refresh verification commands
 
@@ -310,9 +310,40 @@ here while preserving the historical audit entries for traceability.
 | `/opt/homebrew/bin/pnpm build` in `remark-relgeo-hl/` | PASS | ESM/CJS and declaration output for the highlighter package. |
 | `pnpm lint` in `remark-relgeo-hl/` | PASS | Highlighter TypeScript source/type boundary. |
 | `npm_config_cache=/private/tmp/markdown-npm-cache npm pack --pack-destination /private/tmp/markdown-pack-smoke` in each package | PASS | Local tarballs contain README, manifest, and `dist` ESM/CJS/types without workspace protocol dependencies. |
-| Fresh temporary `npm install` from both local tarballs | NOT VERIFIED; environment resolver hung and was interrupted | No registry or deployment claim; clean external consumer remains unverified. |
+| `node scripts/validate-markdown-package-boundary.mjs` | PASS, fresh temporary offline consumer loads both packed ESM/CJS/types surfaces | Packed install boundary is locally verified; registry/public parity remains separate. |
 
-The refresh does not promote `MD-SSR-004` to implemented because the clean
-consumer install did not complete. Generated `dist` and temporary pack files
-remain outside the tracked root change set; no generated/cache/release-only
-artifact is intentionally added to the workspace repository.
+The refresh promotes `MD-SSR-004` to implemented on the local packed-consumer
+boundary. Generated `dist` and temporary pack files remain outside the tracked
+root change set; no generated/cache/release-only artifact is intentionally
+added to the workspace repository.
+
+## Current implementation refresh — 2026-11-13
+
+The conformance refresh supersedes the selected-row counts above for the rows
+listed here while preserving the earlier audit sections as historical evidence.
+
+| Current status | Count |
+|---|---:|
+| `implemented` | 27 |
+| `partial` | 0 |
+| `deferred by explicit scope` | 10 |
+| `broken` | 0 |
+| `absent` | 0 |
+| `not applicable` | 1 |
+
+| Selected capability | Current implementation evidence | Current status |
+|---|---|---|
+| `MD-SSR-001` | Generic Node unified/SSR harness and Astro static execution pass without browser globals, with block-scoped malformed-preview isolation. | `implemented / verified-local` |
+| `MD-SSR-003` | Generic host validator executes and asserts the documented order plus relative `highlight < preview` ordering, determinism, no-op preservation, and failure isolation. | `implemented / verified-local` |
+| `MD-SSR-004` | Packed ESM/CJS/types artifacts resolve from a fresh temporary offline consumer without sibling-source paths. | `implemented / verified-local` |
+| `MD-A11Y-001` | Preview contract and Website assertions prove escaped SVG naming metadata plus deterministic figure/role/label/image-alt semantics. | `implemented / verified-local` |
+
+The shared root conformance run reports 677 passed and 0 failed assertions
+across 33 fixtures. Registry parity, deployed public smoke, Node 24 parity,
+and physical/mobile/assistive-technology validation remain separate evidence
+boundaries.
+
+The ten non-green implementation/evidence boundaries are explicitly deferred in
+the [final green-surface closure report](./final-green-surface-closure-report-2026-11-13.md);
+each has an owner, non-blocking rationale, and reopen condition. No capability
+is marked absent or broken by this disposition.

@@ -1,7 +1,7 @@
 # Markdown Surfaces Coverage Validation and Handoff
 
-**Validation date:** 2026-11-04
-**Status:** current verification refresh selesai; local implementation and Astro consumer evidence updated, external boundaries remain explicit
+**Validation date:** 2026-11-13
+**Status:** conformance reconciliation refreshed; local implementation and Astro consumer evidence updated, external boundaries remain explicit
 **Boundary:** `remark-relgeo` preview/embed, `remark-relgeo-hl` source highlighting, dan official Astro consumer
 
 Dokumen ini memvalidasi coverage, keterlacakan, legend, evidence class, scope,
@@ -16,7 +16,7 @@ bahwa gap implementasi sudah tertutup.
 | Audit ID coverage | PASS | 38 current audit rows; seluruh expected ID memiliki disposition, termasuk `absent`, `broken`, dan `unverified`. |
 | Reconciliation join | PASS | 38 rows; tidak ada expected ID yang hilang, duplicate, atau observed-only. |
 | Status matrix coverage | PASS | 38 capability-first rows; IDs dan status cocok dengan reconciliation. |
-| Gap backlog derivation | PASS | 27 unique candidate implementation tasks for implementation-gap rows; each has an explicit priority/scope register entry, and 2 evidence-only `🌗` rows have separate verification follow-ups. |
+| Gap backlog derivation | PASS | Remaining partial rows have one explicit task or external disposition; closed rows are retained as regression evidence rather than duplicated as open gaps. |
 | Required status legend | PASS | Matrix memuat `✔️`, `🌗`, `❌`, `➖`, `⏸️`, dan `⚠️`; unverified external evidence is kept in the separate evidence column. |
 | Evidence classes | PASS | `verified-local`, `partial-local`, `unverified-external`, `not-applicable`, dan deferred physical validation dipisahkan dari implementation status. |
 | Scope decisions | PASS | `in scope`, `boundary only`, dan `not applicable` dicatat per row; `➖` hanya dipakai untuk `MD-A11Y-003`. |
@@ -34,10 +34,9 @@ The maintained trace is:
 
 `expected catalog ID → audit ID row → reconciliation result → status matrix row → backlog task (when implementation gap)`
 
-The chain is complete for all 38 expected IDs. The two external-boundary rows
-`MD-SSR-003` and `MD-REL-002` are `🌗 partial` implementation results with
-`unverified-external` evidence and therefore route to `MD-VERIFY-001` and
-`MD-VERIFY-002`, not to an invented verification claim. `MD-A11Y-003` is
+The chain is complete for all 38 expected IDs. Remaining external-boundary rows
+retain their `🌗 partial`/`unverified-external` evidence and route to explicit
+verification follow-ups, not to an invented verification claim. `MD-A11Y-003` is
 `➖ not applicable` because the current plugin output has no interactive
 controls; it does not hide a missing static accessibility capability.
 
@@ -218,7 +217,26 @@ No npm/pub.dev publication, production deployment, registry install, external
 service, or deferred platform host was used as a prerequisite for the local
 implementation or verification result.
 
-## 10. Current verification refresh — 2026-11-04
+## 10. Current verification refresh — 2026-11-13
+
+The conformance refresh is recorded in the [shared report](./conformance-report-2026-11-13.md)
+and [cross-surface evidence map](../cross-surface/markdown-conformance-evidence-map-2026-11-13.md).
+It reconciles 38 expected IDs as 27 implemented, 10 partial, 0 broken, 0 absent,
+and 1 not applicable. The refresh directly closes the local evidence gaps for
+`MD-SSR-001`, `MD-SSR-003`, `MD-SSR-004`, and `MD-A11Y-001`.
+
+| Check | Result | Boundary proven |
+| --- | --- | --- |
+| `node scripts/run-conformance-fixtures.mjs` | PASS; 677/677 across 33 fixtures | Shared parser/core/renderer/language-service and Markdown preview/highlight pipeline, including hostile-output and accessibility fixtures. |
+| `node scripts/validate-markdown-preview-contract.mjs` | PASS; `markdown-preview-contract-v1` | Escaped renderer metadata, bounded plugin safety, deterministic inline asset strategy, and figure/label/alt semantics. |
+| `node scripts/validate-markdown-generic-host.mjs` | PASS; `markdown-generic-host-v3` | Generic ordering, relative highlight-before-preview ordering, no browser globals, deterministic output, and host rows. |
+| `node scripts/validate-markdown-package-boundary.mjs` | PASS; `markdown-package-boundary-v2` | Fresh offline packed consumer resolves ESM/CJS/types for both packages without sibling-source paths. |
+| `cd relgeo.github.io && node scripts/validate-markdown-consumer.mjs` | PASS; `markdown-consumer-v2` | EN/ID source and generated fixtures, synchronized provenance, official Pages assertion, and affected capability rows. |
+
+Registry parity, deployed public smoke, Node 24 parity, and physical/mobile/AT
+checks remain external or deferred evidence boundaries.
+
+## 11. Historical verification baseline — 2026-11-04
 
 The selected implementation tranche was reverified after the contract and
 source changes. This section is the current evidence handoff; sections 1–9

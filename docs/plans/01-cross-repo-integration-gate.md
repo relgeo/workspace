@@ -170,7 +170,7 @@ No local downstream consumer showed a functional regression in this refresh.
 Browser E2E, immutable-pin alignment, hosted smoke, and public artifact parity
 remain separately unverified.
 
-### 0.7 Website and Pages consumer-boundary refresh — 2026-11-04
+### 0.7 Website and Pages consumer-boundary refresh — 2026-11-04 (historical; superseded by 0.8)
 
 The current Website and Pages task reran the direct downstream consumer
 boundaries from the uncommitted worktree. These results are local E3 evidence;
@@ -191,7 +191,29 @@ The current direct consumer result is therefore “no local downstream consumer
 regression observed,” with artifact promotion and cross-repo/hosted parity
 remaining explicitly unverified.
 
-### 0.8 Flutter Workbench consumer-boundary refresh — 2026-11-05
+### 0.8 Website and Pages current closure refresh — 2026-11-14
+
+The current Website/Pages evidence is maintained in the tracked capability-map
+reports rather than promoted from historical CI/public records. The reconciled
+15-row final local-scope status is **13 `✔️` / 0 `🌗` / 0 `❌` / 0 `➖` /
+2 `⏸️` / 0 `⚠️`**. `WEB-PAGE-013` and `WEB-PAGE-014` are explicit holds for
+hosted Pages execution and public smoke reachability.
+
+| Boundary | Current result | Evidence classification |
+| --- | --- | --- |
+| Website build and route/content assertions | PASS — deployment-configured build emitted 141 pages; website tests and content-integrity assertions passed | Local consumer/artifact evidence; no public URL claim |
+| Playground consumer | PASS — build and test passed with 18 files and 119 tests | Local child-consumer evidence |
+| Pages-input provenance and assembled artifact | PASS — synchronized local Playground/spec inputs and 3 Playground assets checked | Local Pages boundary; hosted CI/Pages parity unverified |
+| Root conformance fixtures | PASS — 677 passed, 0 failed across 33 fixtures | Local root evidence |
+| Root integration gate | ENVIRONMENT UNAVAILABLE — Node `22.23.2`, runner requires Node `>=24` | Toolchain boundary; not a consumer parity failure |
+| Public smoke | NOT VERIFIED — `/` stopped with `fetch failed` against `https://relgeo.github.io` | Managed network/public-host boundary; no public defect inferred |
+
+The canonical document chain is the [Website/Pages capability map](../capability-map/website-pages/),
+especially its [final closure report](../capability-map/website-pages/final-closure-report.md).
+No npm release or production deployment is a prerequisite for the local closure;
+CI, Pages deployment, and public smoke remain separate evidence boundaries.
+
+### 0.9 Flutter Workbench consumer-boundary refresh — 2026-11-05
 
 The current Flutter child checkout was checked against the direct consumers of
 the changed diagnostic/parameter/import boundary. These are local observations

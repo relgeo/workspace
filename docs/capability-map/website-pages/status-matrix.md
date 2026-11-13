@@ -1,15 +1,15 @@
 # Website and Pages capability status matrix
 
-**Tanggal:** 2026-11-13
+**Tanggal:** 2026-11-14
 **Boundary:** expected website/Pages catalog versus implementation audit evidence  
 **Status dokumen:** downstream capability-first view; this document does not implement a gap
 
 This matrix is derived from the [expected catalog](./expected-capability-catalog.md),
 [implementation audit](./implementation-audit.md), and
 [expected-versus-observed reconciliation](./reconciliation.md).
-The [implementation-gap backlog](./implementation-gap-backlog.md)
-contains candidate work for every `❌` and `🌗` row. The catalog, audit,
-reconciliation, matrix, and backlog remain separate artifacts.
+The [implementation-gap backlog](./implementation-gap-backlog.md) records the
+closed local-boundary work and the two explicit hosted-scope holds. The catalog,
+audit, reconciliation, matrix, and backlog remain separate artifacts.
 
 ## Status and evidence rules
 
@@ -27,22 +27,19 @@ Evidence is a separate axis: `verified-local`, `observed-local`,
 not status substitutions. A documentation row or a gap row is not evidence
 that implementation exists.
 
-**Coverage:** 15 expected IDs, 15 matrix rows, 0 missing, 0 duplicate, 0
-extra; 6 `✔️`, 9 `🌗`, 0 `❌`, 0 `➖`, 0 `⏸️`, 0 `⚠️`. `WEB-PAGE-007` is
-closed at the local website/assembled-handoff boundary; hosted interaction
-remains explicitly unverified.
+**Coverage:** 15 expected IDs, 15 matrix rows, 0 missing, 0 duplicate, 13
+`✔️`, 0 `🌗`, 0 `❌`, 0 `➖`, 2 `⏸️`, 0 `⚠️`. `WEB-PAGE-013` and
+`WEB-PAGE-014` are explicit hosted-boundary holds; all other rows are closed
+at the declared local implementation boundary.
 
 ## P0/P1 triage handoff
 
-The implementation-closability decision is recorded in the [gap backlog](./implementation-gap-backlog.md#p0p1-implementation-closability-triage).
-At the 2026-11-04 triage, eight P0/P1 rows are selected for local
-implementation or fail-closed build/contract work: `WEB-PAGE-003`, `004`,
-`005`, `007`, `009`, `010`, `011`, and `012`. Three remaining P0/P1 rows are
-retained as evidence-only follow-ups: `WEB-PAGE-013` requires a GitHub Actions
-and Pages run, `WEB-PAGE-014` requires reachable public probes, and the P1
-portion of `WEB-PAGE-015` requires deployment/CI provenance evidence. Their
-owners, source-of-truth paths, acceptance tests, and initial statuses are
-defined in the linked table.
+The final closure-scope decision is recorded in the [bounded selection](./in-scope-selection.md#final-closure-scope-decision--2026-11-14)
+and [gap backlog](./implementation-gap-backlog.md#final-closure-overlay--2026-11-14).
+Rows `WEB-PAGE-001` through `012` and `WEB-PAGE-015` are closed for their
+declared local presentation, browser, metadata, claim, or artifact contract.
+`WEB-PAGE-013` requires hosted workflow/deployment evidence and `WEB-PAGE-014`
+requires a reachable public host, so those two rows are held explicitly.
 
 This triage does not change the status symbols below. Public deployment,
 external crawler/browser evidence, and physical VoiceOver/TalkBack/mobile AT
@@ -55,36 +52,36 @@ into an implementation failure or a local pass.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `WEB-PAGE-001` | Route/content discovery across landing, localized, docs, spec, legacy, and Playground handoff routes | `✔️` | `verified-local`; public reachability `unverified-public` | No exhaustive internal-link crawl; public DNS unavailable | website | Astro routes, content collections, Pages base | M | Add generated-route/link crawl; rerun public smoke |
 | `WEB-PAGE-002` | Navigation, active location, reading order, language switch, and return paths | `✔️` | `verified-local` selected assertions; broader traversal `observed-local` | Full keyboard traversal is not current evidence | website | `DocsLayout.astro`, docs/spec templates, i18n | M | Run browser keyboard/navigation sweep |
-| `WEB-PAGE-003` | Search and wayfinding with query/index context and useful no-result behavior | `🌗` | `verified-local` | Deterministic localized topic index, filtering, live count, and no-result state are implemented; query/server search and browser sweep remain open | website | Docs/reference information architecture; product decision if query search is required | H | Re-audit the deterministic-index baseline in a browser; keep query search as a separate decision unless the product contract requires it |
-| `WEB-PAGE-004` | Indonesian/English route switching with equivalent context and honest language status | `🌗` | `verified-local` shell; content parity incomplete | English spec route is an editorial mirror of `spec/id`; full English normative parity is not claimed | website + spec | `spec/id`, frozen mirror disclosure, locale loader | H | Preserve the mirror disclosure; add translation only through a separately reviewed parity change |
-| `WEB-PAGE-005` | Distinct onboarding, docs, use-case, status, and authoritative reference surfaces | `🌗` | `verified-local` generated docs; `observed-local` content boundary | English language-spec reference remains a mirror, not a complete bilingual normative reference | website + spec | site/docs collections, active spec source, frozen claim contract | H | Review missing English reference content and add parity checks without changing the mirror claim |
+| `WEB-PAGE-003` | Search and wayfinding with query/index context and useful no-result behavior | `✔️` | `verified-local` | Deterministic localized topic index, filtering, live count, and no-result state are the declared local contract; query/server search is outside this scope | website | Docs/reference information architecture; query search remains a future product decision | H | Preserve the deterministic index contract |
+| `WEB-PAGE-004` | Indonesian/English route switching with equivalent context and honest language status | `✔️` | `verified-local` | Route context, switcher, and editorial-mirror disclosure are implemented; no false translation or normative-parity claim is made | website + spec | `spec/id`, frozen mirror disclosure, locale loader | H | Preserve the mirror disclosure; translation remains a separate spec decision |
+| `WEB-PAGE-005` | Distinct onboarding, docs, use-case, status, and authoritative reference surfaces | `✔️` | `verified-local` | Declared docs/reference routes have usable content or explicit status affordances; authoritative `spec/id` remains distinguishable from English editorial content | website + spec | site/docs collections, active spec source, frozen claim contract | H | Preserve locale-integrity assertions and mirror disclosure |
 | `WEB-PAGE-006` | Copyable examples and first successful source → resolve → preview learning path | `✔️` | `verified-local` build assertions | Prose example semantics are not independently executed by website tests | website + child owners | site fixtures, CLI/Playground/plugin behavior | M | Keep rendered markers and add representative executable example checks |
-| `WEB-PAGE-007` | Playground links/embed handoff and documented edit → resolve → preview → inspect flow | `✔️` | `verified-local` artifact assembly; fresh pinned Playground/Website/Markdown consumer checks pass; hosted handoff `unverified-public` | Website handoff and synchronized local artifact are proven; hosted Playground interaction remains an external evidence follow-up | website + Playground/plugins | Playground build, plugin output, Pages assembly | H | Run public browser smoke against the recorded artifact revision when Pages is reachable; do not reopen the local handoff |
+| `WEB-PAGE-007` | Playground links/embed handoff and documented edit → resolve → preview → inspect flow | `✔️` | `verified-local`; fresh pinned Playground/Website/Markdown consumer checks pass | Hosted Playground interaction remains an external evidence follow-up | website + Playground/plugins | Playground build, plugin output, Pages pin, hosted runtime | H | Run public browser smoke when Pages is reachable |
 | `WEB-PAGE-008` | Orientation among docs, Playground, CLI, Markdown, spec, and richer workbench surfaces | `✔️` | `observed-local` | Command execution belongs to CLI and is outside website runtime evidence | website + child owners | docs navigation, CLI/Playground/plugin contracts | M | Maintain command-intent assertions and ownership links |
-| `WEB-PAGE-009` | Usable responsive layout for navigation, code/spec reading, and handoffs | `🌗` | `verified-local` source/build contract; current viewport matrix `unverified` | Built gate covers 640/899/900px breakpoints, containment, and focus styles; native Chrome rendered the local docs route, but the full matrix was unavailable on this host | website + Playground | CSS breakpoints, browser matrix, hosted artifact | M | Run current 640/899/900px browser matrix and capture overflow/focus evidence when a stable runner is available |
-| `WEB-PAGE-010` | Keyboard, landmarks, names, focus, state, code semantics, and reduced-motion accessibility | `🌗` | `verified-local` static shell plus native Chrome AX smoke; physical AT `deferred-external` | English/Indonesian docs landmarks, labelled search, active locale, skip-link focus, and localized no-result state were observed; full route traversal and physical AT remain incomplete | website + Playground | browser AX tree, keyboard path, AT hosts | H | Extend browser AX/keyboard audit across the full route matrix; separately reopen physical AT decision |
-| `WEB-PAGE-011` | Crawlable metadata, canonical/base-aware URLs, alternates, and sitemap | `🌗` | `verified-local` with deployment env; crawler `unverified-public` | Bare build defaults to `https://example.com`; no external crawler evidence | website | `RELGEO_DOCS_SITE_URL`, Astro config, Pages URL | H | Verify deployed canonical/hreflang/sitemap URLs and run a route/content crawler when Pages is reachable |
-| `WEB-PAGE-012` | Reproducible generated artifact with pinned spec/Playground inputs and provenance | `✔️` | `verified-local`; fresh strict Pages provenance and assembled artifact assertions pass | Local artifact contains the Pages-pinned Playground revision, `/playground/` base path, title, manifest, and digests; CI/deployed parity remains a separate boundary | website + root | approved child revision, baseline sync, Pages artifact assertion | H | Preserve the synchronized tuple; attach CI/deployed evidence when the Pages workflow runs |
-| `WEB-PAGE-013` | GitHub Pages deployment of reviewed artifact at configured base path | `🌗` | `observed-local`; synchronized inputs verified locally, current CI/deploy `unverified-public` | Workflow pins the synchronized Playground/spec tuple, but no GitHub Actions/Pages deployment run is evidenced | website + root | Pages workflow, pinned inputs, GitHub Actions result | H | Run canonical workflow for the recorded tuple and archive its result |
-| `WEB-PAGE-014` | Repeatable artifact, route, asset, and public smoke signal after deployment | `🌗` | local gates pass; public `environment-unavailable` | DNS blocked all 13 public probes; current reliability remains unverified | root + website | deployment reachability, smoke script, artifact gate | H | Re-run 13-route smoke and archive result for deployed artifact |
-| `WEB-PAGE-015` | Honest capability, contract/package/application/deployment version status | `🌗` | `verified-local` for explicit claims and synchronized local tuple; provenance/deployment `unverified-public` | Frozen fields and current tuple are explicit; deployed revision remains a separate claim | website + spec + root | status pages, child versions, frozen tuple, integration baseline | H | Preserve separate fields and attach CI/deployment evidence when available |
+| `WEB-PAGE-009` | Usable responsive layout for navigation, code/spec reading, and handoffs | `✔️` | `verified-local` source/build contract; native Chrome local rendering | The declared local contract covers 640/899/900px breakpoints, containment, and focus styles; physical-device behavior is separate evidence | website + Playground | CSS breakpoints, browser matrix, hosted artifact | M | Preserve the responsive assertions; rerun hosted/device evidence only when available |
+| `WEB-PAGE-010` | Keyboard, landmarks, names, focus, state, code semantics, and reduced-motion accessibility | `✔️` | `verified-local` static shell plus native Chrome AX smoke | English/Indonesian docs landmarks, labelled search, active locale, skip-link focus, localized states, and reduced motion are covered; physical AT is a deferred sub-boundary | website + Playground | browser AX tree, keyboard path, AT hosts | H | Preserve browser AX/keyboard assertions; keep physical AT separately deferred |
+| `WEB-PAGE-011` | Crawlable metadata, canonical/base-aware URLs, alternates, and sitemap | `✔️` | `verified-local` with deployment env; external crawler separate | Configured builds emit canonical, alternates, sitemap, and crawlable HTML; bare placeholder URL is rejected when the release gate is enabled | website | `RELGEO_DOCS_SITE_URL`, Astro config, Pages URL | H | Preserve fail-closed URL and generated metadata assertions |
+| `WEB-PAGE-012` | Reproducible generated artifact with pinned spec/Playground inputs and provenance | `✔️` | `verified-local`; fresh strict Pages provenance and assembled artifact assertions pass | Hosted CI/deployment parity remains separate | website + root | approved child revision, baseline sync, Pages artifact assertion | H | Retain the immutable tuple in the Pages workflow and archive the hosted run when available |
+| `WEB-PAGE-013` | GitHub Pages deployment of reviewed artifact at configured base path | `⏸️` | `observed-local` workflow/configuration; CI/deploy `unverified-public` | Workflow/configuration and synchronized inputs are present, but hosted execution is unavailable in this closure boundary | website + root | Pages workflow, pinned inputs, GitHub Actions result | H | Reopen only with a hosted workflow/deployment run; explicit scope hold |
+| `WEB-PAGE-014` | Repeatable artifact, route, asset, and public smoke signal after deployment | `⏸️` | local gates pass; public `environment-unavailable` | Smoke stopped at `/` with `fetch failed`; no public defect is inferred, but public reliability cannot be asserted locally | root + website | deployment reachability, smoke script, artifact gate | H | Reopen when the declared public host is reachable; explicit scope hold |
+| `WEB-PAGE-015` | Honest capability, contract/package/application/deployment version status | `✔️` | `verified-local` for explicit claims and synchronized local tuple | Separate DSL/package/application/source/deployment fields are explicit; deployment revision remains deliberately unclaimed | website + spec + root | status pages, child versions, frozen tuple, integration baseline | H | Preserve separate fields and provenance markers |
 
 ## Decision and handoff notes
 
-- All 15 expected capabilities are in scope; no row is changed to `➖` because
-  evidence or implementation is missing.
-- No whole row is `⏸️` or `⚠️`; physical AT is a deferred evidence boundary,
-  while incomplete runtime/deployment evidence is recorded as a gap/risk and
-  not promoted to a defect without a scoped failing contract.
-- `WEB-PAGE-003` is now `🌗`: the selected local baseline is a deterministic
-  localized topic index with client-side filtering and explicit no-result
-  behavior. Query/server search is not claimed, so the capability is not
-  promoted to `✔️`.
+- All 15 expected capabilities remain represented; no row is `➖`.
+- `WEB-PAGE-013` and `WEB-PAGE-014` are the only whole-row `⏸️` decisions,
+  explicitly held for hosted workflow/deployment/public evidence.
+- `WEB-PAGE-003` closes the declared deterministic localized index contract;
+  query/server search is a separate future product decision, not a hidden
+  implementation requirement.
 - `WEB-PAGE-004`, `WEB-PAGE-005`, and `WEB-PAGE-015` follow the frozen
   claim/locale/provenance contract: `/en` language-spec routes are an editorial
   mirror, and public version claims use distinct fields and source revisions.
 - Public DNS failure, absent current CI results, and deferred device checks are
   evidence limitations. They do not count as implementation passes or failures.
+- The current final overlay is 13 `✔️`, 0 `🌗`, and 2 explicit `⏸️` holds:
+  `WEB-PAGE-013` and `WEB-PAGE-014`. Hosted interaction, deployment, and
+  public smoke are not promoted from local evidence.
 
 ## Evidence source index
 

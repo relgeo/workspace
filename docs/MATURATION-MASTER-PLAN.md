@@ -224,7 +224,28 @@ direct `curl` returned HTTP 000, curl exit 6, `Could not resolve host`.
 Statusnya `environment-unavailable` / `unverified-public`, bukan kegagalan
 source lokal atau bukti bahwa deployment publik rusak.
 
-### 0.4 CLI capability closure handoff — 2026-11-05
+### 0.4 Website and Pages closure-boundary refresh — 2026-11-14
+
+The current Website/Pages capability map is reconciled against 15 expected IDs:
+**13 `✔️` / 0 `🌗` / 0 `❌` / 0 `➖` / 2 `⏸️` / 0 `⚠️`**. Local closure covers
+the website presentation, browser, metadata, claim, and synchronized artifact
+contracts. `WEB-PAGE-013` and `WEB-PAGE-014` are explicit holds for hosted
+Pages deployment and public smoke reachability; they are not source failures.
+
+The current local evidence is a 141-page deployment-configured website build,
+website route/content/metadata/Markdown/accessibility-shell assertions,
+Playground build/test (18 files, 119 tests), synchronized Pages-input
+provenance, assembled artifact assertions, and root conformance `677 passed,
+0 failed across 33 fixtures`. Astro `check` is not verified because managed
+Node `22.23.2` exhausted the heap; the root integration gate is
+`environment-unavailable` because it requires Node `>=24`.
+
+The public smoke attempt against `https://relgeo.github.io` stopped at `/` with
+`fetch failed`. The [Website/Pages final closure report](./capability-map/website-pages/final-closure-report.md)
+keeps local, CI, deployment, public, and physical-AT evidence separate. npm
+release and production deployment are not implementation prerequisites.
+
+### 0.5 CLI capability closure handoff — 2026-11-05
 
 The CLI closure is now reconciled against the frozen 35-ID expected catalog.
 Before the final release-boundary disposition, the CLI matrix counted `32 ✔️`,
@@ -813,7 +834,8 @@ RelGeo dapat disebut matang untuk baseline publik jika seluruh kondisi berikut t
 - [x] spec, package, Playground, website, dan Flutter memiliki compatibility statement; parity evidence Flutter tetap terpisah dan belum selesai.
 - [x] release package memakai gate tarball dan post-publish verification;
 - [ ] fixtures penting dijalankan lintas consumer secara penuh, termasuk CI/standalone/browser/Flutter evidence pada revision workspace terbaru;
-- [x] website Pages dan public smoke test hijau;
+- [~] local Website/Pages build, content, artifact, and conformance gates green;
+  current CI/deployment/public smoke remains unverified or environment-unavailable;
 - [ ] Playground memiliki bukti browser, touch, dan assistive technology yang sesuai scope;
 - [ ] setiap repository memiliki README/development/release guidance yang tidak bertentangan;
 - [ ] perubahan besar mempunyai changelog/decision record dan rollback path;

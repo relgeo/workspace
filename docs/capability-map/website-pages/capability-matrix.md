@@ -1,6 +1,6 @@
 # Website and Pages capability matrix
 
-> **Coverage statement — 2026-11-04.** This matrix covers the Astro website,
+> **Coverage statement — 2026-11-13.** This matrix covers the Astro website,
 > normative-spec ingestion, Markdown integration, localized presentation,
 > Playground assembly, Pages workflow, and public-smoke boundary using website
 > source/content/config, build/check/assertion scripts, child inputs, and
@@ -16,9 +16,9 @@
 |---|---|
 | Surface | relgeo.github.io public documentation website and GitHub Pages artifact |
 | Audit owner | Website repository + workspace/spec/plugin/Playground integration owners |
-| Audit date | 2026-11-04 |
+| Audit date | 2026-11-13 |
 | Source of truth | Astro source/content, spec loader, Markdown plugin config, Pages workflow, build/artifact/smoke scripts, plan 05 |
-| Evidence freshness | Current static build/check/assertion and direct Website/Playground consumer evidence is available. Current provenance/artifact parity is not synchronized because checked-out revisions differ from baseline/Pages pins. The public probe is environment-unavailable because DNS could not resolve `relgeo.github.io`; deployment, full viewport, and physical AT evidence remain separate. |
+| Evidence freshness | Current static build/test/assertion and direct Website/Playground consumer evidence is available. Pages-input provenance and assembled artifact parity pass for the synchronized local Playground/spec tuple; hosted deployment, full viewport, and physical AT evidence remain separate. The public probe is environment-unavailable because DNS could not resolve `relgeo.github.io`. |
 
 ## Status legend
 
@@ -38,7 +38,7 @@ environment; it is not a status symbol.
 
 | Capability | Status | Evidence | Gap / limitation | Consumer | Dependency | Next action |
 |---|---:|---|---|---|---|---|
-| Astro static documentation build | ✔️ | Current build passes and emits 138 pages; package scripts and content collections | Static build does not prove deployed response behavior | Public readers | Astro 5; Node/pnpm workflow | Keep build/check as required website gate |
+| Astro static documentation build | ✔️ | Current build passes and emits 141 pages; package scripts and content collections | Static build does not prove deployed response behavior; Astro check is unavailable on managed Node 22 | Public readers | Astro 5; Node/pnpm workflow | Keep build/check as required website gate |
 | Localized id/en route shell | ✔️ | Localized pages, i18n.ts, language switcher, canonical/alternate links, built-output assertions | Text parity is not guaranteed by route-shell parity | Indonesian and English readers | Content entries; Astro routes | Maintain route assertions and translated content review |
 | Normative spec presentation | ✔️ | languageSpec loader reads spec/id directly; 84 sitemap URLs include spec routes; 138-page build | Website is a presentation layer and does not validate all semantics | Implementers needing active contract | spec/id; content loader | Keep source path/pin explicit in CI |
 | English normative spec translation | ❌ | spec/en/README.md explicitly says Placeholder; en route renders id source with lang=en | English route metadata/shell exists, but full English spec content is absent | English readers needing contract details | spec/en translation work | Keep public limitation explicit; translate/promote only after spec review |
@@ -46,12 +46,12 @@ environment; it is not a status symbol.
 | Markdown source/highlight surface | ✔️ | remark plugins configured; current built-output assertions detect rg token markup | Plugin fallback/registry parity is owned by Markdown surface and remains partial there | Docs readers and authors | remark-relgeo-hl; language-service | Keep website assertion and fix upstream fallback gap |
 | Markdown preview/embed surface | ✔️ | remark plugin configured; current assertions detect safe relgeo preview data-URI output and no source exposure; remark/renderer/conformance checks pass | Preview behavior inherits plugin/core/renderer limits; SVG bytes are not a cross-host semantic parity oracle | Docs readers | remark-relgeo; core; renderer-svg | Keep artifact assertion and bounded preview contract |
 | Playground link and public route | ✔️ | DocsLayout/nav, docs content, built route checks, Pages workflow artifact path, and a current public probe attempt | Current public response is environment-unavailable: DNS could not resolve `relgeo.github.io`; local route and handoff remain verified | Website users | Playground artifact and Pages deployment | Re-run public smoke when DNS resolves |
-| Playground assembled Pages artifact | 🌗 | Pages workflow builds/copies Playground; current local assembly exists, while the strict assembled-artifact assertion rejects unsynchronized provenance | Standalone site build does not contain playground; current Pages workflow run and public response are unverified | Public docs readers | Playground build; Pages workflow | Align the approved tuple, rerun provenance/artifact gates, then archive the Pages run and public smoke |
+| Playground assembled Pages artifact | ✔️ | Pages workflow builds/copies Playground; current local assembly, synchronized provenance, and strict assembled-artifact assertion pass | Current Pages workflow run and public response are unverified | Public docs readers | Playground build; Pages workflow | Preserve the approved tuple, then archive the Pages run and public smoke |
 | SEO metadata and canonical routes | ✔️ | DocsLayout canonical/hreflang/OG/Twitter; built-output assertions | No external crawler or search-console verification | Search/social consumers | Configured Astro site URL/base | Add canonical/link crawler if SEO is release-critical |
 | Sitemap generation | ✔️ | sitemap.xml.ts; current build 84 loc entries; assertion covers root and localized routes | No deployed HTTP or search-engine ingestion evidence | Crawlers and navigation tools | Astro site URL; content collections | Verify deployed sitemap after Pages publish |
 | Accessibility static contract | 🌗 | Skip link, landmarks, labels, focus/reduced motion CSS, active states; built gate and representative native Chrome AX smoke pass | No full route traversal, screen-reader/device session, or full WCAG audit | Keyboard/AT users | Browser/AT runtime | Extend current browser accessibility and manual AT review |
 | Link/route integrity across all generated pages | 🌗 | Selected route assertions, generated route inventory, sitemap | No exhaustive internal-link crawl; Markdown source relative links are not all checked after rewrite | All readers | Astro routes/content links | Add static internal-link crawler before release if required |
-| Pages reproducible input pins | ✔️ | Workflow and baseline identify the synchronized local tuple: website `33d7f969`, Playground `efb7396c`, and spec `26ff5327`; strict workspace/Pages-input and assembled artifact gates pass | Current CI/Pages execution and public deployment remain unverified | Release/integration owners | GitHub Actions checkout and baseline sync | Preserve the tuple; archive CI/deployment and public smoke evidence when available |
+| Pages reproducible input pins | ✔️ | Workflow and baseline identify synchronized local Playground `23fd02c`, spec `26ff532`, and assembled artifact inputs; strict Pages-input and artifact gates pass | Current CI/Pages execution and public deployment remain unverified | Release/integration owners | GitHub Actions checkout and baseline sync | Preserve the tuple; archive CI/deployment and public smoke evidence when available |
 | Public deployed site smoke | 🌗 | `smoke-public-site.mjs` declares 13 route/asset probes; the 2026-11-03 run failed at `/` after `fetch failed`, and direct `curl` returned HTTP 000/curl exit 6 because DNS could not resolve the host | Current public reliability is unverified and environment-unavailable; no public defect is inferred from the DNS failure | Public deployment consumers | GitHub Pages URL/network | Re-run all declared probes when `relgeo.github.io` resolves and archive status for the current revision |
 | Custom domain or non-Pages hosting | ➖ | README and workflow target GitHub Pages; site/base env vars are configurability hooks | No current requirement/evidence for another host | None in current target | Separate deployment decision | Do not infer support from configurable site/base variables |
 | Website as normative language source | ➖ | DocsLayout footer and docs index say language spec remains contract source; loader consumes spec | Website intentionally does not own semantic authority | Implementers and maintainers | spec repository | Preserve source-of-truth boundary |
@@ -78,8 +78,9 @@ environment; it is not a status symbol.
 The website is a functioning static presentation layer with direct normative
 spec ingestion, localized navigation, Markdown plugin integration, SEO shell,
 sitemap, and a reproducible Pages workflow. The strongest current evidence is a
-fresh 141-page build, built-output assertions, Astro check, and direct
-Website/Playground consumer tests. Current local provenance/artifact parity is
+fresh 141-page build, built-output assertions, direct Website/Playground consumer
+tests, and synchronized local provenance/artifact assertions. Astro check is not
+verified at the managed Node 22 boundary. Current local provenance/artifact parity is
 verified for the synchronized tuple and assembled artifact. The English spec
 is not translated, the Playground artifact exists only after workflow assembly,
 and the current public probe is

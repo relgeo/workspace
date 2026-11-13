@@ -2,9 +2,9 @@
 
 **Date:** 2026-10-30  
 **Task:** `select-and-bound-in-scope-capability-debt--1183688132`  
-**Status:** historical 2026-10-30 intake; superseded for current P0/P1
-closability by the [2026-11-04 backlog triage](./implementation-gap-backlog.md#p0p1-implementation-closability-triage);
-selection is not implementation or completion evidence
+**Status:** historical intake plus the explicit final closure-scope decision
+below; the historical selection is retained for before/after traceability and
+is not completion evidence
 **Owner boundary:** `relgeo.github.io` owns website presentation, editorial
 navigation, browser-facing accessibility, metadata, and Pages artifact
 assembly. `spec/id` owns normative DSL meaning; `spec/en`, Playground,
@@ -30,7 +30,28 @@ The selection does not include the already-green navigation/orientation rows
 DNS, a GitHub Actions run, a hosted Playground smoke, or an approved child
 revision into an assumed prerequisite. Those boundaries remain explicit in the
 excluded-work table below. Capability symbols are preserved from the current
-status matrix; this record does not promote any row to `✔️`.
+status matrix. The final closure overlay below is authoritative for the current
+audit.
+
+## Final closure scope decision — 2026-11-14
+
+The final audit closes the website-owned implementation boundary locally. This
+includes route/content generation, deterministic wayfinding, honest
+locale/reference presentation, responsive CSS, browser accessibility shell,
+deployment-aware metadata, local claim/provenance fields, and reproducible
+Pages-input/artifact assembly. The named local checks prove these outcomes;
+they do not imply hosted deployment or public reachability.
+
+`WEB-PAGE-013` (Pages deployment execution) and `WEB-PAGE-014` (public smoke
+reliability) are explicitly held as `⏸️`. Both require hosted GitHub Actions,
+Pages state, or a reachable public host unavailable in this execution boundary.
+The hold preserves the expected rows and does not reclassify external evidence
+limitations as source defects.
+
+Final status contract: **13 `✔️`, 0 `🌗`, 0 `❌`, 0 `➖`, 2 `⏸️`, 0 `⚠️`**.
+Physical VoiceOver/TalkBack/mobile-AT checks remain a deferred evidence
+sub-boundary under `WEB-PAGE-010`; browser-verifiable implementation remains
+in scope and is closed by the available local checks.
 
 ## Evidence and selection inputs
 

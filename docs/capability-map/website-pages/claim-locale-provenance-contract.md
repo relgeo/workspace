@@ -66,17 +66,17 @@ deployment revision into one generic “version”.
 | `websitePackageVersion` | `0.5.0` from `relgeo.github.io/package.json` | Website deployment application version; not a DSL release. |
 | `playgroundPackageVersion` | `0.4.0` from `playground/package.json` | Playground application version; not a DSL release. |
 | `normativeSpecPath` | `spec/id` | Source tree that owns active language meaning. |
-| `websiteRevision` | `c5ca17f06476fd2beeb4a48e971265a0e57495c7` | Website commit selected for this synchronized local handoff. |
+| `websiteRevision` | `6c3954c352cd08f2396febbe46dc1b9b491eafb0` | Website commit selected for this synchronized local handoff. |
 | `specRevision` | `26ff53278d77d916b0e0e6c26ca9ab496232fbc0` | Normative spec commit selected for this synchronized local handoff. |
-| `playgroundRevision` | `c263920146a7ba28fe76561df25d1174b289663b` | Playground commit selected for this synchronized local handoff and Pages pin. |
+| `playgroundRevision` | `23fd02c0ba99e40d3973c0482a6177d065f8fa3e` | Playground commit selected for this synchronized local handoff and Pages pin. |
 | `deploymentRevision` | Set only by the Pages run that built/deployed the tuple above | A deployment/run identity; never inferred from a package version. |
 
 The exact frozen source tuple is therefore:
 
 ```text
-website  = c5ca17f06476fd2beeb4a48e971265a0e57495c7
+website  = 6c3954c352cd08f2396febbe46dc1b9b491eafb0
 spec     = 26ff53278d77d916b0e0e6c26ca9ab496232fbc0
-playground = c263920146a7ba28fe76561df25d1174b289663b
+playground = 23fd02c0ba99e40d3973c0482a6177d065f8fa3e
 ```
 
 The current checkout has the selected website, spec, and Playground commit

@@ -168,6 +168,13 @@ Patch release boleh bergerak mandiri. Perubahan kontrak bahasa yang breaking har
 
 Website mengambil source spec saat build dan menyajikannya pada `/docs/language-spec/`. Website bukan pemilik kontrak normatif tersebut.
 
+Untuk status capability Website/Pages yang dapat diaudit, gunakan rantai
+canonical di [`docs/capability-map/website-pages/`](./capability-map/website-pages/):
+expected catalog, implementation audit, reconciliation, status matrix,
+implementation-gap backlog, dan final closure report. Bukti local, CI, hosted
+Pages, public smoke, dan physical-AT tetap dipisahkan; dokumentasi ini tidak
+mengubah boundary implementasi.
+
 ## Aturan Perubahan
 
 Perubahan pada folder submodule harus dilakukan dari repository anak terkait. Root hanya merekam pointer commit submodule setelah baseline anak diverifikasi.

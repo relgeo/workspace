@@ -29,3 +29,11 @@ snapshot is loaded; the next host/asset bridge supplies the index.
 The behavior is covered by `mcp/test/spec_index_test.dart` and the full
 `mcp/test/` suite. Flutter and the desktop host remain responsible for loading
 the bundled snapshot and constructing the index.
+
+Before constructing the index, `RelGeoSpecSnapshotLoader` verifies the pinned
+asset manifest: every Markdown asset must match its declared byte length and
+SHA-256, and the sorted path/hash/length manifest must reproduce the corpus
+digest. Unsupported digest algorithms and stale manifests fail closed, so a
+partial or tampered offline corpus cannot be advertised as a complete spec.
+The loader tests cover clean loading, per-file content drift, stale corpus
+digests, and path traversal rejection.

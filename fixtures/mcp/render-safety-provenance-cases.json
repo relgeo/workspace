@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "mcp-render-safety-provenance/v1",
+  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "compatibilityLine": "0.5",
+  "cases": [
+    {
+      "id": "render-context-mismatch",
+      "boundary": "document-to-renderer",
+      "expected": "structured-failure-before-owner-call"
+    },
+    {
+      "id": "render-target-ownership",
+      "boundary": "mcp-to-renderer",
+      "expected": "reject-sheet-or-view-mismatch"
+    },
+    {
+      "id": "render-evidence-identity",
+      "boundary": "document-to-renderer-to-mcp",
+      "expectedFields": ["sheetId", "viewId", "identity", "provenance.revision"]
+    },
+    {
+      "id": "render-output-safety",
+      "boundary": "renderer-to-mcp",
+      "expected": "reject-empty-or-untraceable-output"
+    }
+  ]
+}

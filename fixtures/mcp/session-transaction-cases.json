@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "mcp-session-transaction/v1",
+  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "cases": [
+    {
+      "id": "apply-one-undoable-edit",
+      "documentId": "fixture-document",
+      "source": "scene: old\n",
+      "baseRevision": 0,
+      "edits": [
+        {"range": {"start": 7, "end": 10}, "replacement": "new"}
+      ],
+      "expectedStatus": "applied",
+      "expectedSource": "scene: new\n",
+      "expectedRevision": 1
+    },
+    {
+      "id": "stale-after-reload",
+      "documentId": "fixture-document",
+      "source": "scene: old\n",
+      "baseRevision": 0,
+      "reloadedSource": "scene: reloaded\n",
+      "expectedStatus": "stale",
+      "expectedRevisionAfterReload": 1
+    },
+    {
+      "id": "valid-no-op",
+      "documentId": "fixture-document",
+      "source": "scene: same\n",
+      "baseRevision": 0,
+      "edits": [
+        {"range": {"start": 7, "end": 11}, "replacement": "same"}
+      ],
+      "expectedStatus": "no-op",
+      "expectedRevision": 0
+    },
+    {
+      "id": "closed-session-rejects-apply",
+      "documentId": "fixture-document",
+      "source": "scene: old\n",
+      "baseRevision": 0,
+      "closed": true,
+      "expectedStatus": "failed"
+    }
+  ]
+}

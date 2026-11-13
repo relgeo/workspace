@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "recordType": "mcp-cancelled-task-disposition",
+  "capturedAt": "2026-11-12",
+  "workspaceRoot": "/Users/agusmade/projects/relgeo-workspace",
+  "sourceLocator": "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-cancelled-task-dispositions-2026-11-12.json",
+  "compatibilityLine": "0.5",
+  "baseline": {
+    "root": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+    "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+    "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+  },
+  "goalId": "goal-1794436648601740",
+  "taskCount": 5,
+  "tasks": [
+    {
+      "taskId": "run-final-mcp-green-surface-audit-and-closure-handoff--6648601740",
+      "title": "Run final MCP green-surface audit and closure handoff",
+      "classification": "stale/superseded",
+      "reason": "The repository audit evidence was retained, but native goal closure was blocked by workflow state and this handoff was superseded by the cancellation reconciliation task.",
+      "owner": "suclos-workflow-owner",
+      "remediation": "Repair the typed executionAttempt timeline reference and stale validation references, then run the native goal evaluator only when the goal is validating.",
+      "testedRevision": "root=47c8b526dcf67197d0e5546a310b68dafcdf97fc; mcp=824b46eccabd77da37bb37fa72b1c4a0e019442f; flutter=1b894663778af002675e253049c8a793c5cea8b9; spec=26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "evidenceClass": "supporting-local",
+      "claimLimit": "Repository audit evidence does not prove native goal closure, task validation, canonical CI, packaged runtime, or interoperability.",
+      "evidenceRefs": ["docs/evidence/mcp-boundary-reconciliation-2026-11-12.json", "docs/capability-map/mcp/freeze-2026-11-12.md"],
+      "acceptanceCriteria": ["criterion-1-kelima-task-cancelled-memiliki-disposition-ekspl", "criterion-2-tidak-ada-task-cancelled-yang-diam-diam-diperlak", "criterion-3-supporting-local-manual-evidence-dipisahkan-dari", "criterion-4-setiap-boundary-yang-belum-tersedia-memiliki-own", "criterion-5-dependency-dan-blocker-goal-konsisten-setelah-re"]
+    },
+    {
+      "taskId": "close-mcp-setup-operations-and-compatibility-residuals--6648601740",
+      "title": "Close MCP setup, operations, and compatibility residuals",
+      "classification": "environment-unavailable/deferred",
+      "reason": "Local protocol/security/setup evidence exists, while the Flutter managed-sandbox engine.stamp boundary and packaged runtime were unavailable; semantic review could not ground some historical references.",
+      "owner": "flutter-workspace-delivery-owner",
+      "remediation": "Run the Flutter setup/operations suite in a Flutter-capable managed or target boundary that permits the toolchain cache update, then record packaged start, authenticated call, security behavior, and clean stop.",
+      "testedRevision": "root=47c8b526dcf67197d0e5546a310b68dafcdf97fc; mcp=824b46eccabd77da37bb37fa72b1c4a0e019442f; flutter=1b894663778af002675e253049c8a793c5cea8b9; spec=26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "evidenceClass": "supporting-local",
+      "canonicalCiEvidence": false,
+      "claimLimit": "Direct Dart/local setup evidence is not a canonical CI, packaged-runtime, or external-client pass.",
+      "evidenceRefs": ["docs/capability-map/mcp/status-matrix.md", "docs/capability-map/mcp/freeze-2026-11-12.md", "docs/evidence/mcp-boundary-reconciliation-2026-11-12.json"],
+      "acceptanceCriteria": ["criterion-1-kelima-task-cancelled-memiliki-disposition-ekspl", "criterion-2-tidak-ada-task-cancelled-yang-diam-diam-diperlak", "criterion-3-supporting-local-manual-evidence-dipisahkan-dari", "criterion-4-setiap-boundary-yang-belum-tersedia-memiliki-own", "criterion-5-dependency-dan-blocker-goal-konsisten-setelah-re"]
+    },
+    {
+      "taskId": "reconcile-mcp-evidence-classes-and-runtime-boundary-outcomes--6648601740",
+      "title": "Reconcile MCP evidence classes and runtime boundary outcomes",
+      "classification": "stale/superseded",
+      "reason": "The task's historical validation plans and semantic reviews were revision-mismatched; the current boundary reconciliation artifact supersedes those records without promoting unavailable runtime evidence.",
+      "owner": "mcp-evidence-owner",
+      "remediation": "Use the current boundary reconciliation record and matching validation revision when a future workflow repair makes a fresh task-specific review possible; do not replay the stale plan.",
+      "testedRevision": "root=47c8b526dcf67197d0e5546a310b68dafcdf97fc; mcp=824b46eccabd77da37bb37fa72b1c4a0e019442f; flutter=1b894663778af002675e253049c8a793c5cea8b9; spec=26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "evidenceClass": "supporting-local",
+      "canonicalCiEvidence": false,
+      "claimLimit": "Historical evidence-class checks document boundaries only; they do not prove canonical CI, packaged runtime, or interoperability.",
+      "evidenceRefs": ["docs/evidence/mcp-boundary-reconciliation-2026-11-12.json", "docs/evidence/README.md"],
+      "acceptanceCriteria": ["criterion-1-kelima-task-cancelled-memiliki-disposition-ekspl", "criterion-2-tidak-ada-task-cancelled-yang-diam-diam-diperlak", "criterion-3-supporting-local-manual-evidence-dipisahkan-dari", "criterion-4-setiap-boundary-yang-belum-tersedia-memiliki-own", "criterion-5-dependency-dan-blocker-goal-konsisten-setelah-re"]
+    },
+    {
+      "taskId": "run-task-specific-mcp-verification-and-consumer-propagation--6648601740",
+      "title": "Run task-specific MCP verification and consumer propagation",
+      "classification": "stale/duplicate",
+      "reason": "This verification handoff was replaced by the fresh and compact task-specific verification tasks; its command-level evidence remains historical supporting evidence.",
+      "owner": "mcp-contract-owner",
+      "remediation": "Retain the compact contract revision and consumer mapping artifact; do not rerun this cancelled task or promote its historical output beyond the named repository boundary.",
+      "testedRevision": "root=47c8b526dcf67197d0e5546a310b68dafcdf97fc; mcp=824b46eccabd77da37bb37fa72b1c4a0e019442f; flutter=1b894663778af002675e253049c8a793c5cea8b9; spec=26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "evidenceClass": "supporting-local",
+      "canonicalCiEvidence": false,
+      "claimLimit": "Task-specific command output proves only the repository contract and consumer mapping it names; it is not runtime interoperability evidence.",
+      "evidenceRefs": ["docs/evidence/mcp-task-specific-verification-2026-11-12.json", "docs/evidence/mcp-contract-alignment-2026-11-12.json"],
+      "acceptanceCriteria": ["criterion-1-kelima-task-cancelled-memiliki-disposition-ekspl", "criterion-2-tidak-ada-task-cancelled-yang-diam-diam-diperlak", "criterion-3-supporting-local-manual-evidence-dipisahkan-dari", "criterion-4-setiap-boundary-yang-belum-tersedia-memiliki-own", "criterion-5-dependency-dan-blocker-goal-konsisten-setelah-re"]
+    },
+    {
+      "taskId": "run-fresh-task-specific-mcp-verification-and-consumer-propagation--6648601740",
+      "title": "Run fresh task-specific MCP verification and consumer propagation",
+      "classification": "stale/duplicate",
+      "reason": "The fresh handoff was superseded by the compact verification task after semantic grounding remained unavailable; no runtime pass is inferred from its command output.",
+      "owner": "mcp-contract-owner",
+      "remediation": "Use the compact task-specific artifact if a future matching validation record is required; do not repeat the stale fresh handoff or attach redundant external evidence.",
+      "testedRevision": "root=47c8b526dcf67197d0e5546a310b68dafcdf97fc; mcp=824b46eccabd77da37bb37fa72b1c4a0e019442f; flutter=1b894663778af002675e253049c8a793c5cea8b9; spec=26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "evidenceClass": "supporting-local",
+      "canonicalCiEvidence": false,
+      "claimLimit": "Historical fresh-task output is supporting repository evidence only; semantic grounding and packaged/interoperability claims remain unverified.",
+      "evidenceRefs": ["docs/evidence/mcp-task-specific-verification-2026-11-12.json", "docs/evidence/mcp-contract-alignment-2026-11-12.json"],
+      "acceptanceCriteria": ["criterion-1-kelima-task-cancelled-memiliki-disposition-ekspl", "criterion-2-tidak-ada-task-cancelled-yang-diam-diam-diperlak", "criterion-3-supporting-local-manual-evidence-dipisahkan-dari", "criterion-4-setiap-boundary-yang-belum-tersedia-memiliki-own", "criterion-5-dependency-dan-blocker-goal-konsisten-setelah-re"]
+    }
+  ],
+  "dependencyDisposition": {
+    "staleDependencyCount": 0,
+    "cycleCount": 0,
+    "newDependenciesIntroduced": 0,
+    "openBlockers": [],
+    "nonBlockingWorkflowNotes": [
+      {
+        "boundary": "Flutter managed sandbox",
+        "finding": "engine.stamp permission prevented the packaged-runtime check",
+        "disposition": "environment-unavailable/deferred; outside cancelled-task reconciliation",
+        "claimLimit": "No Flutter packaged-runtime pass is claimed."
+      },
+      {
+        "boundary": "SuClos workflow",
+        "finding": "typed executionAttempt timeline and stale historical validation references require workflow repair",
+        "disposition": "external workflow note; not an open blocker for this evidence ledger",
+        "claimLimit": "This note does not claim the native goal evaluator or workflow repair passed."
+      }
+    ],
+    "claimLimit": "This ledger records the dependency interpretation; it does not mutate or repair SuClos workflow references.",
+    "status": "reconciled; workflow-repair-outside-task"
+  }
+}

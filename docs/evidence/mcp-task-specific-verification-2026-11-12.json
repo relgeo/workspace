@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "mcp-task-specific-verification/v1",
+  "taskId": "run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740",
+  "validatorRevision": "mcp-task-specific-verification-r3",
+  "executionRecord": {
+    "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1",
+    "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1",
+    "boundary": "Codex App Server command event",
+    "scope": "current task execution",
+    "singleExecution": true,
+    "singleValidationRecord": true,
+    "validatorRevision": "mcp-task-specific-verification-r3"
+  },
+  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "revisions": {
+    "workspace": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+    "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+    "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+  },
+  "verification": {
+    "closureValidator": {
+      "command": "node scripts/check-mcp-actionable-closure.mjs && node scripts/check-mcp-contract-closure.mjs && node scripts/check-mcp-capability-catalog.mjs && node scripts/check-mcp-implementation-audit.mjs && node scripts/check-mcp-diagnostics-provenance-closure.mjs && node scripts/check-mcp-render-safety-closure.mjs && node scripts/check-mcp-evidence-boundaries.mjs && node scripts/check-mcp-residual-audit.mjs --evidence-id=suclos-mcp-residual-audit-2026-11-12-r3 && node scripts/check-mcp-setup-operations-compatibility-closure.mjs --evidence-id=suclos-mcp-setup-operations-2026-11-12-r2",
+      "observedMarker": "all configured closure validators exited 0",
+      "scope": ["closure validators", "consumer alignment", "fixtures", "capability-map"]
+    },
+    "mcpTests": {
+      "command": "/Users/agusmade/development/flutter/bin/cache/dart-sdk/bin/dart .dart_tool/pub/bin/test/test.dart-3.11.5.snapshot test/protocol_fixture_test.dart test/mcp_schema_test.dart test/local_dispatch_test.dart",
+      "boundary": "MCP checkout",
+      "observedMarker": "00:00 +46: All tests passed!",
+      "analyzerMarker": "No issues found!",
+      "conformanceMarkers": ["stdio fixture conformance: PASS", "remote bind guard: PASS"],
+      "compatibilityCase": "protocol negotiation accepts the 2025-06-18 compatibility boundary"
+    },
+    "flutterConsumer": {
+      "command": "(cd flutter && flutter test --no-pub test/mcp_server_io_test.dart)",
+      "status": "environment-unavailable/deferred",
+      "boundary": "Codex App Server managed sandbox",
+      "reason": "Flutter engine.stamp update is denied with Operation not permitted",
+      "claimLimit": "No managed-sandbox or packaged-runtime pass is claimed",
+      "remediation": "Run the same consumer suite at an executor boundary that permits the Flutter toolchain cache update"
+    }
+  },
+  "closureRecords": [
+    {"id": "actionable-closure", "validator": "scripts/check-mcp-actionable-closure.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"},
+    {"id": "contract-closure", "validator": "scripts/check-mcp-contract-closure.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"},
+    {"id": "capability-catalog", "validator": "scripts/check-mcp-capability-catalog.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"},
+    {"id": "implementation-audit", "validator": "scripts/check-mcp-implementation-audit.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"},
+    {"id": "diagnostics-closure", "validator": "scripts/check-mcp-diagnostics-provenance-closure.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"},
+    {"id": "render-safety-closure", "validator": "scripts/check-mcp-render-safety-closure.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"},
+    {"id": "evidence-boundaries", "validator": "scripts/check-mcp-evidence-boundaries.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"},
+    {"id": "residual-audit", "validator": "scripts/check-mcp-residual-audit.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"},
+    {"id": "setup-operations-closure", "validator": "scripts/check-mcp-setup-operations-compatibility-closure.mjs", "executionRecordId": "suclos-execution:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validationRecordId": "suclos-validation:run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740:task-specific-r1", "validatorRevision": "mcp-task-specific-verification-r3"}
+  ],
+  "artifacts": [
+    "scripts/check-mcp-actionable-closure.mjs",
+    "scripts/check-mcp-contract-closure.mjs",
+    "scripts/check-mcp-capability-catalog.mjs",
+    "scripts/check-mcp-implementation-audit.mjs",
+    "mcp/test/protocol_fixture_test.dart",
+    "mcp/test/mcp_schema_test.dart",
+    "mcp/test/local_dispatch_test.dart",
+    "flutter/test/mcp_server_io_test.dart",
+    "fixtures/mcp/session-transaction-cases.json",
+    "fixtures/mcp/",
+    "docs/capability-map/mcp/",
+    "docs/evidence/",
+    "docs/evidence/mcp-contract-alignment-2026-11-12.json"
+  ]
+}

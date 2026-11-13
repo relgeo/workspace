@@ -1,11 +1,12 @@
 # RelGeo MCP — Expected Product Capability Catalog
 
 **Status:** expected catalog selesai sebelum audit; implementation audit tersedia terpisah  
-**Tanggal baseline:** 2026-10-30  
+**Tanggal baseline:** 2026-11-08
 **Owner koordinasi:** `relgeo/workspace`  
 **Owner package/protocol:** `relgeo_mcp`  
 **Owner desktop host/bridge:** RelGeo Desktop Flutter  
 **Compatibility line:** RelGeo DSL `0.5.x`
+**Current freeze/disposition:** [2026-11-12 freeze record](./freeze-2026-11-12.md)
 
 ## 1. Tujuan dan aturan pembacaan
 
@@ -23,6 +24,15 @@ tidak boleh menghapus row expected dari katalog.
 `CATALOG-VERIFIED` berarti row memiliki requirement anchor, keputusan scope,
 dan owner/source of truth. Ini bukan klaim bahwa kemampuan sudah dibuat,
 terhubung ke adapter, lulus conformance, atau usable pada host desktop.
+
+**Freeze boundary 2026-11-08:** katalog ini tetap membekukan 68 ID expected
+setelah audit checkout aktual. Implementasi, test, dan status matrix hanya
+mengisi observasi terhadap ID tersebut; tidak boleh menambah, menghapus, atau
+mengubah status scope secara diam-diam. Dua capability yang boleh tetap
+`⏸️` pada boundary ini adalah `WF-02` (prompt layer) dan `DEL-01`
+(standalone executable/package readiness). Remote MCP/deployment,
+Android/iOS delivery, dan arbitrary Flutter command invocation tetap
+non-goals `➖`, bukan pengganti row expected desktop.
 
 Downstream artifacts are kept separate: [implementation audit](./implementation-audit.md), [expected-versus-observed reconciliation](./reconciliation.md), [status matrix](./status-matrix.md), and [implementation gap backlog](./implementation-gap-backlog.md). The dated legacy log remains linked from the current audit as historical evidence.
 
@@ -81,6 +91,28 @@ host-owned commands, not only DTO names.
 | Host document lifecycle | File: New/Open/Recent/Save/Save As/Close/Quit; Edit: Undo/Redo/Copy source; Document: Recompile; File → Export → SVG Model or Sheet/View | `DOC-*`, `EDIT-04`, `DOC-06`, `RENDER-02`, and `SEC-07` explicitly preserve host ownership; MCP direct apply must not bypass these commands | `flutter/lib/src/ui/workbench_commands.dart`, `flutter/lib/src/ui/cad_workbench.dart`, `flutter/lib/src/ui/workbench_file_service.dart`, S01 |
 | CLI/automation context | `info`, `compile`, `check`/`validate`, machine-readable output, exit/error behavior | CLI is an integrated consumer context for `DEL-*`/`HOST-05`; any direct CLI MCP exposure remains a future adapter decision | `cli/src/index.ts`, `cli/README.md`, Plan 11 §2.1 |
 | Agent desktop edit | Read active document → inspect diagnostics → propose bounded patch → apply with base revision → inspect result → user Undo/Save | `DOC-01`–`DOC-06`, `EDIT-01`–`EDIT-05`, `ERR-03`–`ERR-04`, and `SEC-03`–`SEC-07` are required together but remain separately auditable | Plan 11 §6–7; S01; Flutter bridge |
+
+### 1.5 Frozen closure metadata contract
+
+The catalog is a stable-ID join, not a count-only inventory. For every ID in
+§3, the closure boundary is the union of the matching rows in the four
+canonical artifacts below. No row may be considered complete because another
+row has similar behavior, and implementation/evidence status cannot remove or
+reclassify an expected capability.
+
+| Required field | Canonical artifact and column | Meaning at this boundary |
+| --- | --- | --- |
+| Stable capability ID and expected outcome | This catalog, §3 `ID` and `Capability expected` | The immutable join key and the user-visible capability being required. |
+| Owner and source of truth | This catalog, §3 `Owner / source of truth`; repeated in the evidence register | The implementation owner and normative/explanatory authority that defines the outcome. |
+| Implementation boundary | Reconciliation `Implementation status` + status matrix `Gap`/`Owner` | The exact MCP/package, host, or cross-surface boundary that is present, partial, absent, or deferred; an unconnected consumer is not silently counted as MCP implementation. |
+| Evidence boundary | Reconciliation `Evidence status` + evidence register `Source path observed`/`Test / fixture evidence`/`Dependency or environment boundary` | What was actually inspected or exercised, including local, external-client, packaged-runtime, and environment-unavailable limits. |
+| Dependency | Status matrix `Dependency` and evidence register `Dependency or environment boundary` | A real prerequisite or unavailable execution boundary; it is not a reason to delete an expected row. |
+| Next action | Status matrix `Next action` and evidence register `Next action` | The smallest owner-scoped follow-up that advances or verifies that same ID. |
+
+The reconciliation, status matrix, and evidence register each contain exactly
+one row for every ID in §3. Their rows are the row-level closure record for
+implementation boundary, evidence boundary, dependency, and next action; the
+expected catalog remains the source of the complete requirement set.
 
 ## 2. Keputusan scope yang mengikat
 
@@ -159,7 +191,7 @@ implementasi.
 | --- | --- | --- | --- | --- | --- | --- |
 | DOC-01 | Active document snapshot | U3 dapat membaca source dokumen yang sedang aktif beserta `documentId`, name, optional path, revision, dirty, dan diagnostics. | P11 §6 session contract; C04 active resource; S01 snapshot invariants. | Hanya desktop-connected active session; tidak ada arbitrary open-document lookup. | Flutter `WorkbenchDocumentSession` via `RelGeoAgentBridge`; session contract `relgeo_mcp` | CATALOG-VERIFIED |
 | DOC-02 | Active-document resource | Agent dapat membaca `relgeo://document/active` dan `.../diagnostics` dengan session guard. | P11 resources; C04 canonical URI and active guard. | URI hanya resolve pada connected mode dan token yang sah. | Flutter bridge + `relgeo_mcp` resource resolver | CATALOG-VERIFIED |
-| DOC-03 | Document identity/revision lifecycle | Perubahan source menaikkan revision; open/create dokumen lain mengganti identity; Save tidak mengubah source revision. | S01 snapshot/revision invariants; P11 §6. | Monotonic revision dan identity guard adalah boundary contract, bukan UI detail. | Flutter document session; `relgeo_mcp` session contract | CATALOG-VERIFIED |
+| DOC-03 | Document identity/revision lifecycle | Perubahan source menaikkan revision; open/create/reload dokumen menginvalidasi proposal lama; close menghapus active target; open/create dokumen lain mengganti identity; Save tidak mengubah source revision. | S01 snapshot/revision invariants; P11 §6. | Monotonic revision, explicit open/close state, dan identity guard adalah boundary contract, bukan UI detail. | Flutter document session; `relgeo_mcp` session contract | CATALOG-VERIFIED |
 | DOC-04 | Dirty-state visibility | U3 dapat mengetahui bahwa direct apply mengubah in-memory document menjadi dirty. | P11 §2.2, §6, §7; S01 Save/autosave separation. | Direct apply tidak menyimpan file dan dirty state harus tetap milik host. | Flutter session/editor host | CATALOG-VERIFIED |
 | DOC-05 | Session start/stop/revocation | U5 dapat memulai dan menghentikan sesi server; setelah stop, token dan active bridge access tidak berlaku. | P11 §7; S01 token lifecycle; UI status in P11 §8. | Session scoped to one local server instance; no persisted token. | Flutter host + `relgeo_mcp` token/session contract | CATALOG-VERIFIED |
 | DOC-06 | Explicit Save/Save As boundary | U3 tetap memakai Save/Save As sebagai aksi dokumen terpisah setelah agent edit. | P11 acceptance §10; S01 §5. | MCP direct apply tidak memanggil Save, Save As, export, file picker, atau autosave. | Flutter file/document lifecycle; bridge boundary S01 | CATALOG-VERIFIED |
@@ -172,7 +204,7 @@ implementasi.
 | EDIT-02 | Desktop `apply_document_edit` | U3 dapat menerapkan proposal ke active document melalui bridge. | P11 §6/§9 Tahap 4; C04 explicitly separates this from read-only MVP; S01. | Desktop-connected only; read-write token and explicit mutation scope required. | Flutter `RelGeoAgentBridge` + `relgeo_mcp` adapter | CATALOG-VERIFIED |
 | EDIT-03 | Base document/revision guard | Patch stale atau ditujukan ke identity lain ditolak tanpa perubahan sebagian. | P11 acceptance §10; S01 stale/rejected rules. | No merge, fuzzy match, fallback document, or silent rebase. | Flutter session bridge; `DocumentEditProposal` contract | CATALOG-VERIFIED |
 | EDIT-04 | One undoable transaction | Setiap accepted agent patch menjadi satu history entry yang dapat di-Undo/Redo oleh user. | P11 §2.2, §6, §7; S01 one undoable transaction. | One proposal → one editor setter/history entry; not multiple hidden mutations. | Flutter editor controller + session bridge | CATALOG-VERIFIED |
-| EDIT-05 | Apply result states | Agent/user dapat membedakan `applied`, `stale`, `rejected`, dan `failed`, termasuk new revision/diagnostics bila ada. | P11 session contract; S01 result contract; C04 result separation. | Error state tidak boleh dilaporkan sebagai applied. | `relgeo_mcp` session DTO + Flutter bridge | CATALOG-VERIFIED |
+| EDIT-05 | Apply result states | Agent/user dapat membedakan `applied`, valid `no-op`, `stale`, `rejected`, `failed`, dan `cancelled`, termasuk new revision/diagnostics bila ada. | P11 session contract; S01 result contract; C04 result separation. | Valid no-op tidak membuat undo entry atau menaikkan revision; error/cancel state tidak boleh dilaporkan sebagai applied. | `relgeo_mcp` session DTO + Flutter bridge | CATALOG-VERIFIED |
 
 ### 3.6 Resources, snapshot, dan provenance
 
@@ -213,9 +245,9 @@ implementasi.
 | --- | --- | --- | --- | --- | --- | --- |
 | ERR-01 | Typed input validation errors | Client mendapat protocol/tool error untuk input schema salah, bounds terlampaui, unknown tool, atau invalid URI; proses tidak crash. | C04 typed bounded inputs; T03 acceptance gate item 3; T02 fixture. | Error harus dapat dibedakan dari domain diagnostic; no silent coercion. | MCP adapter + `relgeo_mcp` DTO contract | CATALOG-VERIFIED |
 | ERR-02 | Structured domain error mapping | Parse, validation, resolution, geometry, and constraint failures mempertahankan code/message/range/origin sesuai DSL contract. | C04 validation mapping; DSL §6 error model; P11 acceptance. | Error code normative dari spec; explanatory text tidak boleh mengganti code. | `core`/language-service contracts; `spec/id`; MCP result mapping | CATALOG-VERIFIED |
-| ERR-03 | Host/session error states | Client dapat membedakan unauthenticated, forbidden scope, no active session, stale, rejected, failed, unavailable, dan stopped server. | P11 §6/§7; S01 token/result contract; HOST rows. | No fallback to another document/server; failure must be explicit. | `relgeo_mcp` session/security contract + Flutter host | CATALOG-VERIFIED |
+| ERR-03 | Host/session error states | Client dapat membedakan unauthenticated, forbidden scope, no active session, stale, rejected, failed, cancelled/timeout, unavailable, dan stopped server. | P11 §6/§7; S01 token/result contract; HOST rows. | No fallback to another document/server; failure dan timeout harus explicit dan tidak boleh commit mutation. | `relgeo_mcp` session/security contract + Flutter host | CATALOG-VERIFIED |
 | ERR-04 | Error-safe partial work | Invalid/failed read or render tidak mengubah active document; failed mutation tidak dilaporkan applied. | C04 read-only MVP; S01 one transaction; T03 invalid args. | Mutation atomic at proposal boundary; no partial source write. | Flutter bridge + MCP adapter | CATALOG-VERIFIED |
-| CXL-01 | Request cancellation/abort | Client/host dapat membatalkan request yang sedang berjalan dan menerima canceled outcome tanpa hasil stale yang diterapkan. | Task scope cancellation/errors; MCP lifecycle/transport acceptance boundary T02/T03; S01 atomic edit. | Exact wire error code/profile remains open until SDK conformance; especially required for long render/validation and before mutation commit. | MCP adapter + Flutter bridge; protocol conformance source T03 | CATALOG-VERIFIED (protocol-detail-open) |
+| CXL-01 | Request cancellation/abort | Client/host dapat membatalkan atau timeout request yang sedang berjalan dan menerima cancelled outcome tanpa hasil stale yang diterapkan. | Task scope cancellation/errors; MCP lifecycle/transport acceptance boundary T02/T03; S01 atomic edit. | Cancellation/timeout wajib diamati pada commit boundary; request timeout tidak boleh meninggalkan background mutation. | MCP adapter + Flutter bridge; protocol conformance source T03 | CATALOG-VERIFIED (protocol-detail-open) |
 | CXL-02 | Disconnect/stop cancellation safety | Stop server, token revocation, atau disconnect tidak meninggalkan background mutation atau live token. | P11 §7; S01 token revocation/server stop; HOST-02. | Stop is a hard boundary for new calls and pending mutation commit. | Flutter host + MCP session/transport adapter | CATALOG-VERIFIED (protocol-detail-open) |
 
 ### 3.10 Security boundary
@@ -326,3 +358,13 @@ gates as gaps at that time. Several have since been implemented; consult the
 current [status matrix](./status-matrix.md) and [implementation audit](./implementation-audit.md)
 for present status. Expected requirements remain in the catalog after delivery
 and are not silently converted into scope exclusions.
+
+## 6. Deterministic catalog validation
+
+Run `pnpm run mcp:catalog:check` from the workspace root. The gate proves that
+the frozen 68-ID catalog has no duplicates, that reconciliation, status matrix,
+and source-level evidence register are one-to-one joins, that status counts and
+the two explicit holds match this boundary, and that Plans 11/14 plus the MCP
+and capability-map evidence surfaces are present. This validates catalog
+completeness and evidence boundaries; it does not promote local implementation
+tests to external-client, release, or packaged-runtime proof.

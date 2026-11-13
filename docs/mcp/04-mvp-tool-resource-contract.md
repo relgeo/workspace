@@ -97,7 +97,7 @@ ValidationResult
 
 `RelGeoDiagnostic` memiliki `code`, `message`, `severity`, optional line/
 character `TextRange`, `origin`, dan optional provenance. `origin` membedakan
-`languageService`, `core`, dan sumber lain; `provenance` tetap menunjuk versi
+`language-service`, `core`, dan sumber lain; `provenance` tetap menunjuk versi
 spec bila rule normatif yang mendasari penjelasan perlu dilacak.
 
 Owner-adapter mapping:
@@ -110,8 +110,10 @@ Owner-adapter mapping:
 - `relgeo_explain_diagnostic` accepts versioned owner documentation/catalog
   content and preserves code/severity semantics; it does not invent a catalog.
 - `relgeo_render_source` accepts bounded in-memory SVG from the renderer owner;
-  owner failures become typed dispatch errors and no file is written. Direct
-  `parseRelGeo` → resolve → `SVGRenderer.render` composition remains open.
+  owner failures become typed dispatch errors and no file is written. When a
+  request supplies `sheetId`, the result preserves that target; a conflicting
+  owner target is rejected as an owner-contract error. Direct `parseRelGeo` →
+  resolve → `SVGRenderer.render` composition remains open.
 
 ## 4. Tool catalog typed
 

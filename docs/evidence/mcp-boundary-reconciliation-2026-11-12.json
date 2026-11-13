@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "recordType": "mcp-evidence-boundary-reconciliation",
+  "capturedAt": "2026-11-12",
+  "workspaceRoot": "/Users/agusmade/projects/relgeo-workspace",
+  "sourceLocator": "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-boundary-reconciliation-2026-11-12.json",
+  "compatibilityLine": "0.5",
+  "baseline": {
+    "root": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+    "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+    "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "worktree": "dirty-source-checkout"
+  },
+  "evidenceClasses": [
+    "supporting-local",
+    "supporting-manual",
+    "canonical-ci",
+    "packaged-runtime",
+    "interoperability"
+  ],
+  "records": [
+    {
+      "id": "mcp-local-protocol-and-security",
+      "evidenceClass": "supporting-local",
+      "state": "verified-local",
+      "boundary": "workspace-direct-dart-and-flutter-consumer-tests",
+      "provenance": [
+        "mcp/test/",
+        "flutter/test/mcp_server_io_test.dart",
+        "docs/evidence/README.md"
+      ],
+      "revisions": {
+        "root": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+        "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+        "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+        "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+      },
+      "claimLimit": "Supports only the named local source, fixture, and consumer boundaries; it is not canonical CI, packaged-runtime, or interoperability proof."
+    },
+    {
+      "id": "mcp-maintainer-terminal-runtime",
+      "evidenceClass": "supporting-manual",
+      "state": "supporting-only",
+      "boundary": "maintainer-terminal-outside-managed-sandbox",
+      "provenance": [
+        ".internal/mcp-external-runtime-evidence-20261111T035454Z.log",
+        "docs/evidence/mcp-packaged-artifact-provenance.json"
+      ],
+      "revisions": {
+        "root": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+        "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+        "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+        "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+      },
+      "canonicalCiEvidence": false,
+      "reportAvailable": true,
+      "reportType": "supporting-terminal-record",
+      "claimLimit": "May support the recorded artifact/revision boundary only; it cannot promote managed-sandbox, canonical CI, packaged-host, or public interoperability claims."
+    },
+    {
+      "id": "mcp-canonical-ci-boundary",
+      "evidenceClass": "canonical-ci",
+      "state": "environment-unavailable-deferred",
+      "boundary": "managed-or-canonical-ci-runtime",
+      "provenance": [
+        "docs/evidence/README.md",
+        "docs/capability-map/mcp/freeze-2026-11-12.md"
+      ],
+      "revisions": {
+        "root": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+        "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+        "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+        "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+      },
+      "owner": "workspace-release-owner",
+      "reportAvailable": false,
+      "reportDisposition": "environment-unavailable/deferred",
+      "remediation": "Join root, MCP, Flutter, spec, artifact, OS/architecture, run, and checksums at an available canonical CI/release boundary.",
+      "claimLimit": "No canonical CI or release claim is made from supporting evidence."
+    },
+    {
+      "id": "mcp-packaged-runtime-boundary",
+      "evidenceClass": "packaged-runtime",
+      "state": "environment-unavailable-deferred",
+      "boundary": "supported-packaged-desktop-artifact-launch",
+      "provenance": [
+        "flutter/build/macos/Build/Products/Release/RelGeo.app",
+        "docs/evidence/mcp-packaged-artifact-provenance.json"
+      ],
+      "revisions": {
+        "root": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+        "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+        "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+        "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+      },
+      "owner": "flutter-workspace-delivery-owner",
+      "reportAvailable": false,
+      "reportDisposition": "environment-unavailable/deferred",
+      "remediation": "Launch the actual supported artifact and record MCP start, authenticated call, permission/security behavior, and clean stop.",
+      "claimLimit": "Artifact metadata is not packaged-runtime smoke evidence."
+    },
+    {
+      "id": "mcp-interoperability-boundary",
+      "evidenceClass": "interoperability",
+      "state": "environment-unavailable-deferred",
+      "boundary": "managed-inspector-or-compatible-external-client",
+      "provenance": [
+        "docs/mcp/03-sdk-conformance-runbook.md",
+        "docs/evidence/README.md",
+        "docs/capability-map/mcp/freeze-2026-11-12.md"
+      ],
+      "revisions": {
+        "root": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+        "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+        "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+        "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+      },
+      "owner": "mcp-transport-conformance-owner",
+      "remediation": "Run initialize/negotiation, tools/resources, invalid-request, and security smoke with an available client/socket boundary.",
+      "claimLimit": "Local protocol tests and external supporting logs are not managed interoperability proof."
+    }
+  ],
+  "failureTaxonomy": [
+    {
+      "class": "target-defect",
+      "kind": "implementation-failure",
+      "retryable": false,
+      "decisionNeeded": false,
+      "claim": "A source or contract failure owned by the target implementation."
+    },
+    {
+      "class": "validation-failure",
+      "kind": "validation-failure",
+      "retryable": false,
+      "decisionNeeded": false,
+      "claim": "A failed or insufficient check; it is not silently converted into an environment limitation."
+    },
+    {
+      "class": "environment-unavailable",
+      "kind": "environment-unavailable",
+      "retryable": false,
+      "decisionNeeded": false,
+      "claim": "The named host/service/runtime boundary was unavailable; no target defect or pass is inferred."
+    },
+    {
+      "class": "pending-human-decision",
+      "kind": "decision-deferred",
+      "retryable": false,
+      "decisionNeeded": true,
+      "claim": "A product decision is required before scope or delivery changes."
+    }
+  ],
+  "retryPolicy": {
+    "maxAttempts": 2,
+    "environmentUnavailableRetryable": false,
+    "deterministicFailureRetryable": false,
+    "retryRequiresPreflightFingerprint": true,
+    "independentStageContinuation": "run-independent-stages-after-unavailable",
+    "blockerFingerprintComparison": "preflight-stop-on-duplicate",
+    "duplicateFingerprintPolicy": "predict-before-next-attempt; preserve-first-failure-and-do-not-create-a-new-decision-or-unbounded-retry"
+  },
+  "decisions": [
+    {
+      "id": "DEL-01-standalone-executable",
+      "fingerprint": "decision:standalone-executable:del-01",
+      "state": "deferred",
+      "owner": "mcp-packaging-owner",
+      "claimLimit": "The stdio fixture is observational; no standalone executable claim is made."
+    },
+    {
+      "id": "WF-02-prompt-contract",
+      "fingerprint": "decision:prompt-contract:wf-02",
+      "state": "deferred",
+      "owner": "workspace-product-owner",
+      "claimLimit": "Prompt text is not treated as normative rule storage."
+    }
+  ],
+  "duplicateChecks": {
+    "recordIdsUnique": true,
+    "decisionFingerprintsUnique": true,
+    "environmentBoundariesHaveOwnerRemediation": true,
+    "environmentBoundariesAreNotRetryable": true
+  }
+}

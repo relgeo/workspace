@@ -1,14 +1,15 @@
 # RelGeo MCP — Coverage Validation and Implementation Handoff
 
-**Date:** 2026-11-05
+**Date:** 2026-11-12
 **Validation target:** MCP agent authoring and desktop-connected workflow
-**Validation status:** 68 expected rows are joined to current MCP/Flutter
+**Validation status:** 68 expected rows are joined to the frozen MCP/Flutter
 implementation evidence; the pure-Dart contract/fixture suite and selected
 offline, bridge, and HTTP consumer tests pass. Live client interoperability,
 loopback socket execution in this managed runner, and packaged-app MCP smoke
-remain unverified or environment-gated.
+remain unverified or environment-gated. See the [freeze/disposition record](./freeze-2026-11-12.md)
+for the exact revision baseline and promotion rules.
 
-> **Verification run (2026-11-05):** 44 MCP Dart tests and Dart analysis pass.
+> **Supporting verification run (2026-11-05):** 44 MCP Dart tests and Dart analysis pass.
 > The dependency-free stdio fixture and remote-bind guard pass. Flutter's
 > offline snapshot loader, Workbench bridge, and MCP HTTP integration test pass
 > with the checked-in bundle. The full transport harness reaches the HTTP
@@ -35,7 +36,7 @@ boundary. Runtime delivery is asserted only for the specific tested MCP/Flutter
 paths; live client interoperability and packaged-app smoke remain separate
 evidence gates.
 
-The strongest observed slices are the bundled 34-file spec snapshot and
+The strongest observed slices are the bundled 35-file spec snapshot and
 retrieval tools, authenticated desktop loopback server, active-document
 resources, permission-gated edit transaction, Flutter operational dialog, and
 the release artifact pipeline. Semantic validation/rendering, completion,
@@ -79,14 +80,14 @@ the complete 68-row catalog.
 | Catalog category | Expected rows | Audit section | Coverage result | Principal open boundary |
 | --- | ---: | --- | --- | --- |
 | Discovery, syntax/reference, examples | 6 | §3–§6 + reconciliation | 6/6 audited and joined | Full-spec search is implemented; examples remain bounded/basic and need richer selector coverage. |
-| Completion, validation, diagnostics, workflow | 10 | §3–§6 + reconciliation | 10/10 audited and joined | No callable composition; prompts remain deferred. |
+| Completion, validation, diagnostics, workflow | 10 | §3–§6 + reconciliation | 10/10 audited and joined | Typed local composition is verified; cross-host parity is the remaining `VAL-03` boundary and prompts remain deferred. |
 | Rendering | 3 | §3–§6 + reconciliation | 3/3 audited and joined | No core → resolve → renderer MCP executor or failure mapping. |
 | Document/session lifecycle | 6 | §3–§6 + reconciliation | 6/6 audited and joined | Packaged-app lifecycle smoke and pending-request race remain open. |
 | Edit transactions | 5 | §3–§6 + reconciliation | 5/5 audited and joined | Edit is protocol-exposed under opt-in permission; review UI/result failure and live client smoke remain open. |
-| Resources, snapshot, provenance | 7 | §3–§6 + reconciliation | 7/7 audited and joined | Full-spec/offline and active-document resources exist; diagnostics catalog and cache/fallback policy remain open. |
+| Resources, snapshot, provenance | 7 | §3–§6 + reconciliation | 7/7 audited and joined | Full-spec/offline, diagnostic catalog, cache identity, and proposal provenance are locally verified; packaged/client proof remains separate. |
 | Transport and protocol surface | 6 | §3–§6 + reconciliation | 6/6 audited and joined | Embedded loopback HTTP exists; standalone stdio and external client/Inspector proof remain open. |
 | Host, bridge, command surface | 5 | §3–§6 + reconciliation | 5/5 audited and joined | Embedded lifecycle/config UI exists; connected-client status and packaged UI smoke remain open. |
-| Error behavior and cancellation | 6 | §3–§6 + reconciliation | 6/6 audited and joined | Domain mapping, cancellation, and stop-race evidence remain open; schema validation is verified locally at the adapter boundary. |
+| Error behavior and cancellation | 6 | §3–§6 + reconciliation | 6/6 audited and joined | Domain mapping and local cancellation/stop behavior are verified; external disconnect evidence remains separate. |
 | Security boundary | 8 | §3–§6 + reconciliation | 8/8 audited and joined | Loopback, bearer auth, read/write permission, active-session guard, and edit bounds are tested; packaged smoke remains separate. |
 | Delivery readiness and release evidence | 6 | §3–§6 + reconciliation | 6/6 audited and joined | v1.0.1 artifacts/checksums exist as an unpublished draft; MCP-specific packaged runtime smoke remains open. |
 | **Total** | **68** | **§3–§6 + row join** | **68/68** | **Coverage is bounded to the declared catalog.** |
@@ -98,19 +99,20 @@ the complete 68-row catalog.
 | Catalog → current audit | `PASS: 68/68` | Zero missing, extra, or duplicate IDs; audit §2 snapshot/coverage plus the reconciliation and matrix row join. |
 | Catalog → reconciliation | `PASS: 68/68` | One row per expected ID; `mcp/reconciliation.md` §1–§2. |
 | Reconciliation → actionable matrix | `PASS: 68/68` | Matrix contains 68 user-meaningful rows with required action columns. |
-| Active gap → backlog | `PASS: 23/23` | 20 `🌗` + 3 `❌` + 0 `⚠️` implementation/evidence rows assigned once to `MCP-T01`–`MCP-T11`; 2 deferred rows remain separate. |
+| Active residual → backlog | `PASS: 6/6` | `VAL-03`, `TRAN-03`, `DEL-03`, `DEL-04`, `DEL-05`, and `DEL-06` each have one owner, boundary, remediation, and promotion condition; 2 deferred rows remain separate. |
 | Deferred rows retained | `PASS: 2` | `WF-02` and `DEL-01` remain `⏸️` decision-gated follow-ups, not silently removed. |
-| Implemented rows retained | `PASS: 43` | `✔️` rows remain in reconciliation and matrix; they are not counted as active gap tasks. |
+| Implemented rows retained | `PASS: 60` | `✔️` rows remain in reconciliation and matrix; they are not counted as residual gap tasks. |
 | Required status vocabulary | `PASS` | Matrix uses only `✔️`, `🌗`, `❌`, `⚠️`, and `⏸️` for in-scope rows; evidence state is separate. |
 | Documentation-only boundary | `PASS` | Catalog, audit, matrix, backlog, runbooks, and this handoff are explicitly not implementation evidence. |
 | Required context links | `PASS` | MCP, integrated consumers, `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, and `docs/capability-map` are linked or named above. |
 
 ## 5. Current result and evidence limitations
 
-The current matrix distribution is 43 `✔️`, 20 `🌗`, 3 `❌`, 0 `⚠️`, and 2
-`⏸️`. Evidence state remains independent: four rows are `not-verified`; no
-current row is marked `environment-unavailable`. Local, absence, and scope
-evidence are recorded separately in the audit and matrix.
+The current matrix distribution is 60 `✔️`, 6 `🌗`, 0 `❌`, 0 `⚠️`, and 2
+`⏸️`. Evidence state remains independent: `VAL-03`, `DEL-03`, and `DEL-04`
+are `not-verified`; `TRAN-03`, `DEL-05`, and `DEL-06` are `partial-local`.
+Managed-sandbox and packaged-runtime limitations are recorded as
+`environment-unavailable/deferred` in the freeze record, not as target defects.
 
 The following limitations remain open and are not inferred failures:
 
@@ -119,19 +121,20 @@ The following limitations remain open and are not inferred failures:
    not verified.
 2. No live Inspector run against the current server has been recorded;
    `DEL-03` remains `not-verified` for client interoperability.
-3. Cross-host deterministic validation and cancellation/stop race evidence are
-   missing; `VAL-03`, `CXL-02`, and `DEL-04` remain `not-verified`.
+3. Cross-host deterministic validation, standalone executable, external-client,
+   packaged-runtime, release-provenance, and live setup evidence remain open;
+   these are the six residual rows in the backlog.
 4. Flutter CI `41184291670` built/tests all three platforms, and release workflow
    `41184693233` created v1.0.1 draft artifacts with verified checksums. Runtime
    MCP smoke from those packaged apps has not been done.
 5. `docs/integration-baseline.json` still has its 2026-10-09 child pointers;
    current child commits are not covered by a refreshed root integration run.
 
-### 5.1 Current behavior verification (2026-11-05)
+### 5.1 Supporting behavior verification (2026-11-05)
 
-These are the exact commands run against the current checkout. The command
-paths are absolute to make the evidence reproducible in the managed runner;
-the equivalent relative commands are shown elsewhere in this handoff.
+These are historical/supporting commands run against an earlier checkout. They
+remain useful for boundary traceability, but are not promoted to current
+canonical CI or packaged-runtime evidence.
 
 | Command | Result | Evidence boundary |
 | --- | --- | --- |
@@ -166,20 +169,11 @@ complete.
 ## 7. Implementation handoff
 
 The current implementation and verified boundaries must be preserved. The
-remaining implementation/evidence work is:
-
-- finish semantic validation, completion, diagnostic explanation, and renderer
-  adapters (`MCP-T02`, `MCP-T03`, `MCP-T10`);
-- add diagnostics catalog and cache/fallback policy (`MCP-T04`);
-- decide standalone stdio and record current Inspector/client compatibility
-  (`MCP-T05`);
-- decide whether connected-client status is required and verify the permission
-  dialog from the packaged app (`MCP-T06`);
-- finish review/failure-state and cancellation/race guarantees (`MCP-T07`,
-  `MCP-T08`);
-- compose the bounded authoring workflow and provenance chain (`MCP-T09`);
-- smoke-test MCP from desktop release artifacts and join release provenance
-  (`MCP-T11`).
+remaining evidence work is the six-row residual backlog: cross-host parity
+(`VAL-03`), standalone stdio decision/executable (`TRAN-03`), external
+Inspector/client interoperability (`DEL-03`), packaged runtime smoke
+(`DEL-04`), release provenance (`DEL-05`), and live setup/operations/client
+flow (`DEL-06`). `WF-02` and `DEL-01` remain explicit scope decisions.
 
 These are candidate tasks in the [implementation-gap
 backlog](./implementation-gap-backlog.md). The expected catalog remains the
@@ -201,7 +195,7 @@ candidate task complete until its acceptance evidence is directly available.
 | [Current implementation audit](./implementation-audit.md) | Source, tests, UI/workflows, configuration, consumers, docs, and runtime evidence. |
 | [Expected/observed reconciliation](./reconciliation.md) | One-to-one implementation/evidence/scope join. |
 | [Actionable capability matrix](./capability-matrix.md) | One user-meaningful capability per row with status and action fields. |
-| [Prioritized gap backlog](./implementation-gap-backlog.md) | 11 candidate implementation tasks covering 34 active gaps. |
+| [Residual gap backlog](./implementation-gap-backlog.md) | Six evidence-bound residual rows plus two scope-deferred rows. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Product maturation and delivery context. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Repository ownership and MCP/Flutter boundary. |
 
@@ -209,9 +203,9 @@ candidate task complete until its acceptance evidence is directly available.
 
 | Boundary | Current value |
 | --- | --- |
-| Workspace root | `7d02e4c` documentation follow-up; integration baseline still captured `2026-10-09` |
-| MCP child | `b4561c08f7b41fd5630c76138a26ce6717ae9b33` |
-| Flutter child | `60ec76042b369659e4d048b2a53ea3a66a384de3` |
+| Workspace root | `47c8b526dcf67197d0e5546a310b68dafcdf97fc` |
+| MCP child | `824b46eccabd77da37bb37fa72b1c4a0e019442f` |
+| Flutter child | `1b894663778af002675e253049c8a793c5cea8b9` |
 | Flutter quality/build CI | [run `41184291670`](https://github.com/relgeo/flutter/actions/runs/41184291670), success |
 | Desktop release workflow | [run `41184693233`](https://github.com/relgeo/flutter/actions/runs/41184693233), draft v1.0.1 |
 | MCP test evidence | 44 Dart tests plus offline snapshot, bridge, and Flutter loopback HTTP integration coverage, recorded in current audit |

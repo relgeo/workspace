@@ -86,8 +86,9 @@ transport cannot turn this contract into an arbitrary file writer.
 
 `relgeo_review_proposed_patch` is read-only: it validates the bounded proposal,
 returns the current active snapshot, and never calls the editor setter. Apply
-results are explicit `review`, `applied`, `stale`, `rejected`, `failed`, or
-`cancelled` states. `McpRequestCancellationRegistry` maps a cancellation
+results are explicit `review`, `applied`, `no-op`, `stale`, `rejected`, `failed`,
+or `cancelled` states. A valid no-op does not create an undo entry or advance
+the revision. `McpRequestCancellationRegistry` maps a cancellation
 notification to the request token; the router returns JSON-RPC `-32800` and the
 Flutter server cancels pending work before stop/revoke. The guarded bridge checks
 the token immediately before its editor transaction and converts transaction
@@ -110,13 +111,16 @@ autosave remain out of scope.
 
 The pure contract tests cover multi-edit application, overlap/range bounds,
 stale revisions, token scope/expiry/revocation, and localhost policy. The
-Flutter test covers the active-document adapter, one native undo entry, dirty
-state, document identity/revision reset, and stale replay rejection:
+Flutter tests cover the active-document adapter, one native undo entry, dirty
+state, document identity/revision reset, stale replay rejection, in-memory-only
+apply/no-save behavior, editor transaction failure recovery, and the HTTP
+stop/cancellation race:
 
 - `mcp/test/session_bridge_test.dart`
-- `mcp/test/local_dispatch_test.dart` (review, cancellation, stop, and no-commit
-  race fixtures)
+- `mcp/test/local_dispatch_test.dart` (review, wire result-state matrix,
+  cancellation, stop, and no-commit race fixtures)
 - `flutter/test/workbench_agent_bridge_test.dart`
+- `flutter/test/mcp_server_io_test.dart`
 
 The SDK/transport candidate decision and protocol fixture conformance remain a
 separate follow-up; this contract intentionally does not lock `dart_mcp` or

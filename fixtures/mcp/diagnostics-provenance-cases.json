@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "mcp-diagnostics-provenance/v1",
+  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "compatibilityLine": "0.5",
+  "cases": [
+    {
+      "id": "validation-identity-guard",
+      "boundary": "language-service-to-mcp",
+      "expected": "reject-owner-identity-from-another-document"
+    },
+    {
+      "id": "diagnostic-provenance-guard",
+      "boundary": "core-language-service-to-mcp",
+      "expected": "reject-diagnostic-from-another-spec-revision"
+    },
+    {
+      "id": "completion-context-identity-echo",
+      "boundary": "language-service-to-mcp",
+      "expected": "echo-shared-identity-when-legacy-input-omits-identity"
+    },
+    {
+      "id": "diagnostic-order-normalization",
+      "boundary": "core-language-service-to-mcp",
+      "expected": "stable-order-by-path-code-range-severity-origin-message"
+    },
+    {
+      "id": "producer-diagnostic-field-mapping",
+      "boundary": "core-language-service-to-mcp",
+      "expected": "preserve-code-range-origin-phase-path-and-provenance"
+    },
+    {
+      "id": "producer-completion-provenance-mapping",
+      "boundary": "language-service-to-mcp",
+      "expected": "populate-proposal-basedOn-from-producer-provenance"
+    }
+  ]
+}

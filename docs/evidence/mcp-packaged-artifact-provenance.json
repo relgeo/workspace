@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "recordType": "mcp-packaged-artifact-provenance",
+  "evidenceLog": ".internal/mcp-external-runtime-evidence-20261111T035454Z.log",
+  "evidenceClass": "external_terminal_manual",
+  "evidenceBoundary": "maintainer_terminal_outside_managed_sandbox",
+  "canonicalCiEvidence": false,
+  "testedArtifact": {
+    "name": "RelGeo.app",
+    "path": "flutter/build/macos/Build/Products/Release/RelGeo.app",
+    "platform": "macos",
+    "architecture": "host-native",
+    "client": "@modelcontextprotocol/inspector --cli",
+    "transport": "http",
+    "protocolVersion": "2025-11-25"
+  },
+  "testedRevisions": {
+    "workspace": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+    "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+    "flutter": "1b894663778af002675e253049c8a793c5cea8b9"
+  },
+  "bundledSpecSnapshot": {
+    "specVersion": "0.5",
+    "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "digestAlgorithm": "sha256",
+    "digest": "sha256:407bbfbeec449f533609decdd88b1168b69f039aab38d342490f147febdbe9c6",
+    "sourceUrl": "https://github.com/relgeo/spec/tree/26ff53278d77d916b0e0e6c26ca9ab496232fbc0/id",
+    "fileCount": 35,
+    "coverage": "full spec/id Markdown snapshot"
+  },
+  "runtimeResult": {
+    "passedSteps": 12,
+    "failedSteps": 0,
+    "blockedSteps": 0,
+    "overallResult": "PASS",
+    "capabilityProbe": "relgeo_get_capabilities"
+  },
+  "boundaryDisposition": {
+    "managedSandboxSocketAndInspector": "environment_unavailable/deferred",
+    "canonicalCi": "deferred",
+    "note": "This supporting external-terminal record does not promote packaged runtime or Inspector evidence to canonical CI."
+  }
+}

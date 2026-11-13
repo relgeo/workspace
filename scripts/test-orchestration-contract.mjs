@@ -10,6 +10,7 @@ import {
   DEPENDENCY_STATUSES,
   createEvidenceEnvelope,
   evaluateDecisionGate,
+  runIndependentStagesSync,
   runWithBoundedAttemptsSync,
 } from "./orchestration-contract.mjs";
 
@@ -25,7 +26,10 @@ const transientResult = runWithBoundedAttemptsSync(() => {
   return transientAttempts === 1
     ? { passed: false, exitCode: 1, output: "fetch failed: ECONNRESET" }
     : { passed: true, exitCode: 0 };
-}, { sleep: (milliseconds) => sleeps.push(milliseconds) });
+}, {
+  sleep: (milliseconds) => sleeps.push(milliseconds),
+  predictBlockerFingerprint: (attempt) => attempt === 1 ? "transient-first" : "transient-recovery",
+});
 
 assert.equal(transientResult.passed, true);
 assert.equal(transientResult.attempts.length, 2);
@@ -34,6 +38,7 @@ assert.deepEqual(transientResult.retryPolicy, {
   maxAttempts: 2,
   backoffMs: 250,
   attemptsUsed: 2,
+  executionsUsed: 2,
   exhausted: false,
 });
 assert.equal(transientResult.firstFailure.attemptId, "attempt-1");
@@ -52,6 +57,49 @@ assert.deepEqual(transientResult.attemptLinks, [
   },
 ]);
 assert.deepEqual(sleeps, [250]);
+
+let duplicateTransientAttempts = 0;
+const duplicateTransientResult = runWithBoundedAttemptsSync(() => {
+  duplicateTransientAttempts += 1;
+  return { passed: false, exitCode: 1, output: "fetch failed: ECONNRESET" };
+}, {
+  maxAttempts: 3,
+  sleep: () => {},
+  predictBlockerFingerprint: () => "same-transient-blocker",
+});
+assert.equal(duplicateTransientAttempts, 1);
+assert.equal(duplicateTransientResult.attempts.length, 2);
+assert.equal(duplicateTransientResult.finalAttempt.retrySuppressedReason, "duplicate-blocker-fingerprint");
+assert.equal(duplicateTransientResult.finalAttempt.executionSkipped, true);
+assert.equal(duplicateTransientResult.retryPolicy.executionsUsed, 1);
+assert.equal(
+  duplicateTransientResult.finalAttempt.blockerFingerprint,
+  duplicateTransientResult.firstFailure.blockerFingerprint,
+);
+
+let unpredictedTransientAttempts = 0;
+const unpredictedTransientResult = runWithBoundedAttemptsSync(() => {
+  unpredictedTransientAttempts += 1;
+  return { passed: false, exitCode: 1, output: "fetch failed: ECONNRESET" };
+}, { maxAttempts: 3, sleep: () => { throw new Error("unpredicted failure was retried"); } });
+assert.equal(unpredictedTransientAttempts, 1);
+assert.equal(unpredictedTransientResult.finalAttempt.retrySuppressedReason, "missing-blocker-fingerprint-predictor");
+assert.equal(unpredictedTransientResult.finalAttempt.executionSkipped, true);
+
+const independentStageRuns = [];
+const independentStageResults = runIndependentStagesSync(
+  ["environment-check", "independent-contract"],
+  (stage) => {
+    independentStageRuns.push(stage);
+    return stage === "environment-check"
+      ? { passed: false, exitCode: 2, error: "managed socket unavailable", environmentUnavailable: true }
+      : { passed: true, exitCode: 0 };
+  },
+);
+assert.deepEqual(independentStageRuns, ["environment-check", "independent-contract"]);
+assert.equal(independentStageResults[0].result.finalAttempt.blockerClass, "environment-unavailable");
+assert.equal(independentStageResults[1].result.passed, true);
+assert.equal(independentStageResults[1].result.finalAttempt.attempt, 1);
 
 let deterministicAttempts = 0;
 const deterministicResult = runWithBoundedAttemptsSync(() => {
@@ -146,4 +194,4 @@ for (const source of runnerSources) {
 assert.match(runnerSources[1], /runWithBoundedAttemptsSync/);
 assert.match(runnerSources[2], /runWithBoundedAttemptsSync/);
 
-console.log("Orchestration contract tests passed: bounded retry, blocker taxonomy, evidence envelope, and sync checkout policy.");
+console.log("Orchestration contract tests passed: bounded retry, blocker taxonomy, evidence envelope, sync checkout policy, and independent-stage continuation.");

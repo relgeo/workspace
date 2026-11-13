@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "mcp-setup-operations-compatibility/v1",
+  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "compatibilityLine": "0.5",
+  "protocolVersion": "2025-11-25",
+  "cases": [
+    {
+      "id": "protocol-negotiation-and-invalid-request",
+      "boundary": "mcp-json-rpc-router",
+      "expected": "tested-local"
+    },
+    {
+      "id": "loopback-and-remote-origin-policy",
+      "boundary": "flutter-loopback-http",
+      "expected": "remote-origin-rejected"
+    },
+    {
+      "id": "session-stop-token-revocation",
+      "boundary": "mcp-session",
+      "expected": "token-rejected-after-stop"
+    },
+    {
+      "id": "setup-token-redaction-and-permission",
+      "boundary": "host-operations",
+      "expected": "redacted-status-and-explicit-permission"
+    },
+    {
+      "id": "packaged-client-and-inspector-boundary",
+      "boundary": "target-runtime",
+      "expected": "environment-unavailable-deferred"
+    }
+  ]
+}

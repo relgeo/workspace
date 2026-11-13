@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "mcp-contract-boundary/v1",
+  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "compatibilityLine": "0.5",
+  "cases": [
+    {
+      "id": "render-target-echo",
+      "request": {"sheetId": "sheet-a"},
+      "ownerResult": {"sheetId": null},
+      "expected": "adapter-echoes-requested-target"
+    },
+    {
+      "id": "render-target-mismatch",
+      "request": {"sheetId": "sheet-a"},
+      "ownerResult": {"sheetId": "sheet-b"},
+      "expectedErrorCategory": "owner-contract"
+    },
+    {
+      "id": "proposal-provenance-version-mismatch",
+      "proposalSpecVersion": "0.4",
+      "requestSpecVersion": "0.5",
+      "expectedError": "provenance-spec-version-mismatch"
+    },
+    {
+      "id": "unsupported-future-version",
+      "requestSpecVersion": "0.6",
+      "expectedErrorCategory": "unsupported-spec-version",
+      "expectedDiagnosticCode": "UNSUPPORTED_SPEC_VERSION"
+    }
+  ]
+}

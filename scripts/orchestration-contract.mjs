@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 const TRANSIENT_FAILURE_PATTERN = /(?:ECONNRESET|ECONNREFUSED|EAI_AGAIN|ETIMEDOUT|timed? ?out|timeout|socket hang up|network|fetch failed|rate limit|\b429\b|\b502\b|\b503\b|\b504\b)/i;
 const ENVIRONMENT_FAILURE_PATTERN = /(?:requires Node(?:\.js)?|unsupported engine|operation not permitted|permission denied|command not found|no such file|cannot find module|browser.*(?:not found|missing))/i;
 
@@ -254,6 +256,35 @@ export function assertCurrentEvidence(options = {}) {
   return assessment;
 }
 
+export function createBlockerFingerprint(result = {}, classified = {}) {
+  if (result.blockerFingerprint) return String(result.blockerFingerprint);
+  const material = JSON.stringify({
+    blockerClass: classified.blockerClass ?? null,
+    dependencyStatus: classified.dependencyStatus ?? null,
+    exitCode: result.exitCode ?? null,
+    error: result.error ?? "",
+    output: result.output ?? "",
+  });
+  return createHash("sha256").update(material).digest("hex");
+}
+
+/**
+ * Run independent stages without turning one environment boundary into a
+ * dependency blocker for the remaining stages. Each stage still gets its own
+ * bounded retry policy and evidence record.
+ */
+export function runIndependentStagesSync(stages, executeStage, optionsForStage = () => ({})) {
+  if (!Array.isArray(stages)) throw new Error("stages must be an array");
+  if (typeof executeStage !== "function") throw new Error("executeStage must be a function");
+  return stages.map((stage, index) => ({
+    stage,
+    result: runWithBoundedAttemptsSync(
+      (attempt) => executeStage(stage, attempt),
+      optionsForStage(stage, index),
+    ),
+  }));
+}
+
 function sleepSync(milliseconds) {
   if (milliseconds <= 0) return;
   const buffer = new SharedArrayBuffer(4);
@@ -265,6 +296,7 @@ export function runWithBoundedAttemptsSync(execute, {
   backoffMs = DEFAULT_RETRY_POLICY.backoffMs,
   sleep = sleepSync,
   classify = classifyFailure,
+  predictBlockerFingerprint = null,
 } = {}) {
   if (!Number.isInteger(maxAttempts) || maxAttempts < 1) {
     throw new Error("maxAttempts must be a positive integer");
@@ -273,7 +305,41 @@ export function runWithBoundedAttemptsSync(execute, {
   const attempts = [];
   const attemptLinks = [];
   let firstFailure = null;
+  let executionsUsed = 0;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    const predictedFingerprint = typeof predictBlockerFingerprint === "function"
+      ? predictBlockerFingerprint(attempt, firstFailure)
+      : null;
+    const previousAttempt = attempts.at(-1) ?? null;
+    const attemptId = "attempt-" + attempt;
+    if (
+      attempt > 1 &&
+      firstFailure &&
+      predictedFingerprint !== null &&
+      predictedFingerprint !== undefined &&
+      String(predictedFingerprint) === firstFailure.blockerFingerprint
+    ) {
+      const suppressed = {
+        ...firstFailure,
+        attempt,
+        attemptId,
+        previousAttemptId: previousAttempt?.attemptId ?? null,
+        retryable: false,
+        retrySuppressedReason: "duplicate-blocker-fingerprint",
+        duplicateOfAttemptId: firstFailure.attemptId,
+        executionSkipped: true,
+        passed: false,
+      };
+      attempts.push(suppressed);
+      attemptLinks.push({
+        attemptId,
+        attempt,
+        previousAttemptId: suppressed.previousAttemptId,
+        linkedToFirstFailure: firstFailure.attemptId,
+      });
+      break;
+    }
+
     let result;
     try {
       result = execute(attempt) ?? {};
@@ -283,8 +349,10 @@ export function runWithBoundedAttemptsSync(execute, {
         error: error instanceof Error ? error.message : String(error),
       };
     }
-    const previousAttempt = attempts.at(-1) ?? null;
-    const attemptId = "attempt-" + attempt;
+    executionsUsed += 1;
+    if (predictedFingerprint !== null && predictedFingerprint !== undefined) {
+      result = { ...result, blockerFingerprint: String(predictedFingerprint) };
+    }
     const normalized = {
       ...result,
       attempt,
@@ -304,7 +372,22 @@ export function runWithBoundedAttemptsSync(execute, {
     }
 
     const failure = classify(normalized);
-    const classified = { ...normalized, ...failure };
+    const blockerFingerprint = createBlockerFingerprint(normalized, failure);
+    const duplicateAttempt = attempts.find(
+      (previous) => previous.blockerFingerprint === blockerFingerprint,
+    );
+    const classified = {
+      ...normalized,
+      ...failure,
+      blockerFingerprint,
+      ...(duplicateAttempt
+        ? {
+            retryable: false,
+            retrySuppressedReason: "duplicate-blocker-fingerprint",
+            duplicateOfAttemptId: duplicateAttempt.attemptId,
+          }
+        : {}),
+    };
     if (!firstFailure) firstFailure = { ...classified };
     attempts.push(classified);
     attemptLinks.push({
@@ -314,6 +397,17 @@ export function runWithBoundedAttemptsSync(execute, {
       linkedToFirstFailure: firstFailure.attemptId,
     });
     if (!classified.retryable || attempt >= maxAttempts) break;
+    if (typeof predictBlockerFingerprint !== "function") {
+      const suppressed = {
+        ...classified,
+        retryable: false,
+        retrySuppressedReason: "missing-blocker-fingerprint-predictor",
+        executionSkipped: true,
+      };
+      attempts[attempts.length - 1] = suppressed;
+      if (firstFailure.attemptId === attemptId) firstFailure = { ...suppressed };
+      break;
+    }
     sleep(backoffMs * attempt);
   }
 
@@ -328,6 +422,7 @@ export function runWithBoundedAttemptsSync(execute, {
       maxAttempts,
       backoffMs,
       attemptsUsed: attempts.length,
+      executionsUsed,
       exhausted: !finalAttempt.passed && attempts.length >= maxAttempts,
     },
   };

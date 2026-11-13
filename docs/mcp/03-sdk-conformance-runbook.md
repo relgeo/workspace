@@ -125,7 +125,10 @@ catalog reads carry version/revision/digest identity; the cache rejects identity
 mismatches and expires entries at a bounded TTL. Review is a separate read-only
 tool, and apply is guarded by document identity/revision plus a cooperative
 cancellation token. Stop and decoded-client disconnects cancel pending requests
-before an edit commit.
+before an edit commit. The embedded desktop HTTP host also applies a bounded
+timeout to body reads and router work; timeout cancels the request token and
+returns JSON-RPC `-32800` with `data.category: request-timeout` before a guarded
+bridge can commit a mutation.
 
 These checks close the pure-Dart contract/adapter edge only. They do not claim
 direct `core`/`language-service`/`renderer-svg` composition, a standalone RelGeo

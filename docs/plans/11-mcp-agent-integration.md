@@ -1,6 +1,6 @@
 # Sub-Rencana 11 — MCP Server dan Agent-Assisted RelGeo Authoring
 
-**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, desktop Streamable HTTP server, offline full-spec retrieval, review patch read-only, dan edit dokumen aktif berbasis izin tersedia. Izin edit mati secara default; sesi read-write menerapkan patch bounded dengan revision guard sebagai satu transaksi undoable. Cancellation request/stop memiliki cooperative abort boundary sebelum commit. Validasi/render mandiri tetap owner-provided dan belum menjadi semantic engine di package MCP.
+**Status keputusan:** arah arsitektur awal telah disetujui maintainer. **Status implementasi:** contract session/security, typed tool/resource schema, JSON-RPC router, desktop Streamable HTTP server, offline full-spec retrieval, review patch read-only, dan edit dokumen aktif berbasis izin tersedia. Izin edit mati secara default; sesi read-write menerapkan patch bounded dengan revision guard sebagai satu transaksi undoable. Cancellation request/stop dan request timeout memiliki cooperative abort boundary sebelum commit. Validasi/render mandiri tetap owner-provided dan belum menjadi semantic engine di package MCP.
 
 Status delivery terbaru dan batas evidence per capability dicatat di [MCP
 capability matrix](../capability-map/mcp/capability-matrix.md), [reconciliation
@@ -415,7 +415,7 @@ DocumentEditProposal
   rationale
 
 DocumentEditResult
-  review | applied | stale | rejected | failed | cancelled
+  review | applied | no-op | stale | rejected | failed | cancelled
   newRevision?
   diagnostics
 ```
@@ -446,6 +446,7 @@ MCP Server desktop-connected harus aman secara default:
 - token acak untuk setiap sesi;
 - token dibatalkan saat server berhenti;
 - scope read-only dan read-write terpisah;
+- transport failures expose stable machine-readable categories before bridge dispatch;
 - edit hanya boleh diterapkan ke active document session;
 - patch harus bounded, memiliki base revision, dan menjadi satu undoable transaction;
 - Save, Save As, export, dan arbitrary filesystem access bukan bagian dari direct
@@ -530,6 +531,29 @@ Streamable HTTP sudah memiliki server/harness dan remote host ditolak, tetapi
 binding socket tidak dapat dijalankan pada managed sandbox. Kandidat SDK belum
 dikunci; evidence dan command validation ada di
 `docs/mcp/02-sdk-transport-spike.md`.
+
+#### Current cross-surface closure disposition
+
+The unchecked items in this plan are not implicit prerequisites for the
+implemented MCP contract/host boundary. Each remaining item is classified
+below with an owner, the exact evidence boundary, and a concrete follow-up.
+This is an execution disposition, not a documentation-only promotion of an
+implementation gap.
+
+| Boundary | Disposition | Owner | Reason / evidence boundary | Concrete follow-up |
+| --- | --- | --- | --- | --- |
+| Producer diagnostics and semantic validation (`core`/`language-service`) | `deferred` | Core + language-service owners | MCP owns typed DTO/error preservation and callback composition; producer-backed parse/resolve/code catalogs are separate package APIs. MCP regression and authoring-pipeline tests verify the adapter boundary, while producer tests remain producer evidence. | Add producer-backed mapping fixtures when the owner APIs are exposed; rerun `mcp/test/authoring_pipeline_test.dart` plus the owner package suites. |
+| Semantic SVG projection (`renderer-svg`) | `deferred` | Renderer owner + MCP adapter owner | Typed render/context/error boundaries and hostile-input guards are present, but no core-to-renderer production executor is wired into the MCP package. Local MCP render-boundary tests do not claim SVG producer parity. | Add an in-memory renderer adapter and invalid-render matrix once renderer error/projection fields are exposed. |
+| MCP Inspector / external-client interoperability | `environment_unavailable` | MCP transport owner | The managed Codex App Server boundary denies loopback socket binding; the supporting manual log is local evidence only and cannot promote the canonical boundary. | Run `dart run tool/run_transport_conformance.dart` and the Inspector CLI on writable CI/desktop; record protocol negotiation and tools/resources evidence. |
+| Flutter loopback Streamable HTTP in managed validation | `environment_unavailable` | Flutter host + MCP transport owners | Direct conformance reaches stdio and remote-bind checks, then fails before HTTP startup with `SocketException: Operation not permitted` on `127.0.0.1`; Flutter host tests remain passing at their available boundary. | Repeat the same command in a socket-capable managed/CI host and retain the output as canonical HTTP evidence. |
+| Standalone executable / CLI bridge | `deferred` | MCP packaging owner | No standalone consumer decision or executable entrypoint is in the current MVP; stdio fixture conformance is implemented independently of package publication. | Obtain the standalone-consumer decision; if approved, add `bin/relgeo_mcp.dart`, stdio entrypoint tests, and stdout/stderr separation evidence. |
+| Website/GitHub documentation fallback | `deferred` | Spec/docs owner | Normative offline snapshot is intentionally authoritative for MVP; remote documentation is optional and cannot override pinned `spec/id` provenance. | Add a revision-pinned explanatory fallback only after scope/security review, with provenance and offline-fallback tests. |
+| Packaged desktop and multi-platform runtime smoke | `environment_unavailable` | Flutter delivery owner | Packaged artifact launch and external-client smoke are not available in this executor boundary; no production/runtime claim is made from local Flutter tests. | Launch the packaged artifact on each available target and record enable, call, security, and stop evidence. |
+
+Remote HTTP deployment, package publication, and unavailable host platforms are
+therefore explicit deferred/environment boundaries rather than hidden
+dependencies. They are not prerequisites for the pure-Dart contract, stdio,
+remote-bind guard, or available Flutter host tests already recorded below.
 
 ### Tahap 2 — Authoring quality
 
@@ -618,7 +642,7 @@ Cara menjalankan dan batas kemampuan dijelaskan di
 - [x] setiap edit Agent menjadi satu transaksi undoable;
 - [x] pengguna langsung melihat perubahan dan dapat membatalkannya dengan Undo;
 - [x] patch stale ditolak dengan aman;
-- [x] proposal memiliki outcome review/applied/stale/rejected/failed/cancelled;
+- [x] proposal memiliki outcome review/applied/no-op/stale/rejected/failed/cancelled;
 - [x] cancellation, stop, dan disconnect boundary tidak melakukan commit stale;
 - [x] direct apply tidak melakukan autosave atau menulis arbitrary filesystem;
 - [x] Save dan export tetap mengikuti document lifecycle sebagai aksi terpisah;

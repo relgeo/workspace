@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "mcp-contract-alignment/v1",
+  "workspaceRoot": "/Users/agusmade/projects/relgeo-workspace",
+  "sourceLocator": "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-contract-alignment-2026-11-12.json",
+  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "status": "verified",
+  "boundary": "Codex App Server task-specific validator",
+  "consumers": [
+    {"id": "mcp-export", "surface": "MCP public contract export"},
+    {"id": "mcp-status", "surface": "MCP server status contractRevision"},
+    {"id": "flutter-assertion", "surface": "Flutter MCP server status assertion"},
+    {"id": "fixtures", "surface": "six MCP contract fixtures"}
+  ],
+  "fixtureCount": 6,
+  "claimLimit": "Alignment is verified at the repository checkout; Flutter packaged-runtime execution remains deferred."
+}

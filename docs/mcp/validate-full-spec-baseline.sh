@@ -16,8 +16,8 @@ test -s docs/capability-map/mcp/implementation-audit.md || \
 
 markdown_count="$(rg --files spec/id -g '*.md' | wc -l | tr -d ' ')"
 normative_count="$(rg -l 'Status dokumen: `Normative`' spec/id -g '*.md' | wc -l | tr -d ' ')"
-test "$markdown_count" = 34 || fail "expected 34 spec Markdown files, found $markdown_count"
-test "$normative_count" = 26 || fail "expected 26 normative files, found $normative_count"
+test "$markdown_count" = 35 || fail "expected 35 spec Markdown files, found $markdown_count"
+test "$normative_count" = 27 || fail "expected 27 normative files, found $normative_count"
 
 rg -q 'Superseded for the current checkout' docs/mcp/05-full-spec-search-baseline-audit.md || \
   fail 'historical audit is not marked superseded'
@@ -30,4 +30,4 @@ rg -q 'resources/templates/list' mcp/lib/src/adapter/local_dispatch.dart || \
 test -s flutter/assets/relgeo_spec/v0.5/manifest.json || \
   fail 'current Flutter spec snapshot manifest is missing'
 
-printf 'historical baseline audit: PASS (34 Markdown, 26 normative; current full-spec retrieval and bundled snapshot are present)\n'
+printf 'historical baseline audit: PASS (35 Markdown, 27 normative; current full-spec retrieval and bundled snapshot are present)\n'

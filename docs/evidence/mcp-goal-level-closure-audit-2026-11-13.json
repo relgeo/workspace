@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "recordType": "mcp-goal-level-closure-audit-explicit-acceptance-mapping",
+  "capturedAt": "2026-11-13",
+  "goalId": "goal-1794436648601740",
+  "taskId": "run-final-mcp-goal-level-closure-audit-with-explicit-acceptance-mapping--6648601740",
+  "validationPlanRevision": "run-final-mcp-goal-level-closure-audit-with-explicit-acceptance-mapping--6648601740:r2",
+  "validationPlanLinkage": {
+    "acceptanceCriterionIds": [
+      "criterion-1-delapan-acceptance-criteria-goal-dievaluasi-satu",
+      "criterion-2-catalog-status-matrix-backlog-reconciliation-dan",
+      "criterion-3-semua-capability-in-scope-tidak-memiliki-status-",
+      "criterion-4-supporting-local-manual-canonical-ci-packaged-ru",
+      "criterion-5-setiap-task-closure-yang-diperhitungkan-memiliki",
+      "criterion-6-tidak-ada-retry-decision-duplikat-atau-source-fa",
+      "criterion-7-consumer-fixture-flutter-host-bridge-dokumentasi",
+      "criterion-8-audit-final-menghasilkan-keputusan-closure-ekspl"
+    ],
+    "evidenceRequirementIds": [
+      "evidence-1-command-node-scripts-check-mcp-evidence-boundari"
+    ],
+    "checkIds": [
+      "catalog-and-capability-alignment",
+      "residual-boundary-audit",
+      "actionable-closure-audit",
+      "evidence-boundary-and-disposition-audit",
+      "task-specific-consumer-verification"
+    ],
+    "validationStatus": "awaiting-suclos-validation"
+  },
+  "workspaceRoot": "/Users/agusmade/projects/relgeo-workspace",
+  "decision": "not-completed",
+  "baseline": {
+    "root": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
+    "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
+    "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+  },
+  "criteria": [
+    {
+      "id": "criterion-1-delapan-acceptance-criteria-goal-dievaluasi-satu",
+      "status": "PASS",
+      "basis": "This artifact evaluates all eight acceptance criteria individually and records PASS or NOT_READY for each.",
+      "locators": ["file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-goal-level-closure-audit-2026-11-13.json:19"],
+      "evidenceClass": "supporting-local",
+      "owner": "mcp-evidence-owner",
+      "remediation": "Retain this mapping with the exact checker artifacts when the SuClos validation record is available.",
+      "claimLimit": "Repository audit structure is not proof of native SuClos goal completion."
+    },
+    {
+      "id": "criterion-2-catalog-status-matrix-backlog-reconciliation-dan",
+      "status": "PASS",
+      "basis": "Catalog checker reports 68 unique IDs aligned across catalog, reconciliation, status matrix, and implementation evidence register.",
+      "locators": [
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/expected-capability-catalog.md:28",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/status-matrix.md:47",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/implementation-evidence-register.md:8",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/implementation-gap-backlog.md:61",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/reconciliation.md:50",
+        "command:node scripts/check-mcp-capability-catalog.mjs"
+      ],
+      "evidenceClass": "supporting-local",
+      "owner": "mcp-evidence-owner",
+      "remediation": "Re-run the catalog alignment check only when a source revision changes.",
+      "claimLimit": "This proves repository ID alignment, not packaged runtime or interoperability."
+    },
+    {
+      "id": "criterion-3-semua-capability-in-scope-tidak-memiliki-status-",
+      "status": "PASS",
+      "basis": "Actionable closure reports zero partial/defective rows; all eight deferred rows retain source, executable evidence, dependency, next action, owner/remediation, and claim-limit records.",
+      "locators": [
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/status-matrix.md:47",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/implementation-gap-backlog.md:29",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/implementation-gap-backlog.md:35",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/capability-map/mcp/implementation-gap-backlog.md:51",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-boundary-reconciliation-2026-11-12.json:76",
+        "command:node scripts/check-mcp-actionable-closure.mjs",
+        "command:node scripts/check-mcp-residual-audit.mjs --evidence-id=mcp-goal-1794436648601740-final"
+      ],
+      "evidenceClass": "supporting-local+environment-unavailable/deferred",
+      "owner": "workspace-release-owner",
+      "remediation": "Use the recorded owner-specific follow-ups at an available canonical boundary; do not promote deferred rows.",
+      "claimLimit": "Deferred rows are dispositioned, not claimed as runtime passes."
+    },
+    {
+      "id": "criterion-4-supporting-local-manual-canonical-ci-packaged-ru",
+      "status": "PASS",
+      "basis": "Boundary reconciliation separates supporting-local, supporting-manual, canonical-ci, packaged-runtime, and interoperability classes and pins them to frozen revisions.",
+      "locators": [
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-boundary-reconciliation-2026-11-12.json:15",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-boundary-reconciliation-2026-11-12.json:56",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-contract-alignment-2026-11-12.json:5",
+        "command:cd /Users/agusmade/projects/relgeo-workspace && node scripts/check-mcp-evidence-boundaries.mjs"
+      ],
+      "evidenceClass": "supporting-local+supporting-manual+deferred-boundaries",
+      "owner": "mcp-evidence-owner",
+      "remediation": "Obtain canonical CI, packaged-runtime, or interoperability evidence only at the corresponding available boundary.",
+      "claimLimit": "Local/manual evidence has canonicalCiEvidence=false and cannot prove packaged or interoperability behavior."
+    },
+    {
+      "id": "criterion-5-setiap-task-closure-yang-diperhitungkan-memiliki",
+      "status": "PASS",
+      "basis": "Task-specific verification reports task-specific validation records, execution/validation linkage, contract revision, four consumers, and nine closures; cancelled tasks retain explicit dispositions.",
+      "locators": [
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-task-specific-verification-2026-11-12.json:6",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-task-specific-verification-2026-11-12.json:45",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-cancelled-task-dispositions-2026-11-12.json:15",
+        "command:cd /Users/agusmade/projects/relgeo-workspace && node scripts/check-mcp-task-specific-verification.mjs"
+      ],
+      "evidenceClass": "supporting-local",
+      "owner": "mcp-contract-owner",
+      "remediation": "Keep cancelled-task ledger and task-specific linkage revision-pinned; do not replay stale tasks.",
+      "claimLimit": "Task-specific linkage proves the named repository contract boundary only."
+    },
+    {
+      "id": "criterion-6-tidak-ada-retry-decision-duplikat-atau-source-fa",
+      "status": "PASS",
+      "basis": "Boundary audit reports bounded retry, non-retryable environment-unavailable outcomes, unique decision fingerprints, zero stale/cyclic/new dependencies, and no open blockers.",
+      "locators": [
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-boundary-reconciliation-2026-11-12.json:154",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-boundary-reconciliation-2026-11-12.json:179",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-cancelled-task-dispositions-2026-11-12.json:104",
+        "command:cd /Users/agusmade/projects/relgeo-workspace && node scripts/check-mcp-evidence-boundaries.mjs"
+      ],
+      "evidenceClass": "environment-unavailable/deferred",
+      "owner": "suclos-workflow-owner",
+      "remediation": "Repair the external workflow boundary only when a fresh validator run is available; preserve first-failure fingerprints.",
+      "claimLimit": "Environment unavailability is not treated as a source failure or runtime pass."
+    },
+    {
+      "id": "criterion-7-consumer-fixture-flutter-host-bridge-dokumentasi",
+      "status": "PASS",
+      "basis": "Contract verification joins the pinned contract revision to MCP export/status, Flutter assertion, fixtures, plans, and capability-map artifacts.",
+      "locators": [
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-contract-alignment-2026-11-12.json:5",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/plans/11-mcp-agent-integration.md",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/plans/14-mcp-full-spec-search.md",
+        "command:cd /Users/agusmade/projects/relgeo-workspace && node scripts/check-mcp-task-specific-verification.mjs"
+      ],
+      "evidenceClass": "supporting-local",
+      "owner": "mcp-contract-owner",
+      "remediation": "Reconcile consumers again only when the contract revision changes.",
+      "claimLimit": "Consumer propagation is repository-level evidence; Flutter packaged execution remains deferred."
+    },
+    {
+      "id": "criterion-8-audit-final-menghasilkan-keputusan-closure-ekspl",
+      "status": "NOT_READY",
+      "basis": "Repository checks pass and this audit records not-completed, but this new task has no SuClos validation record yet; native workflow and packaged/managed Flutter boundaries remain deferred.",
+      "locators": [
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-goal-level-closure-audit-2026-11-13.json:2",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-goal-level-closure-audit-2026-11-12.json:53",
+        "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-boundary-reconciliation-2026-11-12.json:179"
+      ],
+      "evidenceClass": "supporting-local+environment-unavailable/deferred",
+      "owner": "suclos-workflow-owner",
+      "remediation": "Run the configured independent checks through the SuClos validation boundary and repair native workflow references if validation remains unavailable.",
+      "claimLimit": "This terminal audit cannot claim completed, canonical CI, packaged-runtime, or interoperability closure."
+    }
+  ],
+  "residualRequirements": [
+    {
+      "boundary": "SuClos native validation workflow",
+      "status": "not-verified",
+      "owner": "suclos-workflow-owner",
+      "remediation": "Produce a SuClos validation record for this task and repair any typed execution/validation linkage that prevents verification.",
+      "claimLimit": "Command-level PASS is supporting evidence until SuClos validates it."
+    },
+    {
+      "boundary": "Flutter packaged/managed runtime and interoperability",
+      "status": "environment-unavailable/deferred",
+      "owner": "flutter-workspace-delivery-owner",
+      "remediation": "Run setup, packaged launch, authenticated call, security behavior, clean stop, and compatible-client smoke at an available Flutter-capable boundary.",
+      "claimLimit": "Local/manual and repository evidence is not packaged-runtime or interoperability proof."
+    }
+  ],
+  "claimLimit": "This is an evidence-aware repository audit. It does not mark the SuClos goal completed."
+}

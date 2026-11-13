@@ -276,10 +276,14 @@ environment-gated sampai dijalankan pada desktop/CI yang mengizinkan socket.
 **Kriteria offline:** fixture adapter dan Flutter membuktikan skenario retrieval,
 provenance, no-result, dan snapshot offline dengan data yang sama.
 
-**Kriteria end-to-end:** MCP Inspector dan Codex Desktop berhasil memakai server
-desktop lokal untuk skenario di bawah. Kriteria ini tetap tertunda sampai smoke
-test dijalankan pada desktop yang dapat membuka loopback; jangan tandai Plan 14
-selesai sebelum evidence tersebut dicatat.
+**Kriteria local end-to-end:** executable Flutter HTTP host integration tests
+(`flutter/test/mcp_server_io_test.dart`) now exercise the bundled retrieval
+boundary, security gates, guarded edits, timeout cancellation, and server-stop
+cancellation. Together with the adapter-boundary tests above, this records the
+local loopback/server evidence for the offline retrieval closure. MCP Inspector
+and Codex Desktop external-client interoperability remain an explicit
+environment-gated hold; they are separate from the offline/local closure and
+must not be implied by these tests.
 
 ## 6. Skenario penerimaan
 

@@ -109,6 +109,119 @@ check(versionAcceptance?.unsupportedFuture === true, "version policy rejects und
 check(versionAcceptance?.omittedDefaultsTo === matrix.compatibilityLine, "version policy declares the omitted-version default");
 check(versionAcceptance?.parserDiagnosticCode === "UNSUPPORTED_SPEC_VERSION", "version policy declares the parser diagnostic code");
 
+let mcpSchema;
+let mcpDispatcher;
+let languageServiceProtocol;
+let coreParser;
+let fixtureManifest;
+let languageServiceFixture;
+let mcpContractFixture;
+let mcpCrossSurfaceFixture;
+try {
+  mcpSchema = await readFile(resolve(root, "mcp/lib/src/contract/mcp_schema.dart"), "utf8");
+  mcpDispatcher = await readFile(resolve(root, "mcp/lib/src/adapter/local_dispatch.dart"), "utf8");
+  languageServiceProtocol = await readFile(resolve(root, "language-service/src/protocol.ts"), "utf8");
+  coreParser = await readFile(resolve(root, "core/src/parser.ts"), "utf8");
+  fixtureManifest = await readJson(resolve(root, "fixtures/manifest.json"));
+  languageServiceFixture = await readJson(
+    resolve(root, "fixtures/expected/language-service-protocol.v0.5.json"),
+  );
+  mcpContractFixture = await readJson(
+    resolve(root, "fixtures/mcp/contract-boundary-cases.json"),
+  );
+  mcpCrossSurfaceFixture = await readJson(
+    resolve(root, "fixtures/mcp/cross-surface-contract-cases.json"),
+  );
+} catch (error) {
+  fail(`MCP compatibility sources are unreadable (${error.message})`);
+}
+check(
+  mcpSchema?.includes(`const relGeoCompatibilityLine = relGeoMvpSpecVersion`),
+  "MCP contract declares the shared compatibility line",
+);
+check(
+  mcpSchema?.includes("const relGeoLanguageServiceProtocolVersion = '0.2'") &&
+    mcpSchema?.includes("const relGeoPositionEncoding = 'utf-16'"),
+  "MCP contract pins Language Service protocol and UTF-16 positions",
+);
+check(
+  mcpSchema?.includes("const relGeoUnsupportedSpecVersionCode = 'UNSUPPORTED_SPEC_VERSION'") &&
+    mcpSchema?.includes("return 'language-service'") &&
+    mcpSchema?.includes("return 'document'"),
+  "MCP contract exposes stable unsupported-version code and canonical provenance wire values",
+);
+check(
+  mcpDispatcher?.includes("category: McpErrorCategory.unsupportedSpecVersion") &&
+    mcpDispatcher?.includes("relGeoUnsupportedSpecVersionCode"),
+  "MCP dispatcher rejects unsupported versions with a stable category and diagnostic code",
+);
+check(
+  languageServiceProtocol?.includes("LANGUAGE_SERVICE_PROTOCOL_VERSION = '0.2'") &&
+    languageServiceProtocol?.includes("LANGUAGE_SERVICE_SPEC_VERSION = '0.5'") &&
+    languageServiceProtocol?.includes("source: 'language-service'"),
+  "Language Service protocol declares the same active line and provenance vocabulary",
+);
+check(
+  coreParser?.includes('ACTIVE_REL_GEO_SPEC_VERSION = "0.5"') &&
+    coreParser?.includes('UNSUPPORTED_SPEC_VERSION'),
+  "Core parser owns the active DSL line and unsupported-version diagnostic",
+);
+check(
+  fixtureManifest?.compatibilityLine === matrix.compatibilityLine &&
+    fixtureManifest?.versionAcceptance?.parserDiagnosticCode === "UNSUPPORTED_SPEC_VERSION",
+  "shared fixture manifest follows the active line and diagnostic policy",
+);
+check(
+  fixtureManifest?.languageServiceProtocolFixture?.protocolVersion === "0.2" &&
+    fixtureManifest?.languageServiceProtocolFixture?.positionEncoding === "utf-16" &&
+    languageServiceFixture?.protocolVersion === "0.2" &&
+    languageServiceFixture?.specVersion === matrix.compatibilityLine &&
+    languageServiceFixture?.positionEncoding === "utf-16",
+  "language-service conformance fixture matches the MCP identity boundary",
+);
+check(
+  existsSync(resolve(root, "fixtures/reference/17-v06-invalid-unsupported-version.yaml")) &&
+    existsSync(resolve(root, "fixtures/reference/18-v10-invalid-unknown-version.yaml")),
+  "shared fixtures retain unsupported and unknown future-version cases",
+);
+check(
+  mcpContractFixture?.schemaVersion === "mcp-contract-boundary/v1" &&
+    mcpContractFixture?.compatibilityLine === matrix.compatibilityLine &&
+    Array.isArray(mcpContractFixture?.cases) &&
+    new Set(mcpContractFixture.cases.map((entry) => entry.id)).size === 4 &&
+    mcpContractFixture.cases.some(
+      (entry) => entry.id === "render-target-echo" &&
+        entry.expected === "adapter-echoes-requested-target",
+    ) &&
+    mcpContractFixture.cases.some(
+      (entry) => entry.id === "render-target-mismatch" &&
+        entry.expectedErrorCategory === "owner-contract",
+    ) &&
+    mcpContractFixture.cases.some(
+      (entry) => entry.id === "proposal-provenance-version-mismatch" &&
+        entry.expectedError === "provenance-spec-version-mismatch",
+    ) &&
+    mcpContractFixture.cases.some(
+      (entry) => entry.id === "unsupported-future-version" &&
+        entry.expectedDiagnosticCode === "UNSUPPORTED_SPEC_VERSION",
+    ),
+  "shared MCP contract fixture covers target, provenance, and version boundaries",
+);
+check(
+  mcpCrossSurfaceFixture?.schemaVersion === "mcp-cross-surface-contract/v1" &&
+    mcpCrossSurfaceFixture?.compatibilityLine === matrix.compatibilityLine &&
+    Array.isArray(mcpCrossSurfaceFixture?.cases) &&
+    mcpCrossSurfaceFixture.cases.length === 5 &&
+    mcpCrossSurfaceFixture.cases.every((entry) => typeof entry.id === "string"),
+  "shared MCP cross-surface fixture covers validation, identity, errors, transport, and host status",
+);
+check(
+  existsSync(resolve(root, "mcp/lib/src/contract")) &&
+    existsSync(resolve(root, "docs/mcp/08-contract-compatibility-boundary.md")) &&
+    existsSync(resolve(root, "spec/id")),
+  "MCP contract documentation and normative spec source are present",
+);
+
 check(flutterCapabilityMatrix?.schemaVersion === 1, "Flutter capability matrix schema version is supported");
 check(
   flutterCapabilityMatrix?.compatibilityLine === matrix.compatibilityLine,

@@ -51,7 +51,7 @@ sama.
 | Playground | [capability matrix](./playground/capability-matrix.md) | `35 ✔️ / 0 🌗 / 0 ❌ / 0 ⚠️ / 2 ⏸️` bounded closure | Core editor/preview/persistence flows and bootstrap lifecycle are closed locally; `PG-A11Y-001` remains held for browser/native host evidence and `PG-DELIVERY-001` for hosted Pages smoke/parity. |
 | Website/Pages | [matrix](./website-pages/capability-matrix.md) | `✔️` static artifact / `🌗` public | Astro/spec/Markdown/SEO shell tersedia; pin, public smoke, dan AT checks belum current. |
 | Flutter | [status matrix](./flutter-workbench/status-matrix.md) | `44 ✔️ / 17 🌗 / 0 ❌` pada declared 61-ID workbench boundary | Desktop release workflow `41184693233` produced v1.0.1 draft bundles/checksums for macOS, Linux, and Windows; Flutter CI `41184291670` passed. Target-device launch/MCP smoke and publishing remain pending. |
-| MCP | [capability matrix](./mcp/capability-matrix.md) | `32 ✔️ / 24 🌗 / 10 ❌ / 2 ⏸️` | Full v0.5 spec search, desktop loopback HTTP, active-document read, and opt-in bounded edit are implemented locally; ChatGPT Desktop write round-trip and packaged MCP smoke remain unverified. |
+| MCP | [capability matrix](./mcp/capability-matrix.md) | `60 ✔️ / 6 🌗 / 0 ❌ / 2 ⏸️` | Full v0.5 spec search, desktop loopback HTTP, active-document read, and opt-in bounded edit are verified at local boundaries; six residual rows remain evidence-bound and packaged/interoperability proof is separate. |
 | Cross-repository | [status matrix](./cross-repository/status-matrix.md) | baseline pointer recorded; strict/integration gates not verified | `docs/integration-baseline.json` remains a pointer snapshot. No gitlink, staging, or baseline mutation was performed; clean-checkout and Node 24 integration evidence remain separate follow-up gates. |
 
 Detail evidence, owner, consumer, gap, dan next action tetap berada di matrix
@@ -124,6 +124,8 @@ are explicitly labeled so they cannot be mistaken for current evidence.
 - [MCP capability matrix](./mcp/capability-matrix.md) — inventory capability,
   status, evidence, gap, risiko, dependency, dan delivery roadmap untuk
   boundary MCP.
+- [MCP freeze/disposition record](./mcp/freeze-2026-11-12.md) — current
+  revision baseline, residual boundary classes, and promotion rules.
 - [MCP expected capability catalog](./mcp/expected-capability-catalog.md) —
   expected user outcomes, requirement anchors, scope decisions, and
   owner/source-of-truth rows written before implementation comparison.

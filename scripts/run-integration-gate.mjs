@@ -295,10 +295,20 @@ function runStage(label, command, args, cwd = root, environment = process.env) {
 }
 
 function runWorkspacePackageStage(packageName, scriptName) {
+  const environment = packageName === "relgeo-docs-site"
+    ? {
+      ...process.env,
+      RELGEO_DOCS_SITE_URL: "https://relgeo.github.io",
+      RELGEO_DOCS_BASE: "/",
+      RELGEO_DOCS_REQUIRE_PUBLIC_URL: "1",
+    }
+    : process.env;
   return runStage(
     packageName + ": " + scriptName,
     "pnpm",
     ["--filter", packageName, "run", scriptName],
+    root,
+    environment,
   );
 }
 
@@ -515,6 +525,11 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
     environment = {
       ...process.env,
       RELGEO_SPEC_PATH: path.join(specTarget, "id"),
+      RELGEO_SPEC_ROOT: path.join(root, "spec"),
+      RELGEO_PLAYGROUND_ROOT: path.join(root, "playground"),
+      RELGEO_DOCS_SITE_URL: "https://relgeo.github.io",
+      RELGEO_DOCS_BASE: "/",
+      RELGEO_DOCS_REQUIRE_PUBLIC_URL: "1",
     };
   }
   try {
@@ -602,10 +617,10 @@ if (localMode) {
     ["relgeo-playground", "audit:ux"],
     ["relgeo-playground", "build"],
     ["relgeo-playground", "test:e2e"],
-    ["relgeo-docs-site", "provenance:check"],
     ["relgeo-docs-site", "check"],
     ["relgeo-docs-site", "build"],
     ["relgeo-docs-site", "test"],
+    ["relgeo-docs-site", "provenance:check"],
     ["relgeo-docs-site", "provenance:pages"],
     ["relgeo-docs-site", "test:pages-artifact"],
   ];
@@ -651,6 +666,7 @@ if (localMode) {
       "check",
       "build",
       "test",
+      "provenance:pages",
       "test:pages-artifact",
     ], {
       playgroundDist: publicPlayground?.cwd

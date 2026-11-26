@@ -4,7 +4,7 @@
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
   "capturedAt": "2026-11-26",
-  "rootRevision": "d6a7ada443670170fed03907478155540ddd420f",
+  "rootRevision": "b93601f76d98412a50f2fef01bc04aba80ba3ecf",
   "compatibilityLine": "0.5",
   "toolchain": {
     "node": ">=24",

@@ -42,13 +42,16 @@ function entryIdentitiesMatch(actual, expected) {
     actual.every((entry, index) => entry.path === expected[index].path && entry.name === expected[index].name);
 }
 
-function planEntriesMatch(actual, expected) {
+function planEntriesMatch(actual, expected, baseExpected = expected) {
   const allowedStatuses = new Set(["retained", "planned", "published", "failed", "skipped"]);
   return Array.isArray(actual) && actual.length === expected.length && expected.every((entry) => {
     const found = actual.find((candidate) => candidate.path === entry.path);
+    const baseEntry = baseExpected.find((candidate) => candidate.path === entry.path);
     return found?.path === entry.path &&
       found.name === entry.name &&
-      found.fromVersion === entry.version &&
+      baseEntry?.name === entry.name &&
+      found.fromVersion === baseEntry?.version &&
+      found.targetVersion === entry.version &&
       typeof found.targetVersion === "string" &&
       /^\d+\.\d+\.\d+$/.test(found.targetVersion) &&
       allowedStatuses.has(found.status);
@@ -66,8 +69,8 @@ function patchIncreases(fromVersion, targetVersion) {
   return Boolean(from && target && target[0] === from[0] && target[1] === from[1] && target[2] > from[2]);
 }
 
-function releasePackagePlanMatches(actual, expected, contractChange, bumpPolicy) {
-  if (!planEntriesMatch(actual, expected)) return false;
+function releasePackagePlanMatches(actual, expected, baseExpected, contractChange, bumpPolicy) {
+  if (!planEntriesMatch(actual, expected, baseExpected)) return false;
   if (!sameArray(actual.map((entry) => entry.path), expected.map((entry) => entry.path))) return false;
 
   return actual.every((entry) => {
@@ -178,7 +181,13 @@ if (matrix && record) {
   } else {
     check(record.baseReleaseVersion === "0.5.0", "planned or partial record identifies the current base release");
     check(
-      releasePackagePlanMatches(record.packagePlan, matrix.packages, record.decision?.contractChange, matrix.policy?.bumpPolicy),
+      releasePackagePlanMatches(
+        record.packagePlan,
+        matrix.packages,
+        record.baseMatrixSnapshot?.packages ?? matrix.packages,
+        record.decision?.contractChange,
+        matrix.policy?.bumpPolicy,
+      ),
       "candidate package plan follows matrix package order and bump policy",
     );
     check(consumerPlanMatches(record.consumers, matrix.consumers), "candidate consumer plan covers every matrix consumer");

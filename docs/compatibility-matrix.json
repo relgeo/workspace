@@ -86,7 +86,7 @@
     {
       "path": "geometry",
       "name": "@relgeo/geometry",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
@@ -94,7 +94,7 @@
     {
       "path": "core",
       "name": "@relgeo/core",
-      "version": "0.5.2",
+      "version": "0.5.3",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
@@ -102,7 +102,7 @@
     {
       "path": "renderer-svg",
       "name": "@relgeo/renderer-svg",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
@@ -110,7 +110,7 @@
     {
       "path": "language-service",
       "name": "@relgeo/language-service",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
@@ -118,7 +118,7 @@
     {
       "path": "remark-relgeo-hl",
       "name": "@relgeo/remark-relgeo-hl",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
@@ -126,7 +126,7 @@
     {
       "path": "remark-relgeo",
       "name": "@relgeo/remark-relgeo",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"
@@ -134,7 +134,7 @@
     {
       "path": "cli",
       "name": "@relgeo/cli",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "compatibilityLine": "0.5",
       "publishable": true,
       "versionPolicy": "same-line"

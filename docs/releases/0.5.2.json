@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "releaseVersion": "0.5.2",
+  "baseReleaseVersion": "0.5.0",
+  "compatibilityLine": "0.5",
+  "status": "planned",
+  "recordedAt": "2026-11-26",
+  "publicationMode": "manual-2fa",
+  "decision": {
+    "kind": "patch-compatible",
+    "contractChange": "patch-compatible",
+    "rationale": "Publish the accumulated post-0.5.1 package changes so public-registry consumers can resolve the same geometry, core, renderer, language-service, Markdown, and CLI contracts exercised by the current workspace.",
+    "approvalStatus": "deferred",
+    "specRevision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "partialReleasePolicy": "stop-and-record-then-forward-fix-next-patch",
+    "notes": "This is a genuine candidate with source changes in every package listed as planned. No package is to be published until the operator completes the candidate preflight and reviews the tarballs."
+  },
+  "releaseOrder": [
+    "spec",
+    "geometry",
+    "core",
+    "renderer-svg",
+    "language-service",
+    "remark-relgeo-hl",
+    "remark-relgeo",
+    "cli",
+    "playground",
+    "relgeo.github.io"
+  ],
+  "baseMatrixSnapshot": {
+    "compatibilityLine": "0.5",
+    "specRevision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "packages": [
+      { "path": "geometry", "name": "@relgeo/geometry", "version": "0.5.0" },
+      { "path": "core", "name": "@relgeo/core", "version": "0.5.2" },
+      { "path": "renderer-svg", "name": "@relgeo/renderer-svg", "version": "0.5.0" },
+      { "path": "language-service", "name": "@relgeo/language-service", "version": "0.5.1" },
+      { "path": "remark-relgeo-hl", "name": "@relgeo/remark-relgeo-hl", "version": "0.5.0" },
+      { "path": "remark-relgeo", "name": "@relgeo/remark-relgeo", "version": "0.5.0" },
+      { "path": "cli", "name": "@relgeo/cli", "version": "0.5.0" }
+    ]
+  },
+  "packagePlan": [
+    { "path": "geometry", "name": "@relgeo/geometry", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned" },
+    { "path": "core", "name": "@relgeo/core", "fromVersion": "0.5.2", "targetVersion": "0.5.3", "status": "planned" },
+    { "path": "renderer-svg", "name": "@relgeo/renderer-svg", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned" },
+    { "path": "language-service", "name": "@relgeo/language-service", "fromVersion": "0.5.1", "targetVersion": "0.5.2", "status": "planned" },
+    { "path": "remark-relgeo-hl", "name": "@relgeo/remark-relgeo-hl", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned" },
+    { "path": "remark-relgeo", "name": "@relgeo/remark-relgeo", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned" },
+    { "path": "cli", "name": "@relgeo/cli", "fromVersion": "0.5.0", "targetVersion": "0.5.1", "status": "planned" }
+  ],
+  "consumers": [
+    { "path": "playground", "name": "relgeo-playground", "version": "0.4.0", "status": "pending" },
+    { "path": "relgeo.github.io", "name": "relgeo-docs-site", "version": "0.5.0", "status": "pending" }
+  ],
+  "sourceChanges": [
+    { "path": "geometry", "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3", "summary": "Accumulated geometry normalization, composition, placement, query, numeric, and boundary coverage after the 0.5.0 publication." },
+    { "path": "core", "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab", "summary": "Accumulated core runtime diagnostics, semantic, geometry-consumer, and capability closure changes after the published 0.5.2 source." },
+    { "path": "renderer-svg", "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b", "summary": "Accumulated semantic SVG parity, safety, accessibility metadata, and renderer capability changes after 0.5.0." },
+    { "path": "language-service", "revision": "e2c21878aedda84874555286bc448af92137e742", "summary": "Accumulated editor protocol, diagnostics, provenance, and language-service capability closure changes after 0.5.1." },
+    { "path": "remark-relgeo-hl", "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5", "summary": "Hardened highlighting fallback, escaping, and Markdown boundary behavior after 0.5.0." },
+    { "path": "remark-relgeo", "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53", "summary": "Hardened preview rendering, assets, sanitization, and accessibility boundaries after 0.5.0." },
+    { "path": "cli", "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee", "summary": "Closed CLI authoring and environment-handling gaps after 0.5.0." }
+  ],
+  "evidence": {
+    "candidateSource": { "status": "pending", "note": "Run the candidate audit, build, compatibility, local integration, and tarball checks before publish." },
+    "registryVerification": { "status": "pending" },
+    "publicIntegration": { "status": "pending" }
+  },
+  "followUp": {
+    "automatedPublishing": "not-enabled",
+    "manualPublishRequired": true,
+    "partialReleasePolicy": "stop-and-record-then-forward-fix-next-patch",
+    "openGates": [
+      "Publish only the seven changed npm packages in matrix release order after the operator reviews preflight output.",
+      "Do not publish playground or relgeo.github.io; they are consumers, not npm package targets.",
+      "After publishing, run registry verification and public integration, then update this record to completed or partial."
+    ]
+  }
+}

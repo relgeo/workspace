@@ -18,6 +18,7 @@ Record tidak mengaktifkan publish otomatis. Ia menjadi bukti keputusan dan ledge
 - [`0.5.0.md`](./0.5.0.md) — baseline publik `0.5.0`, dipublish manual dan diverifikasi setelah publish.
 - [`0.5.0.json`](./0.5.0.json) — snapshot machine-readable yang divalidasi oleh `release:record:check`.
 - [`0.5.1.json`](./0.5.1.json) dan [`0.5.1.md`](./0.5.1.md) — patch release selesai; `core` dan `language-service` tersedia sebagai `0.5.1`, seluruh gate registry/CI dicatat, dan snapshot matrix disimpan untuk audit historis.
+- [`0.5.2.json`](./0.5.2.json) dan [`0.5.2.md`](./0.5.2.md) — candidate patch release untuk package changes yang sudah ada di workspace tetapi belum tersedia pada registry; publish tetap menunggu operator menjalankan urutan manual 2FA.
 
 ## Evaluasi automation gate — 2026-10-08
 

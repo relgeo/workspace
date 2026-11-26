@@ -4,7 +4,7 @@
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
   "capturedAt": "2026-11-26",
-  "rootRevision": "84adcc7ed8a6fde37439f0af945a3a20fad9b3e3",
+  "rootRevision": "d6a7ada443670170fed03907478155540ddd420f",
   "compatibilityLine": "0.5",
   "toolchain": {
     "node": ">=24",
@@ -40,58 +40,58 @@
     },
     {
       "path": "core",
-      "revision": "be120cc6f9aa1597054af070ae470bef40fd80ff",
+      "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
       "package": {
         "name": "@relgeo/core",
-        "version": "0.5.2"
+        "version": "0.5.3"
       }
     },
     {
       "path": "geometry",
-      "revision": "e01b91ae40bcdf84d453716a7e2692b3e018a7c4",
+      "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
       "package": {
         "name": "@relgeo/geometry",
-        "version": "0.5.0"
-      }
-    },
-    {
-      "path": "language-service",
-      "revision": "962d17a0fed048c2fb89ef239063d92dfbcfe44e",
-      "package": {
-        "name": "@relgeo/language-service",
         "version": "0.5.1"
       }
     },
     {
+      "path": "language-service",
+      "revision": "e2c21878aedda84874555286bc448af92137e742",
+      "package": {
+        "name": "@relgeo/language-service",
+        "version": "0.5.2"
+      }
+    },
+    {
       "path": "renderer-svg",
-      "revision": "da3e1eb9befe51ecae1dd8961259f806caca507a",
+      "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
       "package": {
         "name": "@relgeo/renderer-svg",
-        "version": "0.5.0"
+        "version": "0.5.1"
       }
     },
     {
       "path": "cli",
-      "revision": "727ad44684ba7ee14306b92352225561fcf7b12a",
+      "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
       "package": {
         "name": "@relgeo/cli",
-        "version": "0.5.0"
+        "version": "0.5.1"
       }
     },
     {
       "path": "remark-relgeo",
-      "revision": "acab9725d95c7b9459f7c33c1914ba357847c463",
+      "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
       "package": {
         "name": "@relgeo/remark-relgeo",
-        "version": "0.5.0"
+        "version": "0.5.1"
       }
     },
     {
       "path": "remark-relgeo-hl",
-      "revision": "82fd4d65797a9d59297dce03e1049a7d7ee00686",
+      "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
       "package": {
         "name": "@relgeo/remark-relgeo-hl",
-        "version": "0.5.0"
+        "version": "0.5.1"
       }
     },
     {

@@ -471,11 +471,25 @@ function copyForPublicGate(repositoryPath) {
       return !excluded.has(firstSegment);
     },
   });
-  if (fs.existsSync(path.join(root, "fixtures"))) {
-    fs.cpSync(path.join(root, "fixtures"), path.join(temporaryRoot, "fixtures"), {
+
+  // Some package tests intentionally consume shared, checked-in contract
+  // inputs outside the package directory. A public-boundary checkout must
+  // assemble those inputs explicitly; otherwise a missing sibling is
+  // misclassified as an environment failure even though the published
+  // package and its runtime dependencies are valid.
+  const sharedPaths = new Set(["fixtures"]);
+  if (repositoryPath === "core") sharedPaths.add("spec");
+  if (repositoryPath === "remark-relgeo") sharedPaths.add("renderer-svg");
+
+  for (const sharedPath of sharedPaths) {
+    const sharedSource = path.join(root, sharedPath);
+    if (!fs.existsSync(sharedSource)) continue;
+    fs.cpSync(sharedSource, path.join(temporaryRoot, sharedPath), {
       recursive: true,
       filter(sourcePath) {
-        return path.basename(sourcePath) !== ".git";
+        return path.basename(sourcePath) !== ".git"
+          && path.basename(sourcePath) !== "node_modules"
+          && path.basename(sourcePath) !== "dist";
       },
     });
   }

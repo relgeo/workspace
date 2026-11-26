@@ -390,6 +390,20 @@ function runPackBoundaryStage(packageName, cwd) {
   return passed;
 }
 
+const publicRegistryProbe = [
+  "const https = require('node:https');",
+  "const request = https.get('https://registry.npmjs.org/', { headers: { accept: 'application/json' } }, (response) => {",
+  "  response.resume();",
+  "  response.on('end', () => {",
+  "    if (response.statusCode >= 200 && response.statusCode < 300) process.exit(0);",
+  "    console.error('registry HTTP ' + response.statusCode);",
+  "    process.exit(1);",
+  "  });",
+  "});",
+  "request.setTimeout(10000, () => { console.error('registry request timed out'); request.destroy(); process.exit(1); });",
+  "request.on('error', (error) => { console.error(error.code || error.message); process.exit(1); });",
+].join("\n");
+
 function copyPlaygroundArtifact(label, source, destination) {
   const startedAt = Date.now();
   let passed = true;
@@ -655,7 +669,12 @@ if (localMode) {
   runStage("workspace: shared conformance fixtures", process.execPath, [
     "scripts/run-conformance-fixtures.mjs",
   ]);
-} else {
+} else if (runStage(
+  "public-registry: reachability preflight",
+  process.execPath,
+  ["-e", publicRegistryProbe],
+  root,
+)) {
   try {
     const packageStages = [
       ["@relgeo/geometry", "geometry", ["lint", "build", "test"]],

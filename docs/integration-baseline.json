@@ -4,7 +4,7 @@
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
   "capturedAt": "2026-11-26",
-  "rootRevision": "b93601f76d98412a50f2fef01bc04aba80ba3ecf",
+  "rootRevision": "bbb92b4059ee55ee0efe2e8b17a3eeb0d4e0d1ba",
   "compatibilityLine": "0.5",
   "toolchain": {
     "node": ">=24",
@@ -20,7 +20,7 @@
   "submodules": [
     {
       "path": "relgeo.github.io",
-      "revision": "99a3ab65e100fc177e4d13a031fe395695b0e851",
+      "revision": "450488d93d05059a190efd89e013f9a5274b8313",
       "package": {
         "name": "relgeo-docs-site",
         "version": "0.5.0"

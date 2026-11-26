@@ -166,6 +166,17 @@ const joined = {
 
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(joined, null, 2) + "\n");
-console.log(`Joined evidence ${freshness.current ? "eligible" : "not eligible"} for current claim.`);
+const sourceReportAvailable = Boolean(sourceReport);
+console.log(
+  `Joined evidence ${freshness.current && sourceReportAvailable ? "eligible" : "not eligible"} for current claim.`,
+);
+if (!sourceReportAvailable) {
+  console.log("Source integration report unavailable; the preceding gate result remains authoritative.");
+}
 console.log("Joined report written; local output path is omitted from evidence.");
-process.exitCode = sourceReport && (evidenceState !== "current" || freshness.current) ? 0 : 1;
+// This helper runs with `if: always()` so it can preserve diagnostic output
+// after an earlier gate fails. Do not turn a missing report into a second,
+// misleading failure; an existing report that is stale remains a hard error.
+process.exitCode = sourceReportAvailable
+  ? (evidenceState !== "current" || freshness.current ? 0 : 1)
+  : 0;

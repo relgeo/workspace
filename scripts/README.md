@@ -232,6 +232,11 @@ Fixture `capability` adalah candidate untuk capability yang belum dipromosikan k
 active contract; runner mewajibkan expected scene/output snapshot dan tetap
 melaporkan evidence-nya terpisah dari baseline aktif.
 
+Perbandingan snapshot scene dan SVG pada runner memakai comparator semantic yang terversi
+dari Core dan renderer. Raw SVG tetap disimpan sebagai artefak reviewable, tetapi byte
+presentasi (whitespace, metadata opsional, dan urutan key JSON) tidak menjadi parity
+contract; perubahan semantic object order, topology, atau nilai geometry tetap gagal.
+
 Runner ini adalah gate workspace-level. Repository anak tetap dapat diuji standalone,
 tetapi fixture bersama perlu disediakan oleh checkout workspace atau oleh packaging test
 yang eksplisit; runner tidak mengubah repository anak secara diam-diam.

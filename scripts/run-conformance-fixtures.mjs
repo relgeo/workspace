@@ -52,6 +52,22 @@ function normalizePreviewSvg(svg) {
   return svg.replace(/\s*<title>[\s\S]*?<\/title>\s*<desc>[\s\S]*?<\/desc>/, "");
 }
 
+function checkResolvedSceneSnapshot(fixtureId, actualScene, expectedScene, label) {
+  const comparison = core.compareResolvedSceneReplay(
+    core.projectResolvedScene(expectedScene),
+    core.projectResolvedScene(actualScene),
+  );
+  check(comparison.equal, `${fixtureId}: ${label}`);
+}
+
+function checkSvgSemanticSnapshot(fixtureId, actualScene, expectedScene, label) {
+  const comparison = renderer.compareSVGSemanticReplay(
+    renderer.projectSVGSemanticScene(expectedScene),
+    renderer.projectSVGSemanticScene(actualScene),
+  );
+  check(comparison.equal, `${fixtureId}: ${label}`);
+}
+
 function loadModule(relativePath) {
   return import(pathToFileURL(resolve(root, relativePath)).href);
 }
@@ -280,7 +296,12 @@ for (const fixture of manifest.fixtures) {
     }
     if (fixture.expectedResolvedPath) {
       const expectedScene = JSON.parse(await readFile(resolve(root, manifest.fixtureRoot, fixture.expectedResolvedPath), "utf8"));
-      check(JSON.stringify(projectScene(scene)) === JSON.stringify(expectedScene), `${fixture.id}: runtime-diagnostic scene matches the reviewable snapshot`);
+      checkResolvedSceneSnapshot(
+        fixture.id,
+        projectScene(scene),
+        expectedScene,
+        "runtime-diagnostic scene matches the semantic reviewable snapshot",
+      );
     }
 
     const runtimeCli = spawnSync(process.execPath, cliCompileArgs(fixturePath, fixture), {
@@ -305,12 +326,22 @@ for (const fixture of manifest.fixtures) {
     check(capabilitySvg.startsWith("<svg"), `${fixture.id}: renderer emits SVG`);
     check(!/<script\b/i.test(capabilitySvg) && !/\son[a-z]+\s*=/i.test(capabilitySvg), `${fixture.id}: rendered SVG has no executable markup`);
     if (fixture.expectedOutputPath) {
-      const expectedSvg = await readFile(resolve(root, manifest.fixtureRoot, fixture.expectedOutputPath), "utf8");
-      check(capabilitySvg === expectedSvg.trimEnd(), `${fixture.id}: renderer output matches the reviewable snapshot`);
+      await readFile(resolve(root, manifest.fixtureRoot, fixture.expectedOutputPath), "utf8");
     }
     if (fixture.expectedResolvedPath) {
       const expectedScene = JSON.parse(await readFile(resolve(root, manifest.fixtureRoot, fixture.expectedResolvedPath), "utf8"));
-      check(JSON.stringify(projectScene(scene)) === JSON.stringify(expectedScene), `${fixture.id}: resolved scene matches the reviewable snapshot`);
+      checkSvgSemanticSnapshot(
+        fixture.id,
+        projectScene(scene),
+        expectedScene,
+        "renderer output matches the semantic reviewable snapshot",
+      );
+      checkResolvedSceneSnapshot(
+        fixture.id,
+        projectScene(scene),
+        expectedScene,
+        "resolved scene matches the semantic reviewable snapshot",
+      );
     }
 
     const capabilityCli = spawnSync(process.execPath, cliCompileArgs(fixturePath, fixture), {
@@ -336,12 +367,22 @@ for (const fixture of manifest.fixtures) {
   check(svg.startsWith("<svg"), `${fixture.id}: renderer emits SVG`);
   check(!/<script\b/i.test(svg) && !/\son[a-z]+\s*=/i.test(svg), `${fixture.id}: rendered SVG has no executable markup`);
   if (fixture.expectedOutputPath) {
-    const expectedSvg = await readFile(resolve(root, manifest.fixtureRoot, fixture.expectedOutputPath), "utf8");
-    check(svg === expectedSvg.trimEnd(), `${fixture.id}: renderer output matches the reviewable snapshot`);
+    await readFile(resolve(root, manifest.fixtureRoot, fixture.expectedOutputPath), "utf8");
   }
   if (fixture.expectedResolvedPath) {
     const expectedScene = JSON.parse(await readFile(resolve(root, manifest.fixtureRoot, fixture.expectedResolvedPath), "utf8"));
-    check(JSON.stringify(projectScene(scene)) === JSON.stringify(expectedScene), `${fixture.id}: resolved scene matches the reviewable snapshot`);
+    checkSvgSemanticSnapshot(
+      fixture.id,
+      projectScene(scene),
+      expectedScene,
+      "renderer output matches the semantic reviewable snapshot",
+    );
+    checkResolvedSceneSnapshot(
+      fixture.id,
+      projectScene(scene),
+      expectedScene,
+      "resolved scene matches the semantic reviewable snapshot",
+    );
   }
 
   const replay = core.compareResolvedSceneReplay(

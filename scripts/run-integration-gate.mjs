@@ -516,17 +516,33 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
   const restorePackageJson = pinPublicRegistryVersions(cwd);
   let environment = process.env;
   if (repositoryPath === "relgeo.github.io") {
+    const websiteRevision = execFileSync("git", ["-C", path.join(root, repositoryPath), "rev-parse", "HEAD"], {
+      encoding: "utf8",
+    }).trim();
+    const playgroundRevision = execFileSync("git", ["-C", path.join(root, "playground"), "rev-parse", "HEAD"], {
+      encoding: "utf8",
+    }).trim();
+    const specRevision = execFileSync("git", ["-C", path.join(root, "spec"), "rev-parse", "HEAD"], {
+      encoding: "utf8",
+    }).trim();
     const specTarget = path.join(cwd, ".ci", "spec");
     fs.mkdirSync(path.dirname(specTarget), { recursive: true });
     fs.cpSync(path.join(root, "spec"), specTarget, {
       recursive: true,
       filter: (sourcePath) => path.basename(sourcePath) !== ".git",
     });
+    const compatibilityTarget = path.join(path.dirname(cwd), "docs", "compatibility-matrix.json");
+    fs.mkdirSync(path.dirname(compatibilityTarget), { recursive: true });
+    fs.copyFileSync(path.join(root, "docs", "compatibility-matrix.json"), compatibilityTarget);
     environment = {
       ...process.env,
       RELGEO_SPEC_PATH: path.join(specTarget, "id"),
       RELGEO_SPEC_ROOT: path.join(root, "spec"),
       RELGEO_PLAYGROUND_ROOT: path.join(root, "playground"),
+      RELGEO_WEBSITE_REVISION: websiteRevision,
+      RELGEO_PLAYGROUND_REVISION: playgroundRevision,
+      RELGEO_SPEC_REVISION: specRevision,
+      RELGEO_COMPATIBILITY_MATRIX: compatibilityTarget,
       RELGEO_DOCS_SITE_URL: "https://relgeo.github.io",
       RELGEO_DOCS_BASE: "/",
       RELGEO_DOCS_REQUIRE_PUBLIC_URL: "1",
@@ -557,14 +573,14 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
     }
 
     for (const scriptName of scripts) {
-      if (scriptName === "test:pages-artifact" && options.playgroundDist) {
+      runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd, environment);
+      if (scriptName === "build" && options.playgroundDist) {
         copyPlaygroundArtifact(
           packageName + ": assemble public Playground artifact",
           options.playgroundDist,
           path.join(cwd, "dist", "playground"),
         );
       }
-      runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd, environment);
     }
     return { cwd, installed: true };
   } finally {

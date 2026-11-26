@@ -155,13 +155,22 @@ if (matrix && record) {
       record.decision?.partialReleasePolicy === releaseDecision?.partialReleasePolicy,
     "partial release record follows the matrix forward-fix policy",
   );
-  check(record.decision?.specRevision === matrix.contract.specRevision, "record spec revision matches the matrix contract revision");
+  const expectedSpecRevision = record.status === "completed"
+    ? record.matrixSnapshot?.specRevision
+    : matrix.contract.specRevision;
+  check(
+    typeof expectedSpecRevision === "string" && record.decision?.specRevision === expectedSpecRevision,
+    record.status === "completed"
+      ? "completed record spec revision matches its immutable matrix snapshot"
+      : "record spec revision matches the matrix contract revision",
+  );
   check(sameArray(record.releaseOrder, matrix.policy.releaseOrder), "record release order matches the compatibility matrix");
   check(record.publicationMode === "manual-2fa", "publication mode is explicit and does not imply automated publishing");
 
   if (record.status === "completed") {
     const snapshot = record.matrixSnapshot;
     check(snapshot?.compatibilityLine === matrix.compatibilityLine, "completed record contains a snapshot for the active compatibility line");
+    check(typeof snapshot?.specRevision === "string", "completed record contains an immutable spec revision snapshot");
     check(entryIdentitiesMatch(snapshot?.packages, matrix.packages), "completed record snapshot covers the current package identities in order");
     check(entryIdentitiesMatch(snapshot?.consumers, matrix.consumers), "completed record snapshot covers the current consumer identities in order");
     check(entriesMatch(record.packages, snapshot?.packages, "published"), "every snapshot package is recorded as published at its recorded version");

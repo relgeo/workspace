@@ -6,8 +6,8 @@ Folder ini menyimpan keputusan dan evidence release lintas repository. Record di
 
 1. Salin [`TEMPLATE.md`](./TEMPLATE.md) untuk setiap release candidate atau release yang selesai.
 2. Tetapkan compatibility line, revision `spec`, release order, package status, consumer status, evidence, dan recovery decision.
-3. Simpan snapshot machine-readable dengan nama versi, misalnya `0.5.0.json`.
-4. Jalankan `pnpm run release:record:check <version>` sebelum review. Validator membandingkan record dengan compatibility matrix dan memastikan tidak ada package/consumer yang hilang. Status `planned` dan `partial` boleh divalidasi sebagai rencana, sedangkan preflight final hanya menerima status `completed`.
+3. Simpan snapshot machine-readable dengan nama versi, misalnya `0.5.0.json`. Untuk record `completed`, sertakan `matrixSnapshot.specRevision` agar revision yang benar-benar dirilis tetap immutable ketika matrix aktif maju.
+4. Jalankan `pnpm run release:record:check <version>` sebelum review. Validator membandingkan candidate `planned`/`partial` dengan compatibility matrix aktif, sementara record `completed` diverifikasi terhadap snapshot matrix-nya sendiri dan hanya mencocokkan identitas package/consumer dengan matrix aktif. Status `planned` dan `partial` boleh divalidasi sebagai rencana, sedangkan preflight final hanya menerima status `completed`.
 5. Jika publish berhenti setelah sebagian package berhasil, ubah status record menjadi `partial`, catat package terakhir yang berhasil, dan tulis forward-fix version. Jangan menghapus atau mencoba menerbitkan ulang versi npm yang sama.
 6. Jalankan validator record setelah recovery diisi. Untuk status `partial`, validator memastikan package order konsisten, forward-fix lebih baru dan masih satu compatibility line, serta `noRepublishSameVersion` bernilai `true`.
 

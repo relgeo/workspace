@@ -28,6 +28,7 @@
   ],
   "matrixSnapshot": {
     "compatibilityLine": "0.5",
+    "specRevision": "b96ba3b23de202227eade06614635ef6717df516",
     "packages": [
       { "path": "geometry", "name": "@relgeo/geometry", "version": "0.5.0" },
       { "path": "core", "name": "@relgeo/core", "version": "0.5.0" },

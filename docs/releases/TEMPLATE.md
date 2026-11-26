@@ -7,6 +7,10 @@
 **Publication mode:** manual / automated  
 **Machine-readable snapshot:** `<version>.json`
 
+For a completed record, the machine-readable `matrixSnapshot` must include the
+exact `specRevision` used for that release. Historical completed records remain
+auditable when the active compatibility matrix advances later.
+
 ## 1. Decision
 
 - Contract change: none / patch-compatible / breaking.

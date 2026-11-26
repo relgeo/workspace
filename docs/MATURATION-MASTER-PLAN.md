@@ -1,10 +1,32 @@
 # RelGeo Maturation Master Plan
 
-**Status:** master plan aktif — promotion boolean/intersection fixture 15 selesai; MCP sudah menjadi submodule resmi; desktop v1.0.1 tersedia sebagai draft lintas-platform; Language Specification closure locally green on the audited 53-ID boundary, with goal-level audit and supervisor closure completed; status diperbarui 2026-11-07
+**Status:** master plan aktif — historical promotions remain preserved, while the current Cross-Repository Orchestration checkpoint is not green and is explicitly boundary-limited; status diperbarui 2026-11-14
 **Tanggal baseline:** 2026-10-08
 **Compatibility line saat ini:** RelGeo DSL 0.5.x  
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** seluruh repository publik RelGeo dan integrasinya sebagai satu ekosistem
+
+## Current Cross-Repository Orchestration checkpoint — 2026-11-14
+
+The current source-of-truth boundary is root revision
+`63b28c4ebde79a9b7d83faa182fca06387272143`, baseline manifest
+`docs/integration-baseline.json` captured on `2026-11-13`, compatibility line
+`0.5`, Node `>=24`, and pnpm `10.33.3`. The structured current evidence is
+[`cross-repository-canonical-verification-2026-11-14.json`](./evidence/cross-repository-canonical-verification-2026-11-14.json)
+and the public-boundary scan is
+[`public-boundary-audit-2026-11-14.json`](./evidence/public-boundary-audit-2026-11-14.json).
+
+The current managed workspace reports Node `22.23.2`/pnpm `10.33.3`.
+Compatibility is supporting-local (`301 passed, 0 failed`) and fixture
+conformance remains supporting-local (`677 passed, 0 failed across 33
+fixtures`). Strict baseline is not promotable: Flutter checkout
+`3a9f7766f168b0077057fbedb571c3d4c8432bf2` differs from the root gitlink and
+baseline `dc630bf19397ec20fff37ffa52f9f8e7e32b0f89`. Bootstrap and local/public
+integration are environment-unavailable at the managed Node 22 boundary.
+
+This section is the active overlay; dated sections below are historical evidence
+and must not be read as current canonical proof unless they name this revision
+and boundary explicitly.
 
 ## 0. Checkpoint evidence — 2026-10-08 (historical, superseded)
 

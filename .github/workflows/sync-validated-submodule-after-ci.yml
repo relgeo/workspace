@@ -46,7 +46,7 @@ jobs:
            github.event.action == 'flutter_ci_succeeded')) ||
         github.event_name == 'workflow_dispatch'
       }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Read and validate dispatch metadata
@@ -188,7 +188,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 24.21.0
+
+      - name: Verify canonical sync-runner contract
+        run: |
+          set -euo pipefail
+          test "$(node --version)" = "v24.21.0"
+          test "$(pnpm --version)" = "10.33.3"
+          test -z "$(git status --porcelain)"
+          if git submodule status --recursive | grep -q '^-'; then
+            echo "An expected submodule is not initialized" >&2
+            exit 1
+          fi
+          curl -fsSIL --max-time 10 https://registry.npmjs.org/
 
       - name: Fetch and stage the validated submodule gitlink
         id: stage
@@ -222,6 +234,69 @@ jobs:
           git add docs/integration-baseline.json
           pnpm run verify:baseline:strict
           pnpm run compatibility:check
+          pnpm run baseline:sync:check
+
+      - name: Write validated child CI provenance
+        if: steps.stage.outputs.changed == 'true'
+        id: provenance
+        env:
+          SUBMODULE: ${{ steps.metadata.outputs.submodule }}
+          SOURCE_REPOSITORY: ${{ steps.metadata.outputs.repository }}
+          SOURCE_PATH: ${{ steps.metadata.outputs.path }}
+          SOURCE_WORKFLOW: ${{ steps.metadata.outputs.workflow }}
+          SOURCE_SHA: ${{ steps.metadata.outputs.sha }}
+          SOURCE_RUN_ID: ${{ steps.metadata.outputs.run_id }}
+          SOURCE_RUN_URL: ${{ steps.verify-run.outputs.run_url }}
+          SYNC_BRANCH: ${{ steps.metadata.outputs.sync_branch }}
+        run: |
+          set -euo pipefail
+          mkdir -p .local
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { execFileSync } from 'node:child_process';
+
+          const baseline = JSON.parse(fs.readFileSync('docs/integration-baseline.json', 'utf8'));
+          const sourcePath = process.env.SOURCE_PATH;
+          const child = baseline.submodules.find((entry) => entry.path === sourcePath);
+          const rootRevision = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+          const provenance = {
+            schemaVersion: 1,
+            contract: 'validated-submodule-ci-provenance-v1',
+            source: {
+              repository: process.env.SOURCE_REPOSITORY,
+              path: sourcePath,
+              revision: process.env.SOURCE_SHA,
+              workflow: process.env.SOURCE_WORKFLOW,
+              branch: 'refs/heads/main',
+              runId: process.env.SOURCE_RUN_ID,
+              runUrl: process.env.SOURCE_RUN_URL,
+              conclusion: 'success',
+            },
+            root: {
+              repository: 'relgeo/workspace',
+              checkoutRevision: rootRevision,
+              syncBranch: process.env.SYNC_BRANCH,
+            },
+            baseline: {
+              path: 'docs/integration-baseline.json',
+              capturedAt: baseline.capturedAt,
+              rootRevision: baseline.rootRevision,
+              compatibilityLine: baseline.compatibilityLine,
+              childRevision: child?.revision ?? null,
+            },
+            claim: 'This record links one successful child main push to the exact root gitlink and regenerated baseline candidate; it is not a merge or production-deployment claim.',
+          };
+          fs.writeFileSync('.local/validated-submodule-ci-provenance.json', JSON.stringify(provenance, null, 2) + '\n');
+          NODE
+
+      - name: Upload validated child CI provenance
+        if: steps.stage.outputs.changed == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: validated-submodule-ci-provenance-${{ steps.metadata.outputs.submodule }}-${{ steps.metadata.outputs.sha }}
+          path: .local/validated-submodule-ci-provenance.json
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Open synchronization PR
         if: steps.stage.outputs.changed == 'true'
@@ -241,6 +316,7 @@ jobs:
             - SHA: `${{ steps.metadata.outputs.sha }}`
             - Child CI run: [${{ steps.metadata.outputs.run_id }}](${{ steps.verify-run.outputs.run_url }})
             - Source workflow: `${{ steps.metadata.outputs.workflow }}`
+            - Provenance artifact: `validated-submodule-ci-provenance-${{ steps.metadata.outputs.submodule }}-${{ steps.metadata.outputs.sha }}`
 
             The root gitlink and integration baseline were regenerated only after
             the exact SHA and successful `push`/`main` workflow run were verified.

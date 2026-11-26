@@ -15,6 +15,15 @@ import {
 } from "./orchestration-contract.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const rootPackage = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
+const bootstrapSource = fs.readFileSync(path.join(root, "scripts", "bootstrap.mjs"), "utf8");
+assert.equal(rootPackage.engines.node, ">=24");
+assert.equal(rootPackage.packageManager, "pnpm@10.33.3");
+assert.match(fs.readFileSync(path.join(root, ".node-version"), "utf8"), /^24\./);
+assert.match(bootstrapSource, /git\", \[\"submodule\", \"update\", \"--init\", \"--recursive\"\]/);
+assert.match(bootstrapSource, /pnpm\", \[\"install\", \"--frozen-lockfile\"\]/);
+assert.match(bootstrapSource, /env: \{ CI: \"true\" \}/);
+assert.match(bootstrapSource, /scripts\/verify-baseline\.mjs/);
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "relgeo-bootstrap-contract-"));
 const reportPath = path.join(tempRoot, "bootstrap.json");
 
@@ -23,11 +32,16 @@ const bootstrap = spawnSync(process.execPath, [
   "--skip-submodules",
   "--skip-install",
   `--report=${reportPath}`,
-], { cwd: root, encoding: "utf8" });
+], { cwd: tempRoot, encoding: "utf8" });
 assert.ok([0, 1, 2].includes(bootstrap.status));
 const reportText = fs.readFileSync(reportPath, "utf8");
 const report = JSON.parse(reportText);
 assert.equal(report.contract, "fresh-clone-bootstrap-v1");
+assert.deepEqual(report.workspaceBoundary.requiredFiles, ["package.json", "pnpm-lock.yaml", ".gitmodules"]);
+assert.deepEqual(report.workspaceBoundary.missingFiles, []);
+assert.equal(report.workspaceBoundary.siblingSource, false);
+assert.ok(report.steps.some((step) => step.id === "toolchain: node"));
+assert.ok(report.steps.some((step) => step.id === "toolchain: pnpm"));
 assert.ok(Array.isArray(report.submodules));
 assert.ok(Array.isArray(report.steps));
 assert.ok(report.evidence.testedRevisions);
@@ -35,6 +49,7 @@ assert.equal(report.publicBoundary.contract, "public-boundary-v1");
 assert.equal(report.publicBoundary.passed, true);
 assert.equal(report.publicBoundary.violations.length, 0);
 assert.ok(!reportText.includes(root));
+assert.ok(!reportText.includes(tempRoot));
 assert.ok(!reportText.includes("PRIVATE_KEY"));
 assert.ok(!reportText.includes("ACCESS_TOKEN"));
 

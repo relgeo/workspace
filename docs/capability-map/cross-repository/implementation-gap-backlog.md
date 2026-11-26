@@ -1,11 +1,11 @@
 # Cross-Repository Orchestration — Implementation Gap Backlog
 
-> Current evidence checkpoint (2026-11-05): candidate tasks below retain the implementation gaps, while the dated 2026-10-30 root-gate evidence is historical. Current root contract/conformance evidence is available (`298/298` fixtures); child gitlinks are observable but child worktrees contain local modifications and 11 of 12 integration-manifest pins are stale. This host has pnpm 10.33.3 but Node 22.23.2, below the declared Node 24+ gate, so full runtime claims remain environment-unavailable.
+> Current evidence checkpoint (2026-11-14): candidate tasks below retain the implementation gaps, while dated root-gate and provider evidence is historical. Current compatibility/conformance evidence is supporting-local; 11 child worktrees match current gitlinks and Flutter is clean but differs from its root gitlink. The baseline synchronization gate is therefore not promotable. This host has pnpm 10.33.3 but Node 22.23.2, below the declared Node 24+ gate, so full runtime claims remain environment-unavailable. See [`cross-repository-canonical-verification-2026-11-14.json`](../../evidence/cross-repository-canonical-verification-2026-11-14.json).
 
 **Status:** candidate backlog; selected implementation outcomes are recorded here,
 but this document does not substitute for source/tests/audit evidence
 
-**Tanggal:** 2026-11-05
+**Tanggal:** 2026-11-14
 
 **Expected source:** [Expected Cross-Repository Orchestration Capability Catalog](./expected-capability-catalog.md)
 
@@ -46,7 +46,7 @@ bootstrap/baseline/gate evidence; `P1` closes high-risk evidence, release,
 security, and operational-control gaps. Dependencies still determine the safe
 execution order.
 
-## Triage P0/P1 — 2026-11-05
+## Triage P0/P1 — 2026-11-14 review refresh
 
 Triage ini adalah keputusan intake untuk task `Triage remaining Cross-Repository
 Orchestration gaps`. Status pada kolom **status awal** disalin dari status
@@ -201,14 +201,14 @@ capabilities remain unresolved.
 
 | Selected capability | Current status | Evidence | Remaining boundary |
 | --- | --- | --- | --- |
-| `ORCH-BOOT-004` / `GAP-ORCH-001` | `🌗` (`verified-static`) | `scripts/public-boundary.mjs` is integrated into bootstrap report generation and npm pack inspection; clean/unsafe path and content fixtures pass via `pnpm run public-boundary:contract:test` and `pnpm run bootstrap:contract:test`. | Run the complete artifact/log scan in canonical CI/public evidence; implementation status is not promoted by this local fixture alone. |
+| `ORCH-BOOT-004` / `GAP-ORCH-001` | `🌗` (`partial-current`) | `scripts/audit-public-boundary.mjs` now scans the 325-entry tracked tree, available public artifact roots, consumer manifests, and 7 workflows; `docs/evidence/public-boundary-audit-2026-11-14.json` records no local path, credential-material, or workflow-policy violation. Negative fixtures remain covered by `pnpm run public-boundary:audit:test`. | Five candidate artifact roots were unavailable in this checkout; run the same scanner after canonical Node 24/CI public artifact generation. |
 | `ORCH-OPS-005` / `GAP-ORCH-006` | `🌗` (`verified-static`) | `evaluateDecisionGate()` centralizes approved/pending/rejected/stale states; release preflight consumes it; `pnpm run orchestration:contract:test` covers approval and fail-closed decision states. | Extend/observe the gate at any provider-side scope/release promotion surface; local source/test evidence does not prove live provider enforcement. |
 | `ORCH-OPS-001`, `ORCH-OPS-002` / `GAP-ORCH-006` | `✔️` (`verified-static`) | Shared contract, integration/release/baseline report fields, focused contract test, and structured Node-prerequisite report | `ORCH-OPS-005` live provider propagation and canonical decision observation remain open. |
 | `ORCH-OPS-003` / `GAP-ORCH-007` | `✔️` (`verified-static`) | Shared transient classifier, two-attempt bounded retry/backoff, preserved attempts, deterministic/environment non-retry assertions | Live transient CI/provider observation remains open. |
 | `ORCH-PUB-003` / `GAP-ORCH-008` | `✔️` (`verified-static`) | Sync workflow `persist-credentials: false`, declared write boundary, and focused workflow policy assertions | Provider-side sync PR/dispatch observation remains open. |
 | `ORCH-EVID-002` / `GAP-ORCH-004` | `🌗` (`partial-current`) | Shared evidence envelope separates evidence classes; focused contract and blocked integration report preserve limitations | Current canonical run after baseline reconciliation remains open. |
-| `ORCH-EVID-003` / `GAP-ORCH-004` | `🌗` (`partial-current`) | Schema-versioned evidence envelope and exact baseline/toolchain/limitation fields in reports | Three stale manifest revisions and current artifact/public-smoke join remain open. |
-| `ORCH-BASE-002` / `GAP-ORCH-002` | `🌗` (`partial-current`) | Strict verifier and failure-injection evidence preserved; current JSON identifies stale revisions and dirty child worktrees | Validated child-CI synchronization and clean baseline remain open. |
+| `ORCH-EVID-003` / `GAP-ORCH-004` | `🌗` (`partial-current`) | Schema-versioned evidence envelope and exact baseline/toolchain/limitation fields in reports | Six stale manifest revisions and current artifact/public-smoke join remain open. |
+| `ORCH-BASE-002` / `GAP-ORCH-002` | `🌗` (`partial-current`) | Strict verifier and failure-injection evidence preserved; current JSON identifies stale revisions while all child worktrees are clean | Validated child-CI synchronization and clean baseline remain open. |
 
 The other candidate rows below remain visible because their environment,
 provider, public-registry, release, or deferred-platform evidence is not a

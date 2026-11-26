@@ -25,13 +25,40 @@ node scripts/bootstrap.mjs --report=.local/bootstrap-report.json
 Runner ini memeriksa Node `>=24` dan pnpm `10.33.3`, menginisialisasi
 submodule secara recursive, memasang dependency dengan lockfile frozen, lalu
 menjalankan strict baseline report. Report machine-readable selalu memuat
-status setiap langkah dan status setiap submodule; command, revision, dan
+status setiap langkah dan status setiap submodule. Sebelum toolchain probe,
+runner memverifikasi `package.json`, `pnpm-lock.yaml`, dan `.gitmodules` dari
+checkout yang menjadi script root; caller boleh menjalankan script dari cwd
+lain dan runner tidak memakai sibling source. Command, revision, dan
 limitation yang dicatat tidak memuat absolute path, credential, environment
 variable, atau isi `.local/`/`private/`. Node/pnpm yang tidak tersedia atau
-berbeda menghasilkan `blocked`/`environment-unavailable` dengan exit code `2`,
-bukan klaim parity.
+berbeda menghasilkan step toolchain yang actionable, outcome
+`blocked`/`environment-unavailable`, dan exit code `2`, bukan klaim parity.
 
 ### Evidence schema and freshness rules
+
+### Deterministic baseline synchronization
+
+`node scripts/check-baseline-synchronization.mjs` is a read-only promotion
+gate. It compares `.gitmodules`, root gitlinks, recursive child `HEAD` and
+clean-state observations, `docs/integration-baseline.json`, and
+`docs/compatibility-matrix.json`. It emits `baseline-synchronization-v1`
+with exact root/child provenance and exits non-zero when any pointer,
+manifest, package, compatibility, or provenance field is stale. Use
+`--json` for CI evidence and `--baseline=<path>` for isolated failure
+injection; a failed check always sets `promotion.eligible` to `false`.
+
+The reviewable update flow is:
+
+```sh
+node scripts/verify-baseline.mjs --write
+pnpm run verify:baseline:strict
+pnpm run compatibility:check
+pnpm run baseline:sync:check
+```
+
+The `baseline:sync:write` package script runs the same sequence. It must be
+run only after the validated child revision and clean checkout are available;
+the checker never writes a manifest or silently promotes a stale pointer.
 
 Semua report memakai `schemaVersion: 1` pada envelope evidence dan field wajib
 berikut: `evidenceClass`, `evidenceState`, `capturedAt`, `workspaceRevision`,
@@ -83,6 +110,13 @@ Fixture lokalnya dijalankan dengan:
 ~~~text
 pnpm run public-boundary:contract:test
 ~~~
+
+Audit boundary aktual dijalankan dengan `pnpm run public-boundary:audit`.
+Perintah ini membaca tracked tree melalui `git ls-files`, memeriksa artifact
+root yang tersedia, consumer manifests, dan workflow child/root. Hasil
+terstruktur ditulis ke `docs/evidence/public-boundary-audit-2026-11-14.json`;
+artifact root yang belum dibangun dicatat sebagai unavailable dan tidak
+dipromosikan menjadi bukti public-runtime.
 
 Mode public menambahkan override sementara di checkout temporary agar seluruh dependency `@relgeo/*` tepat pada versi baseline manifest, lalu mengabaikan lockfile temporary. Override dan perubahan package manager ini tidak pernah ditulis kembali ke repository sumber.
 

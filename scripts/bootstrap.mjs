@@ -20,18 +20,21 @@ const skipInstall = process.argv.includes("--skip-install");
 
 const steps = [];
 const limitations = [];
+const requiredWorkspaceFiles = ["package.json", "pnpm-lock.yaml", ".gitmodules"];
 
 function commandLabel(command, args = []) {
   return [command, ...args].join(" ");
 }
 
-function runStep(id, command, args = [], { allowFailure = false } = {}) {
+function runStep(id, command, args = [], { allowFailure = false, env = {} } = {}) {
   const result = spawnSync(command, args, {
     cwd: root,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
+    env: { ...process.env, ...env },
   });
   const passed = result.status === 0;
+  const output = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
   const step = {
     id,
     command: commandLabel(command, args),
@@ -41,7 +44,8 @@ function runStep(id, command, args = [], { allowFailure = false } = {}) {
   if (!passed) {
     step.blocker = classifyFailure({
       error: result.error?.message ?? "",
-      output: `${result.stdout ?? ""}\n${result.stderr ?? ""}`,
+      output,
+      environmentUnavailable: /(?:ENOTFOUND|EAI_AGAIN|could not resolve host|no network)/i.test(output),
     });
   }
   steps.push(step);
@@ -68,6 +72,17 @@ function readBaseline() {
   }
 }
 
+function workspaceBoundaryState() {
+  const missing = requiredWorkspaceFiles.filter((file) => !fs.existsSync(path.join(root, file)));
+  return {
+    contract: "fresh-clone-workspace-v1",
+    requiredFiles: [...requiredWorkspaceFiles],
+    checkedFiles: requiredWorkspaceFiles.filter((file) => !missing.includes(file)),
+    missingFiles: missing,
+    siblingSource: false,
+  };
+}
+
 function submoduleState() {
   const result = spawnSync("git", ["submodule", "status", "--recursive"], {
     cwd: root,
@@ -87,11 +102,34 @@ function submoduleState() {
 
 const baseline = readBaseline();
 const nodeMajor = Number(process.versions.node.split(".")[0]);
+const workspaceBoundary = workspaceBoundaryState();
+const workspaceReady = workspaceBoundary.missingFiles.length === 0;
+steps.push({
+  id: "bootstrap: checkout boundary",
+  command: "workspace metadata",
+  passed: workspaceReady,
+  exitCode: workspaceReady ? 0 : 1,
+  ...(workspaceReady ? {} : {
+    blocker: classifyFailure({ blockerClass: "target-defect" }),
+    missingFiles: workspaceBoundary.missingFiles,
+  }),
+});
+const nodeReady = nodeMajor >= requiredNodeMajor;
+steps.push({
+  id: "toolchain: node",
+  command: "node --version",
+  passed: nodeReady,
+  exitCode: nodeReady ? 0 : 2,
+  observedVersion: process.version,
+  ...(nodeReady ? {} : {
+    blocker: classifyFailure({ prerequisite: true, error: `requires Node.js ${requiredNodeMajor}+; found ${process.version}` }),
+  }),
+});
 let pnpmVersion = null;
 const pnpmProbe = runStep("toolchain: pnpm", "pnpm", ["--version"], { allowFailure: true });
 if (pnpmProbe.passed) pnpmVersion = pnpmProbe.stdout.trim();
 
-const toolchainReady = nodeMajor >= requiredNodeMajor && pnpmVersion === requiredPnpm;
+const toolchainReady = nodeReady && pnpmVersion === requiredPnpm;
 if (nodeMajor < requiredNodeMajor) {
   limitations.push(`declared Node.js minimum is ${requiredNodeMajor}; found ${process.versions.node}`);
 }
@@ -103,7 +141,7 @@ if (toolchainReady && !skipSubmodules) {
   runStep("bootstrap: recursive submodules", "git", ["submodule", "update", "--init", "--recursive"]);
 }
 if (toolchainReady && !skipInstall) {
-  runStep("bootstrap: frozen dependencies", "pnpm", ["install", "--frozen-lockfile"]);
+  runStep("bootstrap: frozen dependencies", "pnpm", ["install", "--frozen-lockfile"], { env: { CI: "true" } });
 }
 if (toolchainReady) {
   runStep("baseline: strict submodule report", "node", ["scripts/verify-baseline.mjs", "--strict"]);
@@ -111,7 +149,12 @@ if (toolchainReady) {
 
 const submodules = submoduleState();
 const failedSteps = steps.filter((step) => !step.passed && !step.allowFailure);
-const passed = toolchainReady && failedSteps.length === 0;
+for (const step of failedSteps) {
+  if (step.blocker?.blockerClass === "environment-unavailable") {
+    limitations.push(`${step.id}: ${step.blocker.remediation}`);
+  }
+}
+const passed = workspaceReady && toolchainReady && failedSteps.length === 0;
 const evidence = createEvidenceEnvelope({
   evidenceClass: "local-workspace",
   evidenceState: "current",
@@ -127,9 +170,10 @@ const evidence = createEvidenceEnvelope({
 const report = {
   schemaVersion: 1,
   contract: "fresh-clone-bootstrap-v1",
-  outcome: passed ? "passed" : toolchainReady ? "failed" : "blocked",
+  outcome: passed ? "passed" : !workspaceReady ? "failed" : !toolchainReady ? "blocked" : "failed",
   requiredToolchain: { node: `>=${requiredNodeMajor}`, pnpm: requiredPnpm },
   observedToolchain: { node: process.version, pnpm: pnpmVersion },
+  workspaceBoundary,
   evidence,
   submodules,
   steps,
@@ -160,4 +204,4 @@ fs.mkdirSync(path.dirname(reportPath), { recursive: true });
 fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n");
 console.log(`Bootstrap ${report.outcome}: ${submodules.length} submodule(s) reported`);
 console.log("Report written; its evidence omits the local report path.");
-process.exitCode = report.outcome === "passed" ? 0 : toolchainReady ? 1 : 2;
+process.exitCode = report.outcome === "passed" ? 0 : toolchainReady && workspaceReady ? 1 : 2;

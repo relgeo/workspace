@@ -2,7 +2,7 @@
 
 **Status:** expected catalog selesai; implementation audit diterbitkan
 
-**Tanggal katalog:** 2026-10-30
+**Tanggal katalog:** 2026-10-30; reviewed boundary 2026-11-14
 
 **Compatibility line:** RelGeo DSL `0.5`
 
@@ -13,6 +13,8 @@
 **Reconciliation:** [Expected-versus-Observed Cross-Repository Orchestration Reconciliation](./reconciliation.md)
 
 **Status matrix:** [Cross-Repository Orchestration Capability Status Matrix](./status-matrix.md)
+
+**Reviewed freeze projection:** [expected-catalog.md](./expected-catalog.md)
 
 **Implementation-gap backlog:** [Cross-Repository Orchestration Implementation Gap Backlog](./implementation-gap-backlog.md)
 
@@ -167,7 +169,7 @@ boundary, dependency, and next action without changing the expected rows.
 
 | ID | Current status | Evidence | Owner / source boundary | Dependency | Remaining gap / next action |
 | --- | --- | --- | --- | --- | --- |
-| `ORCH-BASE-002` | `🌗` / `partial-current` | Historical 2026-10-30 verifier: 3 stale pins and 11 dirty checkouts. Current overlay: 11 of 12 manifest pins are stale; all child checkouts are clean and match gitlinks. | `relgeo/workspace`; [`scripts/verify-baseline.mjs`](../../../scripts/verify-baseline.mjs), [`docs/integration-baseline.json`](../../integration-baseline.json) | Validated child CI, clean child checkouts | Reconcile exact child SHAs through the sync PR, then rerun strict baseline and integration. |
+| `ORCH-BASE-002` | `🌗` / `partial-current` | Historical 2026-10-30 verifier remains historical. Current overlay: 11 child checkouts match current gitlinks; Flutter is clean but differs from the root pointer, and the recursive status has 1 non-clean marker. | `relgeo/workspace`; [`scripts/verify-baseline.mjs`](../../../scripts/verify-baseline.mjs), [`docs/integration-baseline.json`](../../integration-baseline.json) | Validated child CI, clean child checkouts | Reconcile the exact Flutter SHA through the sync PR, resolve the non-clean marker, then rerun strict baseline and integration. |
 | `ORCH-EVID-002` | `🌗` / `partial-current` | Shared evidence envelope separates local/public/manual classes; current baseline remains stale | `relgeo/workspace`; [`scripts/orchestration-contract.mjs`](../../../scripts/orchestration-contract.mjs) and gate/preflight reports | Refreshed baseline and Node 24 integration host | Produce a current canonical run and retain class/limitation labels. |
 | `ORCH-EVID-003` | `🌗` / `partial-current` | Reports bind root revision, baseline, compatibility line, toolchain, limitations, and child baseline entries | `relgeo/workspace` + child CI; integration/release report scripts | Validated child CI, artifact/report retention | Join current child revisions to one canonical evidence record. |
 | `ORCH-OPS-001` | `✔️` / `verified-static` | Owner/remediation/dependency fields and focused contract test pass | `relgeo/workspace` + stage owners; integration, release-preflight, and baseline scripts | Node 24 for full stage execution | Rerun the report contract with a supported integration stage. |

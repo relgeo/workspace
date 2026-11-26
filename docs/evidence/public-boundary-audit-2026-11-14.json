@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "recordType": "public-boundary-audit",
+  "contract": "public-boundary-v1",
+  "auditContract": "public-boundary-audit-v1",
+  "capturedAt": "2026-11-14",
+  "workspaceRevision": "63b28c4ebde79a9b7d83faa182fca06387272143",
+  "claimLimit": "This is local tracked-tree and available-artifact evidence; it is not proof of a deployed public runtime, registry consumer, or provider-side CI artifact.",
+  "trackedTree": {
+    "entries": 325,
+    "textFiles": 313,
+    "skippedBinaryOrLarge": 12,
+    "pathViolations": [],
+    "credentialMaterialFiles": [],
+    "credentialTestFixtures": [
+      "scripts/test-public-boundary-contract.mjs"
+    ],
+    "machineSpecificReferences": [
+      {
+        "path": "docs/capability-map/cli/coverage-validation-handoff.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/cross-surface/core-runtime-consumer-parity-2026-11-05.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/flutter-workbench/implementation-audit.md",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/flutter-workbench/implementation-gap-map.md",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/language-service/coverage-validation-handoff.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/language-service/implementation-audit.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/language-specification/closure-report.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/language-specification/coverage-validation-handoff.md",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/mcp/archive/implementation-audit-legacy.md",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/mcp/coverage-validation-handoff.md",
+        "count": 4,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/mcp/diagnostics-provenance-closure-2026-11-12.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/mcp/setup-operations-compatibility-closure-2026-11-12.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/capability-map/website-pages/root-verification-report.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/README.md",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/mcp-boundary-reconciliation-2026-11-12.json",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/mcp-cancelled-task-dispositions-2026-11-12.json",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/mcp-contract-alignment-2026-11-12.json",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/mcp-goal-level-closure-audit-2026-11-12.json",
+        "count": 11,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/mcp-goal-level-closure-audit-2026-11-13.json",
+        "count": 24,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/mcp-task-specific-verification-2026-11-12.json",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/audit-compatibility-behavior.mjs",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/check-compatibility.mjs",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/check-language-spec-vocabulary.mjs",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/check-mcp-evidence-boundaries.mjs",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/check-playground-artifact.mjs",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/run-conformance-fixtures.mjs",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/test-child-ci-sync-contract.mjs",
+        "count": 3,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/test-orchestration-contract.mjs",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/test-public-boundary-contract.mjs",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/test-workflow-security-policy.mjs",
+        "count": 9,
+        "scope": "source-or-evidence-reference"
+      }
+    ],
+    "passed": true
+  },
+  "publicArtifacts": {
+    "candidateRoots": [
+      "playground/dist",
+      "playground/build",
+      "relgeo.github.io/dist",
+      "relgeo.github.io/build",
+      "dist",
+      "build",
+      "public"
+    ],
+    "scannedRoots": [
+      "playground/dist",
+      "relgeo.github.io/dist"
+    ],
+    "unavailableRoots": [
+      "playground/build",
+      "relgeo.github.io/build",
+      "dist",
+      "build",
+      "public"
+    ],
+    "audit": {
+      "entries": 165,
+      "textFiles": 161,
+      "skippedBinaryOrLarge": 4,
+      "pathViolations": [],
+      "credentialMaterialFiles": [],
+      "credentialTestFixtures": [],
+      "machineSpecificReferences": [],
+      "passed": true
+    },
+    "status": "scanned-available-roots"
+  },
+  "consumers": {
+    "requiredFiles": [
+      "package.json",
+      "playground/package.json",
+      "relgeo.github.io/package.json",
+      "flutter/pubspec.yaml",
+      "mcp/pubspec.yaml",
+      ".github/workflows/integration.yml",
+      ".github/workflows/sync-validated-submodule-after-ci.yml",
+      "flutter/.github/workflows/flutter-ci.yml"
+    ],
+    "missingFiles": [],
+    "publicManifestsChecked": [
+      "playground/package.json",
+      "relgeo.github.io/package.json"
+    ],
+    "localSiblingDependencies": [],
+    "workflowFiles": [
+      ".github/workflows/integration.yml",
+      ".github/workflows/sync-validated-submodule-after-ci.yml",
+      "flutter/.github/workflows/desktop-release.yml",
+      "flutter/.github/workflows/flutter-ci.yml",
+      "mcp/.github/workflows/mcp-ci.yml",
+      "playground/.github/workflows/playground-ci.yml",
+      "relgeo.github.io/.github/workflows/pages.yml"
+    ],
+    "workflowViolations": [],
+    "passed": true
+  },
+  "capabilityMap": {
+    "source": "docs/capability-map/cross-repository/status-matrix.md",
+    "records": [
+      {
+        "id": "ORCH-BOOT-004",
+        "present": true,
+        "status": "🌗"
+      },
+      {
+        "id": "ORCH-PUB-001",
+        "present": true,
+        "status": "✔️"
+      },
+      {
+        "id": "ORCH-PUB-002",
+        "present": true,
+        "status": "🌗"
+      },
+      {
+        "id": "ORCH-PUB-003",
+        "present": true,
+        "status": "✔️"
+      },
+      {
+        "id": "ORCH-PUB-004",
+        "present": true,
+        "status": "✔️"
+      }
+    ]
+  },
+  "disposition": {
+    "status": "pass-with-artifact-boundary",
+    "owner": "relgeo/workspace + affected consumer owners",
+    "remediation": "Build public consumer artifacts on the declared Node 24/CI boundary, then rerun this audit against those exact output roots."
+  }
+}

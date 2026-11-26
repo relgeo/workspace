@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "recordType": "cross-repository-canonical-verification",
+  "contract": "cross-repository-verification-v1",
+  "capturedAt": "2026-11-14",
+  "workspaceRevision": "63b28c4ebde79a9b7d83faa182fca06387272143",
+  "boundary": {
+    "cleanCheckout": false,
+    "canonicalCiRunUrl": null,
+    "evidenceClass": "supporting-local",
+    "claimLimit": "No clean-checkout, canonical CI, registry, provider, or public-runtime pass is claimed from this managed workspace. Environment-unavailable results retain owner/remediation fields."
+  },
+  "observedToolchain": {
+    "node": "v22.23.2",
+    "pnpm": "10.33.3",
+    "requiredNode": ">=24",
+    "requiredPnpm": "10.33.3"
+  },
+  "checks": [
+    {
+      "id": "strict-baseline",
+      "command": "pnpm run verify:baseline:strict",
+      "boundary": "managed-local-workspace",
+      "result": "failed",
+      "exitCode": 1,
+      "outputExcerpt": "[FAIL] flutter: checkout matches gitlink — 3a9f7766f168b0077057fbedb571c3d4c8432bf2 != dc630bf19397ec20fff37ffa52f9f8e7e32b0f89\nSummary: 1 failed, 84 passed",
+      "artifact": "root gitlink and child checkout state",
+      "owner": "relgeo/workspace + Flutter owner",
+      "remediation": "Promote the validated Flutter child commit through a writable root Git index, refresh the baseline, and rerun strict verification."
+    },
+    {
+      "id": "baseline-synchronization",
+      "command": "pnpm run baseline:sync:check:json",
+      "boundary": "managed-local-workspace",
+      "result": "failed",
+      "exitCode": 1,
+      "outputExcerpt": "{\"ok\":false,\"promotion\":false,\"summary\":{\"total\":99,\"passed\":97,\"failed\":2},\"failures\":[{\"id\":\"submodules: recursive status\",\"detail\":\"12 entries, 1 non-clean markers\"},{\"id\":\"flutter: checkout matches gitlink\",\"detail\":\"3a9f7766f168b0077057fbedb571c3d4c8432bf2 != dc630bf19397ec20fff37ffa52f9f8e7e32b0f89\"}]}"
+    },
+    {
+      "id": "compatibility",
+      "command": "pnpm run compatibility:check",
+      "boundary": "managed-local-workspace",
+      "result": "passed",
+      "exitCode": 0,
+      "outputExcerpt": "summary: 301 passed, 0 failed",
+      "evidenceClass": "supporting-local"
+    },
+    {
+      "id": "conformance",
+      "command": "pnpm run conformance:fixtures",
+      "boundary": "supporting-local-record",
+      "result": "passed",
+      "exitCode": 0,
+      "outputExcerpt": "summary: 677 passed, 0 failed across 33 fixtures",
+      "evidenceClass": "supporting-local",
+      "claimLimit": "Fixture/conformance evidence does not replace Flutter runtime or canonical CI evidence."
+    },
+    {
+      "id": "bootstrap",
+      "command": "node scripts/bootstrap.mjs --skip-install --skip-submodules --report=/private/tmp/relgeo-canonical-bootstrap-2026-11-14.json",
+      "boundary": "Codex App Server managed sandbox",
+      "result": "environment-unavailable",
+      "exitCode": 2,
+      "outputExcerpt": "Bootstrap blocked: 12 submodule(s) reported\nReport written; its evidence omits the local report path.",
+      "artifact": "/private/tmp/relgeo-canonical-bootstrap-2026-11-14.json",
+      "owner": "relgeo/workspace",
+      "remediation": "Run the declared Node 24 bootstrap on a clean checkout with a writable recursive-submodule boundary."
+    },
+    {
+      "id": "local-integration",
+      "command": "node scripts/run-integration-gate.mjs --local --report=/private/tmp/relgeo-canonical-local-2026-11-14.json",
+      "boundary": "Codex App Server managed sandbox",
+      "result": "environment-unavailable",
+      "exitCode": 2,
+      "outputExcerpt": "RelGeo integration gate requires Node.js 24+; found 22.23.2.",
+      "artifact": "/private/tmp/relgeo-canonical-local-2026-11-14.json",
+      "owner": "relgeo/workspace",
+      "remediation": "Rerun the local integration gate on Node 24+ after the root baseline is promotable."
+    },
+    {
+      "id": "public-integration",
+      "command": "node scripts/run-integration-gate.mjs --public --report=/private/tmp/relgeo-canonical-public-2026-11-14.json",
+      "boundary": "Codex App Server managed sandbox",
+      "result": "environment-unavailable",
+      "exitCode": 2,
+      "outputExcerpt": "RelGeo integration gate requires Node.js 24+; found 22.23.2.",
+      "artifact": "/private/tmp/relgeo-canonical-public-2026-11-14.json",
+      "owner": "relgeo/workspace + public consumer owners",
+      "remediation": "Rerun the public-registry gate from a temporary checkout on Node 24 with registry/network access."
+    },
+    {
+      "id": "integration-evidence-contract",
+      "command": "pnpm run integration:evidence:test",
+      "boundary": "managed-local-workspace",
+      "result": "passed",
+      "exitCode": 0,
+      "outputExcerpt": "Joined integration evidence tests passed: current revision join and historical rejection.",
+      "evidenceClass": "supporting-local"
+    },
+    {
+      "id": "public-boundary",
+      "command": "pnpm run public-boundary:audit",
+      "boundary": "managed-local-workspace",
+      "result": "passed-with-boundary",
+      "exitCode": 0,
+      "outputExcerpt": "{\"contract\":\"public-boundary-audit-v1\",\"status\":\"pass-with-artifact-boundary\",\"trackedEntries\":325,\"trackedPassed\":true,\"artifactRootsScanned\":2,\"artifactRootsUnavailable\":5,\"consumerPassed\":true,\"workflowViolations\":0}",
+      "artifact": "docs/evidence/public-boundary-audit-2026-11-14.json",
+      "evidenceClass": "supporting-local",
+      "claimLimit": "Only tracked tree and available local artifact roots were scanned; canonical/public artifact availability remains separate."
+    }
+  ],
+  "disposition": {
+    "status": "not-canonical-green",
+    "owner": "relgeo/workspace orchestration owners and canonical CI operators",
+    "remediation": "Refresh the Flutter root gitlink and baseline, then rerun Node 24 bootstrap, strict baseline, local integration, public integration, and canonical artifact/provenance joins.",
+    "claimLimit": "Supporting-local passes are not promoted to clean-checkout, canonical CI, public registry, or deployed-runtime evidence."
+  }
+}

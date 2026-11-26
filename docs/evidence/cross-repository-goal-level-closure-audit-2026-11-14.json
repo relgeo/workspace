@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "recordType": "cross-repository-goal-level-closure-audit",
+  "capturedAt": "2026-11-14",
+  "goalId": "goal-1794594127244947",
+  "goalTitle": "Close Cross-Repository Orchestration Capability Debt to a Green Surface",
+  "workspaceRevision": "63b28c4ebde79a9b7d83faa182fca06387272143",
+  "closureDecision": "not-completed",
+  "closureEligible": false,
+  "basis": "The audit preserves supporting local evidence but does not promote unavailable Node 24, registry, Flutter SDK/cache, remote provider, clean root Git index, or canonical CI boundaries. Three implementation tasks are done, four environment-blocked tasks are cancelled, the documentation reconciliation task is active, and SuClos workflow integrity reports one missing typed executionAttempt timeline reference.",
+  "statusMatrixSnapshot": {
+    "path": "docs/capability-map/cross-repository/status-matrix.md",
+    "observedCounts": { "✔️": 21, "🌗": 18, "❌": 0, "➖": 0, "⏸️": 0, "⚠️": 0 },
+    "interpretation": "The matrix still contains actionable partial rows; zero ❌/⚠️ does not establish goal closure.",
+    "staleClaims": [
+      "Rows describing the 2026-11-08 baseline are not a substitute for the refreshed local manifest.",
+      "Current root Flutter gitlink promotion is not complete after child workflow commit 3a9f776.",
+      "Canonical provider/CI and public-runtime evidence is not present in this managed boundary."
+    ]
+  },
+  "criteria": [
+    {
+      "id": "criterion-1-catalog-reconciliation",
+      "result": "supporting-evidence-only",
+      "summary": "Expected catalog, audit, reconciliation, status matrix, and backlog artifacts exist and are linked, but unresolved partial rows remain.",
+      "evidence": ["docs/capability-map/cross-repository/expected-catalog.md", "docs/capability-map/cross-repository/reconciliation.md", "docs/capability-map/cross-repository/status-matrix.md"],
+      "revision": "63b28c4ebde79a9b7d83faa182fca06387272143"
+    },
+    {
+      "id": "criterion-2-fresh-checkout-bootstrap",
+      "result": "environment-unavailable",
+      "summary": "Bootstrap contract evidence passes, but the full Node 24/frozen install/recursive submodule run is not verified in the managed sandbox.",
+      "evidence": ["scripts/bootstrap.mjs", "scripts/test-bootstrap-and-evidence-contract.mjs", "command:node scripts/bootstrap.mjs --report=/private/tmp/relgeo-bootstrap-node24-final.json"],
+      "revision": "63b28c4ebde79a9b7d83faa182fca06387272143"
+    },
+    {
+      "id": "criterion-3-pinned-gitlink-baseline-synchronization",
+      "result": "blocked",
+      "summary": "Deterministic checker and mismatch injection pass, but the current Flutter child commit is not yet recorded in the root gitlink because the managed root Git index is not writable.",
+      "evidence": ["scripts/check-baseline-synchronization.mjs", "docs/integration-baseline.json", "command:pnpm run verify:baseline:strict"],
+      "revision": "63b28c4ebde79a9b7d83faa182fca06387272143"
+    },
+    {
+      "id": "criterion-4-public-boundary-hygiene",
+      "result": "supporting-evidence-only",
+      "summary": "Tracked-tree, available-artifact, consumer-manifest, and workflow scans now pass locally; five candidate artifact roots remain unavailable and canonical/public artifact evidence is not claimed.",
+      "evidence": ["scripts/audit-public-boundary.mjs", "docs/evidence/public-boundary-audit-2026-11-14.json", "scripts/test-public-boundary-audit.mjs"],
+      "revision": "63b28c4ebde79a9b7d83faa182fca06387272143"
+    },
+    {
+      "id": "criterion-5-cross-repository-synchronization",
+      "result": "blocked",
+      "summary": "Static child-CI workflow contracts pass and Flutter standalone MCP pin was corrected in child commit 3a9f776, but root pointer promotion and live CI/provider artifact evidence are unavailable.",
+      "evidence": [".github/workflows/sync-validated-submodule-after-ci.yml", "scripts/test-child-ci-sync-contract.mjs", "flutter/.github/workflows/flutter-ci.yml"],
+      "revision": "63b28c4ebde79a9b7d83faa182fca06387272143"
+    },
+    {
+      "id": "criterion-6-strict-and-canonical-integration-evidence",
+      "result": "environment-unavailable",
+      "summary": "Local static/fixture checks are preserved, but Node 24, registry, Flutter SDK/cache, remote provider, and public canonical runs are not available at the required boundaries.",
+      "evidence": ["docs/capability-map/cross-repository/coverage-validation-handoff.md", "scripts/run-integration-gate.mjs", "scripts/join-integration-evidence.mjs"],
+      "revision": "63b28c4ebde79a9b7d83faa182fca06387272143"
+    },
+    {
+      "id": "criterion-7-capability-map-and-status-synchronization",
+      "result": "open",
+      "summary": "Capability-map documents and current evidence links are reconciled; the status matrix now records 21 implemented and 18 partial rows, preserving actionable environment and pointer boundaries rather than reclassifying them as green.",
+      "evidence": ["docs/capability-map/cross-repository/status-matrix.md", "docs/capability-map/cross-repository/implementation-gap-backlog.md", "docs/capability-map/cross-repository/coverage-validation-handoff.md"],
+      "revision": "63b28c4ebde79a9b7d83faa182fca06387272143"
+    },
+    {
+      "id": "criterion-8-goal-level-closure-audit",
+      "result": "not-completed",
+      "summary": "SuClos records three done tasks, four cancelled environment-blocked tasks, one active documentation task, no follow-ups, and one workflow-integrity error; terminal native goal validation cannot pass yet.",
+      "evidence": ["suclos:goal-1794594127244947:get_goal_workflow_status", "suclos:goal-1794594127244947:audit_goal_follow_up_evidence"],
+      "revision": "63b28c4ebde79a9b7d83faa182fca06387272143"
+    }
+  ],
+  "taskExecutionMap": {
+    "done": [
+      "freeze-and-rebaseline-the-cross-repository-orchestration-catalog--4127244947",
+      "synchronize-gitlinks-baseline-manifests-and-revision-provenance--4127244947",
+      "close-public-boundary-hygiene-and-cross-surface-propagation-gaps--4127244947"
+    ],
+    "cancelled": [
+      "close-fresh-checkout-bootstrap-and-pinned-toolchain-gaps--4127244947",
+      "harden-cross-repository-ci-synchronization-and-evidence-automation--4127244947",
+      "run-final-cross-repository-orchestration-goal-level-closure-audit--4127244947",
+      "run-canonical-orchestration-verification-from-a-clean-boundary--4127244947"
+    ],
+    "todo": [],
+    "running": ["reconcile-orchestration-documentation-and-capability-evidence--4127244947"],
+    "followUps": 0,
+    "pendingDecisions": 0
+  },
+  "integrity": {
+    "consistent": false,
+    "errorCount": 1,
+    "findings": [{
+      "code": "missing_typed_timeline_reference",
+      "entityId": "event-1794630755339055",
+      "missingReference": "attempt-1794630755339014",
+      "owner": "SuClos workflow integrity",
+      "remediation": "Repair or reconcile the executionAttempt timeline reference before terminal goal validation.",
+      "claimLimit": "This audit does not claim timeline integrity or goal completion."
+    }]
+  },
+  "residualRequirements": [
+    { "id": "RESIDUAL-BOOTSTRAP", "owner": "relgeo/workspace + supported CI host", "remediation": "Run Node 24/pnpm 10.33.3 bootstrap with registry and writable recursive Git metadata.", "claimLimit": "Supporting contract evidence is not canonical fresh-checkout proof." },
+    { "id": "RESIDUAL-GITLINK", "owner": "relgeo/workspace", "remediation": "Stage Flutter gitlink 3a9f776, regenerate baseline, and rerun strict synchronization checks.", "claimLimit": "Current root checkout is not a promoted exact-SHA baseline." },
+    { "id": "RESIDUAL-CI", "owner": "child CI owners + relgeo/workspace", "remediation": "Observe successful Flutter/MCP/Playground main CI dispatch, provider revalidation, sync PR, and provenance artifact.", "claimLimit": "Static workflow assertions do not prove live provider behavior." },
+    { "id": "RESIDUAL-PUBLIC", "owner": "relgeo/workspace + consumer owners", "remediation": "Run current public boundary, registry consumer, artifact, and public-smoke evidence on the declared boundary.", "claimLimit": "No deployment, registry, or public-runtime claim is made." },
+    { "id": "RESIDUAL-SUCLOS-INTEGRITY", "owner": "SuClos workflow integrity", "remediation": "Resolve the missing typed executionAttempt timeline reference, then rerun goal-level validation.", "claimLimit": "Terminal native validation evidence is not yet valid for completion." }
+  ],
+  "evidenceLocatorRevisionMap": [
+    { "locator": "docs/evidence/cross-repository-goal-level-closure-audit-2026-11-14.json", "kind": "structured-audit", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "docs/capability-map/cross-repository/status-matrix.md", "kind": "capability-status", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "docs/integration-baseline.json", "kind": "baseline-manifest", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "scripts/check-baseline-synchronization.mjs", "kind": "deterministic-checker", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "docs/evidence/cross-repository-canonical-verification-2026-11-14.json", "kind": "verification-envelope", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "docs/evidence/public-boundary-audit-2026-11-14.json", "kind": "public-boundary-audit", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "docs/MATURATION-MASTER-PLAN.md", "kind": "master-plan-current-overlay", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "docs/REPOSITORY-MAP.md", "kind": "repository-ownership-map", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "docs/plans/01-cross-repo-integration-gate.md", "kind": "integration-plan-current-overlay", "revision": "63b28c4ebde79a9b7d83faa182fca06387272143" },
+    { "locator": "suclos:goal-1794594127244947:get_goal_workflow_status", "kind": "native-workflow-status", "revision": null }
+  ]
+}

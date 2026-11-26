@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const baseline = JSON.parse(fs.readFileSync(path.join(root, "docs", "integration-baseline.json"), "utf8"));
 const syncWorkflow = fs.readFileSync(
   path.join(root, ".github", "workflows", "sync-validated-submodule-after-ci.yml"),
   "utf8",
@@ -34,6 +35,13 @@ assert.match(syncWorkflow, /changed=false/);
 assert.match(syncWorkflow, /node scripts\/verify-baseline\.mjs --write/);
 assert.match(syncWorkflow, /pnpm run verify:baseline:strict/);
 assert.match(syncWorkflow, /pnpm run compatibility:check/);
+assert.match(syncWorkflow, /pnpm run baseline:sync:check/);
+assert.match(syncWorkflow, /validated-submodule-ci-provenance-v1/);
+assert.match(syncWorkflow, /source: \{/);
+assert.match(syncWorkflow, /runId: process\.env\.SOURCE_RUN_ID/);
+assert.match(syncWorkflow, /runUrl: process\.env\.SOURCE_RUN_URL/);
+assert.match(syncWorkflow, /childRevision: child\?\.revision/);
+assert.match(syncWorkflow, /actions\/upload-artifact@v6/);
 assert.match(syncWorkflow, /peter-evans\/create-pull-request@v7/);
 assert.match(syncWorkflow, /workflow_id: 'integration\.yml'/);
 assert.match(syncWorkflow, /persist-credentials: false/);
@@ -58,6 +66,13 @@ for (const [submodule, relativePath] of childWorkflows) {
   assert.match(workflow, /workflow: '\.github\/workflows\/[a-z-]+-ci\.yml'/);
   assert.match(workflow, /WORKSPACE_DISPATCH_TOKEN/);
 }
+
+const flutterWorkflow = fs.readFileSync(
+  path.join(root, "flutter", ".github", "workflows", "flutter-ci.yml"),
+  "utf8",
+);
+const mcpBaselineRevision = baseline.submodules.find((entry) => entry.path === "mcp")?.revision;
+assert.match(flutterWorkflow, new RegExp(`repository: relgeo/mcp[\\s\\S]*?ref: ${mcpBaselineRevision}`));
 
 const verifier = fs.readFileSync(path.join(root, "scripts", "verify-baseline.mjs"), "utf8");
 assert.match(verifier, /function buildManifest/);

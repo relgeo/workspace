@@ -3,7 +3,7 @@
 **Status:** compatibility entry point; the canonical reporting view is
 [`status-matrix.md`](./status-matrix.md)
 
-**As of:** 2026-11-05
+**As of:** 2026-11-14
 
 This file exists for consumers that expect the generic `capability-matrix.md`
 entry point. It does not duplicate the 39-row matrix. The canonical

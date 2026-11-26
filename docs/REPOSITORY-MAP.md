@@ -19,6 +19,21 @@ Peta ini menjelaskan boundary publik dan ownership pada root workspace.
 
 Root `docs/` dan `scripts/` bukan submodule. Keduanya menjadi bagian dari repository `relgeo/workspace`.
 
+## Current orchestration evidence boundary — 2026-11-14
+
+For the current Cross-Repository Orchestration review, the root revision is
+`63b28c4ebde79a9b7d83faa182fca06387272143`. Root-owned orchestration source,
+baseline, workflow, and evidence are authoritative at this path; child source
+changes remain authoritative in the named child repository and are represented
+at root only by the gitlink and baseline metadata. The current evidence envelope
+is [`cross-repository-canonical-verification-2026-11-14.json`](./evidence/cross-repository-canonical-verification-2026-11-14.json).
+
+Supporting-local compatibility/conformance results are not canonical CI or
+public-runtime evidence. The current Flutter child checkout is ahead of its
+root gitlink, so the baseline is not promotable until a validated sync flow can
+write the root index and regenerate the manifest. Node 24, registry/public
+consumer, provider CI, and deployed-runtime results remain separate boundaries.
+
 ## Capability inventory boundary
 
 `docs/capability-map/INVENTORY-PROTOCOL.md` menetapkan aturan discovery dan

@@ -80,7 +80,7 @@ operational and workflow boundaries. Current authoritative statuses are:
 
 | Capability | Current status | Evidence boundary |
 | --- | --- | --- |
-| `ORCH-BASE-002` | `🌗` | Strict baseline still reports stale manifest revisions and dirty child worktrees. |
+| `ORCH-BASE-002` | `🌗` | Strict baseline reports 6 stale manifest revisions; all child worktrees are clean, but the Node 24 gate is unavailable on this host. |
 | `ORCH-EVID-002` | `🌗` | Shared envelope is present, but current baseline/evidence refresh remains pending. |
 | `ORCH-EVID-003` | `🌗` | Exact revision/baseline fields are emitted, but current pointers still drift. |
 | `ORCH-OPS-001` | `✔️` | Shared owner/remediation/dependency fields and focused fixture pass. |

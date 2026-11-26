@@ -15,7 +15,8 @@ concurrency:
 
 jobs:
   flutter:
-    runs-on: ubuntu-latest
+    # Keep the canonical Linux image stable; do not follow the mutable latest label.
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout workspace and submodules
@@ -27,7 +28,23 @@ jobs:
       - name: Setup Node.js for the workspace runner
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 24.21.0
+
+      - name: Setup pnpm for the workspace runner
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.33.3
+
+      - name: Verify canonical runner contract
+        run: |
+          set -euo pipefail
+          test "$(node --version)" = "v24.21.0"
+          test "$(pnpm --version)" = "10.33.3"
+          test -z "$(git status --porcelain)"
+          if git submodule status --recursive | grep -q '^-'; then
+            echo "An expected submodule is not initialized" >&2
+            exit 1
+          fi
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -55,7 +72,8 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   flutter-macos:
-    runs-on: macos-latest
+    # Explicit Apple Silicon image for reproducible macOS desktop evidence.
+    runs-on: macos-15
     timeout-minutes: 45
     env:
       LANG: en_US.UTF-8
@@ -120,12 +138,12 @@ jobs:
             echo "- Flutter channel: stable"
             echo "- Flutter version: 3.41.9"
             echo "- Command: flutter build macos --no-pub --release"
-            echo "- Runner: macos-latest"
+            echo "- Runner: macos-15"
             echo "- Artifact: relgeo-flutter-macos-${{ runner.arch }}-${{ github.sha }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   flutter-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - name: Checkout workspace and submodules
@@ -197,12 +215,13 @@ jobs:
             echo "- Flutter channel: stable"
             echo "- Flutter version: 3.41.9"
             echo "- Command: flutter build linux --no-pub --release"
-            echo "- Runner: ubuntu-latest"
+            echo "- Runner: ubuntu-24.04"
             echo "- Artifact: relgeo-flutter-linux-x64-${{ github.sha }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   flutter-windows:
-    runs-on: windows-latest
+    # Pin the Windows image used for desktop artifact evidence.
+    runs-on: windows-2022
     timeout-minutes: 45
     steps:
       - name: Checkout workspace and submodules
@@ -274,12 +293,12 @@ jobs:
             "- Flutter channel: stable",
             "- Flutter version: 3.41.9",
             "- Command: flutter build windows --no-pub --release",
-            "- Runner: windows-latest",
+            "- Runner: windows-2022",
             "- Artifact: relgeo-flutter-windows-x64-${{ github.sha }}"
           ) | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
 
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout workspace and submodules
@@ -296,8 +315,27 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 24.21.0
           cache: pnpm
+
+      - name: Verify canonical runner contract
+        run: |
+          set -euo pipefail
+          echo "runner_os=$RUNNER_OS"
+          echo "runner_arch=${{ runner.arch }}"
+          echo "image_os=${ImageOS:-unknown}"
+          echo "image_version=${ImageVersion:-unknown}"
+          node --version
+          pnpm --version
+          git submodule status --recursive
+          test "$(node --version)" = "v24.21.0"
+          test "$(pnpm --version)" = "10.33.3"
+          if git submodule status --recursive | grep -q '^-'; then
+            echo "An expected submodule is not initialized" >&2
+            exit 1
+          fi
+          curl -fsSIL --max-time 10 https://registry.npmjs.org/
+          test -z "$(git status --porcelain)"
 
       - name: Check contract compatibility matrix
         run: pnpm run compatibility:check
@@ -356,7 +394,7 @@ jobs:
 
   public:
     needs: verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - name: Checkout workspace and submodules
@@ -373,7 +411,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 24.21.0
           cache: pnpm
 
       - name: Run public-registry integration gate

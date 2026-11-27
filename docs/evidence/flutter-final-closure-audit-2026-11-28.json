@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "flutter-workbench-final-closure/v1",
+  "capturedAt": "2026-11-28",
+  "surface": "flutter-workbench",
+  "rowSource": "docs/evidence/rebaseline-disposition-register-2026-11-27.json",
+  "revisionTuple": {
+    "root": "2bc298ee24c3a45679ce02c399e1014012f8bd12",
+    "flutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626"
+  },
+  "beforeAfter": {
+    "before": { "total": 61, "statusCounts": { "✔️": 44, "🌗": 17, "❌": 0, "➖": 0, "⏸️": 0, "⚠️": 0 }, "heldIds": ["DOC-08", "IO-01", "IO-02", "EDIT-04", "CONTRACT-01", "CONTRACT-02", "CONTRACT-03", "CANVAS-03", "CANVAS-04", "CMD-03", "A11Y-01", "A11Y-02", "WINDOW-01", "PLAT-01", "PLAT-02", "PLAT-03", "PLAT-04"] },
+    "after": { "total": 61, "statusCounts": { "✔️": 44, "🌗": 0, "❌": 0, "➖": 0, "⏸️": 17, "⚠️": 0 }, "heldIds": ["DOC-08", "IO-01", "IO-02", "EDIT-04", "CONTRACT-01", "CONTRACT-02", "CONTRACT-03", "CANVAS-03", "CANVAS-04", "CMD-03", "A11Y-01", "A11Y-02", "WINDOW-01", "PLAT-01", "PLAT-02", "PLAT-03", "PLAT-04"] },
+    "transition": "17 🌗 → 17 ⏸️; 44 ✔️ → 44 ✔️",
+    "rowDetailSource": "The register contains one owner/source/evidence/revision/dependency/remediation/claim-limit row for each of the 61 IDs."
+  },
+  "statusClaim": "Zero actionable 🌗/❌/⚠️. The 17 ⏸️ rows are explicit scope/environment holds, not unsupported green claims.",
+  "claimLimits": [
+    "Implementation status is separate from host, accessibility, OS, packaged-runtime, signing, deployment, and provenance evidence.",
+    "Native picker, forced-exit/relaunch, assistive technology, OS shortcut/window-manager delivery, and packaged runtime remain unverified where the register says so.",
+    "Raw SVG presentation/byte equality, Android/iOS, custom title bar, publishing, signing, and deployment remain explicit scope boundaries.",
+    "Current MCP Dart runtime and TypeScript semantic replay limitations are named in the cross-surface evidence; no unavailable check is promoted to green."
+  ],
+  "artifactReferences": {
+    "expectedCatalog": "docs/plans/12-flutter-workbench-capability-baseline.md",
+    "implementationAudit": "docs/capability-map/flutter-workbench/implementation-gap-map.md",
+    "reconciliation": "docs/capability-map/flutter-workbench/reconciliation.md",
+    "statusMatrix": "docs/capability-map/flutter-workbench/status-matrix.md",
+    "backlog": "docs/capability-map/flutter-workbench/implementation-gap-backlog.md",
+    "coverageHandoff": "docs/capability-map/flutter-workbench/coverage-validation-handoff.md",
+    "masterPlan": "docs/MATURATION-MASTER-PLAN.md"
+  }
+}

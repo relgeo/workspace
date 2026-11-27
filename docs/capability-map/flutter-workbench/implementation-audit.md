@@ -3,7 +3,7 @@
 # Flutter implementation audit — evidence summary
 
 > **Current-head rebaseline — 2026-11-27:** Current source boundary is root
-> `723c2c0` with Flutter `52e5bd2`; all 61 ID dispositions are in the
+> `2bc298e` with Flutter `52e5bd2`; all 61 ID dispositions are in the
 > [machine-readable register](../../evidence/rebaseline-disposition-register-2026-11-27.json).
 > The register records 44 `✔️` source-boundary implementations and 17 `⏸️`
 > holds. The historical test and CI records below remain tied to their recorded
@@ -187,7 +187,7 @@ requires the named command and host evidence boundaries.
 
 | Boundary | Recorded value | Interpretation |
 |---|---|---|
-| Workspace `HEAD` | `723c2c0b05483e9cdfc2cd84f6fbad10b5184597` | Current root revision used for the rebaseline. |
+| Workspace `HEAD` | `2bc298ee24c3a45679ce02c399e1014012f8bd12` | Current root revision used for the rebaseline. |
 | Flutter child `HEAD` | `52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current child revision used for source inspection and analyzer boundary. |
 | Worktree state | Root and `flutter/` are intentionally dirty | The implementation/doc changes are uncommitted task work. No commit or release artifact is implied by these hashes; preserve unrelated worktree changes. |
 | Changed Flutter boundary | `flutter/lib/src/ui/`, `flutter/lib/src/features/inspector/`, and focused `flutter/test/` files | Recovery, scene graph, selection, canvas, inspector, and command wiring plus focused tests. |

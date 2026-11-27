@@ -2,7 +2,7 @@
 
 > **Current-head rebaseline — 2026-11-27.** The canonical one-row-per-ID
 > disposition is [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
-> It joins the 61 expected IDs to current root `723c2c0` and Flutter `52e5bd2`,
+> It joins the 61 expected IDs to current root `2bc298e` and Flutter `52e5bd2`,
 > while retaining implementation status separately from evidence and disposition.
 > The former 17 `🌗` rows are now explicit `⏸️` holds with owner, remediation,
 > dependency, revision, evidence locator, and claim limit; this is not a claim
@@ -24,7 +24,7 @@
 
 | Evidence source | Role in this reconciliation |
 | --- | --- |
-| `workspace@723c2c0b05483e9cdfc2cd84f6fbad10b5184597` | Current root `HEAD`, captured from the clean root checkout. |
+| `workspace@2bc298ee24c3a45679ce02c399e1014012f8bd12` | Current root `HEAD`, captured from the clean root checkout. |
 | `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current Flutter gitlink and child `HEAD`; source audit boundary for this rebaseline. |
 | `spec@26ff53278d77d916b0e0e6c26ca9ab496232fbc0`, `mcp@ad3079bb9658ea44f58ae0a6872a042473e95626` | Current normative spec snapshot and pure-Dart host contract inputs. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, active desktop/platform gates, compatibility line, and historical-versus-current evidence rules. |

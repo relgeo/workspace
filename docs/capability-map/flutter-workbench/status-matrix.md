@@ -1,7 +1,7 @@
 # Flutter Workbench — Capability Status Matrix
 
 > **Current-head rebaseline — 2026-11-27.** This matrix is synchronized to
-> root `723c2c0` and Flutter `52e5bd2`. The 17 formerly `🌗` rows are explicit
+> root `2bc298e` and Flutter `52e5bd2`. The 17 formerly `🌗` rows are explicit
 > `⏸️` dispositions in the [machine-readable register](../../evidence/rebaseline-disposition-register-2026-11-27.json),
 > with implementation status and evidence limitations kept separate.
 

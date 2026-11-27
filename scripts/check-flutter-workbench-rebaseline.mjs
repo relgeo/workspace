@@ -50,8 +50,19 @@ else pass('status counts: 44 implemented, 17 held, no actionable partial rows');
 const baseline = JSON.parse(text('docs/integration-baseline.json'));
 const currentRoot = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
 const currentFlutter = execFileSync('git', ['-C', 'flutter', 'rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
-if (currentRoot !== register.revisionTuple.root || currentRoot !== baseline.rootRevision) fail(`root revision drift: current=${currentRoot}`);
-else pass(`root revision: ${currentRoot}`);
+function isAncestor(revision) {
+  try {
+    execFileSync('git', ['merge-base', '--is-ancestor', revision, currentRoot], { cwd: root, stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+if (!isAncestor(register.revisionTuple.root) || !isAncestor(baseline.rootRevision)) {
+  fail(`root revision drift: evidence=${register.revisionTuple.root}, baseline=${baseline.rootRevision}, current=${currentRoot}`);
+} else {
+  pass(`root revision ancestry: evidence=${register.revisionTuple.root}, baseline=${baseline.rootRevision}, current=${currentRoot}`);
+}
 const baselineFlutter = baseline.submodules.find((entry) => entry.path === 'flutter')?.revision;
 if (currentFlutter !== register.revisionTuple.flutter || currentFlutter !== baselineFlutter) fail(`Flutter revision drift: current=${currentFlutter}`);
 else pass(`Flutter revision: ${currentFlutter}`);

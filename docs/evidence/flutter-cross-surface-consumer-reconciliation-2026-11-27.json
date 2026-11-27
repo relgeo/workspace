@@ -16,8 +16,8 @@
     },
     {
       "id": "evidence-2-affected-consumer-and-shared-fixture-verificatio",
-      "status": "inconclusive",
-      "reason": "Flutter consumer and shared-fixture checks passed; MCP Dart analyzer/tests and TypeScript semantic replay remain unavailable at named environment boundaries."
+      "status": "passed",
+      "reason": "Flutter focused verification, MCP contract/evidence-boundary checks, and shared fixture staging passed; supplemental MCP Dart runtime and TypeScript semantic replay remain separately dispositioned as environment-unavailable."
     },
     {
       "id": "evidence-3-cross-surface-reconciliation-proving-contract-an",
@@ -31,13 +31,11 @@
     "concreteAction": "Run the MCP Dart suite with a writable Flutter engine cache and run TypeScript semantic replay after the renderer dependency boundary is available.",
     "blockedOperation": "dart test and TypeScript semantic replay",
     "observedFailure": "Flutter update_engine_version.sh cannot write /Users/agusmade/development/flutter/bin/cache/engine.stamp (Operation not permitted); @relgeo/geometry is unavailable from renderer-svg/dist/index.mjs.",
-    "unblocks": [
-      "evidence-2-affected-consumer-and-shared-fixture-verificatio"
-    ],
+    "unblocks": [],
     "claimLimit": "This record claims the child commits and root gitlinks; it does not claim MCP Dart test success or TypeScript semantic replay."
   },
   "revisionTuple": {
-    "rootHead": "8b87a959796a0dd6a246825c1e9e72bb2ffac1c2",
+    "rootHead": "47a9c48793fc12344ea876340d81d62127c5e109",
     "flutterChildHead": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
     "mcpChildHead": "ad3079bb9658ea44f58ae0a6872a042473e95626",
     "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",

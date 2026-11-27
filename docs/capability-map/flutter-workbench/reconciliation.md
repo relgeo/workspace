@@ -2,7 +2,7 @@
 
 > **Current-head rebaseline — 2026-11-27.** The canonical one-row-per-ID
 > disposition is [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
-> It joins the 61 expected IDs to current root `707843a` and Flutter `20253e8`,
+> It joins the 61 expected IDs to current root `723c2c0` and Flutter `52e5bd2`,
 > while retaining implementation status separately from evidence and disposition.
 > The former 17 `🌗` rows are now explicit `⏸️` holds with owner, remediation,
 > dependency, revision, evidence locator, and claim limit; this is not a claim
@@ -24,9 +24,9 @@
 
 | Evidence source | Role in this reconciliation |
 | --- | --- |
-| `workspace@707843aae50608d48fb0d6ff0fc8780cc961b891` | Current root `HEAD`, captured from the clean root checkout. |
+| `workspace@723c2c0b05483e9cdfc2cd84f6fbad10b5184597` | Current root `HEAD`, captured from the clean root checkout. |
 | `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current Flutter gitlink and child `HEAD`; source audit boundary for this rebaseline. |
-| `spec@26ff53278d77d916b0e0e6c26ca9ab496232fbc0`, `mcp@109bd599fc5b4881f3a3ada128da7e9d548ab936` | Current normative spec snapshot and pure-Dart host contract inputs. |
+| `spec@26ff53278d77d916b0e0e6c26ca9ab496232fbc0`, `mcp@ad3079bb9658ea44f58ae0a6872a042473e95626` | Current normative spec snapshot and pure-Dart host contract inputs. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, active desktop/platform gates, compatibility line, and historical-versus-current evidence rules. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Repository ownership and Flutter surface boundary. |
 | [`docs/capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) and the capability-map artifacts | Discovery categories, status/evidence separation, expected-but-missing rule, and one-to-one coverage checks. |

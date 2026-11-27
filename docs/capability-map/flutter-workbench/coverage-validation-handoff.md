@@ -1,7 +1,7 @@
 # Flutter Workbench — Coverage Validation and Handoff
 
 > **Current-head rebaseline — 2026-11-27:** The 61-ID join is synchronized to
-> root `707843a` and Flutter `20253e8`. The machine-readable disposition
+> root `723c2c0` and Flutter `52e5bd2`. The machine-readable disposition
 > register is [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
 
 > **Historical release checkpoint — 2026-10-31:** Flutter `60ec760` passed CI run `41184291670`; release run `41184693233` created an unpublished v1.0.1 draft with macOS universal, Linux x64, and Windows x64 archives/checksums. These are build/artifact facts, not target-host launch proof. The 307-test suite below is historical evidence from the 2026-10-30 pointer. Native picker, MCP packaged smoke, AT, signing, notarization, and install workflow remain open.
@@ -172,7 +172,7 @@ artifact channel, or consumer combination has been executed.
 | `Q-FW-003` | DSL 0.5.x active fixture promotion dan semantic SVG comparator belum dibuktikan pada current pointer; raw/presentation parity tetap scope non-goal. | `CONTRACT-01..03`, `GAP-FW-002` |
 | `Q-FW-004` | Graph UX, stable object identity, selection semantics, hit-testing tolerance, dan keyboard selection behavior belum didefinisikan. | `CANVAS-05`, `VIEW-05`, `GAP-FW-004` |
 | `Q-FW-005` | Shortcut map per OS, native accessibility tree/VoiceOver/screen reader, dan native close/quit lifecycle belum memiliki current runtime evidence. | `CMD-03`, `A11Y-01/02`, `WINDOW-01`, `GAP-FW-005` |
-| `Q-FW-006` | Current pointer `20253e8` is joined to root `707843a`; launch/MCP smoke and current artifact runtime remain unverified. | `PLAT-01..04`, audit §1, `GAP-FW-006` |
+| `Q-FW-006` | Current pointer `52e5bd2` is joined to root `723c2c0`; launch/MCP smoke and current artifact runtime remain unverified. | `PLAT-01..04`, audit §1, `GAP-FW-006` |
 | `Q-FW-007` | Android/iOS, custom title bar, raw SVG byte equality, signed distribution, dan full DSL promotion adalah deferred/not applicable scope decisions, bukan untracked desktop gaps. | `SCOPE-01..05`, reconciliation scope findings |
 
 Fresh local analyzer/test success is retained as local evidence only; it does

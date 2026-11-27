@@ -1,7 +1,7 @@
 # Flutter Workbench — Implementation Audit and Gap Map
 
 > **Current-head rebaseline — 2026-11-27:** This audit is synchronized to
-> workspace `707843a` and Flutter `20253e8`. Implementation findings remain
+> workspace `723c2c0` and Flutter `52e5bd2`. Implementation findings remain
 > source/evidence observations; the canonical disposition for every ID is in
 > [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
 > The former 17 partial queue rows are explicitly `⏸️` held there with owner,
@@ -9,7 +9,7 @@
 > claim limit. A held disposition does not promote source, host, contract, or
 > packaged-runtime claims.
 
-> **Historical release checkpoint — 2026-10-31:** Flutter pointer `60ec76042b369659e4d048b2a53ea3a66a384de3` passed CI run `41184291670`; release workflow `41184693233` produced a v1.0.1 draft with macOS universal, Linux x64, and Windows x64 archives and checksums. Those records remain historical because current HEAD points to Flutter `20253e8`. They do not close PLAT-01..03 target runtime smoke or PLAT-04 current artifact join. ChatGPT Desktop edit interoperability remains a separate live-client check.
+> **Historical release checkpoint — 2026-10-31:** Flutter pointer `60ec76042b369659e4d048b2a53ea3a66a384de3` passed CI run `41184291670`; release workflow `41184693233` produced a v1.0.1 draft with macOS universal, Linux x64, and Windows x64 archives and checksums. Those records remain historical because current HEAD points to Flutter `52e5bd2`. They do not close PLAT-01..03 target runtime smoke or PLAT-04 current artifact join. ChatGPT Desktop edit interoperability remains a separate live-client check.
 
 > **Coverage statement — 2026-11-27.** Audit ini membandingkan seluruh 61 ID
 > capability pada [expected catalog](./expected-capability-catalog.md);
@@ -34,7 +34,7 @@
 | Field | Nilai |
 | --- | --- |
 | Surface | Flutter desktop authoring workbench, semantic runtime, geometry/SVG consumer |
-| Detailed source audit checkout (2026-11-27) | `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` (`desktop-v1.0.1-7-g20253e8`); root gitlink and child checkout agree. |
+| Detailed source audit checkout (2026-11-27) | `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` (`desktop-v1.0.1-8-g52e5bd2`); root gitlink and child checkout agree. |
 | Host | macOS `14.5`, `arm64` |
 | Flutter/Dart | Flutter stable `3.41.9` / Dart `3.11.5` dari SDK lokal |
 | Historical local rerun (2026-10-30) | `flutter analyze --no-pub` — **PASS, No issues found**; `flutter test --no-pub --reporter compact` — **PASS, 307 tests passed**. Golden suites emit a configuration warning because the `golden` tag is not declared in `dart_test.yaml`; this did not fail the run. |
@@ -43,7 +43,7 @@
 | Fresh web build | **Not verified / environment unavailable**: `flutter build web --no-pub` stopped at `/Users/agusmade/development/flutter/bin/internal/update_engine_version.sh:64` because the SDK could not write `/Users/agusmade/development/flutter/bin/cache/engine.stamp` (`Operation not permitted`). This is not classified as a source/build defect. |
 | Fresh macOS build | **Not verified** karena blocker SDK yang sama; tidak diklaim sebagai build failure source |
 | Historical/canonical CI | Run `37832260326`, root `328c869`, Flutter `ea8e754`; historical, bukan pointer yang sedang diaudit |
-| Workspace baseline pointer | `docs/integration-baseline.json` regenerated at root `707843a`; Flutter `20253e8b...` matches the gitlink and child checkout. |
+| Workspace baseline pointer | `docs/integration-baseline.json` regenerated at root `723c2c0`; Flutter `52e5bd2b...` matches the gitlink and child checkout. |
 
 ### 1.1 Status implementation dan evidence
 
@@ -178,10 +178,10 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | --- | --- | --- | --- | --- |
 | EXPORT-01 | implemented at injected boundary | E1/E2/E3 | `WorkbenchSvgExportController`, `SvgExporter`, File → Export → SVG → Model, controller and semantic SVG tests. | Native destination dialog and actual file write on target OS not E5 verified. |
 | EXPORT-02 | implemented at injected boundary | E1/E2 | Model/Sheet View export commands and target selector/widget tests exist. | Native dialog/write and all sheet presentation policies not E5 verified. |
-| PLAT-01 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `20253e8` has no current target-host launch record in this workspace. | Target macOS launch, native window/keyboard/VoiceOver behavior, and packaged MCP smoke remain unverified. |
-| PLAT-02 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `20253e8` has no current target-host launch record in this workspace. | No target Linux artifact launch/session smoke; Wayland/X11, picker, input, clean exit, and packaged MCP remain unverified. |
-| PLAT-03 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `20253e8` has no current target-host launch record in this workspace. | Windows 11 extraction/launch/DLL/SmartScreen/input and packaged MCP smoke remain unverified; signing/installer work is separate. |
-| PLAT-04 | partial | E4 current tuple manifest; artifact/runtime join not verified | `docs/integration-baseline.json` now joins root `707843a` and Flutter `20253e8`; no current artifact checksum/runtime record is attached. | Baseline tuple is current, but artifact build, launch, publish, and deployment claims remain unverified. |
+| PLAT-01 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `52e5bd2` has no current target-host launch record in this workspace. | Target macOS launch, native window/keyboard/VoiceOver behavior, and packaged MCP smoke remain unverified. |
+| PLAT-02 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `52e5bd2` has no current target-host launch record in this workspace. | No target Linux artifact launch/session smoke; Wayland/X11, picker, input, clean exit, and packaged MCP remain unverified. |
+| PLAT-03 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `52e5bd2` has no current target-host launch record in this workspace. | Windows 11 extraction/launch/DLL/SmartScreen/input and packaged MCP smoke remain unverified; signing/installer work is separate. |
+| PLAT-04 | partial | E4 current tuple manifest; artifact/runtime join not verified | `docs/integration-baseline.json` now joins root `723c2c0` and Flutter `52e5bd2`; no current artifact checksum/runtime record is attached. | Baseline tuple is current, but artifact build, launch, publish, and deployment claims remain unverified. |
 
 ## 4. Scope classifications outside the active implementation rows
 

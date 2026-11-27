@@ -6,7 +6,7 @@ explicit owner/remediation/claim limits and are not actionable queue items
 
 The canonical machine-readable join is
 [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
-It is synchronized to root `707843a` and Flutter `20253e8`. Implementation
+It is synchronized to root `723c2c0` and Flutter `52e5bd2`. Implementation
 status is intentionally separate from the `⏸️` disposition symbol.
 
 **Expected source:** [`expected-capability-catalog.md`](./expected-capability-catalog.md) (canonical baseline: [`12-flutter-workbench-capability-baseline.md`](../../plans/12-flutter-workbench-capability-baseline.md))
@@ -21,7 +21,7 @@ status is intentionally separate from the `⏸️` disposition symbol.
 
 | Source | Backlog use |
 | --- | --- |
-| `workspace@707843aae50608d48fb0d6ff0fc8780cc961b891` | Current root `HEAD`; root/submodule tuple is captured in `docs/integration-baseline.json`. |
+| `workspace@723c2c0b05483e9cdfc2cd84f6fbad10b5184597` | Current root `HEAD`; root/submodule tuple is captured in `docs/integration-baseline.json`. |
 | `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current Flutter child and gitlink pointer; source audit boundary for this rebaseline. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, compatibility line, desktop delivery gates, and evidence provenance rules. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Ownership boundary for `relgeo/flutter` and `relgeo/workspace`. |

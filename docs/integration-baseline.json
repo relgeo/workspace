@@ -4,7 +4,7 @@
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
   "capturedAt": "2026-11-27",
-  "rootRevision": "707843aae50608d48fb0d6ff0fc8780cc961b891",
+  "rootRevision": "723c2c0b05483e9cdfc2cd84f6fbad10b5184597",
   "compatibilityLine": "0.5",
   "toolchain": {
     "node": "24.21.0",
@@ -107,7 +107,7 @@
     },
     {
       "path": "mcp",
-      "revision": "109bd599fc5b4881f3a3ada128da7e9d548ab936"
+      "revision": "ad3079bb9658ea44f58ae0a6872a042473e95626"
     }
   ]
 }

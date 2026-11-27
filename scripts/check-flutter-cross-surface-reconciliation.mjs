@@ -25,11 +25,13 @@ for (const [key, value] of Object.entries(current)) {
 }
 if (evidence.contractRevision !== 'mcp-contract-2026-11-12-r2') fail('contract revision is not r2');
 if (evidence.childRepositories?.find((repo) => repo.path === 'flutter')?.status !== 'committed') fail('Flutter child commit is not recorded as committed');
-if (evidence.childRepositories?.find((repo) => repo.path === 'mcp')?.status !== 'working-tree-changes-uncommitted') fail('MCP commit limitation is not explicit');
+if (evidence.childRepositories?.find((repo) => repo.path === 'mcp')?.status !== 'committed') fail('MCP child commit is not recorded as committed');
 if (evidence.sharedFixtures?.result !== 'passed') fail('shared fixture staging is not passed');
 if (!evidence.consumerVerification?.some((entry) => entry.consumer === 'Flutter' && entry.status === 'passed')) fail('Flutter consumer pass is missing');
 if (!evidence.consumerVerification?.some((entry) => entry.consumer === 'MCP/root contract' && entry.status === 'passed')) fail('MCP/root structural consumer pass is missing');
-if (!evidence.reconciliation?.deferred?.includes('MCP child commit and root mcp gitlink')) fail('MCP gitlink limitation is not recorded');
+if (!evidence.rootGitlinks?.flutter?.indexUpdate?.startsWith('committed-in-root-')) fail('Flutter root gitlink is not recorded as committed');
+if (!evidence.rootGitlinks?.mcp?.indexUpdate?.startsWith('committed-in-root-')) fail('MCP root gitlink is not recorded as committed');
+if (!evidence.reconciliation?.deferred?.includes('MCP Dart analyzer/tests/transport at managed sandbox boundary')) fail('MCP test boundary is not recorded');
 
 const requiredCoverage = [
   'criterion-1-perubahan-flutter-yang-memerlukan-penyesuaian-li',
@@ -43,10 +45,15 @@ for (const id of requiredCoverage) {
   if (!entry) fail(`validation coverage is missing ${id}`);
   if (!entry?.reason) fail(`validation coverage has no reason for ${id}`);
 }
+if (evidence.requiredAccess?.status !== 'environment-unavailable') fail('required access disposition is not environment-unavailable');
+if (!evidence.requiredAccess?.concreteAction) fail('required access concrete action is missing');
+if (!evidence.requiredAccess?.observedFailure) fail('required access observed failure is missing');
+if (!evidence.requiredAccess?.claimLimit) fail('required access claim limit is missing');
 
 if (!process.exitCode) {
   pass(`revision tuple: root=${current.rootHead.slice(0, 8)} flutter=${current.flutterChildHead.slice(0, 8)} mcp=${current.mcpChildHead.slice(0, 8)}`);
-  pass('Flutter child commit, contract/fixture consumers, and deferred MCP gitlink boundary are explicit');
+  pass('Flutter and MCP child commits/gitlinks, contract/fixture consumers, and deferred MCP runtime boundary are explicit');
   for (const id of requiredCoverage) pass(`validation coverage: ${id}=${coverage.get(id).status}`);
+  pass(`required access: ${evidence.requiredAccess.status}; blocked operation is explicit`);
   console.log('Flutter cross-surface reconciliation check passed: contract, fixtures, consumers, and provenance are joined.');
 }

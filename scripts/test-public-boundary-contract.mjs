@@ -49,4 +49,4 @@ assert.deepEqual(unsafeContentPath.violations, [
   { path: "/tmp/report.json", reason: "absolute-or-parent-traversal" },
 ]);
 
-console.log("Public-boundary contract tests passed: clean entries pass and unsafe paths/content fail closed.");
+console.log("Public-boundary contract tests: PASS — clean entries pass and unsafe paths/content fail closed.");

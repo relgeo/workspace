@@ -7,7 +7,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const auditPath = path.join(root, "docs", "evidence", "cross-repository-goal-level-closure-audit-2026-11-14.json");
+const auditPath = path.join(root, "docs", "evidence", "cross-repository-goal-level-closure-audit-2026-11-26.json");
 const audit = JSON.parse(fs.readFileSync(auditPath, "utf8"));
 const currentRevision = execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim();
 

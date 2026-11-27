@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "recordType": "cross-repository-closure-envelope",
+  "capturedAt": "2026-11-27",
+  "goalId": "goal-1794594127244947",
+  "goalRevision": "886f034b16c7347a1879b75fdf2f5cb491317dee",
+  "decision": "not-completed",
+  "claimLimit": "This envelope prepares the next native evaluator; it does not promote bounded external evidence or incomplete SuClos integrity to green closure.",
+  "canonicalRun": {
+    "locator": "https://github.com/relgeo/workspace/actions/runs/45826282113",
+    "evidenceClass": "canonical_ci",
+    "conclusion": "success",
+    "testedRootRevision": "886f034b16c7347a1879b75fdf2f5cb491317dee",
+    "jobs": {
+      "verify": "success",
+      "public": "success",
+      "flutter": "success",
+      "flutter-macos": "success",
+      "flutter-linux": "success",
+      "flutter-windows": "success"
+    },
+    "provenance": "SuClos external validation record; provider artifact is outside the managed App Server boundary."
+  },
+  "supportingLocal": {
+    "locator": "suclos:local-integration-report",
+    "evidenceClass": "supporting_local",
+    "passed": 52,
+    "failed": 0,
+    "claimLimit": "Supporting local evidence is not canonical CI or public-runtime proof."
+  },
+  "revisionTuple": {
+    "root": "886f034b16c7347a1879b75fdf2f5cb491317dee",
+    "submodules": {
+      "cli": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+      "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "flutter": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "language-service": "e2c21878aedda84874555286bc448af92137e742",
+      "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "playground": "33631d930adc01efbdf25caccdd95e1af55e2526",
+      "relgeo.github.io": "450488d93d05059a190efd89e013f9a5274b8313",
+      "remark-relgeo": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+      "remark-relgeo-hl": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+      "renderer-svg": "8be3e30a2bbc02cdcd2fb8f828c2efd7144b90d1b",
+      "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    },
+    "baselineLocator": "docs/integration-baseline.json",
+    "statusLocator": "git submodule status --recursive",
+    "tupleStatus": "root and current gitlink tuple captured together; provider submodule manifest remains externally sourced",
+    "claimLimit": "Do not claim the provider tested every submodule revision until its artifact is independently inspectable."
+  },
+  "criteria": [
+    { "id": "criterion-1-catalog-reconciliation", "requirementIds": ["criterion-1-the-four-currently-unproven-goal-criteria-have-d"], "evidenceClass": "supporting_local", "locator": "docs/capability-map/cross-repository/status-matrix.md", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee", "capturedAt": "2026-11-27", "verification": "bounded-not-verified" },
+    { "id": "criterion-2-fresh-checkout-bootstrap", "requirementIds": ["criterion-3-all-genuine-external-limitations-are-represented"], "evidenceClass": "environment_unavailable", "locator": "command:node --version", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee", "capturedAt": "2026-11-27", "verification": "bounded-not-verified" },
+    { "id": "criterion-3-pinned-gitlink-baseline-synchronization", "requirementIds": ["criterion-2-the-canonical-run-is-tied-to-the-exact-root-and-"], "evidenceClass": "supporting_local", "locator": "docs/integration-baseline.json", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee", "capturedAt": "2026-11-27", "verification": "passed" },
+    { "id": "criterion-4-public-boundary-hygiene", "requirementIds": ["criterion-3-all-genuine-external-limitations-are-represented"], "evidenceClass": "environment_unavailable", "locator": "docs/evidence/public-boundary-audit-2026-11-14.json", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee", "capturedAt": "2026-11-27", "verification": "bounded-not-verified" },
+    { "id": "criterion-5-cross-repository-synchronization", "requirementIds": ["criterion-1-the-four-currently-unproven-goal-criteria-have-d"], "evidenceClass": "canonical_ci", "locator": "https://github.com/relgeo/workspace/actions/runs/45826282113", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee", "capturedAt": "2026-11-27", "verification": "reported-success" },
+    { "id": "criterion-6-strict-and-canonical-integration-evidence", "requirementIds": ["criterion-5-a-compact-closure-envelope-is-available-for-the-"], "evidenceClass": "supporting_local", "locator": "suclos:local-integration-report", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee", "capturedAt": "2026-11-27", "verification": "52-passed-0-failed-supporting-only" },
+    { "id": "criterion-7-capability-map-and-status-synchronization", "requirementIds": ["criterion-3-all-genuine-external-limitations-are-represented"], "evidenceClass": "supporting_local", "locator": "docs/evidence/cross-repository-goal-level-closure-audit-2026-11-26.json", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee", "capturedAt": "2026-11-27", "verification": "bounded-not-verified" },
+    { "id": "criterion-8-goal-level-closure-audit", "requirementIds": ["criterion-4-the-current-native-task-execution-validation-fol"], "evidenceClass": "environment_unavailable", "locator": "suclos:goal-1794594127244947:get_goal_workflow_status", "revision": null, "capturedAt": "2026-11-27", "verification": "blocked-by-native-integrity-repair" }
+  ],
+  "residualDispositions": [
+    { "id": "RESIDUAL-BOOTSTRAP", "owner": "relgeo/workspace + supported CI host", "provenance": "environment_unavailable", "remediation": "Run Node 24.21.0/pnpm 10.33.3 bootstrap with registry and writable recursive Git metadata.", "claimLimit": "Managed App Server Node 22.23.2 cannot prove the canonical fresh-checkout boundary." },
+    { "id": "RESIDUAL-CI-PUBLIC", "owner": "child CI owners + relgeo/workspace", "provenance": "environment_unavailable", "remediation": "Retain provider artifact and run current public-boundary, registry, artifact, and public-smoke checks on their declared host.", "claimLimit": "External success and static checks do not replace a current native public artifact record." },
+    { "id": "RESIDUAL-SUCLOS-INTEGRITY", "owner": "SuClos workflow integrity", "provenance": "notVerified", "remediation": "Repair the missing typed executionAttempt/timeline references through the native repair workflow, then rerun goal validation.", "claimLimit": "Historical orphan/stale records remain history; no terminal green closure claim is made." }
+  ],
+  "nativeIntegrity": {
+    "currentTask": "repair-closure-grade-evidence-reconcile-residual-boundaries-and-restore-native-goal-integrity--4127244947",
+    "currentTaskStatus": "running",
+    "historicalCancelledTasksPreserved": true,
+    "currentChain": "execution and validation must be regenerated by the native executor after integrity repair",
+    "status": "not-ready-for-terminal-closure"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "recordType": "cross-repository-goal-level-closure-audit",
+  "capturedAt": "2026-11-27",
+  "goalId": "goal-1794594127244947",
+  "goalTitle": "Close Cross-Repository Orchestration Capability Debt to a Green Surface",
+  "workspaceRevision": "886f034b16c7347a1879b75fdf2f5cb491317dee",
+  "closureDecision": "not-completed",
+  "closureEligible": false,
+  "basis": "Current strict baseline, compatibility, conformance, and documentation checks pass, and the baseline manifest now records the tested root revision. The managed executor remains on Node 22.23.2, the required Node 24 integration boundary is unavailable, and SuClos workflow integrity still reports historical/orphan timeline references. These limitations are preserved as bounded not-verified dispositions.",
+  "statusMatrixSnapshot": {
+    "path": "docs/capability-map/cross-repository/status-matrix.md",
+    "observedCounts": { "✔️": 21, "🌗": 18, "❌": 0, "➖": 0, "⏸️": 0, "⚠️": 0 },
+    "interpretation": "The matrix retains 18 partial rows; zero ❌/⚠️ does not establish goal closure.",
+    "staleClaims": [
+      "The status matrix is a reporting view and retains historical/current-boundary distinctions.",
+      "The integration baseline was reconciled to tested root 886f034; prior bbb92b4 provenance remains historical only.",
+      "Canonical Node 24, provider, registry, and public-runtime claims are not made from the managed executor."
+    ]
+  },
+  "criteria": [
+    {
+      "id": "criterion-1-catalog-reconciliation",
+      "result": "bounded-not-verified",
+      "summary": "Catalog, status, backlog, and evidence artifacts are present; the status matrix still records partial capabilities.",
+      "evidence": ["docs/capability-map/cross-repository/expected-catalog.md", "docs/capability-map/cross-repository/status-matrix.md", "docs/capability-map/cross-repository/implementation-gap-backlog.md"],
+      "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee"
+    },
+    {
+      "id": "criterion-2-fresh-checkout-bootstrap",
+      "result": "environment-unavailable",
+      "summary": "The managed executor reports Node 22.23.2; the required Node 24 clean-checkout bootstrap is not claimed.",
+      "evidence": ["scripts/bootstrap.mjs", "scripts/test-bootstrap-and-evidence-contract.mjs", "command:node --version"],
+      "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee"
+    },
+    {
+      "id": "criterion-3-pinned-gitlink-baseline-synchronization",
+      "result": "passed",
+      "summary": "Strict verification passes with 85 checks and docs/integration-baseline.json now records rootRevision 886f034 together with the current 12-submodule tuple.",
+      "evidence": ["docs/integration-baseline.json", "scripts/check-baseline-synchronization.mjs", "command:pnpm run verify:baseline:strict"],
+      "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee"
+    },
+    {
+      "id": "criterion-4-public-boundary-hygiene",
+      "result": "bounded-not-verified",
+      "summary": "The documentation reconciliation check passes with closureEligible=false; unavailable public artifact and runtime boundaries remain explicitly unclaimed.",
+      "evidence": ["scripts/check-cross-repository-documentation.mjs", "docs/evidence/public-boundary-audit-2026-11-14.json", "command:pnpm run cross-repository:docs:check"],
+      "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee"
+    },
+    {
+      "id": "criterion-5-cross-repository-synchronization",
+      "result": "bounded-not-verified",
+      "summary": "Current compatibility and conformance checks pass locally, but live provider dispatch, artifact provenance, and public synchronization are not claimed from this executor.",
+      "evidence": [".github/workflows/sync-validated-submodule-after-ci.yml", "scripts/test-child-ci-sync-contract.mjs", "command:pnpm run compatibility:check", "command:pnpm run conformance:fixtures"],
+      "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee"
+    },
+    {
+      "id": "criterion-6-strict-and-canonical-integration-evidence",
+      "result": "environment-unavailable",
+      "summary": "The local integration gate stops at the Node 24 prerequisite because the managed executor has Node 22.23.2; external CI evidence remains separately scoped and is not promoted here.",
+      "evidence": ["scripts/run-integration-gate.mjs", "command:pnpm run integration:gate -- --local", "suclos:external-ci-run-45826282113"],
+      "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee"
+    },
+    {
+      "id": "criterion-7-capability-map-and-status-synchronization",
+      "result": "bounded-not-verified",
+      "summary": "The current documentation check passes, while the status matrix retains 18 partial rows and therefore does not support a green closure claim.",
+      "evidence": ["docs/capability-map/cross-repository/status-matrix.md", "docs/capability-map/cross-repository/implementation-gap-backlog.md", "command:pnpm run cross-repository:docs:check"],
+      "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee"
+    },
+    {
+      "id": "criterion-8-goal-level-closure-audit",
+      "result": "not-completed",
+      "summary": "Replacement tasks are recorded as validated where available, but this audit remains non-completed because Node 24 evidence, current baseline provenance, residual partial rows, and workflow integrity are unresolved.",
+      "evidence": ["suclos:goal-1794594127244947:get_goal_workflow_status", "suclos:goal-1794594127244947:audit_goal_follow_up_evidence"],
+      "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee"
+    }
+  ],
+  "taskExecutionMap": {
+    "done": [
+      "freeze-and-rebaseline-the-cross-repository-orchestration-catalog--4127244947",
+      "synchronize-gitlinks-baseline-manifests-and-revision-provenance--4127244947",
+      "close-public-boundary-hygiene-and-cross-surface-propagation-gaps--4127244947",
+      "reconcile-orchestration-documentation-and-capability-evidence--4127244947",
+      "replacement-rerun-fresh-checkout-bootstrap-and-pinned-toolchain-verification--4127244947",
+      "replacement-rerun-cross-repository-ci-synchronization-and-evidence-automation--4127244947",
+      "replacement-rerun-canonical-orchestration-verification-from-a-clean-boundary--4127244947",
+      "replacement-run-final-cross-repository-orchestration-goal-level-closure-audit--4127244947",
+      "prepare-final-closure-handoff-for-cross-repository-orchestration--4127244947",
+      "run-native-closure-transition-after-terminal-reconciliation--4127244947"
+    ],
+    "cancelled": [
+      "close-fresh-checkout-bootstrap-and-pinned-toolchain-gaps--4127244947",
+      "harden-cross-repository-ci-synchronization-and-evidence-automation--4127244947",
+      "run-final-cross-repository-orchestration-goal-level-closure-audit--4127244947",
+      "run-canonical-orchestration-verification-from-a-clean-boundary--4127244947"
+    ],
+    "todo": [],
+    "running": ["repair-closure-grade-evidence-reconcile-residual-boundaries-and-restore-native-goal-integrity--4127244947"],
+    "followUps": 0,
+    "pendingDecisions": 0
+  },
+  "integrity": {
+    "consistent": false,
+    "errorCount": 1,
+    "findings": [{
+      "code": "missing_typed_timeline_reference",
+      "entityId": "event-1795701776428149",
+      "missingReference": "attempt-1795701776428135",
+      "owner": "SuClos workflow integrity",
+      "remediation": "Repair or reconcile the executionAttempt timeline reference before terminal goal validation.",
+      "claimLimit": "This audit does not claim timeline integrity or goal completion."
+    }]
+  },
+  "residualRequirements": [
+    { "id": "RESIDUAL-BOOTSTRAP", "owner": "relgeo/workspace + supported CI host", "remediation": "Run Node 24/pnpm 10.33.3 bootstrap with registry and writable recursive Git metadata.", "claimLimit": "Supporting contract evidence is not canonical fresh-checkout proof." },
+    { "id": "RESIDUAL-CI", "owner": "child CI owners + relgeo/workspace", "remediation": "Observe and retain current provider dispatch, artifact provenance, and synchronization evidence.", "claimLimit": "Static workflow assertions and external references do not replace a current native artifact record." },
+    { "id": "RESIDUAL-PUBLIC", "owner": "relgeo/workspace + consumer owners", "remediation": "Run current public boundary, registry consumer, artifact, and public-smoke evidence on the declared boundary.", "claimLimit": "No deployment, registry, or public-runtime claim is made." },
+    { "id": "RESIDUAL-SUCLOS-INTEGRITY", "owner": "SuClos workflow integrity", "remediation": "Resolve the missing typed executionAttempt timeline reference, then rerun goal-level validation.", "claimLimit": "Terminal native validation evidence is not yet valid for completion." }
+  ],
+  "evidenceLocatorRevisionMap": [
+    { "locator": "docs/evidence/cross-repository-goal-level-closure-audit-2026-11-26.json", "kind": "structured-audit", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "docs/capability-map/cross-repository/status-matrix.md", "kind": "capability-status", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "docs/integration-baseline.json", "kind": "baseline-manifest", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "scripts/check-baseline-synchronization.mjs", "kind": "deterministic-checker", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "docs/evidence/cross-repository-canonical-verification-2026-11-14.json", "kind": "historical-verification-envelope", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "docs/evidence/public-boundary-audit-2026-11-14.json", "kind": "historical-public-boundary-audit", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "docs/MATURATION-MASTER-PLAN.md", "kind": "master-plan-current-overlay", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "docs/REPOSITORY-MAP.md", "kind": "repository-ownership-map", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "docs/plans/01-cross-repo-integration-gate.md", "kind": "integration-plan-current-overlay", "revision": "886f034b16c7347a1879b75fdf2f5cb491317dee" },
+    { "locator": "suclos:goal-1794594127244947:get_goal_workflow_status", "kind": "native-workflow-status", "revision": null }
+  ]
+}

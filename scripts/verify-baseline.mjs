@@ -325,6 +325,9 @@ if (jsonOutput) {
       (checks.length - failures.length) +
       " passed",
   );
+  if (failures.length === 0) {
+    console.log("Baseline verification passed");
+  }
 }
 
 process.exitCode = failures.length ? 1 : 0;

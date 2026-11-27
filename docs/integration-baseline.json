@@ -3,8 +3,8 @@
   "contract": "integration-baseline-v1",
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
-  "capturedAt": "2026-11-26",
-  "rootRevision": "bbb92b4059ee55ee0efe2e8b17a3eeb0d4e0d1ba",
+  "capturedAt": "2026-11-27",
+  "rootRevision": "886f034b16c7347a1879b75fdf2f5cb491317dee",
   "compatibilityLine": "0.5",
   "toolchain": {
     "node": ">=24",

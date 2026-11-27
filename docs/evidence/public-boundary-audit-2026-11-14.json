@@ -4,15 +4,16 @@
   "contract": "public-boundary-v1",
   "auditContract": "public-boundary-audit-v1",
   "capturedAt": "2026-11-14",
-  "workspaceRevision": "63b28c4ebde79a9b7d83faa182fca06387272143",
+  "workspaceRevision": "886f034b16c7347a1879b75fdf2f5cb491317dee",
   "claimLimit": "This is local tracked-tree and available-artifact evidence; it is not proof of a deployed public runtime, registry consumer, or provider-side CI artifact.",
   "trackedTree": {
-    "entries": 325,
-    "textFiles": 313,
+    "entries": 338,
+    "textFiles": 326,
     "skippedBinaryOrLarge": 12,
     "pathViolations": [],
     "credentialMaterialFiles": [],
     "credentialTestFixtures": [
+      "scripts/test-public-boundary-audit.mjs",
       "scripts/test-public-boundary-contract.mjs"
     ],
     "machineSpecificReferences": [
@@ -122,6 +123,11 @@
         "scope": "source-or-evidence-reference"
       },
       {
+        "path": "scripts/audit-public-boundary.mjs",
+        "count": 3,
+        "scope": "source-or-evidence-reference"
+      },
+      {
         "path": "scripts/check-compatibility.mjs",
         "count": 2,
         "scope": "source-or-evidence-reference"
@@ -191,8 +197,8 @@
       "public"
     ],
     "audit": {
-      "entries": 165,
-      "textFiles": 161,
+      "entries": 183,
+      "textFiles": 179,
       "skippedBinaryOrLarge": 4,
       "pathViolations": [],
       "credentialMaterialFiles": [],

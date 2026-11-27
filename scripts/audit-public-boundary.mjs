@@ -63,7 +63,11 @@ async function scanFiles(paths, { artifact = false } = {}) {
       continue;
     }
     textFiles += 1;
-    if (CREDENTIAL_MATERIAL.test(text)) {
+    // The scanner source necessarily contains the detection patterns it is
+    // looking for; treating those literals as shipped credentials makes the
+    // audit fail on its own implementation rather than on public content.
+    const isScannerSource = filePath === "scripts/audit-public-boundary.mjs";
+    if (!isScannerSource && CREDENTIAL_MATERIAL.test(text)) {
       if (/(?:^|\/)(?:test-|fixtures\/|__tests__\/)|\.test\./.test(filePath)) credentialTestFixtures.push(filePath);
       else credentialLeaks.push(filePath);
     }

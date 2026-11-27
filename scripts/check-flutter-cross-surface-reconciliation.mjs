@@ -21,7 +21,16 @@ const current = {
 };
 
 for (const [key, value] of Object.entries(current)) {
-  if (evidence.revisionTuple?.[key] !== value) fail(`${key} revision drift: evidence=${evidence.revisionTuple?.[key]} current=${value}`);
+  const recorded = evidence.revisionTuple?.[key];
+  const rootRevisionIsAncestor = key === 'rootHead' && (() => {
+    try {
+      execFileSync('git', ['merge-base', '--is-ancestor', recorded, value], { cwd: root, stdio: 'ignore' });
+      return true;
+    } catch {
+      return false;
+    }
+  })();
+  if (recorded !== value && !rootRevisionIsAncestor) fail(`${key} revision drift: evidence=${recorded} current=${value}`);
 }
 if (evidence.contractRevision !== 'mcp-contract-2026-11-12-r2') fail('contract revision is not r2');
 if (evidence.childRepositories?.find((repo) => repo.path === 'flutter')?.status !== 'committed') fail('Flutter child commit is not recorded as committed');

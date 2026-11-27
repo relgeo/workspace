@@ -47,7 +47,7 @@
   },
   "consumerPropagation": {
     "status": "pass",
-    "revision": "mcp-contract-2026-11-12-r1",
+    "revision": "mcp-contract-2026-11-12-r2",
     "consumers": ["mcp-export", "mcp-status", "flutter-assertion", "fixtures"],
     "evidence": "docs/evidence/mcp-contract-alignment-2026-11-12.json"
   },

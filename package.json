@@ -55,6 +55,7 @@
     "conformance:fixtures": "node scripts/run-conformance-fixtures.mjs",
     "fixtures:stage:flutter": "node scripts/stage-flutter-fixtures.mjs --out=.local/flutter-fixtures",
     "flutter:conformance": "node scripts/run-flutter-conformance.mjs",
+    "flutter:rebaseline:check": "node scripts/check-flutter-workbench-rebaseline.mjs",
     "integration:gate": "node scripts/run-integration-gate.mjs",
     "integration:public": "node scripts/run-integration-gate.mjs --public",
     "build": "pnpm -r run build",

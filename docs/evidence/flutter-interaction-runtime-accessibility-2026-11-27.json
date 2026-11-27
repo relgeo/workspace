@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "flutter-interaction-runtime-accessibility/v1",
+  "capturedAt": "2026-11-27",
+  "taskId": "complete-flutter-workbench-inspection-navigation-command-accessibility-and-lifecycle-behavior--2998940397",
+  "owner": "relgeo/flutter",
+  "revisionTuple": {
+    "workspace": "707843aae50608d48fb0d6ff0fc8780cc961b891",
+    "flutterHead": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "rendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+    "flutterWorktree": "dirty-task-changes-not-committed"
+  },
+  "sourceChanges": [
+    {
+      "surface": "canvas semantics",
+      "status": "implemented",
+      "source": "flutter/lib/src/features/preview/workbench_viewport_panel.dart",
+      "contract": "Canvas preview exposes a stable container label, selected-object value, and selection hint.",
+      "claimLimit": "This is the Flutter semantics boundary; native accessibility-tree announcements are not inferred."
+    }
+  ],
+  "focusedVerification": {
+    "command": "flutter test test/workbench_viewport_feature_test.dart test/workbench_scene_graph_test.dart test/workbench_scene_graph_panel_test.dart test/workbench_window_host_test.dart test/workbench_method_channel_window_host_test.dart test/workbench_context_menu_test.dart test/workbench_platform_menu_bar_test.dart test/keyboard_activatable_test.dart",
+    "status": "passed",
+    "scope": "Codex App Server managed sandbox; host-neutral Flutter interaction, semantics, command, and lifecycle boundaries",
+    "outputExcerpt": "00:07 +19: All tests passed!",
+    "coverage": [
+      "canvas preview selected-object semantics",
+      "scene graph selection and keyboard activation",
+      "visible-object hit testing and hidden-role filtering",
+      "window host sizing and lifecycle close callback",
+      "context-menu and global shortcut registry parity",
+      "platform menu order and shortcut conflict detection",
+      "Tab focus and Enter/Space activation"
+    ]
+  },
+  "surfaceDisposition": [
+    {
+      "id": "CANVAS-03",
+      "status": "bounded-implemented; host-evidence-held",
+      "owner": "relgeo/flutter",
+      "sourceOfTruth": "flutter/lib/src/features/inspector/inspector_panel.dart; flutter/test/inspector_panel_test.dart",
+      "evidenceLocator": "focused interaction command; docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
+      "dependency": "resolved scene and selection controller",
+      "remediation": "retain inspector field-inventory regression and add native pointer/AT smoke when a target host exists",
+      "claimLimit": "Flutter inspector fields and selected-object semantics are covered; exhaustive evaluator/property parity and native AT are not claimed."
+    },
+    {
+      "id": "CANVAS-04",
+      "status": "bounded-implemented; host-evidence-held",
+      "owner": "relgeo/flutter + relgeo/core",
+      "sourceOfTruth": "flutter/lib/src/features/parameters/parameters_panel.dart; flutter/test/workbench_document_settings_test.dart",
+      "evidenceLocator": "focused interaction command; docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
+      "dependency": "parameter specs, profile state, and document controller",
+      "remediation": "retain valid/invalid/reset parameter regressions and extend cross-consumer evaluator evidence separately",
+      "claimLimit": "Bounded Flutter parameter editing/reset is covered; full evaluator/profile parity is not claimed."
+    },
+    {
+      "id": "CMD-03",
+      "status": "implemented-at-Flutter-boundary; native-held",
+      "owner": "relgeo/flutter",
+      "sourceOfTruth": "flutter/lib/src/ui/workbench_commands.dart; flutter/lib/src/ui/workbench_platform_menu_bar.dart",
+      "evidenceLocator": "focused interaction command; flutter/test/workbench_platform_menu_bar_test.dart; flutter/test/workbench_context_menu_test.dart",
+      "dependency": "shared command registry and platform menu adapter",
+      "remediation": "publish the macOS/Linux/Windows shortcut matrix and run native menu/shortcut smoke",
+      "claimLimit": "Registry conflict detection and Flutter shortcut/menu parity pass; OS modifier mapping and native delivery are not claimed."
+    },
+    {
+      "id": "A11Y-01",
+      "status": "implemented-at-Flutter-boundary; native-held",
+      "owner": "relgeo/flutter",
+      "sourceOfTruth": "flutter/lib/src/ui/keyboard_activatable.dart; flutter/test/keyboard_activatable_test.dart",
+      "evidenceLocator": "focused interaction command; flutter/test/workbench_scene_graph_panel_test.dart",
+      "dependency": "FocusTraversalGroup and shared keyboard activator",
+      "remediation": "run deterministic Tab/Enter/Space/arrows/Escape traversal on supported desktop hosts",
+      "claimLimit": "Flutter focus order and activation are covered; native focus traversal and AT behavior are not claimed."
+    },
+    {
+      "id": "A11Y-02",
+      "status": "implemented-at-Flutter-boundary; native-held",
+      "owner": "relgeo/flutter",
+      "sourceOfTruth": "flutter/lib/src/features/preview/workbench_viewport_panel.dart; flutter/lib/src/ui/workbench_scene_graph_panel.dart",
+      "evidenceLocator": "focused interaction command; flutter/test/workbench_viewport_feature_test.dart; flutter/test/workbench_scene_graph_panel_test.dart",
+      "dependency": "Flutter semantics tree and selected-object state",
+      "remediation": "capture current macOS/Linux/Windows accessibility trees and announcements",
+      "claimLimit": "Canvas, graph, inspector, parameter, and control semantics are tested in Flutter; VoiceOver/NVDA/AT-SPI/UIA announcements are not claimed."
+    },
+    {
+      "id": "WINDOW-01",
+      "status": "implemented-at-adapter-boundary; native-held",
+      "owner": "relgeo/flutter + native host runners",
+      "sourceOfTruth": "flutter/lib/src/ui/workbench_window_host.dart; flutter/lib/src/ui/workbench_method_channel_window_host.dart",
+      "evidenceLocator": "focused interaction command; flutter/test/workbench_window_host_test.dart; flutter/test/workbench_method_channel_window_host_test.dart",
+      "dependency": "window host adapter and dirty-document lifecycle guard",
+      "remediation": "run clean and dirty close/quit transcripts on each supported desktop host",
+      "claimLimit": "Host-neutral close callback and method-channel contract are tested; OS window-manager event delivery and clean packaged exit are not claimed."
+    }
+  ],
+  "hostEvidenceEnvelope": {
+    "status": "not-verified",
+    "hosts": [
+      {
+        "host": "macOS desktop",
+        "boundary": "native window, menu, keyboard, and VoiceOver runtime",
+        "status": "deferred",
+        "owner": "relgeo/flutter + native host runners",
+        "remediation": "launch the current artifact and capture shortcut, traversal, AX-tree, picker, and close/quit transcripts",
+        "claimLimit": "No macOS runtime or VoiceOver pass is claimed by this source/test envelope."
+      },
+      {
+        "host": "Linux desktop",
+        "boundary": "native window, keyboard, and AT-SPI runtime",
+        "status": "deferred",
+        "owner": "relgeo/flutter + native host runners",
+        "remediation": "run on the declared Wayland/X11 session and capture shortcut, traversal, AT-SPI, and close/quit transcripts",
+        "claimLimit": "No Linux runtime or AT-SPI pass is claimed by this source/test envelope."
+      },
+      {
+        "host": "Windows desktop",
+        "boundary": "native window, keyboard, and UI Automation runtime",
+        "status": "deferred",
+        "owner": "relgeo/flutter + native host runners",
+        "remediation": "launch the current artifact and capture shortcut, traversal, UIA, and close/quit transcripts",
+        "claimLimit": "No Windows runtime or UI Automation pass is claimed by this source/test envelope."
+      }
+    ]
+  },
+  "exclusions": [
+    "custom title bar",
+    "Android/iOS runtime",
+    "packaged signing and deployment",
+    "raw SVG presentation parity"
+  ]
+}

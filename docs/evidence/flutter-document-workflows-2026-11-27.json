@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0",
+  "capturedAt": "2026-11-27",
+  "taskId": "complete-flutter-document-file-import-export-and-recovery-workflows--2998940397",
+  "owner": "Flutter Workbench",
+  "sourceOfTruth": [
+    "flutter/lib/src/ui/cad_workbench.dart",
+    "flutter/lib/src/ui/workbench_file_service.dart",
+    "flutter/lib/src/ui/workbench_document_recovery.dart",
+    "flutter/lib/src/ui/workbench_import_diagnostics.dart",
+    "flutter/lib/src/ui/workbench_svg_export_controller.dart"
+  ],
+  "revisionTuple": {
+    "root": "707843aae50608d48fb0d6ff0fc8780cc961b891",
+    "flutterHead": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+    "flutterWorktree": "dirty-task-changes-not-committed"
+  },
+  "verification": {
+    "command": "flutter analyze --no-pub && flutter test --no-pub --reporter compact test/workbench_file_service_test.dart test/workbench_document_recovery_test.dart test/workbench_svg_export_controller_test.dart test/workbench_import_diagnostics_test.dart test/invalid_fixture_boundary_test.dart test/reference_fixtures_test.dart test/widget_test.dart",
+    "result": "passed",
+    "scope": "Codex App Server managed sandbox; host-neutral Flutter source and regression boundaries",
+    "testsPassed": 62,
+    "coverage": [
+      "document picker cancellation and allowed extension vocabulary",
+      "path-backed and bytes-backed import",
+      "malformed UTF-8 diagnostic code",
+      "recent-file read failure preservation",
+      "recovery round-trip and clear",
+      "SVG picker cancellation and injected write boundary",
+      "invalid YAML and resolver failure fixtures"
+    ]
+  },
+  "widgetVerification": {
+    "command": "flutter test --no-pub --reporter compact test/widget_test.dart",
+    "result": "passed",
+    "scope": "Codex App Server managed sandbox; Flutter workbench lifecycle and recovery widgets",
+    "testsPassed": 35,
+    "coverage": [
+      "New/Open/Save/Save As and recent document lifecycle",
+      "dirty close, quit, and new-document guards",
+      "failed Open and failed Save preservation",
+      "interrupted-draft restore and recovery clear",
+      "typed host-save acknowledgement clearing dirty state and identity"
+    ]
+  },
+  "recovery": {
+    "status": "implemented_and_contract_tested",
+    "evidenceLocator": [
+      "flutter/lib/src/ui/workbench_document_recovery.dart",
+      "flutter/lib/src/ui/cad_workbench.dart::_onCodeChanged",
+      "flutter/lib/src/ui/cad_workbench.dart::_loadRecoveryDraft",
+      "flutter/test/workbench_document_recovery_test.dart",
+      "flutter/test/widget_test.dart::restoring an interrupted draft consumes the recovery record"
+    ],
+    "successCases": [
+      "dirty source persists with document identity and optional path/name",
+      "restore consumes the recovery record",
+      "successful file-service and typed-host save clear recovery"
+    ],
+    "failureCases": [
+      "persistence exceptions are best-effort and do not replace live source"
+    ],
+    "hostLimitation": {
+      "status": "not_verified",
+      "boundary": "packaged native forced-exit/relaunch runtime",
+      "owner": "Flutter host integration",
+      "remediation": "Run a packaged desktop relaunch check with a forced process exit and record the platform-specific SharedPreferences result.",
+      "claimLimit": "This envelope proves host-neutral persistence and restore contracts only; it does not claim packaged OS crash recovery."
+    }
+  },
+  "picker": {
+    "status": "implemented_and_contract_tested",
+    "evidenceLocator": [
+      "flutter/lib/src/ui/workbench_file_service.dart::WorkbenchFilePicker",
+      "flutter/lib/src/ui/workbench_file_service.dart::_PlatformWorkbenchFilePicker",
+      "flutter/test/workbench_file_service_test.dart"
+    ],
+    "successCases": [
+      "desktop-style path-backed picker result is read",
+      "web-style bytes-backed picker result is decoded",
+      "Save writes to the active path without opening a picker"
+    ],
+    "failureCases": [
+      "picker cancellation returns null without writing",
+      "malformed UTF-8 returns document.decode",
+      "recent read failures remain errors instead of deleting the recent entry"
+    ],
+    "hostLimitation": {
+      "status": "not_verified",
+      "boundary": "native file_picker UI and platform permissions",
+      "owner": "Flutter host integration",
+      "remediation": "Run desktop and web picker smoke checks on each supported packaged host.",
+      "claimLimit": "Injected picker tests prove the adapter contract, not native dialog rendering, permissions, or OS sandbox behavior."
+    }
+  },
+  "import": {
+    "status": "implemented_and_contract_tested",
+    "supportedExtensions": ["yaml", "yml", "relgeo"],
+    "diagnosticCodes": [
+      "relgeo.yaml.parse",
+      "relgeo.compile",
+      "relgeo.document.decode",
+      "relgeo.document.io"
+    ],
+    "evidenceLocator": [
+      "flutter/lib/src/ui/workbench_import_diagnostics.dart",
+      "flutter/test/workbench_import_diagnostics_test.dart",
+      "flutter/test/invalid_fixture_boundary_test.dart"
+    ],
+    "claimLimit": "Parser, resolver, and file-boundary diagnostics are covered in the managed Flutter test boundary; localized host error presentation is not claimed."
+  },
+  "export": {
+    "status": "implemented_and_contract_tested",
+    "evidenceLocator": [
+      "flutter/lib/src/ui/workbench_svg_export_controller.dart",
+      "flutter/test/workbench_svg_export_controller_test.dart",
+      "flutter/lib/src/ui/cad_workbench.dart::_exportSVGTarget"
+    ],
+    "successCases": ["injected destination receives generated SVG contents"],
+    "failureCases": ["destination cancellation performs no write"],
+    "hostLimitation": {
+      "status": "not_verified",
+      "boundary": "native SVG destination dialog and packaged filesystem permissions",
+      "owner": "Flutter host integration",
+      "remediation": "Run packaged desktop export checks for model and sheet/view destinations.",
+      "claimLimit": "Injected export tests do not prove native dialog presentation or packaged filesystem permissions."
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "schemaVersion": "mcp-contract-alignment/v1",
   "workspaceRoot": "/Users/agusmade/projects/relgeo-workspace",
   "sourceLocator": "file:/Users/agusmade/projects/relgeo-workspace/docs/evidence/mcp-contract-alignment-2026-11-12.json",
-  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "contractRevision": "mcp-contract-2026-11-12-r2",
   "status": "verified",
   "boundary": "Codex App Server task-specific validator",
   "consumers": [

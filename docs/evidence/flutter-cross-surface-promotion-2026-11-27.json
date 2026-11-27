@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "flutter-cross-surface-promotion/v1",
+  "taskId": "close-flutter-diagnostics-active-contract-fixture-promotion-and-semantic-parity-gaps--2998940397",
+  "contractRevision": "mcp-contract-2026-11-12-r2",
+  "revisionTuple": {
+    "workspace": "707843aae50608d48fb0d6ff0fc8780cc961b891",
+    "flutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "rendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b"
+  },
+  "owners": {
+    "diagnosticDto": "relgeo/mcp + relgeo/flutter",
+    "diagnosticVocabulary": "relgeo/spec + relgeo/core + relgeo/flutter",
+    "semanticSvgComparator": "relgeo/renderer-svg + relgeo/flutter",
+    "fixturePromotion": "relgeo/workspace"
+  },
+  "promotions": [
+    {
+      "fixtureId": "v05-boolean-intersection-candidate",
+      "manifestPath": "reference/15-v05-boolean-intersection-candidate.yaml",
+      "status": "active",
+      "surfaces": ["core", "renderer-svg", "cli", "flutter"],
+      "boundary": "resolved semantic geometry and SVG projection",
+      "claimLimit": "Does not promote raw SVG presentation equality, evaluator completeness, or native Flutter runtime behavior."
+    },
+    {
+      "fixtureId": "v05-evaluator-units-candidate",
+      "manifestPath": "reference/16-v05-evaluator-units-candidate.yaml",
+      "status": "active",
+      "surfaces": ["core", "renderer-svg", "cli", "flutter"],
+      "boundary": "bounded length-unit and derived-placement semantic projection",
+      "claimLimit": "Does not promote full evaluator/profile parity or native Flutter runtime behavior."
+    },
+    {
+      "fixtureId": "v05-collection-boolean-contract",
+      "manifestPath": "reference/24-v05-collection-boolean-contract.yaml",
+      "status": "active",
+      "surfaces": ["core", "renderer-svg", "language-service", "cli"],
+      "boundary": "workspace active candidate outside Flutter promotion",
+      "claimLimit": "Union/xor/repeat collection behavior is not claimed as Flutter parity until a Flutter semantic projection exists."
+    }
+  ],
+  "verification": {
+    "command": "node scripts/check-flutter-diagnostics-contract.mjs",
+    "status": "passed",
+    "outputExcerpt": "Flutter diagnostics contract evidence check passed: schema, provenance, cases, and promotion boundaries are joined.",
+    "claimLimit": "This structural check joins manifest, provenance, diagnostic cases, and promotion boundaries; it is not a renderer runtime test."
+  },
+  "exclusions": [
+    "raw SVG bytes",
+    "presentation styles and metadata",
+    "native picker and packaged runtime",
+    "Android/iOS and custom title bar"
+  ]
+}

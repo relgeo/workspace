@@ -93,28 +93,28 @@ check(
 );
 check(
   fixture?.schemaVersion === "mcp-contract-boundary/v1" &&
-  fixture?.contractRevision === "mcp-contract-2026-11-12-r1" &&
+  fixture?.contractRevision === "mcp-contract-2026-11-12-r2" &&
   fixture?.compatibilityLine === "0.5" &&
   fixture?.cases?.length === 4,
   "shared contract fixture pins the active line and four boundary cases",
 );
 check(
   crossSurfaceFixture?.schemaVersion === "mcp-cross-surface-contract/v1" &&
-    crossSurfaceFixture?.contractRevision === "mcp-contract-2026-11-12-r1" &&
+  crossSurfaceFixture?.contractRevision === "mcp-contract-2026-11-12-r2" &&
     crossSurfaceFixture?.compatibilityLine === "0.5" &&
     crossSurfaceFixture?.cases?.length === 5,
   "shared cross-surface fixture pins five adapter boundary cases",
 );
 check(
   sessionFixture?.schemaVersion === "mcp-session-transaction/v1" &&
-    sessionFixture?.contractRevision === "mcp-contract-2026-11-12-r1" &&
+  sessionFixture?.contractRevision === "mcp-contract-2026-11-12-r2" &&
     sessionFixture?.cases?.length === 4,
   "session/transaction fixture pins the shared immutable contract revision",
 );
 check(
     sessionBridge.includes("relGeoMcpContractRevision") &&
     sessionBridge.includes("contractRevision") &&
-    schemaTests.includes("mcp-contract-2026-11-12-r1") &&
+  schemaTests.includes("mcp-contract-2026-11-12-r2") &&
     schemaTests.includes("contractRevision"),
   "MCP and host-facing status consumers expose the shared immutable contract revision",
 );

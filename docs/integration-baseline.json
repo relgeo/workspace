@@ -4,7 +4,7 @@
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
   "capturedAt": "2026-11-27",
-  "rootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+  "rootRevision": "707843aae50608d48fb0d6ff0fc8780cc961b891",
   "compatibilityLine": "0.5",
   "toolchain": {
     "node": "24.21.0",
@@ -103,7 +103,7 @@
     },
     {
       "path": "flutter",
-      "revision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6"
+      "revision": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d"
     },
     {
       "path": "mcp",

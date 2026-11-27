@@ -61,6 +61,9 @@ if (!outputArg) {
       }
     }
 
+    const diagnosticContract = manifest.flutterImportDiagnosticContract?.path;
+    if (diagnosticContract) copyFixtureFile(diagnosticContract, outputRoot);
+
     const referenceReadme = resolve(fixtureRoot, "reference", "README.md");
     if (existsSync(referenceReadme)) {
       copyFixtureFile("reference/README.md", outputRoot);

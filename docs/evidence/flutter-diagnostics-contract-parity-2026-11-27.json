@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "flutter-diagnostics-contract-parity/v1",
+  "taskId": "close-flutter-diagnostics-active-contract-fixture-promotion-and-semantic-parity-gaps--2998940397",
+  "owner": "relgeo/flutter + relgeo/spec + relgeo/core + relgeo/renderer-svg",
+  "sourceOfTruth": [
+    "fixtures/manifest.json",
+    "fixtures/diagnostics/flutter-import-contract.json",
+    "flutter/lib/src/ui/workbench_import_diagnostics.dart",
+    "mcp/lib/src/contract/session_bridge.dart",
+    "fixtures/manifest.json#/svgSemanticSerialization"
+  ],
+  "revisionTuple": {
+    "workspace": "707843aae50608d48fb0d6ff0fc8780cc961b891",
+    "flutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "rendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b"
+  },
+  "diagnosticContract": {
+    "path": "fixtures/diagnostics/flutter-import-contract.json",
+    "contractRevision": "mcp-contract-2026-11-12-r2",
+    "provenance": {
+      "source": "spec",
+      "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    },
+    "cases": [
+      "invalid-yaml",
+      "unknown-reference",
+      "runtime-empty-boolean",
+      "document-decode"
+    ],
+    "status": "passed"
+  },
+  "fixtureConformance": {
+    "workspaceFallback": {
+      "command": "flutter test test/workbench_import_diagnostics_test.dart test/shared_diagnostic_contract_test.dart",
+      "status": "passed",
+      "outputExcerpt": "00:00 +6: All tests passed!",
+      "claimLimit": "The focused test used the workspace fixture fallback; it proves Flutter diagnostic mapping, not packaged host behavior."
+    },
+    "stagedFixtureRunner": {
+      "command": "node scripts/run-flutter-conformance.mjs test/shared_v05_conformance_test.dart test/shared_diagnostic_contract_test.dart",
+      "status": "environment-unavailable/deferred",
+      "boundary": "Codex App Server managed sandbox",
+      "reason": "Flutter probe cannot update /Users/agusmade/development/flutter/bin/cache/engine.stamp (Operation not permitted).",
+      "remediation": "Run the same staged conformance command at a boundary that permits the Flutter SDK cache update.",
+      "claimLimit": "No staged-wrapper or packaged-runtime pass is claimed."
+    }
+  },
+  "semanticSvg": {
+    "schema": "relgeo.svg-semantic",
+    "schemaVersion": 1,
+    "tolerance": 0.000001,
+    "comparator": "@relgeo/renderer-svg.compareSVGSemanticReplay",
+    "rawSvgPresentationParity": "excluded",
+    "typescriptReplay": {
+      "command": "node scripts/run-renderer-semantic-replay.mjs",
+      "status": "environment-unavailable/deferred",
+      "boundary": "Codex App Server managed sandbox workspace dependency installation",
+      "reason": "Cannot resolve @relgeo/geometry from renderer-svg/dist/index.mjs; offline install lacks the required npm tarball.",
+      "remediation": "Restore workspace dependencies at a network-enabled or prewarmed dependency boundary, then rerun the replay.",
+      "claimLimit": "No TypeScript semantic replay pass is claimed; raw SVG bytes and presentation parity remain out of scope."
+    }
+  }
+}

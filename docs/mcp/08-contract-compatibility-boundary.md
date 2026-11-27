@@ -7,7 +7,7 @@ for DSL version meaning, and `language-service/src/protocol.ts` remains the
 source of truth for editor protocol fields.
 
 The immutable wire-contract revision is
-`mcp-contract-2026-11-12-r1`. It is exported by the MCP package and is carried
+`mcp-contract-2026-11-12-r2`. It is exported by the MCP package and is carried
 in host status responses; the MCP and Flutter consumers must use this same
 revision rather than inferring compatibility from a workspace commit alone.
 

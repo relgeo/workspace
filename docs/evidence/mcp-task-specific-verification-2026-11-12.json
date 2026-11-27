@@ -11,11 +11,11 @@
     "singleValidationRecord": true,
     "validatorRevision": "mcp-task-specific-verification-r3"
   },
-  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "contractRevision": "mcp-contract-2026-11-12-r2",
   "revisions": {
-    "workspace": "47c8b526dcf67197d0e5546a310b68dafcdf97fc",
-    "mcp": "824b46eccabd77da37bb37fa72b1c4a0e019442f",
-    "flutter": "1b894663778af002675e253049c8a793c5cea8b9",
+    "workspace": "707843aae50608d48fb0d6ff0fc8780cc961b891",
+    "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+    "flutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
     "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
   },
   "verification": {

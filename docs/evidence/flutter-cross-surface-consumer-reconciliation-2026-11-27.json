@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "flutter-cross-surface-consumer-reconciliation/v1",
+  "capturedAt": "2026-11-27",
+  "taskId": "propagate-flutter-contract-and-consumer-changes-across-the-repository-graph--2998940397",
+  "contractRevision": "mcp-contract-2026-11-12-r2",
+  "validationCoverage": [
+    {
+      "id": "criterion-1-perubahan-flutter-yang-memerlukan-penyesuaian-li",
+      "status": "inconclusive",
+      "reason": "Cross-surface contract, fixture, and consumer alignment is evidenced, but MCP child commit and root gitlink update remain unavailable at the managed sandbox Git-metadata boundary."
+    },
+    {
+      "id": "evidence-1-child-repository-commits-and-updated-root-gitlin",
+      "status": "inconclusive",
+      "reason": "Flutter child commit is present; MCP child commit and root gitlink updates cannot be claimed because root Git metadata is not writable in the managed sandbox."
+    },
+    {
+      "id": "evidence-2-affected-consumer-and-shared-fixture-verificatio",
+      "status": "inconclusive",
+      "reason": "Flutter consumer and shared-fixture checks passed; MCP Dart analyzer/tests and TypeScript semantic replay remain unavailable at named environment boundaries."
+    },
+    {
+      "id": "evidence-3-cross-surface-reconciliation-proving-contract-an",
+      "status": "passed",
+      "reason": "The current contract revision, revision tuple, fixture staging, consumer checks, deferred boundaries, and claim limits are joined in this record."
+    }
+  ],
+  "revisionTuple": {
+    "rootHead": "707843aae50608d48fb0d6ff0fc8780cc961b891",
+    "flutterChildHead": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "mcpChildHead": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "rendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b"
+  },
+  "childRepositories": [
+    {
+      "path": "flutter",
+      "status": "committed",
+      "commit": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+      "commitMessage": "feat: close Flutter document and interaction contracts",
+      "localChecks": [
+        "flutter analyze --no-pub",
+        "flutter test --no-pub --reporter compact test/workbench_file_service_test.dart test/workbench_import_diagnostics_test.dart test/shared_diagnostic_contract_test.dart test/workbench_viewport_feature_test.dart test/workbench_window_host_test.dart test/workbench_method_channel_window_host_test.dart"
+      ],
+      "claimLimit": "The child commit is present locally; packaged host and native picker/runtime behavior remain unclaimed."
+    },
+    {
+      "path": "mcp",
+      "status": "working-tree-changes-uncommitted",
+      "head": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "changedFiles": [
+        "lib/src/contract/contract_revision.dart",
+        "lib/src/contract/session_bridge.dart",
+        "test/local_dispatch_test.dart",
+        "test/mcp_schema_test.dart"
+      ],
+      "commitAttempt": {
+        "status": "environment-unavailable/deferred",
+        "boundary": "Codex App Server managed sandbox filesystem",
+        "command": "git diff --check && git add lib/src/contract/contract_revision.dart lib/src/contract/session_bridge.dart test/local_dispatch_test.dart test/mcp_schema_test.dart && git commit -m \"feat: extend MCP diagnostic provenance contract\"",
+        "reason": "Unable to create /Users/agusmade/projects/relgeo-workspace/.git/modules/mcp/index.lock (Operation not permitted).",
+        "remediation": "Run the same commit operation at a boundary with writable root Git submodule metadata, then update the root mcp gitlink.",
+        "claimLimit": "MCP source changes are inspected and structurally joined to the r2 contract, but no MCP child commit or root mcp gitlink update is claimed here."
+      },
+      "localChecks": [
+        "git diff --check",
+        "node scripts/check-mcp-contract-closure.mjs",
+        "node scripts/check-mcp-evidence-boundaries.mjs"
+      ],
+      "testBoundary": {
+        "status": "environment-unavailable/deferred",
+        "command": "dart test",
+        "reason": "Flutter SDK update_engine_version.sh cannot write /Users/agusmade/development/flutter/bin/cache/engine.stamp (Operation not permitted).",
+        "claimLimit": "No MCP Dart analyzer/test/transport pass is claimed from this managed sandbox."
+      }
+    }
+  ],
+  "sharedFixtures": {
+    "status": "staged",
+    "command": "node scripts/stage-flutter-fixtures.mjs --out=.local/flutter-fixtures",
+    "result": "passed",
+    "outputExcerpt": "Staged 33 fixture(s) for Flutter into .local/flutter-fixtures.",
+    "claimLimit": "Staging proves workspace fixture selection/copying, not packaged runtime or cross-language execution."
+  },
+  "consumerVerification": [
+    {
+      "consumer": "Flutter",
+      "command": "flutter analyze --no-pub && flutter test --no-pub --reporter compact test/workbench_file_service_test.dart test/workbench_import_diagnostics_test.dart test/shared_diagnostic_contract_test.dart test/workbench_viewport_feature_test.dart test/workbench_window_host_test.dart test/workbench_method_channel_window_host_test.dart",
+      "status": "passed",
+      "outputExcerpt": "00:13 +21: All tests passed!"
+    },
+    {
+      "consumer": "MCP/root contract",
+      "command": "node scripts/check-mcp-contract-closure.mjs && node scripts/check-mcp-evidence-boundaries.mjs",
+      "status": "passed",
+      "outputExcerpt": "MCP contract closure checks passed: DTO, provenance, compatibility, fixture, and evidence boundaries are joined."
+    },
+    {
+      "consumer": "TypeScript semantic replay",
+      "status": "environment-unavailable/deferred",
+      "boundary": "Codex App Server managed sandbox workspace dependencies",
+      "reason": "@relgeo/geometry is unavailable from renderer-svg/dist/index.mjs.",
+      "claimLimit": "No TypeScript renderer replay or raw SVG presentation parity is claimed."
+    }
+  ],
+  "rootGitlinks": {
+    "flutter": {
+      "workingTreeTarget": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+      "indexUpdate": "pending-root-commit",
+      "claimLimit": "The Flutter child target is updated in the working tree; the root commit is not claimed."
+    },
+    "mcp": {
+      "workingTreeTarget": "109bd599fc5b4881f3a3ada128da7e9d548ab936-dirty",
+      "indexUpdate": "blocked-by-unwritable-submodule-metadata",
+      "claimLimit": "The root mcp gitlink remains at the prior clean HEAD because the MCP child could not be committed."
+    }
+  },
+  "reconciliation": {
+    "status": "partially-aligned-with-explicit-environment-boundary",
+    "aligned": [
+      "MCP contract revision r2",
+      "diagnostic DTO provenance fields",
+      "Flutter diagnostic consumer",
+      "shared diagnostic and MCP fixtures",
+      "Flutter current child commit",
+      "root evidence and capability-map pointers"
+    ],
+    "deferred": [
+      "MCP child commit and root mcp gitlink",
+      "MCP Dart analyzer/tests/transport at managed sandbox boundary",
+      "TypeScript renderer semantic replay while dependencies are unavailable"
+    ]
+  }
+}

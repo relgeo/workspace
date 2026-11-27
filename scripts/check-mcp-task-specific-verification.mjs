@@ -43,7 +43,7 @@ for (const [name, revision] of Object.entries(expectedRevisions)) {
 if (manifest.schemaVersion !== "mcp-task-specific-verification/v1") failures.push("schema version is invalid");
 if (manifest.validatorRevision !== "mcp-task-specific-verification-r3") failures.push("validator revision is missing");
 if (manifest.taskId !== "run-compact-task-specific-mcp-verification-and-consumer-propagation--6648601740") failures.push("task id is not current");
-if (manifest.contractRevision !== "mcp-contract-2026-11-12-r1") failures.push("shared contract revision is missing");
+if (manifest.contractRevision !== "mcp-contract-2026-11-12-r2") failures.push("shared contract revision is missing");
 if (
   contractAlignment.schemaVersion !== "mcp-contract-alignment/v1" ||
   contractAlignment.status !== "verified" ||
@@ -97,7 +97,7 @@ for (const fixturePath of [
   }
 }
 const contractConsumers = [
-  ["mcp/lib/src/contract/contract_revision.dart", "mcp-contract-2026-11-12-r1"],
+  ["mcp/lib/src/contract/contract_revision.dart", "mcp-contract-2026-11-12-r2"],
   ["mcp/lib/relgeo_mcp.dart", "contract_revision.dart"],
   ["mcp/lib/src/contract/session_bridge.dart", "contractRevision"],
   ["flutter/test/mcp_server_io_test.dart", "relGeoMcpContractRevision"],

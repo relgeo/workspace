@@ -11,22 +11,28 @@ implementation status is synchronized in the audit/reconciliation artifacts
 below and is summarized here so the expected catalog cannot be mistaken for a
 completion claim.
 
-## Current synchronized status — 2026-11-03
+## Current synchronized status — 2026-11-27
 
 | Status | Count | Reconciliation meaning |
 |---|---:|---|
 | `✔️` | 44 | Implemented at the audited Flutter boundary with local evidence; native-host qualifiers remain in the row. |
-| `🌗` | 17 | Partial implementation, contract coverage, or environment-dependent evidence remains. |
+| `⏸️` | 17 | Explicitly held at the current boundary: implementation/evidence or shared-contract work remains, with owner, remediation, revision, dependency, evidence locator, and claim limit in the disposition register. |
 | `❌` | 0 | No expected user-facing capability is currently classified as absent at the audited boundary. |
 | `➖` | 0 | No out-of-scope row is treated as active implementation in this matrix. |
-| `⏸️` | 0 | No held/deferred row is treated as active implementation in this matrix. |
 | `⚠️` | 0 | No confirmed broken/mismatched capability. |
 
-The three recently implemented boundaries are `DOC-08` (now `🌗` because
-forced-exit/native storage evidence remains open), `CANVAS-05` (`✔️` at the
-Flutter boundary), and `VIEW-05` (`✔️` at the Flutter boundary). This does not
-claim native desktop, assistive-technology, or physical-pointer verification.
-The canonical baseline and all unresolved/deferred scope rows remain intact.
+The current-head rebaseline keeps `DOC-08`, `IO-01`, `IO-02`, `EDIT-04`,
+`CONTRACT-01..03`, `CANVAS-03..04`, `CMD-03`, `A11Y-01..02`, `WINDOW-01`, and
+`PLAT-01..04` as explicit `⏸️` dispositions. The diagnostic/contract subset
+has bounded implementation evidence, while its deferred cross-consumer or
+host boundaries remain explicit rather than being promoted. This closes the
+stale `🌗` rows as tracked decisions, not as unproven implementation claims. The canonical
+machine-readable join is [`rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
+
+Current root/submodule provenance and the active Flutter contract snapshot are
+recorded in that register and [`docs/integration-baseline.json`](../../integration-baseline.json).
+This does not claim native desktop, assistive-technology, physical-pointer,
+packaged-runtime, signing, or deployment verification.
 
 Related evidence:
 
@@ -44,8 +50,8 @@ dispositions.
 
 For this task, the selected IDs are joined against the baseline catalog and
 the current audited status symbols in the reconciliation. `✔️` rows are not
-active debt; `➖` and `⏸️` rows are scope decisions and are not implementation
-work.
+active debt; `➖` and `⏸️` rows are explicit scope/environment/contract
+dispositions and are not untracked implementation work.
 
 ## Frozen desktop authoring boundary
 

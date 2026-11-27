@@ -1,8 +1,17 @@
 # Flutter Workbench — Implementation Audit and Gap Map
 
-> **Release checkpoint — 2026-10-31:** Current Flutter pointer `60ec76042b369659e4d048b2a53ea3a66a384de3` passed Flutter CI run `41184291670`; release workflow `41184693233` produced a v1.0.1 draft with macOS universal, Linux x64, and Windows x64 archives and checksums. This supersedes the stale claim below that current-pointer builds/artifacts are unavailable. It does not close PLAT-01..03 target runtime smoke or PLAT-04 baseline synchronization: `docs/integration-baseline.json` remains from 2026-10-09. ChatGPT Desktop edit interoperability remains a separate live-client check. The 307-test and analyzer results below describe the 2026-10-30 checkout, not the current release pointer.
+> **Current-head rebaseline — 2026-11-27:** This audit is synchronized to
+> workspace `707843a` and Flutter `20253e8`. Implementation findings remain
+> source/evidence observations; the canonical disposition for every ID is in
+> [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
+> The former 17 partial queue rows are explicitly `⏸️` held there with owner,
+> source of truth, dependency, remediation, revision, evidence locator, and
+> claim limit. A held disposition does not promote source, host, contract, or
+> packaged-runtime claims.
 
-> **Coverage statement — 2026-10-30.** Audit ini membandingkan seluruh 61 ID
+> **Historical release checkpoint — 2026-10-31:** Flutter pointer `60ec76042b369659e4d048b2a53ea3a66a384de3` passed CI run `41184291670`; release workflow `41184693233` produced a v1.0.1 draft with macOS universal, Linux x64, and Windows x64 archives and checksums. Those records remain historical because current HEAD points to Flutter `20253e8`. They do not close PLAT-01..03 target runtime smoke or PLAT-04 current artifact join. ChatGPT Desktop edit interoperability remains a separate live-client check.
+
+> **Coverage statement — 2026-11-27.** Audit ini membandingkan seluruh 61 ID
 > capability pada [expected catalog](./expected-capability-catalog.md);
 > lima `SCOPE-*` rows di katalog diperlakukan sebagai keputusan scope terpisah,
 > bukan capability implementation row. Audit dilakukan terhadap checkout
@@ -10,7 +19,7 @@
 > screens, menu/command/shortcut, service dan platform boundary, config,
 > test/golden/fixture, analyzer/test execution, build workflow, runtime note,
 > serta plan dan decision docs. Checkout yang diaudit adalah
-> `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf`; mobile, signing/store,
+> `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d`; mobile, signing/store,
 > native AT, dan host runtime lintas OS tidak dapat dinyatakan terverifikasi
 > dari environment ini. Missing implementation dibedakan dari evidence yang
 > belum dapat dijalankan.
@@ -25,7 +34,7 @@
 | Field | Nilai |
 | --- | --- |
 | Surface | Flutter desktop authoring workbench, semantic runtime, geometry/SVG consumer |
-| Detailed source audit checkout (2026-10-30) | `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` (`staging-2026-09-11-114-gb21eceb`); the release checkpoint above is the current `60ec760` pointer. |
+| Detailed source audit checkout (2026-11-27) | `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` (`desktop-v1.0.1-7-g20253e8`); root gitlink and child checkout agree. |
 | Host | macOS `14.5`, `arm64` |
 | Flutter/Dart | Flutter stable `3.41.9` / Dart `3.11.5` dari SDK lokal |
 | Historical local rerun (2026-10-30) | `flutter analyze --no-pub` — **PASS, No issues found**; `flutter test --no-pub --reporter compact` — **PASS, 307 tests passed**. Golden suites emit a configuration warning because the `golden` tag is not declared in `dart_test.yaml`; this did not fail the run. |
@@ -34,7 +43,7 @@
 | Fresh web build | **Not verified / environment unavailable**: `flutter build web --no-pub` stopped at `/Users/agusmade/development/flutter/bin/internal/update_engine_version.sh:64` because the SDK could not write `/Users/agusmade/development/flutter/bin/cache/engine.stamp` (`Operation not permitted`). This is not classified as a source/build defect. |
 | Fresh macOS build | **Not verified** karena blocker SDK yang sama; tidak diklaim sebagai build failure source |
 | Historical/canonical CI | Run `37832260326`, root `328c869`, Flutter `ea8e754`; historical, bukan pointer yang sedang diaudit |
-| Workspace baseline pointer | `docs/integration-baseline.json` masih mencatat Flutter `f39a913...`; berbeda dari checkout `b21eceb...` |
+| Workspace baseline pointer | `docs/integration-baseline.json` regenerated at root `707843a`; Flutter `20253e8b...` matches the gitlink and child checkout. |
 
 ### 1.1 Status implementation dan evidence
 
@@ -97,7 +106,7 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | DOC-08 | partial | E1/E2 | `WorkbenchDocumentRecoveryStore` menyimpan draft source/identity secara best-effort; `cad_workbench.dart` menyimpan dirty edits, menawarkan RESTORE/DISCARD saat startup, dan membersihkan draft setelah lifecycle sukses; focused recovery tests lulus. | Forced-exit/native storage behavior and a real relaunch smoke remain unverified; retain as an active partial gap. |
 | DOC-09 | implemented | E1/E2 | `WorkbenchDocumentFile`, path/name, UTF-8 read/write, document session identity tersedia; file-service tests lulus. | Format/encoding error UX lintas OS belum E5. |
 | IO-01 | partial | E1/E2; native not verified | `file_picker` adapter dipasang sebagai default untuk Open/Save As dan tests memakai injected boundary. | Native picker appearance/cancel/permission pada macOS/Linux/Windows belum diverifikasi. |
-| IO-02 | partial | E1/E2/E3 | Open reads `.yaml`, `.yml`, `.relgeo`; YAML resolver and shared fixture/conformance tests lulus. | Tidak ada archive/project import terpisah; extension/filter and error vocabulary masih open. |
+| IO-02 | bounded implementation | E1/E2/E3 | Open reads `.yaml`, `.yml`, `.relgeo`; canonical diagnostic fixture covers YAML parse, resolve, runtime, and file-boundary vocabulary. | Archive/project import remains out of scope; broader cross-consumer replay is deferred by dependency boundary. |
 
 ### 3.2 Authoring, compile, diagnostics, dan contract
 
@@ -106,14 +115,14 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | EDIT-01 | implemented | E1/E2 | `EditorPanel`, `WorkbenchEditorFeature`, `re_editor`, widget/workbench tests. | Native IME/text interaction belum E5. |
 | EDIT-02 | implemented | E1/E2 | `RelGeoAutocompleteView` dan semantic selection actions; `editor_autocomplete_test.dart` lulus. | Full DSL vocabulary parity belum E3 lengkap. |
 | EDIT-03 | implemented | E1/E2 | `cad_workbench.dart` debounce compile path dan targeted listeners; current widget suite lulus. | Timing/performance runtime desktop belum E5 diukur. |
-| EDIT-04 | partial | E2/E3 | `ConstraintViolation`, inspector Errors, align fixture, invalid boundary, dan semantic projection tersedia. | Full cross-consumer diagnostic vocabulary/path/object parity belum selesai. |
+| EDIT-04 | bounded implementation | E2/E3 | `WorkbenchImportDiagnostics` emits canonical code, phase, path, origin, and session revision for parser/compiler/file boundaries; focused fixture test passes. | Native presentation and full cross-consumer vocabulary parity remain unclaimed. |
 | EDIT-05 | implemented | E2/E3 | Invalid edit tests mempertahankan valid preview terakhir dan menampilkan error. | Native runtime state transition belum E5. |
 | EDIT-06 | implemented | E1/E2 | `re_editor` history, Edit → Undo, controller/widget tests. | Shortcut mapping native per OS belum E5. |
 | EDIT-07 | implemented | E1/E2 | `re_editor` redo, Edit → Redo, controller/widget tests. | Shortcut mapping native per OS belum E5. |
 | EDIT-08 | implemented | E1/E2 | Copy source command and context menu use shared registry; context-menu/widget tests lulus. | Clipboard permission/behavior native belum E5. |
-| CONTRACT-01 | partial | E2/E3/E4 historical | `pubspec.yaml`/README state DSL 0.5; resolver, YAML, shared fixture adapter, and the historical 2026-10-30 307-test suite pass. | Full DSL parser/diagnostic contract parity bukan seluruhnya proven; baseline child pointer differs from canonical docs. |
-| CONTRACT-02 | partial | E2/E3/E4 historical | Resolver/graph/geometry/boolean implementations and semantic projection exist; fixture 15 active only on bounded contract; the historical 2026-10-30 307-test suite passes. | Evaluator/unit fixture 16 remains candidate; union/xor/non-rectangle/degenerate surfaces remain outside active contract. |
-| CONTRACT-03 | partial | E2/E3/E4 historical | `SvgExporter`, SVG contract tests, semantic SVG projection, fixture snapshots exist. | Semantic core is bounded; raw bytes/style/viewBox/text/metadata/overlay presentation are deliberately not contract. |
+| CONTRACT-01 | bounded implementation | E2/E3/current contract envelope | MCP contract r2, canonical diagnostic fixture, and current revision tuple are joined; staged Flutter replay is separately dispositioned. | Full DSL parser/diagnostic parity remains unclaimed until the current consumer dependency graph is runnable. |
+| CONTRACT-02 | bounded implementation | E2/E3/current promotion check | Manifest and promotion check pass; fixtures 15/16 are active on Flutter, while fixture 24 is explicitly not promoted. | Evaluator/topology/collection completeness remains outside the promoted Flutter boundary. |
+| CONTRACT-03 | bounded implementation | E2/E3/current semantic contract | Flutter semantic SVG comparator uses the manifest schema/tolerance and excludes presentation bytes; TypeScript replay is separately dispositioned. | Raw bytes/style/viewBox/text/metadata/overlay presentation remain deliberately outside contract. |
 
 ### 3.3 Canvas, preview, inspection, dan navigation
 
@@ -121,8 +130,8 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | --- | --- | --- | --- | --- |
 | CANVAS-01 | implemented | E1/E2 | `CanvasPainter`, `WorkbenchViewportPanel`, widget/golden/sheet preview tests. | GPU/window resize/native runtime belum E5. |
 | CANVAS-02 | implemented | E1/E2 | `WorkbenchPreviewTarget` supports model/sheet; widget tests switch sheet and back to model. | Component target is declared but renderer support is not active; not part of current expected model/sheet outcome. |
-| CANVAS-03 | partial | E1/E2 | `InspectorPanel` tabs Objects/Values/Errors/BOM and inspector tests cover geometry/semantics. | Exhaustive object/property/constraint inspection parity belum established. |
-| CANVAS-04 | partial | E1/E2 | `ParametersPanel` is conditional and parameter override/reset tests exist. | Full parameter/evaluator policy remains candidate/partial; no empty-panel regression beyond current covered paths. |
+| CANVAS-03 | bounded implementation | E1/E2; host evidence held | `InspectorPanel` tabs Objects/Values/Errors/BOM and inspector tests cover geometry/semantics; selection is shared with canvas/graph. | Exhaustive object/property/constraint inspection parity and native AT remain unverified. |
+| CANVAS-04 | bounded implementation | E1/E2; cross-consumer evidence held | `ParametersPanel` is conditional and parameter override/reset/profile tests exist. | Full parameter/evaluator policy remains outside the bounded Flutter surface. |
 | CANVAS-05 | implemented at Flutter boundary | E1/E2 | `WorkbenchSceneGraph` projects resolved relationships; `WorkbenchSceneGraphPanel` renders selectable nodes; View → Panels → Dependency graph exposes it; focused graph model/panel tests and the full 307-test suite pass. | Native/runtime accessibility and richer relationship semantics remain open; do not promote beyond the Flutter boundary without that evidence. |
 | CANVAS-06 | implemented | E1/E2 | Overlay toolbar, role filter, anchors/labels/bounds controls, and widget semantics tests exist. | Native pointer/accessibility announcement remains E5 unverified. |
 | VIEW-01 | implemented | E1/E2 | View command, `WorkbenchViewportController.zoomIn/zoomOut`, toolbar, controller/widget tests. | Native keyboard/trackpad behavior not E5 verified. |
@@ -155,11 +164,11 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | --- | --- | --- | --- | --- |
 | CMD-01 | implemented | E1/E2 | `WorkbenchCommandRegistry` is shared by menu, toolbar, context menu, global `Shortcuts`/`Actions`, and native menu adapter; context/menu tests pass. | Native event parity not E5 verified. |
 | CMD-02 | implemented | E1/E2 | File/Edit/View/Document/Workbench/Help menu order and commands are defined; platform menu test passes. | Native macOS/Linux/Windows menu runtime not E5 verified. |
-| CMD-03 | partial | E1/E2; native not verified | Main commands have shortcut activators and menu labels; shortcut tests/command source exist. | Exact per-platform modifier policy and full traversal/shortcut smoke remain unverified; no confirmed broken mapping is claimed. |
-| A11Y-01 | partial | E1/E2; E5 not verified | `FocusableActionDetector`, Enter/Space activation, divider/resize semantics, focus tests, and widget semantics paths exist. | Full Tab/arrow/Escape traversal on native macOS/Linux/Windows remains unverified. |
-| A11Y-02 | partial | E1/E2; E5 not verified | Labels, values, checked states, panel/selector semantics, and semantics tests exist. | VoiceOver/AT announcements and current native AX tree were not captured. |
+| CMD-03 | bounded implementation | E1/E2; native not verified | Main commands have shortcut activators, conflict detection, menu labels, context-menu parity, and global shortcut tests. | Exact per-platform modifier policy and native menu/shortcut delivery remain unverified; no confirmed broken mapping is claimed. |
+| A11Y-01 | bounded implementation | E1/E2; E5 not verified | `FocusableActionDetector`, Enter/Space activation, focus traversal, divider/resize semantics, and graph activation tests exist. | Full Tab/arrow/Escape traversal on native macOS/Linux/Windows remains unverified. |
+| A11Y-02 | bounded implementation | E1/E2; E5 not verified | Canvas preview, inspector, graph, parameter, panel, and selector labels/values/states are covered by Flutter semantics tests. | VoiceOver/AT announcements and current native AX/AT trees were not captured. |
 | A11Y-03 | implemented | E1/E2; E5 not verified | `MediaQuery.disableAnimations` maps to zero motion; `workbench_motion_test.dart` passes. | Native reduced-motion preference and full focus exclusion smoke remain unverified. |
-| WINDOW-01 | partial | E1/E2; E5 not verified | `WorkbenchWindowLifecycleHost`, method-channel close, dirty guards, and host tests exist. | Native window-manager close/quit and clean exit on current artifact not verified. |
+| WINDOW-01 | bounded implementation | E1/E2; E5 not verified | `WorkbenchWindowLifecycleHost`, method-channel close, dirty guards, and clean/dirty host tests exist. | Native window-manager close/quit and clean exit on current artifact not verified. |
 | WINDOW-02 | implemented | E1/E2; E5 not verified | Window policy/default/minimum sizes, compact mode, and host configuration tests exist. | Actual OS enforcement/resize on each target not verified. |
 | WINDOW-03 | implemented at boundary | E1; E5 not verified | Native title bar is the explicit current boundary; no custom chrome implementation is required. | Multi-monitor/HiDPI/native controls still require macOS/Linux/Windows runtime smoke. |
 
@@ -169,10 +178,10 @@ boundary di §4, bukan untuk menyamarkan capability yang belum dibuat.
 | --- | --- | --- | --- | --- |
 | EXPORT-01 | implemented at injected boundary | E1/E2/E3 | `WorkbenchSvgExportController`, `SvgExporter`, File → Export → SVG → Model, controller and semantic SVG tests. | Native destination dialog and actual file write on target OS not E5 verified. |
 | EXPORT-02 | implemented at injected boundary | E1/E2 | Model/Sheet View export commands and target selector/widget tests exist. | Native dialog/write and all sheet presentation policies not E5 verified. |
-| PLAT-01 | partial | E4 current build; E5 runtime not verified | CI run `41184291670` built current Flutter `60ec760`; v1.0.1 universal macOS archive/checksum is in draft run `41184693233`. | Target macOS launch, native window/keyboard/VoiceOver behavior, and packaged MCP smoke remain unverified. |
-| PLAT-02 | partial | E4 current build; E5 runtime not verified | CI run `41184291670` built current Flutter `60ec760`; Linux x64 archive/checksum is in draft run `41184693233`. | No target Linux artifact launch/session smoke; Wayland/X11, picker, input, clean exit, and packaged MCP remain unverified. |
-| PLAT-03 | partial | E4 current build; E5 runtime not verified | CI run `41184291670` built current Flutter `60ec760`; Windows x64 archive/checksum is in draft run `41184693233`. | Windows 11 extraction/launch/DLL/SmartScreen/input and packaged MCP smoke remain unverified; signing/installer work is separate. |
-| PLAT-04 | partial | E4 current artifact provenance; root integration provenance stale | Draft release manifest/checksums identify current Flutter source, workflow, OS, and architecture. | The root baseline manifest remains captured 2026-10-09; publish and join the release tag to a refreshed integration baseline. |
+| PLAT-01 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `20253e8` has no current target-host launch record in this workspace. | Target macOS launch, native window/keyboard/VoiceOver behavior, and packaged MCP smoke remain unverified. |
+| PLAT-02 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `20253e8` has no current target-host launch record in this workspace. | No target Linux artifact launch/session smoke; Wayland/X11, picker, input, clean exit, and packaged MCP remain unverified. |
+| PLAT-03 | partial | E4 historical artifact; E5 runtime not verified | Historical CI run `41184291670` built Flutter `60ec760`; current Flutter `20253e8` has no current target-host launch record in this workspace. | Windows 11 extraction/launch/DLL/SmartScreen/input and packaged MCP smoke remain unverified; signing/installer work is separate. |
+| PLAT-04 | partial | E4 current tuple manifest; artifact/runtime join not verified | `docs/integration-baseline.json` now joins root `707843a` and Flutter `20253e8`; no current artifact checksum/runtime record is attached. | Baseline tuple is current, but artifact build, launch, publish, and deployment claims remain unverified. |
 
 ## 4. Scope classifications outside the active implementation rows
 

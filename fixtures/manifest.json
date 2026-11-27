@@ -53,6 +53,12 @@
     "protocolVersion": "0.2",
     "positionEncoding": "utf-16"
   },
+  "flutterImportDiagnosticContract": {
+    "path": "diagnostics/flutter-import-contract.json",
+    "schema": "relgeo.flutter-import-diagnostics",
+    "schemaVersion": 1,
+    "contractRevision": "mcp-contract-2026-11-12-r2"
+  },
   "cliContractCoverage": {
     "input": {
       "pathPrecedence": "explicit path wins over unrelated stdin",

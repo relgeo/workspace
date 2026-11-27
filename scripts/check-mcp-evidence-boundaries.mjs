@@ -208,7 +208,7 @@ check(Array.isArray(goalAudit.residualRequirements) && goalAudit.residualRequire
     typeof residual.claimLimit === "string" && residual.claimLimit.length > 0),
 "goal-level audit records residual owner, remediation, and claim limits");
 check(goalAudit.consumerPropagation?.status === "pass" &&
-  goalAudit.consumerPropagation?.revision === "mcp-contract-2026-11-12-r1" &&
+  goalAudit.consumerPropagation?.revision === "mcp-contract-2026-11-12-r2" &&
   Array.isArray(goalAudit.consumerPropagation?.consumers) &&
   goalAudit.consumerPropagation.consumers.join(",") === "mcp-export,mcp-status,flutter-assertion,fixtures",
 "goal-level audit records revision and four consumer propagation");

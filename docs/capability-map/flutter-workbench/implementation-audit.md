@@ -2,6 +2,13 @@
 
 # Flutter implementation audit — evidence summary
 
+> **Current-head rebaseline — 2026-11-27:** Current source boundary is root
+> `707843a` with Flutter `20253e8`; all 61 ID dispositions are in the
+> [machine-readable register](../../evidence/rebaseline-disposition-register-2026-11-27.json).
+> The register records 44 `✔️` source-boundary implementations and 17 `⏸️`
+> holds. The historical test and CI records below remain tied to their recorded
+> revisions and are not promoted to current-pointer runtime evidence.
+
 The detailed current audit and gap map is
 [implementation-gap-map.md](./implementation-gap-map.md). This companion
 document preserves the earlier source/test/evidence summary and the fresh local
@@ -46,9 +53,9 @@ contract includes host smoke or additional parity work.
 | `VIEW-05` | `WorkbenchSelectionController`, viewport hit-testing, canvas selection highlight, and inspector selection propagation | `flutter/test/workbench_scene_graph_test.dart`; full suite `307` passed | **Implemented at Flutter boundary**: visible-object hit-testing synchronizes canvas, graph, and inspector selection; physical pointer behavior remains unverified. |
 
 The focused tests also cover recovery-store round trip/cleanup and graph-panel
-selection/close behavior. Existing selected `🌗` rows remain partial unless
-their full acceptance contract is separately satisfied; no `➖` or `⏸️` item was
-activated by this tranche.
+selection/close behavior. The current-head disposition register is authoritative
+for the selected rows; bounded contract implementation and deferred host or
+cross-consumer evidence are kept as separate fields.
 
 ## Implementation refresh — 2026-11-05
 
@@ -57,9 +64,10 @@ public DSL/API or compatibility line:
 
 | Capability | Source change | Direct evidence | Honest result |
 |---|---|---|---|
-| `CANVAS-04` | `WorkbenchParameterSpec.accepts` now rejects non-finite, unknown, invalid-bound, and out-of-range overrides; `WorkbenchDocumentController` sanitizes initial, profile, and programmatic overrides before exposing them to recompilation. | `flutter/test/workbench_document_settings_test.dart`; `flutter/test/workbench_document_controller_test.dart`; focused run: 12 controller/settings tests passed. | **Partial implementation strengthened**: the editor envelope is bounded; full evaluator/profile parity remains open. |
-| `IO-02` | `FilePickerWorkbenchFileService.openDocumentAtPath` now rejects unsupported recent-file extensions before reading; `.relgeo`, `.yaml`, and `.yml` remain the active import boundary. | `flutter/test/workbench_file_service_test.dart`; focused file-service run: 5 tests passed. | **Partial implementation strengthened**: unsupported recent imports are a no-op; native picker and broader diagnostic promotion remain unverified. |
-| `EDIT-04` / `CONTRACT-01` | Flutter `ConstraintViolation` now carries the Core/Geometry diagnostic metadata (`severity`, `origin`, `expected`, `actual`); constraint processing decorates every violation with the active `error`/`constraint` contract and the `0.001` tolerance. | `flutter/test/constraints_diagnostics_test.dart`; `flutter/test/shared_v05_conformance_test.dart`; targeted run: 5 tests passed. | **Partial implementation strengthened**: current-pointer diagnostic projection now matches the active shared fixture; broader diagnostic vocabulary and all-consumer promotion remain open. |
+| `CANVAS-04` | `WorkbenchParameterSpec.accepts` now rejects non-finite, unknown, invalid-bound, and out-of-range overrides; `WorkbenchDocumentController` sanitizes initial, profile, and programmatic overrides before exposing them to recompilation. | `flutter/test/workbench_document_settings_test.dart`; `flutter/test/workbench_document_controller_test.dart`; `docs/evidence/flutter-interaction-runtime-accessibility-2026-11-27.json#/surfaceDisposition/CANVAS-04`. | **Bounded implementation complete**: the editor envelope is bounded and tested; full evaluator/profile parity remains explicitly outside this boundary. |
+| `IO-02` | `FilePickerWorkbenchFileService.openDocumentAtPath` rejects unsupported recent-file extensions; `.relgeo`, `.yaml`, and `.yml` remain the active import boundary; diagnostic cases are canonicalized in the shared fixture. | `flutter/test/workbench_file_service_test.dart`; `flutter/test/shared_diagnostic_contract_test.dart`; `docs/evidence/flutter-diagnostics-contract-parity-2026-11-27.json#/diagnosticContract`. | **Bounded implementation complete**: unsupported recent imports are a no-op and parse/resolve/runtime/file diagnostics have stable fields; native picker and broader cross-consumer promotion remain deferred. |
+| `EDIT-04` / `CONTRACT-01` | Flutter diagnostics now project canonical code, phase, path, origin, and session revision through the MCP DTO; the active contract is pinned to `mcp-contract-2026-11-12-r2`. | `flutter/test/shared_diagnostic_contract_test.dart`; `mcp/test/mcp_schema_test.dart`; `node scripts/check-flutter-diagnostics-contract.mjs`. | **Bounded implementation complete**: current Flutter/MCP diagnostic mapping passes; full cross-consumer vocabulary and native presentation are not claimed. |
+| `CONTRACT-02` / `CONTRACT-03` | Fixture promotion is recorded for fixtures 15/16, fixture 24 remains outside Flutter promotion, and Flutter SVG comparison is semantic with manifest tolerance and explicit presentation exclusions. | `docs/evidence/flutter-cross-surface-promotion-2026-11-27.json`; `flutter/test/shared_v05_conformance_test.dart`; `flutter/test/support/svg_semantic_projection.dart`. | **Bounded implementation complete**: current structural promotion and semantic comparator boundary are joined; TypeScript replay is deferred until workspace dependencies are available. |
 
 Validation at the current child checkout: `flutter analyze --no-pub` passed with
 no issues; the focused controller/settings/file-service run passed 17 tests and
@@ -168,10 +176,10 @@ are claimed only for source/test evidence at the audited child revision; no
 native picker, window-manager, assistive-technology, Linux/Windows runtime, or
 desktop artifact result is inferred from them.
 
-The root pointer/baseline mismatch is the main audit issue. Before promoting or
-regressing any Flutter capability, refresh `docs/integration-baseline.json`, run
-the Flutter jobs from a clean checkout at the current root pointer, and record
-the resulting child revision in the evidence record.
+The prior root pointer/baseline mismatch has been rebaselined. `docs/integration-baseline.json`
+now joins the current root and all child checkouts. Current analyzer evidence is
+recorded in the 2026-11-27 validation overlay; full test/runtime promotion still
+requires the named command and host evidence boundaries.
 
 ## Evidence handoff — 2026-10-30
 
@@ -179,8 +187,8 @@ the resulting child revision in the evidence record.
 
 | Boundary | Recorded value | Interpretation |
 |---|---|---|
-| Workspace `HEAD` | `1cfa86553d7adb18179c6b3e1a33618a179b1414` | Root revision used for this evidence snapshot. |
-| Flutter child `HEAD` | `b21eceb258070133f32fd822b6fd23a4f21b0bbf` | Child revision used for analyzer, focused tests, conformance tests, and the full local suite. |
+| Workspace `HEAD` | `707843aae50608d48fb0d6ff0fc8780cc961b891` | Current root revision used for the rebaseline. |
+| Flutter child `HEAD` | `52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current child revision used for source inspection and analyzer boundary. |
 | Worktree state | Root and `flutter/` are intentionally dirty | The implementation/doc changes are uncommitted task work. No commit or release artifact is implied by these hashes; preserve unrelated worktree changes. |
 | Changed Flutter boundary | `flutter/lib/src/ui/`, `flutter/lib/src/features/inspector/`, and focused `flutter/test/` files | Recovery, scene graph, selection, canvas, inspector, and command wiring plus focused tests. |
 | Changed evidence boundary | `docs/capability-map/flutter-workbench/` | Catalog status snapshot, audit, reconciliation, backlog, selection, and handoff records. |
@@ -207,7 +215,7 @@ from native artifact/runtime claims.
 |---|---|---|---|
 | `DOC-08` recovery completion | `relgeo/flutter` | `🌗`: dirty-draft persistence and startup RESTORE/DISCARD are locally wired; forced-exit/native storage is unverified | Forced-exit/relaunch integration, stale/corrupt-draft behavior, and host persistence smoke. |
 | `IO-01`/`IO-02` file/import completion | `relgeo/flutter` + `relgeo/core` | `🌗`: injected picker/import and invalid-boundary tests pass; native picker and broader diagnostic vocabulary remain open | macOS/Linux/Windows picker smoke plus expanded supported/unsupported import fixtures. |
-| `CANVAS-03`/`CANVAS-04` inspector and parameters | `relgeo/flutter` + `relgeo/core` | `🌗`: current surfaces work locally; exhaustive property/parameter parity is not established | Field inventory and parameter/profile conformance fixtures. |
-| `CMD-03`/`A11Y-01`/`A11Y-02`/`WINDOW-01` | `relgeo/flutter` + native host runners | `🌗`: Flutter command/focus/semantics/window boundaries are tested; native event/AT/lifecycle is unverified | Per-OS shortcut, keyboard traversal, AT-tree, and close/quit smoke. |
-| `PLAT-01..04` | `relgeo/flutter` + `relgeo/workspace` + CI | `🌗`: current release artifacts/checksums are in a v1.0.1 draft; target launch and root-baseline provenance remain unverified | Smoke the draft bundles on target operating systems and refresh the integration baseline. |
+| `CANVAS-03`/`CANVAS-04` inspector and parameters | `relgeo/flutter` + `relgeo/core` | `⏸️`: bounded inspector/selection and parameter/profile surfaces are tested; exhaustive property/evaluator parity remains held | Field inventory and parameter/profile conformance fixtures. |
+| `CMD-03`/`A11Y-01`/`A11Y-02`/`WINDOW-01` | `relgeo/flutter` + native host runners | `⏸️`: Flutter command/focus/semantics/window boundaries are implemented and tested; native event/AT/lifecycle is explicitly held | Per-OS shortcut, keyboard traversal, AT-tree, and close/quit smoke. |
+| `PLAT-01..04` | `relgeo/flutter` + `relgeo/workspace` + CI | `⏸️`: current tuple provenance is refreshed; target launch/runtime and current artifact join remain unverified | Smoke current bundles on target operating systems and attach artifact/runtime provenance. |
 | Deferred/out-of-scope boundaries | Maintainers/product decision | `➖`/`⏸️` rows remain separate from active implementation | No action in this task; revisit only with an explicit scope/contract decision. |

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "mcp-setup-operations-compatibility/v1",
-  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "contractRevision": "mcp-contract-2026-11-12-r2",
   "compatibilityLine": "0.5",
   "protocolVersion": "2025-11-25",
   "cases": [

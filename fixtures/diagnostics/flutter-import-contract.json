@@ -1,0 +1,55 @@
+{
+  "schema": "relgeo.flutter-import-diagnostics",
+  "schemaVersion": 1,
+  "compatibilityLine": "0.5",
+  "contractRevision": "mcp-contract-2026-11-12-r2",
+  "provenance": {
+    "source": "spec",
+    "sourceUrl": "spec/id/core/diagnostics.md",
+    "specVersion": "0.5",
+    "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+  },
+  "sourceRevisionFormat": "session-revision",
+  "cases": [
+    {
+      "id": "invalid-yaml",
+      "fixture": "reference/12-v05-invalid-yaml-syntax.yaml",
+      "expected": {
+        "code": "INVALID_YAML",
+        "phase": "parse",
+        "path": "document",
+        "origin": "activeDocument"
+      }
+    },
+    {
+      "id": "unknown-reference",
+      "fixture": "reference/21-v05-invalid-reference-path.yaml",
+      "expected": {
+        "code": "UNKNOWN_IDENTIFIER",
+        "phase": "resolve",
+        "path": "objects.marker.at[0]",
+        "origin": "activeDocument"
+      }
+    },
+    {
+      "id": "runtime-empty-boolean",
+      "fixture": "reference/19-v05-runtime-empty-boolean.yaml",
+      "expected": {
+        "code": "BOOLEAN_EMPTY_RESULT",
+        "phase": "runtime",
+        "path": "objects.empty",
+        "origin": "activeDocument"
+      }
+    },
+    {
+      "id": "document-decode",
+      "kind": "file",
+      "expected": {
+        "code": "DOCUMENT_DECODE",
+        "phase": "io",
+        "path": "document",
+        "origin": "activeDocument"
+      }
+    }
+  ]
+}

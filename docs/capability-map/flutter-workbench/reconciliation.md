@@ -1,6 +1,14 @@
 # Flutter Workbench — Expected-versus-Observed Reconciliation
 
-> **Coverage statement — 2026-11-03.** Dokumen ini adalah join satu-per-satu
+> **Current-head rebaseline — 2026-11-27.** The canonical one-row-per-ID
+> disposition is [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
+> It joins the 61 expected IDs to current root `707843a` and Flutter `20253e8`,
+> while retaining implementation status separately from evidence and disposition.
+> The former 17 `🌗` rows are now explicit `⏸️` holds with owner, remediation,
+> dependency, revision, evidence locator, and claim limit; this is not a claim
+> that native/runtime or cross-consumer work passed.
+
+> **Coverage statement — 2026-11-27.** Dokumen ini adalah join satu-per-satu
 > antara seluruh 61 ID pada [expected capability catalog](./expected-capability-catalog.md)
 > dan baris observed pada [Flutter implementation audit](./implementation-gap-map.md).
 > Ia tidak menambah capability, tidak menghapus expected row, dan tidak
@@ -16,8 +24,9 @@
 
 | Evidence source | Role in this reconciliation |
 | --- | --- |
-| `flutter@60ec76042b369659e4d048b2a53ea3a66a384de3` | Current root gitlink; Flutter CI and desktop release workflow evidence are in the checkpointed audit. |
-| `flutter@b21eceb258070133f32fd822b6fd23a4f21b0bbf` | Detailed 2026-10-30 source/test/platform audit; historical local analyzer/test result, not current pointer. |
+| `workspace@707843aae50608d48fb0d6ff0fc8780cc961b891` | Current root `HEAD`, captured from the clean root checkout. |
+| `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current Flutter gitlink and child `HEAD`; source audit boundary for this rebaseline. |
+| `spec@26ff53278d77d916b0e0e6c26ca9ab496232fbc0`, `mcp@109bd599fc5b4881f3a3ada128da7e9d548ab936` | Current normative spec snapshot and pure-Dart host contract inputs. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, active desktop/platform gates, compatibility line, and historical-versus-current evidence rules. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Repository ownership and Flutter surface boundary. |
 | [`docs/capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) and the capability-map artifacts | Discovery categories, status/evidence separation, expected-but-missing rule, and one-to-one coverage checks. |
@@ -47,13 +56,13 @@ The active Flutter import adapter intentionally emits only
 Source path/phase/object parity remains part of `EDIT-04`/`CONTRACT-02` and is
 not synthesized from exception strings.
 
-## P0/P1 triage checkpoint — 2026-11-04
+## Current disposition checkpoint — 2026-11-27
 
-The [canonical backlog triage](./implementation-gap-backlog.md#p0p1-triage-disposition--2026-11-04)
-selects `DOC-08`, `IO-01`, `IO-02`, `EDIT-04`, `CONTRACT-01`, `CONTRACT-02`,
-`CONTRACT-03`, `CANVAS-03`, `CANVAS-04`, `CMD-03`, `A11Y-01`, `A11Y-02`, and
-`WINDOW-01` as implementation-closable source/contract slices. Their current
-reconciliation remains `🌗 partial` until the listed acceptance evidence passes.
+The current disposition register records `DOC-08`, `IO-01`, `IO-02`, `EDIT-04`,
+`CONTRACT-01`, `CONTRACT-02`, `CONTRACT-03`, `CANVAS-03`, `CANVAS-04`,
+`CMD-03`, `A11Y-01`, `A11Y-02`, `WINDOW-01`, and `PLAT-01..04` as `⏸️`.
+Their implementation status remains `partial` where source/contract work is
+bounded, but the stale `🌗` symbol is no longer used as an actionable queue.
 
 `CANVAS-05` and `VIEW-05` are `implemented at Flutter boundary` with host
 evidence still open. `PLAT-01`–`PLAT-04` are evidence-only target-host or
@@ -143,10 +152,10 @@ Makna penting:
 | DOC-05 | `✔️` | implemented | source-plus-local | in scope; Flutter recent store | [Audit §3.1 DOC-05](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-06 | `✔️` | implemented | source-plus-local | in scope; Flutter document session | [Audit §3.1 DOC-06](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-07 | `✔️` | implemented | source-plus-local; native not verified | in scope; Flutter/host lifecycle boundary | [Audit §3.1 DOC-07](./implementation-gap-map.md#31-document-file-dan-recovery) |
-| DOC-08 | `🌗` | partial | recovery store and focused local tests; forced-exit/native storage not verified | in scope; `relgeo/flutter` owner | [Audit §3.1 DOC-08](./implementation-gap-map.md#31-document-file-dan-recovery) |
+| DOC-08 | `⏸️` | partial | recovery store and focused local tests; forced-exit/native storage not verified | held environment boundary; `relgeo/flutter` owner | [Audit §3.1 DOC-08](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-09 | `✔️` | implemented | source-plus-local | in scope; Flutter document identity/file service | [Audit §3.1 DOC-09](./implementation-gap-map.md#31-document-file-dan-recovery) |
-| IO-01 | `🌗` | partial | source-plus-local; native not verified | in scope; Flutter adapter, OS picker evidence pending | [Audit §3.1 IO-01](./implementation-gap-map.md#31-document-file-dan-recovery) |
-| IO-02 | `🌗` | partial | bounded-contract | in scope; bounded RelGeo/YAML import | [Audit §3.1 IO-02](./implementation-gap-map.md#31-document-file-dan-recovery) |
+| IO-01 | `⏸️` | partial | source-plus-local; native not verified | held environment boundary; Flutter adapter owner | [Audit §3.1 IO-01](./implementation-gap-map.md#31-document-file-dan-recovery) |
+| IO-02 | `⏸️` | implemented-at-bounded-boundary | current diagnostic fixture + focused Flutter tests | held only for broader cross-consumer policy; Flutter + core owners | [Audit §3.1 IO-02](./implementation-gap-map.md#31-document-file-dan-recovery) |
 
 ### 2. Authoring, compile, diagnostics, dan contract
 
@@ -155,14 +164,14 @@ Makna penting:
 | EDIT-01 | `✔️` | implemented | source-plus-local | in scope; Flutter editor | [Audit §3.2 EDIT-01](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-02 | `✔️` | implemented | source-plus-local | in scope; Flutter editor/DSL vocabulary | [Audit §3.2 EDIT-02](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-03 | `✔️` | implemented | source-plus-local | in scope; Flutter workbench compile path | [Audit §3.2 EDIT-03](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
-| EDIT-04 | `🌗` | partial | bounded-contract | in scope; diagnostic contract shared with DSL/core | [Audit §3.2 EDIT-04](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
+| EDIT-04 | `⏸️` | implemented-at-bounded-boundary | current diagnostic fixture + focused Flutter tests | held only for cross-consumer/runtime execution; Flutter + spec + core owners | [Audit §3.2 EDIT-04](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-05 | `✔️` | implemented | bounded-contract | in scope; Flutter preview recovery behavior | [Audit §3.2 EDIT-05](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-06 | `✔️` | implemented | source-plus-local | in scope; Flutter editor history | [Audit §3.2 EDIT-06](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-07 | `✔️` | implemented | source-plus-local | in scope; Flutter editor history | [Audit §3.2 EDIT-07](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-08 | `✔️` | implemented | source-plus-local | in scope; shared command registry | [Audit §3.2 EDIT-08](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
-| CONTRACT-01 | `🌗` | partial | bounded-contract; historical cross-consumer evidence | in scope with DSL `0.5.x` boundary | [Audit §3.2 CONTRACT-01](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
-| CONTRACT-02 | `🌗` | partial | bounded-contract; historical CI | in scope only for promoted fixture boundary | [Audit §3.2 CONTRACT-02](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
-| CONTRACT-03 | `🌗` | partial | bounded-contract; historical CI | in scope for semantic SVG core, not raw/presentation parity | [Audit §3.2 CONTRACT-03](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
+| CONTRACT-01 | `⏸️` | implemented-at-bounded-boundary | current contract revision + diagnostic fixture; staged replay deferred | held only for current-pointer cross-consumer execution; spec + Flutter + core owners | [Audit §3.2 CONTRACT-01](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
+| CONTRACT-02 | `⏸️` | implemented-at-bounded-boundary | current manifest/promotion check | fixtures 15/16 are Flutter-promoted; fixture 24 remains explicit non-Flutter scope; workspace + Flutter owners | [Audit §3.2 CONTRACT-02](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
+| CONTRACT-03 | `⏸️` | implemented-at-bounded-boundary | semantic comparator contract + Flutter projection; TS replay deferred | held only for current-pointer renderer replay; raw/presentation excluded; renderer + Flutter owners | [Audit §3.2 CONTRACT-03](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 
 ### 3. Canvas, preview, inspection, dan navigation
 
@@ -170,8 +179,8 @@ Makna penting:
 | --- | --- | --- | --- | --- | --- |
 | CANVAS-01 | `✔️` | implemented | source-plus-local | in scope; Flutter canvas/preview | [Audit §3.3 CANVAS-01](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-02 | `✔️` | implemented | source-plus-local | in scope for model/sheet view | [Audit §3.3 CANVAS-02](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
-| CANVAS-03 | `🌗` | partial | source-plus-local | in scope; inspector surface parity incomplete | [Audit §3.3 CANVAS-03](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
-| CANVAS-04 | `🌗` | partial | source-plus-local | in scope conditional; parameter policy remains bounded | [Audit §3.3 CANVAS-04](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
+| CANVAS-03 | `⏸️` | bounded implementation | source-plus-local; host evidence held | bounded inspector/selection boundary; exhaustive field inventory remains separate | [Audit §3.3 CANVAS-03](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
+| CANVAS-04 | `⏸️` | bounded implementation | source-plus-local; cross-consumer evidence held | bounded parameter/profile editing boundary; full evaluator parity remains separate | [Audit §3.3 CANVAS-04](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-05 | `✔️` | implemented at Flutter boundary | graph model/panel and focused tests; native AT/runtime not verified | in scope; user-facing graph belongs to Flutter workbench | [Audit §3.3 CANVAS-05](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-06 | `✔️` | implemented | source-plus-local; native AT not verified | in scope; Flutter overlay/role controls | [Audit §3.3 CANVAS-06](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | VIEW-01 | `✔️` | implemented | source-plus-local | in scope; Flutter viewport | [Audit §3.3 VIEW-01](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
@@ -204,11 +213,11 @@ Makna penting:
 | --- | --- | --- | --- | --- | --- |
 | CMD-01 | `✔️` | implemented | source-plus-local; native event not verified | in scope; shared Flutter command registry | [Audit §3.5 CMD-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 | CMD-02 | `✔️` | implemented | source-plus-local; native menu not verified | in scope; Flutter menu/native adapter boundary | [Audit §3.5 CMD-02](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
-| CMD-03 | `🌗` | partial | source-plus-local; native shortcut not verified | in scope; per-OS shortcut policy pending | [Audit §3.5 CMD-03](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
-| A11Y-01 | `🌗` | partial | source-plus-local; native AT not verified | in scope; Flutter focus/activation boundary | [Audit §3.5 A11Y-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
-| A11Y-02 | `🌗` | partial | source-plus-local; native AT not verified | in scope; Flutter semantics boundary | [Audit §3.5 A11Y-02](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
+| CMD-03 | `⏸️` | implemented at Flutter boundary | source-plus-local; native shortcut not verified | held host evidence boundary; registry conflict and shortcut parity are tested | [Audit §3.5 CMD-03](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
+| A11Y-01 | `⏸️` | implemented at Flutter boundary | source-plus-local; native AT not verified | held host evidence boundary; focus/activation paths are tested | [Audit §3.5 A11Y-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
+| A11Y-02 | `⏸️` | implemented at Flutter boundary | source-plus-local; native AT not verified | held host evidence boundary; canvas/graph/control semantics are tested | [Audit §3.5 A11Y-02](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 | A11Y-03 | `✔️` | implemented | source-plus-local; OS preference not verified | in scope; Flutter reduced-motion boundary | [Audit §3.5 A11Y-03](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
-| WINDOW-01 | `🌗` | partial | source-plus-local; native lifecycle not verified | in scope; Flutter/native host lifecycle | [Audit §3.5 WINDOW-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
+| WINDOW-01 | `⏸️` | implemented at adapter boundary | source-plus-local; native lifecycle not verified | held host evidence boundary; close callback, dirty guard, and method channel are tested | [Audit §3.5 WINDOW-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 | WINDOW-02 | `✔️` | implemented | source-plus-local; OS enforcement not verified | in scope; Flutter window policy | [Audit §3.5 WINDOW-02](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 | WINDOW-03 | `✔️` | implemented | source; native runtime not verified | in scope as native title-bar boundary; custom chrome deferred | [Audit §3.5 WINDOW-03](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 
@@ -218,10 +227,10 @@ Makna penting:
 | --- | --- | --- | --- | --- | --- |
 | EXPORT-01 | `✔️` | implemented | source-plus-local; native write not verified | in scope; Flutter SVG export boundary | [Audit §3.6 EXPORT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 | EXPORT-02 | `✔️` | implemented | source-plus-local; native write not verified | in scope; Flutter model/sheet export | [Audit §3.6 EXPORT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-01 | `🌗` | partial | current CI build and v1.0.1 draft archive/checksum verified; target launch not verified | in scope; macOS target | [Audit §3.6 PLAT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-02 | `🌗` | partial | current CI build and v1.0.1 draft archive/checksum verified; target Linux runtime not verified | in scope; Ubuntu/Linux target | [Audit §3.6 PLAT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-03 | `🌗` | partial | current CI build and v1.0.1 draft archive/checksum verified; Windows runtime not verified | in scope; Windows 11 target | [Audit §3.6 PLAT-03](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-04 | `🌗` | partial | release artifacts carry source/workflow/platform/checksum metadata; root baseline is stale | in scope; workspace evidence owner | [Audit §3.6 PLAT-04](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-01 | `⏸️` | partial | current CI build and v1.0.1 draft archive/checksum verified; target launch not verified | held target-host environment boundary; Flutter + workspace | [Audit §3.6 PLAT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-02 | `⏸️` | partial | current CI build and v1.0.1 draft archive/checksum verified; target Linux runtime not verified | held target-host environment boundary; Flutter + workspace | [Audit §3.6 PLAT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-03 | `⏸️` | partial | current CI build and v1.0.1 draft archive/checksum verified; Windows runtime not verified | held target-host environment boundary; Flutter + workspace | [Audit §3.6 PLAT-03](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-04 | `⏸️` | partial | current baseline tuple refreshed; artifact/runtime proof not verified | held provenance/runtime boundary; workspace owner | [Audit §3.6 PLAT-04](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 
 ## Coverage validation
 
@@ -232,15 +241,16 @@ Makna penting:
 | Expected IDs missing from reconciliation | 0 |
 | Observed-only IDs added to reconciliation | 0 |
 | Duplicate reconciliation IDs | 0 |
-| Result counts | 44 `✔️` implemented, 17 `🌗` partial, 0 `❌` absent, 0 `⚠️` broken |
+| Result counts | 44 `✔️` implemented, 0 `🌗` partial, 0 `❌` absent, 17 `⏸️` held, 0 `⚠️` broken |
 | Implementation/evidence/scope columns present | Yes |
 | Audit trace present on every row | Yes |
 
-DOC-08 remains explicitly partial because forced-exit/relaunch and native
-storage behavior are not verified. CANVAS-05 and VIEW-05 are implemented at the
-Flutter boundary, with native accessibility/pointer and richer contract work
-still visible in the audit and backlog. No row is changed to `➖` merely because
-some adjacent source/test/runtime evidence is unavailable.
+DOC-08 remains implementation-partial but is explicitly held because
+forced-exit/relaunch and native storage behavior are not verified. CANVAS-05 and
+VIEW-05 are implemented at the Flutter boundary, with native
+accessibility/pointer and richer contract work still visible in the audit and
+backlog. No row is changed to `➖` merely because some adjacent source/test/
+runtime evidence is unavailable; all 17 held rows have a disposition record.
 
 ## Scope findings kept separate from capability results
 
@@ -248,7 +258,7 @@ some adjacent source/test/runtime evidence is unavailable.
 | --- | --- | --- |
 | Android/iOS delivery and mobile AT | `deferred` | Not an active desktop capability; keep outside the 61 expected rows. |
 | Custom title bar | `deferred` | Native title bar remains the current WINDOW-03 boundary. |
-| Raw SVG byte equality/full presentation parity | `not applicable` to active 0.5.x semantic contract | CONTRACT-03 remains `🌗` only for bounded semantic core; no raw-byte gap is invented. |
+| Raw SVG byte equality/full presentation parity | `not applicable` to active 0.5.x semantic contract | CONTRACT-03 remains `⏸️` only for bounded semantic core; no raw-byte gap is invented. |
 | pub.dev/signed desktop distribution | `not applicable` to current Flutter posture | PLAT rows cover build/artifact/provenance, not publishing/signing. |
 | Native picker/runtime/AT/build evidence unavailable on this host | `in scope`, evidence limitation | Keep implementation status separate; do not turn an evidence limitation into `❌`. |
 

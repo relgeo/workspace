@@ -1,6 +1,6 @@
 {
   "schemaVersion": "mcp-session-transaction/v1",
-  "contractRevision": "mcp-contract-2026-11-12-r1",
+  "contractRevision": "mcp-contract-2026-11-12-r2",
   "cases": [
     {
       "id": "apply-one-undoable-edit",

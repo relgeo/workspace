@@ -4,10 +4,10 @@
   "baselineId": "relgeo-public-0.5-staging",
   "baselineName": "relgeo-public-0.5-staging",
   "capturedAt": "2026-11-27",
-  "rootRevision": "886f034b16c7347a1879b75fdf2f5cb491317dee",
+  "rootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
   "compatibilityLine": "0.5",
   "toolchain": {
-    "node": ">=24",
+    "node": "24.21.0",
     "pnpm": "10.33.3"
   },
   "repository": "relgeo/workspace",
@@ -16,6 +16,13 @@
     "evidenceState": "current",
     "currentRule": "Only exact root gitlink and child checkout revisions captured together may support a current claim.",
     "historicalRule": "A prior snapshot remains historical when root or any child revision changes."
+  },
+  "provenance": {
+    "generatedBy": "scripts/verify-baseline.mjs --write",
+    "rootRevisionSource": "git rev-parse HEAD",
+    "childRevisionSource": "git rev-parse HEAD in each registered submodule checkout",
+    "gitlinkRevisionSource": "git ls-files -s from the current root index",
+    "cleanCheckoutRequired": true
   },
   "submodules": [
     {

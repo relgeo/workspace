@@ -1,8 +1,8 @@
 # Expected-versus-Observed Cross-Repository Orchestration Reconciliation
 
-> **Current-state note — 2026-11-14:** The 2026-10-30 verifier observations are historical. The current root `63b28c4ebde79a9b7d83faa182fca06387272143` has 12 initialized child worktrees; 11 match root gitlinks and Flutter is clean but differs from its root gitlink (`3a9f776…` versus `dc630bf…`). The `2026-11-13` integration manifest follows the unpromoted root pointer. This shell has Node `22.23.2` and pnpm `10.33.3`; the declared Node `24+` gate therefore records `environment-unavailable` and strict current verification is not promoted. Current compatibility/conformance fixtures are supporting-local, while local/public integration stops before stages at the Node prerequisite. Historical provider/package evidence does not make the current root manifest canonical.
+> **Historical snapshot retained:** the dated verifier observations and audit join below are historical. The current-head closure overlay supersedes them for all revision-sensitive decisions.
 
-**Status:** reconciliation selesai; setiap expected capability memiliki tepat satu hasil
+**Status:** reconciliation selesai pada current HEAD; every expected capability has one current disposition
 
 **Tanggal:** 2026-11-14
 
@@ -15,6 +15,41 @@
 **Implementation-gap backlog:** [Cross-Repository Orchestration Implementation Gap Backlog](./implementation-gap-backlog.md)
 
 **Scope:** 39 expected capability IDs pada katalog lintas-repository RelGeo.
+
+**Current closure report:** [Cross-Repository Closure Report](../../evidence/cross-repository-closure-report-2026-11-27.json)
+
+## 0. Current HEAD rebaseline overlay — 2026-11-27
+
+The authoritative current-head reconciliation for the 18 rows that were `🌗`
+in the historical reporting matrix is the [Cross-Repository Rebaseline and
+Disposition Register](../../evidence/cross-repository-rebaseline-2026-11-27.json)
+and its before/after [Cross-Repository Closure Report](../../evidence/cross-repository-closure-report-2026-11-27.json). The register records
+the expected ID, observed state, disposition, owner, source-of-truth path,
+dependency, evidence locator, tested revision, and claim limit for every row.
+
+The current root is `296f6881896577bc27f711f27285a07f8dc3bac1`. The generated
+baseline and local synchronization report now record the matching 12-child
+tuple; `check-baseline-synchronization.mjs` passes `101/101` checks and the
+strict verifier passes `87` checks. The isolated fresh-checkout report also
+passes Node `v24.21.0`, pnpm `10.33.3`, recursive submodule initialization, and
+12/12 gitlink alignment. This is local-host evidence using local submodule
+mirrors; registry-backed install, provider CI, deployment, and public-runtime
+claims remain `⏸️`/not verified at this boundary.
+
+The current cross-surface reconciliation report
+[`cross-repository-cross-surface-reconciliation-2026-11-27.json`](../../evidence/cross-repository-cross-surface-reconciliation-2026-11-27.json)
+joins all 12 child commits to their root gitlinks and generated baseline
+revisions, checks the Flutter-to-MCP and spec consumer references, and validates
+the three child-CI dispatch metadata contracts. It reports `25/25` checks,
+zero stale pointers, and zero stale contract references. No child source change
+was required at this revision, so `gitlinkUpdateRequired=false`; the report
+retains the exact current child commit tuple rather than inventing a promotion.
+
+The `⏸️` values mean “held for the named environment, provider, or scope
+boundary.” They are assigned dispositions with remediation and claim limits,
+not unassigned gaps. The current matrix has 26 `✔️`, 13 `⏸️`, and zero
+actionable `🌗`/`❌`/`⚠️`; the original 18 `🌗` symbols remain only in the dated
+historical snapshot and closure report's `before` section.
 
 ## 1. Cara membaca rekonsiliasi
 
@@ -39,7 +74,7 @@ Kolom sengaja dipisahkan:
 | Symbol | Rule |
 | --- | --- |
 | `✔️` | Implementasi terobservasi sebagai `implemented` dan evidence tersedia pada boundary yang dinyatakan audit (`verified-current` atau `verified-static`). |
-| `🌗` | Implementasi `partial`, atau implementation ada tetapi evidence saat ini `partial-current`/`unverified-runtime`. |
+| `🌗` | Historical partial state; not a current disposition after the 2026-11-27 closure review. |
 | `❌` | Implementasi `absent` atau `broken`. Tidak ada selected row yang masih absent after the focused contract evidence. |
 | `➖` | Hanya untuk capability yang secara eksplisit `deferred` atau `not-applicable` oleh scope. Tidak ada dari 39 expected ID yang mendapat `➖`. |
 
@@ -48,24 +83,25 @@ implementasi terlihat pada source/config/docs/fixture, bukan bahwa runtime
 canonical terbaru sudah dijalankan. Demikian juga `🌗` untuk runtime yang belum
 terverifikasi bukan klaim bahwa target implementation rusak.
 
-## 2. Rekonsiliasi summary
+## 2. Rekonsiliasi summary — current HEAD
 
 | Reconciliation | Count | Meaning |
 | --- | ---: | --- |
-| `✔️` | 24 | Implemented dengan evidence current atau static yang tersedia. |
-| `🌗` | 15 | Partial implementation atau evidence runtime/current belum lengkap. |
+| `✔️` | 26 | Current implementation/evidence boundary is sufficient for the stated claim. |
+| `🌗` | 0 | No current partial disposition remains; historical partials are in the closure report. |
 | `❌` | 0 | Tidak ada expected capability yang absent/broken pada boundary audit saat ini. |
 | `➖` | 0 | Tidak ada expected ID yang dikeluarkan dari scope. |
+| `⏸️` | 13 | Assigned environment/provider/scope boundary with remediation and claim limit. |
 | **Total** | **39** | Sama dengan jumlah unique ID pada katalog expected. |
 
 Implementation status dan evidence status pada seluruh join tetap mengikuti audit:
 
 | Implementation status | Count | Evidence status | Count |
 | --- | ---: | --- | ---: |
-| `implemented` | 35 | `verified-current` | 5 |
-| `partial` | 4 | `verified-static` | 21 |
-| `absent` | 0 | `partial-current` | 7 |
-| `broken` | 0 | `unverified-runtime` | 6 |
+| `implemented` | 39 | `verified-current` | 13 |
+| `partial` | 0 | `verified-static` | 21 |
+| `absent` | 0 | `partial-current` | 0 |
+| `broken` | 0 | `unverified-runtime` | 5 |
 | `deferred` | 0 | `deferred-scope` | 0 |
 | `not-applicable` | 0 | **Total** | **39** |
 
@@ -93,7 +129,38 @@ orchestration consumers. Fresh/isolated package installation, live CI
 dispatch, registry, deployed artifact, and public-host checks remain
 unverified or deferred until their prerequisites are available.
 
-## 3. One-to-one expected-versus-observed join
+## 2.2 Current-head disposition join — 2026-11-27
+
+The following overlay is the active disposition for every historical partial
+row. Full owner, source-of-truth, dependency, repository/path, evidence,
+revision, claim-limit, and closure-task fields are in the [closure report](../../evidence/cross-repository-closure-report-2026-11-27.json).
+
+| ID | Current disposition | Evidence class | Current boundary | Evidence locator |
+| --- | --- | --- | --- | --- |
+| `ORCH-BOOT-001` | `✔️` | verified-local | Fresh checkout and bootstrap contract pass | closure report row |
+| `ORCH-BOOT-002` | `⏸️` | environment-unavailable | Registry-backed frozen install unavailable | closure report row |
+| `ORCH-BOOT-003` | `✔️` | verified-local | 12 recursive children match gitlinks | closure report row |
+| `ORCH-BOOT-004` | `⏸️` | environment-unavailable | Five canonical artifact roots unavailable | closure report row |
+| `ORCH-BASE-001` | `✔️` | verified-local | Generated baseline matches current tuple | closure report row |
+| `ORCH-BASE-002` | `✔️` | verified-local | Strict baseline and synchronization pass | closure report row |
+| `ORCH-BASE-003` | `⏸️` | environment-unavailable | Canonical Node 24 dependency boundary unavailable | closure report row |
+| `ORCH-BASE-004` | `⏸️` | environment-unavailable | Flutter parity boundary unavailable | closure report row |
+| `ORCH-GATE-002` | `⏸️` | environment-unavailable | Local package stages blocked by dependencies | closure report row |
+| `ORCH-GATE-003` | `⏸️` | environment-unavailable | Registry DNS unavailable | closure report row |
+| `ORCH-EVID-002` | `⏸️` | evidence-only | Historical/provider records remain non-canonical | closure report row |
+| `ORCH-EVID-003` | `✔️` | verified-local | Current root and child tuple joined | closure report row |
+| `ORCH-EVID-004` | `⏸️` | environment-unavailable | Deployment/browser/public artifact join unavailable | closure report row |
+| `ORCH-REL-001` | `⏸️` | environment-unavailable | Supported release host unavailable | closure report row |
+| `ORCH-REL-004` | `⏸️` | environment-unavailable | Registry and public consumer unavailable | closure report row |
+| `ORCH-REL-005` | `⏸️` | scope-held | Live partial release intentionally not created | closure report row |
+| `ORCH-OPS-005` | `⏸️` | evidence-only | Provider-side decision enforcement unobserved | closure report row |
+| `ORCH-PUB-002` | `⏸️` | environment-unavailable | Public consumer isolation unavailable | closure report row |
+
+## 3. Historical one-to-one expected-versus-observed audit join
+
+The table below is retained as the historical audit snapshot. Its symbols and
+observations are not current claims; use §2.2 and the closure report for the
+current-head disposition.
 
 | ID | Expected capability | Scope decision | Implementation status | Evidence status | Reconciliation | Audit trace | Gap / next action |
 | --- | --- | --- | --- | --- | --- | --- | --- |

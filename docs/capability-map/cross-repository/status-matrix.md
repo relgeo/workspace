@@ -1,8 +1,8 @@
 # Cross-Repository Orchestration — Capability Status Matrix
 
-**Status:** reporting view; tidak menutup implementation gap
+**Status:** current-head disposition view; historical candidate observations are retained below
 
-**Tanggal:** 2026-11-14
+**Tanggal:** 2026-11-27
 
 **Expected catalog:** [Expected Cross-Repository Orchestration Capability Catalog](./expected-capability-catalog.md)
 
@@ -16,6 +16,18 @@
 
 **Coverage validation and handoff:** [Coverage Validation and Handoff](./coverage-validation-handoff.md)
 
+**Current HEAD rebaseline:** [Cross-Repository Rebaseline and Disposition Register](../../evidence/cross-repository-rebaseline-2026-11-27.json)
+
+**Current closure report:** [Cross-Repository Closure Report](../../evidence/cross-repository-closure-report-2026-11-27.json)
+
+The current matrix reconciles all 39 capabilities at root revision
+`296f6881896577bc27f711f27285a07f8dc3bac1`. The closure report records the
+before/after transition for all 18 historical `🌗` rows: five are locally
+verified as `✔️`, and thirteen are explicitly `⏸️` for named external-evidence
+or scope boundaries. No actionable `🌗`, `❌`, or `⚠️` remains. Historical
+candidate observations and the original 18 partial statuses are preserved in
+the dated rebaseline and closure artifacts.
+
 ## Cara membaca
 
 Matrix ini adalah reporting view capability-first. Expected catalog, audit,
@@ -26,32 +38,33 @@ yang berbeda.
 | Status | Makna |
 | --- | --- |
 | `✔️` | Implemented pada boundary yang dinyatakan audit; bukan jaminan semua runtime canonical terbaru sudah dijalankan. |
-| `🌗` | Partial implementation atau evidence current/runtime belum lengkap. |
+| `🌗` | Historical partial status only; it is not a current status in this matrix. |
 | `❌` | Expected capability absent atau broken pada boundary audit. |
 | `➖` | Not applicable terhadap scope yang diputuskan; bukan pengganti evidence yang belum diverifikasi. |
 | `⏸️` | Sengaja deferred/ditahan oleh keputusan scope atau promotion. |
 | `⚠️` | Broken/mismatch terkonfirmasi pada boundary yang diaudit. |
 
-Current count: **21 `✔️` · 18 `🌗` · 0 `❌` · 0 `➖` · 0 `⏸️` · 0 `⚠️`**.
-Runtime atau provider evidence yang belum tersedia tetap ditulis pada kolom
-Evidence dan tidak otomatis menjadi `❌`.
+Current count: **26 `✔️` · 0 `🌗` · 0 `❌` · 0 `➖` · 13 `⏸️` · 0 `⚠️`**.
+The 13 `⏸️` rows name their owner, source of truth, dependency, evidence
+locator, tested revision, claim limit, and concrete remediation in the [closure
+report](../../evidence/cross-repository-closure-report-2026-11-27.json).
 
 ## Matrix
 
 | ID | Capability | Status | Evidence | Gap | Owner | Dependency | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [`ORCH-BOOT-001`](./reconciliation.md) | Fresh clone bootstrap entrypoint | `🌗` | `unverified-environment`: `scripts/bootstrap.mjs` exists, but this host is Node 22.23.2 and cannot satisfy the Node 24 gate | Supported fresh-clone probe not current | `relgeo/workspace` | Node 24, pnpm, submodules | Fresh clone diverges by operator | Run the clean-clone bootstrap probe on supported toolchain |
-| [`ORCH-BOOT-002`](./reconciliation.md) | Pinned toolchain and dependency bootstrap | `🌗` | `unverified-environment`: pnpm 10.33.3 is present but Node 22.23.2 is below the declared Node 24 requirement | Supported-toolchain install not current evidence | `relgeo/workspace` | Node 24 host, frozen lockfile | Gates run on unsupported toolchain | Verify on Node 24 |
-| [`ORCH-BOOT-003`](./reconciliation.md) | Recursive submodule initialization and synchronization | `🌗` | `partial-current`: 12 child worktrees are initialized and clean, but Flutter checkout `3a9f7766f168b0077057fbedb571c3d4c8432bf2` differs from root gitlink `dc630bf19397ec20fff37ffa52f9f8e7e32b0f89` | Current root pointer is not promotable | `relgeo/workspace` | Git, child repositories, writable root index | Stale/dirty pointers are mistaken for fresh bootstrap | Promote the validated exact-SHA sync and rerun strict verification |
-| [`ORCH-BOOT-004`](./reconciliation.md) | Public workspace boundary hygiene | `🌗` | `partial-current`: `docs/evidence/public-boundary-audit-2026-11-14.json` scans 325 tracked entries, 2 available artifact roots, consumer manifests, and 7 workflows with no credential-material/path/workflow violations | Five candidate artifact roots were unavailable in this checkout; canonical CI/public artifact scan remains unverified | `relgeo/workspace` | Artifact scanner, public tree, Node 24/CI | Private paths or secrets leak | Build and scan all declared public artifact roots on the canonical Node 24/CI boundary |
-| [`ORCH-BASE-001`](./reconciliation.md) | Versioned integration baseline manifest | `🌗` | `partial-current`: manifest exists with `capturedAt` 2026-11-13 and root revision `63b28c4…`, but its Flutter revision follows the unpromoted root gitlink | Manifest is structurally current but not a promotable child-checkout baseline | `relgeo/workspace` | Validated child CI, exact gitlinks | Claims inherit stale or unpromoted revisions | Regenerate after validated Flutter pointer promotion |
-| [`ORCH-BASE-002`](./reconciliation.md) | Strict gitlink/checkout/manifest verification | `🌗` | `unverified-environment`: 11 child checkouts match current gitlinks; Flutter is clean but differs from the root pointer, and the recursive status has 1 non-clean marker; Node 22.23.2 cannot satisfy the Node 24 gate | Current baseline is not promotable or verified against the full workspace | `relgeo/workspace` | Child CI, current gitlinks, Node/pnpm | False green baseline | Sync the exact Flutter commit, resolve recursive status, install supported toolchain, rerun strict verifier |
-| [`ORCH-BASE-003`](./reconciliation.md) | DSL/package/consumer compatibility verification | `🌗` | `partial-current`: current local compatibility check is `301 passed, 0 failed`, but it ran on Node 22.23.2 and is not Node 24/canonical evidence | Supported-toolchain and current-pointer canonical rerun pending | `relgeo/spec` + workspace | Node 24, compatibility matrix | Incompatible contract line | Rerun on declared toolchain and joined baseline |
-| [`ORCH-BASE-004`](./reconciliation.md) | Shared conformance orchestration | `🌗` | `partial-current`: current root conformance 677/677 across 33 fixtures; Flutter probe remains blocked | Cross-platform conformance incomplete | `relgeo/workspace` | Flutter SDK permissions, fixtures | Consumer drift escapes fixtures | Run Flutter conformance on supported host |
+| [`ORCH-BOOT-001`](./reconciliation.md) | Fresh clone bootstrap entrypoint | `✔️` | Current local fresh-checkout report: Node v24.21.0, pnpm 10.33.3, recursive bootstrap, and contract fixture pass | Canonical CI/provider execution remains outside this claim | `relgeo/workspace` | Node 24, pnpm, submodules | Fresh clone diverges by operator | Re-run on canonical CI when available |
+| [`ORCH-BOOT-002`](./reconciliation.md) | Pinned toolchain and dependency bootstrap | `⏸️` | Exact Node/pnpm contract is present; registry-backed frozen install is unavailable at the managed dependency boundary | No implementation defect; install evidence is environment-unavailable | `relgeo/workspace` | Node 24 host, frozen lockfile, registry | Gates run without declared toolchain | Re-run frozen install with registry access |
+| [`ORCH-BOOT-003`](./reconciliation.md) | Recursive submodule initialization and synchronization | `✔️` | Current fresh-checkout report initializes all 12 children and matches every checkout to its root gitlink | Provider synchronization and canonical CI are not claimed | `relgeo/workspace` | Git, child repositories, clean-clone probe | Stale/dirty pointers are mistaken for fresh bootstrap | Retain exact-SHA synchronization check |
+| [`ORCH-BOOT-004`](./reconciliation.md) | Public workspace boundary hygiene | `⏸️` | Local boundary audit and negative fixtures pass; five declared artifact roots are unavailable | Canonical CI/public artifact scan is environment-unavailable | `relgeo/workspace + CI/artifact owners` | Artifact roots, Node 24, scan inputs | Private paths or secrets leak | Scan all declared roots on canonical CI |
+| [`ORCH-BASE-001`](./reconciliation.md) | Versioned integration baseline manifest | `✔️` | Generated manifest records current root and 12-child tuple; synchronization passes 101/101 | No validated child-CI or provider-artifact claim | `relgeo/workspace` | Exact child gitlinks, validated child CI | Claims inherit stale revisions | Regenerate only through synchronization path |
+| [`ORCH-BASE-002`](./reconciliation.md) | Strict gitlink/checkout/manifest verification | `✔️` | Strict verifier passes 87 checks and synchronization passes 101/101 at current root | Provider CI, registry, and public-runtime behavior are not claimed | `relgeo/workspace` | Current baseline, clean checkout, toolchain | False green baseline | Retain strict verifier in integration gate |
+| [`ORCH-BASE-003`](./reconciliation.md) | DSL/package/consumer compatibility verification | `⏸️` | Compatibility command passes locally, but canonical Node 24 dependency execution is unavailable | Evidence boundary only; no contract regression is claimed | `relgeo/spec + relgeo/workspace` | Current tuple, Node 24 canonical toolchain | Incompatible contract line | Re-run with canonical dependency boundary |
+| [`ORCH-BASE-004`](./reconciliation.md) | Shared conformance orchestration | `⏸️` | TypeScript fixtures pass; same-baseline Flutter conformance is unavailable in this execution boundary | Flutter parity remains unverified, not failed | `relgeo/workspace + child owners` | Fixtures, Flutter SDK/cache, Node 24 run | Consumer drift escapes fixtures | Run Flutter conformance on supported host |
 | [`ORCH-BASE-005`](./reconciliation.md) | Source-of-truth and ownership reconciliation | `✔️` | `verified-static`: map/plan/release ownership docs | No central machine-readable stage registry | `relgeo/workspace` | Repository map, source owners | Reviewers misassign failures | Maintain ownership map; consider registry later |
 | [`ORCH-GATE-001`](./reconciliation.md) | Dependency graph and deterministic gate order | `✔️` | `verified-static`: runner declares order | Current gate stopped before stages | `relgeo/workspace` | Node 24, package graph | Wrong order hides root cause | Execute current gate on Node 24 |
-| [`ORCH-GATE-002`](./reconciliation.md) | Local workspace package gate | `🌗` | `unverified-runtime`: package stages exist; Node gate blocked | Current package gate not run | workspace + package owners | Node 24, installs | Package regression lacks current proof | Run local package gate and retain report |
-| [`ORCH-GATE-003`](./reconciliation.md) | Isolated public-registry gate | `🌗` | `unverified-runtime`: public runner statically present | Registry/public gate not executed | `relgeo/workspace` | Node 24, registry/network | Local aliases hide publish defects | Run isolated registry gate |
+| [`ORCH-GATE-002`](./reconciliation.md) | Local workspace package gate | `⏸️` | Local report records 30 environment-unavailable blocked stages after the runner classified missing dependencies | No package regression is claimed | workspace + package owners | Node 24, installs | Package regression lacks current proof | Re-run with installable Node 24 dependency state |
+| [`ORCH-GATE-003`](./reconciliation.md) | Isolated public-registry gate | `⏸️` | Public report reaches the gate but registry DNS is unavailable at the remote-provider boundary | No registry/public consumer claim is made | `relgeo/workspace` | Node 24, registry/network | Local aliases hide publish defects | Re-run with registry/network access |
 | [`ORCH-GATE-004`](./reconciliation.md) | Consumer artifact assembly and assertion | `✔️` | `verified-static`: Playground/website assembly and assertions | Current public route run pending | workspace + consumer owners | Public gate, artifact build | Artifact route mismatch | Repeat current artifact assertion |
 | [`ORCH-GATE-005`](./reconciliation.md) | Independent cross-surface gate partitioning | `✔️` | `verified-static`: separate TS/public/Flutter jobs | Current canonical job evidence stale | `relgeo/workspace` + CI | CI runners, current pointers | Unrelated failures become opaque | Refresh canonical run after sync |
 | [`ORCH-CI-001`](./reconciliation.md) | Validated child-CI success dispatch | `✔️` | `verified-static`: child workflows dispatch exact metadata | No live child dispatch observed | Child CI + workspace | GitHub Actions provider | Unvalidated pointer proposal | Observe a successful child run |
@@ -60,34 +73,33 @@ Evidence dan tidak otomatis menjadi `❌`.
 | [`ORCH-CI-004`](./reconciliation.md) | Exact pointer staging and baseline regeneration | `✔️` | `verified-static`: fetch/stage/write/strict flow exists | Current drift awaits sync | `relgeo/workspace` | Validated child run, PR | Blind manifest update | Use reviewable sync branch |
 | [`ORCH-CI-005`](./reconciliation.md) | Reviewable synchronization PR and integration dispatch | `✔️` | `verified-static`: PR and Integration dispatch configured | PR merge/branch protection not observed | `relgeo/workspace` | GitHub PR permissions | Pointer lands without normal gate | Verify provider-side merge path |
 | [`ORCH-EVID-001`](./reconciliation.md) | Machine-readable gate report | `✔️` | `verified-static`: report fields and retention configured | Current integration report needs Node 24 | `relgeo/workspace` | Node 24, report artifact | Review requires rerun | Produce current report |
-| [`ORCH-EVID-002`](./reconciliation.md) | Evidence class separation | `🌗` | `partial-current`: policy separates local/public/CI/manual | Current stale baseline and historical evidence coexist | `relgeo/workspace` | Refreshed canonical run | Historical evidence is over-promoted | Refresh and label evidence classes |
-| [`ORCH-EVID-003`](./reconciliation.md) | Revision-to-evidence traceability | `🌗` | `partial-current`: shared envelope and exact baseline fields are emitted; 3 revisions drift | Current claim cannot inherit older evidence silently | `relgeo/workspace` | Child CI, baseline sync | Artifact identity is ambiguous | Regenerate baseline and evidence links |
-| [`ORCH-EVID-004`](./reconciliation.md) | Canonical artifact and public-smoke reconciliation | `🌗` | `unverified-runtime`: hooks/artifacts documented | Current artifact, URL, and baseline not joined | workspace + website owner | Public deploy/browser/network | Public claim lacks provenance | Capture one joined post-deploy record |
+| [`ORCH-EVID-002`](./reconciliation.md) | Evidence class separation | `⏸️` | Evidence class/limitation contract and fixtures pass; historical/provider records remain explicitly non-canonical | Evidence-only hold, not an implementation defect | `relgeo/workspace` | Current baseline, canonical run, evidence envelope | Historical evidence is over-promoted | Capture a current canonical record |
+| [`ORCH-EVID-003`](./reconciliation.md) | Revision-to-evidence traceability | `✔️` | Current baseline and reports carry the same root revision and 12-child tuple; cross-surface check passes 25/25 | External artifact/deployment provenance remains outside this claim | `relgeo/workspace + child CI owners` | Regenerated baseline, child metadata | Artifact identity is ambiguous | Retain exact-revision join checks |
+| [`ORCH-EVID-004`](./reconciliation.md) | Canonical artifact and public-smoke reconciliation | `⏸️` | Join contract is implemented, but current artifact/deployment/browser evidence is unavailable | No deployment or public-runtime claim is made | workspace + website owner | Artifact digest, URL, public smoke/browser | Public claim lacks provenance | Capture joined post-deploy record |
 | [`ORCH-EVID-005`](./reconciliation.md) | Honest environment-unavailable handling | `✔️` | `verified-current`: Node/Flutter/cache blockers classified; shared report taxonomy added | Provider/Flutter owners still need to adopt the contract | `relgeo/workspace` | Report schema | Blocker misreported as target defect | Extend the contract to refreshed provider/Flutter reports |
-| [`ORCH-REL-001`](./reconciliation.md) | Release preflight composition | `🌗` | `unverified-environment`: host has Node 22.23.2/pnpm 10.33.3, below the declared Node 24 requirement | Valid current preflight not run | release owner + workspace | Clean tree, Node 24 | Unsafe release continuation | Run valid preflight on supported tree |
+| [`ORCH-REL-001`](./reconciliation.md) | Release preflight composition | `⏸️` | Read-only preflight exists; required Node 24 release boundary is unavailable | No publish was attempted and no current preflight is claimed | release owner + workspace | Clean tree, Node 24, baseline, release record | Unsafe release continuation | Run on supported release host |
 | [`ORCH-REL-002`](./reconciliation.md) | Public tarball and metadata hygiene gate | `✔️` | `verified-current`: release audit 106/106 | Cache isolation is host-specific | package owners + workspace | npm cache, package manifests | Bad artifact reaches registry | Retain pack audit and cache guidance |
 | [`ORCH-REL-003`](./reconciliation.md) | Manual ordered publish with operator stop | `✔️` | `verified-static`: ordered manual release flow | Live publish intentionally not run | release owner | Release record, npm auth | Partial release from wrong order | Keep manual stop boundary |
-| [`ORCH-REL-004`](./reconciliation.md) | Post-publish registry and consumer verification | `🌗` | `unverified-runtime`: registry probe remained pending | Registry/public consumer evidence missing | release + consumer owners | Node 24, network, registry | Published package unverified | Repeat with network-available host |
-| [`ORCH-REL-005`](./reconciliation.md) | Partial-release forward-fix recovery | `🌗` | `partial-current`: injection passed; no real partial release | Runtime recovery scenario unverified | release owner | Release record, newer patch | Unsafe republish or rollback assumption | Run controlled recovery evidence |
+| [`ORCH-REL-004`](./reconciliation.md) | Post-publish registry and consumer verification | `⏸️` | Published-package verification is outside the current registry/network boundary | No registry version or public consumer result is asserted | release + consumer owners | Node 24, network, registry | Published package unverified | Re-run on network-capable host |
+| [`ORCH-REL-005`](./reconciliation.md) | Partial-release forward-fix recovery | `⏸️` | Recovery fixture passes; live partial release is intentionally not created | Scope-held; fixture evidence is not live registry evidence | release owner | Release record, newer patch | Unsafe republish or rollback assumption | Observe only in approved release environment |
 | [`ORCH-REL-006`](./reconciliation.md) | Release decision record and no-op guard | `✔️` | `verified-current`: record 35/35 and failure injection | Automation prerequisite remains future | release owner + workspace | Decision record, package order | Unapproved/no-op release | Preserve decision record checks |
 | [`ORCH-OPS-001`](./reconciliation.md) | Actionable failure ownership | `✔️` | `verified-static`: shared owner/remediation/dependency fields plus focused contract fixture | Full stage runtime still awaits Node 24 | `relgeo/workspace` + stage owners | Report schema | Generic red status delays recovery | Rerun the same report contract on Node 24 |
 | [`ORCH-OPS-002`](./reconciliation.md) | Blocker classification and dependency propagation | `✔️` | `verified-static`: shared blocker taxonomy and dependency-impact fields; environment blocker fixture passes | Live provider propagation remains unobserved | `relgeo/workspace` | Blocker schema, dependency graph | Wrong downstream work is blocked | Exercise provider-backed propagation later |
 | [`ORCH-OPS-003`](./reconciliation.md) | Bounded retry and rerun policy | `✔️` | `verified-static`: bounded transient retry, backoff, classifier, and attempt retention fixture passes | No live transient provider failure was induced | `relgeo/workspace` + CI | Failure taxonomy, report retention | Retry storms or overwritten evidence | Verify attempt retention in supported CI |
 | [`ORCH-OPS-004`](./reconciliation.md) | Cancellation, concurrency, and idempotent replay | `✔️` | `verified-static`: cancellation and duplicate-SHA guard | Replay race test not current | `relgeo/workspace` + CI | Provider workflows | Duplicate dispatch creates false baseline | Add isolated replay fixture |
-| [`ORCH-OPS-005`](./reconciliation.md) | Human decision boundary | `🌗` | `verified-static`: `evaluateDecisionGate()` and release-preflight enforcement fail closed for pending/rejected/stale decisions | Provider-side scope/release enforcement and current canonical decision record remain unobserved | `relgeo/workspace` | Maintainer decision records | Scope inferred without approval | Observe provider/canonical enforcement; preserve fail-closed local gate |
+| [`ORCH-OPS-005`](./reconciliation.md) | Human decision boundary | `⏸️` | Local approved/pending/rejected/stale decision handling is contract-tested and fail-closed | Provider-side promotion enforcement remains unobserved | `relgeo/workspace + stage/release owners` | Maintainer decision records, provider promotion | Scope inferred without approval | Observe provider enforcement; preserve local fail-closed gate |
 | [`ORCH-PUB-001`](./reconciliation.md) | Secret and private-path exclusion | `✔️` | `verified-current-local`: the public-boundary audit covers tracked paths/content and 2 available artifact roots; unsafe fixtures fail closed | Five candidate artifact roots were unavailable; no deployed/public artifact claim is made | `relgeo/workspace` | Artifact scanner | Public leakage | Repeat against canonical CI/public artifacts and retain the same report schema |
-| [`ORCH-PUB-002`](./reconciliation.md) | No sibling-source leakage in public consumers | `🌗` | `unverified-runtime`: isolated runner exists | Public consumer gate unavailable | workspace + consumer owners | Node 24, registry, browser | Local source masks package defect | Run public consumer gate |
+| [`ORCH-PUB-002`](./reconciliation.md) | No sibling-source leakage in public consumers | `⏸️` | Isolated runner and boundary fixtures exist; public consumer gate is unavailable at registry/network boundary | Local tests do not prove registry-installed consumer isolation | workspace + consumer owners | Node 24, registry, browser | Local source masks package defect | Run public consumer gate with sibling source absent |
 | [`ORCH-PUB-003`](./reconciliation.md) | Least-privilege CI and credential-free checkout | `✔️` | `verified-static`: sync checkout explicitly disables credential persistence; focused workflow policy fixture passes | Provider-side PR/dispatch behavior remains unobserved | `relgeo/workspace` + CI | GitHub permissions | Credential persistence/excess permission | Review live sync PR/dispatch under exact-SHA validation |
 | [`ORCH-PUB-004`](./reconciliation.md) | Safe report/artifact retention and provenance | `✔️` | `verified-static`: 7-day retention and SHA metadata | Uploaded artifact availability not queried | `relgeo/workspace` + CI | Artifact service | Evidence becomes uncontrolled store | Query current artifact retention/provenance |
 
 ## Coverage and handoff
 
-The matrix contains exactly the 39 expected capability IDs. The 15 rows marked
-`🌗` are represented as unresolved candidates in the [implementation-gap
-backlog](./implementation-gap-backlog.md). The selected implementation rows
-retain their backlog entries as historical traceability, with their closure
-evidence recorded in the audit and reconciliation. The backlog does not change
-status by itself.
+The matrix contains exactly the 39 expected capability IDs. The 18 historical
+`🌗` candidates are represented in the [implementation-gap
+backlog](./implementation-gap-backlog.md) and closure report; the active matrix
+has no unresolved partial, failed, or warning row. Backlog entries remain
+historical traceability and do not change status by themselves.
 
 Coverage limits, unresolved questions, and implementation handoff conditions are
 recorded in the [coverage validation and handoff](./coverage-validation-handoff.md).

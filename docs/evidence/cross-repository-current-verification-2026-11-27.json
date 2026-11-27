@@ -1,0 +1,118 @@
+{
+  "recordType": "cross-repository-current-verification",
+  "schemaVersion": 1,
+  "capturedAt": "2026-11-27",
+  "testedRootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+  "toolchain": {
+    "node": "v24.21.0",
+    "pnpm": "10.33.3"
+  },
+  "revisionTuple": {
+    "relgeo.github.io": "450488d93d05059a190efd89e013f9a5274b8313",
+    "playground": "33631d930adc01efbdf25caccdd95e1af55e2526",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "language-service": "e2c21878aedda84874555286bc448af92137e742",
+    "renderer-svg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+    "cli": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+    "remark-relgeo": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+    "remark-relgeo-hl": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+    "flutter": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+    "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936"
+  },
+  "checks": [
+    {
+      "id": "strict-baseline",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/verify-baseline.mjs --strict --json",
+      "result": "passed",
+      "outputExcerpt": "\"workspaceRevision\": \"296f6881896577bc27f711f27285a07f8dc3bac1\" ... \"node\": \"v24.21.0\" ... \"pnpm\": \"pnpm@10.33.3\" ... \"total\": 87, \"passed\": 87, \"failed\": 0"
+    },
+    {
+      "id": "compatibility",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/check-compatibility.mjs",
+      "result": "passed",
+      "outputExcerpt": "summary: 301 passed, 0 failed"
+    },
+    {
+      "id": "conformance",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/run-conformance-fixtures.mjs",
+      "result": "inconclusive",
+      "boundary": "Codex App Server managed workspace dependency state and remote npm registry/cache",
+      "outputExcerpt": "Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@relgeo/geometry' imported from /Users/agusmade/projects/relgeo-workspace/core/dist/index.mjs",
+      "remediation": "Run frozen workspace install on a Node 24 host with registry access or a complete pnpm store, then rerun conformance."
+    },
+    {
+      "id": "local-integration",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/run-integration-gate.mjs --local --report=docs/evidence/cross-repository-local-integration-2026-11-27.json",
+      "result": "inconclusive",
+      "boundary": "Codex App Server managed workspace dependency/cache state",
+      "report": "docs/evidence/cross-repository-local-integration-2026-11-27.json",
+      "outputExcerpt": "Integration gate summary: 8 passed, 30 failed, 38 total",
+      "classification": "All 30 failed stages are recorded as environment-unavailable; the repaired classifier leaves zero target-defect results.",
+      "remediation": "Run pnpm install --frozen-lockfile with registry access or a complete local store, then rerun the local gate."
+    },
+    {
+      "id": "public-integration",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/run-integration-gate.mjs --public --report=docs/evidence/cross-repository-public-integration-2026-11-27.json",
+      "result": "inconclusive",
+      "boundary": "remote provider registry",
+      "report": "docs/evidence/cross-repository-public-integration-2026-11-27.json",
+      "outputExcerpt": "Integration gate summary: 2 passed, 1 failed, 3 total\nENOTFOUND",
+      "remediation": "Run the public gate on a network-capable declared Node 24 environment."
+    },
+    {
+      "id": "workflow-contracts",
+      "command": "node scripts/test-child-ci-sync-contract.mjs && node scripts/test-child-ci-sync-failure-injection.mjs",
+      "result": "passed",
+      "outputExcerpt": "Child-CI synchronization contract tests passed: allowlist, exact run validation, concurrency, gitlink staging, baseline regeneration, PR flow, and child dispatch metadata.\nChild-CI sync failure injection passed: valid dispatch/run accepted; 9 stale, unsuccessful, wrong-source, dirty, and provenance-mismatch cases rejected."
+    },
+    {
+      "id": "workflow-security",
+      "command": "node scripts/test-workflow-security-policy.mjs",
+      "result": "passed",
+      "outputExcerpt": "Workflow security policy passed: bounded runs, credential-free checkout, and least-privilege permissions."
+    },
+    {
+      "id": "cross-surface-reconciliation",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/check-cross-surface-reconciliation.mjs --report=docs/evidence/cross-repository-cross-surface-reconciliation-2026-11-27.json",
+      "result": "passed",
+      "outputExcerpt": "Cross-surface reconciliation: PASS (25/25 checks; 12 child commits; stalePointers=0; staleContractReferences=0; gitlinkUpdateRequired=false)"
+    },
+    {
+      "id": "goal-closure-check",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/check-cross-repository-goal-closure.mjs",
+      "result": "passed",
+      "outputExcerpt": "Cross-repository goal closure audit: PASS (audit=historical; auditRevision=886f034b16c7347a1879b75fdf2f5cb491317dee; currentRevision=296f6881896577bc27f711f27285a07f8dc3bac1; criteria=8; residuals=4; integrityErrors=1; currentCrossSurface=25/25)"
+    },
+    {
+      "id": "canonical-evidence-check",
+      "command": "node scripts/check-canonical-orchestration-evidence.mjs",
+      "result": "passed",
+      "outputExcerpt": "Canonical orchestration evidence: PASS (checks=9; canonicalGreen=false; cleanCheckout=false)"
+    }
+  ],
+  "repairedFailures": [
+    {
+      "path": "scripts/orchestration-contract.mjs",
+      "change": "Classify ERR_MODULE_NOT_FOUND, missing packages, spawn ENOENT, and command-not-found variants as environment-unavailable.",
+      "validation": "node scripts/test-orchestration-contract.mjs",
+      "outputExcerpt": "Orchestration contract tests passed: bounded retry, blocker taxonomy, evidence envelope, sync checkout policy, and independent-stage continuation."
+    },
+    {
+      "path": "scripts/check-cross-repository-goal-closure.mjs",
+      "change": "Keep the 2026-11-26 audit historical when its revision predates HEAD, and validate freshness against current rebaseline and cross-surface evidence.",
+      "validation": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/check-cross-repository-goal-closure.mjs",
+      "outputExcerpt": "Cross-repository goal closure audit: PASS (audit=historical; auditRevision=886f034b16c7347a1879b75fdf2f5cb491317dee; currentRevision=296f6881896577bc27f711f27285a07f8dc3bac1; criteria=8; residuals=4; integrityErrors=1; currentCrossSurface=25/25)"
+    }
+  ],
+  "ciEvidence": {
+    "canonicalAvailable": false,
+    "runUrls": [],
+    "artifactUrls": [],
+    "boundary": "SuClos/Codex managed execution has no live provider CI run or artifact URL available for this checkout.",
+    "claimLimit": "Local current reports and static workflow contracts do not substitute for provider-side CI evidence.",
+    "remediation": "Run the same checks in the canonical provider workflow and attach its run and artifact URLs."
+  },
+  "claimLimit": "Strict baseline, compatibility, workflow contracts, cross-surface alignment, and local report classification are current local evidence. Conformance, local package runtime, public registry, and canonical CI remain explicitly not verified where their dependencies are unavailable."
+}

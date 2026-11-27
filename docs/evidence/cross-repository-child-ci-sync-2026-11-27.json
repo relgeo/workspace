@@ -1,0 +1,59 @@
+{
+  "recordType": "cross-repository-child-ci-synchronization-evidence",
+  "schemaVersion": 1,
+  "capturedAt": "2026-11-27",
+  "testedRootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+  "scope": {
+    "repositories": ["relgeo/flutter", "relgeo/playground", "relgeo/mcp", "relgeo/workspace"],
+    "workflow": ".github/workflows/sync-validated-submodule-after-ci.yml",
+    "claimLimit": "This record is deterministic local contract evidence. It does not claim a live GitHub provider dispatch, synchronization PR, or remote token execution."
+  },
+  "implementation": {
+    "sharedPolicy": "scripts/child-ci-sync-policy.cjs",
+    "workflow": ".github/workflows/sync-validated-submodule-after-ci.yml",
+    "contractTest": "scripts/test-child-ci-sync-contract.mjs",
+    "failureInjection": "scripts/test-child-ci-sync-failure-injection.mjs",
+    "childWorkflows": [
+      "flutter/.github/workflows/flutter-ci.yml",
+      "playground/.github/workflows/playground-ci.yml",
+      "mcp/.github/workflows/mcp-ci.yml"
+    ]
+  },
+  "checks": [
+    {
+      "id": "security-concurrency",
+      "command": "node scripts/test-workflow-security-policy.mjs",
+      "result": "passed",
+      "outputExcerpt": "Workflow security policy passed: bounded runs, credential-free checkout, and least-privilege permissions."
+    },
+    {
+      "id": "synchronization-contract",
+      "command": "node scripts/test-child-ci-sync-contract.mjs",
+      "result": "passed",
+      "outputExcerpt": "Child-CI synchronization contract tests passed: allowlist, exact run validation, concurrency, gitlink staging, baseline regeneration, PR flow, and child dispatch metadata."
+    },
+    {
+      "id": "failure-injection",
+      "command": "node scripts/test-child-ci-sync-failure-injection.mjs",
+      "result": "passed",
+      "outputExcerpt": "Child-CI sync failure injection passed: valid dispatch/run accepted; 9 stale, unsuccessful, wrong-source, dirty, and provenance-mismatch cases rejected."
+    },
+    {
+      "id": "orchestration-integration",
+      "command": "node scripts/test-orchestration-contract.mjs",
+      "result": "passed",
+      "outputExcerpt": "Orchestration contract tests passed: bounded retry, blocker taxonomy, evidence envelope, sync checkout policy, and independent-stage continuation."
+    }
+  ],
+  "validatedRules": [
+    "allowlisted repository/path/workflow",
+    "40-character child SHA and numeric run ID",
+    "dispatch branch main",
+    "completed successful push-to-main workflow run",
+    "exact run SHA, workflow path, and source repository",
+    "exact fetched and checked-out SHA",
+    "clean child and root worktrees",
+    "staged gitlink and regenerated baseline exact-match provenance",
+    "bounded concurrency and least-privilege actions read verification"
+  ]
+}

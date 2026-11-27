@@ -10,7 +10,7 @@ Script root harus:
 4. menjelaskan dependency dan failure dengan jelas;
 5. tidak membaca atau mempublikasikan isi `.local/` dan `private/`.
 
-Integration gate membutuhkan Node.js 24 atau lebih baru dan pnpm 10.33.3; workflow CI mengonfigurasi keduanya secara eksplisit. Root juga mem-pin Node `24.21.0` pada `.node-version` agar local operator tidak menjalankan Node 22 secara tidak sengaja.
+Integration gate membutuhkan Node.js `24.21.0` dan pnpm `10.33.3`; workflow CI mengonfigurasi keduanya secara eksplisit. Root mem-pin Node `24.21.0` pada `.node-version`, dan bootstrap menolak versi Node/pnpm yang berbeda agar local operator tidak menjalankan toolchain drift.
 
 Script deployment detail menjadi ownership repository tujuan masing-masing.
 
@@ -22,7 +22,7 @@ Jalankan dari root checkout baru dengan toolchain yang dipin:
 node scripts/bootstrap.mjs --report=.local/bootstrap-report.json
 ~~~
 
-Runner ini memeriksa Node `>=24` dan pnpm `10.33.3`, menginisialisasi
+Runner ini memeriksa Node `24.21.0` dan pnpm `10.33.3`, menginisialisasi
 submodule secara recursive, memasang dependency dengan lockfile frozen, lalu
 menjalankan strict baseline report. Report machine-readable selalu memuat
 status setiap langkah dan status setiap submodule. Sebelum toolchain probe,
@@ -53,12 +53,16 @@ The reviewable update flow is:
 node scripts/verify-baseline.mjs --write
 pnpm run verify:baseline:strict
 pnpm run compatibility:check
-pnpm run baseline:sync:check
+node scripts/check-baseline-synchronization.mjs --json --report=.local/baseline-synchronization-report.json
 ```
 
 The `baseline:sync:write` package script runs the same sequence. It must be
-run only after the validated child revision and clean checkout are available;
-the checker never writes a manifest or silently promotes a stale pointer.
+run only after the validated child revision and clean checkout are available.
+The generator performs a pre-write check against every root gitlink, checkout
+revision, and child worktree; it refuses to write when one is uninitialized,
+out-of-date, or dirty. The read-only checker never writes a manifest or
+silently promotes a stale pointer, and `--report=PATH` stores its exact
+root/child provenance without shell redirection.
 
 Semua report memakai `schemaVersion: 1` pada envelope evidence dan field wajib
 berikut: `evidenceClass`, `evidenceState`, `capturedAt`, `workspaceRevision`,
@@ -97,7 +101,7 @@ PLAYWRIGHT_EXECUTABLE_PATH="/path/to/your/chromium-or-chrome" pnpm run integrati
 
 Hasil pass/fail dicetak langsung pada log gate; browser trace atau source tidak diunggah otomatis. CI tidak mengatur variabel fallback tersebut dan tetap memasang browser pinned.
 
-Manifest snapshot publik berada di `docs/integration-baseline.json`. Verifier tidak membutuhkan GitHub API; ia membandingkan manifest dengan gitlink workspace, checkout submodule, working tree, dan `package.json` lokal. Opsi `--write` memperbarui snapshot dari checkout saat ini dan hanya boleh dipakai secara sengaja. Opsi `--manifest=PATH` dipakai oleh failure-injection untuk menguji snapshot sementara tanpa mengubah file publik. Opsi `--require-main` hanya untuk validasi lokal; CI submodule checkout biasanya detached.
+Manifest snapshot publik berada di `docs/integration-baseline.json`. Verifier tidak membutuhkan GitHub API; ia membandingkan manifest dengan gitlink workspace, checkout submodule, working tree, dan `package.json` lokal. Opsi `--write` memperbarui snapshot dari checkout saat ini hanya setelah preflight deterministik lulus. Opsi `--manifest=PATH` dipakai oleh failure-injection untuk menguji snapshot sementara tanpa mengubah file publik. Opsi `--require-main` hanya untuk validasi lokal; CI submodule checkout biasanya detached.
 
 Mode `--local` menggunakan root pnpm workspace dan workspace links. Mode `--public` menyalin setiap consumer ke direktori temporary tanpa sibling submodule, lalu meng-install dependency dari npm registry dan menjalankan package/consumer checks di sana. Mode public juga menjalankan `npm pack --dry-run --json` untuk package library dan menolak path absolute/parent traversal serta material `node_modules`, `.git`, file `.env`/`.env.*`, secret, dan direktori lokal.
 

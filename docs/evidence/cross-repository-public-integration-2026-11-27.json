@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 1,
+  "contract": "integration-gate-v1",
+  "mode": "public-registry",
+  "generatedAt": "2026-11-27T14:45:36.618Z",
+  "passed": false,
+  "evidence": {
+    "schemaVersion": 1,
+    "evidenceClass": "public-registry",
+    "evidenceState": "current",
+    "capturedAt": "2026-11-27T14:45:36.630Z",
+    "workspaceRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+    "baseline": {
+      "name": "relgeo-public-0.5-staging",
+      "capturedAt": "2026-11-27",
+      "compatibilityLine": "0.5"
+    },
+    "testedRevisions": {
+      "root": "296f6881896577bc27f711f27285a07f8dc3bac1",
+      "children": {
+        "relgeo.github.io": "450488d93d05059a190efd89e013f9a5274b8313",
+        "playground": "33631d930adc01efbdf25caccdd95e1af55e2526",
+        "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+        "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+        "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+        "language-service": "e2c21878aedda84874555286bc448af92137e742",
+        "renderer-svg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+        "cli": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+        "remark-relgeo": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+        "remark-relgeo-hl": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+        "flutter": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+        "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936"
+      }
+    },
+    "toolchain": {
+      "node": "v24.21.0",
+      "pnpm": "10.33.3"
+    },
+    "run": {
+      "id": null
+    },
+    "artifact": null,
+    "command": "node scripts/run-integration-gate.mjs --public",
+    "limitations": []
+  },
+  "baseline": {
+    "workspaceRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+    "name": "relgeo-public-0.5-staging",
+    "compatibilityLine": "0.5",
+    "submodules": [
+      {
+        "path": "relgeo.github.io",
+        "revision": "450488d93d05059a190efd89e013f9a5274b8313",
+        "package": {
+          "name": "relgeo-docs-site",
+          "version": "0.5.0"
+        }
+      },
+      {
+        "path": "playground",
+        "revision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+        "package": {
+          "name": "relgeo-playground",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "path": "spec",
+        "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+        "package": null
+      },
+      {
+        "path": "core",
+        "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+        "package": {
+          "name": "@relgeo/core",
+          "version": "0.5.3"
+        }
+      },
+      {
+        "path": "geometry",
+        "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+        "package": {
+          "name": "@relgeo/geometry",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "language-service",
+        "revision": "e2c21878aedda84874555286bc448af92137e742",
+        "package": {
+          "name": "@relgeo/language-service",
+          "version": "0.5.2"
+        }
+      },
+      {
+        "path": "renderer-svg",
+        "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+        "package": {
+          "name": "@relgeo/renderer-svg",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "cli",
+        "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+        "package": {
+          "name": "@relgeo/cli",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "remark-relgeo",
+        "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+        "package": {
+          "name": "@relgeo/remark-relgeo",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "remark-relgeo-hl",
+        "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+        "package": {
+          "name": "@relgeo/remark-relgeo-hl",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "flutter",
+        "revision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+        "package": null
+      },
+      {
+        "path": "mcp",
+        "revision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+        "package": null
+      }
+    ]
+  },
+  "summary": {
+    "total": 3,
+    "passed": 2,
+    "failed": 1,
+    "blocked": 1
+  },
+  "results": [
+    {
+      "label": "baseline: strict verification",
+      "command": "/Users/agusmade/.nvm/versions/node/v24.21.0/bin/node",
+      "args": [
+        "scripts/verify-baseline.mjs",
+        "--strict"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 510,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "baseline",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "public-registry",
+        "boundary": "remote-provider",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 510,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "baseline: failure injection",
+      "command": "/Users/agusmade/.nvm/versions/node/v24.21.0/bin/node",
+      "args": [
+        "scripts/test-baseline-failure.mjs"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 494,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "baseline",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "public-registry",
+        "boundary": "remote-provider",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 494,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "public-registry: reachability preflight",
+      "command": "/Users/agusmade/.nvm/versions/node/v24.21.0/bin/node",
+      "args": [
+        "-e",
+        "const https = require('node:https');\nconst request = https.get('https://registry.npmjs.org/', { headers: { accept: 'application/json' } }, (response) => {\n  response.resume();\n  response.on('end', () => {\n    if (response.statusCode >= 200 && response.statusCode < 300) process.exit(0);\n    console.error('registry HTTP ' + response.statusCode);\n    process.exit(1);\n  });\n});\nrequest.setTimeout(10000, () => { console.error('registry request timed out'); request.destroy(); process.exit(1); });\nrequest.on('error', (error) => { console.error(error.code || error.message); process.exit(1); });"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 76,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "public-registry",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "public-registry",
+        "boundary": "remote-provider",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 73,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 73,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "public-registry",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    }
+  ]
+}

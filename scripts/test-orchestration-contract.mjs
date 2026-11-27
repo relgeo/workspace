@@ -9,6 +9,7 @@ import {
   DECISION_STATES,
   DEPENDENCY_STATUSES,
   createEvidenceEnvelope,
+  classifyFailure,
   evaluateDecisionGate,
   runIndependentStagesSync,
   runWithBoundedAttemptsSync,
@@ -18,6 +19,9 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const preflightSource = fs.readFileSync(path.join(root, "scripts", "run-release-preflight.mjs"), "utf8");
 assert.match(preflightSource, /evaluateDecisionGate/);
 assert.match(preflightSource, /release decision record approval/);
+assert.equal(classifyFailure({ error: "getaddrinfo ENOTFOUND registry.npmjs.org" }).blockerClass, "environment-unavailable");
+assert.equal(classifyFailure({ error: "Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@relgeo/geometry'" }).blockerClass, "environment-unavailable");
+assert.equal(classifyFailure({ error: "Command \"playwright\" not found" }).blockerClass, "environment-unavailable");
 
 const sleeps = [];
 let transientAttempts = 0;

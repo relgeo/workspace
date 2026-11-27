@@ -1,0 +1,76 @@
+{
+  "recordType": "cross-repository-propagation-evidence",
+  "schemaVersion": 1,
+  "capturedAt": "2026-11-27",
+  "testedRootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+  "scope": {
+    "repositories": [
+      "relgeo/workspace",
+      "relgeo/relgeo.github.io",
+      "relgeo/playground",
+      "relgeo/spec",
+      "relgeo/core",
+      "relgeo/geometry",
+      "relgeo/language-service",
+      "relgeo/renderer-svg",
+      "relgeo/cli",
+      "relgeo/remark-relgeo",
+      "relgeo/remark-relgeo-hl",
+      "relgeo/flutter",
+      "relgeo/mcp"
+    ],
+    "claimLimit": "Local current-head evidence only. It does not claim a live child CI run, provider dispatch, synchronization PR merge, registry, deployment, or runtime consumer execution."
+  },
+  "propagationDecision": {
+    "childSourceChangesRequired": false,
+    "gitlinkUpdateRequired": false,
+    "reason": "All 12 child checkouts already match the current root gitlinks and generated baseline; changing a child or pointer would be an unvalidated promotion."
+  },
+  "childRepositoryCommits": [
+    { "path": "relgeo.github.io", "revision": "450488d93d05059a190efd89e013f9a5274b8313", "clean": true },
+    { "path": "playground", "revision": "33631d930adc01efbdf25caccdd95e1af55e2526", "clean": true },
+    { "path": "spec", "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0", "clean": true },
+    { "path": "core", "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab", "clean": true },
+    { "path": "geometry", "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3", "clean": true },
+    { "path": "language-service", "revision": "e2c21878aedda84874555286bc448af92137e742", "clean": true },
+    { "path": "renderer-svg", "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b", "clean": true },
+    { "path": "cli", "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee", "clean": true },
+    { "path": "remark-relgeo", "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53", "clean": true },
+    { "path": "remark-relgeo-hl", "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5", "clean": true },
+    { "path": "flutter", "revision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6", "clean": true },
+    { "path": "mcp", "revision": "109bd599fc5b4881f3a3ada128da7e9d548ab936", "clean": true }
+  ],
+  "checks": [
+    {
+      "id": "cross-surface-reconciliation",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/check-cross-surface-reconciliation.mjs --report=docs/evidence/cross-repository-cross-surface-reconciliation-2026-11-27.json",
+      "result": "passed",
+      "outputExcerpt": "Cross-surface reconciliation: PASS (25/25 checks; 12 child commits; stalePointers=0; staleContractReferences=0; gitlinkUpdateRequired=false)"
+    },
+    {
+      "id": "child-ci-contract",
+      "command": "node scripts/test-child-ci-sync-contract.mjs",
+      "result": "passed",
+      "outputExcerpt": "Child-CI synchronization contract tests passed: allowlist, exact run validation, concurrency, gitlink staging, baseline regeneration, PR flow, and child dispatch metadata."
+    },
+    {
+      "id": "workflow-security",
+      "command": "node scripts/test-workflow-security-policy.mjs",
+      "result": "passed",
+      "outputExcerpt": "Workflow security policy passed: bounded runs, credential-free checkout, and least-privilege permissions."
+    },
+    {
+      "id": "baseline-synchronization",
+      "command": "node scripts/check-baseline-synchronization.mjs --report=docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json",
+      "result": "passed",
+      "outputExcerpt": "Summary: 0 failed, 101 passed\nPromotion: eligible"
+    },
+    {
+      "id": "cross-repository-documentation",
+      "command": "node scripts/check-cross-repository-documentation.mjs",
+      "result": "passed",
+      "outputExcerpt": "Cross-repository documentation reconciliation: PASS (requiredFiles=10; rows=39; partialDispositions=18; statusCounts=21/18/0)"
+    }
+  ],
+  "reconciliationArtifact": "docs/evidence/cross-repository-cross-surface-reconciliation-2026-11-27.json"
+}

@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "contract": "fresh-clone-bootstrap-v1",
+  "outcome": "blocked",
+  "requiredToolchain": {
+    "node": "24.21.0",
+    "pnpm": "10.33.3"
+  },
+  "toolchainContract": {
+    "nodeVersionSource": ".node-version",
+    "packageManagerSource": "package.json#packageManager",
+    "exactNodeVersion": "24.21.0",
+    "exactPnpmVersion": "10.33.3"
+  },
+  "observedToolchain": {
+    "node": "v24.21.0",
+    "pnpm": "10.33.3"
+  },
+  "workspaceBoundary": {
+    "contract": "fresh-clone-workspace-v1",
+    "requiredFiles": [
+      "package.json",
+      "pnpm-lock.yaml",
+      ".gitmodules",
+      ".node-version"
+    ],
+    "checkedFiles": [
+      "package.json",
+      "pnpm-lock.yaml",
+      ".gitmodules",
+      ".node-version"
+    ],
+    "missingFiles": [],
+    "siblingSource": false
+  },
+  "evidence": {
+    "schemaVersion": 1,
+    "evidenceClass": "local-workspace",
+    "evidenceState": "current",
+    "capturedAt": "2026-11-27T13:58:37.042Z",
+    "workspaceRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+    "baseline": {
+      "name": "relgeo-public-0.5-staging",
+      "capturedAt": "2026-11-27",
+      "compatibilityLine": "0.5"
+    },
+    "testedRevisions": {
+      "root": "296f6881896577bc27f711f27285a07f8dc3bac1",
+      "children": {
+        "cli": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+        "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+        "flutter": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+        "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+        "language-service": "e2c21878aedda84874555286bc448af92137e742",
+        "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+        "playground": "33631d930adc01efbdf25caccdd95e1af55e2526",
+        "relgeo.github.io": "450488d93d05059a190efd89e013f9a5274b8313",
+        "remark-relgeo": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+        "remark-relgeo-hl": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+        "renderer-svg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+        "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+      }
+    },
+    "toolchain": {
+      "node": "v24.21.0",
+      "pnpm": "10.33.3"
+    },
+    "run": {
+      "id": null
+    },
+    "artifact": null,
+    "command": "node scripts/bootstrap.mjs",
+    "limitations": [
+      "bootstrap: recursive submodules: Git metadata write is unavailable at this execution boundary"
+    ]
+  },
+  "submodules": [
+    {
+      "path": "cli",
+      "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+      "gitlinkRevision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "core",
+      "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "gitlinkRevision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "flutter",
+      "revision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "gitlinkRevision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "geometry",
+      "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "gitlinkRevision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "language-service",
+      "revision": "e2c21878aedda84874555286bc448af92137e742",
+      "gitlinkRevision": "e2c21878aedda84874555286bc448af92137e742",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "mcp",
+      "revision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "gitlinkRevision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "playground",
+      "revision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+      "gitlinkRevision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "relgeo.github.io",
+      "revision": "450488d93d05059a190efd89e013f9a5274b8313",
+      "gitlinkRevision": "450488d93d05059a190efd89e013f9a5274b8313",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "remark-relgeo",
+      "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+      "gitlinkRevision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "remark-relgeo-hl",
+      "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+      "gitlinkRevision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "renderer-svg",
+      "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+      "gitlinkRevision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    },
+    {
+      "path": "spec",
+      "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "gitlinkRevision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "matchesGitlink": true,
+      "dirty": false,
+      "state": "checked-out"
+    }
+  ],
+  "steps": [
+    {
+      "id": "bootstrap: checkout boundary",
+      "command": "workspace metadata",
+      "passed": true,
+      "exitCode": 0
+    },
+    {
+      "id": "toolchain: node",
+      "command": "node --version",
+      "passed": true,
+      "exitCode": 0,
+      "observedVersion": "v24.21.0"
+    },
+    {
+      "id": "toolchain: pnpm",
+      "command": "pnpm --version",
+      "passed": true,
+      "exitCode": 0
+    },
+    {
+      "id": "bootstrap: recursive submodules",
+      "command": "git submodule update --init --recursive",
+      "passed": false,
+      "exitCode": 128,
+      "blocker": {
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false
+      },
+      "limitation": "Git metadata write is unavailable at this execution boundary"
+    },
+    {
+      "id": "baseline: strict submodule report",
+      "command": "node scripts/verify-baseline.mjs --strict",
+      "passed": true,
+      "exitCode": 0
+    },
+    {
+      "id": "bootstrap: gitlink alignment",
+      "command": "git submodule status --recursive",
+      "passed": true,
+      "exitCode": 0,
+      "submodules": [
+        {
+          "path": "cli",
+          "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+          "gitlinkRevision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "core",
+          "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+          "gitlinkRevision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "flutter",
+          "revision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+          "gitlinkRevision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "geometry",
+          "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+          "gitlinkRevision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "language-service",
+          "revision": "e2c21878aedda84874555286bc448af92137e742",
+          "gitlinkRevision": "e2c21878aedda84874555286bc448af92137e742",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "mcp",
+          "revision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+          "gitlinkRevision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "playground",
+          "revision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+          "gitlinkRevision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "relgeo.github.io",
+          "revision": "450488d93d05059a190efd89e013f9a5274b8313",
+          "gitlinkRevision": "450488d93d05059a190efd89e013f9a5274b8313",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "remark-relgeo",
+          "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+          "gitlinkRevision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "remark-relgeo-hl",
+          "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+          "gitlinkRevision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "renderer-svg",
+          "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+          "gitlinkRevision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        },
+        {
+          "path": "spec",
+          "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+          "gitlinkRevision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+          "matchesGitlink": true,
+          "dirty": false,
+          "state": "checked-out"
+        }
+      ]
+    },
+    {
+      "id": "public-boundary:report",
+      "command": "public-boundary-v1",
+      "passed": true,
+      "exitCode": 0
+    }
+  ],
+  "limitations": [
+    "bootstrap: recursive submodules: Git metadata write is unavailable at this execution boundary"
+  ],
+  "currentHistoricalRule": "Only this report's exact root/child revisions are current; later checkout changes make it historical.",
+  "publicBoundary": {
+    "contract": "public-boundary-v1",
+    "passed": true,
+    "entriesChecked": 1,
+    "contentsChecked": 1,
+    "violations": []
+  }
+}

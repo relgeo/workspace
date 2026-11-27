@@ -1,0 +1,169 @@
+{
+  "recordType": "cross-repository-closure-report",
+  "schemaVersion": 1,
+  "capturedAt": "2026-11-27",
+  "testedRootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+  "sourceRebaseline": "docs/evidence/cross-repository-rebaseline-2026-11-27.json",
+  "before": {
+    "source": "docs/capability-map/cross-repository/status-matrix.md historical snapshot",
+    "counts": { "✔️": 21, "🌗": 18, "❌": 0, "➖": 0, "⏸️": 0, "⚠️": 0 },
+    "partialCapabilityIds": [
+      "ORCH-BOOT-001", "ORCH-BOOT-002", "ORCH-BOOT-003", "ORCH-BOOT-004",
+      "ORCH-BASE-001", "ORCH-BASE-002", "ORCH-BASE-003", "ORCH-BASE-004",
+      "ORCH-GATE-002", "ORCH-GATE-003", "ORCH-EVID-002", "ORCH-EVID-003",
+      "ORCH-EVID-004", "ORCH-REL-001", "ORCH-REL-004", "ORCH-REL-005",
+      "ORCH-OPS-005", "ORCH-PUB-002"
+    ]
+  },
+  "after": {
+    "source": "current-head disposition register below",
+    "counts": { "✔️": 26, "🌗": 0, "❌": 0, "➖": 0, "⏸️": 13, "⚠️": 0 },
+    "actionableUnresolved": [],
+    "externalEvidenceHeld": [
+      "ORCH-BOOT-002", "ORCH-BOOT-004", "ORCH-BASE-003", "ORCH-BASE-004",
+      "ORCH-GATE-002", "ORCH-GATE-003", "ORCH-EVID-002", "ORCH-EVID-004",
+      "ORCH-REL-001", "ORCH-REL-004", "ORCH-REL-005", "ORCH-OPS-005", "ORCH-PUB-002"
+    ]
+  },
+  "rows": [
+    {
+      "id": "ORCH-BOOT-001", "beforeStatus": "🌗", "afterStatus": "✔️", "owner": "relgeo/workspace",
+      "sourceOfTruth": ["scripts/bootstrap.mjs", "scripts/test-bootstrap-and-evidence-contract.mjs"],
+      "repositoryPath": "workspace:scripts/bootstrap.mjs", "dependency": ["Node 24.21.0", "pnpm 10.33.3", "recursive submodules"],
+      "closureTask": "GAP-ORCH-001", "evidenceLocator": ["docs/evidence/cross-repository-fresh-checkout-bootstrap-verification-2026-11-27.json", "command:node scripts/test-bootstrap-and-evidence-contract.mjs"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Local clean-checkout evidence; no provider or canonical-CI claim."
+    },
+    {
+      "id": "ORCH-BOOT-002", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace",
+      "sourceOfTruth": [".node-version", "package.json", "pnpm-lock.yaml", "scripts/bootstrap.mjs"],
+      "repositoryPath": "workspace:.node-version; workspace:pnpm-lock.yaml", "dependency": ["Node 24.21.0", "pnpm 10.33.3", "registry access"],
+      "closureTask": "GAP-ORCH-001", "evidenceLocator": ["docs/evidence/cross-repository-fresh-checkout-bootstrap-verification-2026-11-27.json", "docs/evidence/cross-repository-bootstrap-verification-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Toolchain contract is verified; registry-backed frozen install remains environment-unavailable."
+    },
+    {
+      "id": "ORCH-BOOT-003", "beforeStatus": "🌗", "afterStatus": "✔️", "owner": "relgeo/workspace",
+      "sourceOfTruth": [".gitmodules", "command:git ls-tree HEAD", "command:git submodule status --recursive"],
+      "repositoryPath": "workspace:.gitmodules and 12 registered submodule paths", "dependency": ["Git", "child repositories", "clean-clone probe"],
+      "closureTask": "GAP-ORCH-001", "evidenceLocator": ["docs/evidence/cross-repository-fresh-checkout-bootstrap-verification-2026-11-27.json", "docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Local recursive initialization and gitlink alignment; no provider synchronization claim."
+    },
+    {
+      "id": "ORCH-BOOT-004", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace + CI/artifact owners",
+      "sourceOfTruth": ["scripts/audit-public-boundary.mjs", "scripts/test-public-boundary-contract.mjs"],
+      "repositoryPath": "workspace:scripts/audit-public-boundary.mjs", "dependency": ["canonical CI artifact roots", "Node 24", "public-boundary scan inputs"],
+      "closureTask": "GAP-ORCH-001", "evidenceLocator": ["command:node scripts/audit-public-boundary.mjs", "command:node scripts/test-public-boundary-contract.mjs"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Local tracked-tree hygiene only; five declared artifact roots remain unavailable."
+    },
+    {
+      "id": "ORCH-BASE-001", "beforeStatus": "🌗", "afterStatus": "✔️", "owner": "relgeo/workspace",
+      "sourceOfTruth": ["docs/integration-baseline.json", "scripts/verify-baseline.mjs"],
+      "repositoryPath": "workspace:docs/integration-baseline.json", "dependency": ["current root revision", "exact child gitlinks", "validated child CI"],
+      "closureTask": "GAP-ORCH-002", "evidenceLocator": ["docs/integration-baseline.json", "docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Generated local baseline is current; no validated child-CI or provider-artifact claim."
+    },
+    {
+      "id": "ORCH-BASE-002", "beforeStatus": "🌗", "afterStatus": "✔️", "owner": "relgeo/workspace",
+      "sourceOfTruth": ["scripts/verify-baseline.mjs", "docs/integration-baseline.json"],
+      "repositoryPath": "workspace:scripts/verify-baseline.mjs", "dependency": ["current baseline manifest", "clean checkout", "supported integration toolchain"],
+      "closureTask": "GAP-ORCH-002", "evidenceLocator": ["command:node scripts/verify-baseline.mjs --strict", "docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Local strict verification only; no provider CI, registry, or public-runtime claim."
+    },
+    {
+      "id": "ORCH-BASE-003", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/spec + relgeo/workspace",
+      "sourceOfTruth": ["scripts/check-compatibility.mjs", "docs/compatibility-matrix.json"],
+      "repositoryPath": "workspace:scripts/check-compatibility.mjs; submodule:spec", "dependency": ["current root/child tuple", "Node 24 canonical toolchain"],
+      "closureTask": "GAP-ORCH-002", "evidenceLocator": ["command:PATH=Node24 node scripts/check-compatibility.mjs", "docs/evidence/cross-repository-current-verification-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Compatibility proof is not canonical while the managed validator cannot reproduce the Node 24 dependency boundary."
+    },
+    {
+      "id": "ORCH-BASE-004", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace + child owners",
+      "sourceOfTruth": ["scripts/run-conformance-fixtures.mjs", "scripts/run-flutter-conformance.mjs", "fixtures/manifest.json"],
+      "repositoryPath": "workspace:scripts/run-conformance-fixtures.mjs; submodule:flutter", "dependency": ["shared fixture manifest", "Flutter SDK/cache", "Node 24 canonical run"],
+      "closureTask": "GAP-ORCH-002", "evidenceLocator": ["command:PATH=Node24 node scripts/run-conformance-fixtures.mjs", "docs/evidence/cross-repository-current-verification-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "TypeScript fixture success does not establish Flutter parity; Flutter boundary is unavailable."
+    },
+    {
+      "id": "ORCH-GATE-002", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace + package owners",
+      "sourceOfTruth": ["scripts/run-integration-gate.mjs", "package.json"],
+      "repositoryPath": "workspace:scripts/run-integration-gate.mjs", "dependency": ["Node 24.21.0", "workspace installs", "current baseline"],
+      "closureTask": "GAP-ORCH-003", "evidenceLocator": ["docs/evidence/cross-repository-local-integration-2026-11-27.json", "docs/evidence/cross-repository-current-verification-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "30 blocked stages are environment-unavailable; no package regression is claimed."
+    },
+    {
+      "id": "ORCH-GATE-003", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace + package/consumer owners",
+      "sourceOfTruth": ["scripts/run-integration-gate.mjs", ".github/workflows/integration.yml"],
+      "repositoryPath": "workspace:scripts/run-integration-gate.mjs --public", "dependency": ["Node 24.21.0", "registry/network", "consumer runtime"],
+      "closureTask": "GAP-ORCH-003", "evidenceLocator": ["docs/evidence/cross-repository-public-integration-2026-11-27.json", "docs/evidence/cross-repository-current-verification-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Registry/public consumer proof is unavailable at the remote-provider DNS boundary."
+    },
+    {
+      "id": "ORCH-EVID-002", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace",
+      "sourceOfTruth": ["scripts/orchestration-contract.mjs", "scripts/join-integration-evidence.mjs"],
+      "repositoryPath": "workspace:scripts/orchestration-contract.mjs; workspace:scripts/join-integration-evidence.mjs", "dependency": ["current baseline", "canonical run record", "evidence envelope"],
+      "closureTask": "GAP-ORCH-004", "evidenceLocator": ["command:node scripts/test-orchestration-contract.mjs", "docs/evidence/cross-repository-current-verification-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Class separation is implemented and tested; historical/provider records remain non-canonical."
+    },
+    {
+      "id": "ORCH-EVID-003", "beforeStatus": "🌗", "afterStatus": "✔️", "owner": "relgeo/workspace + child CI owners",
+      "sourceOfTruth": ["docs/integration-baseline.json", "scripts/join-integration-evidence.mjs"],
+      "repositoryPath": "workspace:docs/integration-baseline.json; workspace:scripts/join-integration-evidence.mjs", "dependency": ["regenerated baseline", "validated child-CI metadata", "current artifact/public record"],
+      "closureTask": "GAP-ORCH-004", "evidenceLocator": ["docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json", "docs/evidence/cross-repository-cross-surface-reconciliation-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Local revision-to-evidence joining is current; external provenance remains outside the claim."
+    },
+    {
+      "id": "ORCH-EVID-004", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace + website/consumer owners",
+      "sourceOfTruth": ["scripts/join-integration-evidence.mjs", ".github/workflows/integration.yml"],
+      "repositoryPath": "workspace:scripts/join-integration-evidence.mjs; submodule:relgeo.github.io", "dependency": ["artifact digest", "deployment URL", "public smoke/browser", "canonical baseline"],
+      "closureTask": "GAP-ORCH-004", "evidenceLocator": ["docs/evidence/cross-repository-local-integration-2026-11-27.json", "docs/evidence/cross-repository-public-integration-2026-11-27.json"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "No deployment, registry, browser, or public-runtime claim is made."
+    },
+    {
+      "id": "ORCH-REL-001", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "release owner + relgeo/workspace",
+      "sourceOfTruth": ["scripts/run-release-preflight.mjs", "docs/plans/03-npm-release-guard.md"],
+      "repositoryPath": "workspace:scripts/run-release-preflight.mjs", "dependency": ["Node 24.21.0", "clean tree", "current baseline", "release record"],
+      "closureTask": "GAP-ORCH-005", "evidenceLocator": ["docs/evidence/cross-repository-current-verification-2026-11-27.json", "scripts/run-release-preflight.mjs"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "No current release-preflight result is claimed and no publish was attempted."
+    },
+    {
+      "id": "ORCH-REL-004", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "release + consumer owners",
+      "sourceOfTruth": ["scripts/verify-published-packages.mjs", "scripts/run-integration-gate.mjs"],
+      "repositoryPath": "workspace:scripts/verify-published-packages.mjs", "dependency": ["Node 24.21.0", "npm registry/network", "public consumer"],
+      "closureTask": "GAP-ORCH-005", "evidenceLocator": ["docs/evidence/cross-repository-public-integration-2026-11-27.json", "scripts/verify-published-packages.mjs"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "No registry version or public consumer result is asserted."
+    },
+    {
+      "id": "ORCH-REL-005", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "release owner",
+      "sourceOfTruth": ["scripts/plan-release-recovery.mjs", "scripts/test-release-record-failure.mjs", "docs/plans/03-npm-release-guard.md"],
+      "repositoryPath": "workspace:scripts/plan-release-recovery.mjs", "dependency": ["controlled failure injection", "approved release record", "newer forward-fix"],
+      "closureTask": "GAP-ORCH-005", "scopeDecision": "Do not create a real partial release in this rebaseline; retain controlled recovery evidence.",
+      "evidenceLocator": ["scripts/test-release-record-failure.mjs", "docs/plans/03-npm-release-guard.md"], "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Fixture evidence does not prove a live registry transaction."
+    },
+    {
+      "id": "ORCH-OPS-005", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace + stage/release owners",
+      "sourceOfTruth": ["scripts/orchestration-contract.mjs", "scripts/run-release-preflight.mjs", "docs/decisions/07-cross-repo-open-decisions.md"],
+      "repositoryPath": "workspace:scripts/orchestration-contract.mjs", "dependency": ["maintainer decision record", "provider/release promotion surface"],
+      "closureTask": "GAP-ORCH-006", "evidenceLocator": ["command:node scripts/test-orchestration-contract.mjs", "scripts/run-release-preflight.mjs"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Local fail-closed decision behavior does not prove provider-side enforcement."
+    },
+    {
+      "id": "ORCH-PUB-002", "beforeStatus": "🌗", "afterStatus": "⏸️", "owner": "relgeo/workspace + consumer owners",
+      "sourceOfTruth": ["scripts/run-integration-gate.mjs", ".github/workflows/integration.yml"],
+      "repositoryPath": "workspace:scripts/run-integration-gate.mjs --public; submodule:relgeo.github.io", "dependency": ["Node 24.21.0", "registry/network", "public consumer runtime"],
+      "closureTask": "GAP-ORCH-003", "evidenceLocator": ["docs/evidence/cross-repository-public-integration-2026-11-27.json", "scripts/run-integration-gate.mjs"],
+      "testedRevision": "296f6881896577bc27f711f27285a07f8dc3bac1", "claimLimit": "Local workspace tests do not prove registry-installed consumer isolation."
+    }
+  ],
+  "residualClassification": {
+    "implementationDefects": [],
+    "environmentUnavailable": ["managed App Server dependency install/cache", "remote registry DNS", "Flutter SDK/public deployment/browser evidence"],
+    "scopeHeld": ["ORCH-REL-005"],
+    "remediation": "Rerun the named evidence boundary on a Node 24.21.0 host with registry/Flutter/public-runtime access; do not promote these holds to implementation failure or green runtime evidence."
+  },
+  "checks": {
+    "documentation": "node scripts/check-cross-repository-documentation.mjs",
+    "crossSurface": "node scripts/check-cross-surface-reconciliation.mjs",
+    "goalClosure": "node scripts/check-cross-repository-goal-closure.mjs",
+    "diffHygiene": "git diff --check",
+    "revisionTuple": "node scripts/verify-baseline.mjs --strict --json"
+  }
+}

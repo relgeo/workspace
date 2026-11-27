@@ -1,0 +1,73 @@
+{
+  "recordType": "cross-repository-public-boundary-closure-evidence",
+  "schemaVersion": 1,
+  "capturedAt": "2026-11-27",
+  "testedRootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+  "claimLimit": "Local audit and join diagnostics are current at the tested root. The public registry gate is not promoted because the remote-provider registry preflight returned ENOTFOUND; no deployment or provider-runtime success is claimed.",
+  "artifacts": {
+    "boundaryAudit": "docs/evidence/cross-repository-public-boundary-audit-2026-11-27.json",
+    "publicIntegration": "docs/evidence/cross-repository-public-integration-2026-11-27.json",
+    "joinedIntegration": "docs/evidence/cross-repository-public-integration-joined-2026-11-27.json"
+  },
+  "implementation": {
+    "audit": "scripts/audit-public-boundary.mjs",
+    "joiner": "scripts/join-integration-evidence.mjs",
+    "integrationGate": "scripts/run-integration-gate.mjs",
+    "failureInjection": "scripts/test-joined-integration-evidence.mjs"
+  },
+  "checks": [
+    {
+      "id": "public-boundary-audit",
+      "command": "PUBLIC_BOUNDARY_REPORT=docs/evidence/cross-repository-public-boundary-audit-2026-11-27.json node scripts/audit-public-boundary.mjs",
+      "result": "passed-with-artifact-boundary",
+      "outputExcerpt": "{\"contract\":\"public-boundary-audit-v1\",\"status\":\"pass-with-artifact-boundary\",\"trackedEntries\":340,\"trackedPassed\":true,\"artifactRootsScanned\":2,\"artifactRootsUnavailable\":5,\"consumerPassed\":true,\"workflowViolations\":0,\"reportPath\":\"docs/evidence/cross-repository-public-boundary-audit-2026-11-27.json\"}"
+    },
+    {
+      "id": "public-integration-report",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/run-integration-gate.mjs --public --report=docs/evidence/cross-repository-public-integration-2026-11-27.json",
+      "result": "environment-unavailable",
+      "boundary": "remote-provider",
+      "outputExcerpt": "Public integration report: recorded environment-unavailable at remote-provider (root=296f6881896577bc27f711f27285a07f8dc3bac1; summary=2/3 passed)"
+    },
+    {
+      "id": "evidence-join",
+      "command": "node scripts/join-integration-evidence.mjs --report=docs/evidence/cross-repository-public-integration-2026-11-27.json --output=docs/evidence/cross-repository-public-integration-joined-2026-11-27.json --evidence-class=public-registry --evidence-state=current --artifact-id=relgeo-public-integration-report --artifact-path=docs/evidence/cross-repository-public-integration-2026-11-27.json --current-root-revision=296f6881896577bc27f711f27285a07f8dc3bac1 --current-baseline-name=relgeo-public-0.5-staging",
+      "result": "not-eligible-by-design",
+      "outputExcerpt": "Evidence join: PASS (current claim rejected with explicit temporary-checkout boundary diagnostic; root=296f6881896577bc27f711f27285a07f8dc3bac1)"
+    },
+    {
+      "id": "failure-injection",
+      "command": "node scripts/test-joined-integration-evidence.mjs",
+      "result": "passed",
+      "outputExcerpt": "Joined integration evidence tests passed: current join, historical rejection, stale revision, missing provenance/artifact, and missing source diagnostics."
+    },
+    {
+      "id": "local-compatibility",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/check-compatibility.mjs",
+      "result": "passed",
+      "outputExcerpt": "summary: 301 passed, 0 failed"
+    },
+    {
+      "id": "local-conformance",
+      "command": "PATH=/Users/agusmade/.nvm/versions/node/v24.21.0/bin:/opt/homebrew/bin:$PATH node scripts/run-conformance-fixtures.mjs",
+      "result": "environment-unavailable",
+      "boundary": "Codex App Server managed workspace dependency state",
+      "outputExcerpt": "Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@relgeo/geometry' imported from /Users/agusmade/projects/relgeo-workspace/core/dist/index.mjs",
+      "remediation": "Run the conformance fixture after the declared workspace dependencies and built package links are installed on the target validation boundary."
+    }
+  ],
+  "explicitUnavailableInputs": [
+    {
+      "code": "registry-unavailable",
+      "boundary": "remote-provider",
+      "diagnostic": "ENOTFOUND",
+      "remediation": "Rerun the public gate on a host with registry.npmjs.org DNS/network access."
+    },
+    {
+      "code": "public-artifact-roots-unavailable",
+      "boundary": "local-workspace",
+      "count": 5,
+      "remediation": "Build the declared public consumer artifacts, then rerun the boundary audit against those exact roots."
+    }
+  ]
+}

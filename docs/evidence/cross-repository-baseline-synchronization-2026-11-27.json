@@ -1,0 +1,561 @@
+{
+  "schemaVersion": 1,
+  "contract": "baseline-synchronization-v1",
+  "ok": true,
+  "promotion": {
+    "eligible": true,
+    "rule": "A baseline is promotable only when .gitmodules, root gitlinks, child HEAD/clean state, baseline revisions, and compatibility provenance all match."
+  },
+  "provenance": {
+    "rootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+    "baselineRootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+    "baselineCapturedAt": "2026-11-27",
+    "compatibilityLine": "0.5",
+    "childRevisions": {
+      "relgeo.github.io": "450488d93d05059a190efd89e013f9a5274b8313",
+      "playground": "33631d930adc01efbdf25caccdd95e1af55e2526",
+      "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "language-service": "e2c21878aedda84874555286bc448af92137e742",
+      "renderer-svg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+      "cli": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+      "remark-relgeo": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+      "remark-relgeo-hl": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+      "flutter": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936"
+    }
+  },
+  "recursiveSubmoduleStatus": [
+    "b06cadc03c43542eaaa8728711ef7238c0c759ee cli (v0.5.0-6-gb06cadc)",
+    " cf2404a8fafdb0d664fdd7dc672926b5207184ab core (v0.5.0-11-gcf2404a)",
+    " 20253e8b06da5b9a2329020bc1ee8c60622a3de6 flutter (desktop-v1.0.1-7-g20253e8)",
+    " 91c644379759d61184f64c8250e7ff7ef0b745f3 geometry (v0.5.0-7-g91c6443)",
+    " e2c21878aedda84874555286bc448af92137e742 language-service (v0.5.0-8-ge2c2187)",
+    " 109bd599fc5b4881f3a3ada128da7e9d548ab936 mcp (heads/main)",
+    " 33631d930adc01efbdf25caccdd95e1af55e2526 playground (staging-2026-09-11-112-g33631d9)",
+    " 450488d93d05059a190efd89e013f9a5274b8313 relgeo.github.io (staging-2026-09-11-58-g450488d)",
+    " 07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53 remark-relgeo (v0.5.0-6-g07d09a5)",
+    " 4de88408a543a9f39424e4cf9706ee8441c8e3d5 remark-relgeo-hl (v0.5.0-5-g4de8840)",
+    " 8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b renderer-svg (v0.5.0-10-g8be3e30)",
+    " 26ff53278d77d916b0e0e6c26ca9ab496232fbc0 spec (staging-2026-09-11-3-g26ff532)"
+  ],
+  "summary": {
+    "total": 101,
+    "passed": 101,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "id": ".gitmodules: unique paths",
+      "passed": true,
+      "detail": "paths are unique"
+    },
+    {
+      "id": ".gitmodules: complete entries",
+      "passed": true,
+      "detail": "every entry declares path and url"
+    },
+    {
+      "id": "root: baseline revision",
+      "passed": true,
+      "detail": "296f6881896577bc27f711f27285a07f8dc3bac1 != 296f6881896577bc27f711f27285a07f8dc3bac1"
+    },
+    {
+      "id": "submodules: recursive status",
+      "passed": true,
+      "detail": "12 entries, 0 non-clean markers"
+    },
+    {
+      "id": "baseline: submodule set",
+      "passed": true,
+      "detail": "12 manifest entries, 12 registered submodules"
+    },
+    {
+      "id": "baseline: compatibility line",
+      "passed": true,
+      "detail": "0.5 != 0.5"
+    },
+    {
+      "id": "matrix: baseline locator",
+      "passed": true,
+      "detail": "docs/integration-baseline.json"
+    },
+    {
+      "id": "baseline: captured date",
+      "passed": true,
+      "detail": "2026-11-27"
+    },
+    {
+      "id": "baseline: pinned Node version",
+      "passed": true,
+      "detail": "24.21.0 != 24.21.0"
+    },
+    {
+      "id": "baseline: pinned pnpm version",
+      "passed": true,
+      "detail": "10.33.3 != 10.33.3"
+    },
+    {
+      "id": "relgeo.github.io: path exists",
+      "passed": true,
+      "detail": "relgeo.github.io"
+    },
+    {
+      "id": "relgeo.github.io: gitlink",
+      "passed": true,
+      "detail": "450488d93d05059a190efd89e013f9a5274b8313"
+    },
+    {
+      "id": "relgeo.github.io: checkout matches gitlink",
+      "passed": true,
+      "detail": "450488d93d05059a190efd89e013f9a5274b8313 != 450488d93d05059a190efd89e013f9a5274b8313"
+    },
+    {
+      "id": "relgeo.github.io: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "relgeo.github.io: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "450488d93d05059a190efd89e013f9a5274b8313 != 450488d93d05059a190efd89e013f9a5274b8313"
+    },
+    {
+      "id": "relgeo.github.io: baseline package provenance",
+      "passed": true,
+      "detail": "relgeo-docs-site@0.5.0"
+    },
+    {
+      "id": "playground: path exists",
+      "passed": true,
+      "detail": "playground"
+    },
+    {
+      "id": "playground: gitlink",
+      "passed": true,
+      "detail": "33631d930adc01efbdf25caccdd95e1af55e2526"
+    },
+    {
+      "id": "playground: checkout matches gitlink",
+      "passed": true,
+      "detail": "33631d930adc01efbdf25caccdd95e1af55e2526 != 33631d930adc01efbdf25caccdd95e1af55e2526"
+    },
+    {
+      "id": "playground: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "playground: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "33631d930adc01efbdf25caccdd95e1af55e2526 != 33631d930adc01efbdf25caccdd95e1af55e2526"
+    },
+    {
+      "id": "playground: baseline package provenance",
+      "passed": true,
+      "detail": "relgeo-playground@0.4.0"
+    },
+    {
+      "id": "spec: path exists",
+      "passed": true,
+      "detail": "spec"
+    },
+    {
+      "id": "spec: gitlink",
+      "passed": true,
+      "detail": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    },
+    {
+      "id": "spec: checkout matches gitlink",
+      "passed": true,
+      "detail": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0 != 26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    },
+    {
+      "id": "spec: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "spec: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0 != 26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    },
+    {
+      "id": "core: path exists",
+      "passed": true,
+      "detail": "core"
+    },
+    {
+      "id": "core: gitlink",
+      "passed": true,
+      "detail": "cf2404a8fafdb0d664fdd7dc672926b5207184ab"
+    },
+    {
+      "id": "core: checkout matches gitlink",
+      "passed": true,
+      "detail": "cf2404a8fafdb0d664fdd7dc672926b5207184ab != cf2404a8fafdb0d664fdd7dc672926b5207184ab"
+    },
+    {
+      "id": "core: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "core: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "cf2404a8fafdb0d664fdd7dc672926b5207184ab != cf2404a8fafdb0d664fdd7dc672926b5207184ab"
+    },
+    {
+      "id": "core: baseline package provenance",
+      "passed": true,
+      "detail": "@relgeo/core@0.5.3"
+    },
+    {
+      "id": "geometry: path exists",
+      "passed": true,
+      "detail": "geometry"
+    },
+    {
+      "id": "geometry: gitlink",
+      "passed": true,
+      "detail": "91c644379759d61184f64c8250e7ff7ef0b745f3"
+    },
+    {
+      "id": "geometry: checkout matches gitlink",
+      "passed": true,
+      "detail": "91c644379759d61184f64c8250e7ff7ef0b745f3 != 91c644379759d61184f64c8250e7ff7ef0b745f3"
+    },
+    {
+      "id": "geometry: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "geometry: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "91c644379759d61184f64c8250e7ff7ef0b745f3 != 91c644379759d61184f64c8250e7ff7ef0b745f3"
+    },
+    {
+      "id": "geometry: baseline package provenance",
+      "passed": true,
+      "detail": "@relgeo/geometry@0.5.1"
+    },
+    {
+      "id": "language-service: path exists",
+      "passed": true,
+      "detail": "language-service"
+    },
+    {
+      "id": "language-service: gitlink",
+      "passed": true,
+      "detail": "e2c21878aedda84874555286bc448af92137e742"
+    },
+    {
+      "id": "language-service: checkout matches gitlink",
+      "passed": true,
+      "detail": "e2c21878aedda84874555286bc448af92137e742 != e2c21878aedda84874555286bc448af92137e742"
+    },
+    {
+      "id": "language-service: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "language-service: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "e2c21878aedda84874555286bc448af92137e742 != e2c21878aedda84874555286bc448af92137e742"
+    },
+    {
+      "id": "language-service: baseline package provenance",
+      "passed": true,
+      "detail": "@relgeo/language-service@0.5.2"
+    },
+    {
+      "id": "renderer-svg: path exists",
+      "passed": true,
+      "detail": "renderer-svg"
+    },
+    {
+      "id": "renderer-svg: gitlink",
+      "passed": true,
+      "detail": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b"
+    },
+    {
+      "id": "renderer-svg: checkout matches gitlink",
+      "passed": true,
+      "detail": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b != 8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b"
+    },
+    {
+      "id": "renderer-svg: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "renderer-svg: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b != 8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b"
+    },
+    {
+      "id": "renderer-svg: baseline package provenance",
+      "passed": true,
+      "detail": "@relgeo/renderer-svg@0.5.1"
+    },
+    {
+      "id": "cli: path exists",
+      "passed": true,
+      "detail": "cli"
+    },
+    {
+      "id": "cli: gitlink",
+      "passed": true,
+      "detail": "b06cadc03c43542eaaa8728711ef7238c0c759ee"
+    },
+    {
+      "id": "cli: checkout matches gitlink",
+      "passed": true,
+      "detail": "b06cadc03c43542eaaa8728711ef7238c0c759ee != b06cadc03c43542eaaa8728711ef7238c0c759ee"
+    },
+    {
+      "id": "cli: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "cli: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "b06cadc03c43542eaaa8728711ef7238c0c759ee != b06cadc03c43542eaaa8728711ef7238c0c759ee"
+    },
+    {
+      "id": "cli: baseline package provenance",
+      "passed": true,
+      "detail": "@relgeo/cli@0.5.1"
+    },
+    {
+      "id": "remark-relgeo: path exists",
+      "passed": true,
+      "detail": "remark-relgeo"
+    },
+    {
+      "id": "remark-relgeo: gitlink",
+      "passed": true,
+      "detail": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53"
+    },
+    {
+      "id": "remark-relgeo: checkout matches gitlink",
+      "passed": true,
+      "detail": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53 != 07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53"
+    },
+    {
+      "id": "remark-relgeo: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "remark-relgeo: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53 != 07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53"
+    },
+    {
+      "id": "remark-relgeo: baseline package provenance",
+      "passed": true,
+      "detail": "@relgeo/remark-relgeo@0.5.1"
+    },
+    {
+      "id": "remark-relgeo-hl: path exists",
+      "passed": true,
+      "detail": "remark-relgeo-hl"
+    },
+    {
+      "id": "remark-relgeo-hl: gitlink",
+      "passed": true,
+      "detail": "4de88408a543a9f39424e4cf9706ee8441c8e3d5"
+    },
+    {
+      "id": "remark-relgeo-hl: checkout matches gitlink",
+      "passed": true,
+      "detail": "4de88408a543a9f39424e4cf9706ee8441c8e3d5 != 4de88408a543a9f39424e4cf9706ee8441c8e3d5"
+    },
+    {
+      "id": "remark-relgeo-hl: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "remark-relgeo-hl: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "4de88408a543a9f39424e4cf9706ee8441c8e3d5 != 4de88408a543a9f39424e4cf9706ee8441c8e3d5"
+    },
+    {
+      "id": "remark-relgeo-hl: baseline package provenance",
+      "passed": true,
+      "detail": "@relgeo/remark-relgeo-hl@0.5.1"
+    },
+    {
+      "id": "flutter: path exists",
+      "passed": true,
+      "detail": "flutter"
+    },
+    {
+      "id": "flutter: gitlink",
+      "passed": true,
+      "detail": "20253e8b06da5b9a2329020bc1ee8c60622a3de6"
+    },
+    {
+      "id": "flutter: checkout matches gitlink",
+      "passed": true,
+      "detail": "20253e8b06da5b9a2329020bc1ee8c60622a3de6 != 20253e8b06da5b9a2329020bc1ee8c60622a3de6"
+    },
+    {
+      "id": "flutter: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "flutter: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "20253e8b06da5b9a2329020bc1ee8c60622a3de6 != 20253e8b06da5b9a2329020bc1ee8c60622a3de6"
+    },
+    {
+      "id": "mcp: path exists",
+      "passed": true,
+      "detail": "mcp"
+    },
+    {
+      "id": "mcp: gitlink",
+      "passed": true,
+      "detail": "109bd599fc5b4881f3a3ada128da7e9d548ab936"
+    },
+    {
+      "id": "mcp: checkout matches gitlink",
+      "passed": true,
+      "detail": "109bd599fc5b4881f3a3ada128da7e9d548ab936 != 109bd599fc5b4881f3a3ada128da7e9d548ab936"
+    },
+    {
+      "id": "mcp: working tree clean",
+      "passed": true,
+      "detail": "clean"
+    },
+    {
+      "id": "mcp: baseline revision matches gitlink",
+      "passed": true,
+      "detail": "109bd599fc5b4881f3a3ada128da7e9d548ab936 != 109bd599fc5b4881f3a3ada128da7e9d548ab936"
+    },
+    {
+      "id": "matrix: unique repository paths",
+      "passed": true,
+      "detail": "paths are unique"
+    },
+    {
+      "id": "matrix:geometry: registered",
+      "passed": true,
+      "detail": "geometry"
+    },
+    {
+      "id": "matrix:geometry: baseline provenance",
+      "passed": true,
+      "detail": "geometry"
+    },
+    {
+      "id": "matrix:core: registered",
+      "passed": true,
+      "detail": "core"
+    },
+    {
+      "id": "matrix:core: baseline provenance",
+      "passed": true,
+      "detail": "core"
+    },
+    {
+      "id": "matrix:renderer-svg: registered",
+      "passed": true,
+      "detail": "renderer-svg"
+    },
+    {
+      "id": "matrix:renderer-svg: baseline provenance",
+      "passed": true,
+      "detail": "renderer-svg"
+    },
+    {
+      "id": "matrix:language-service: registered",
+      "passed": true,
+      "detail": "language-service"
+    },
+    {
+      "id": "matrix:language-service: baseline provenance",
+      "passed": true,
+      "detail": "language-service"
+    },
+    {
+      "id": "matrix:remark-relgeo-hl: registered",
+      "passed": true,
+      "detail": "remark-relgeo-hl"
+    },
+    {
+      "id": "matrix:remark-relgeo-hl: baseline provenance",
+      "passed": true,
+      "detail": "remark-relgeo-hl"
+    },
+    {
+      "id": "matrix:remark-relgeo: registered",
+      "passed": true,
+      "detail": "remark-relgeo"
+    },
+    {
+      "id": "matrix:remark-relgeo: baseline provenance",
+      "passed": true,
+      "detail": "remark-relgeo"
+    },
+    {
+      "id": "matrix:cli: registered",
+      "passed": true,
+      "detail": "cli"
+    },
+    {
+      "id": "matrix:cli: baseline provenance",
+      "passed": true,
+      "detail": "cli"
+    },
+    {
+      "id": "matrix:playground: registered",
+      "passed": true,
+      "detail": "playground"
+    },
+    {
+      "id": "matrix:playground: baseline provenance",
+      "passed": true,
+      "detail": "playground"
+    },
+    {
+      "id": "matrix:relgeo.github.io: registered",
+      "passed": true,
+      "detail": "relgeo.github.io"
+    },
+    {
+      "id": "matrix:relgeo.github.io: baseline provenance",
+      "passed": true,
+      "detail": "relgeo.github.io"
+    },
+    {
+      "id": "matrix:flutter: registered",
+      "passed": true,
+      "detail": "flutter"
+    },
+    {
+      "id": "matrix:flutter: baseline provenance",
+      "passed": true,
+      "detail": "flutter"
+    },
+    {
+      "id": "matrix: spec provenance",
+      "passed": true,
+      "detail": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0 != 26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    }
+  ],
+  "failures": [],
+  "inputs": {
+    "baseline": "docs/integration-baseline.json",
+    "compatibilityMatrix": "docs/compatibility-matrix.json",
+    "gitmodules": ".gitmodules"
+  }
+}

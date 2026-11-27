@@ -10,12 +10,16 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const jsonOutput = process.argv.includes("--json");
 const baselineArgument = process.argv.find((argument) => argument.startsWith("--baseline="));
 const matrixArgument = process.argv.find((argument) => argument.startsWith("--matrix="));
+const reportArgument = process.argv.find((argument) => argument.startsWith("--report="));
 const baselinePath = baselineArgument
   ? path.resolve(root, baselineArgument.slice("--baseline=".length))
   : path.join(root, "docs", "integration-baseline.json");
 const matrixPath = matrixArgument
   ? path.resolve(root, matrixArgument.slice("--matrix=".length))
   : path.join(root, "docs", "compatibility-matrix.json");
+const reportPath = reportArgument
+  ? path.resolve(root, reportArgument.slice("--report=".length))
+  : null;
 const checks = [];
 const failures = [];
 
@@ -75,9 +79,11 @@ function childState(submodulePath) {
 
 let baseline;
 let matrix;
+let rootPackage;
 try {
   baseline = readJson(baselinePath);
   matrix = readJson(matrixPath);
+  rootPackage = readJson(path.join(root, "package.json"));
 } catch (error) {
   check("inputs: readable manifests", false, error.message);
   baseline = {};
@@ -125,6 +131,10 @@ check(
 check("baseline: compatibility line", baseline.compatibilityLine === matrix.compatibilityLine, `${baseline.compatibilityLine ?? "missing"} != ${matrix.compatibilityLine ?? "missing"}`);
 check("matrix: baseline locator", matrix.baselineManifest === "docs/integration-baseline.json", matrix.baselineManifest ?? "missing");
 check("baseline: captured date", /^\d{4}-\d{2}-\d{2}$/.test(baseline.capturedAt ?? ""), baseline.capturedAt ?? "missing");
+const pinnedNodeVersion = fs.readFileSync(path.join(root, ".node-version"), "utf8").trim();
+const pinnedPnpmVersion = String(rootPackage?.packageManager ?? "").replace(/^pnpm@/, "");
+check("baseline: pinned Node version", baseline.toolchain?.node === pinnedNodeVersion, `${baseline.toolchain?.node ?? "missing"} != ${pinnedNodeVersion}`);
+check("baseline: pinned pnpm version", baseline.toolchain?.pnpm === pinnedPnpmVersion, `${baseline.toolchain?.pnpm ?? "missing"} != ${pinnedPnpmVersion}`);
 
 const childRevisions = {};
 for (const entry of gitmodules) {
@@ -190,6 +200,11 @@ const report = {
     gitmodules: ".gitmodules",
   },
 };
+
+if (reportPath) {
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n");
+}
 
 if (jsonOutput) {
   process.stdout.write(JSON.stringify(report, null, 2) + "\n");

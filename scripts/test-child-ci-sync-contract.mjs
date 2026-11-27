@@ -11,24 +11,27 @@ const syncWorkflow = fs.readFileSync(
   path.join(root, ".github", "workflows", "sync-validated-submodule-after-ci.yml"),
   "utf8",
 );
+const policy = fs.readFileSync(path.join(root, "scripts", "child-ci-sync-policy.cjs"), "utf8");
 
 assert.match(syncWorkflow, /repository_dispatch:\s*\n\s*types: \[submodule_ci_succeeded, flutter_ci_succeeded\]/);
 assert.match(syncWorkflow, /workflow_dispatch:\s*\n\s*inputs:/);
 assert.match(syncWorkflow, /concurrency:[\s\S]*?cancel-in-progress: true/);
 assert.match(syncWorkflow, /contents: write[\s\S]*?pull-requests: write[\s\S]*?actions: read/);
-assert.match(syncWorkflow, /const specs = \{[\s\S]*?flutter:[\s\S]*?playground:[\s\S]*?mcp:/);
-assert.match(syncWorkflow, /!\/\^\[0-9a-f\]\{40\}\$\//);
-assert.match(syncWorkflow, /!\/\^\\d\+\$\//);
-assert.match(syncWorkflow, /payloadRepository && payloadRepository !== expectedRepository/);
-assert.match(syncWorkflow, /payloadPath && payloadPath !== spec\.path/);
-assert.match(syncWorkflow, /payloadWorkflow && payloadWorkflow !== spec\.workflow/);
-assert.match(syncWorkflow, /run\.head_sha !== expectedSha/);
-assert.match(syncWorkflow, /run\.conclusion !== 'success'/);
-assert.match(syncWorkflow, /run\.event !== 'push' \|\| run\.head_branch !== 'main'/);
-assert.match(syncWorkflow, /run\.path !== expectedWorkflow/);
-assert.match(syncWorkflow, /run\.head_repository\?\.full_name/);
+assert.match(syncWorkflow, /child-ci-sync-policy\.cjs/);
+assert.match(syncWorkflow, /PAYLOAD_BRANCH/);
+assert.match(policy, /validateDispatchMetadata/);
+assert.match(policy, /validateWorkflowRun/);
+assert.match(policy, /validateSynchronizationCandidate/);
+assert.match(policy, /validateProvenance/);
+assert.match(policy, /run\?\.head_sha !== expectedSha/);
+assert.match(policy, /run\?\.conclusion !== 'success'/);
+assert.match(policy, /run\?\.status !== 'completed'/);
+assert.match(policy, /run\?\.event !== 'push' \|\| run\?\.head_branch !== 'main'/);
+assert.match(policy, /run\?\.path !== expectedWorkflow/);
+assert.match(policy, /run\?\.head_repository\?\.full_name/);
 assert.match(syncWorkflow, /git -C "\$SUBMODULE_PATH" fetch --no-tags origin "\$SUBMODULE_SHA"/);
 assert.match(syncWorkflow, /git -C "\$SUBMODULE_PATH" checkout --detach "\$SUBMODULE_SHA"/);
+assert.match(syncWorkflow, /git -C "\$SUBMODULE_PATH" status --porcelain/);
 assert.match(syncWorkflow, /git ls-tree HEAD "\$SUBMODULE_PATH" \| awk '\{print \$3\}'/);
 assert.match(syncWorkflow, /git add "\$SUBMODULE_PATH"/);
 assert.match(syncWorkflow, /changed=false/);
@@ -41,6 +44,8 @@ assert.match(syncWorkflow, /source: \{/);
 assert.match(syncWorkflow, /runId: process\.env\.SOURCE_RUN_ID/);
 assert.match(syncWorkflow, /runUrl: process\.env\.SOURCE_RUN_URL/);
 assert.match(syncWorkflow, /childRevision: child\?\.revision/);
+assert.match(syncWorkflow, /gitlinkRevision/);
+assert.match(syncWorkflow, /execFileSync\('git', \['ls-files', '-s'/);
 assert.match(syncWorkflow, /actions\/upload-artifact@v6/);
 assert.match(syncWorkflow, /peter-evans\/create-pull-request@v7/);
 assert.match(syncWorkflow, /workflow_id: 'integration\.yml'/);

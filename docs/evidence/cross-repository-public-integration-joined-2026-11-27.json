@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "contract": "joined-integration-evidence-v1",
+  "claim": {
+    "evidenceClass": "public-registry",
+    "evidenceState": "current",
+    "currentObservationEligible": true,
+    "currentClaimEligible": false,
+    "freshnessReasons": [
+      "missing-temporary-checkout-boundary"
+    ],
+    "rule": "Historical, revision-mismatched, or failed-gate evidence cannot satisfy a current success claim."
+  },
+  "root": {
+    "repository": "relgeo/workspace",
+    "revision": "296f6881896577bc27f711f27285a07f8dc3bac1"
+  },
+  "baseline": {
+    "id": "relgeo-public-0.5-staging",
+    "name": "relgeo-public-0.5-staging",
+    "capturedAt": "2026-11-27",
+    "compatibilityLine": "0.5"
+  },
+  "children": {
+    "relgeo.github.io": "450488d93d05059a190efd89e013f9a5274b8313",
+    "playground": "33631d930adc01efbdf25caccdd95e1af55e2526",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "language-service": "e2c21878aedda84874555286bc448af92137e742",
+    "renderer-svg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+    "cli": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+    "remark-relgeo": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+    "remark-relgeo-hl": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+    "flutter": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+    "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936"
+  },
+  "toolchain": {
+    "node": "v24.21.0",
+    "pnpm": "10.33.3"
+  },
+  "run": {
+    "id": null,
+    "url": null
+  },
+  "artifact": {
+    "id": "relgeo-public-integration-report",
+    "url": null,
+    "path": "docs/evidence/cross-repository-public-integration-2026-11-27.json"
+  },
+  "gate": {
+    "mode": "public-registry",
+    "passed": false,
+    "summary": {
+      "total": 3,
+      "passed": 2,
+      "failed": 1,
+      "blocked": 1
+    }
+  },
+  "stages": [
+    {
+      "label": "baseline: strict verification",
+      "command": "node scripts/verify-baseline.mjs --strict",
+      "passed": true,
+      "environment": {
+        "mode": "public-registry",
+        "boundary": "remote-provider",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "blockerClass": null,
+      "dependencyStatus": "ready"
+    },
+    {
+      "label": "baseline: failure injection",
+      "command": "node scripts/test-baseline-failure.mjs",
+      "passed": true,
+      "environment": {
+        "mode": "public-registry",
+        "boundary": "remote-provider",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "blockerClass": null,
+      "dependencyStatus": "ready"
+    },
+    {
+      "label": "public-registry: reachability preflight",
+      "command": "node -e const https = require('node:https');\nconst request = https.get('https://registry.npmjs.org/', { headers: { accept: 'application/json' } }, (response) => {\n  response.resume();\n  response.on('end', () => {\n    if (response.statusCode >= 200 && response.statusCode < 300) process.exit(0);\n    console.error('registry HTTP ' + response.statusCode);\n    process.exit(1);\n  });\n});\nrequest.setTimeout(10000, () => { console.error('registry request timed out'); request.destroy(); process.exit(1); });\nrequest.on('error', (error) => { console.error(error.code || error.message); process.exit(1); });",
+      "passed": false,
+      "environment": {
+        "mode": "public-registry",
+        "boundary": "remote-provider",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "blockerClass": "environment-unavailable",
+      "dependencyStatus": "blocked"
+    }
+  ],
+  "limitations": [
+    "Run the public gate through its isolated temporary checkout and retain the boundary stage evidence.",
+    "Run on the declared toolchain/host or record the environment limitation."
+  ],
+  "inputDiagnostics": [
+    {
+      "code": "missing-temporary-checkout-boundary",
+      "status": "not-verified",
+      "remediation": "Run the public gate through its isolated temporary checkout and retain the boundary stage evidence."
+    }
+  ],
+  "capturedAt": "2026-11-27T14:24:58.686Z"
+}

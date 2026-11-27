@@ -1,0 +1,2993 @@
+{
+  "schemaVersion": 1,
+  "contract": "integration-gate-v1",
+  "mode": "local-workspace",
+  "generatedAt": "2026-11-27T14:48:55.196Z",
+  "passed": false,
+  "evidence": {
+    "schemaVersion": 1,
+    "evidenceClass": "local-workspace",
+    "evidenceState": "current",
+    "capturedAt": "2026-11-27T14:48:55.229Z",
+    "workspaceRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+    "baseline": {
+      "name": "relgeo-public-0.5-staging",
+      "capturedAt": "2026-11-27",
+      "compatibilityLine": "0.5"
+    },
+    "testedRevisions": {
+      "root": "296f6881896577bc27f711f27285a07f8dc3bac1",
+      "children": {
+        "relgeo.github.io": "450488d93d05059a190efd89e013f9a5274b8313",
+        "playground": "33631d930adc01efbdf25caccdd95e1af55e2526",
+        "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+        "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+        "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+        "language-service": "e2c21878aedda84874555286bc448af92137e742",
+        "renderer-svg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+        "cli": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+        "remark-relgeo": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+        "remark-relgeo-hl": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+        "flutter": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+        "mcp": "109bd599fc5b4881f3a3ada128da7e9d548ab936"
+      }
+    },
+    "toolchain": {
+      "node": "v24.21.0",
+      "pnpm": "10.33.3"
+    },
+    "run": {
+      "id": null
+    },
+    "artifact": null,
+    "command": "node scripts/run-integration-gate.mjs --local",
+    "limitations": []
+  },
+  "baseline": {
+    "workspaceRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+    "name": "relgeo-public-0.5-staging",
+    "compatibilityLine": "0.5",
+    "submodules": [
+      {
+        "path": "relgeo.github.io",
+        "revision": "450488d93d05059a190efd89e013f9a5274b8313",
+        "package": {
+          "name": "relgeo-docs-site",
+          "version": "0.5.0"
+        }
+      },
+      {
+        "path": "playground",
+        "revision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+        "package": {
+          "name": "relgeo-playground",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "path": "spec",
+        "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+        "package": null
+      },
+      {
+        "path": "core",
+        "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+        "package": {
+          "name": "@relgeo/core",
+          "version": "0.5.3"
+        }
+      },
+      {
+        "path": "geometry",
+        "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+        "package": {
+          "name": "@relgeo/geometry",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "language-service",
+        "revision": "e2c21878aedda84874555286bc448af92137e742",
+        "package": {
+          "name": "@relgeo/language-service",
+          "version": "0.5.2"
+        }
+      },
+      {
+        "path": "renderer-svg",
+        "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+        "package": {
+          "name": "@relgeo/renderer-svg",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "cli",
+        "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+        "package": {
+          "name": "@relgeo/cli",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "remark-relgeo",
+        "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+        "package": {
+          "name": "@relgeo/remark-relgeo",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "remark-relgeo-hl",
+        "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+        "package": {
+          "name": "@relgeo/remark-relgeo-hl",
+          "version": "0.5.1"
+        }
+      },
+      {
+        "path": "flutter",
+        "revision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+        "package": null
+      },
+      {
+        "path": "mcp",
+        "revision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+        "package": null
+      }
+    ]
+  },
+  "summary": {
+    "total": 38,
+    "passed": 8,
+    "failed": 30,
+    "blocked": 30
+  },
+  "results": [
+    {
+      "label": "baseline: strict verification",
+      "command": "/Users/agusmade/.nvm/versions/node/v24.21.0/bin/node",
+      "args": [
+        "scripts/verify-baseline.mjs",
+        "--strict"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 559,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "baseline",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 559,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "baseline: failure injection",
+      "command": "/Users/agusmade/.nvm/versions/node/v24.21.0/bin/node",
+      "args": [
+        "scripts/test-baseline-failure.mjs"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 603,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "baseline",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 603,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "workspace: frozen install",
+      "command": "pnpm",
+      "args": [
+        "install",
+        "--frozen-lockfile"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 70830,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "workspace",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 70804,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 70804,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "workspace",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "workspace: Playwright Chromium",
+      "command": "pnpm",
+      "args": [
+        "exec",
+        "playwright",
+        "install",
+        "chromium"
+      ],
+      "passed": false,
+      "exitCode": 254,
+      "durationMs": 758,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "workspace",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "temporary-checkout",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 254,
+          "durationMs": 758,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 254,
+        "durationMs": 758,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "workspace",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/geometry: lint",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/geometry",
+        "run",
+        "lint"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 240,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/geometry",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 240,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 240,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/geometry",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/geometry: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/geometry",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 237,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/geometry",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 237,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 237,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/geometry",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/geometry: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/geometry",
+        "run",
+        "test"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 219,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/geometry",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 219,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 219,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/geometry",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/core: lint",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/core",
+        "run",
+        "lint"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 280,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/core",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 280,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 280,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/core",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/core: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/core",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 282,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/core",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 281,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 281,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/core",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/core: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/core",
+        "run",
+        "test"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 227,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/core",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 227,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 227,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/core",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/renderer-svg: lint",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/renderer-svg",
+        "run",
+        "lint"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 237,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/renderer-svg",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 237,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 237,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/renderer-svg",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/renderer-svg: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/renderer-svg",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 220,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/renderer-svg",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 220,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 220,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/renderer-svg",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/renderer-svg: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/renderer-svg",
+        "run",
+        "test"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 213,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/renderer-svg",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 213,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 213,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/renderer-svg",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/renderer-svg: test:dist",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/renderer-svg",
+        "run",
+        "test:dist"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 213,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/renderer-svg",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 213,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 213,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/renderer-svg",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/language-service: lint",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/language-service",
+        "run",
+        "lint"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 222,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/language-service",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 222,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 222,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/language-service",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/language-service: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/language-service",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 220,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/language-service",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 220,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 220,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/language-service",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/language-service: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/language-service",
+        "run",
+        "test"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 232,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/language-service",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 232,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 232,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/language-service",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/remark-relgeo-hl: lint",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/remark-relgeo-hl",
+        "run",
+        "lint"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 258,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/remark-relgeo-hl",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 258,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 258,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/remark-relgeo-hl",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/remark-relgeo-hl: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/remark-relgeo-hl",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 216,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/remark-relgeo-hl",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 216,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 216,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/remark-relgeo-hl",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/remark-relgeo-hl: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/remark-relgeo-hl",
+        "run",
+        "test"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 214,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/remark-relgeo-hl",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 214,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 214,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/remark-relgeo-hl",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/remark-relgeo: lint",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/remark-relgeo",
+        "run",
+        "lint"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 217,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/remark-relgeo",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 217,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 217,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/remark-relgeo",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/remark-relgeo: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/remark-relgeo",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 206,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/remark-relgeo",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 206,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 206,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/remark-relgeo",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/remark-relgeo: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/remark-relgeo",
+        "run",
+        "test"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 329,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/remark-relgeo",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 329,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 329,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/remark-relgeo",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/cli: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/cli",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 206,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/cli",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 206,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 206,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/cli",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "@relgeo/cli: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "@relgeo/cli",
+        "run",
+        "test"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 208,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "@relgeo/cli",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 208,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 208,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "@relgeo/cli",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "relgeo-playground: lint",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-playground",
+        "run",
+        "lint"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 227,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-playground",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 227,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 227,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "relgeo-playground",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "relgeo-playground: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-playground",
+        "run",
+        "test"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 236,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-playground",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 236,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 236,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "relgeo-playground",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "relgeo-playground: audit:ux",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-playground",
+        "run",
+        "audit:ux"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 285,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-playground",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 285,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "relgeo-playground: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-playground",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 240,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-playground",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 239,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 239,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "relgeo-playground",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "relgeo-playground: test:e2e",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-playground",
+        "run",
+        "test:e2e"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 226,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-playground",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 226,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 226,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "relgeo-playground",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "relgeo-docs-site: check",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-docs-site",
+        "run",
+        "check"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 294,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-docs-site",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 294,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 294,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "relgeo-docs-site",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "relgeo-docs-site: build",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-docs-site",
+        "run",
+        "build"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 255,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-docs-site",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 255,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 255,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "relgeo-docs-site",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    },
+    {
+      "label": "relgeo-docs-site: test",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-docs-site",
+        "run",
+        "test"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 488,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-docs-site",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 488,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "relgeo-docs-site: provenance:check",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-docs-site",
+        "run",
+        "provenance:check"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 301,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-docs-site",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 301,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "relgeo-docs-site: provenance:pages",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-docs-site",
+        "run",
+        "provenance:pages"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 339,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-docs-site",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 339,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "relgeo-docs-site: assemble workspace Playground artifact",
+      "command": "copy-built-artifact",
+      "args": [],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 22,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-docs-site",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "decisionNeeded": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 1,
+        "backoffMs": 0,
+        "attemptsUsed": 1,
+        "exhausted": false
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null,
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": {
+        "kind": "assembled-playground-artifact",
+        "identity": "relgeo.github.io/dist/playground"
+      },
+      "limitation": null
+    },
+    {
+      "label": "relgeo-docs-site: test:pages-artifact",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "relgeo-docs-site",
+        "run",
+        "test:pages-artifact"
+      ],
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 317,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "relgeo-docs-site",
+      "blockerClass": null,
+      "remediation": null,
+      "decisionRequired": false,
+      "dependencyImpact": "none",
+      "downstreamImpact": "none",
+      "dependencyStatus": "ready",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": null,
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": true,
+          "exitCode": 0,
+          "durationMs": 317,
+          "blockerClass": null,
+          "retryable": false,
+          "remediation": null,
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": null
+        }
+      ],
+      "firstFailure": null
+    },
+    {
+      "label": "workspace: shared conformance fixtures",
+      "command": "/Users/agusmade/.nvm/versions/node/v24.21.0/bin/node",
+      "args": [
+        "scripts/run-conformance-fixtures.mjs"
+      ],
+      "passed": false,
+      "exitCode": 1,
+      "durationMs": 43,
+      "owner": "relgeo/workspace",
+      "repository": "relgeo/workspace",
+      "surface": "workspace",
+      "blockerClass": "environment-unavailable",
+      "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+      "decisionRequired": false,
+      "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+      "dependencyStatus": "blocked",
+      "retryPolicy": {
+        "maxAttempts": 2,
+        "backoffMs": 250,
+        "attemptsUsed": 1,
+        "executionsUsed": 1,
+        "exhausted": false
+      },
+      "environment": {
+        "mode": "local-workspace",
+        "boundary": "workspace",
+        "node": "v24.21.0",
+        "pnpm": "10.33.3"
+      },
+      "artifact": null,
+      "limitation": "Run on the declared toolchain/host or record the environment limitation.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "attemptId": "attempt-1",
+          "previousAttemptId": null,
+          "passed": false,
+          "exitCode": 1,
+          "durationMs": 43,
+          "blockerClass": "environment-unavailable",
+          "retryable": false,
+          "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+          "decisionRequired": false,
+          "decisionNeeded": false
+        }
+      ],
+      "attemptLinks": [
+        {
+          "attemptId": "attempt-1",
+          "attempt": 1,
+          "previousAttemptId": null,
+          "linkedToFirstFailure": "attempt-1"
+        }
+      ],
+      "firstFailure": {
+        "attempt": 1,
+        "attemptId": "attempt-1",
+        "previousAttemptId": null,
+        "passed": false,
+        "exitCode": 1,
+        "durationMs": 43,
+        "blockerClass": "environment-unavailable",
+        "retryable": false,
+        "remediation": "Run on the declared toolchain/host or record the environment limitation.",
+        "decisionRequired": false,
+        "decisionNeeded": false,
+        "owner": "relgeo/workspace",
+        "repository": "relgeo/workspace",
+        "surface": "workspace",
+        "dependencyImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "downstreamImpact": "Dependent stages remain untrusted until this stage passes or is explicitly classified as unavailable.",
+        "dependencyStatus": "blocked"
+      }
+    }
+  ]
+}

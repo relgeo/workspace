@@ -1,0 +1,357 @@
+{
+  "recordType": "cross-repository-cross-surface-reconciliation",
+  "schemaVersion": 1,
+  "capturedAt": "2026-11-27",
+  "testedRootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+  "scope": {
+    "repositories": [
+      "https://github.com/relgeo/relgeo.github.io.git",
+      "https://github.com/relgeo/playground.git",
+      "https://github.com/relgeo/spec.git",
+      "https://github.com/relgeo/core.git",
+      "https://github.com/relgeo/geometry.git",
+      "https://github.com/relgeo/language-service.git",
+      "https://github.com/relgeo/renderer-svg.git",
+      "https://github.com/relgeo/cli.git",
+      "https://github.com/relgeo/remark-relgeo.git",
+      "https://github.com/relgeo/remark-relgeo-hl.git",
+      "https://github.com/relgeo/flutter.git",
+      "https://github.com/relgeo/mcp.git"
+    ],
+    "contract": "child commit == root gitlink == generated baseline revision == clean checkout",
+    "claimLimit": "Local current-head reconciliation only; it does not claim provider CI dispatch, PR merge, registry, deployment, or runtime behavior."
+  },
+  "summary": {
+    "status": "pass",
+    "checks": 25,
+    "passed": 25,
+    "failed": 0,
+    "childRepositories": 12,
+    "stalePointerCount": 0,
+    "staleContractReferenceCount": 0,
+    "gitlinkUpdateRequired": false
+  },
+  "rootGitlinks": [
+    {
+      "path": "relgeo.github.io",
+      "repository": "https://github.com/relgeo/relgeo.github.io.git",
+      "gitlinkRevision": "450488d93d05059a190efd89e013f9a5274b8313",
+      "checkoutRevision": "450488d93d05059a190efd89e013f9a5274b8313",
+      "baselineRevision": "450488d93d05059a190efd89e013f9a5274b8313",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "playground",
+      "repository": "https://github.com/relgeo/playground.git",
+      "gitlinkRevision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+      "checkoutRevision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+      "baselineRevision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "spec",
+      "repository": "https://github.com/relgeo/spec.git",
+      "gitlinkRevision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "checkoutRevision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "baselineRevision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "core",
+      "repository": "https://github.com/relgeo/core.git",
+      "gitlinkRevision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "checkoutRevision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "baselineRevision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "geometry",
+      "repository": "https://github.com/relgeo/geometry.git",
+      "gitlinkRevision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "checkoutRevision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "baselineRevision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "language-service",
+      "repository": "https://github.com/relgeo/language-service.git",
+      "gitlinkRevision": "e2c21878aedda84874555286bc448af92137e742",
+      "checkoutRevision": "e2c21878aedda84874555286bc448af92137e742",
+      "baselineRevision": "e2c21878aedda84874555286bc448af92137e742",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "renderer-svg",
+      "repository": "https://github.com/relgeo/renderer-svg.git",
+      "gitlinkRevision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+      "checkoutRevision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+      "baselineRevision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "cli",
+      "repository": "https://github.com/relgeo/cli.git",
+      "gitlinkRevision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+      "checkoutRevision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+      "baselineRevision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "remark-relgeo",
+      "repository": "https://github.com/relgeo/remark-relgeo.git",
+      "gitlinkRevision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+      "checkoutRevision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+      "baselineRevision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "remark-relgeo-hl",
+      "repository": "https://github.com/relgeo/remark-relgeo-hl.git",
+      "gitlinkRevision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+      "checkoutRevision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+      "baselineRevision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "flutter",
+      "repository": "https://github.com/relgeo/flutter.git",
+      "gitlinkRevision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "checkoutRevision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "baselineRevision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "checkoutClean": true,
+      "branch": "main"
+    },
+    {
+      "path": "mcp",
+      "repository": "https://github.com/relgeo/mcp.git",
+      "gitlinkRevision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "checkoutRevision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "baselineRevision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "checkoutClean": true,
+      "branch": "main"
+    }
+  ],
+  "childRepositoryCommits": [
+    {
+      "path": "relgeo.github.io",
+      "revision": "450488d93d05059a190efd89e013f9a5274b8313",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "playground",
+      "revision": "33631d930adc01efbdf25caccdd95e1af55e2526",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "spec",
+      "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "core",
+      "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "geometry",
+      "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "language-service",
+      "revision": "e2c21878aedda84874555286bc448af92137e742",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "renderer-svg",
+      "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "cli",
+      "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "remark-relgeo",
+      "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "remark-relgeo-hl",
+      "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "flutter",
+      "revision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "branch": "main",
+      "clean": true
+    },
+    {
+      "path": "mcp",
+      "revision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "branch": "main",
+      "clean": true
+    }
+  ],
+  "matrix": {
+    "expectedPackagePathCount": 10,
+    "partialRows": 18,
+    "disposedRows": 18,
+    "dispositionValues": [
+      "✔️",
+      "⏸️"
+    ]
+  },
+  "stalePointers": [],
+  "staleContractReferences": [],
+  "checks": [
+    {
+      "id": "root: current revision readable",
+      "passed": true,
+      "detail": "296f6881896577bc27f711f27285a07f8dc3bac1"
+    },
+    {
+      "id": ".gitmodules: registered child count",
+      "passed": true,
+      "detail": "12 registered child repositories"
+    },
+    {
+      "id": "baseline: root revision",
+      "passed": true,
+      "detail": "296f6881896577bc27f711f27285a07f8dc3bac1 != 296f6881896577bc27f711f27285a07f8dc3bac1"
+    },
+    {
+      "id": "relgeo.github.io: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "450488d93d05059a190efd89e013f9a5274b8313 / 450488d93d05059a190efd89e013f9a5274b8313 / 450488d93d05059a190efd89e013f9a5274b8313"
+    },
+    {
+      "id": "playground: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "33631d930adc01efbdf25caccdd95e1af55e2526 / 33631d930adc01efbdf25caccdd95e1af55e2526 / 33631d930adc01efbdf25caccdd95e1af55e2526"
+    },
+    {
+      "id": "spec: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0 / 26ff53278d77d916b0e0e6c26ca9ab496232fbc0 / 26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    },
+    {
+      "id": "core: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "cf2404a8fafdb0d664fdd7dc672926b5207184ab / cf2404a8fafdb0d664fdd7dc672926b5207184ab / cf2404a8fafdb0d664fdd7dc672926b5207184ab"
+    },
+    {
+      "id": "geometry: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "91c644379759d61184f64c8250e7ff7ef0b745f3 / 91c644379759d61184f64c8250e7ff7ef0b745f3 / 91c644379759d61184f64c8250e7ff7ef0b745f3"
+    },
+    {
+      "id": "language-service: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "e2c21878aedda84874555286bc448af92137e742 / e2c21878aedda84874555286bc448af92137e742 / e2c21878aedda84874555286bc448af92137e742"
+    },
+    {
+      "id": "renderer-svg: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b / 8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b / 8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b"
+    },
+    {
+      "id": "cli: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "b06cadc03c43542eaaa8728711ef7238c0c759ee / b06cadc03c43542eaaa8728711ef7238c0c759ee / b06cadc03c43542eaaa8728711ef7238c0c759ee"
+    },
+    {
+      "id": "remark-relgeo: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53 / 07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53 / 07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53"
+    },
+    {
+      "id": "remark-relgeo-hl: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "4de88408a543a9f39424e4cf9706ee8441c8e3d5 / 4de88408a543a9f39424e4cf9706ee8441c8e3d5 / 4de88408a543a9f39424e4cf9706ee8441c8e3d5"
+    },
+    {
+      "id": "flutter: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "20253e8b06da5b9a2329020bc1ee8c60622a3de6 / 20253e8b06da5b9a2329020bc1ee8c60622a3de6 / 20253e8b06da5b9a2329020bc1ee8c60622a3de6"
+    },
+    {
+      "id": "mcp: child commit, gitlink, and baseline align",
+      "passed": true,
+      "detail": "109bd599fc5b4881f3a3ada128da7e9d548ab936 / 109bd599fc5b4881f3a3ada128da7e9d548ab936 / 109bd599fc5b4881f3a3ada128da7e9d548ab936"
+    },
+    {
+      "id": "matrix: all registered package paths remain unique",
+      "passed": true,
+      "detail": "10 unique paths"
+    },
+    {
+      "id": "rebaseline: all 18 partial rows have dispositions",
+      "passed": true,
+      "detail": "18 rows with explicit dispositions"
+    },
+    {
+      "id": "rebaseline: current root revision",
+      "passed": true,
+      "detail": "296f6881896577bc27f711f27285a07f8dc3bac1 != 296f6881896577bc27f711f27285a07f8dc3bac1"
+    },
+    {
+      "id": "flutter: validated dispatch metadata",
+      "passed": true,
+      "detail": "flutter/.github/workflows/flutter-ci.yml declares repository/path/SHA/run/workflow/branch metadata"
+    },
+    {
+      "id": "playground: validated dispatch metadata",
+      "passed": true,
+      "detail": "playground/.github/workflows/playground-ci.yml declares repository/path/SHA/run/workflow/branch metadata"
+    },
+    {
+      "id": "mcp: validated dispatch metadata",
+      "passed": true,
+      "detail": "mcp/.github/workflows/mcp-ci.yml declares repository/path/SHA/run/workflow/branch metadata"
+    },
+    {
+      "id": "flutter: MCP dependency ref matches root gitlink",
+      "passed": true,
+      "detail": "109bd599fc5b4881f3a3ada128da7e9d548ab936, 109bd599fc5b4881f3a3ada128da7e9d548ab936 != 109bd599fc5b4881f3a3ada128da7e9d548ab936"
+    },
+    {
+      "id": "flutter spec manifest: spec revision matches root gitlink",
+      "passed": true,
+      "detail": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0 != 26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    },
+    {
+      "id": "compatibility matrix: spec revision matches root gitlink",
+      "passed": true,
+      "detail": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0 != 26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    },
+    {
+      "id": "release record: spec revision matches root gitlink",
+      "passed": true,
+      "detail": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0, 26ff53278d77d916b0e0e6c26ca9ab496232fbc0 != 26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
+    }
+  ],
+  "failures": []
+}

@@ -24,6 +24,8 @@ assert.match(bootstrapSource, /git\", \[\"submodule\", \"update\", \"--init\", \
 assert.match(bootstrapSource, /pnpm\", \[\"install\", \"--frozen-lockfile\"\]/);
 assert.match(bootstrapSource, /env: \{ CI: \"true\" \}/);
 assert.match(bootstrapSource, /scripts\/verify-baseline\.mjs/);
+assert.match(bootstrapSource, /process\.versions\.node === requiredNodeVersion/);
+assert.match(bootstrapSource, /gitlinkRevision/);
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "relgeo-bootstrap-contract-"));
 const reportPath = path.join(tempRoot, "bootstrap.json");
 
@@ -37,13 +39,17 @@ assert.ok([0, 1, 2].includes(bootstrap.status));
 const reportText = fs.readFileSync(reportPath, "utf8");
 const report = JSON.parse(reportText);
 assert.equal(report.contract, "fresh-clone-bootstrap-v1");
-assert.deepEqual(report.workspaceBoundary.requiredFiles, ["package.json", "pnpm-lock.yaml", ".gitmodules"]);
+assert.deepEqual(report.workspaceBoundary.requiredFiles, ["package.json", "pnpm-lock.yaml", ".gitmodules", ".node-version"]);
 assert.deepEqual(report.workspaceBoundary.missingFiles, []);
 assert.equal(report.workspaceBoundary.siblingSource, false);
 assert.ok(report.steps.some((step) => step.id === "toolchain: node"));
 assert.ok(report.steps.some((step) => step.id === "toolchain: pnpm"));
 assert.ok(Array.isArray(report.submodules));
+assert.ok(report.submodules.every((entry) => "gitlinkRevision" in entry && "matchesGitlink" in entry && "dirty" in entry));
 assert.ok(Array.isArray(report.steps));
+assert.deepEqual(report.requiredToolchain, { node: "24.21.0", pnpm: "10.33.3" });
+assert.equal(report.toolchainContract.exactNodeVersion, "24.21.0");
+assert.equal(report.toolchainContract.exactPnpmVersion, "10.33.3");
 assert.ok(report.evidence.testedRevisions);
 assert.equal(report.publicBoundary.contract, "public-boundary-v1");
 assert.equal(report.publicBoundary.passed, true);

@@ -9,8 +9,9 @@ import { createEvidenceEnvelope, classifyFailure } from "./orchestration-contrac
 import { inspectPublicEntries } from "./public-boundary.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const requiredNodeMajor = 24;
-const requiredPnpm = "10.33.3";
+const requiredNodeVersion = fs.readFileSync(path.join(root, ".node-version"), "utf8").trim();
+const rootPackage = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
+const requiredPnpm = String(rootPackage.packageManager ?? "").replace(/^pnpm@/, "");
 const reportArgument = process.argv.find((argument) => argument.startsWith("--report="));
 const reportPath = reportArgument
   ? path.resolve(root, reportArgument.slice("--report=".length))
@@ -20,7 +21,7 @@ const skipInstall = process.argv.includes("--skip-install");
 
 const steps = [];
 const limitations = [];
-const requiredWorkspaceFiles = ["package.json", "pnpm-lock.yaml", ".gitmodules"];
+const requiredWorkspaceFiles = ["package.json", "pnpm-lock.yaml", ".gitmodules", ".node-version"];
 
 function commandLabel(command, args = []) {
   return [command, ...args].join(" ");
@@ -47,6 +48,9 @@ function runStep(id, command, args = [], { allowFailure = false, env = {} } = {}
       output,
       environmentUnavailable: /(?:ENOTFOUND|EAI_AGAIN|could not resolve host|no network)/i.test(output),
     });
+    if (/lock config file|operation not permitted/i.test(output)) {
+      step.limitation = "Git metadata write is unavailable at this execution boundary";
+    }
   }
   steps.push(step);
   return { ...step, stdout: result.stdout ?? "", stderr: result.stderr ?? "", allowFailure };
@@ -72,6 +76,19 @@ function readBaseline() {
   }
 }
 
+function readGitlinkRevision(submodulePath) {
+  try {
+    const line = execFileSync("git", ["ls-tree", "HEAD", "--", submodulePath], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    return line.match(/^160000 commit ([0-9a-f]{40})\t/)?.[1] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 function workspaceBoundaryState() {
   const missing = requiredWorkspaceFiles.filter((file) => !fs.existsSync(path.join(root, file)));
   return {
@@ -89,19 +106,35 @@ function submoduleState() {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "ignore"],
   });
-  return (result.stdout ?? "").split(/\r?\n/).filter(Boolean).map((line) => {
+  const entries = (result.stdout ?? "").split(/\r?\n/).filter(Boolean).map((line) => {
     const marker = line[0];
     const parts = line.trim().split(/\s+/);
+    const submodulePath = parts[1] ?? "unknown";
+    const checkoutRevision = parts[0] ?? "unknown";
+    const gitlinkRevision = readGitlinkRevision(submodulePath);
+    let dirty = null;
+    try {
+      dirty = Boolean(execFileSync("git", ["status", "--porcelain"], {
+        cwd: path.join(root, submodulePath),
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      }).trim());
+    } catch {
+      dirty = null;
+    }
     return {
-      path: parts[1] ?? "unknown",
-      revision: parts[0] ?? "unknown",
+      path: submodulePath,
+      revision: checkoutRevision,
+      gitlinkRevision,
+      matchesGitlink: Boolean(gitlinkRevision) && checkoutRevision === gitlinkRevision,
+      dirty,
       state: marker === "-" ? "uninitialized" : marker === "+" ? "out-of-date" : marker === "U" ? "conflicted" : "checked-out",
     };
   });
+  return { commandPassed: result.status === 0, entries };
 }
 
 const baseline = readBaseline();
-const nodeMajor = Number(process.versions.node.split(".")[0]);
 const workspaceBoundary = workspaceBoundaryState();
 const workspaceReady = workspaceBoundary.missingFiles.length === 0;
 steps.push({
@@ -114,7 +147,7 @@ steps.push({
     missingFiles: workspaceBoundary.missingFiles,
   }),
 });
-const nodeReady = nodeMajor >= requiredNodeMajor;
+const nodeReady = process.versions.node === requiredNodeVersion;
 steps.push({
   id: "toolchain: node",
   command: "node --version",
@@ -122,7 +155,7 @@ steps.push({
   exitCode: nodeReady ? 0 : 2,
   observedVersion: process.version,
   ...(nodeReady ? {} : {
-    blocker: classifyFailure({ prerequisite: true, error: `requires Node.js ${requiredNodeMajor}+; found ${process.version}` }),
+    blocker: classifyFailure({ prerequisite: true, error: `requires Node.js ${requiredNodeVersion} exactly; found ${process.version}` }),
   }),
 });
 let pnpmVersion = null;
@@ -130,14 +163,14 @@ const pnpmProbe = runStep("toolchain: pnpm", "pnpm", ["--version"], { allowFailu
 if (pnpmProbe.passed) pnpmVersion = pnpmProbe.stdout.trim();
 
 const toolchainReady = nodeReady && pnpmVersion === requiredPnpm;
-if (nodeMajor < requiredNodeMajor) {
-  limitations.push(`declared Node.js minimum is ${requiredNodeMajor}; found ${process.versions.node}`);
+if (!nodeReady) {
+  limitations.push(`declared Node.js version is ${requiredNodeVersion}; found ${process.versions.node}`);
 }
 if (pnpmVersion !== requiredPnpm) {
   limitations.push(`declared pnpm version is ${requiredPnpm}; observed ${pnpmVersion ?? "unavailable"}`);
 }
 
-if (toolchainReady && !skipSubmodules) {
+if (workspaceReady && !skipSubmodules) {
   runStep("bootstrap: recursive submodules", "git", ["submodule", "update", "--init", "--recursive"]);
 }
 if (toolchainReady && !skipInstall) {
@@ -147,11 +180,32 @@ if (toolchainReady) {
   runStep("baseline: strict submodule report", "node", ["scripts/verify-baseline.mjs", "--strict"]);
 }
 
-const submodules = submoduleState();
+const submoduleObservation = submoduleState();
+const submodules = submoduleObservation.entries;
+const submoduleAlignment = submoduleObservation.commandPassed && submodules.length > 0 && submodules.every((entry) => entry.matchesGitlink && entry.dirty === false);
+steps.push({
+  id: "bootstrap: gitlink alignment",
+  command: "git submodule status --recursive",
+  passed: submoduleAlignment,
+  exitCode: submoduleAlignment ? 0 : 1,
+  ...(submoduleObservation.commandPassed ? {} : {
+    blocker: classifyFailure({ blockerClass: "environment-unavailable" }),
+    limitation: "Git could not read recursive submodule status at this execution boundary",
+  }),
+  submodules: submodules.map(({ path: submodulePath, revision, gitlinkRevision, matchesGitlink, dirty, state }) => ({
+    path: submodulePath,
+    revision,
+    gitlinkRevision,
+    matchesGitlink,
+    dirty,
+    state,
+  })),
+});
 const failedSteps = steps.filter((step) => !step.passed && !step.allowFailure);
+const environmentBlocked = failedSteps.some((step) => step.blocker?.blockerClass === "environment-unavailable");
 for (const step of failedSteps) {
   if (step.blocker?.blockerClass === "environment-unavailable") {
-    limitations.push(`${step.id}: ${step.blocker.remediation}`);
+    limitations.push(`${step.id}: ${step.limitation ?? step.blocker.remediation}`);
   }
 }
 const passed = workspaceReady && toolchainReady && failedSteps.length === 0;
@@ -163,15 +217,21 @@ const evidence = createEvidenceEnvelope({
   baselineCapturedAt: baseline.capturedAt ?? null,
   compatibilityLine: baseline.compatibilityLine ?? "unknown",
   toolchain: { node: process.version, pnpm: pnpmVersion },
-  childRevisions: Object.fromEntries((baseline.submodules ?? []).map((entry) => [entry.path, entry.revision])),
+  childRevisions: Object.fromEntries(submodules.map((entry) => [entry.path, entry.revision])),
   command: "node scripts/bootstrap.mjs",
   limitations,
 });
 const report = {
   schemaVersion: 1,
   contract: "fresh-clone-bootstrap-v1",
-  outcome: passed ? "passed" : !workspaceReady ? "failed" : !toolchainReady ? "blocked" : "failed",
-  requiredToolchain: { node: `>=${requiredNodeMajor}`, pnpm: requiredPnpm },
+  outcome: passed ? "passed" : !workspaceReady ? "failed" : !toolchainReady || environmentBlocked ? "blocked" : "failed",
+  requiredToolchain: { node: requiredNodeVersion, pnpm: requiredPnpm },
+  toolchainContract: {
+    nodeVersionSource: ".node-version",
+    packageManagerSource: "package.json#packageManager",
+    exactNodeVersion: requiredNodeVersion,
+    exactPnpmVersion: requiredPnpm,
+  },
   observedToolchain: { node: process.version, pnpm: pnpmVersion },
   workspaceBoundary,
   evidence,
@@ -204,4 +264,4 @@ fs.mkdirSync(path.dirname(reportPath), { recursive: true });
 fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n");
 console.log(`Bootstrap ${report.outcome}: ${submodules.length} submodule(s) reported`);
 console.log("Report written; its evidence omits the local report path.");
-process.exitCode = report.outcome === "passed" ? 0 : toolchainReady && workspaceReady ? 1 : 2;
+process.exitCode = report.outcome === "passed" ? 0 : report.outcome === "blocked" ? 2 : 1;

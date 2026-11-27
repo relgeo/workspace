@@ -1,12 +1,12 @@
 # Sub-rencana Tahap 1 — Cross-repo Integration Gate
 
-**Status implementasi:** Selesai sebagai runner/workflow contract. **Status evidence aktif:** tidak ada clean-checkout atau canonical CI URL untuk root `63b28c4ebde79a9b7d83faa182fca06387272143`; run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) pada root `328c869` dan `Integration #151` dipertahankan sebagai historical evidence untuk revision masing-masing. Current verification and limitations are recorded in [`cross-repository-canonical-verification-2026-11-14.json`](../evidence/cross-repository-canonical-verification-2026-11-14.json).
+**Status implementasi:** Selesai sebagai runner/workflow contract. **Status evidence aktif:** current root `296f6881896577bc27f711f27285a07f8dc3bac1` has a local strict baseline and cross-surface reconciliation; the current verification report records registry, dependency-install, Flutter, deployment, and public-runtime boundaries as unavailable or not verified where applicable. The before/after disposition register is [`cross-repository-closure-report-2026-11-27.json`](../evidence/cross-repository-closure-report-2026-11-27.json). Run [37832260326](https://github.com/relgeo/workspace/actions/runs/37832260326) and `Integration #151` remain historical evidence for their recorded revisions.
 **Induk:** ../MATURATION-MASTER-PLAN.md  
 **Tanggal:** 2026-09-15  
 **Owner koordinasi:** relgeo/workspace  
 **Scope:** workspace, package TypeScript publik, Playground, website, dan bukti integrasinya
 
-## Current verification overlay — 2026-11-14
+## Historical verification overlay — 2026-11-14
 
 The current root baseline is not promotable: strict verification reports one
 Flutter checkout/gitlink mismatch, and the deterministic synchronization gate
@@ -14,8 +14,21 @@ reports `97/99` with promotion ineligible. Compatibility is supporting-local at
 `301 passed, 0 failed`; fixture conformance is supporting-local at `677 passed,
 0 failed across 33 fixtures`. Bootstrap and both local/public integration gates
 stop at the managed Node `22.23.2` host because the declared prerequisite is
-Node `>=24`. These outcomes are current local evidence and environment
-dispositions, not canonical CI or public-runtime success.
+Node `>=24`. These outcomes are historical local evidence and environment
+dispositions, not canonical CI or public-runtime success. The 2026-11-27
+current report supersedes them for revision-sensitive decisions.
+
+## Current verification overlay — 2026-11-27
+
+The exact current root/12-child tuple is recorded in
+[`cross-repository-current-verification-2026-11-27.json`](../evidence/cross-repository-current-verification-2026-11-27.json).
+Strict baseline passes 87/87, cross-surface reconciliation passes 25/25 with
+zero stale pointers or contract references, and workflow/child-CI contract
+checks pass. Local and public integration reports are current but boundary
+limited: package/install stages are environment-unavailable, and the public
+registry probe is blocked by remote-provider DNS. These are not source defects;
+the reports include the exact remediation boundary and no public-runtime green
+claim is made.
 
 ## 0. Checkpoint evidence — 2026-10-08
 

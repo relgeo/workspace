@@ -13,6 +13,14 @@ const integrationWorkflow = fs.readFileSync(
   path.join(root, ".github", "workflows", "integration.yml"),
   "utf8",
 );
+const integrationGate = fs.readFileSync(
+  path.join(root, "scripts", "run-integration-gate.mjs"),
+  "utf8",
+);
+assert.match(integrationGate, /missing artifact: Playground dist\/index\.html/);
+assert.match(integrationGate, /missing provenance: Playground dist\/playground-provenance\.json/);
+assert.match(integrationGate, /verifyTemporaryCheckoutBoundary/);
+assert.match(integrationGate, /runStage\(packageName \+ ": " \+ scriptName[\s\S]*?&& passed/);
 assert.match(integrationWorkflow, /join-integration-evidence\.mjs[\s\S]*integration-gate-joined-evidence\.json/);
 assert.match(integrationWorkflow, /join-integration-evidence\.mjs[\s\S]*integration-public-joined-evidence\.json/);
 assert.match(integrationWorkflow, /integration-gate-joined-evidence\.json/);
@@ -81,5 +89,57 @@ assert.equal(historicalJoined.claim.currentClaimEligible, false);
 assert.ok(historicalJoined.claim.freshnessReasons.includes("historical-evidence"));
 
 assert.ok(!JSON.stringify(currentJoined).includes(tempRoot));
+
+const stale = spawnSync(process.execPath, [
+  path.join(root, "scripts", "join-integration-evidence.mjs"),
+  `--report=${source}`,
+  `--output=${output}`,
+  "--current-root-revision=" + "c".repeat(40),
+  "--current-baseline-name=test-baseline",
+  "--current-child=core:" + "b".repeat(40),
+], { cwd: root, encoding: "utf8" });
+assert.equal(stale.status, 1);
+const staleJoined = JSON.parse(fs.readFileSync(output, "utf8"));
+assert.equal(staleJoined.claim.currentClaimEligible, false);
+assert.ok(staleJoined.claim.freshnessReasons.includes("root-revision-mismatch"));
+
+const missingProvenanceReport = { ...sourceReport, evidence: { ...sourceReport.evidence, testedRevisions: {} } };
+fs.writeFileSync(source, JSON.stringify(missingProvenanceReport, null, 2));
+const missingProvenance = spawnSync(process.execPath, [
+  path.join(root, "scripts", "join-integration-evidence.mjs"),
+  `--report=${source}`,
+  `--output=${output}`,
+  "--current-root-revision=" + "a".repeat(40),
+  "--current-baseline-name=test-baseline",
+  "--current-child=core:" + "b".repeat(40),
+], { cwd: root, encoding: "utf8" });
+assert.equal(missingProvenance.status, 1);
+const missingProvenanceJoined = JSON.parse(fs.readFileSync(output, "utf8"));
+assert.ok(missingProvenanceJoined.inputDiagnostics.some((entry) => entry.code === "missing-provenance"));
+
+const missingArtifactReport = { ...sourceReport, evidence: { ...sourceReport.evidence }, results: [{ ...sourceReport.results[0], artifact: null }] };
+fs.writeFileSync(source, JSON.stringify(missingArtifactReport, null, 2));
+const missingArtifact = spawnSync(process.execPath, [
+  path.join(root, "scripts", "join-integration-evidence.mjs"),
+  `--report=${source}`,
+  `--output=${output}`,
+  "--current-root-revision=" + "a".repeat(40),
+  "--current-baseline-name=test-baseline",
+  "--current-child=core:" + "b".repeat(40),
+], { cwd: root, encoding: "utf8" });
+assert.equal(missingArtifact.status, 1);
+const missingArtifactJoined = JSON.parse(fs.readFileSync(output, "utf8"));
+assert.ok(missingArtifactJoined.inputDiagnostics.some((entry) => entry.code === "missing-artifact"));
+
+const missingSource = spawnSync(process.execPath, [
+  path.join(root, "scripts", "join-integration-evidence.mjs"),
+  `--report=${path.join(tempRoot, "missing.json")}`,
+  `--output=${output}`,
+], { cwd: root, encoding: "utf8" });
+assert.equal(missingSource.status, 0);
+const missingSourceJoined = JSON.parse(fs.readFileSync(output, "utf8"));
+assert.equal(missingSourceJoined.claim.currentClaimEligible, false);
+assert.ok(missingSourceJoined.inputDiagnostics.some((entry) => entry.code === "missing-integration-report"));
+
 fs.rmSync(tempRoot, { recursive: true, force: true });
-console.log("Joined integration evidence tests passed: current revision join and historical rejection.");
+console.log("Joined integration evidence tests passed: current join, historical rejection, stale revision, missing provenance/artifact, and missing source diagnostics.");

@@ -86,7 +86,15 @@ const currentClaimChildren = Object.keys(currentChildren).length > 0
   : currentChildRevisions();
 const sourceReport = fs.existsSync(reportPath) ? readJson(reportPath) : null;
 const limitations = [];
-if (!sourceReport) limitations.push("source integration report unavailable");
+const inputDiagnostics = [];
+if (!sourceReport) {
+  limitations.push("source integration report unavailable");
+  inputDiagnostics.push({
+    code: "missing-integration-report",
+    status: "environment-unavailable",
+    remediation: "Run the declared integration gate on its target boundary and pass its report path to this joiner.",
+  });
+}
 
 const sourceEvidence = sourceReport?.evidence ?? createEvidenceEnvelope({
   evidenceClass: evidenceClass ?? "manual",
@@ -110,6 +118,40 @@ const joinedEvidence = {
   artifact: { id: artifactId, url: artifactUrl, path: artifactPath },
   limitations: [...new Set([...(sourceEvidence.limitations ?? []), ...limitations])],
 };
+if (sourceReport) {
+  if (!joinedEvidence.testedRevisions?.root || !joinedEvidence.baseline?.name || !joinedEvidence.testedRevisions?.children || Object.keys(joinedEvidence.testedRevisions.children).length === 0) {
+    inputDiagnostics.push({
+      code: "missing-provenance",
+      status: "not-verified",
+      remediation: "Regenerate the integration report with the evidence envelope containing root, baseline, and child revisions.",
+    });
+  }
+  if (evidenceState === "current" && sourceReport.mode === "public-registry") {
+    const hasArtifactEvidence = Boolean(
+      artifactId || artifactUrl || artifactPath
+      || sourceEvidence.artifact?.id || sourceEvidence.artifact?.url || sourceEvidence.artifact?.path
+      || sourceReport.results?.some((result) => result.artifact),
+    );
+    if (!hasArtifactEvidence) {
+      inputDiagnostics.push({
+        code: "missing-artifact",
+        status: "not-verified",
+        remediation: "Attach the public integration artifact ID/path or a stage artifact record before making a current public claim.",
+      });
+    }
+    const hasTemporaryBoundary = sourceReport.results?.some(
+      (result) => result.environment?.boundary === "temporary-checkout",
+    );
+    if (!hasTemporaryBoundary) {
+      inputDiagnostics.push({
+        code: "missing-temporary-checkout-boundary",
+        status: "not-verified",
+        remediation: "Run the public gate through its isolated temporary checkout and retain the boundary stage evidence.",
+      });
+    }
+  }
+}
+for (const diagnostic of inputDiagnostics) joinedEvidence.limitations.push(diagnostic.remediation);
 const freshness = assessEvidenceFreshness({
   evidence: joinedEvidence,
   workspaceRevision: evidenceState === "current" ? (currentRootRevision ?? rootRevision()) : undefined,
@@ -139,8 +181,8 @@ const joined = {
     evidenceClass: joinedEvidence.evidenceClass,
     evidenceState,
     currentObservationEligible: freshness.current,
-    currentClaimEligible: freshness.current && sourceReport?.passed === true,
-    freshnessReasons: freshness.reasons,
+    currentClaimEligible: freshness.current && sourceReport?.passed === true && inputDiagnostics.length === 0,
+    freshnessReasons: [...freshness.reasons, ...inputDiagnostics.map((diagnostic) => diagnostic.code)],
     rule: "Historical, revision-mismatched, or failed-gate evidence cannot satisfy a current success claim.",
   },
   root: { repository: baseline.repository ?? "relgeo/workspace", revision: joinedEvidence.testedRevisions?.root ?? "unknown" },
@@ -161,6 +203,7 @@ const joined = {
   },
   stages,
   limitations: [...new Set([...(joinedEvidence.limitations ?? []), ...stageLimitations])],
+  inputDiagnostics,
   capturedAt: joinedEvidence.capturedAt,
 };
 
@@ -168,7 +211,7 @@ fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(joined, null, 2) + "\n");
 const sourceReportAvailable = Boolean(sourceReport);
 console.log(
-  `Joined evidence ${freshness.current && sourceReportAvailable ? "eligible" : "not eligible"} for current claim.`,
+  `Joined evidence ${joined.claim.currentClaimEligible ? "eligible" : "not eligible"} for current claim.`,
 );
 if (!sourceReportAvailable) {
   console.log("Source integration report unavailable; the preceding gate result remains authoritative.");
@@ -178,5 +221,5 @@ console.log("Joined report written; local output path is omitted from evidence."
 // after an earlier gate fails. Do not turn a missing report into a second,
 // misleading failure; an existing report that is stale remains a hard error.
 process.exitCode = sourceReportAvailable
-  ? (evidenceState !== "current" || freshness.current ? 0 : 1)
+  ? (evidenceState !== "current" || (freshness.current && inputDiagnostics.length === 0) ? 0 : 1)
   : 0;

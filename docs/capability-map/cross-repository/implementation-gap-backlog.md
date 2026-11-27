@@ -1,6 +1,6 @@
 # Cross-Repository Orchestration — Implementation Gap Backlog
 
-> Current evidence checkpoint (2026-11-14): candidate tasks below retain the implementation gaps, while dated root-gate and provider evidence is historical. Current compatibility/conformance evidence is supporting-local; 11 child worktrees match current gitlinks and Flutter is clean but differs from its root gitlink. The baseline synchronization gate is therefore not promotable. This host has pnpm 10.33.3 but Node 22.23.2, below the declared Node 24+ gate, so full runtime claims remain environment-unavailable. See [`cross-repository-canonical-verification-2026-11-14.json`](../../evidence/cross-repository-canonical-verification-2026-11-14.json).
+> Current evidence checkpoint (2026-11-27): the historical matrix snapshot had 18 `🌗` rows; the current-head closure view is **26 `✔️` · 13 `⏸️` · 0 actionable `🌗`/`❌`/`⚠️`**. Root `296f6881896577bc27f711f27285a07f8dc3bac1` and all 12 child gitlinks are aligned. The [closure report](../../evidence/cross-repository-closure-report-2026-11-27.json) assigns every historical partial to a current disposition with owner, evidence locator, tested revision, claim limit, and remediation. Historical provider/public limitations remain separately scoped.
 
 **Status:** candidate backlog; selected implementation outcomes are recorded here,
 but this document does not substitute for source/tests/audit evidence
@@ -23,8 +23,9 @@ but this document does not substitute for source/tests/audit evidence
 
 This is a planning/reporting artifact, not implementation. A candidate becomes
 done only after source/workflow changes, tests, and the stated evidence target
-pass. Every unresolved current `🌗` capability is represented below; selected
-rows that are now `✔️` remain in their candidate groups as closure traceability.
+pass. The candidate rows below preserve historical intake and closure
+traceability; current disposition is owned by the status matrix and closure
+report. There are no unresolved current `🌗` rows.
 Missing runtime, provider, host, or network services remain evidence limitations
 and do not count as an implementation fix.
 
@@ -231,17 +232,19 @@ prerequisite for this implementation tranche.
 
 | Check | Result |
 | --- | --- |
-| Matrix unresolved `🌗` capability rows | 15 |
+| Historical candidate `🌗` capability rows | 18 |
+| Current actionable unresolved `🌗`/`❌`/`⚠️` rows | 0 |
 | Backlog capability IDs covered (including selected closure trace) | 19 |
 | Capability IDs missing from backlog | 0 |
 | Backlog-only capability IDs | 0 |
 | Candidate rows | 8 |
 | Priority distribution | 3 `P0`, 5 `P1` |
-| Implementation claimed closed by this document | No; closure evidence is recorded in the audit/reconciliation, while grouped goals remain open where any member capability is unresolved |
+| Implementation claimed closed by this document | No; current dispositions and closure evidence are recorded in the status matrix, reconciliation, and closure report; `⏸️` rows remain explicitly environment/provider/scope-held |
 
-No absent capability remains in the current matrix. `ORCH-OPS-003` is promoted
-to `✔️` only because its source implementation and focused fixture evidence are
-recorded; grouped candidate goals do not promote their remaining `🌗` members.
+No absent or actionable partial capability remains in the current matrix. The
+historical candidate groups remain visible so that source/test work and external
+evidence follow-ups are not lost; they do not override the current disposition
+register.
 
 Coverage limitations and unresolved questions are maintained in the [coverage
 validation and handoff](./coverage-validation-handoff.md).

@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 
 const TRANSIENT_FAILURE_PATTERN = /(?:ECONNRESET|ECONNREFUSED|EAI_AGAIN|ETIMEDOUT|timed? ?out|timeout|socket hang up|network|fetch failed|rate limit|\b429\b|\b502\b|\b503\b|\b504\b)/i;
-const ENVIRONMENT_FAILURE_PATTERN = /(?:requires Node(?:\.js)?|unsupported engine|operation not permitted|permission denied|command not found|no such file|cannot find module|browser.*(?:not found|missing))/i;
+const ENVIRONMENT_FAILURE_PATTERN = /(?:requires Node(?:\.js)?|unsupported engine|operation not permitted|permission denied|command\s+[^\n]*not found|no such file|cannot find (?:module|package)|ERR_MODULE_NOT_FOUND|spawn ENOENT|browser.*(?:not found|missing)|ENOTFOUND|getaddrinfo)/i;
 
 export const EVIDENCE_SCHEMA_VERSION = 1;
 

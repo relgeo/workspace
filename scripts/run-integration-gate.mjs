@@ -63,7 +63,7 @@ const observedPnpmVersion = packageManagerVersion();
 function stageEnvironment(cwd) {
   return {
     mode: localMode ? "local-workspace" : "public-registry",
-    boundary: cwd === root ? "workspace" : "temporary-checkout",
+    boundary: localMode ? (cwd === root ? "workspace" : "temporary-checkout") : (cwd === root ? "remote-provider" : "temporary-checkout"),
     node: process.version,
     pnpm: observedPnpmVersion,
   };
@@ -409,12 +409,18 @@ function copyPlaygroundArtifact(label, source, destination) {
   let passed = true;
   let error;
   try {
+    if (!source || !fs.existsSync(path.join(source, "index.html"))) {
+      throw new Error("missing artifact: Playground dist/index.html");
+    }
+    if (!fs.existsSync(path.join(source, "playground-provenance.json"))) {
+      throw new Error("missing provenance: Playground dist/playground-provenance.json");
+    }
     fs.rmSync(destination, { recursive: true, force: true });
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     fs.cpSync(source, destination, { recursive: true });
   } catch (copyError) {
     passed = false;
-    error = "artifact copy failed";
+    error = copyError.message || "artifact copy failed";
   }
   const failure = passed ? null : classifyFailure({ error });
   results.push({
@@ -472,6 +478,13 @@ function copyForPublicGate(repositoryPath) {
     },
   });
 
+  const gitProbe = spawnSync("git", ["-C", temporaryRoot, "rev-parse", "--is-inside-work-tree"], {
+    encoding: "utf8",
+  });
+  if (gitProbe.status === 0) {
+    throw new Error("public temporary checkout unexpectedly contains Git metadata");
+  }
+
   // Some package tests intentionally consume shared, checked-in contract
   // inputs outside the package directory. A public-boundary checkout must
   // assemble those inputs explicitly; otherwise a missing sibling is
@@ -495,6 +508,43 @@ function copyForPublicGate(repositoryPath) {
   }
   temporaryRoots.push(temporaryRoot);
   return target;
+}
+
+function verifyTemporaryCheckoutBoundary() {
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), "relgeo-public-boundary-probe-"));
+  const startedAt = Date.now();
+  const probe = spawnSync("git", ["-C", temporaryRoot, "rev-parse", "--is-inside-work-tree"], {
+    encoding: "utf8",
+  });
+  const passed = probe.status !== 0;
+  const error = passed ? null : "temporary public checkout unexpectedly resolves as a Git worktree";
+  results.push({
+    label: "public-boundary: non-git temporary checkout",
+    command: "git",
+    args: ["-C", "<temporary-root>", "rev-parse", "--is-inside-work-tree"],
+    passed,
+    exitCode: probe.status ?? 1,
+    durationMs: Date.now() - startedAt,
+    owner: "relgeo/workspace",
+    repository: "relgeo/workspace",
+    surface: "public-boundary",
+    ...stageFailureMetadata({ passed, error, output: probe.stderr ?? "" }),
+    ...singleAttemptEvidence({
+      passed,
+      exitCode: probe.status ?? 1,
+      failure: passed ? null : classifyFailure({ error }),
+      owner: "relgeo/workspace",
+      repository: "relgeo/workspace",
+      surface: "public-boundary",
+    }),
+    environment: stageEnvironment(temporaryRoot),
+    artifact: null,
+    limitation: passed ? "Git metadata is intentionally absent; revisions are supplied through explicit provenance inputs." : error,
+    ...(error ? { error } : {}),
+  });
+  fs.rmSync(temporaryRoot, { recursive: true, force: true });
+  console.log((passed ? "[PASS] " : "[FAIL] ") + "public-boundary: non-git temporary checkout");
+  return passed;
 }
 
 function pinPublicRegistryVersions(cwd) {
@@ -529,11 +579,12 @@ function runPublicPackage(packageName, repositoryPath, scripts) {
     );
     if (!installed) return false;
 
+    let passed = true;
     for (const scriptName of scripts) {
-      runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd);
+      passed = runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd) && passed;
     }
-    runPackBoundaryStage(packageName, cwd);
-    return true;
+    passed = runPackBoundaryStage(packageName, cwd) && passed;
+    return passed;
   } finally {
     restorePackageJson();
   }
@@ -586,6 +637,7 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
     );
     if (!installed) return false;
 
+    let passed = true;
     if (repositoryPath === "playground") {
       environment = {
         ...process.env,
@@ -593,24 +645,30 @@ function runPublicConsumer(packageName, repositoryPath, scripts, options = {}) {
           encoding: "utf8",
         }).trim(),
       };
-      ensurePlaywrightChromium(
+      passed = ensurePlaywrightChromium(
         packageName + ": Playwright Chromium (public registry)",
         cwd,
         environment,
-      );
+      ) && passed;
     }
 
     for (const scriptName of scripts) {
-      runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd, environment);
+      passed = runStage(packageName + ": " + scriptName + " (public registry)", "pnpm", ["run", scriptName], cwd, environment) && passed;
       if (scriptName === "build" && options.playgroundDist) {
-        copyPlaygroundArtifact(
+        passed = copyPlaygroundArtifact(
           packageName + ": assemble public Playground artifact",
           options.playgroundDist,
           path.join(cwd, "dist", "playground"),
-        );
+        ) && passed;
+      } else if (scriptName === "build" && repositoryPath === "relgeo.github.io") {
+        passed = copyPlaygroundArtifact(
+          packageName + ": assemble public Playground artifact",
+          null,
+          path.join(cwd, "dist", "playground"),
+        ) && passed;
       }
     }
-    return { cwd, installed: true };
+    return { cwd, installed: true, passed };
   } finally {
     restorePackageJson();
   }
@@ -688,7 +746,7 @@ if (localMode) {
   process.execPath,
   ["-e", publicRegistryProbe],
   root,
-)) {
+) && verifyTemporaryCheckoutBoundary()) {
   try {
     const packageStages = [
       ["@relgeo/geometry", "geometry", ["lint", "build", "test"]],

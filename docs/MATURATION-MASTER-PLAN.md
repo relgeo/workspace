@@ -1,12 +1,26 @@
 # RelGeo Maturation Master Plan
 
-**Status:** master plan aktif — historical promotions remain preserved, while the current Cross-Repository Orchestration checkpoint is not green and is explicitly boundary-limited; status diperbarui 2026-11-14
+**Status:** master plan aktif — historical promotions remain preserved, and the current Cross-Repository Orchestration disposition is reconciled with explicit environment/provider limits; status diperbarui 2026-11-27
 **Tanggal baseline:** 2026-10-08
 **Compatibility line saat ini:** RelGeo DSL 0.5.x  
 **Pemilik keputusan:** Agus Made  
 **Ruang lingkup:** seluruh repository publik RelGeo dan integrasinya sebagai satu ekosistem
 
-## Current Cross-Repository Orchestration checkpoint — 2026-11-14
+## Current Cross-Repository Orchestration checkpoint — 2026-11-27
+
+The current-head closure report is [`cross-repository-closure-report-2026-11-27.json`](./evidence/cross-repository-closure-report-2026-11-27.json), tested at root revision
+`296f6881896577bc27f711f27285a07f8dc3bac1`. It reconciles all 18 historical
+`🌗` rows: 5 are `✔️`, 13 are `⏸️` for named environment/provider/scope
+boundaries, and 0 actionable `🌗`/`❌`/`⚠️` remain. The exact 12-child revision
+tuple, current matrix, and cross-surface checks are linked from the report.
+
+The current verification is boundary-limited rather than a green runtime claim:
+strict baseline and cross-surface reconciliation pass locally, while registry,
+dependency-install, Flutter, deployment, and public-runtime evidence is recorded
+as unavailable or not verified with concrete remediation. Historical snapshots
+below remain intact and must not be promoted to current evidence.
+
+## Historical Cross-Repository checkpoint — 2026-11-14
 
 The current source-of-truth boundary is root revision
 `63b28c4ebde79a9b7d83faa182fca06387272143`, baseline manifest
@@ -366,9 +380,10 @@ Daftar berikut adalah indeks lengkap. `Aktif` berarti masih ada pekerjaan implem
 - [Cross-Repository Orchestration Expected Capability Catalog](./capability-map/cross-repository/expected-capability-catalog.md) — expected catalog untuk bootstrap, baseline, gates, CI dispatch, evidence reconciliation, release/recovery, blocker/retry, dan public artifact hygiene; audit implementation dilakukan sesudah review katalog.
 - [Cross-Repository Orchestration Implementation and Evidence Audit](./capability-map/cross-repository/implementation-audit.md) — audit 39 ID terhadap source, workflow, fixture, command, current observation, gap, dan limitation environment.
 - [Cross-Repository Orchestration Expected-versus-Observed Reconciliation](./capability-map/cross-repository/reconciliation.md) — one-to-one join seluruh 39 expected ID dengan implementation status, evidence status, scope decision, symbol, audit trace, dan next action.
-- [Cross-Repository Orchestration Capability Status Matrix](./capability-map/cross-repository/status-matrix.md) — reporting view capability-first untuk 39 ID dengan status `✔️`/`🌗`/`❌`, evidence, owner, dependency, risk, dan next action.
+- [Cross-Repository Orchestration Capability Status Matrix](./capability-map/cross-repository/status-matrix.md) — current-head view for 39 IDs with `✔️`/`⏸️` dispositions and the preserved historical `🌗` snapshot.
 - [Cross-Repository Orchestration Capability Matrix](./capability-map/cross-repository/capability-matrix.md) — compatibility entry point for security/retry evidence; the 39-row canonical view remains the status matrix.
-- [Cross-Repository Orchestration Implementation Gap Backlog](./capability-map/cross-repository/implementation-gap-backlog.md) — 19 gap `❌`/`🌗` sebagai 8 kandidat goal/task dengan acceptance evidence; tidak mengklaim implementasi selesai.
+- [Cross-Repository Orchestration Implementation Gap Backlog](./capability-map/cross-repository/implementation-gap-backlog.md) — historical candidate intake and closure traceability; current actionable unresolved count is zero, with 13 explicit external/scope holds.
+- [Cross-Repository Orchestration Closure Report](./evidence/cross-repository-closure-report-2026-11-27.json) — before/after disposition register for all 18 historical partial rows.
 - [Cross-Repository Orchestration Coverage Validation and Handoff](./capability-map/cross-repository/coverage-validation-handoff.md) — validasi coverage/ID/link/legend/evidence/scope/limitation serta unresolved questions dan handoff implementasi terpisah; tidak mengklaim surface produk lengkap.
 - [Flutter 02 — Workbench Layout dan Panel System](../flutter/docs/plans/02-workbench-layout-and-panel-system.md)
 

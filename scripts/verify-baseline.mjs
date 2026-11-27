@@ -71,11 +71,22 @@ function readGitmodules() {
   return entries;
 }
 
+function getGitlinkRevision(submodulePath) {
+  const line = runGit(["ls-files", "-s", "--", submodulePath]);
+  return line.match(/^160000\s+([0-9a-f]{40})\s+\d\t/)?.[1] ?? null;
+}
+
+function getWorkingTreeStatus(submodulePath) {
+  return runGit(["status", "--porcelain"], path.join(root, submodulePath));
+}
+
 function buildManifest(previous = {}) {
   const rootRevision = runGit(["rev-parse", "HEAD"]);
+  const requiredNodeVersion = fs.readFileSync(path.join(root, ".node-version"), "utf8").trim();
+  const rootPackage = readJson(path.join(root, "package.json"));
   const toolchain = {
-    node: ">=24",
-    pnpm: "10.33.3",
+    node: requiredNodeVersion,
+    pnpm: String(rootPackage.packageManager ?? "").replace(/^pnpm@/, ""),
   };
   const submodules = readGitmodules().map(({ path: submodulePath }) => {
     const entry = {
@@ -105,18 +116,40 @@ function buildManifest(previous = {}) {
       currentRule: "Only exact root gitlink and child checkout revisions captured together may support a current claim.",
       historicalRule: "A prior snapshot remains historical when root or any child revision changes.",
     },
+    provenance: {
+      generatedBy: "scripts/verify-baseline.mjs --write",
+      rootRevisionSource: "git rev-parse HEAD",
+      childRevisionSource: "git rev-parse HEAD in each registered submodule checkout",
+      gitlinkRevisionSource: "git ls-files -s from the current root index",
+      cleanCheckoutRequired: true,
+    },
     submodules,
   };
 }
 
-function getGitlinkRevision(submodulePath) {
-  const line = runGit(["ls-files", "-s", "--", submodulePath]);
-  const match = line.match(/^160000\s+([0-9a-f]{40})\s+\d\t/);
-  return match?.[1] ?? null;
-}
-
-function getWorkingTreeStatus(submodulePath) {
-  return runGit(["status", "--porcelain"], path.join(root, submodulePath));
+function validateGeneratedManifest(manifest) {
+  const errors = [];
+  const registered = readGitmodules();
+  if (!Array.isArray(manifest.submodules) || manifest.submodules.length !== registered.length) {
+    errors.push(`manifest contains ${manifest.submodules?.length ?? 0} child entries; .gitmodules declares ${registered.length}`);
+  }
+  for (const { path: submodulePath } of registered) {
+    const entry = manifest.submodules?.find((candidate) => candidate.path === submodulePath);
+    const pointer = getGitlinkRevision(submodulePath);
+    let checkout = null;
+    let dirty = null;
+    try {
+      checkout = runGit(["rev-parse", "HEAD"], path.join(root, submodulePath));
+      dirty = Boolean(getWorkingTreeStatus(submodulePath));
+    } catch (error) {
+      errors.push(`${submodulePath}: checkout unavailable (${error.message})`);
+    }
+    if (!pointer) errors.push(`${submodulePath}: missing root gitlink`);
+    if (!entry || entry.revision !== pointer) errors.push(`${submodulePath}: generated revision does not match gitlink`);
+    if (checkout !== pointer) errors.push(`${submodulePath}: checkout ${checkout ?? "unavailable"} does not match gitlink ${pointer ?? "missing"}`);
+    if (dirty) errors.push(`${submodulePath}: checkout is dirty`);
+  }
+  return errors;
 }
 
 function verifySubmodule(entry) {
@@ -196,17 +229,37 @@ try {
   record("workspace: Git repository", Boolean(workspaceRevision), workspaceRevision);
   const rootPackage = readJson(path.join(root, "package.json"));
   packageManager = rootPackage.packageManager ?? null;
-  const manifest = writeManifest
+  let manifest = writeManifest
     ? buildManifest(fs.existsSync(manifestPath) ? readJson(manifestPath) : {})
     : readJson(manifestPath);
   if (writeManifest) {
-    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
-    record("manifest: regenerated", true, "snapshot updated");
+    const generationErrors = validateGeneratedManifest(manifest);
+    record(
+      "manifest: generation preflight",
+      generationErrors.length === 0,
+      generationErrors.length === 0 ? "root gitlinks, child checkouts, and clean state match" : generationErrors.join("; "),
+    );
+    if (generationErrors.length === 0) {
+      fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
+      record("manifest: regenerated", true, "snapshot updated");
+    }
   }
   record(
     "manifest: compatibility line",
     manifest.compatibilityLine === "0.5",
     String(manifest.compatibilityLine),
+  );
+  const pinnedNodeVersion = fs.readFileSync(path.join(root, ".node-version"), "utf8").trim();
+  const pinnedPnpmVersion = String(rootPackage.packageManager ?? "").replace(/^pnpm@/, "");
+  record(
+    "manifest: pinned Node version",
+    manifest.toolchain?.node === pinnedNodeVersion,
+    `${manifest.toolchain?.node ?? "missing"} != ${pinnedNodeVersion}`,
+  );
+  record(
+    "manifest: pinned pnpm version",
+    manifest.toolchain?.pnpm === pinnedPnpmVersion,
+    `${manifest.toolchain?.pnpm ?? "missing"} != ${pinnedPnpmVersion}`,
   );
   baselineName = manifest.baselineName ?? "unknown";
   compatibilityLine = manifest.compatibilityLine ?? "unknown";

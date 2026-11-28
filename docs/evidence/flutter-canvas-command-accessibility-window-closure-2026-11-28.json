@@ -3,15 +3,15 @@
   "capturedAt": "2026-11-28",
   "task": "complete-flutter-canvas-command-accessibility-and-window-lifecycle-implementation--9582319760",
   "revisionTuple": {
-    "root": "9d68569aabd1dfde17134d6df145333c5d93611f",
-    "flutterRootGitlink": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
-    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "root": "492c19a875196140fd4a5f86e760153706704e9c",
+    "flutterRootGitlink": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "flutterChildCheckout": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
     "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
     "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
     "rendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
     "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
-    "flutterWorktreeState": "dirty: platform-aware command shortcut implementation and regression test are uncommitted in the child checkout"
+    "flutterWorktreeState": "clean at current child revision"
   },
   "implementedCapabilities": {
     "CANVAS-03": {
@@ -125,6 +125,6 @@
     "CMD-03 now has explicit source-level macOS Command versus Windows/Linux Control mapping, but native OS shortcut delivery and host menu rendering remain unverified.",
     "A11Y-01 and A11Y-02 prove Flutter focus/semantics behavior only; VoiceOver, NVDA, AT-SPI/UIA, and native accessibility-tree announcements are not claimed.",
     "WINDOW-01 proves the Flutter adapter, method-channel close, policy dimensions, and lifecycle callback boundary only; native window-manager close/quit, packaged relaunch, and clean-exit transcripts remain unverified.",
-    "The root gitlink remains at 52e5bd2 because the managed sandbox cannot create the root Git index lock; child checkout 6397c66 is recorded as current source evidence and is not promoted as the root baseline."
+    "The root gitlink and child checkout both point to c93b043 at root revision 492c19a; native host delivery remains a separate external evidence boundary."
   ]
 }

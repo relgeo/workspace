@@ -3,9 +3,9 @@
   "capturedAt": "2026-11-28",
   "task": "implement-flutter-document-file-picker-import-export-and-recovery-closure--9582319760",
   "revisionTuple": {
-    "root": "9d68569aabd1dfde17134d6df145333c5d93611f",
-    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
-    "flutterWorktreeState": "dirty: source and regression changes are uncommitted in the child checkout",
+    "root": "492c19a875196140fd4a5f86e760153706704e9c",
+    "flutterChildCheckout": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "flutterWorktreeState": "clean at current child revision",
     "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
     "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626"
   },

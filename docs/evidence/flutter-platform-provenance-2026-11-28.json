@@ -5,7 +5,7 @@
   "task": "deliver-current-platform-artifacts-and-runtime-provenance-for-flutter-targets--9582319760",
   "owner": "relgeo/workspace",
   "currentRevisionTuple": {
-    "root": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+    "root": "492c19a875196140fd4a5f86e760153706704e9c",
     "flutter": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
     "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0"
@@ -61,7 +61,7 @@
         "owner": "relgeo/flutter + relgeo/workspace",
         "sourceOfTruth": "docs/plans/10-desktop-runtime-smoke-checklist.md; docs/capability-map/flutter-workbench/implementation-gap-map.md",
         "evidenceLocator": "docs/plans/10-desktop-runtime-smoke-checklist.md:64",
-        "revision": "workspace@4371c5d; flutter@c93b043; mcp@ad3079bb",
+        "revision": "workspace@492c19a; flutter@c93b043; mcp@ad3079bb",
         "dependency": "current macOS artifact and approved native-app session",
         "remediation": "Launch the current artifact in an approved macOS session and record window, picker, export, MCP, clean-exit, and accessibility results with checksum.",
         "claimLimit": "macOS host presence and historical archive integrity do not prove current packaged runtime usability, signing, notarization, or VoiceOver behavior."
@@ -84,7 +84,7 @@
         "owner": "relgeo/flutter + relgeo/workspace",
         "sourceOfTruth": "docs/plans/10-desktop-runtime-smoke-checklist.md; docs/capability-map/flutter-workbench/implementation-gap-map.md",
         "evidenceLocator": "docs/plans/08-desktop-platform-delivery.md:149",
-        "revision": "workspace@4371c5d; flutter@c93b043; mcp@ad3079bb",
+        "revision": "workspace@492c19a; flutter@c93b043; mcp@ad3079bb",
         "dependency": "current Linux artifact and declared Wayland/X11 host",
         "remediation": "Extract and launch the current artifact on an approved Ubuntu/Linux host or VM; record distro, session, dependencies, picker, input, MCP, and clean-exit evidence with checksum.",
         "claimLimit": "No Ubuntu/Linux host is available in this execution boundary; historical CI bundle shape does not prove runtime, GTK dependency, picker, or installation success."
@@ -107,7 +107,7 @@
         "owner": "relgeo/flutter + relgeo/workspace",
         "sourceOfTruth": "docs/plans/10-desktop-runtime-smoke-checklist.md; docs/capability-map/flutter-workbench/implementation-gap-map.md",
         "evidenceLocator": "docs/plans/10-desktop-runtime-smoke-checklist.md:101",
-        "revision": "workspace@4371c5d; flutter@c93b043; mcp@ad3079bb",
+        "revision": "workspace@492c19a; flutter@c93b043; mcp@ad3079bb",
         "dependency": "current Windows artifact and Windows 11 host/VM",
         "remediation": "Extract and launch the current ZIP on Windows 11; record executable/DLL/data checks, SmartScreen behavior, picker/export, keyboard, MCP, and clean-exit evidence with checksum.",
         "claimLimit": "No Windows 11 host is available in this execution boundary; ZIP structure and historical checksums do not prove launch, DLL loading, SmartScreen, signing, or installation success."
@@ -130,7 +130,7 @@
         "owner": "relgeo/workspace",
         "sourceOfTruth": "docs/integration-baseline.json; docs/evidence/flutter-platform-provenance-2026-11-28.json",
         "evidenceLocator": "docs/integration-baseline.json:6",
-        "revision": "workspace@4371c5d; flutter@c93b043; mcp@ad3079bb; spec@26ff532",
+        "revision": "workspace@492c19a; flutter@c93b043; mcp@ad3079bb; spec@26ff532",
         "dependency": "PLAT-01..03 target artifacts and runtime transcripts",
         "remediation": "Attach current workflow run, artifact filenames/checksums, SDK/OS/architecture metadata, and target-host results to this exact tuple before any release promotion.",
         "claimLimit": "The tuple and workflow pin prove provenance intent only; they do not prove current build, launch, install, signing, notarization, or deployment."

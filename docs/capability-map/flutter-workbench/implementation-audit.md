@@ -2,8 +2,8 @@
 
 # Flutter implementation audit — evidence summary
 
-> **Current-head rebaseline — 2026-11-27:** Current source boundary is root
-> `9d68569` with Flutter `52e5bd2`; all 61 ID dispositions are in the
+> **Current-head rebaseline — 2026-11-28:** Current source boundary is root
+> `492c19a` with Flutter `c93b043`; all 61 ID dispositions are in the
 > [machine-readable register](../../evidence/rebaseline-disposition-register-2026-11-27.json).
 > The register records 44 `✔️` source-boundary implementations and 17 `⏸️`
 > holds. The historical test and CI records below remain tied to their recorded
@@ -188,9 +188,9 @@ does not promote full test/runtime or host evidence.
 
 | Boundary | Recorded value | Interpretation |
 |---|---|---|
-| Workspace `HEAD` | `9d68569aabd1dfde17134d6df145333c5d93611f` | Current root revision used for the rebaseline. |
-| Flutter child `HEAD` | `52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current child revision used for source inspection and analyzer boundary. |
-| Worktree state | Root and `flutter/` are intentionally dirty | The implementation/doc changes are uncommitted task work. No commit or release artifact is implied by these hashes; preserve unrelated worktree changes. |
+| Workspace `HEAD` | `492c19a875196140fd4a5f86e760153706704e9c` | Current root revision used for the rebaseline. |
+| Flutter child `HEAD` | `c93b0432e12f5ae11d34212d4da467aceaf8ca34` | Current child revision used for source inspection and analyzer boundary. |
+| Worktree state | Root evidence files may be uncommitted; child checkout is clean | Hashes identify the current source tuple; no release or runtime claim is implied. |
 | Changed Flutter boundary | `flutter/lib/src/ui/`, `flutter/lib/src/features/inspector/`, and focused `flutter/test/` files | Recovery, scene graph, selection, canvas, inspector, and command wiring plus focused tests. |
 | Changed evidence boundary | `docs/capability-map/flutter-workbench/` | Catalog status snapshot, audit, reconciliation, backlog, selection, and handoff records. |
 
@@ -216,7 +216,7 @@ from native artifact/runtime claims.
 |---|---|---|---|
 | `DOC-08` recovery completion | `relgeo/flutter` | `🌗`: dirty-draft persistence and startup RESTORE/DISCARD are locally wired; forced-exit/native storage is unverified | Forced-exit/relaunch integration, stale/corrupt-draft behavior, and host persistence smoke. |
 | `IO-01`/`IO-02` file/import completion | `relgeo/flutter` + `relgeo/core` | `🌗`: injected picker/import and invalid-boundary tests pass; native picker and broader diagnostic vocabulary remain open | macOS/Linux/Windows picker smoke plus expanded supported/unsupported import fixtures. |
-| `CANVAS-03`/`CANVAS-04` inspector and parameters | `relgeo/flutter` + `relgeo/core` | `⏸️`: bounded inspector/selection and parameter/profile surfaces are tested; exhaustive property/evaluator parity remains held | Field inventory and parameter/profile conformance fixtures. |
+| `CANVAS-03`/`CANVAS-04` inspector and parameters | `relgeo/flutter` + `relgeo/core` | `⏸️`: bounded inspector/selection and parameter/profile surfaces are tested; only native/dependency-boundary verification remains | Native pointer/AT smoke and current dependency-boundary replay; no source implementation deliverable remains. |
 | `CMD-03`/`A11Y-01`/`A11Y-02`/`WINDOW-01` | `relgeo/flutter` + native host runners | `⏸️`: Flutter command/focus/semantics/window boundaries are implemented and tested; native event/AT/lifecycle is explicitly held | Per-OS shortcut, keyboard traversal, AT-tree, and close/quit smoke. |
 | `PLAT-01..04` | `relgeo/flutter` + `relgeo/workspace` + CI | `⏸️`: current tuple provenance is refreshed; target launch/runtime and current artifact join remain unverified | Smoke current bundles on target operating systems and attach artifact/runtime provenance. |
 | Deferred/out-of-scope boundaries | Maintainers/product decision | `➖`/`⏸️` rows remain separate from active implementation | No action in this task; revisit only with an explicit scope/contract decision. |

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "suclos-task-validation-link/v1",
+  "capturedAt": "2026-11-28",
+  "goalId": "goal-1795849582319760",
+  "taskId": "reconcile-flutter-capability-map-and-perform-uncompromised-green-surface-closure-audit--9582319760",
+  "nativeValidationRecordId": "validation-1795855699642650",
+  "nativeExecutionAttemptId": "execution-attempt-1795855630000098",
+  "status": "inconclusive",
+  "validator": "codex_app_server_task_semantic_reviewer",
+  "artifact": "/Users/agusmade/projects/suclos/.suclos/artifacts/stdout/app-server-exec-1795855698763850.log",
+  "acceptanceCriterionIds": [
+    "criterion-1-61-id-catalog-and-all-17-residuals-have-current-",
+    "criterion-2-final-audit-has-zero-actionable-any-is-a-fully-d"
+  ],
+  "evidenceRequirementIds": [
+    "evidence-1-final-61-id-matrix",
+    "evidence-2-closure-audit",
+    "evidence-3-cross-surface-sync-report",
+    "evidence-4-goal-validation-record"
+  ],
+  "summary": "Repository evidence now links the native SuClos validation record for this task. The recorded semantic review was inconclusive only because this native record was not previously exposed through the repository proof index; the record itself remains authoritative for the validation outcome.",
+  "claimLimit": "This link makes the native validation boundary inspectable; it does not promote an inconclusive native validation to passed or close the goal by itself."
+}

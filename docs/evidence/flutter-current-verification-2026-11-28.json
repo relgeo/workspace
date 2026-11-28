@@ -1,14 +1,14 @@
 {
   "schemaVersion": "flutter-current-verification/v1",
   "capturedAt": "2026-11-28",
-  "taskId": "run-current-flutter-verification-and-repair-only-proven-residual-failures--2998940397",
+  "taskId": "run-current-pointer-flutter-verification-and-repair-proven-failures--9582319760",
   "revisionTuple": {
-    "rootHead": "9d68569aabd1dfde17134d6df145333c5d93611f",
-    "flutterRootGitlink": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
-    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "rootHead": "492c19a875196140fd4a5f86e760153706704e9c",
+    "flutterRootGitlink": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "flutterChildCheckout": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
     "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
-    "rootGitlinkStatus": "pending-root-gitlink-update"
+    "rootGitlinkStatus": "synchronized"
   },
   "verification": [
     {
@@ -25,9 +25,9 @@
     },
     {
       "id": "fixture-staging",
-      "command": "node scripts/stage-flutter-fixtures.mjs --out=/private/tmp/relgeo-flutter-fixtures-current-20261128",
+      "command": "node scripts/stage-flutter-fixtures.mjs --out=/private/tmp/relgeo-flutter-fixtures-current-verification-20261128",
       "status": "passed",
-      "outputExcerpt": "Staged 33 fixture(s) for Flutter into ../../../../private/tmp/relgeo-flutter-fixtures-current-20261128."
+      "outputExcerpt": "Staged 33 fixture(s) for Flutter into ../../../../private/tmp/relgeo-flutter-fixtures-current-verification-20261128."
     },
     {
       "id": "spec-snapshot",
@@ -40,7 +40,7 @@
       "command": "node scripts/run-flutter-conformance.mjs",
       "status": "environment-unavailable/not-verified",
       "boundary": "Codex App Server managed sandbox Flutter SDK cache",
-      "outputExcerpt": "update_engine_version.sh: .../flutter/bin/cache/engine.stamp: Operation not permitted; [BLOCKED] Flutter probe failed: exited with 1",
+      "outputExcerpt": "/Users/agusmade/development/flutter/bin/internal/update_engine_version.sh: line 64: /Users/agusmade/development/flutter/bin/cache/engine.stamp: Operation not permitted\n[BLOCKED] Flutter probe failed: exited with 1",
       "claimLimit": "The wrapper stopped at the SDK probe; no current analyzer, unit/widget/contract, or full-suite result is claimed."
     },
     {
@@ -48,7 +48,7 @@
       "command": "node scripts/run-conformance-fixtures.mjs",
       "status": "environment-unavailable/not-verified",
       "boundary": "Codex App Server managed sandbox workspace dependency links",
-      "outputExcerpt": "ERR_MODULE_NOT_FOUND: Cannot find package '@relgeo/geometry' imported from .../core/dist/index.mjs",
+      "outputExcerpt": "Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@relgeo/geometry' imported from /Users/agusmade/projects/relgeo-workspace/core/dist/index.mjs",
       "claimLimit": "Fixture staging passed, but cross-language execution did not run because workspace package links are absent."
     },
     {
@@ -56,7 +56,7 @@
       "command": "node scripts/run-renderer-semantic-replay.mjs",
       "status": "environment-unavailable/not-verified",
       "boundary": "Codex App Server managed sandbox workspace dependency links",
-      "outputExcerpt": "ERR_MODULE_NOT_FOUND: Cannot find package '@relgeo/geometry' imported from .../renderer-svg/dist/index.mjs",
+      "outputExcerpt": "Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@relgeo/geometry' imported from /Users/agusmade/projects/relgeo-workspace/renderer-svg/dist/index.mjs",
       "claimLimit": "No TypeScript semantic replay or raw/presentation SVG parity is claimed."
     },
     {
@@ -64,31 +64,63 @@
       "command": "pnpm install --frozen-lockfile --offline",
       "status": "environment-unavailable/not-verified",
       "boundary": "Codex App Server managed sandbox dependency cache",
-      "outputExcerpt": "ERR_PNPM_NO_OFFLINE_TARBALL: A package is missing from the store ... load-tsconfig-0.2.5.tgz",
+      "outputExcerpt": "ERR_PNPM_NO_OFFLINE_TARBALL: A package is missing from the store but cannot download it in offline mode. The missing package may be downloaded from https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz.",
       "claimLimit": "The missing package prevents local workspace link restoration; this is not classified as a source defect."
     },
     {
       "id": "cross-surface-reconciliation",
       "command": "node scripts/check-flutter-cross-surface-reconciliation.mjs",
-      "status": "inconclusive",
+      "status": "passed",
       "boundary": "root gitlink versus child checkout",
-      "outputExcerpt": "[FAIL] flutterChildHead revision drift: evidence=52e5bd2... current=6397c66...",
-      "claimLimit": "The prior reconciliation record is historical; the current child workflow commit is recorded separately pending a writable root gitlink update."
+      "outputExcerpt": "Flutter cross-surface reconciliation passed: root gitlink and child checkout are synchronized.",
+      "claimLimit": "Current root gitlink and child checkout are synchronized at c93b043; this does not claim provider CI, registry, deployment, or runtime behavior."
     }
   ],
+  "artifactEvidence": {
+    "currentTuple": {
+      "root": "492c19a875196140fd4a5f86e760153706704e9c",
+      "flutter": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+      "status": "synchronized"
+    },
+    "inspectionCommand": "node scripts/check-flutter-platform-artifacts.mjs",
+    "inspectionStatus": "inconclusive",
+    "localArtifacts": [
+      {"platform": "macOS", "path": "flutter/build/draft-v1.0.1/RelGeo-macos-universal-v1.0.1.zip", "sha256": "ad059635dab1e7d6963502a14d338190ef1b611b42680b5a058ee8e44a6fb335", "structure": "passed"},
+      {"platform": "Ubuntu/Linux", "path": "flutter/build/draft-v1.0.1/RelGeo-linux-x64-v1.0.1.tar.gz", "sha256": "730b918e9bd263841e93aa2f8d5deaefb9fb9e018c8cdab90a15fc8337473417", "structure": "passed"},
+      {"platform": "Windows 11", "path": "flutter/build/draft-v1.0.1/RelGeo-windows-x64-v1.0.1.zip", "sha256": "d09e6ced298d9f9682a3a3d02232b68a0f351dca510401d5d344bedb2c92ae99", "structure": "passed"}
+    ],
+    "currentCiUrls": [],
+    "currentCiArtifacts": [],
+    "runtimeSmoke": {
+      "status": "environment-unavailable/not-verified",
+      "boundary": "target OS hosts and current packaged release provenance",
+      "claimLimit": "Historical local archive structure/checksums do not prove current-tuple packaging, launch, picker/MCP, accessibility, or clean exit."
+    },
+    "claimLimit": "No current provider CI URL or downloadable CI artifact was available in this execution boundary; local archives remain historical structural evidence only."
+  },
+  "standaloneCheckout": {
+    "command": "node scripts/bootstrap.mjs --skip-submodules --skip-install --report=/private/tmp/relgeo-bootstrap-current-verification-20261128.json",
+    "status": "environment-unavailable/not-verified",
+    "boundary": "Codex App Server managed sandbox Node toolchain",
+    "outputExcerpt": "Bootstrap blocked: 12 submodule(s) reported",
+    "report": "/private/tmp/relgeo-bootstrap-current-verification-20261128.json",
+    "claimLimit": "The current report records root 492c19a, all 12 submodule gitlinks aligned and clean, and public-boundary hygiene passed; full bootstrap/fresh-clone proof was blocked because Node.js 22.23.2 is installed while 24.21.0 is required."
+  },
   "currentSourceBinding": {
     "status": "source-record-joined; execution-not-verified",
-    "childCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
-    "command": "git -C flutter ls-tree -r --name-only 6397c66aa931dc767e0ae505cd89a40cca433564 -- test lib",
+    "childCheckout": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "command": "git -C flutter ls-tree -r --name-only c93b0432e12f5ae11d34212d4da467aceaf8ca34 -- test lib",
     "diagnosticsRecord": {
       "record": "docs/evidence/flutter-diagnostics-contract-parity-2026-11-27.json",
-      "historicalRecordedFlutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+      "priorHistoricalRecordedFlutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+      "currentSourceRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
       "currentSourceFiles": ["lib/src/ui/workbench_import_diagnostics.dart", "test/workbench_import_diagnostics_test.dart", "test/shared_diagnostic_contract_test.dart"],
       "claimLimit": "The contract record is joined to current source paths, but its historical test pass is not promoted to a current child-checkout execution pass."
     },
     "interactionRecord": {
       "record": "docs/evidence/flutter-interaction-runtime-accessibility-2026-11-27.json",
-      "historicalRecordedFlutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+      "priorHistoricalRecordedFlutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+      "currentSourceRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
       "currentSourceFiles": ["lib/src/ui/keyboard_activatable.dart", "lib/src/ui/workbench_window_host.dart", "test/workbench_viewport_feature_test.dart", "test/workbench_window_host_test.dart", "test/keyboard_activatable_test.dart"],
       "claimLimit": "The interaction record is joined to current source paths, but its historical focused test pass and host dispositions do not prove current host/runtime execution."
     },
@@ -110,9 +142,9 @@
     "claimLimit": "No repair-specific green rerun is claimed because no source/workflow/fixture defect was established. Rerun the affected gates after the named environment boundaries are restored."
   },
   "envelope": {
-    "passed": ["diagnostics-contract", "interaction-evidence", "fixture-staging", "spec-snapshot"],
+    "passed": ["diagnostics-contract", "interaction-evidence", "fixture-staging", "spec-snapshot", "cross-surface-reconciliation"],
     "notVerified": ["flutter-analyzer-tests-contract", "shared-conformance", "semantic-replay", "dependency-bootstrap"],
-    "inconclusive": ["cross-surface-reconciliation"],
+    "inconclusive": [],
     "claimLimit": "Passed source/evidence checks are not promoted to current Flutter runtime, packaged artifact, host smoke, or cross-language parity claims."
   }
 }

@@ -8,10 +8,11 @@
     "command": "node scripts/report-flutter-final-closure-evidence.mjs",
     "purpose": "Directly joins the 61-ID catalog, per-ID dispositions, seven verification boundaries, current revision tuple, gitlinks, and downstream references.",
     "readableIndex": "docs/evidence/flutter-final-closure-proof.md",
-    "readableIndexGenerator": "scripts/write-flutter-final-closure-proof.mjs"
+    "readableIndexGenerator": "scripts/write-flutter-final-closure-proof.mjs",
+    "goalValidationRecord": "docs/evidence/flutter-goal-validation-record-2026-11-28.json"
   },
   "revisionTuple": {
-    "root": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+    "root": "492c19a875196140fd4a5f86e760153706704e9c",
     "flutter": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "flutterRootGitlink": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "flutterChildCheckout": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
@@ -19,7 +20,7 @@
     "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
     "gitlinkSync": {
       "status": "synchronized",
-      "boundary": "SuClos native root Git commit 4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "boundary": "SuClos native root Git commit 492c19a875196140fd4a5f86e760153706704e9c",
       "claimLimit": "Root gitlink and child checkout both point to c93b043; provider CI, registry, deployment, and runtime claims remain separate."
     }
   },
@@ -87,7 +88,14 @@
     "transition": "17 🌗 → 17 ⏸️; 44 ✔️ → 44 ✔️",
     "rowDetailSource": "The register contains one owner/source/evidence/revision/dependency/remediation/claim-limit row for each of the 61 IDs."
   },
-  "statusClaim": "Zero actionable 🌗/❌/⚠️. The 17 ⏸️ rows are explicit scope/environment holds, not unsupported green claims.",
+  "statusClaim": "Zero actionable 🌗/❌/⚠️. The 17 ⏸️ rows are external-evidence-only holds at the synchronized tuple; no actionable implementation or contract/consumer gap remains.",
+  "closurePolicy": {
+    "heldRows": "external-evidence-only",
+    "actionableImplementationGap": 0,
+    "actionableContractConsumerGap": 0,
+    "verificationDeliverablesOnly": true,
+    "claimLimit": "Each remediation is a host, toolchain, provider, or packaged-runtime verification run; none requests additional source, contract, or consumer implementation."
+  },
   "claimLimits": [
     "Implementation status is separate from host, accessibility, OS, packaged-runtime, signing, deployment, and provenance evidence.",
     "Native picker, forced-exit/relaunch, assistive technology, OS shortcut/window-manager delivery, and packaged runtime remain unverified where the register says so.",
@@ -101,8 +109,9 @@
     "statusMatrix": "docs/capability-map/flutter-workbench/status-matrix.md",
     "backlog": "docs/capability-map/flutter-workbench/implementation-gap-backlog.md",
     "coverageHandoff": "docs/capability-map/flutter-workbench/coverage-validation-handoff.md",
-    "masterPlan": "docs/MATURATION-MASTER-PLAN.md"
-  },
+  "masterPlan": "docs/MATURATION-MASTER-PLAN.md",
+  "goalValidationRecord": "docs/evidence/flutter-goal-validation-record-2026-11-28.json"
+},
   "rows": [
     {
       "id": "DOC-01",
@@ -114,7 +123,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#31-document-file-dan-recovery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "document session and command registry",
       "remediation": "retain New/document-session regression coverage",
       "claimLimit": "does not claim native host lifecycle or runtime proof"
@@ -129,7 +138,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#31-document-file-dan-recovery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "file service and picker adapter",
       "remediation": "retain injected Open regression; native picker is IO-01",
       "claimLimit": "does not claim native picker permission or dialog behavior"
@@ -144,7 +153,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#31-document-file-dan-recovery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "document session and file service",
       "remediation": "retain save failure/dirty-state regression",
       "claimLimit": "does not claim native disk or permission behavior"
@@ -159,7 +168,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#31-document-file-dan-recovery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "IO-01 picker boundary",
       "remediation": "retain Save As identity regression",
       "claimLimit": "does not claim native Save As dialog behavior"
@@ -174,7 +183,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#31-document-file-dan-recovery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "preferences storage",
       "remediation": "retain bounded recent-store regression",
       "claimLimit": "does not claim host path validity or persistence after packaged relaunch"
@@ -189,7 +198,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#31-document-file-dan-recovery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "document session",
       "remediation": "retain dirty-state regression",
       "claimLimit": "does not claim native window-manager close delivery"
@@ -204,7 +213,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#31-document-file-dan-recovery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "WINDOW-01 and document session",
       "remediation": "retain save/discard/cancel guard tests",
       "claimLimit": "does not claim native quit event delivery"
@@ -219,7 +228,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; MP; W02; D09",
       "evidenceLocator": "docs/evidence/flutter-document-file-recovery-closure-2026-11-28.json#/implementedCapabilities/DOC-08; flutter/test/workbench_document_recovery_test.dart; flutter/test/widget_test.dart#restoring-an-interrupted-draft-consumes-the-recovery-record",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "document serialization and persistence policy",
       "remediation": "run forced-exit/relaunch smoke; capture stale/corrupt draft behavior and cleanup on target host",
       "claimLimit": "atomic local recovery, migration, corruption cleanup, and blocked-storage tolerance are tested; OS crash recovery, durability, consent, and relaunch behavior remain unverified"
@@ -234,7 +243,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; DSL",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#31-document-file-dan-recovery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "file service and editor session",
       "remediation": "retain UTF-8 identity/path regression",
       "claimLimit": "does not claim cross-OS encoding/error UX"
@@ -249,7 +258,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; P10",
       "evidenceLocator": "docs/evidence/flutter-document-file-recovery-closure-2026-11-28.json#/implementedCapabilities/IO-01; flutter/test/workbench_file_service_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "DOC-02..04 and platform runners",
       "remediation": "run macOS/Linux/Windows Open and Save As picker smoke including cancel and permission failures",
       "claimLimit": "injected picker success/failure/cancel, extension filtering, normalization, and filesystem writes are tested; native dialog, permission, or packaged runtime behavior remains unverified"
@@ -264,7 +273,7 @@
       "owner": "relgeo/flutter + relgeo/core",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; DSL",
       "evidenceLocator": "docs/evidence/flutter-document-file-recovery-closure-2026-11-28.json#/implementedCapabilities/IO-02; fixtures/diagnostics/flutter-import-contract.json; flutter/test/shared_diagnostic_contract_test.dart; flutter/test/workbench_import_diagnostics_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CONTRACT-01/02 and shared fixtures",
       "remediation": "re-run current-pointer cross-consumer import/diagnostic replay after dependencies are available; preserve archive/project scope boundary",
       "claimLimit": "supported .relgeo/.yaml/.yml filtering, UTF-8 decoding, malformed-byte and unsupported-format diagnostics are tested; archive/project import and full cross-consumer parity remain unclaimed"
@@ -279,7 +288,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "editor package",
       "remediation": "retain editor widget regression",
       "claimLimit": "does not claim native IME/text runtime behavior"
@@ -294,7 +303,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; W02; DSL",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "DSL vocabulary and editor",
       "remediation": "retain autocomplete fixture synchronization",
       "claimLimit": "does not claim full DSL vocabulary parity"
@@ -309,7 +318,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "compile/resolver boundary",
       "remediation": "retain debounced compile regression",
       "claimLimit": "does not claim native performance or latency budget"
@@ -324,7 +333,7 @@
       "owner": "relgeo/flutter + relgeo/spec + relgeo/core",
       "sourceOfTruth": "fixtures/diagnostics/flutter-import-contract.json; flutter/lib/src/ui/workbench_import_diagnostics.dart; mcp/lib/src/contract/session_bridge.dart",
       "evidenceLocator": "docs/evidence/flutter-editor-contract-diagnostics-semantic-closure-2026-11-28.json#/implementedCapabilities/EDIT-04; flutter/test/workbench_import_diagnostics_test.dart; flutter/test/shared_diagnostic_contract_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "current TypeScript dependency graph for cross-consumer replay",
       "remediation": "rerun current-pointer cross-consumer diagnostics after dependencies are available",
       "claimLimit": "Flutter/MCP code-path mapping and structured field preservation are proven; native presentation and full cross-consumer vocabulary are not claimed"
@@ -339,7 +348,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "EDIT-04",
       "remediation": "retain last-valid-preview regression",
       "claimLimit": "does not claim all invalid corpus or native runtime transition"
@@ -354,7 +363,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "editor history and command registry",
       "remediation": "retain undo regression",
       "claimLimit": "does not claim native shortcut mapping"
@@ -369,7 +378,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "editor history and command registry",
       "remediation": "retain redo regression",
       "claimLimit": "does not claim native shortcut mapping"
@@ -384,7 +393,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "shared command registry",
       "remediation": "retain copy-source command regression",
       "claimLimit": "does not claim native clipboard permission behavior"
@@ -399,7 +408,7 @@
       "owner": "relgeo/spec + relgeo/flutter + relgeo/core",
       "sourceOfTruth": "fixtures/manifest.json; fixtures/diagnostics/flutter-import-contract.json; mcp/lib/src/contract/contract_revision.dart",
       "evidenceLocator": "docs/evidence/flutter-editor-contract-diagnostics-semantic-closure-2026-11-28.json#/implementedCapabilities/CONTRACT-01; flutter/test/workbench_agent_bridge_test.dart; flutter/test/shared_diagnostic_contract_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "workspace package links and staged Flutter runner",
       "remediation": "rerun current-pointer spec/core/Flutter conformance at an available dependency/toolchain boundary",
       "claimLimit": "Manifest, provenance, bounded Flutter/MCP DTO, and guarded editor transactions are synchronized; full DSL parity is not claimed"
@@ -414,7 +423,7 @@
       "owner": "relgeo/workspace + relgeo/spec + relgeo/flutter + relgeo/core",
       "sourceOfTruth": "fixtures/manifest.json; scripts/check-flutter-diagnostics-contract.mjs",
       "evidenceLocator": "docs/evidence/flutter-editor-contract-diagnostics-semantic-closure-2026-11-28.json#/implementedCapabilities/CONTRACT-02; docs/evidence/flutter-cross-surface-promotion-2026-11-27.json#/promotions; scripts/check-flutter-diagnostics-contract.mjs",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "current consumer dependency graph",
       "remediation": "run promoted fixture semantic conformance after workspace dependencies are restored; preserve fixture 24 exclusion",
       "claimLimit": "Only bounded fixtures 15/16 are promoted; evaluator/topology/collection completeness is not claimed"
@@ -429,7 +438,7 @@
       "owner": "relgeo/spec + relgeo/flutter + relgeo/renderer-svg",
       "sourceOfTruth": "fixtures/manifest.json#/svgSemanticSerialization; flutter/test/support/svg_semantic_projection.dart; scripts/run-renderer-semantic-replay.mjs",
       "evidenceLocator": "docs/evidence/flutter-editor-contract-diagnostics-semantic-closure-2026-11-28.json#/implementedCapabilities/CONTRACT-03; flutter/test/shared_v05_conformance_test.dart; docs/evidence/flutter-diagnostics-contract-parity-2026-11-27.json#/semanticSvg",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; flutter-root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "@relgeo/geometry workspace dependency",
       "remediation": "restore workspace package links and rerun semantic replay on fixtures 10/15/16; retain raw presentation exclusion",
       "claimLimit": "Flutter semantic geometry and declared tolerance are proven; raw bytes, style, viewBox, text, metadata, overlay, and TypeScript replay parity are not claimed"
@@ -444,7 +453,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "viewport and renderer",
       "remediation": "retain canvas/golden regression",
       "claimLimit": "does not claim GPU, resize, or native runtime usability"
@@ -459,7 +468,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "renderer and document model",
       "remediation": "retain model/sheet switch regression",
       "claimLimit": "does not claim unsupported component target parity"
@@ -474,9 +483,9 @@
       "owner": "relgeo/flutter + relgeo/core",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; P10; DSL",
       "evidenceLocator": "docs/evidence/flutter-canvas-command-accessibility-window-closure-2026-11-28.json#/implementedCapabilities/CANVAS-03; flutter/test/inspector_panel_test.dart; flutter/test/workbench_scene_graph_panel_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CANVAS-02, EDIT-02, resolved scene",
-      "remediation": "map every supported active object/geometry/constraint field to inspector tabs and fixtures; run native pointer/AT smoke when a host exists",
+      "remediation": "run native pointer/AT smoke against the recorded inspector/selection field inventory when a target host exists; no source mapping remains pending",
       "claimLimit": "current inspector and graph tests prove the bounded field/selection surface but not exhaustive property/constraint parity or native AT"
     },
     {
@@ -489,9 +498,9 @@
       "owner": "relgeo/flutter + relgeo/core",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; DSL",
       "evidenceLocator": "docs/evidence/flutter-canvas-command-accessibility-window-closure-2026-11-28.json#/implementedCapabilities/CANVAS-04; flutter/test/workbench_feature_surface_test.dart; flutter/test/workbench_composition_shell_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CONTRACT-01 and CANVAS-03",
-      "remediation": "cover conditional visibility, defaults, derived values, valid edits, rejection, and recompile consistency across consumers",
+      "remediation": "run the existing bounded parameter/profile fixtures at a current dependency/toolchain boundary and record the result; no new editor implementation or cross-consumer case is pending",
       "claimLimit": "parameter surface tests prove the bounded Flutter editing/reset/semantics surface but not full evaluator/profile parity"
     },
     {
@@ -504,7 +513,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; P10; DSL",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation; flutter/test/workbench_scene_graph_test.dart",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "scene graph projection, layout, selection",
       "remediation": "retain graph identity tests; add native accessibility/richer relationship smoke",
       "claimLimit": "does not claim native AT/runtime or full relationship semantics"
@@ -519,7 +528,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; W01",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "canvas and A11Y-02",
       "remediation": "retain overlay/role/filter tests",
       "claimLimit": "does not claim native pointer or accessibility announcement"
@@ -534,7 +543,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "viewport controller",
       "remediation": "retain zoom regression",
       "claimLimit": "does not claim native gesture/shortcut behavior"
@@ -549,7 +558,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P06; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "viewport transform",
       "remediation": "retain pan/transform regression",
       "claimLimit": "does not claim physical trackpad/mouse behavior"
@@ -564,7 +573,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "canvas bounds",
       "remediation": "retain fit-to-content regression",
       "claimLimit": "does not claim real window resize behavior"
@@ -579,7 +588,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "viewport transform and command registry",
       "remediation": "retain reset regression",
       "claimLimit": "does not claim native command dispatch"
@@ -594,7 +603,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation; flutter/test/workbench_scene_graph_test.dart",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "scene graph, viewport transform, inspector",
       "remediation": "retain shared selection regressions; add keyboard/physical pointer smoke",
       "claimLimit": "does not claim physical pointer, richer hit-testing, or native selection behavior"
@@ -609,7 +618,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "responsive layout",
       "remediation": "retain panel lifecycle tests",
       "claimLimit": "does not claim native resize/focus behavior"
@@ -624,7 +633,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; W03",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "panel lifecycle and dock tree",
       "remediation": "retain docking regression",
       "claimLimit": "does not claim native pointer drag behavior"
@@ -639,7 +648,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; W03; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "LAYOUT-02",
       "remediation": "retain floating resize/dock tests",
       "claimLimit": "does not claim native drag/resize behavior"
@@ -654,7 +663,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "preferences and layout model",
       "remediation": "retain profile regression",
       "claimLimit": "does not claim host persistence after packaged relaunch"
@@ -669,7 +678,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; W03",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "LAYOUT-04",
       "remediation": "retain reset/corruption fallback regression",
       "claimLimit": "does not claim host storage durability"
@@ -684,7 +693,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; W03",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "shared preferences and layout persistence",
       "remediation": "retain versioned persistence regression",
       "claimLimit": "does not claim native restart or packaged persistence"
@@ -699,7 +708,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "responsive layout and window policy",
       "remediation": "retain compact/wide widget tests",
       "claimLimit": "does not claim real OS resize usability"
@@ -714,7 +723,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "preferences and theme tokens",
       "remediation": "retain system-theme default regression",
       "claimLimit": "does not claim live OS theme transition"
@@ -729,7 +738,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "theme tokens",
       "remediation": "retain light-theme widget checks",
       "claimLimit": "does not claim native contrast/AT review"
@@ -744,7 +753,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "theme preference",
       "remediation": "retain dark-theme widget checks",
       "claimLimit": "does not claim native contrast/AT review"
@@ -759,7 +768,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "theme and canvas appearance tokens",
       "remediation": "retain app/canvas separation regression",
       "claimLimit": "does not claim native display preference behavior"
@@ -774,7 +783,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "shared preferences",
       "remediation": "retain namespaced preference tests",
       "claimLimit": "does not claim host storage durability"
@@ -789,7 +798,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#34-layout-theme-preferences-persistence",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "PREF-01",
       "remediation": "retain reset/safe-fallback regression",
       "claimLimit": "does not claim packaged storage migration"
@@ -804,7 +813,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; W02",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "document/editor/viewport controllers",
       "remediation": "retain shared registry regression",
       "claimLimit": "does not claim native event dispatch"
@@ -819,7 +828,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; W02; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CMD-01 and native menu adapter",
       "remediation": "retain menu ordering/state regression",
       "claimLimit": "does not claim native menu rendering/action behavior"
@@ -834,7 +843,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; W02",
       "evidenceLocator": "docs/evidence/flutter-canvas-command-accessibility-window-closure-2026-11-28.json#/implementedCapabilities/CMD-03; flutter/test/workbench_context_menu_test.dart; flutter/test/workbench_platform_menu_bar_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CMD-01/02 and platform runners",
       "remediation": "publish native menu/shortcut delivery transcript on macOS/Linux/Windows",
       "claimLimit": "source tests prove registry conflict detection, context/menu parity, and explicit Command-versus-Control mapping; native delivery is not claimed"
@@ -849,7 +858,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10; W02",
       "evidenceLocator": "docs/evidence/flutter-canvas-command-accessibility-window-closure-2026-11-28.json#/implementedCapabilities/A11Y-01; flutter/test/keyboard_activatable_test.dart; flutter/test/workbench_composition_shell_test.dart; flutter/test/dock_layout_renderer_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CMD-03 and responsive layout",
       "remediation": "run deterministic Tab/Enter/Space/arrows/Escape traversal on target hosts",
       "claimLimit": "Flutter focus order, activation, and splitter keyboard operation are covered; native traversal and AT behavior are not claimed"
@@ -864,7 +873,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10; W01; W02",
       "evidenceLocator": "docs/evidence/flutter-canvas-command-accessibility-window-closure-2026-11-28.json#/implementedCapabilities/A11Y-02; flutter/test/workbench_viewport_feature_test.dart; flutter/test/workbench_feature_surface_test.dart; flutter/test/workbench_scene_graph_panel_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CANVAS-03 and CMD-02",
       "remediation": "capture current macOS/Linux/Windows accessibility trees and announcements",
       "claimLimit": "Flutter semantics labels/states are covered; VoiceOver/NVDA/AT-SPI/UIA announcements are not claimed"
@@ -879,7 +888,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "theme/accessibility policy",
       "remediation": "retain reduced-motion/focus exclusion regression",
       "claimLimit": "does not claim native reduced-motion preference propagation"
@@ -894,7 +903,7 @@
       "owner": "relgeo/flutter + native host runners",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; P10",
       "evidenceLocator": "docs/evidence/flutter-canvas-command-accessibility-window-closure-2026-11-28.json#/implementedCapabilities/WINDOW-01; flutter/test/workbench_window_host_test.dart; flutter/test/workbench_method_channel_window_host_test.dart; flutter/test/workbench_window_policy_test.dart",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "DOC-06/07 and native host",
       "remediation": "run close/quit transcript for clean, dirty save/discard/cancel, callback ordering, and clean exit",
       "claimLimit": "policy, method-channel, and lifecycle callback tests prove the adapter boundary only; OS window-manager event delivery is not claimed"
@@ -909,7 +918,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "LAYOUT-07 and window policy",
       "remediation": "retain window policy tests",
       "claimLimit": "does not claim OS minimum-size enforcement"
@@ -924,7 +933,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W01; P10; D09",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "platform runners",
       "remediation": "retain native title-bar decision; run multi-monitor/HiDPI smoke when host exists",
       "claimLimit": "custom title bar is out of scope; native runtime usability is not proven"
@@ -939,7 +948,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; P06; P10",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#36-export-dan-platform-delivery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CONTRACT-03 and IO-01",
       "remediation": "retain model export regression; add native destination smoke",
       "claimLimit": "does not claim packaged native destination write"
@@ -954,7 +963,7 @@
       "owner": "relgeo/flutter",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; W02; P06",
       "evidenceLocator": "docs/capability-map/flutter-workbench/implementation-gap-map.md#36-export-dan-platform-delivery",
-      "revision": "workspace@4371c5d; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "CANVAS-02 and IO-01",
       "remediation": "retain model/sheet target regression; add native destination smoke",
       "claimLimit": "does not claim packaged native write or full SVG presentation parity"
@@ -969,7 +978,7 @@
       "owner": "relgeo/flutter + relgeo/workspace",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10; MAC; D09",
       "evidenceLocator": "docs/evidence/flutter-platform-artifact-runtime-closure-2026-11-28.json#/targetBoundaryMatrix/0; docs/evidence/flutter-platform-artifact-inspection-2026-11-28.json#/artifacts/0",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "macOS host/runtime and current artifact",
       "remediation": "build current artifact after the SDK cache boundary is restored, then install/launch and record picker/export/MCP/clean-exit transcript with checksum",
       "claimLimit": "Historical archive structure/checksum and the blocked managed build do not claim current launch, usability, signing, notarization, or install success"
@@ -984,7 +993,7 @@
       "owner": "relgeo/flutter + relgeo/workspace",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10; D09",
       "evidenceLocator": "docs/evidence/flutter-platform-artifact-runtime-closure-2026-11-28.json#/targetBoundaryMatrix/1; docs/evidence/flutter-platform-artifact-inspection-2026-11-28.json#/artifacts/1",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "Ubuntu/Linux host/session and current artifact",
       "remediation": "build/extract/launch on an approved Wayland/X11 host after current artifact production is restored and record runtime/picker/input/clean-exit provenance",
       "claimLimit": "No Linux host is available in this execution boundary; historical archive structure/checksum does not claim Linux runtime, session, GTK dependencies, or install success"
@@ -999,7 +1008,7 @@
       "owner": "relgeo/flutter + relgeo/workspace",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; P10; D09",
       "evidenceLocator": "docs/evidence/flutter-platform-artifact-runtime-closure-2026-11-28.json#/targetBoundaryMatrix/2; docs/evidence/flutter-platform-artifact-inspection-2026-11-28.json#/artifacts/2",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "Windows 11 host/runtime and current artifact",
       "remediation": "build/extract/launch on an approved Windows 11 host after current artifact production is restored and record DLL/input/picker/MCP/clean-exit provenance",
       "claimLimit": "No Windows host is available in this execution boundary; historical ZIP structure/checksum does not claim launch, DLL loading, SmartScreen, signing, or install success"
@@ -1014,7 +1023,7 @@
       "owner": "relgeo/workspace",
       "sourceOfTruth": "docs/plans/12-flutter-workbench-capability-baseline.md; MP; P10; docs/integration-baseline.json",
       "evidenceLocator": "docs/evidence/flutter-platform-artifact-runtime-closure-2026-11-28.json#/packagingChange; docs/evidence/flutter-platform-provenance-2026-11-28.json#/assetProvenance",
-      "revision": "workspace@4371c5d; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
+      "revision": "workspace@492c19a; flutter-child@c93b043; root-gitlink@c93b043; spec@26ff532; mcp@ad3079bb",
       "dependency": "PLAT-01..03 and current integration baseline",
       "remediation": "restore current artifact build, attach release-manifest.json/SHA256SUMS.txt with spec provenance, and update root gitlink before target-runtime promotion",
       "claimLimit": "Current tuple and workflow guard prove provenance intent and asset alignment only; they do not prove current artifact build, launch, install, signing, or deployment"

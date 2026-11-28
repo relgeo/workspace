@@ -3,12 +3,12 @@
   "capturedAt": "2026-11-28",
   "task": "deliver-current-platform-artifacts-and-runtime-provenance-for-flutter-targets--9582319760",
   "revisionTuple": {
-    "rootHead": "9d68569aabd1dfde17134d6df145333c5d93611f",
-    "flutterRootGitlink": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
-    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "rootHead": "492c19a875196140fd4a5f86e760153706704e9c",
+    "flutterRootGitlink": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "flutterChildCheckout": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
     "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
-    "rootGitlinkStatus": "pending-root-gitlink-update"
+    "rootGitlinkStatus": "synchronized"
   },
   "packagingChange": {
     "workflow": "flutter/.github/workflows/desktop-release.yml",
@@ -105,6 +105,6 @@
     "The desktop release workflow now prevents spec provenance loss by requiring one spec revision, digest, and manifest path across all target metadata files before creating release-manifest.json.",
     "Current macOS build execution is blocked at the managed Flutter SDK engine.stamp permission boundary; Linux and Windows target hosts are unavailable in this execution boundary.",
     "Analyzer/test/conformance, semantic replay, standalone checkout, and runtime smoke remain separately classified in flutter-current-verification-2026-11-28.json; unavailable checks are not treated as target failures or passes.",
-    "Root flutter gitlink 52e5bd2 remains distinct from child checkout 6397c66 because the managed sandbox cannot create the root Git index lock."
+    "Root flutter gitlink and child checkout are synchronized at c93b043; current artifact/runtime claims remain limited by historical archive provenance and unavailable target hosts."
   ]
 }

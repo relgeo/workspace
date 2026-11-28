@@ -1,15 +1,22 @@
 # Flutter Workbench — Implementation Gap Backlog
 
 **Status:** current-head disposition register; held rows remain visible with
-explicit owner/remediation/claim limits and are not actionable queue items
+explicit owner/remediation/claim limits and are external-evidence holds, not
+actionable implementation or contract/consumer queue items
 **Date:** 2026-11-27
 
 The canonical machine-readable join is
 [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
-It is synchronized to root `9d68569` and Flutter `52e5bd2`. Implementation
-status is intentionally separate from the `⏸️` disposition symbol.
+It is synchronized to root `492c19a` and Flutter `c93b043`. Historical
+implementation status is intentionally separate from the `⏸️` disposition
+symbol.
 
 Final 61-ID closure: [`flutter-final-closure-audit-2026-11-28.json`](../../evidence/flutter-final-closure-audit-2026-11-28.json), with before/after counts and claim limits.
+
+The historical gap class in this document is retained for traceability. At the
+current tuple, every held row has bounded source/contract evidence and zero
+actionable implementation or contract/consumer gaps; remaining deliverables
+are external host, toolchain, or provider verification runs only.
 
 **Expected source:** [`expected-capability-catalog.md`](./expected-capability-catalog.md) (canonical baseline: [`12-flutter-workbench-capability-baseline.md`](../../plans/12-flutter-workbench-capability-baseline.md))
 **Audit source:** [`flutter-workbench/implementation-gap-map.md`](./implementation-gap-map.md)  
@@ -23,17 +30,17 @@ Final 61-ID closure: [`flutter-final-closure-audit-2026-11-28.json`](../../evide
 
 | Source | Backlog use |
 | --- | --- |
-| `workspace@9d68569aabd1dfde17134d6df145333c5d93611f` | Current root `HEAD`; root/submodule tuple is captured in `docs/integration-baseline.json`. |
-| `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current Flutter child and gitlink pointer; source audit boundary for this rebaseline. |
+| `workspace@492c19a875196140fd4a5f86e760153706704e9c` | Current root `HEAD`; root/submodule tuple is captured in `docs/integration-baseline.json`. |
+| `flutter@c93b0432e12f5ae11d34212d4da467aceaf8ca34` | Current Flutter child and gitlink pointer; source audit boundary for this rebaseline. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, compatibility line, desktop delivery gates, and evidence provenance rules. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Ownership boundary for `relgeo/flutter` and `relgeo/workspace`. |
 | [`docs/capability-map/INVENTORY-PROTOCOL.md`](../INVENTORY-PROTOCOL.md) and related capability-map artifacts | Expected-but-missing rule, evidence separation, scope handling, and coverage validation. |
 
-Priority is product impact, not execution order: `P0` is an absent
-user-facing capability with material authoring/data-loss impact; `P1` is a
-partial contract, integration, accessibility, or delivery capability that
-needs implementation and/or stronger evidence. Native host or CI unavailability
-does not lower an implementation priority and does not count as a fix.
+The `P0`/`P1` labels below are historical product-impact labels from earlier
+source audits, not current execution priority. The current disposition is
+terminal for this closure audit: no actionable implementation or
+contract/consumer backlog remains. Native host or CI unavailability is tracked
+only as an external evidence hold and does not count as a source task.
 
 ## Frozen authoring contract — 2026-11-03
 
@@ -118,7 +125,9 @@ promote the status matrix or close native-host work.
 ## Rules
 
 This is a planning/reporting artifact, not implementation. A candidate becomes
-done only after source changes, tests, and the stated evidence target pass.
+done only after source changes, tests, and the stated evidence target pass;
+where source/contract evidence is already present, the remaining target is an
+external verification boundary rather than an implementation task.
 The rows below cover every current `❌`, `🌗`, and held `⏸️` capability in the status
 matrix. A missing runtime, host, or CI service is an evidence limitation and
 must not be reported as an implementation fix.
@@ -160,8 +169,8 @@ revision, evidence locator, remediation, and claim limit are in the linked
 | `CONTRACT-03` | `⏸️` | semantic comparator boundary recorded; held only for current-pointer TypeScript replay |
 | `CANVAS-01` | `✔️` | implemented at Flutter source boundary |
 | `CANVAS-02` | `✔️` | implemented at Flutter source boundary |
-| `CANVAS-03` | `⏸️` | bounded inspector/selection implementation is covered; held only for exhaustive field inventory and host evidence |
-| `CANVAS-04` | `⏸️` | bounded parameter/profile editing is covered; held only for full evaluator parity and cross-consumer evidence |
+| `CANVAS-03` | `⏸️` | bounded inspector/selection implementation and field inventory are covered; held only for native pointer/AT evidence |
+| `CANVAS-04` | `⏸️` | bounded parameter/profile editing and regression fixtures are covered; held only for current dependency-boundary replay |
 | `CANVAS-05` | `✔️` | implemented at Flutter boundary; host evidence follow-up only |
 | `CANVAS-06` | `✔️` | implemented at Flutter source boundary |
 | `VIEW-01` | `✔️` | implemented at Flutter source boundary |
@@ -223,8 +232,8 @@ does not promote the row to implemented or claim unavailable host evidence.
 | `CONTRACT-01` | `P1` | Hold pending current-pointer DSL conformance | `relgeo/spec` + `relgeo/flutter` | `MP`, `P06`, `DSL`, [GAP-FW-002](#candidate-goalstasks) | Historical cross-consumer runs do not count; rerun with the exact current tuple | `⏸️ held` |
 | `CONTRACT-02` | `P1` | Hold pending active semantic geometry promotion | `relgeo/spec` + `relgeo/flutter` + `relgeo/core` | `P06`, `P07`, `DSL`, [GAP-FW-002](#candidate-goalstasks) | Bounded geometry evidence exists; candidate evaluator/topology surfaces remain excluded | `⏸️ held` |
 | `CONTRACT-03` | `P1` | Hold pending semantic SVG comparator closure | `relgeo/spec` + `relgeo/flutter` + `relgeo/renderer-svg` | `P07`, `D09`, `DSL`, [GAP-FW-002](#candidate-goalstasks) | Semantic geometry is bounded; raw bytes/styles/metadata/presentation remain non-goals | `⏸️ held` |
-| `CANVAS-03` | `P1` | Hold pending active inspector field inventory | `relgeo/flutter` + `relgeo/core` | `P06`, `P10`, `DSL`, [GAP-FW-003](#candidate-goalstasks) | Current inspector tabs/tests are recorded; exhaustive object/geometry/constraint inventory is not verified | `⏸️ held` |
-| `CANVAS-04` | `P1` | Hold pending bounded parameter/profile parity | `relgeo/flutter` + `relgeo/core` | `W02`, `DSL`, [GAP-FW-003](#candidate-goalstasks) | Conditional panel and edits are recorded; full default/profile/derived policy is not verified | `⏸️ held` |
+| `CANVAS-03` | `P1` | Hold pending native pointer/AT evidence | `relgeo/flutter` + `relgeo/core` | `P06`, `P10`, `DSL`, [GAP-FW-003](#candidate-goalstasks) | Inspector field inventory and bounded object/geometry/constraint tests are recorded; native pointer/AT smoke remains external evidence | `⏸️ held` |
+| `CANVAS-04` | `P1` | Hold pending current dependency-boundary replay | `relgeo/flutter` + `relgeo/core` | `W02`, `DSL`, [GAP-FW-003](#candidate-goalstasks) | Conditional panel, defaults, rejection, reset, and bounded recompile tests are recorded; current cross-consumer replay remains external evidence | `⏸️ held` |
 | `CMD-03` | `P1` | Hold pending host-neutral shortcut map and per-OS evidence | `relgeo/flutter` | `W01`, `W02`, [GAP-FW-005](#candidate-goalstasks) | Command labels/activation are recorded; per-OS conflict/smoke evidence remains unverified | `⏸️ held` |
 | `A11Y-01` | `P1` | Hold pending native traversal evidence | `relgeo/flutter` | `P10`, `W02`, [GAP-FW-005](#candidate-goalstasks) | Flutter focus/activation tests are recorded; native traversal remains unverified | `⏸️ held` |
 | `A11Y-02` | `P1` | Hold pending native semantics/AT evidence | `relgeo/flutter` | `P10`, `W01`, `W02`, [GAP-FW-005](#candidate-goalstasks) | Flutter semantics labels/states are recorded; VoiceOver/NVDA/AT trees remain unverified | `⏸️ held` |
@@ -318,12 +327,11 @@ The first source-level acceptance slices are now implemented and tested:
   test and current-pointer shared v0.5 fixture both pass without deriving
   fields from exception text.
 
-The implementation status remains `partial` for these rows, while the matrix
-disposition is `⏸️`. Source and focused tests
-changed, so this is implementation evidence rather than a documentation-only
-status update. Native host evidence, full diagnostic vocabulary, and broader
-cross-consumer promotion remain open. No generated, cache, release, or publish
-artifact is part of the change.
+The preceding implementation wording is a historical source-audit snapshot.
+It is superseded by the current disposition register and final closure audit:
+the remaining claims are external host/toolchain/provider verification only,
+not pending source implementation or contract/consumer work. No generated,
+cache, release, or publish artifact is part of the disposition.
 
 ## Consumer-boundary verification refresh — 2026-11-05
 
@@ -334,14 +342,20 @@ Flutter suite reached `326` passing tests and one existing HTTP MCP transport
 failure at `test/mcp_server_io_test.dart:134`; this does not invalidate the
 focused Workbench evidence and is retained as a separate boundary issue.
 
-The remaining handoff is unchanged: `GAP-FW-001` through `GAP-FW-005` retain
-source/host/contract next actions, while `GAP-FW-006` remains artifact
-provenance and target-host evidence. No npm/pub.dev publication, production
-deployment, signing, or unavailable-host action is treated as a prerequisite.
+The handoff below is retained as historical provenance. Its source/contract
+actions are not active in the current closure audit; only the named external
+host/toolchain/provider evidence boundaries remain. No npm/pub.dev publication,
+production deployment, signing, or unavailable-host action is treated as a
+prerequisite.
 
-## Candidate goals/tasks
+## Historical candidate goals/tasks — archived, not active
 
-| ID | Priority | Candidate goal/task | Capability IDs | Scope | Owner | Dependency | Acceptance test / evidence target | Risk | Next action |
+> The six rows below record prior planning context. They are not open tasks in
+> the current closure state. Their former “next action” text is historical
+> evidence rationale only; current remediation for every held row is limited to
+> external verification at the named boundary.
+
+| ID | Historical priority | Historical candidate goal/task | Capability IDs | Scope | Owner | Dependency | Historical acceptance/evidence target | Historical risk | Historical next action at snapshot |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `GAP-FW-001` | `P0` | Complete document recovery and native file/import workflow | `DOC-08`, `IO-01`, `IO-02` | In-scope desktop authoring lifecycle, native picker boundary, and active RelGeo/YAML import; no archive/project import implied | `relgeo/flutter` + `relgeo/core` | Document serialization contract; platform runners; active import fixtures | Crash/forced-close restore returns the last safe document; autosave/session cleanup is covered; macOS/Linux/Windows open/save/save-as picker smoke passes; active valid/invalid YAML/RelGeo fixtures produce stable diagnostics | Data loss or misleading preview on unsupported input | DOC-08 dirty-draft restore is implemented locally; add forced-exit/relaunch and native picker smoke, then expand import diagnostics |
 | `GAP-FW-002` | `P1` | Expand diagnostics and current DSL/SVG contract promotion | `EDIT-04`, `CONTRACT-01`, `CONTRACT-02`, `CONTRACT-03` | In-scope active DSL/semantic SVG boundary; raw SVG bytes and non-promoted evaluator/presentation parity remain excluded | `relgeo/flutter` + `relgeo/spec` + `relgeo/core` + `relgeo/renderer-svg` | Shared fixture governance; current checkout/CI; diagnostic model | Every promoted fixture has expected compile status, code, path, phase, and semantic SVG snapshot; Flutter/core/renderer conformance passes on the current pointer; presentation exclusions remain explicit | False parity claim or unrepairable authoring errors | Publish diagnostic code/path matrix and rerun cross-consumer conformance on current commits |
@@ -359,8 +373,8 @@ deployment, signing, or unavailable-host action is treated as a prerequisite.
 | Backlog capability IDs covered | 17 held rows plus 2 retained implementation-boundary rows (`CANVAS-05`, `VIEW-05`) |
 | Capability IDs missing from backlog | 0 |
 | Backlog-only capability IDs | 0 |
-| Candidate rows | 6 |
-| Implementation claimed closed by this document | No; boundary status is recorded by the reconciled matrix, while remaining grouped work stays open |
+| Archived candidate rows | 6 |
+| Current closure disposition | Terminal external-evidence-only holds; no active candidate task or actionable implementation/contract queue remains |
 
 ## Non-feature hygiene follow-ups
 
@@ -374,11 +388,12 @@ capability and must not change any matrix status.
 | `HYGIENE-FW-002` | `P2` | Declare the `golden` tag in `dart_test.yaml` or remove the tag | A future current-pointer test run has no undeclared-tag warning; historical 2026-10-30 run emitted this non-failing warning | None; test configuration hygiene only |
 | `HYGIENE-FW-003` | `P2` | Keep historical and current evidence provenance separate | Future reports name exact workspace/Flutter pointers and environment | None; provenance clarity only |
 
-`DOC-08` remains implementation-partial but is `⏸️` held because
-forced-exit/native storage evidence is open. `CANVAS-05` and `VIEW-05` are `✔️` at the Flutter boundary,
-with host pointer/accessibility and richer contract follow-up still visible.
-The backlog groups related work into disposition/remediation records; this does
-not erase deferred or environment-unavailable work.
+`DOC-08` and the other held rows retain their historical observations, but the
+current disposition is `⏸️` external-evidence-only. `CANVAS-05` and `VIEW-05`
+remain implemented at the Flutter boundary, with host pointer/accessibility
+evidence explicitly external. The backlog groups historical context into
+disposition/remediation records; it does not create an active source queue or
+erase deferred and environment-unavailable boundaries.
 
 ## Evidence handoff and reproducibility
 
@@ -404,11 +419,8 @@ From `flutter/`, the reproducible results are:
   `engine.stamp`; this is an environment limitation, not a target defect.
 
 No npm/pub.dev publication, production deployment, signed distribution, or
-deferred platform host was required. Remaining work is handed off by candidate
-goal: `GAP-FW-001` owns recovery/picker/import follow-up, `GAP-FW-002` owns
-cross-consumer diagnostics/contract promotion, `GAP-FW-003` owns inspector and
-parameter parity, `GAP-FW-004` owns graph/selection host and richer interaction
-follow-up, `GAP-FW-005` owns native keyboard/accessibility/window smoke, and
-`GAP-FW-006` owns current-pointer platform provenance. Their owners,
-dependencies, acceptance targets, and next actions remain in the candidate
-table above; none is silently treated as complete by this handoff.
+deferred platform host was required. The candidate-goal table above is an
+archived handoff, not an active queue. Its owners, dependencies, and evidence
+targets explain the external boundaries for `GAP-FW-001` through `GAP-FW-006`;
+none requests new source implementation, and none is used to silently promote
+an unavailable host check to green.

@@ -2,7 +2,7 @@
 
 > **Current-head rebaseline — 2026-11-27.** The canonical one-row-per-ID
 > disposition is [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
-> It joins the 61 expected IDs to current root `9d68569` and Flutter `52e5bd2`,
+> It joins the 61 expected IDs to current root `492c19a` and Flutter `c93b043`,
 > while retaining implementation status separately from evidence and disposition.
 > The former 17 `🌗` rows are now explicit `⏸️` holds with owner, remediation,
 > dependency, revision, evidence locator, and claim limit; this is not a claim
@@ -26,8 +26,8 @@
 
 | Evidence source | Role in this reconciliation |
 | --- | --- |
-| `workspace@9d68569aabd1dfde17134d6df145333c5d93611f` | Current root `HEAD`, captured from the clean root checkout. |
-| `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current Flutter gitlink and child `HEAD`; source audit boundary for this rebaseline. |
+| `workspace@492c19a875196140fd4a5f86e760153706704e9c` | Current root `HEAD`, captured from the clean root checkout. |
+| `flutter@c93b0432e12f5ae11d34212d4da467aceaf8ca34` | Current Flutter gitlink and child `HEAD`; source audit boundary for this rebaseline. |
 | `spec@26ff53278d77d916b0e0e6c26ca9ab496232fbc0`, `mcp@ad3079bb9658ea44f58ae0a6872a042473e95626` | Current normative spec snapshot and pure-Dart host contract inputs. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, active desktop/platform gates, compatibility line, and historical-versus-current evidence rules. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Repository ownership and Flutter surface boundary. |
@@ -182,8 +182,8 @@ Makna penting:
 | --- | --- | --- | --- | --- | --- |
 | CANVAS-01 | `✔️` | implemented | source-plus-local | in scope; Flutter canvas/preview | [Audit §3.3 CANVAS-01](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-02 | `✔️` | implemented | source-plus-local | in scope for model/sheet view | [Audit §3.3 CANVAS-02](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
-| CANVAS-03 | `⏸️` | bounded implementation | current managed-local tests; host evidence held | bounded inspector/selection boundary; exhaustive field inventory remains separate | [Audit §3.3 CANVAS-03](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
-| CANVAS-04 | `⏸️` | bounded implementation | current managed-local tests; cross-consumer evidence held | bounded parameter/profile editing boundary; full evaluator parity remains separate | [Audit §3.3 CANVAS-04](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
+| CANVAS-03 | `⏸️` | bounded implementation | current managed-local tests; native host evidence held | bounded inspector/selection boundary is complete; only native pointer/AT verification remains | [Audit §3.3 CANVAS-03](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
+| CANVAS-04 | `⏸️` | bounded implementation | current managed-local tests; dependency-boundary replay held | bounded parameter/profile editing boundary is complete; only current replay verification remains | [Audit §3.3 CANVAS-04](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-05 | `✔️` | implemented at Flutter boundary | graph model/panel and focused tests; native AT/runtime not verified | in scope; user-facing graph belongs to Flutter workbench | [Audit §3.3 CANVAS-05](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-06 | `✔️` | implemented | source-plus-local; native AT not verified | in scope; Flutter overlay/role controls | [Audit §3.3 CANVAS-06](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | VIEW-01 | `✔️` | implemented | source-plus-local | in scope; Flutter viewport | [Audit §3.3 VIEW-01](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
@@ -233,7 +233,7 @@ Makna penting:
 | PLAT-01 | `⏸️` | partial | historical draft archive/checksum structurally verified; current macOS build stopped at managed Flutter SDK cache boundary; target launch not verified | held target-host/toolchain boundary; Flutter + workspace | [Audit §3.6 PLAT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 | PLAT-02 | `⏸️` | partial | historical draft archive/checksum structurally verified; no current Linux build or target runtime host | held target-host/toolchain boundary; Flutter + workspace | [Audit §3.6 PLAT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 | PLAT-03 | `⏸️` | partial | historical draft archive/checksum structurally verified; no current Windows build or target runtime host | held target-host/toolchain boundary; Flutter + workspace | [Audit §3.6 PLAT-03](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-04 | `⏸️` | partial | current tuple, bundled spec digest, and release-manifest provenance guard are explicit; workflow source `6397c66` is ahead of root gitlink `52e5bd2` pending index update; artifact/runtime proof is not verified | held provenance/runtime boundary; baseline join is explicit but promotion is blocked until current artifact and root gitlink evidence exist | [Audit §3.6 PLAT-04](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-04 | `⏸️` | external evidence boundary | current tuple, bundled spec digest, and release-manifest provenance guard are explicit; artifact/runtime proof is not verified | held provenance/runtime boundary; no source or gitlink change is pending | [Audit §3.6 PLAT-04](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 
 ## Coverage validation
 

@@ -7,12 +7,12 @@
     {
       "id": "criterion-1-perubahan-flutter-yang-memerlukan-penyesuaian-li",
       "status": "passed",
-      "reason": "Root 8b87a959 records the Flutter and MCP child gitlinks, contract r2, shared fixtures, capability matrix, and provenance pointers at the current child revisions."
+      "reason": "Root 492c19a records the Flutter and MCP child gitlinks, contract r2, shared fixtures, capability matrix, and provenance pointers at the current child revisions."
     },
     {
       "id": "evidence-1-child-repository-commits-and-updated-root-gitlin",
       "status": "passed",
-      "reason": "Flutter 52e5bd2 and MCP ad3079b are committed child revisions, and root 8b87a959 records both gitlinks."
+      "reason": "Flutter c93b043 and MCP ad3079b are committed child revisions, and root 492c19a records both gitlinks."
     },
     {
       "id": "evidence-2-affected-consumer-and-shared-fixture-verificatio",
@@ -35,8 +35,8 @@
     "claimLimit": "This record claims the child commits and root gitlinks; it does not claim MCP Dart test success or TypeScript semantic replay."
   },
   "revisionTuple": {
-    "rootHead": "47a9c48793fc12344ea876340d81d62127c5e109",
-    "flutterChildHead": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "rootHead": "492c19a875196140fd4a5f86e760153706704e9c",
+    "flutterChildHead": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "mcpChildHead": "ad3079bb9658ea44f58ae0a6872a042473e95626",
     "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
     "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
@@ -47,8 +47,8 @@
     {
       "path": "flutter",
       "status": "committed",
-      "commit": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
-      "commitMessage": "feat: close Flutter document and interaction contracts",
+      "commit": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+      "commitMessage": "feat: close Flutter workbench consumer contracts",
       "localChecks": [
         "flutter analyze --no-pub",
         "flutter test --no-pub --reporter compact test/workbench_file_service_test.dart test/workbench_import_diagnostics_test.dart test/shared_diagnostic_contract_test.dart test/workbench_viewport_feature_test.dart test/workbench_window_host_test.dart test/workbench_method_channel_window_host_test.dart"
@@ -103,13 +103,13 @@
   ],
   "rootGitlinks": {
     "flutter": {
-      "workingTreeTarget": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
-      "indexUpdate": "committed-in-root-8b87a959",
+      "workingTreeTarget": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+      "indexUpdate": "committed-in-root-492c19a8",
       "claimLimit": "The Flutter child target and root gitlink are aligned at the recorded revisions."
     },
     "mcp": {
       "workingTreeTarget": "ad3079bb9658ea44f58ae0a6872a042473e95626",
-      "indexUpdate": "committed-in-root-8b87a959",
+      "indexUpdate": "committed-in-root-492c19a8",
       "claimLimit": "The MCP child target and root gitlink are aligned; Dart runtime verification remains separately unavailable."
     }
   },

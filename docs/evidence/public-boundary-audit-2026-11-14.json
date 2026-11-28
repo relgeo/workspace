@@ -4,11 +4,11 @@
   "contract": "public-boundary-v1",
   "auditContract": "public-boundary-audit-v1",
   "capturedAt": "2026-11-14",
-  "workspaceRevision": "886f034b16c7347a1879b75fdf2f5cb491317dee",
+  "workspaceRevision": "492c19a875196140fd4a5f86e760153706704e9c",
   "claimLimit": "This is local tracked-tree and available-artifact evidence; it is not proof of a deployed public runtime, registry consumer, or provider-side CI artifact.",
   "trackedTree": {
-    "entries": 338,
-    "textFiles": 326,
+    "entries": 385,
+    "textFiles": 373,
     "skippedBinaryOrLarge": 12,
     "pathViolations": [],
     "credentialMaterialFiles": [],
@@ -88,6 +88,56 @@
         "scope": "source-or-evidence-reference"
       },
       {
+        "path": "docs/evidence/cross-repository-current-verification-2026-11-27.json",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/cross-repository-local-integration-2026-11-27.json",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/cross-repository-propagation-2026-11-27.json",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/cross-repository-public-boundary-closure-2026-11-27.json",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/cross-repository-public-integration-2026-11-27.json",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/flutter-canvas-command-accessibility-window-closure-2026-11-28.json",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/flutter-cross-surface-consumer-reconciliation-2026-11-27.json",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/flutter-diagnostics-contract-parity-2026-11-27.json",
+        "count": 1,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/flutter-editor-contract-diagnostics-semantic-closure-2026-11-28.json",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "docs/evidence/flutter-platform-artifact-runtime-closure-2026-11-28.json",
+        "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
         "path": "docs/evidence/mcp-boundary-reconciliation-2026-11-12.json",
         "count": 2,
         "scope": "source-or-evidence-reference"
@@ -130,6 +180,11 @@
       {
         "path": "scripts/check-compatibility.mjs",
         "count": 2,
+        "scope": "source-or-evidence-reference"
+      },
+      {
+        "path": "scripts/check-cross-surface-reconciliation.mjs",
+        "count": 1,
         "scope": "source-or-evidence-reference"
       },
       {
@@ -243,7 +298,7 @@
       {
         "id": "ORCH-BOOT-004",
         "present": true,
-        "status": "🌗"
+        "status": "⏸️"
       },
       {
         "id": "ORCH-PUB-001",
@@ -253,7 +308,7 @@
       {
         "id": "ORCH-PUB-002",
         "present": true,
-        "status": "🌗"
+        "status": "⏸️"
       },
       {
         "id": "ORCH-PUB-003",

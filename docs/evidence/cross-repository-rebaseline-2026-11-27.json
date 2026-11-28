@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordType": "cross-repository-rebaseline-disposition-register",
   "capturedAt": "2026-11-27",
-  "testedRootRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+  "testedRootRevision": "492c19a875196140fd4a5f86e760153706704e9c",
   "sourceOfTruth": {
     "expectedCatalog": "docs/capability-map/cross-repository/expected-catalog.md",
     "statusMatrix": "docs/capability-map/cross-repository/status-matrix.md",
@@ -11,7 +11,7 @@
     "currentReconciliation": "docs/capability-map/cross-repository/reconciliation.md"
   },
   "matrixSnapshot": {
-    "matrixRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+    "matrixRevision": "492c19a875196140fd4a5f86e760153706704e9c",
     "expectedCapabilityCount": 39,
     "observedCounts": {
       "✔️": 21,
@@ -43,7 +43,7 @@
     ]
   },
   "revisionTuple": {
-    "root": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+    "root": "492c19a875196140fd4a5f86e760153706704e9c",
     "rootLocator": "command:git rev-parse HEAD",
     "submoduleLocator": "command:git submodule status --recursive; command:git ls-tree HEAD",
     "checkoutObservation": "mcp:inspect_repository",
@@ -83,7 +83,7 @@
       "dependency": ["Node 24.21.0", "pnpm 10.33.3", "recursive submodules", "writable clean-clone Git metadata"],
       "closureTask": "GAP-ORCH-001",
       "evidenceLocator": ["docs/evidence/cross-repository-fresh-checkout-bootstrap-verification-2026-11-27.json", "command:node scripts/test-bootstrap-and-evidence-contract.mjs"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "A clean isolated checkout initialized all 12 recursive submodules and passed the bootstrap entrypoint on Node v24.21.0 with pnpm 10.33.3; the contract fixture also passes.",
       "claimLimit": "This is local-host evidence using local submodule mirrors; it does not claim managed App Server, provider, or canonical CI execution."
     },
@@ -99,7 +99,7 @@
       "dependency": ["Node 24.21.0 host", "pnpm 10.33.3", "registry access"],
       "closureTask": "GAP-ORCH-001",
       "evidenceLocator": ["docs/evidence/cross-repository-fresh-checkout-bootstrap-verification-2026-11-27.json", "docs/evidence/cross-repository-bootstrap-verification-2026-11-27.json"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "The fresh-checkout probe confirms the exact Node v24.21.0/pnpm 10.33.3 contract, but dependency installation was intentionally skipped because registry-backed install evidence is not available at this boundary.",
       "claimLimit": "Toolchain contract is locally verified; frozen-install and registry availability remain unverified."
     },
@@ -115,7 +115,7 @@
       "dependency": ["Git", "child repositories", "clean-clone probe"],
       "closureTask": "GAP-ORCH-001",
       "evidenceLocator": ["docs/evidence/cross-repository-fresh-checkout-bootstrap-verification-2026-11-27.json", "command:node scripts/check-baseline-synchronization.mjs --json --report=docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "The isolated fresh-checkout probe initialized all 12 recursive submodules and confirmed all 12 checkout revisions match the root gitlinks; the synchronization report passes 101/101 checks.",
       "claimLimit": "Local recursive initialization and gitlink alignment are proven; provider synchronization and canonical CI are not."
     },
@@ -131,7 +131,7 @@
       "dependency": ["canonical CI artifact roots", "Node 24", "public-boundary scan inputs"],
       "closureTask": "GAP-ORCH-001",
       "evidenceLocator": ["command:node scripts/audit-public-boundary.mjs", "command:node scripts/test-public-boundary-contract.mjs"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Current local audit passes with 340 tracked entries and 2 artifact roots; 5 declared artifact roots are unavailable.",
       "claimLimit": "Local tracked-tree and available-root hygiene is not a complete canonical CI/public-artifact scan."
     },
@@ -147,8 +147,8 @@
       "dependency": ["current root revision", "exact child gitlinks", "validated child CI"],
       "closureTask": "GAP-ORCH-002",
       "evidenceLocator": ["docs/integration-baseline.json", "docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json", "command:node scripts/verify-baseline.mjs --strict"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
-      "observation": "The generated manifest records root 4371c5d0a343e5452aa69e0da6f070e2424d6ae6 and the current 12-child tuple; synchronization passes 101/101 checks.",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
+      "observation": "The generated manifest records root 492c19a875196140fd4a5f86e760153706704e9c and the current 12-child tuple; synchronization passes 101/101 checks.",
       "claimLimit": "The generated local baseline is current and reproducible; it does not assert validated child CI or provider artifacts."
     },
     {
@@ -163,7 +163,7 @@
       "dependency": ["current baseline manifest", "clean checkout", "supported integration toolchain"],
       "closureTask": "GAP-ORCH-002",
       "evidenceLocator": ["command:node scripts/verify-baseline.mjs --strict", "docs/evidence/cross-repository-fresh-checkout-bootstrap-verification-2026-11-27.json", "docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "The strict verifier passes 87 checks against the generated manifest, and the synchronization report passes 101/101 checks for the current root and 12-child tuple.",
       "claimLimit": "Local strict verification does not prove provider CI, registry-backed integration, or public-runtime behavior."
     },
@@ -179,7 +179,7 @@
       "dependency": ["current root/child tuple", "Node 24 canonical toolchain"],
       "closureTask": "GAP-ORCH-002",
       "evidenceLocator": ["command:node scripts/check-compatibility.mjs"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Current compatibility checks pass on the local Node 22 boundary, but the declared Node 24 canonical rerun is unavailable.",
       "claimLimit": "Local compatibility success is supporting evidence only and is not promoted to canonical Node 24 proof."
     },
@@ -195,7 +195,7 @@
       "dependency": ["shared fixture manifest", "Flutter SDK/cache boundary", "Node 24 canonical run"],
       "closureTask": "GAP-ORCH-002",
       "evidenceLocator": ["command:node scripts/run-conformance-fixtures.mjs", "scripts/run-flutter-conformance.mjs"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Root conformance passes 677/677 across 33 fixtures; same-baseline Flutter conformance was not available in this execution boundary.",
       "claimLimit": "TypeScript fixture success does not establish cross-platform Flutter parity."
     },
@@ -211,7 +211,7 @@
       "dependency": ["Node 24.21.0", "workspace installs", "current baseline manifest"],
       "closureTask": "GAP-ORCH-003",
       "evidenceLocator": ["command:node --version", "scripts/run-integration-gate.mjs"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "The package gate is implemented, but the current managed executor cannot enter it because Node is 22.23.2.",
       "claimLimit": "No current local package-gate result is claimed; this is not a package regression finding."
     },
@@ -227,7 +227,7 @@
       "dependency": ["Node 24.21.0", "registry/network", "consumer runtime"],
       "closureTask": "GAP-ORCH-003",
       "evidenceLocator": ["command:node --version", "scripts/run-integration-gate.mjs --public"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "The isolated public runner is present, but registry/public consumer execution was not reached on this Node 22 boundary.",
       "claimLimit": "No registry package or public consumer parity claim is made."
     },
@@ -243,7 +243,7 @@
       "dependency": ["current baseline", "canonical run record", "evidence envelope"],
       "closureTask": "GAP-ORCH-004",
       "evidenceLocator": ["command:node scripts/test-orchestration-contract.mjs", "docs/evidence/cross-repository-closure-envelope-2026-11-27.json"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Evidence classes and limitation fields are implemented and contract-tested; the current evidence set still contains historical and externally sourced records.",
       "claimLimit": "Classification is current local evidence; it does not make historical/provider records canonical."
     },
@@ -259,7 +259,7 @@
       "dependency": ["regenerated root baseline", "validated child-CI metadata", "current artifact/public record"],
       "closureTask": "GAP-ORCH-004",
       "evidenceLocator": ["docs/integration-baseline.json", "docs/evidence/cross-repository-baseline-synchronization-2026-11-27.json", "docs/evidence/cross-repository-fresh-checkout-bootstrap-verification-2026-11-27.json"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "The generated baseline and evidence reports carry the same tested root revision and 12-child tuple, with provenance naming the generator and gitlink sources.",
       "claimLimit": "Local revision-to-evidence joining is current; external artifact, deployment, and provider-run provenance remain outside this claim."
     },
@@ -275,7 +275,7 @@
       "dependency": ["current artifact digest", "deployment URL", "public smoke/browser", "canonical baseline"],
       "closureTask": "GAP-ORCH-004",
       "evidenceLocator": ["docs/evidence/cross-repository-closure-envelope-2026-11-27.json", "scripts/join-integration-evidence.mjs"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Artifact, deployment URL, and public-smoke join is documented but was not captured at the current managed execution boundary.",
       "claimLimit": "No deployment, registry, browser, or public-runtime claim is made."
     },
@@ -291,7 +291,7 @@
       "dependency": ["Node 24.21.0", "clean tree", "current baseline", "release record"],
       "closureTask": "GAP-ORCH-005",
       "evidenceLocator": ["command:node --version", "scripts/run-release-preflight.mjs"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Read-only preflight implementation exists, but the required Node 24 release boundary is unavailable.",
       "claimLimit": "No valid current release-preflight result is claimed and no publish was attempted."
     },
@@ -307,7 +307,7 @@
       "dependency": ["Node 24.21.0", "npm registry/network", "public consumer"],
       "closureTask": "GAP-ORCH-005",
       "evidenceLocator": ["scripts/verify-published-packages.mjs", "docs/evidence/cross-repository-closure-envelope-2026-11-27.json"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Published-package verification remains outside this execution boundary; the earlier probe is not promoted as a result.",
       "claimLimit": "No registry version or public consumer result is asserted."
     },
@@ -324,7 +324,7 @@
       "closureTask": "GAP-ORCH-005",
       "scopeDecision": "Do not create a real partial release in this rebaseline task; retain the controlled recovery fixture and require an approved release-environment observation for runtime closure.",
       "evidenceLocator": ["scripts/test-release-record-failure.mjs", "docs/plans/03-npm-release-guard.md"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Recovery planning and failure injection exist; a real partial release was neither created nor required here.",
       "claimLimit": "Fixture evidence does not prove a live registry transaction or republish behavior."
     },
@@ -340,7 +340,7 @@
       "dependency": ["maintainer decision record", "provider/release promotion surface"],
       "closureTask": "GAP-ORCH-006",
       "evidenceLocator": ["command:node scripts/test-orchestration-contract.mjs", "scripts/run-release-preflight.mjs"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "Local approved/pending/rejected/stale decision handling is contract-tested and fail-closed; provider-side promotion enforcement was not observed.",
       "claimLimit": "Local decision-gate behavior does not prove provider-side scope or release enforcement."
     },
@@ -356,7 +356,7 @@
       "dependency": ["Node 24.21.0", "registry/network", "public consumer runtime"],
       "closureTask": "GAP-ORCH-003",
       "evidenceLocator": ["scripts/run-integration-gate.mjs", "command:node --version", "docs/evidence/public-boundary-audit-2026-11-14.json"],
-      "testedRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+      "testedRevision": "492c19a875196140fd4a5f86e760153706704e9c",
       "observation": "The isolated runner is present and local boundary fixtures pass, but the public consumer gate was not executed without sibling source.",
       "claimLimit": "Local workspace tests do not prove registry-installed consumer isolation."
     }

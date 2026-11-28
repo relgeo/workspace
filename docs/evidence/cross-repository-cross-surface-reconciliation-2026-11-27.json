@@ -2,7 +2,7 @@
   "recordType": "cross-repository-cross-surface-reconciliation",
   "schemaVersion": 1,
   "capturedAt": "2026-11-28",
-  "testedRootRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+  "testedRootRevision": "492c19a875196140fd4a5f86e760153706704e9c",
   "scope": {
     "repositories": [
       "https://github.com/relgeo/relgeo.github.io.git",
@@ -230,7 +230,7 @@
     {
       "id": "root: current revision readable",
       "passed": true,
-      "detail": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6"
+      "detail": "492c19a875196140fd4a5f86e760153706704e9c"
     },
     {
       "id": ".gitmodules: registered child count",
@@ -240,7 +240,7 @@
     {
       "id": "baseline: root revision",
       "passed": true,
-      "detail": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6 != 4371c5d0a343e5452aa69e0da6f070e2424d6ae6"
+      "detail": "492c19a875196140fd4a5f86e760153706704e9c != 492c19a875196140fd4a5f86e760153706704e9c"
     },
     {
       "id": "relgeo.github.io: child commit, gitlink, and baseline align",
@@ -315,7 +315,7 @@
     {
       "id": "rebaseline: current root revision",
       "passed": true,
-      "detail": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6 != 4371c5d0a343e5452aa69e0da6f070e2424d6ae6"
+      "detail": "492c19a875196140fd4a5f86e760153706704e9c != 492c19a875196140fd4a5f86e760153706704e9c"
     },
     {
       "id": "flutter: validated dispatch metadata",

@@ -6,8 +6,8 @@
   "sourceTupleJoin": {
     "status": "inconclusive",
     "reason": "Local files are historical v1.0.1 draft artifacts without a current release manifest or source-tuple attestation.",
-    "currentRoot": "9d68569aabd1dfde17134d6df145333c5d93611f",
-    "currentFlutterGitlink": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d"
+    "currentRoot": "492c19a875196140fd4a5f86e760153706704e9c",
+    "currentFlutterGitlink": "c93b0432e12f5ae11d34212d4da467aceaf8ca34"
   },
   "artifacts": [
     {
@@ -49,7 +49,7 @@
     "owner": "relgeo/flutter + relgeo/workspace",
     "sourceOfTruth": "docs/plans/10-desktop-runtime-smoke-checklist.md; docs/evidence/flutter-platform-provenance-2026-11-28.json",
     "evidenceLocator": "docs/plans/10-desktop-runtime-smoke-checklist.md:110",
-    "revision": "workspace@9d68569; flutter-gitlink@52e5bd2; workflow-source@6397c66; mcp@ad3079bb",
+    "revision": "workspace@492c19a; flutter-gitlink@c93b043; workflow-source@c93b043; mcp@ad3079bb",
     "dependency": "current-tuple native artifacts and approved macOS/Linux/Windows runtime hosts",
     "remediation": "Produce fresh artifacts from the synchronized root gitlink/workflow source, attach release-manifest.json and SHA256SUMS.txt, then execute target-host launch, picker/MCP, accessibility, and clean-exit smoke.",
     "claimLimit": "This record proves only local historical archive structure/checksums; it does not claim current packaged runtime usability."

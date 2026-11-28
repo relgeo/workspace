@@ -1,14 +1,14 @@
 # Flutter Workbench — Coverage Validation and Handoff
 
 > **Current-head rebaseline — 2026-11-27:** The 61-ID join is synchronized to
-> root `9d68569` and Flutter `52e5bd2`. The machine-readable disposition
+> root `492c19a` and Flutter `c93b043`. The machine-readable disposition
 > register is [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
 
 Final closure audit: [`../../evidence/flutter-final-closure-audit-2026-11-28.json`](../../evidence/flutter-final-closure-audit-2026-11-28.json).
 
 Current verification envelope — 2026-11-28: [`../../evidence/flutter-current-verification-2026-11-28.json`](../../evidence/flutter-current-verification-2026-11-28.json).
-It records root `9d68569`, Flutter root gitlink `52e5bd2`, Flutter child
-checkout `6397c66`, and MCP `ad3079b`. Four source/evidence checks passed;
+It records root `492c19a`, Flutter root gitlink `c93b043`, Flutter child
+checkout `c93b043`, and MCP `ad3079b`. Four source/evidence checks passed;
 Flutter analyzer/tests, shared conformance, semantic replay, and dependency
 bootstrap remain explicitly not verified or environment-unavailable. The
 child checkout is ahead of the root gitlink pending a writable root index
@@ -119,7 +119,7 @@ coverage proof for the Flutter boundary:
 | Declared category | Audit evidence/path | Handoff result |
 | --- | --- | --- |
 | Contract and normative intent | `docs/MATURATION-MASTER-PLAN.md`, `docs/REPOSITORY-MAP.md`, `docs/plans/06-flutter-alignment.md`, `docs/plans/07-flutter-capability-promotion-and-svg-parity.md`, expected catalog | Reviewed; active DSL/SVG boundaries and non-goals are preserved. |
-| Implementation/source and public API | `flutter/lib/main.dart`, `flutter/lib/src/ui/`, `flutter/lib/src/features/`, `flutter/lib/src/core/`, `flutter/pubspec.yaml` | Reviewed at current `flutter@52e5bd2`; symbols and user-facing boundaries are recorded in audit §2/§3. |
+| Implementation/source and public API | `flutter/lib/main.dart`, `flutter/lib/src/ui/`, `flutter/lib/src/features/`, `flutter/lib/src/core/`, `flutter/pubspec.yaml` | Reviewed at current `flutter@c93b043`; symbols and user-facing boundaries are recorded in audit §2/§3. |
 | Tests, fixtures, snapshots, and negative cases | `flutter/test/`, `flutter/test/support/`, shared fixtures, golden files; current `flutter test --no-pub --reporter compact` | Historical 2026-10-30 run: 307 tests passed locally; current source pointer is covered by Flutter CI `41184291670`. |
 | UI, command, worker, host, or consumer wiring | `flutter/lib/src/ui/cad_workbench.dart`, composition shell, feature panels, command/menu/context-menu files, `flutter/lib/src/mcp/` | Reviewed; routes, menus, shortcuts, bridges, and the single-surface `MaterialApp` boundary are explicit. |
 | Platform, persistence, accessibility, security, and runtime boundaries | `flutter/macos/`, `flutter/linux/`, `flutter/windows/`, file/preferences/layout services, method-channel host, `docs/plans/10-desktop-runtime-smoke-checklist.md` | Reviewed; native picker/AT/host runtime remains `not verified` where unavailable. |
@@ -182,7 +182,7 @@ artifact channel, or consumer combination has been executed.
 | `Q-FW-003` | DSL 0.5.x active fixture promotion dan semantic SVG comparator belum dibuktikan pada current pointer; raw/presentation parity tetap scope non-goal. | `CONTRACT-01..03`, `GAP-FW-002` |
 | `Q-FW-004` | Graph UX, stable object identity, selection semantics, hit-testing tolerance, dan keyboard selection behavior belum didefinisikan. | `CANVAS-05`, `VIEW-05`, `GAP-FW-004` |
 | `Q-FW-005` | Shortcut map per OS, native accessibility tree/VoiceOver/screen reader, dan native close/quit lifecycle belum memiliki current runtime evidence. | `CMD-03`, `A11Y-01/02`, `WINDOW-01`, `GAP-FW-005` |
-| `Q-FW-006` | Current pointer `52e5bd2` is joined to root `9d68569`; launch/MCP smoke and current artifact runtime remain unverified. | `PLAT-01..04`, audit §1, `GAP-FW-006` |
+| `Q-FW-006` | Current pointer `c93b043` is joined to root `492c19a`; launch/MCP smoke and current artifact runtime remain unverified. | `PLAT-01..04`, audit §1, `GAP-FW-006` |
 | `Q-FW-007` | Android/iOS, custom title bar, raw SVG byte equality, signed distribution, dan full DSL promotion adalah deferred/not applicable scope decisions, bukan untracked desktop gaps. | `SCOPE-01..05`, reconciliation scope findings |
 
 Fresh local analyzer/test success is retained as local evidence only; it does

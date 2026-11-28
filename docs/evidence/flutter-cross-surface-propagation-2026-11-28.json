@@ -22,7 +22,7 @@
     "claimLimit": "Local current-head and contract evidence only. This record does not claim provider CI dispatch, merge, registry, deployment, or public runtime behavior."
   },
   "revisionTuple": {
-    "rootHead": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+    "rootHead": "492c19a875196140fd4a5f86e760153706704e9c",
     "flutterChildHead": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "flutterRootGitlink": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
@@ -86,14 +86,14 @@
   },
   "baselineAndProvenance": {
     "baseline": "docs/integration-baseline.json",
-    "baselineRootRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+    "baselineRootRevision": "492c19a875196140fd4a5f86e760153706704e9c",
     "baselineFlutterRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "currentFlutterChildRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
     "status": "synchronized",
     "owner": "relgeo/workspace",
     "sourceOfTruth": "root index gitlink plus flutter child HEAD",
     "locator": "git ls-tree HEAD flutter; git -C flutter rev-parse HEAD",
-    "revision": "root@4371c5d; gitlink@c93b043; child@c93b043",
+    "revision": "root@492c19a; gitlink@c93b043; child@c93b043",
     "remediation": "Retain the native root commit and rerun current cross-surface and fresh-checkout/public verification gates after any subsequent root or child revision change.",
     "claimLimit": "The root baseline now claims the committed Flutter child revision; this does not claim provider CI, registry, deployment, or public runtime behavior."
   },
@@ -129,8 +129,8 @@
     {
       "id": "public-boundary",
       "command": "node scripts/audit-public-boundary.mjs",
-      "result": "passed",
-      "outputExcerpt": "{\"contract\":\"public-boundary-audit-v1\",\"status\":\"pass-with-artifact-boundary\",\"trackedEntries\":372,\"trackedPassed\":true,\"artifactRootsScanned\":2,\"artifactRootsUnavailable\":5,\"consumerPassed\":true,\"workflowViolations\":0,\"reportPath\":\"docs/evidence/public-boundary-audit-2026-11-14.json\"}",
+      "result": "inconclusive",
+      "outputExcerpt": "{\"contract\":\"public-boundary-audit-v1\",\"status\":\"pass-with-artifact-boundary\",\"trackedEntries\":385,\"trackedPassed\":true,\"artifactRootsScanned\":2,\"artifactRootsUnavailable\":5,\"consumerPassed\":true,\"workflowViolations\":0,\"reportPath\":\"docs/evidence/public-boundary-audit-2026-11-14.json\"}",
       "scope": "SuClos local validator tracked/public-boundary hygiene; unavailable artifact roots remain unverified"
     },
     {
@@ -159,12 +159,13 @@
     },
     {
       "id": "fresh-checkout-bootstrap-contract",
-      "command": "node scripts/bootstrap.mjs --skip-submodules --skip-install --report=/private/tmp/relgeo-bootstrap-current-20261128.json",
+      "command": "node scripts/bootstrap.mjs --skip-submodules --skip-install --report=/private/tmp/relgeo-bootstrap-current-20261128-r2.json",
       "result": "inconclusive",
       "outputExcerpt": "Bootstrap blocked: 12 submodule(s) reported",
       "scope": "Codex App Server managed sandbox bootstrap boundary",
       "boundary": "Codex App Server managed sandbox Node toolchain",
-      "claimLimit": "The report observed current root 4371c5d, all 12 submodule gitlinks aligned and clean, and public-boundary report passed; bootstrap did not reach a full fresh-clone proof because the host Node was v22.23.2 while the declared toolchain is Node 24.21.0."
+      "artifact": "/private/tmp/relgeo-bootstrap-current-20261128-r2.json",
+      "claimLimit": "The report observed current root 492c19a, all 12 submodule gitlinks aligned and clean, and public-boundary report passed; bootstrap did not reach a full fresh-clone proof because the host Node was v22.23.2 while the declared toolchain is Node 24.21.0."
     }
   ],
   "requiredAccess": {
@@ -194,7 +195,7 @@
     {
       "id": "evidence-3-baseline-provenance-records",
       "status": "passed",
-      "reason": "Current provenance and integration baseline are synchronized to root 4371c5d and Flutter c93b043."
+      "reason": "Current provenance and integration baseline are synchronized to root 492c19a and Flutter c93b043."
     },
     {
       "id": "evidence-4-fresh-checkout-public-verification",

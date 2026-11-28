@@ -1,9 +1,11 @@
 # Playground coverage validation and handoff
 
-**Validation date:** 2026-11-07
+**Validation date:** 2026-11-28
 
 **Scope:** Playground expected catalog, implementation audit, reconciliation,
 capability matrices, backlog, source/tests, and available local verification.
+The editor and parameter-entry reconciliation is maintained in
+[editor-parameter-closure.md](./editor-parameter-closure.md).
 
 This is an evidence handoff for the approved local closure boundary. It is not
 a claim that the Playground is production-ready, publicly hosted-verified, or
@@ -30,12 +32,12 @@ physical-device evidence to verified status.
 
 | Check | Result | Boundary or limitation |
 | --- | --- | --- |
-| `pnpm test` in `playground/` | PASS — 18 files / 119 tests | Unit tests live in `playground/src/__tests__`; `playground/test` is not present. Bootstrap lifecycle, worker identity/recovery/lifecycle, accessibility helpers, theme, viewport, keyboard, persistence, and consumer contracts are covered. |
+| `pnpm test` in `playground/` | PASS — 20 files / 133 tests | Unit tests live in `playground/src/__tests__`; `playground/test` is not present. Bootstrap lifecycle, worker identity/recovery/lifecycle, accessibility helpers, theme, viewport, keyboard/editor, parameter-entry, persistence, and consumer contracts are covered. |
 | `pnpm build` in `playground/` | PASS | TypeScript and Vite production build completed; only a non-blocking chunk-size warning was emitted. |
 | `pnpm audit:ux` in `playground/` | PASS — 13 component files / 4 approved dynamic inline styles | Static UX, ARIA, focus, responsive, reduced-motion, forced-colors, theme, and inline-style contracts pass. |
 | `pnpm lint` in `playground/` | PASS | Current Playground source is lint-clean when run independently. |
 | `pnpm conformance:fixtures` at workspace root | PASS — 677 assertions across 33 fixtures | Active 0.5 conformance, negative diagnostics, runtime errors, serialization replay, renderer, language-service, highlighting, preview, and CLI consumer checks pass. |
-| `pnpm exec playwright test --list` in `playground/` | PASS — 17 tests discovered | Delayed bootstrap, theme, file, viewport, accessibility, mobile, and authoring cases are present in the browser suite. |
+| `pnpm exec playwright test --list` in `playground/` | PASS — 22 tests discovered | Delayed bootstrap, theme, file, viewport, accessibility, mobile, editor, wrap, numeric-input, and reset cases are present in the browser suite. |
 | `pnpm exec playwright test` in `playground/` | NOT VERIFIED — environment unavailable | Playwright failed before page creation because the preview server could not bind `127.0.0.1:4173` (`EPERM`). This is not a source or test failure. |
 | `pnpm --filter relgeo-docs-site build` in workspace root | PASS | Docs site build completed and generated the local static site used for artifact assembly. |
 | `rsync -az --delete playground/dist/ relgeo.github.io/dist/playground/ && (cd relgeo.github.io && pnpm provenance:check && RELGEO_PLAYGROUND_ROOT=../playground RELGEO_SPEC_ROOT=../spec pnpm provenance:pages && pnpm run test:pages-artifact) && pnpm playground:artifact:check` | PASS | Local assembled artifact, route/title/base path, asset manifest/digests, child revisions, Pages workflow pins, and integration baseline agree for Playground `efb7396…`, website `33d7f96…`, spec `26ff532…`, and root `b3d9a4a…`. Hosted public parity remains separate. |
@@ -71,7 +73,7 @@ silently promoted to browser, native, or hosted verification.
 
 | Candidate | Capability | Owner | Current evidence | Next action |
 | --- | --- | --- | --- | --- |
-| `PG-TASK-002` | `PG-LIFE-002` startup/loading state | Playground lifecycle owner | `verified-local`; source distinguishes opening/restoring/ready/error, 119 unit tests pass, and browser discovery includes delayed gating; execution is not verified because preview binding returns `EPERM` | Run delayed bootstrap/restore/first-resolve browser checks on a bind-capable host; this is evidence follow-up, not an implementation gap. |
+| `PG-TASK-002` | `PG-LIFE-002` startup/loading state | Playground lifecycle owner | `verified-local`; source distinguishes opening/restoring/ready/error, 133 unit tests pass, and browser discovery includes delayed gating; execution is not verified because preview binding returns `EPERM` | Run delayed bootstrap/restore/first-resolve browser checks on a bind-capable host; this is evidence follow-up, not an implementation gap. |
 | `PG-TASK-005` | `PG-A11Y-001` web accessibility semantics evidence | Playground UI/accessibility owner | `⏸️ host-unverified`; static UX/ARIA/focus contracts pass, browser traversal and native AT remain unavailable | Run supported-browser AX/keyboard checks, then record native VoiceOver/TalkBack/device evidence separately when hosts are available. |
 | `PG-TASK-007` | `PG-DELIVERY-001` hosted artifact consistency | Playground + Pages delivery owner | `⏸️ hosted-unverified`; local route/title/base/manifest/digest/provenance checks pass, hosted parity is unverified | Compare the hosted artifact with the tested revision and run public smoke when Pages is reachable. It is not a prerequisite for local capability closure. |
 

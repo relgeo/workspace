@@ -1,6 +1,6 @@
 # Playground expected-versus-observed reconciliation
 
-> **Coverage statement — 2026-11-07.** This document is a one-to-one join of
+> **Coverage statement — 2026-11-28.** This document is a one-to-one join of
 > the 37 expected capability IDs in the Playground catalog with the 37 rows in
 > the current Playground implementation audit. It does not add observed-only
 > capabilities, remove expected rows, or convert an absent implementation into
@@ -11,6 +11,7 @@
 | Expected source | [Playground expected capability catalog](./expected-capability-catalog.md) |
 | Observed source | [Playground implementation audit](./implementation-audit.md) |
 | Closure source | [Playground row-level closure register](./closure-register.md) |
+| Current editor/parameter overlay | [editor-parameter-closure.md](./editor-parameter-closure.md) |
 | Policy and product sources | [Repository map](../../REPOSITORY-MAP.md); [Maturation master plan](../../MATURATION-MASTER-PLAN.md); [Playground hardening plan](../../plans/05-public-docs-and-playground-hardening.md); [inventory protocol](../INVENTORY-PROTOCOL.md) |
 | Surface owner | `relgeo/playground` owns browser IDE workflow and presentation; `spec/id/`, core, language-service, and renderer packages retain delegated semantics |
 | Join status | Complete; every expected ID has exactly one reconciliation row and one audit trace |
@@ -56,20 +57,25 @@ Important distinctions:
 | Audit trace present | Yes, every row points to the matching audit ID and evidence section |
 | Required evidence sources represented | Yes: `playground` surface, `docs/REPOSITORY-MAP.md`, `docs/MATURATION-MASTER-PLAN.md`, and `docs/capability-map` |
 
-### 2.1 Validation checkpoint — 2026-11-07
+### 2.1 Validation checkpoint — 2026-11-28
 
 | Command / check | Result and interpretation |
 | --- | --- |
-| `pnpm test` in `playground/` | Pass; 18 files and 119 tests. Covers bootstrap phases/gating, bootstrap storage-error status, worker identity/recovery/lifecycle, theme helpers, and the current source/unit contract. |
-| `pnpm build` in `playground/` | Pass; type-check and Vite build completed. Local build provenance records child revision `c263920146a7ba28fe76561df25d1174b289663b`. |
+| `pnpm test` in `playground/` | Pass; 20 files and 133 tests. Covers bootstrap phases/gating, bootstrap storage-error status, worker identity/recovery/lifecycle, theme helpers, keyboard/editor behavior, parameter drafts/reset helpers, and the current source/unit contract. |
+| `pnpm build` in `playground/` | Pass; type-check and Vite build completed. Local build provenance records child revision `33631d930adc01efbdf25caccdd95e1af55e2526`. |
 | `pnpm audit:ux` in `playground/` | Pass; 13 component files and 4 approved dynamic inline styles. |
-| `pnpm exec playwright test --list` in `playground/` | Pass; 17 browser tests discovered, including delayed bootstrap gating, startup/accessibility, and system-theme cases. |
+| `pnpm exec playwright test --list` in `playground/` | Pass; 22 browser tests discovered, including delayed bootstrap gating, startup/accessibility, editor authoring, word-wrap, numeric-input, and profile-reset cases. |
 | `pnpm exec playwright test playground.spec.ts -g "gates the workspace while bootstrap is loading"` | Not verified; Playwright could not start its preview server because binding `127.0.0.1:4173` returned `EPERM` before page creation. This is environment-limited, not a target failure. |
 | `pnpm run test:pages-artifact` in `relgeo.github.io/` | Pass; 3 Playground asset references checked, including base path/title/manifest/digests. The local delivery boundary is closed; hosted parity remains separate. |
 | `pnpm provenance:check` and `pnpm provenance:pages` in `relgeo.github.io/` | Pass; synchronized local tuple with Playground `efb7396…`, website `33d7f96…`, and spec `26ff532…`; no mismatches. |
 
 The canonical workspace declares Node `>=24`; these checks ran under the
 available Node `22.23.2`, so Node-version parity remains environment-limited.
+
+The editor and parameter-entry plan is reconciled against the existing
+capability IDs in [editor-parameter-closure.md](./editor-parameter-closure.md).
+Its local implementation is closed at the source/unit/static boundary; the
+Playwright bind limitation remains an evidence boundary only.
 
 ## 3. Task-bound selection and accepted contracts
 
@@ -153,7 +159,7 @@ new decision surface.
 | ID | Expected capability / user outcome | Result | Implementation status | Evidence status | Scope / owner decision | Audit trace |
 | --- | --- | --- | --- | --- | --- | --- |
 | `PG-LIFE-001` | Open a usable browser Playground session from the public entrypoint | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; Playground entry and delivery boundary | Audit §3 `PG-LIFE-001`; `index.html`, Vite base, build |
-| `PG-LIFE-002` | Show loading/startup state for app, workspace, example, and resolver | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; local implementation is closed, while delayed browser observation is evidence-only and environment-limited | `App.tsx`/`playground-status.ts` explicit `loading`/`empty`/`ready`/`error` phases, 119 unit tests, gating tests, and E2E definition; delayed browser trace remains not verified |
+| `PG-LIFE-002` | Show loading/startup state for app, workspace, example, and resolver | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; local implementation is closed, while delayed browser observation is evidence-only and environment-limited | `App.tsx`/`playground-status.ts` explicit `loading`/`empty`/`ready`/`error` phases, 133 unit tests, gating tests, and E2E definition; delayed browser trace remains not verified |
 | `PG-LIFE-003` | Show editing, resolving, ready/inspecting, and exporting lifecycle transitions | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; Playground lifecycle UI | Audit §3 `PG-LIFE-003`; `playground-status.ts`, saving feedback, view state |
 | `PG-LIFE-004` | Give distinct failure and recovery states for resolve, storage, share, clipboard, and export | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; Playground recovery UI | Audit §3 `PG-LIFE-004`; worker/storage/share errors and recovery actions |
 | `PG-EDIT-001` | Read and edit RelGeo source while retaining editor interaction state | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; Playground editor; DSL remains delegated | Audit §3 `PG-EDIT-001`; CodeMirror, YAML, linter, completion, hover |
@@ -172,7 +178,7 @@ new decision surface.
 | `PG-PERSIST-001` | Restore active file, documents, content, metadata, and identity after reload | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; IndexedDB canonical store, not cloud | Audit §3 `PG-PERSIST-001`; schema v1 repository and active restore |
 | `PG-PERSIST-002` | Distinguish dirty, saving, saved-local, and save-error states | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; memory fallback where possible | Audit §3 `PG-PERSIST-002`; queued writes and persistence feedback |
 | `PG-PERSIST-003` | Backup and restore a versioned JSON workspace safely | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; portability/recovery, no credentials | Audit §3 `PG-PERSIST-003`; size guard, parse, confirmation, replacement |
-| `PG-CANVAS-001` | See live visual projection of resolved source in the preview canvas | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; renderer/core retain delegated semantics | Audit §3 `PG-CANVAS-001`; worker SVG and Preview surfaces, 119 Playground tests, and safe renderer SVG boundary |
+| `PG-CANVAS-001` | See live visual projection of resolved source in the preview canvas | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; renderer/core retain delegated semantics | Audit §3 `PG-CANVAS-001`; worker SVG and Preview surfaces, 133 Playground tests, and safe renderer SVG boundary |
 | `PG-CANVAS-002` | Zoom the screen viewport with understandable bounded controls | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; screen camera, not model mutation | Audit §3 `PG-CANVAS-002`; toolbar, clamped state, Ctrl/Meta+wheel |
 | `PG-CANVAS-003` | Pan with pointer/touch and have a non-gesture alternative | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; physical touch evidence deferred by scope decision | Audit §3 `PG-CANVAS-003`; pointer/pinch handlers and gesture tests |
 | `PG-CANVAS-004` | Fit or recenter the scene after resolve, resize, or sheet change | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; camera contract | Audit §3 `PG-CANVAS-004`; fit/recenter and `ResizeObserver` |
@@ -184,7 +190,7 @@ new decision surface.
 | `PG-THEME-001` | Use a readable user-visible theme across editor, canvas, controls, and diagnostics | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; Playground owns theme control and preference | Audit §3 `PG-THEME-001`; system/light/dark mode, local persistence, tokens, and unit/E2E definitions |
 | `PG-RESP-001` | Use the layout on desktop, tablet, and handset without inaccessible overflow | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; physical handset validation deferred | Audit §3 `PG-RESP-001`; breakpoints, drawer, surface switcher, split modes |
 | `PG-KEY-001` | Run primary actions through keyboard and documented command surface | `✔️ implemented` | `implemented` | `partial-local` | `in scope`; documented command map is implemented, browser focus proof pending | Audit §3 `PG-KEY-001`; Mod+Alt dispatcher, documentation, unit tests, and E2E definition |
-| `PG-A11Y-001` | Expose landmarks, names, states, focus management, announcements, and navigation to AT | `⏸️ held` | `implemented` | `verified-local; host-unverified` | `held`; web semantics are implemented, but browser traversal and native AT/device evidence require unavailable hosts; owner is Playground UI/accessibility | ARIA/live status/focus code, UX audit, discovered DOM/keyboard E2E coverage, and 119 unit tests; browser execution is blocked by `EPERM`, native AT remains separate |
+| `PG-A11Y-001` | Expose landmarks, names, states, focus management, announcements, and navigation to AT | `⏸️ held` | `implemented` | `verified-local; host-unverified` | `held`; web semantics are implemented, but browser traversal and native AT/device evidence require unavailable hosts; owner is Playground UI/accessibility | ARIA/live status/focus code, UX audit, discovered DOM/keyboard E2E coverage, and 133 unit tests; browser execution is blocked by `EPERM`, native AT remains separate |
 | `PG-A11Y-002` | Provide reduced motion, focus/contrast tolerance, target usability, and non-gesture actions | `✔️ implemented` | `implemented` | `deferred-device` | `in scope`; source/static UX contract is implemented, physical evidence pending | Audit §3 `PG-A11Y-002`; reduced motion, forced-colors fallback, targets, and non-gesture alternatives |
 | `PG-SHARE-001` | Share source through URL/hash with feedback, clipboard fallback, and size guard | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no account/cloud collaboration | Audit §3 `PG-SHARE-001`; Base64URL, length guard, history and clipboard |
 | `PG-SHARE-002` | Keep shared source transient until explicit Save as, with distinct recovery states | `✔️ implemented` | `implemented` | `verified-local` | `in scope`; no silent local overwrite | Audit §3 `PG-SHARE-002`; Shared draft, Save as, invalid/oversized hash paths |

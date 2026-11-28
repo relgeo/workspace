@@ -1,6 +1,6 @@
 # Playground status matrix
 
-> **Coverage statement — 2026-11-07.** This is the capability-first status
+> **Coverage statement — 2026-11-28.** This is the capability-first status
 > view for all 37 rows in the Playground expected catalog. It is derived from
 > the [implementation audit](./implementation-audit.md) and
 > [expected-versus-observed reconciliation](./reconciliation.md);
@@ -13,9 +13,9 @@
 | --- | --- |
 | Surface | `relgeo/playground` browser IDE and `/playground/` delivery artifact |
 | Matrix owner | Playground product owner; delegated DSL semantics remain with `spec/id/`, core, language-service, and renderer packages |
-| Source of truth | Expected catalog → implementation audit → reconciliation; required plans remain requirement and scope sources |
-| Audit date | 2026-11-07 |
-| Evidence freshness | Current Playground checkout with explicit bootstrap storage-error handling, worker lifecycle recovery, and delayed-bootstrap E2E coverage: 18 test files / 119 unit tests, production build, lint, UX contract audit, and 17 discovered E2E tests pass/list successfully; targeted browser execution, hosted Pages parity, and native device evidence remain separately held and explicitly not verified |
+| Source of truth | Expected catalog → implementation audit → reconciliation; [editor/parameter closure overlay](./editor-parameter-closure.md); required plans remain requirement and scope sources |
+| Audit date | 2026-11-28 |
+| Evidence freshness | Current Playground checkout with editor keyboard/wrap and numeric parameter/reset closure: 20 test files / 133 unit tests, production build, and 22 discovered E2E tests pass/list successfully; Node 24 parity, targeted browser execution, hosted Pages parity, and native device evidence remain separately held and explicitly not verified |
 
 ## Status and evidence legend
 
@@ -41,7 +41,7 @@ appropriate native AT/device host. It is owned by the Playground
 UI/accessibility owner and must not be inferred from static source checks,
 Playwright test discovery, or the supported-browser DOM contract.
 
-## Final closure boundary — 2026-11-07
+## Final closure boundary — 2026-11-28
 
 The final approved Playground boundary has 37 one-to-one rows: 35 local
 implementation closures and two explicit host/deployment holds. `PG-LIFE-002`
@@ -80,7 +80,7 @@ of capability rows.
 | ID | Capability | Status | Evidence | Gap / limitation | Owner | Dependency | Risk | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `PG-LIFE-001` | Open usable Playground session | `✔️` | Local `index.html`, Vite base, build | Hosted route/smoke unverified | Playground + Pages delivery | Vite base and hosted artifact | Public entry can diverge from tested build | Run current hosted smoke and compare artifact revision |
-| `PG-LIFE-002` | Loading/startup state | `✔️` | Explicit `opening`/`restoring`/`empty`/`ready`/`error` phase model, bootstrap storage errors surfaced as `ERROR`, 119 unit tests, and delayed-bootstrap E2E coverage | Local implementation and gating are verified; delayed browser trace is explicitly not verified because the Playwright preview server cannot bind (`EPERM`) | Playground lifecycle owner | React bootstrap, IndexedDB, examples | Browser-only observation remains unavailable | Run delayed bootstrap test on a bind-capable host; this is evidence follow-up, not an open implementation gap |
+| `PG-LIFE-002` | Loading/startup state | `✔️` | Explicit `opening`/`restoring`/`empty`/`ready`/`error` phase model, bootstrap storage errors surfaced as `ERROR`, 133 unit tests, and delayed-bootstrap E2E coverage | Local implementation and gating are verified; delayed browser trace is explicitly not verified because the Playwright preview server cannot bind (`EPERM`) | Playground lifecycle owner | React bootstrap, IndexedDB, examples | Browser-only observation remains unavailable | Run delayed bootstrap test on a bind-capable host; this is evidence follow-up, not an open implementation gap |
 | `PG-LIFE-003` | Product lifecycle state | `✔️` | Stable fixed-width status dot; ready/error text is available as tooltip without shifting toolbar controls | Export is action feedback, not a separately named state | Playground | Worker, persistence, view state | Transition meaning can be inferred inconsistently | Keep lifecycle assertions in browser smoke |
 | `PG-LIFE-004` | Failure and recovery state | `✔️` | Worker/storage/share/clipboard paths and recovery controls | Native/platform presentation unverified | Playground | Worker, IndexedDB, URL, clipboard | Users may not recover consistently across browsers | Run browser failure-path evidence |
 | `PG-EDIT-001` | RelGeo source editor | `✔️` | CodeMirror, YAML, linter, completion, hover; local tests/build | Fresh browser cursor/selection proof unavailable | Playground editor | CodeMirror and language-service | Authoring confidence may exceed current browser evidence | Retain browser editor smoke |

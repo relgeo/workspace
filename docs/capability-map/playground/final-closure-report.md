@@ -1,6 +1,6 @@
 # Playground final green-surface closure report
 
-**Audit date:** 2026-11-07  
+**Audit date:** 2026-11-28
 **Boundary:** local Playground implementation, unit/static contracts, bounded
 consumer integration, and locally assembled Pages artifact  
 **Out of boundary:** public Pages deployment parity, browser execution on a
@@ -22,6 +22,9 @@ canonical status and capability matrices contain exactly one row per ID:
 | `➖` | 0 expected rows | No expected catalog row was silently removed or narrowed. |
 
 The row-level source/evidence join is [`closure-register.md`](./closure-register.md).
+The editor and parameter-entry plan is reconciled by
+[`editor-parameter-closure.md`](./editor-parameter-closure.md), which maps its
+requirements to existing capability IDs without adding a cosmetic row.
 The canonical status view is [`status-matrix.md`](./status-matrix.md); its
 historical intake snapshot is explicitly separated from the one-row final
 matrix.
@@ -46,7 +49,7 @@ restart, message-error recovery, and cleanup:
 
 - Bootstrap lifecycle: `playground/src/App.tsx`,
   `playground/src/playground-status.ts`, `playground/src/worker.ts`, and
-  `playground/src/indexeddb-persistence.ts`, with 18 test files and 119 unit
+  `playground/src/indexeddb-persistence.ts`, with 20 test files and 133 unit
   tests passing.
 - Accessibility boundary: `App.tsx`, `Navbar.tsx`, `Inspector.tsx`,
   `Sidebar.tsx`, `Editor.tsx`, and `scripts/audit-ux-contract.mjs`; static UX
@@ -60,13 +63,18 @@ restart, message-error recovery, and cleanup:
   Playground `efb7396…`, website `33d7f96…`, spec `26ff532…`, and root baseline
   `b3d9a4a…`; affected `WEB-PAGE-007` is closed locally without claiming
   hosted smoke.
+- Editor and parameter-entry closure: two-space editor indentation, two-stage
+  Escape, session word-wrap, direct numeric metadata/drafts/validation, and
+  profile-aware reset are implemented and mapped to `PG-EDIT-001`,
+  `PG-KEY-001`, `PG-INSPECT-001`, `PG-RESP-001`, and `PG-A11Y-001`; see the
+  overlay for source/test locators and the bounded browser limitation.
 
 ## Root and cross-surface gates
 
 | Gate | Result | Interpretation |
 | --- | --- | --- |
 | Playground test/lint/build/UX audit | PASS | Local source and static contract evidence is green. |
-| Browser discovery | PASS — 17 tests listed | Delayed bootstrap, theme, authoring, viewport, accessibility, and mobile cases are present. |
+| Browser discovery | PASS — 22 tests listed | Delayed bootstrap, theme, authoring, viewport, accessibility, mobile, word-wrap, numeric-input, and profile-reset cases are present. |
 | Browser execution | NOT VERIFIED — `EPERM` on preview bind | Environment unavailable before page creation; not a source failure. |
 | Website test/check | PASS — 0 errors, warnings, hints | Affected Pages consumer remains valid. |
 | Pages artifact/provenance assertion | PASS | Local route/title/assets/digests and revision tuple are internally consistent. |
@@ -106,4 +114,5 @@ boundaries and preserves the remaining holds for future host-capable runs.
 - [`reconciliation.md`](./reconciliation.md)
 - [`implementation-gap-backlog.md`](./implementation-gap-backlog.md)
 - [`closure-register.md`](./closure-register.md)
+- [`editor-parameter-closure.md`](./editor-parameter-closure.md)
 - [`../../MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md)

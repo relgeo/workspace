@@ -1,6 +1,6 @@
 # Playground implementation-gap backlog
 
-**Tanggal:** 2026-11-07
+**Tanggal:** 2026-11-28
 
 **Status:** candidate goal/task register; no row here counts as implementation
 
@@ -11,6 +11,11 @@
 is authoritative for the 37 stable catalog IDs, source/evidence boundaries,
 and explicit closure dispositions. This backlog remains the candidate-task
 history and does not replace that register.
+
+**Current editor/parameter overlay:** [editor-parameter-closure.md](./editor-parameter-closure.md)
+joins the active editor and parameter-entry plan to existing capability IDs;
+it introduces no new row and does not promote a capability without source and
+validation evidence.
 
 **Selected scope:** [bounded in-scope selection](./in-scope-selection.md)
 records the active local/browser tranche. Rows not listed there remain
@@ -29,14 +34,14 @@ no `🌗`, `❌`, or `⚠️` row: `PG-LIFE-002` is locally closed, while
 Updating this document or the matrix never substitutes for source/test
 evidence; the disposition changes here only to mirror the audited boundary.
 
-## Rebaseline checkpoint — 2026-11-07
+## Rebaseline checkpoint — 2026-11-28
 
 The fresh audit closes `PG-LIFE-002` at the local implementation boundary;
 its delayed bootstrap browser trace is an evidence follow-up. `PG-A11Y-001`
 is an explicit `⏸️` host-evidence hold for browser traversal and separately
 labeled native AT evidence. `PG-DELIVERY-001` is an explicit hosted-only
 `⏸️` hold; its local artifact/provenance boundary is closed. The current local Playground
-checkout is `efb7396…`; `pnpm test` (119 tests), `pnpm build`, `pnpm lint`, and
+checkout is `33631d930adc01efbdf25caccdd95e1af55e2526`; `pnpm test` (133 tests), `pnpm build`, `pnpm lint`, and
 `pnpm audit:ux` pass, while targeted browser execution is environment-limited
 by preview-server `EPERM`. No new capability ID is introduced.
 
@@ -61,7 +66,7 @@ where evidence exists and never promotes a local result to hosted parity.
 
 | ID | Bound outcome | Required evidence before closure | Explicit non-goal |
 | --- | --- | --- | --- |
-| `PG-LIFE-002` | Startup distinguishes `loading`, `empty`, `ready`, and `error`; editor, file actions, preview controls, and command shortcuts are gated while bootstrap is `loading`. | Source state model and 119 unit tests close the local implementation; delayed browser trace is recorded as not verified because the preview server cannot bind. | Do not reinterpret resolver `resolving` or storage failure as `empty`; do not change the accepted theme contract. |
+| `PG-LIFE-002` | Startup distinguishes `loading`, `empty`, `ready`, and `error`; editor, file actions, preview controls, and command shortcuts are gated while bootstrap is `loading`. | Source state model and 133 unit tests close the local implementation; delayed browser trace is recorded as not verified because the preview server cannot bind. | Do not reinterpret resolver `resolving` or storage failure as `empty`; do not change the accepted theme contract. |
 | `PG-A11Y-001` | Browser DOM/ARIA semantics expose landmarks, names, roles, selected/expanded/pressed/value states, announcements, focus return/traps, and source/preview navigation. | `playground/scripts/audit-ux-contract.mjs`; DOM/keyboard browser run; focused source/tests; native VoiceOver/TalkBack remains separately labeled as deferred or unverified. | Native AT/device evidence is not silently claimed by static source checks. |
 | `PG-DELIVERY-001` | Hosted `/playground/` is traceable to the tested child revision and assembled artifact. | Child revision, clean build output, base route/title/asset manifest comparison, hosted smoke/share run, and explicit environment/host limitation record. | A local Vite build is not public parity; Pages/network unavailability is `environment-limited`, not an implementation failure. |
 

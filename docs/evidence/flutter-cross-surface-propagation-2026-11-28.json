@@ -1,0 +1,205 @@
+{
+  "recordType": "flutter-cross-surface-propagation-evidence",
+  "schemaVersion": "flutter-cross-surface-propagation/v1",
+  "capturedAt": "2026-11-28",
+  "taskId": "propagate-flutter-closure-changes-across-consumers-and-orchestration--9582319760",
+  "scope": {
+    "repositories": [
+      "relgeo/workspace",
+      "relgeo/relgeo.github.io",
+      "relgeo/playground",
+      "relgeo/spec",
+      "relgeo/core",
+      "relgeo/geometry",
+      "relgeo/language-service",
+      "relgeo/renderer-svg",
+      "relgeo/cli",
+      "relgeo/remark-relgeo",
+      "relgeo/remark-relgeo-hl",
+      "relgeo/flutter",
+      "relgeo/mcp"
+    ],
+    "claimLimit": "Local current-head and contract evidence only. This record does not claim provider CI dispatch, merge, registry, deployment, or public runtime behavior."
+  },
+  "revisionTuple": {
+    "rootHead": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+    "flutterChildHead": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "flutterRootGitlink": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "rendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b"
+  },
+  "childRepositories": [
+    { "path": "relgeo.github.io", "revision": "450488d93d05059a190efd89e013f9a5274b8313", "rootGitlink": "450488d93d05059a190efd89e013f9a5274b8313", "clean": true },
+    { "path": "playground", "revision": "33631d930adc01efbdf25caccdd95e1af55e2526", "rootGitlink": "33631d930adc01efbdf25caccdd95e1af55e2526", "clean": true },
+    { "path": "spec", "revision": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0", "rootGitlink": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0", "clean": true },
+    { "path": "core", "revision": "cf2404a8fafdb0d664fdd7dc672926b5207184ab", "rootGitlink": "cf2404a8fafdb0d664fdd7dc672926b5207184ab", "clean": true },
+    { "path": "geometry", "revision": "91c644379759d61184f64c8250e7ff7ef0b745f3", "rootGitlink": "91c644379759d61184f64c8250e7ff7ef0b745f3", "clean": true },
+    { "path": "language-service", "revision": "e2c21878aedda84874555286bc448af92137e742", "rootGitlink": "e2c21878aedda84874555286bc448af92137e742", "clean": true },
+    { "path": "renderer-svg", "revision": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b", "rootGitlink": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b", "clean": true },
+    { "path": "cli", "revision": "b06cadc03c43542eaaa8728711ef7238c0c759ee", "rootGitlink": "b06cadc03c43542eaaa8728711ef7238c0c759ee", "clean": true },
+    { "path": "remark-relgeo", "revision": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53", "rootGitlink": "07d09a5fa3bc0bb94eb30fb819e4a495e0d18a53", "clean": true },
+    { "path": "remark-relgeo-hl", "revision": "4de88408a543a9f39424e4cf9706ee8441c8e3d5", "rootGitlink": "4de88408a543a9f39424e4cf9706ee8441c8e3d5", "clean": true },
+    { "path": "flutter", "revision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34", "rootGitlink": "c93b0432e12f5ae11d34212d4da467aceaf8ca34", "clean": true, "status": "synchronized" },
+    { "path": "mcp", "revision": "ad3079bb9658ea44f58ae0a6872a042473e95626", "rootGitlink": "ad3079bb9658ea44f58ae0a6872a042473e95626", "clean": true }
+  ],
+  "propagatedChanges": {
+    "flutterChildCommit": {
+      "revision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+      "message": "feat: close Flutter workbench consumer contracts",
+      "paths": [
+        "flutter/.github/workflows/desktop-release.yml",
+        "flutter/lib/src/ui/cad_workbench.dart",
+        "flutter/lib/src/ui/workbench_commands.dart",
+        "flutter/lib/src/ui/workbench_document_recovery.dart",
+        "flutter/lib/src/ui/workbench_file_service.dart",
+        "flutter/lib/src/ui/workbench_import_diagnostics.dart",
+        "flutter/test/shared_diagnostic_contract_test.dart",
+        "flutter/test/workbench_document_recovery_test.dart",
+        "flutter/test/workbench_file_service_test.dart",
+        "flutter/test/workbench_import_diagnostics_test.dart",
+        "flutter/test/workbench_platform_menu_bar_test.dart"
+      ],
+      "status": "committed-child-checkout-clean"
+    },
+    "rootConsumers": [
+      "fixtures/diagnostics/flutter-import-contract.json",
+      "docs/capability-map/flutter-workbench/implementation-gap-map.md",
+      "docs/capability-map/flutter-workbench/reconciliation.md",
+      "docs/capability-map/flutter-workbench/status-matrix.md",
+      "docs/evidence/flutter-final-closure-audit-2026-11-28.json",
+      "docs/evidence/flutter-platform-provenance-2026-11-28.json",
+      "scripts/check-flutter-platform-provenance.mjs"
+    ],
+    "unchangedOwners": [
+      "mcp",
+      "spec",
+      "core",
+      "geometry",
+      "renderer-svg",
+      "playground",
+      "relgeo.github.io"
+    ],
+    "unchangedOwnersReason": "Current contract and consumer checks found no source change required in these repositories; their checked-out revisions remain aligned to root gitlinks."
+  },
+  "baselineAndProvenance": {
+    "baseline": "docs/integration-baseline.json",
+    "baselineRootRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
+    "baselineFlutterRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "currentFlutterChildRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+    "status": "synchronized",
+    "owner": "relgeo/workspace",
+    "sourceOfTruth": "root index gitlink plus flutter child HEAD",
+    "locator": "git ls-tree HEAD flutter; git -C flutter rev-parse HEAD",
+    "revision": "root@4371c5d; gitlink@c93b043; child@c93b043",
+    "remediation": "Retain the native root commit and rerun current cross-surface and fresh-checkout/public verification gates after any subsequent root or child revision change.",
+    "claimLimit": "The root baseline now claims the committed Flutter child revision; this does not claim provider CI, registry, deployment, or public runtime behavior."
+  },
+  "verification": [
+    {
+      "id": "compatibility-and-contract-consumers",
+      "command": "node scripts/check-compatibility.mjs",
+      "result": "passed",
+      "outputExcerpt": "summary: 301 passed, 0 failed",
+      "scope": "SuClos local validator compatibility matrix, Flutter mapping, MCP/spec/core/renderer consumer contracts"
+    },
+    {
+      "id": "mcp-diagnostics-consumer",
+      "command": "node scripts/check-mcp-diagnostics-provenance-closure.mjs",
+      "result": "passed",
+      "outputExcerpt": "MCP diagnostics/provenance closure: PASS (identity, diagnostic provenance, completion fallback, deterministic ordering, tests, and fixture verified; evidence_id=unspecified; evidence_scope=diagnostics-completion-provenance)",
+      "scope": "SuClos local validator MCP/root contract consumer"
+    },
+    {
+      "id": "flutter-rebaseline-and-catalog",
+      "command": "node scripts/check-flutter-workbench-rebaseline.mjs",
+      "result": "passed",
+      "outputExcerpt": "Flutter Workbench rebaseline check passed",
+      "scope": "SuClos local validator 61-ID catalog, 17 held rows, root/child pointers, and capability-map joins"
+    },
+    {
+      "id": "flutter-provenance",
+      "command": "node scripts/check-flutter-platform-provenance.mjs",
+      "result": "passed",
+      "outputExcerpt": "Flutter platform provenance check passed: tuple, workflow pins, four platform dispositions, and claim limits are synchronized.",
+      "scope": "SuClos local validator workflow/spec provenance and target claim limits"
+    },
+    {
+      "id": "public-boundary",
+      "command": "node scripts/audit-public-boundary.mjs",
+      "result": "passed",
+      "outputExcerpt": "{\"contract\":\"public-boundary-audit-v1\",\"status\":\"pass-with-artifact-boundary\",\"trackedEntries\":372,\"trackedPassed\":true,\"artifactRootsScanned\":2,\"artifactRootsUnavailable\":5,\"consumerPassed\":true,\"workflowViolations\":0,\"reportPath\":\"docs/evidence/public-boundary-audit-2026-11-14.json\"}",
+      "scope": "SuClos local validator tracked/public-boundary hygiene; unavailable artifact roots remain unverified"
+    },
+    {
+      "id": "cross-surface-reconciliation",
+      "command": "node scripts/check-cross-surface-reconciliation.mjs --report=docs/evidence/cross-repository-cross-surface-reconciliation-2026-11-27.json",
+      "result": "passed",
+      "outputExcerpt": "Cross-surface reconciliation: PASS (25/25 checks; 12 child commits; stalePointers=0; staleContractReferences=0; gitlinkUpdateRequired=false)",
+      "scope": "SuClos local validator root gitlinks versus child checkouts",
+      "claimLimit": "This is local current-head reconciliation only; it does not claim provider CI dispatch, merge, registry, deployment, or runtime behavior."
+    },
+    {
+      "id": "strict-baseline",
+      "command": "node scripts/verify-baseline.mjs --strict",
+      "result": "passed",
+      "outputExcerpt": "Summary: 0 failed, 89 passed\nBaseline verification passed",
+      "scope": "SuClos local validator generated baseline and clean recursive checkout",
+      "claimLimit": "The strict local baseline now proves current root gitlinks, child checkouts, and clean state; it does not claim provider or public runtime behavior."
+    },
+    {
+      "id": "fresh-checkout-public",
+      "command": "node scripts/audit-public-boundary.mjs",
+      "result": "inconclusive",
+      "outputExcerpt": "artifactRootsUnavailable:5",
+      "scope": "Current local public-boundary scan only",
+      "claimLimit": "No fresh clone, provider CI, registry, deployment, or public runtime was executed at this boundary; the historical fresh-checkout record is not promoted to this current tuple."
+    },
+    {
+      "id": "fresh-checkout-bootstrap-contract",
+      "command": "node scripts/bootstrap.mjs --skip-submodules --skip-install --report=/private/tmp/relgeo-bootstrap-current-20261128.json",
+      "result": "inconclusive",
+      "outputExcerpt": "Bootstrap blocked: 12 submodule(s) reported",
+      "scope": "Codex App Server managed sandbox bootstrap boundary",
+      "boundary": "Codex App Server managed sandbox Node toolchain",
+      "claimLimit": "The report observed current root 4371c5d, all 12 submodule gitlinks aligned and clean, and public-boundary report passed; bootstrap did not reach a full fresh-clone proof because the host Node was v22.23.2 while the declared toolchain is Node 24.21.0."
+    }
+  ],
+  "requiredAccess": {
+    "status": "resolved",
+    "owner": "relgeo/workspace",
+    "boundary": "SuClos native root Git commit",
+    "concreteAction": "Native git_commit staged and committed the reviewed flutter gitlink; the baseline was regenerated and the current synchronization gates were rerun.",
+    "observedFailure": "Earlier Codex App Server git add was blocked by .git/index.lock; the native SuClos commit path resolved the boundary.",
+    "claimLimit": "Root gitlink and baseline promotion are complete locally; this does not claim provider CI, registry, deployment, or public runtime behavior."
+  },
+  "validationCoverage": [
+    {
+      "id": "criterion-1-required-cross-surface-changes-are-applied-at-ow",
+      "status": "passed",
+      "reason": "Child implementation, root Flutter gitlink, generated baseline, consumer records, and provenance are now joined at the current root commit."
+    },
+    {
+      "id": "evidence-1-child-commits-root-gitlinks",
+      "status": "passed",
+      "reason": "All 12 child revisions are recorded; every checkout is clean and matches its root gitlink."
+    },
+    {
+      "id": "evidence-2-cross-surface-evidence",
+      "status": "passed",
+      "reason": "Compatibility, MCP diagnostics, Flutter rebaseline, and platform provenance validators pass; changed owner paths and unchanged consumer owners are listed above."
+    },
+    {
+      "id": "evidence-3-baseline-provenance-records",
+      "status": "passed",
+      "reason": "Current provenance and integration baseline are synchronized to root 4371c5d and Flutter c93b043."
+    },
+    {
+      "id": "evidence-4-fresh-checkout-public-verification",
+      "status": "inconclusive",
+      "reason": "The current boundary scan passes tracked hygiene but has five unavailable artifact roots; no current fresh-clone/provider/public-runtime proof is claimed."
+    }
+  ]
+}

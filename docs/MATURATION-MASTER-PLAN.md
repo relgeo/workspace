@@ -827,10 +827,15 @@ menjadikannya checklist overdue.
 - [x] Flutter menyatakan capability yang benar-benar didukung melalui README dan mapping machine-readable; evidence parity tetap parsial dan promotion pertama sudah diterapkan pada boundary contract terbatas;
 - [x] active/runtime/invalid fixture inti diverifikasi pada Flutter lokal; fixture 15 `boolean/intersection` dan fixture 16 evaluator/unit kini active pada boundary contract terbatas;
 - [x] active, runtime-diagnostic, dan candidate SVG Flutter dibandingkan dengan expected SVG TypeScript pada level object/primitive/path geometry; style, viewBox, dan full SVG policy belum menjadi acceptance;
-- [x] checkout Flutter terisolasi lokal dapat menjalankan dependency resolution, analyzer non-fatal, dan test tanpa parent workspace atau absolute path operator; fixture canonical tetap opt-in melalui `RELGEO_FIXTURE_ROOT`;
-- [x] analyzer Flutter tidak lagi memiliki warning atau style lint; `dart analyze` tersisa `47 INFO` deprecation-only yang tetap dicetak oleh gate CI;
+- [x] historical checkout Flutter terisolasi lokal mencatat dependency resolution, analyzer non-fatal, dan test tanpa parent workspace atau absolute path operator; current-pointer rerun is explicitly not verified, and fixture canonical remains opt-in through `RELGEO_FIXTURE_ROOT`;
+- [x] historical analyzer evidence records no warning or style lint; the current managed analyzer probe is explicitly unavailable at the SDK `engine.stamp` permission boundary, while the recorded `dart analyze` result remains historical-only;
 - [x] README Flutter menjelaskan batas integrasi dan status release; posture release disetujui, sementara capability parity yang belum dipromosikan tetap parsial;
 - [x] workflow dan matrix tidak mengklaim parity final sebelum bukti capability tersedia.
+
+**Current Flutter closure reference — 2026-11-28:** The final 61-ID audit is
+[`docs/evidence/flutter-final-closure-audit-2026-11-28.json`](./evidence/flutter-final-closure-audit-2026-11-28.json).
+It records the current root/Flutter/spec/MCP tuple, `44 ✔️ / 17 ⏸️`, zero
+actionable `🌗/❌/⚠️`, and the explicit host/runtime/provenance claim limits.
 
 **Deliverable sub-rencana:** [docs/plans/06-flutter-alignment.md](./plans/06-flutter-alignment.md), [docs/plans/07-flutter-capability-promotion-and-svg-parity.md](./plans/07-flutter-capability-promotion-and-svg-parity.md), [docs/plans/08-desktop-platform-delivery.md](./plans/08-desktop-platform-delivery.md), [docs/plans/10-desktop-runtime-smoke-checklist.md](./plans/10-desktop-runtime-smoke-checklist.md), dan [flutter/docs/plans/02-workbench-layout-and-panel-system.md](../flutter/docs/plans/02-workbench-layout-and-panel-system.md).
 

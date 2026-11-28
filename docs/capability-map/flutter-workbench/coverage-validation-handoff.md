@@ -1,8 +1,18 @@
 # Flutter Workbench — Coverage Validation and Handoff
 
 > **Current-head rebaseline — 2026-11-27:** The 61-ID join is synchronized to
-> root `2bc298e` and Flutter `52e5bd2`. The machine-readable disposition
+> root `9d68569` and Flutter `52e5bd2`. The machine-readable disposition
 > register is [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
+
+Final closure audit: [`../../evidence/flutter-final-closure-audit-2026-11-28.json`](../../evidence/flutter-final-closure-audit-2026-11-28.json).
+
+Current verification envelope — 2026-11-28: [`../../evidence/flutter-current-verification-2026-11-28.json`](../../evidence/flutter-current-verification-2026-11-28.json).
+It records root `9d68569`, Flutter root gitlink `52e5bd2`, Flutter child
+checkout `6397c66`, and MCP `ad3079b`. Four source/evidence checks passed;
+Flutter analyzer/tests, shared conformance, semantic replay, and dependency
+bootstrap remain explicitly not verified or environment-unavailable. The
+child checkout is ahead of the root gitlink pending a writable root index
+update, so no current child commit is promoted as the root baseline.
 
 > **Historical release checkpoint — 2026-10-31:** Flutter `60ec760` passed CI run `41184291670`; release run `41184693233` created an unpublished v1.0.1 draft with macOS universal, Linux x64, and Windows x64 archives/checksums. These are build/artifact facts, not target-host launch proof. The 307-test suite below is historical evidence from the 2026-10-30 pointer. Native picker, MCP packaged smoke, AT, signing, notarization, and install workflow remain open.
 
@@ -17,10 +27,10 @@
 | `node scripts/check-flutter-workbench-rebaseline.mjs` | **PASS** | 61 unique IDs; catalog, audit, reconciliation, status matrix, and backlog all represent 61/61; 44 `✔️` and 17 `⏸️`; current root/Flutter/spec/MCP contract revisions agree. |
 | `node scripts/verify-baseline.mjs --strict` | **PASS — 87 checks** | SuClos local validator boundary: current root and all 12 child checkouts match the integration baseline; no CI/provider/runtime claim. |
 | `pnpm run spec:snapshot:check` | **PASS** | 35 Flutter-bundled spec Markdown files match the current spec snapshot digest; pnpm reports a Node 22 host warning against the declared Node 24 engine. |
-| `flutter analyze --no-pub` | **PASS — No issues found** | Current Flutter child checkout source/analyzer boundary only. |
+| `flutter analyze --no-pub` | **NOT VERIFIED — environment unavailable** | The current managed Flutter conformance probe stopped at the SDK `engine.stamp` permission boundary before analyzer; the PASS record below is historical at an older child pointer. |
 | `flutter test --no-pub --reporter compact` | **NOT VERIFIED — environment unavailable** | Flutter SDK boundary: the SDK could not write `.../flutter/bin/cache/engine.stamp` (`Operation not permitted`) on the retry; no full current-pointer test count is claimed. |
 
-## Current local validation overlay — 2026-11-05
+## Historical local validation overlay — 2026-11-05
 
 The implementation tranche was revalidated at the local Flutter child pointer
 `9816b47744748c8ac537b1e3a15f083f17c64365` (root workspace pointer
@@ -172,7 +182,7 @@ artifact channel, or consumer combination has been executed.
 | `Q-FW-003` | DSL 0.5.x active fixture promotion dan semantic SVG comparator belum dibuktikan pada current pointer; raw/presentation parity tetap scope non-goal. | `CONTRACT-01..03`, `GAP-FW-002` |
 | `Q-FW-004` | Graph UX, stable object identity, selection semantics, hit-testing tolerance, dan keyboard selection behavior belum didefinisikan. | `CANVAS-05`, `VIEW-05`, `GAP-FW-004` |
 | `Q-FW-005` | Shortcut map per OS, native accessibility tree/VoiceOver/screen reader, dan native close/quit lifecycle belum memiliki current runtime evidence. | `CMD-03`, `A11Y-01/02`, `WINDOW-01`, `GAP-FW-005` |
-| `Q-FW-006` | Current pointer `52e5bd2` is joined to root `2bc298e`; launch/MCP smoke and current artifact runtime remain unverified. | `PLAT-01..04`, audit §1, `GAP-FW-006` |
+| `Q-FW-006` | Current pointer `52e5bd2` is joined to root `9d68569`; launch/MCP smoke and current artifact runtime remain unverified. | `PLAT-01..04`, audit §1, `GAP-FW-006` |
 | `Q-FW-007` | Android/iOS, custom title bar, raw SVG byte equality, signed distribution, dan full DSL promotion adalah deferred/not applicable scope decisions, bukan untracked desktop gaps. | `SCOPE-01..05`, reconciliation scope findings |
 
 Fresh local analyzer/test success is retained as local evidence only; it does

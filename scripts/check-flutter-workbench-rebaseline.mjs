@@ -64,8 +64,17 @@ if (!isAncestor(register.revisionTuple.root) || !isAncestor(baseline.rootRevisio
   pass(`root revision ancestry: evidence=${register.revisionTuple.root}, baseline=${baseline.rootRevision}, current=${currentRoot}`);
 }
 const baselineFlutter = baseline.submodules.find((entry) => entry.path === 'flutter')?.revision;
-if (currentFlutter !== register.revisionTuple.flutter || currentFlutter !== baselineFlutter) fail(`Flutter revision drift: current=${currentFlutter}`);
-else pass(`Flutter revision: ${currentFlutter}`);
+const rootGitlinkFlutter = execFileSync('git', ['ls-tree', 'HEAD', 'flutter'], { cwd: root, encoding: 'utf8' }).trim().split(/\s+/).at(2);
+const recordedRootGitlink = register.revisionTuple.flutterRootGitlink ?? register.revisionTuple.flutter;
+const recordedChildCheckout = register.revisionTuple.flutterChildCheckout ?? register.revisionTuple.flutter;
+if (rootGitlinkFlutter !== baselineFlutter || rootGitlinkFlutter !== recordedRootGitlink) {
+  fail(`Flutter root gitlink drift: current=${rootGitlinkFlutter}, baseline=${baselineFlutter}, evidence=${recordedRootGitlink}`);
+} else if (currentFlutter !== recordedChildCheckout) {
+  fail(`Flutter child checkout drift: current=${currentFlutter}, evidence=${recordedChildCheckout}`);
+} else {
+  pass(`Flutter revisions: root gitlink=${rootGitlinkFlutter}, child checkout=${currentFlutter}`);
+  if (currentFlutter !== rootGitlinkFlutter) pass('Flutter gitlink sync: pending root index update is recorded explicitly');
+}
 
 const specManifest = JSON.parse(text('flutter/assets/relgeo_spec/v0.5/manifest.json'));
 if (specManifest.revision !== register.revisionTuple.spec) fail('spec snapshot revision drift');

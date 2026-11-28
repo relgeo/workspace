@@ -11,7 +11,7 @@ implementation status is synchronized in the audit/reconciliation artifacts
 below and is summarized here so the expected catalog cannot be mistaken for a
 completion claim.
 
-## Current synchronized status — 2026-11-27
+## Current synchronized status — 2026-11-28
 
 | Status | Count | Reconciliation meaning |
 |---|---:|---|
@@ -27,7 +27,7 @@ The current-head rebaseline keeps `DOC-08`, `IO-01`, `IO-02`, `EDIT-04`,
 has bounded implementation evidence, while its deferred cross-consumer or
 host boundaries remain explicit rather than being promoted. This closes the
 stale `🌗` rows as tracked decisions, not as unproven implementation claims. The canonical
-machine-readable join is [`rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
+machine-readable join is [`rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json); the readable residual classification is [`flutter-residual-gap-classification-2026-11-28.md`](../../evidence/flutter-residual-gap-classification-2026-11-28.md).
 
 Current root/submodule provenance and the active Flutter contract snapshot are
 recorded in that register and [`docs/integration-baseline.json`](../../integration-baseline.json).

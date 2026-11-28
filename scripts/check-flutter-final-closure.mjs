@@ -41,10 +41,17 @@ const current = {
   flutter: currentRevision(`${root}flutter`),
   mcp: currentRevision(`${root}mcp`),
 };
+const flutterRootGitlink = execFileSync('git', ['ls-tree', 'HEAD', 'flutter'], { cwd: root, encoding: 'utf8' }).trim().split(/\s+/).at(2);
 const spec = JSON.parse(read('flutter/assets/relgeo_spec/v0.5/manifest.json')).revision;
 const expectedTuple = { ...current, spec };
+const recordedTuple = {
+  root: register.revisionTuple.root,
+  flutter: register.revisionTuple.flutterChildCheckout ?? register.revisionTuple.flutter,
+  mcp: register.revisionTuple.mcp,
+  spec: register.revisionTuple.spec,
+};
 for (const key of ['root', 'flutter', 'mcp', 'spec']) {
-  const recorded = register.revisionTuple[key];
+  const recorded = recordedTuple[key];
   const rootRevisionIsAncestor = key === 'root' && (() => {
     try {
       execFileSync('git', ['merge-base', '--is-ancestor', recorded, expectedTuple[key]], { cwd: root, stdio: 'ignore' });
@@ -54,6 +61,14 @@ for (const key of ['root', 'flutter', 'mcp', 'spec']) {
     }
   })();
   if (recorded !== expectedTuple[key] && !rootRevisionIsAncestor) fail(`${key} revision drift: register=${recorded} current=${expectedTuple[key]}`);
+}
+const recordedRootGitlink = register.revisionTuple.flutterRootGitlink ?? register.revisionTuple.flutter;
+if (recordedRootGitlink !== flutterRootGitlink) fail(`Flutter root gitlink drift: register=${recordedRootGitlink} current=${flutterRootGitlink}`);
+if (recordedRootGitlink !== current.flutter) {
+  const sync = register.revisionTuple.gitlinkSync;
+  if (sync?.status !== 'pending-root-gitlink-update' || sync.rootGitlink !== recordedRootGitlink || sync.childCheckout !== current.flutter) {
+    fail('Flutter child/root gitlink drift is not explicitly dispositioned');
+  }
 }
 if (!process.exitCode) pass(`current revision tuple: root=${current.root.slice(0, 8)} flutter=${current.flutter.slice(0, 8)} mcp=${current.mcp.slice(0, 8)} spec=${spec.slice(0, 8)}`);
 
@@ -85,9 +100,34 @@ for (const row of register.rows) {
 }
 if (!process.exitCode) pass('all 61 rows have disposition fields and no unsupported green claims');
 
+const auditRows = audit.rows;
+if (!Array.isArray(auditRows) || auditRows.length !== 61 || new Set(auditRows.map((row) => row.id)).size !== 61) {
+  fail('final audit does not contain exactly one per-ID before/after row for all 61 IDs');
+} else {
+  for (const row of register.rows) {
+    const auditRow = auditRows.find((candidate) => candidate.id === row.id);
+    const expectedBefore = expectedHeld.includes(row.id) ? '🌗' : '✔️';
+    const expectedAfter = row.status;
+    if (!auditRow || auditRow.beforeStatus !== expectedBefore || auditRow.afterStatus !== expectedAfter) {
+      fail(`${row.id} before/after row drifted`);
+    }
+  }
+  if (!process.exitCode) {
+    pass('per-ID before/after rows: 61/61; every catalog ID has an explicit transition');
+    console.log(`[PASS] per-ID catalog: ${expected.join(', ')}`);
+  }
+}
+
 if (audit.beforeAfter?.before?.total !== 61 || audit.beforeAfter?.after?.total !== 61) fail('audit before/after totals are not 61');
 if (audit.beforeAfter?.transition !== '17 🌗 → 17 ⏸️; 44 ✔️ → 44 ✔️') fail('audit transition statement drifted');
 if (audit.claimLimits?.length < 3) fail('compact claim-limit report is incomplete');
+const requiredBoundaryKeys = ['analyzer', 'unit-widget-contract', 'shared-conformance', 'semantic-parity', 'standalone-checkout', 'build-artifact', 'host-smoke'];
+const boundaryKeys = Array.isArray(audit.verificationBoundaries) ? audit.verificationBoundaries.map((boundary) => boundary.key) : [];
+if (boundaryKeys.length !== requiredBoundaryKeys.length || requiredBoundaryKeys.some((key) => !boundaryKeys.includes(key))) {
+  fail('verification boundary register does not cover all seven required boundaries');
+} else if (audit.verificationBoundaries.some((boundary) => !boundary.status || !boundary.owner || !boundary.remediation || !boundary.evidenceLocator || !boundary.claimLimit)) {
+  fail('verification boundary register has an incomplete disposition');
+} else pass('verification boundaries: 7/7 classified with owner, remediation, locator, and claim limit');
 if (!process.exitCode) {
   pass('before/after: 61 rows; 17 🌗 → 17 ⏸️; 44 ✔️ → 44 ✔️');
   pass('claim limits: implementation, host/runtime, and provenance remain separate');

@@ -1,8 +1,8 @@
 {
   "recordType": "cross-repository-cross-surface-reconciliation",
   "schemaVersion": 1,
-  "capturedAt": "2026-11-27",
-  "testedRootRevision": "296f6881896577bc27f711f27285a07f8dc3bac1",
+  "capturedAt": "2026-11-28",
+  "testedRootRevision": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6",
   "scope": {
     "repositories": [
       "https://github.com/relgeo/relgeo.github.io.git",
@@ -125,18 +125,18 @@
     {
       "path": "flutter",
       "repository": "https://github.com/relgeo/flutter.git",
-      "gitlinkRevision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
-      "checkoutRevision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
-      "baselineRevision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "gitlinkRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+      "checkoutRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
+      "baselineRevision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
       "checkoutClean": true,
       "branch": "main"
     },
     {
       "path": "mcp",
       "repository": "https://github.com/relgeo/mcp.git",
-      "gitlinkRevision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
-      "checkoutRevision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
-      "baselineRevision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "gitlinkRevision": "ad3079bb9658ea44f58ae0a6872a042473e95626",
+      "checkoutRevision": "ad3079bb9658ea44f58ae0a6872a042473e95626",
+      "baselineRevision": "ad3079bb9658ea44f58ae0a6872a042473e95626",
       "checkoutClean": true,
       "branch": "main"
     }
@@ -204,13 +204,13 @@
     },
     {
       "path": "flutter",
-      "revision": "20253e8b06da5b9a2329020bc1ee8c60622a3de6",
+      "revision": "c93b0432e12f5ae11d34212d4da467aceaf8ca34",
       "branch": "main",
       "clean": true
     },
     {
       "path": "mcp",
-      "revision": "109bd599fc5b4881f3a3ada128da7e9d548ab936",
+      "revision": "ad3079bb9658ea44f58ae0a6872a042473e95626",
       "branch": "main",
       "clean": true
     }
@@ -230,7 +230,7 @@
     {
       "id": "root: current revision readable",
       "passed": true,
-      "detail": "296f6881896577bc27f711f27285a07f8dc3bac1"
+      "detail": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6"
     },
     {
       "id": ".gitmodules: registered child count",
@@ -240,7 +240,7 @@
     {
       "id": "baseline: root revision",
       "passed": true,
-      "detail": "296f6881896577bc27f711f27285a07f8dc3bac1 != 296f6881896577bc27f711f27285a07f8dc3bac1"
+      "detail": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6 != 4371c5d0a343e5452aa69e0da6f070e2424d6ae6"
     },
     {
       "id": "relgeo.github.io: child commit, gitlink, and baseline align",
@@ -295,12 +295,12 @@
     {
       "id": "flutter: child commit, gitlink, and baseline align",
       "passed": true,
-      "detail": "20253e8b06da5b9a2329020bc1ee8c60622a3de6 / 20253e8b06da5b9a2329020bc1ee8c60622a3de6 / 20253e8b06da5b9a2329020bc1ee8c60622a3de6"
+      "detail": "c93b0432e12f5ae11d34212d4da467aceaf8ca34 / c93b0432e12f5ae11d34212d4da467aceaf8ca34 / c93b0432e12f5ae11d34212d4da467aceaf8ca34"
     },
     {
       "id": "mcp: child commit, gitlink, and baseline align",
       "passed": true,
-      "detail": "109bd599fc5b4881f3a3ada128da7e9d548ab936 / 109bd599fc5b4881f3a3ada128da7e9d548ab936 / 109bd599fc5b4881f3a3ada128da7e9d548ab936"
+      "detail": "ad3079bb9658ea44f58ae0a6872a042473e95626 / ad3079bb9658ea44f58ae0a6872a042473e95626 / ad3079bb9658ea44f58ae0a6872a042473e95626"
     },
     {
       "id": "matrix: all registered package paths remain unique",
@@ -315,7 +315,7 @@
     {
       "id": "rebaseline: current root revision",
       "passed": true,
-      "detail": "296f6881896577bc27f711f27285a07f8dc3bac1 != 296f6881896577bc27f711f27285a07f8dc3bac1"
+      "detail": "4371c5d0a343e5452aa69e0da6f070e2424d6ae6 != 4371c5d0a343e5452aa69e0da6f070e2424d6ae6"
     },
     {
       "id": "flutter: validated dispatch metadata",
@@ -335,7 +335,7 @@
     {
       "id": "flutter: MCP dependency ref matches root gitlink",
       "passed": true,
-      "detail": "109bd599fc5b4881f3a3ada128da7e9d548ab936, 109bd599fc5b4881f3a3ada128da7e9d548ab936 != 109bd599fc5b4881f3a3ada128da7e9d548ab936"
+      "detail": "ad3079bb9658ea44f58ae0a6872a042473e95626, ad3079bb9658ea44f58ae0a6872a042473e95626 != ad3079bb9658ea44f58ae0a6872a042473e95626"
     },
     {
       "id": "flutter spec manifest: spec revision matches root gitlink",

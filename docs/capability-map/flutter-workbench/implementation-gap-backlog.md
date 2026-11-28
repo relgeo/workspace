@@ -6,8 +6,10 @@ explicit owner/remediation/claim limits and are not actionable queue items
 
 The canonical machine-readable join is
 [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
-It is synchronized to root `2bc298e` and Flutter `52e5bd2`. Implementation
+It is synchronized to root `9d68569` and Flutter `52e5bd2`. Implementation
 status is intentionally separate from the `⏸️` disposition symbol.
+
+Final 61-ID closure: [`flutter-final-closure-audit-2026-11-28.json`](../../evidence/flutter-final-closure-audit-2026-11-28.json), with before/after counts and claim limits.
 
 **Expected source:** [`expected-capability-catalog.md`](./expected-capability-catalog.md) (canonical baseline: [`12-flutter-workbench-capability-baseline.md`](../../plans/12-flutter-workbench-capability-baseline.md))
 **Audit source:** [`flutter-workbench/implementation-gap-map.md`](./implementation-gap-map.md)  
@@ -21,7 +23,7 @@ status is intentionally separate from the `⏸️` disposition symbol.
 
 | Source | Backlog use |
 | --- | --- |
-| `workspace@2bc298ee24c3a45679ce02c399e1014012f8bd12` | Current root `HEAD`; root/submodule tuple is captured in `docs/integration-baseline.json`. |
+| `workspace@9d68569aabd1dfde17134d6df145333c5d93611f` | Current root `HEAD`; root/submodule tuple is captured in `docs/integration-baseline.json`. |
 | `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current Flutter child and gitlink pointer; source audit boundary for this rebaseline. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, compatibility line, desktop delivery gates, and evidence provenance rules. |
 | [`docs/REPOSITORY-MAP.md`](../../REPOSITORY-MAP.md) | Ownership boundary for `relgeo/flutter` and `relgeo/workspace`. |
@@ -60,9 +62,9 @@ quadratic/cubic/boolean/clone/collection objects. Regression coverage is in
 This is local target evidence; native host accessibility and window evidence
 remain separate.
 
-### Current verification handoff — 2026-11-03
+### Historical verification handoff — 2026-11-03
 
-Current root `2ff198d` and Flutter child `60ec760` have passing local evidence:
+Historical root `2ff198d` and Flutter child `60ec760` have passing local evidence:
 `flutter analyze --no-pub`, the full Flutter suite (324 tests), and the focused
 shared fixture/invalid boundary/SVG contract suite (45 tests). Canonical fixture
 staging copied 23 fixtures. The required conformance runner was also invoked,

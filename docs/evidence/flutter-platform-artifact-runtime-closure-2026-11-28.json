@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "flutter-platform-artifact-runtime-closure/v1",
+  "capturedAt": "2026-11-28",
+  "task": "deliver-current-platform-artifacts-and-runtime-provenance-for-flutter-targets--9582319760",
+  "revisionTuple": {
+    "rootHead": "9d68569aabd1dfde17134d6df145333c5d93611f",
+    "flutterRootGitlink": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "rootGitlinkStatus": "pending-root-gitlink-update"
+  },
+  "packagingChange": {
+    "workflow": "flutter/.github/workflows/desktop-release.yml",
+    "change": "release metadata and release-manifest.json now carry one specRevision, asset specDigest, specManifestSha256, and specManifestPath shared by macOS/Linux/Windows builds",
+    "guard": "scripts/check-flutter-platform-provenance.mjs"
+  },
+  "targetBoundaryMatrix": [
+    {
+      "id": "PLAT-01",
+      "target": "macOS",
+      "artifact": "historical-local-structural",
+      "artifactEvidence": "flutter/build/draft-v1.0.1/RelGeo-macos-universal-v1.0.1.zip; sha256 ad059635dab1e7d6963502a14d338190ef1b611b42680b5a058ee8e44a6fb335",
+      "runtime": "not-verified/native-app-boundary-unavailable",
+      "claimLimit": "Archive structure/checksum do not prove current-tuple provenance, launch, picker/MCP, accessibility, signing, or clean exit."
+    },
+    {
+      "id": "PLAT-02",
+      "target": "Ubuntu/Linux",
+      "artifact": "historical-local-structural",
+      "artifactEvidence": "flutter/build/draft-v1.0.1/RelGeo-linux-x64-v1.0.1.tar.gz; sha256 730b918e9bd263841e93aa2f8d5deaefb9fb9e018c8cdab90a15fc8337473417",
+      "runtime": "environment-unavailable/not-verified",
+      "claimLimit": "No Linux host is available in this execution boundary; archive structure/checksum do not prove GTK dependencies, launch, picker/MCP, or clean exit."
+    },
+    {
+      "id": "PLAT-03",
+      "target": "Windows 11",
+      "artifact": "historical-local-structural",
+      "artifactEvidence": "flutter/build/draft-v1.0.1/RelGeo-windows-x64-v1.0.1.zip; sha256 d09e6ced298d9f9682a3a3d02232b68a0f351dca510401d5d344bedb2c92ae99",
+      "runtime": "environment-unavailable/not-verified",
+      "claimLimit": "No Windows host is available in this execution boundary; archive structure/checksum do not prove launch, DLL loading, SmartScreen, signing, or clean exit."
+    },
+    {
+      "id": "PLAT-04",
+      "target": "cross-platform provenance",
+      "artifact": "current workflow contract repaired; current artifact not attached",
+      "artifactEvidence": "desktop-release.yml now joins spec revision/digest/path into release metadata and manifest",
+      "runtime": "not-verified",
+      "claimLimit": "Current tuple/workflow pin and manifest contract do not prove a current build, artifact checksum, install, signing, deployment, or target runtime."
+    }
+  ],
+  "verification": [
+    {
+      "command": "node scripts/check-flutter-platform-provenance.mjs",
+      "result": "passed",
+      "outputExcerpt": "Flutter platform provenance check passed: tuple, workflow pins, four platform dispositions, and claim limits are synchronized.",
+      "scope": "SuClos local validator workspace provenance and release workflow contract",
+      "covers": ["PLAT-01", "PLAT-02", "PLAT-03", "PLAT-04"]
+    },
+    {
+      "command": "node scripts/check-flutter-platform-artifacts.mjs",
+      "result": "inconclusive",
+      "outputExcerpt": "[INCONCLUSIVE] current-tuple join: local archives are historical draft artifacts without a current release manifest or source-tuple attestation",
+      "scope": "Codex App Server managed sandbox local archive inspection",
+      "covers": ["PLAT-01", "PLAT-02", "PLAT-03"]
+    },
+    {
+      "command": "node scripts/check-flutter-current-verification.mjs",
+      "result": "passed",
+      "outputExcerpt": "Flutter current verification envelope passed: 4 passed, 4 not verified, 1 inconclusive.",
+      "scope": "SuClos local validator current-pointer evidence envelope",
+      "covers": ["PLAT-01", "PLAT-02", "PLAT-03", "PLAT-04"]
+    },
+    {
+      "command": "node scripts/test-flutter-spec-snapshot.mjs",
+      "result": "passed",
+      "outputExcerpt": "Flutter spec snapshot drift checks passed (clean, missing, extra, source-change).",
+      "scope": "SuClos local validator bundled spec asset snapshot",
+      "covers": ["PLAT-04"]
+    },
+    {
+      "command": "node scripts/stage-flutter-fixtures.mjs --out=/private/tmp/relgeo-flutter-fixtures-current-20261128",
+      "result": "passed",
+      "outputExcerpt": "Staged 33 fixture(s) for Flutter into ../../../../private/tmp/relgeo-flutter-fixtures-current-20261128.",
+      "scope": "Codex App Server managed sandbox fixture staging",
+      "covers": ["PLAT-04"]
+    },
+    {
+      "command": "flutter build macos --release --no-pub --build-name=1.0.1 --build-number=1",
+      "result": "inconclusive",
+      "outputExcerpt": "/Users/agusmade/development/flutter/bin/internal/update_engine_version.sh: line 64: /Users/agusmade/development/flutter/bin/cache/engine.stamp: Operation not permitted",
+      "scope": "Codex App Server managed sandbox Flutter SDK cache boundary",
+      "covers": ["PLAT-01", "PLAT-04"]
+    },
+    {
+      "command": "awk '/python3 - <<'\"'\"'PY'\"'\"'/{capture=1; next} /^[[:space:]]*PY$/{capture=0} capture' flutter/.github/workflows/desktop-release.yml | python3 -c 'import sys, textwrap; compile(textwrap.dedent(sys.stdin.read()), \"<release-manifest>\", \"exec\")' && echo 'Embedded release-manifest Python syntax passed.'",
+      "result": "passed",
+      "outputExcerpt": "Embedded release-manifest Python syntax passed.",
+      "scope": "Codex App Server managed sandbox static workflow check",
+      "covers": ["PLAT-04"]
+    }
+  ],
+  "claimLimits": [
+    "The three local archives pass structural member and checksum inspection, but are historical v1.0.1 draft artifacts and are not promoted to the current tuple.",
+    "The desktop release workflow now prevents spec provenance loss by requiring one spec revision, digest, and manifest path across all target metadata files before creating release-manifest.json.",
+    "Current macOS build execution is blocked at the managed Flutter SDK engine.stamp permission boundary; Linux and Windows target hosts are unavailable in this execution boundary.",
+    "Analyzer/test/conformance, semantic replay, standalone checkout, and runtime smoke remain separately classified in flutter-current-verification-2026-11-28.json; unavailable checks are not treated as target failures or passes.",
+    "Root flutter gitlink 52e5bd2 remains distinct from child checkout 6397c66 because the managed sandbox cannot create the root Git index lock."
+  ]
+}

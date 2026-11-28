@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "flutter-current-verification/v1",
+  "capturedAt": "2026-11-28",
+  "taskId": "run-current-flutter-verification-and-repair-only-proven-residual-failures--2998940397",
+  "revisionTuple": {
+    "rootHead": "9d68569aabd1dfde17134d6df145333c5d93611f",
+    "flutterRootGitlink": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "rootGitlinkStatus": "pending-root-gitlink-update"
+  },
+  "verification": [
+    {
+      "id": "diagnostics-contract",
+      "command": "node scripts/check-flutter-diagnostics-contract.mjs",
+      "status": "passed",
+      "outputExcerpt": "Flutter diagnostics contract evidence check passed: schema, provenance, cases, and promotion boundaries are joined."
+    },
+    {
+      "id": "interaction-evidence",
+      "command": "node scripts/check-flutter-interaction-evidence.mjs",
+      "status": "passed",
+      "outputExcerpt": "Flutter interaction evidence check passed: source, tests, dispositions, and host limits are explicit."
+    },
+    {
+      "id": "fixture-staging",
+      "command": "node scripts/stage-flutter-fixtures.mjs --out=/private/tmp/relgeo-flutter-fixtures-current-20261128",
+      "status": "passed",
+      "outputExcerpt": "Staged 33 fixture(s) for Flutter into ../../../../private/tmp/relgeo-flutter-fixtures-current-20261128."
+    },
+    {
+      "id": "spec-snapshot",
+      "command": "node scripts/test-flutter-spec-snapshot.mjs",
+      "status": "passed",
+      "outputExcerpt": "Flutter spec snapshot drift checks passed (clean, missing, extra, source-change)."
+    },
+    {
+      "id": "flutter-analyzer-tests-contract",
+      "command": "node scripts/run-flutter-conformance.mjs",
+      "status": "environment-unavailable/not-verified",
+      "boundary": "Codex App Server managed sandbox Flutter SDK cache",
+      "outputExcerpt": "update_engine_version.sh: .../flutter/bin/cache/engine.stamp: Operation not permitted; [BLOCKED] Flutter probe failed: exited with 1",
+      "claimLimit": "The wrapper stopped at the SDK probe; no current analyzer, unit/widget/contract, or full-suite result is claimed."
+    },
+    {
+      "id": "shared-conformance",
+      "command": "node scripts/run-conformance-fixtures.mjs",
+      "status": "environment-unavailable/not-verified",
+      "boundary": "Codex App Server managed sandbox workspace dependency links",
+      "outputExcerpt": "ERR_MODULE_NOT_FOUND: Cannot find package '@relgeo/geometry' imported from .../core/dist/index.mjs",
+      "claimLimit": "Fixture staging passed, but cross-language execution did not run because workspace package links are absent."
+    },
+    {
+      "id": "semantic-replay",
+      "command": "node scripts/run-renderer-semantic-replay.mjs",
+      "status": "environment-unavailable/not-verified",
+      "boundary": "Codex App Server managed sandbox workspace dependency links",
+      "outputExcerpt": "ERR_MODULE_NOT_FOUND: Cannot find package '@relgeo/geometry' imported from .../renderer-svg/dist/index.mjs",
+      "claimLimit": "No TypeScript semantic replay or raw/presentation SVG parity is claimed."
+    },
+    {
+      "id": "dependency-bootstrap",
+      "command": "pnpm install --frozen-lockfile --offline",
+      "status": "environment-unavailable/not-verified",
+      "boundary": "Codex App Server managed sandbox dependency cache",
+      "outputExcerpt": "ERR_PNPM_NO_OFFLINE_TARBALL: A package is missing from the store ... load-tsconfig-0.2.5.tgz",
+      "claimLimit": "The missing package prevents local workspace link restoration; this is not classified as a source defect."
+    },
+    {
+      "id": "cross-surface-reconciliation",
+      "command": "node scripts/check-flutter-cross-surface-reconciliation.mjs",
+      "status": "inconclusive",
+      "boundary": "root gitlink versus child checkout",
+      "outputExcerpt": "[FAIL] flutterChildHead revision drift: evidence=52e5bd2... current=6397c66...",
+      "claimLimit": "The prior reconciliation record is historical; the current child workflow commit is recorded separately pending a writable root gitlink update."
+    }
+  ],
+  "currentSourceBinding": {
+    "status": "source-record-joined; execution-not-verified",
+    "childCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "command": "git -C flutter ls-tree -r --name-only 6397c66aa931dc767e0ae505cd89a40cca433564 -- test lib",
+    "diagnosticsRecord": {
+      "record": "docs/evidence/flutter-diagnostics-contract-parity-2026-11-27.json",
+      "historicalRecordedFlutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+      "currentSourceFiles": ["lib/src/ui/workbench_import_diagnostics.dart", "test/workbench_import_diagnostics_test.dart", "test/shared_diagnostic_contract_test.dart"],
+      "claimLimit": "The contract record is joined to current source paths, but its historical test pass is not promoted to a current child-checkout execution pass."
+    },
+    "interactionRecord": {
+      "record": "docs/evidence/flutter-interaction-runtime-accessibility-2026-11-27.json",
+      "historicalRecordedFlutter": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+      "currentSourceFiles": ["lib/src/ui/keyboard_activatable.dart", "lib/src/ui/workbench_window_host.dart", "test/workbench_viewport_feature_test.dart", "test/workbench_window_host_test.dart", "test/keyboard_activatable_test.dart"],
+      "claimLimit": "The interaction record is joined to current source paths, but its historical focused test pass and host dispositions do not prove current host/runtime execution."
+    },
+    "semanticComparator": {
+      "comparator": "@relgeo/renderer-svg.compareSVGSemanticReplay",
+      "currentCore": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+      "currentGeometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+      "currentRendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+      "status": "environment-unavailable/not-verified",
+      "claimLimit": "The current comparator identity and package revisions are recorded, but replay could not execute because workspace package links are unavailable; raw/presentation parity remains excluded."
+    }
+  },
+  "repairTriage": {
+    "sourceFailureObserved": false,
+    "repairApplied": false,
+    "executionRecord": "node scripts/check-flutter-current-verification.mjs",
+    "rerunStatus": "not-applicable",
+    "reason": "Observed failures are the managed Flutter SDK engine.stamp permission boundary, missing workspace package links/offline dependency cache, and a pending root gitlink update; no target source failure was proven.",
+    "claimLimit": "No repair-specific green rerun is claimed because no source/workflow/fixture defect was established. Rerun the affected gates after the named environment boundaries are restored."
+  },
+  "envelope": {
+    "passed": ["diagnostics-contract", "interaction-evidence", "fixture-staging", "spec-snapshot"],
+    "notVerified": ["flutter-analyzer-tests-contract", "shared-conformance", "semantic-replay", "dependency-bootstrap"],
+    "inconclusive": ["cross-surface-reconciliation"],
+    "claimLimit": "Passed source/evidence checks are not promoted to current Flutter runtime, packaged artifact, host smoke, or cross-language parity claims."
+  }
+}

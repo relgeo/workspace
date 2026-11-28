@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "contract": "flutter-platform-artifact-inspection-v1",
+  "capturedAt": "2026-11-28",
+  "inspectionCommand": "node scripts/check-flutter-platform-artifacts.mjs",
+  "sourceTupleJoin": {
+    "status": "inconclusive",
+    "reason": "Local files are historical v1.0.1 draft artifacts without a current release manifest or source-tuple attestation.",
+    "currentRoot": "9d68569aabd1dfde17134d6df145333c5d93611f",
+    "currentFlutterGitlink": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d"
+  },
+  "artifacts": [
+    {
+      "id": "PLAT-01",
+      "platform": "macOS",
+      "path": "flutter/build/draft-v1.0.1/RelGeo-macos-universal-v1.0.1.zip",
+      "evidenceClass": "historical-local-structural",
+      "sha256": "ad059635dab1e7d6963502a14d338190ef1b611b42680b5a058ee8e44a6fb335",
+      "requiredMembers": ["RelGeo.app/Contents/MacOS/RelGeo"],
+      "inspectionStatus": "passed",
+      "smokeStatus": "not-verified/native-app-boundary-unavailable",
+      "claimLimit": "Archive structure and checksum do not prove current-tuple provenance, launch, picker/MCP behavior, accessibility, or clean exit."
+    },
+    {
+      "id": "PLAT-02",
+      "platform": "Ubuntu/Linux",
+      "path": "flutter/build/draft-v1.0.1/RelGeo-linux-x64-v1.0.1.tar.gz",
+      "evidenceClass": "historical-local-structural",
+      "sha256": "730b918e9bd263841e93aa2f8d5deaefb9fb9e018c8cdab90a15fc8337473417",
+      "requiredMembers": ["RelGeo/relgeo", "RelGeo/data/", "RelGeo/lib/"],
+      "inspectionStatus": "passed",
+      "smokeStatus": "environment-unavailable/not-verified",
+      "claimLimit": "Archive structure and checksum do not prove current-tuple provenance, Linux session dependencies, launch, picker/MCP behavior, or clean exit."
+    },
+    {
+      "id": "PLAT-03",
+      "platform": "Windows 11",
+      "path": "flutter/build/draft-v1.0.1/RelGeo-windows-x64-v1.0.1.zip",
+      "evidenceClass": "historical-local-structural",
+      "sha256": "d09e6ced298d9f9682a3a3d02232b68a0f351dca510401d5d344bedb2c92ae99",
+      "requiredMembers": ["relgeo.exe", "flutter_windows.dll", "data"],
+      "inspectionStatus": "passed",
+      "smokeStatus": "environment-unavailable/not-verified",
+      "claimLimit": "Archive structure and checksum do not prove current-tuple provenance, Windows 11 launch/DLL behavior, SmartScreen, picker/MCP behavior, or clean exit."
+    }
+  ],
+  "smokeDisposition": {
+    "status": "⏸️",
+    "owner": "relgeo/flutter + relgeo/workspace",
+    "sourceOfTruth": "docs/plans/10-desktop-runtime-smoke-checklist.md; docs/evidence/flutter-platform-provenance-2026-11-28.json",
+    "evidenceLocator": "docs/plans/10-desktop-runtime-smoke-checklist.md:110",
+    "revision": "workspace@9d68569; flutter-gitlink@52e5bd2; workflow-source@6397c66; mcp@ad3079bb",
+    "dependency": "current-tuple native artifacts and approved macOS/Linux/Windows runtime hosts",
+    "remediation": "Produce fresh artifacts from the synchronized root gitlink/workflow source, attach release-manifest.json and SHA256SUMS.txt, then execute target-host launch, picker/MCP, accessibility, and clean-exit smoke.",
+    "claimLimit": "This record proves only local historical archive structure/checksums; it does not claim current packaged runtime usability."
+  }
+}

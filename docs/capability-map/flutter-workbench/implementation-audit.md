@@ -3,7 +3,7 @@
 # Flutter implementation audit — evidence summary
 
 > **Current-head rebaseline — 2026-11-27:** Current source boundary is root
-> `2bc298e` with Flutter `52e5bd2`; all 61 ID dispositions are in the
+> `9d68569` with Flutter `52e5bd2`; all 61 ID dispositions are in the
 > [machine-readable register](../../evidence/rebaseline-disposition-register-2026-11-27.json).
 > The register records 44 `✔️` source-boundary implementations and 17 `⏸️`
 > holds. The historical test and CI records below remain tied to their recorded
@@ -28,7 +28,7 @@ The 2026-10-30 local checkout was verified at `flutter@b21eceb258070133f32fd822b
 
 | Command | Result | Interpretation |
 |---|---|---|
-| `flutter analyze --no-pub` | **PASS — No issues found** | Current Flutter source/analyzer evidence. |
+| `flutter analyze --no-pub` | **PASS — No issues found** | Historical Flutter source/analyzer evidence at `flutter@b21eceb`; not a current-pointer managed-toolchain result. |
 | `flutter test --no-pub --reporter compact` | **PASS — 307 tests passed** | Historical unit, widget, golden, fixture, semantics, command, lifecycle, and platform-boundary evidence for `b21eceb`. |
 | Focused recovery/graph/selection + consumer/conformance suite | **PASS — 54 tests passed** | `workbench_document_recovery_test.dart`, scene graph tests, file-service tests, invalid/reference fixtures, shared v0.5 conformance, and SVG exporter contract tests. |
 | `flutter build web --no-pub` | **Not verified — environment unavailable** | Flutter SDK bootstrap could not write `/Users/agusmade/development/flutter/bin/cache/engine.stamp` (`Operation not permitted`); this is not classified as a target source/build defect. |
@@ -69,8 +69,8 @@ public DSL/API or compatibility line:
 | `EDIT-04` / `CONTRACT-01` | Flutter diagnostics now project canonical code, phase, path, origin, and session revision through the MCP DTO; the active contract is pinned to `mcp-contract-2026-11-12-r2`. | `flutter/test/shared_diagnostic_contract_test.dart`; `mcp/test/mcp_schema_test.dart`; `node scripts/check-flutter-diagnostics-contract.mjs`. | **Bounded implementation complete**: current Flutter/MCP diagnostic mapping passes; full cross-consumer vocabulary and native presentation are not claimed. |
 | `CONTRACT-02` / `CONTRACT-03` | Fixture promotion is recorded for fixtures 15/16, fixture 24 remains outside Flutter promotion, and Flutter SVG comparison is semantic with manifest tolerance and explicit presentation exclusions. | `docs/evidence/flutter-cross-surface-promotion-2026-11-27.json`; `flutter/test/shared_v05_conformance_test.dart`; `flutter/test/support/svg_semantic_projection.dart`. | **Bounded implementation complete**: current structural promotion and semantic comparator boundary are joined; TypeScript replay is deferred until workspace dependencies are available. |
 
-Validation at the current child checkout: `flutter analyze --no-pub` passed with
-no issues; the focused controller/settings/file-service run passed 17 tests and
+Historical validation at the referenced child checkout: `flutter analyze --no-pub`
+passed with no issues; the focused controller/settings/file-service run passed 17 tests and
 the diagnostic/shared-conformance run passed 5 tests.
 `dart format` could not run because the managed Flutter SDK attempted to write
 `flutter/bin/cache/engine.stamp` and received `Operation not permitted`; this
@@ -171,15 +171,16 @@ commands or change policy. No embedded repository instruction was followed.
 
 The local verification note is intentionally ignored and machine-specific. It is
 useful evidence of a prior Mac host, but cannot establish a fresh native build
-or runtime result in this workspace. The current local analyzer and test run
-are claimed only for source/test evidence at the audited child revision; no
+or runtime result in this workspace. The recorded local analyzer and test results
+are historical/source-test evidence at their named child revisions; the current
+managed conformance probe is unavailable; no
 native picker, window-manager, assistive-technology, Linux/Windows runtime, or
 desktop artifact result is inferred from them.
 
 The prior root pointer/baseline mismatch has been rebaselined. `docs/integration-baseline.json`
-now joins the current root and all child checkouts. Current analyzer evidence is
-recorded in the 2026-11-27 validation overlay; full test/runtime promotion still
-requires the named command and host evidence boundaries.
+now joins the current root and all child checkouts. The current analyzer probe is
+recorded as unavailable in the final closure audit; historical analyzer evidence
+does not promote full test/runtime or host evidence.
 
 ## Evidence handoff — 2026-10-30
 
@@ -187,7 +188,7 @@ requires the named command and host evidence boundaries.
 
 | Boundary | Recorded value | Interpretation |
 |---|---|---|
-| Workspace `HEAD` | `2bc298ee24c3a45679ce02c399e1014012f8bd12` | Current root revision used for the rebaseline. |
+| Workspace `HEAD` | `9d68569aabd1dfde17134d6df145333c5d93611f` | Current root revision used for the rebaseline. |
 | Flutter child `HEAD` | `52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current child revision used for source inspection and analyzer boundary. |
 | Worktree state | Root and `flutter/` are intentionally dirty | The implementation/doc changes are uncommitted task work. No commit or release artifact is implied by these hashes; preserve unrelated worktree changes. |
 | Changed Flutter boundary | `flutter/lib/src/ui/`, `flutter/lib/src/features/inspector/`, and focused `flutter/test/` files | Recovery, scene graph, selection, canvas, inspector, and command wiring plus focused tests. |

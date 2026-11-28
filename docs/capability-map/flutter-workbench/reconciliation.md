@@ -2,7 +2,7 @@
 
 > **Current-head rebaseline — 2026-11-27.** The canonical one-row-per-ID
 > disposition is [`../../evidence/rebaseline-disposition-register-2026-11-27.json`](../../evidence/rebaseline-disposition-register-2026-11-27.json).
-> It joins the 61 expected IDs to current root `2bc298e` and Flutter `52e5bd2`,
+> It joins the 61 expected IDs to current root `9d68569` and Flutter `52e5bd2`,
 > while retaining implementation status separately from evidence and disposition.
 > The former 17 `🌗` rows are now explicit `⏸️` holds with owner, remediation,
 > dependency, revision, evidence locator, and claim limit; this is not a claim
@@ -20,11 +20,13 @@
 **Status matrix:** [`flutter-workbench/status-matrix.md`](./status-matrix.md)  
 **Gap backlog:** [`flutter-workbench/implementation-gap-backlog.md`](./implementation-gap-backlog.md)
 
+**Final closure audit:** [`flutter-final-closure-audit-2026-11-28.json`](../../evidence/flutter-final-closure-audit-2026-11-28.json)
+
 ## Evidence boundary
 
 | Evidence source | Role in this reconciliation |
 | --- | --- |
-| `workspace@2bc298ee24c3a45679ce02c399e1014012f8bd12` | Current root `HEAD`, captured from the clean root checkout. |
+| `workspace@9d68569aabd1dfde17134d6df145333c5d93611f` | Current root `HEAD`, captured from the clean root checkout. |
 | `flutter@52e5bd2385b019cc3b29e453b6e85ef697bdd62d` | Current Flutter gitlink and child `HEAD`; source audit boundary for this rebaseline. |
 | `spec@26ff53278d77d916b0e0e6c26ca9ab496232fbc0`, `mcp@ad3079bb9658ea44f58ae0a6872a042473e95626` | Current normative spec snapshot and pure-Dart host contract inputs. |
 | [`docs/MATURATION-MASTER-PLAN.md`](../../MATURATION-MASTER-PLAN.md) | Roadmap, active desktop/platform gates, compatibility line, and historical-versus-current evidence rules. |
@@ -61,8 +63,9 @@ not synthesized from exception strings.
 The current disposition register records `DOC-08`, `IO-01`, `IO-02`, `EDIT-04`,
 `CONTRACT-01`, `CONTRACT-02`, `CONTRACT-03`, `CANVAS-03`, `CANVAS-04`,
 `CMD-03`, `A11Y-01`, `A11Y-02`, `WINDOW-01`, and `PLAT-01..04` as `⏸️`.
-Their implementation status remains `partial` where source/contract work is
-bounded, but the stale `🌗` symbol is no longer used as an actionable queue.
+Their implementation status is `bounded-implemented` where source/contract work
+is complete at the owned boundary, but the stale `🌗` symbol is no longer used
+as an actionable queue.
 
 `CANVAS-05` and `VIEW-05` are `implemented at Flutter boundary` with host
 evidence still open. `PLAT-01`–`PLAT-04` are evidence-only target-host or
@@ -77,9 +80,9 @@ locked in the [backlog acceptance matrix](./implementation-gap-backlog.md#contra
 It is a documentation boundary only; no public contract change or compatibility
 line promotion is implied.
 
-## Current target evidence handoff — 2026-11-03
+## Historical target evidence handoff — 2026-11-03
 
-Current root/submodule pointers are `2ff198d` and `flutter@60ec760`. Local
+Historical root/submodule pointers were `2ff198d` and `flutter@60ec760`. Local
 Flutter evidence is `flutter analyze --no-pub` passing, the complete Flutter
 suite passing with 324 tests, and the focused shared fixture/invalid-boundary/
 SVG contract suite passing with 45 tests. Fixture staging copied 23 canonical
@@ -152,10 +155,10 @@ Makna penting:
 | DOC-05 | `✔️` | implemented | source-plus-local | in scope; Flutter recent store | [Audit §3.1 DOC-05](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-06 | `✔️` | implemented | source-plus-local | in scope; Flutter document session | [Audit §3.1 DOC-06](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-07 | `✔️` | implemented | source-plus-local; native not verified | in scope; Flutter/host lifecycle boundary | [Audit §3.1 DOC-07](./implementation-gap-map.md#31-document-file-dan-recovery) |
-| DOC-08 | `⏸️` | partial | recovery store and focused local tests; forced-exit/native storage not verified | held environment boundary; `relgeo/flutter` owner | [Audit §3.1 DOC-08](./implementation-gap-map.md#31-document-file-dan-recovery) |
+| DOC-08 | `⏸️` | bounded-implemented | current recovery/widget tests and evidence envelope; forced-exit/native storage not verified | held environment boundary; `relgeo/flutter` owner | [Audit §3.1 DOC-08](./implementation-gap-map.md#31-document-file-dan-recovery) |
 | DOC-09 | `✔️` | implemented | source-plus-local | in scope; Flutter document identity/file service | [Audit §3.1 DOC-09](./implementation-gap-map.md#31-document-file-dan-recovery) |
-| IO-01 | `⏸️` | partial | source-plus-local; native not verified | held environment boundary; Flutter adapter owner | [Audit §3.1 IO-01](./implementation-gap-map.md#31-document-file-dan-recovery) |
-| IO-02 | `⏸️` | implemented-at-bounded-boundary | current diagnostic fixture + focused Flutter tests | held only for broader cross-consumer policy; Flutter + core owners | [Audit §3.1 IO-02](./implementation-gap-map.md#31-document-file-dan-recovery) |
+| IO-01 | `⏸️` | bounded-implemented | current file-service tests and evidence envelope; native picker not verified | held environment boundary; Flutter adapter owner | [Audit §3.1 IO-01](./implementation-gap-map.md#31-document-file-dan-recovery) |
+| IO-02 | `⏸️` | bounded-implemented | current diagnostic fixture + focused Flutter tests; cross-consumer replay not verified | held only for broader cross-consumer policy; Flutter + core owners | [Audit §3.1 IO-02](./implementation-gap-map.md#31-document-file-dan-recovery) |
 
 ### 2. Authoring, compile, diagnostics, dan contract
 
@@ -164,14 +167,14 @@ Makna penting:
 | EDIT-01 | `✔️` | implemented | source-plus-local | in scope; Flutter editor | [Audit §3.2 EDIT-01](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-02 | `✔️` | implemented | source-plus-local | in scope; Flutter editor/DSL vocabulary | [Audit §3.2 EDIT-02](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-03 | `✔️` | implemented | source-plus-local | in scope; Flutter workbench compile path | [Audit §3.2 EDIT-03](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
-| EDIT-04 | `⏸️` | implemented-at-bounded-boundary | current diagnostic fixture + focused Flutter tests | held only for cross-consumer/runtime execution; Flutter + spec + core owners | [Audit §3.2 EDIT-04](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
+| EDIT-04 | `⏸️` | implemented-at-bounded-boundary | current diagnostic adapter, structured consumer mapping, fixture, and focused Flutter tests | held only for cross-consumer/runtime execution; Flutter + spec + core owners | [Audit §3.2 EDIT-04](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-05 | `✔️` | implemented | bounded-contract | in scope; Flutter preview recovery behavior | [Audit §3.2 EDIT-05](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-06 | `✔️` | implemented | source-plus-local | in scope; Flutter editor history | [Audit §3.2 EDIT-06](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-07 | `✔️` | implemented | source-plus-local | in scope; Flutter editor history | [Audit §3.2 EDIT-07](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 | EDIT-08 | `✔️` | implemented | source-plus-local | in scope; shared command registry | [Audit §3.2 EDIT-08](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
-| CONTRACT-01 | `⏸️` | implemented-at-bounded-boundary | current contract revision + diagnostic fixture; staged replay deferred | held only for current-pointer cross-consumer execution; spec + Flutter + core owners | [Audit §3.2 CONTRACT-01](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
-| CONTRACT-02 | `⏸️` | implemented-at-bounded-boundary | current manifest/promotion check | fixtures 15/16 are Flutter-promoted; fixture 24 remains explicit non-Flutter scope; workspace + Flutter owners | [Audit §3.2 CONTRACT-02](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
-| CONTRACT-03 | `⏸️` | implemented-at-bounded-boundary | semantic comparator contract + Flutter projection; TS replay deferred | held only for current-pointer renderer replay; raw/presentation excluded; renderer + Flutter owners | [Audit §3.2 CONTRACT-03](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
+| CONTRACT-01 | `⏸️` | implemented-at-bounded-boundary | current contract revision, DTO/bridge behavior, diagnostic fixture, and Flutter focused tests; MCP package replay deferred | held only for current-pointer cross-consumer execution; spec + Flutter + core owners | [Audit §3.2 CONTRACT-01](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
+| CONTRACT-02 | `⏸️` | implemented-at-bounded-boundary | current manifest/promotion check and 16-test Flutter fixture conformance | fixtures 15/16 are Flutter-promoted; fixture 24 remains explicit non-Flutter scope; workspace + Flutter owners | [Audit §3.2 CONTRACT-02](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
+| CONTRACT-03 | `⏸️` | implemented-at-bounded-boundary | current Flutter semantic projection/conformance; TypeScript replay deferred | held only for current-pointer renderer replay; raw/presentation excluded; renderer + Flutter owners | [Audit §3.2 CONTRACT-03](./implementation-gap-map.md#32-authoring-compile-diagnostics-dan-contract) |
 
 ### 3. Canvas, preview, inspection, dan navigation
 
@@ -179,8 +182,8 @@ Makna penting:
 | --- | --- | --- | --- | --- | --- |
 | CANVAS-01 | `✔️` | implemented | source-plus-local | in scope; Flutter canvas/preview | [Audit §3.3 CANVAS-01](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-02 | `✔️` | implemented | source-plus-local | in scope for model/sheet view | [Audit §3.3 CANVAS-02](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
-| CANVAS-03 | `⏸️` | bounded implementation | source-plus-local; host evidence held | bounded inspector/selection boundary; exhaustive field inventory remains separate | [Audit §3.3 CANVAS-03](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
-| CANVAS-04 | `⏸️` | bounded implementation | source-plus-local; cross-consumer evidence held | bounded parameter/profile editing boundary; full evaluator parity remains separate | [Audit §3.3 CANVAS-04](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
+| CANVAS-03 | `⏸️` | bounded implementation | current managed-local tests; host evidence held | bounded inspector/selection boundary; exhaustive field inventory remains separate | [Audit §3.3 CANVAS-03](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
+| CANVAS-04 | `⏸️` | bounded implementation | current managed-local tests; cross-consumer evidence held | bounded parameter/profile editing boundary; full evaluator parity remains separate | [Audit §3.3 CANVAS-04](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-05 | `✔️` | implemented at Flutter boundary | graph model/panel and focused tests; native AT/runtime not verified | in scope; user-facing graph belongs to Flutter workbench | [Audit §3.3 CANVAS-05](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | CANVAS-06 | `✔️` | implemented | source-plus-local; native AT not verified | in scope; Flutter overlay/role controls | [Audit §3.3 CANVAS-06](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
 | VIEW-01 | `✔️` | implemented | source-plus-local | in scope; Flutter viewport | [Audit §3.3 VIEW-01](./implementation-gap-map.md#33-canvas-preview-inspection-dan-navigation) |
@@ -213,11 +216,11 @@ Makna penting:
 | --- | --- | --- | --- | --- | --- |
 | CMD-01 | `✔️` | implemented | source-plus-local; native event not verified | in scope; shared Flutter command registry | [Audit §3.5 CMD-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 | CMD-02 | `✔️` | implemented | source-plus-local; native menu not verified | in scope; Flutter menu/native adapter boundary | [Audit §3.5 CMD-02](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
-| CMD-03 | `⏸️` | implemented at Flutter boundary | source-plus-local; native shortcut not verified | held host evidence boundary; registry conflict and shortcut parity are tested | [Audit §3.5 CMD-03](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
-| A11Y-01 | `⏸️` | implemented at Flutter boundary | source-plus-local; native AT not verified | held host evidence boundary; focus/activation paths are tested | [Audit §3.5 A11Y-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
-| A11Y-02 | `⏸️` | implemented at Flutter boundary | source-plus-local; native AT not verified | held host evidence boundary; canvas/graph/control semantics are tested | [Audit §3.5 A11Y-02](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
+| CMD-03 | `⏸️` | implemented at Flutter boundary | current managed-local tests; native shortcut not verified | held host evidence boundary; registry conflict, menu parity, and platform modifier mapping are tested | [Audit §3.5 CMD-03](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
+| A11Y-01 | `⏸️` | implemented at Flutter boundary | current managed-local tests; native AT not verified | held host evidence boundary; focus/activation/keyboard resize paths are tested | [Audit §3.5 A11Y-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
+| A11Y-02 | `⏸️` | implemented at Flutter boundary | current managed-local tests; native AT not verified | held host evidence boundary; canvas/graph/control semantics are tested | [Audit §3.5 A11Y-02](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 | A11Y-03 | `✔️` | implemented | source-plus-local; OS preference not verified | in scope; Flutter reduced-motion boundary | [Audit §3.5 A11Y-03](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
-| WINDOW-01 | `⏸️` | implemented at adapter boundary | source-plus-local; native lifecycle not verified | held host evidence boundary; close callback, dirty guard, and method channel are tested | [Audit §3.5 WINDOW-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
+| WINDOW-01 | `⏸️` | implemented at adapter boundary | current managed-local tests; native lifecycle not verified | held host evidence boundary; policy, close callback, dirty guard, and method channel are tested | [Audit §3.5 WINDOW-01](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 | WINDOW-02 | `✔️` | implemented | source-plus-local; OS enforcement not verified | in scope; Flutter window policy | [Audit §3.5 WINDOW-02](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 | WINDOW-03 | `✔️` | implemented | source; native runtime not verified | in scope as native title-bar boundary; custom chrome deferred | [Audit §3.5 WINDOW-03](./implementation-gap-map.md#35-commands-keyboard-accessibility-dan-window-lifecycle) |
 
@@ -227,10 +230,10 @@ Makna penting:
 | --- | --- | --- | --- | --- | --- |
 | EXPORT-01 | `✔️` | implemented | source-plus-local; native write not verified | in scope; Flutter SVG export boundary | [Audit §3.6 EXPORT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 | EXPORT-02 | `✔️` | implemented | source-plus-local; native write not verified | in scope; Flutter model/sheet export | [Audit §3.6 EXPORT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-01 | `⏸️` | partial | current CI build and v1.0.1 draft archive/checksum verified; target launch not verified | held target-host environment boundary; Flutter + workspace | [Audit §3.6 PLAT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-02 | `⏸️` | partial | current CI build and v1.0.1 draft archive/checksum verified; target Linux runtime not verified | held target-host environment boundary; Flutter + workspace | [Audit §3.6 PLAT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-03 | `⏸️` | partial | current CI build and v1.0.1 draft archive/checksum verified; Windows runtime not verified | held target-host environment boundary; Flutter + workspace | [Audit §3.6 PLAT-03](./implementation-gap-map.md#36-export-dan-platform-delivery) |
-| PLAT-04 | `⏸️` | partial | current baseline tuple refreshed; artifact/runtime proof not verified | held provenance/runtime boundary; workspace owner | [Audit §3.6 PLAT-04](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-01 | `⏸️` | partial | historical draft archive/checksum structurally verified; current macOS build stopped at managed Flutter SDK cache boundary; target launch not verified | held target-host/toolchain boundary; Flutter + workspace | [Audit §3.6 PLAT-01](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-02 | `⏸️` | partial | historical draft archive/checksum structurally verified; no current Linux build or target runtime host | held target-host/toolchain boundary; Flutter + workspace | [Audit §3.6 PLAT-02](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-03 | `⏸️` | partial | historical draft archive/checksum structurally verified; no current Windows build or target runtime host | held target-host/toolchain boundary; Flutter + workspace | [Audit §3.6 PLAT-03](./implementation-gap-map.md#36-export-dan-platform-delivery) |
+| PLAT-04 | `⏸️` | partial | current tuple, bundled spec digest, and release-manifest provenance guard are explicit; workflow source `6397c66` is ahead of root gitlink `52e5bd2` pending index update; artifact/runtime proof is not verified | held provenance/runtime boundary; baseline join is explicit but promotion is blocked until current artifact and root gitlink evidence exist | [Audit §3.6 PLAT-04](./implementation-gap-map.md#36-export-dan-platform-delivery) |
 
 ## Coverage validation
 

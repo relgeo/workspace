@@ -28,7 +28,7 @@ check(typeof contract.provenance?.revision === "string" && contract.provenance.r
 
 const cases = contract.cases ?? [];
 const caseIds = cases.map((item) => item.id);
-check(cases.length === 4, "diagnostic contract must contain four boundary cases");
+check(cases.length === 5, "diagnostic contract must contain five boundary cases");
 check(new Set(caseIds).size === caseIds.length, "diagnostic contract case IDs are duplicated");
 for (const item of cases) {
   check(typeof item.id === "string" && item.id.length > 0, "diagnostic contract case has no ID");

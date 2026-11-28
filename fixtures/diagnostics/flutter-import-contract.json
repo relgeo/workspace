@@ -50,6 +50,16 @@
         "path": "document",
         "origin": "activeDocument"
       }
+    },
+    {
+      "id": "document-unsupported-format",
+      "kind": "file",
+      "expected": {
+        "code": "DOCUMENT_UNSUPPORTED_FORMAT",
+        "phase": "io",
+        "path": "document",
+        "origin": "activeDocument"
+      }
     }
   ]
 }

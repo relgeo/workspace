@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "flutter-document-file-recovery-closure/v1",
+  "capturedAt": "2026-11-28",
+  "task": "implement-flutter-document-file-picker-import-export-and-recovery-closure--9582319760",
+  "revisionTuple": {
+    "root": "9d68569aabd1dfde17134d6df145333c5d93611f",
+    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "flutterWorktreeState": "dirty: source and regression changes are uncommitted in the child checkout",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626"
+  },
+  "implementedCapabilities": {
+    "DOC-08": {
+      "source": [
+        "flutter/lib/src/ui/workbench_document_recovery.dart",
+        "flutter/lib/src/ui/cad_workbench.dart"
+      ],
+      "behavior": [
+        "single JSON recovery payload avoids partial multi-key drafts",
+        "legacy recovery keys migrate on read",
+        "corrupt or incomplete payloads are discarded",
+        "blocked storage remains best-effort and cannot block editing",
+        "startup RESTORE/DISCARD consumes the recovery record"
+      ]
+    },
+    "IO-01": {
+      "source": ["flutter/lib/src/ui/workbench_file_service.dart"],
+      "behavior": [
+        "native picker adapter is wired through file_picker",
+        "yaml/yml/relgeo filters are enforced at the service boundary",
+        "picker cancellation is side-effect free",
+        "picker failures use stable document.picker errors",
+        "Save As normalizes extension-less paths to .relgeo",
+        "unsupported destinations and picked files are rejected"
+      ]
+    },
+    "IO-02": {
+      "source": [
+        "flutter/lib/src/ui/workbench_file_service.dart",
+        "flutter/lib/src/ui/workbench_import_diagnostics.dart"
+      ],
+      "behavior": [
+        "path-backed and bytes-backed documents are accepted",
+        "UTF-8 BOM is normalized and malformed bytes report document.decode",
+        "unsupported format reports DOCUMENT_UNSUPPORTED_FORMAT in the IO diagnostic contract"
+      ]
+    }
+  },
+  "fixtureProtocolUpdates": {
+    "fixture": "fixtures/diagnostics/flutter-import-contract.json",
+    "addedCase": "document-unsupported-format",
+    "expected": {
+      "code": "DOCUMENT_UNSUPPORTED_FORMAT",
+      "phase": "io",
+      "path": "document",
+      "origin": "activeDocument"
+    },
+    "checker": "scripts/check-flutter-diagnostics-contract.mjs",
+    "contractRevision": "mcp-contract-2026-11-12-r2"
+  },
+  "verification": [
+    {
+      "command": "flutter test --no-pub --reporter compact test/workbench_file_service_test.dart test/workbench_document_recovery_test.dart test/workbench_import_diagnostics_test.dart test/shared_diagnostic_contract_test.dart",
+      "result": "passed",
+      "outputExcerpt": "00:06 +24: All tests passed!",
+      "scope": "Codex App Server managed sandbox local Flutter test runner"
+    },
+    {
+      "command": "flutter test --no-pub --reporter compact test/widget_test.dart --plain-name 'restoring an interrupted draft consumes the recovery record'",
+      "result": "passed",
+      "outputExcerpt": "00:05 +1: All tests passed!",
+      "scope": "Codex App Server managed sandbox local Flutter widget test runner"
+    },
+    {
+      "command": "flutter analyze --no-pub",
+      "result": "passed",
+      "outputExcerpt": "No issues found! (ran in 6.5s)",
+      "scope": "Codex App Server managed sandbox Flutter analyzer"
+    },
+    {
+      "command": "node scripts/check-flutter-diagnostics-contract.mjs",
+      "result": "passed",
+      "outputExcerpt": "Flutter diagnostics contract evidence check passed: schema, provenance, cases, and promotion boundaries are joined.",
+      "scope": "SuClos local validator workspace fixture contract"
+    }
+  ],
+  "claimLimits": [
+    "The focused tests prove the injected file-picker adapter, filesystem read/write, supported-format rejection, failure vocabulary, recovery migration, corruption cleanup, blocked-storage tolerance, and startup restore path.",
+    "The actual OS picker dialog, native permissions, packaged artifact, forced process kill, and cross-platform relaunch durability remain target-host evidence boundaries and are not claimed by these local tests.",
+    "No unsupported file type is promoted into the active import contract; the new diagnostic fixture records the rejection semantics explicitly."
+  ]
+}

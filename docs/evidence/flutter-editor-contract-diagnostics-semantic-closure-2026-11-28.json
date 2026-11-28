@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "flutter-editor-contract-diagnostics-semantic-closure/v1",
+  "capturedAt": "2026-11-28",
+  "task": "close-flutter-editor-contract-diagnostics-and-semantic-parity-gaps--9582319760",
+  "revisionTuple": {
+    "root": "9d68569aabd1dfde17134d6df145333c5d93611f",
+    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "rendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "flutterWorktreeState": "dirty: diagnostics adapter and regression tests are uncommitted in the child checkout"
+  },
+  "implementedCapabilities": {
+    "EDIT-04": {
+      "source": [
+        "flutter/lib/src/ui/workbench_import_diagnostics.dart",
+        "flutter/lib/src/mcp/workbench_agent_bridge.dart",
+        "mcp/lib/src/contract/session_bridge.dart"
+      ],
+      "behavior": [
+        "parser/compiler/file failures project stable code, phase, path, origin, and source revision fields",
+        "structured consumer diagnostic objects and map-shaped diagnostics are accepted without importing the core package",
+        "agent edit review/apply uses document identity and revision guards with explicit result states"
+      ]
+    },
+    "CONTRACT-01": {
+      "source": [
+        "mcp/lib/src/contract/session_bridge.dart",
+        "mcp/lib/src/contract/contract_revision.dart",
+        "fixtures/manifest.json",
+        "fixtures/diagnostics/flutter-import-contract.json"
+      ],
+      "behavior": [
+        "active 0.5 contract revision is pinned to mcp-contract-2026-11-12-r2",
+        "Flutter diagnostic DTO preserves canonical machine-readable fields",
+        "editor agent bridge preserves stale/no-op/review/applied/failed boundaries"
+      ]
+    },
+    "CONTRACT-02": {
+      "source": [
+        "fixtures/manifest.json",
+        "flutter/test/shared_v05_conformance_test.dart",
+        "flutter/test/shared_diagnostic_contract_test.dart",
+        "scripts/check-flutter-diagnostics-contract.mjs"
+      ],
+      "behavior": [
+        "fixtures 15 and 16 are explicitly promoted to Flutter bounded semantic coverage",
+        "fixture 24 remains active workspace coverage but explicitly not Flutter-promoted",
+        "canonical diagnostic fixture and promotion metadata are checked together"
+      ]
+    },
+    "CONTRACT-03": {
+      "source": [
+        "flutter/test/support/semantic_projection.dart",
+        "flutter/test/support/svg_semantic_projection.dart",
+        "flutter/test/shared_v05_conformance_test.dart",
+        "fixtures/manifest.json#/svgSemanticSerialization"
+      ],
+      "behavior": [
+        "resolved-scene and SVG geometry are compared semantically with the declared 1e-6 tolerance",
+        "closed-ring rotation/duplication is canonicalized while semantic array order is preserved",
+        "raw SVG bytes, styles, viewBox, metadata, text metrics, and overlays remain outside the parity contract"
+      ]
+    }
+  },
+  "verification": [
+    {
+      "command": "flutter test --no-pub --reporter compact test/workbench_import_diagnostics_test.dart test/shared_diagnostic_contract_test.dart test/shared_v05_conformance_test.dart test/workbench_agent_bridge_test.dart",
+      "result": "passed",
+      "outputExcerpt": "00:06 +18: All tests passed!",
+      "scope": "Codex App Server managed sandbox local Flutter test runner",
+      "covers": ["EDIT-04", "CONTRACT-01", "CONTRACT-02", "CONTRACT-03"]
+    },
+    {
+      "command": "flutter analyze --no-pub",
+      "result": "passed",
+      "outputExcerpt": "No issues found! (ran in 8.0s)",
+      "scope": "Codex App Server managed sandbox Flutter analyzer",
+      "covers": ["EDIT-04", "CONTRACT-01", "CONTRACT-03"]
+    },
+    {
+      "command": "node scripts/check-flutter-diagnostics-contract.mjs",
+      "result": "passed",
+      "outputExcerpt": "Flutter diagnostics contract evidence check passed: schema, provenance, cases, and promotion boundaries are joined.",
+      "scope": "SuClos local validator workspace fixture contract",
+      "covers": ["EDIT-04", "CONTRACT-01", "CONTRACT-02"]
+    },
+    {
+      "command": "node scripts/run-renderer-semantic-replay.mjs",
+      "result": "inconclusive",
+      "outputExcerpt": "Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@relgeo/geometry' imported from /Users/agusmade/projects/relgeo-workspace/renderer-svg/dist/index.mjs",
+      "scope": "Codex App Server managed sandbox workspace dependency boundary",
+      "covers": ["CONTRACT-03"]
+    },
+    {
+      "command": "dart test test/mcp_schema_test.dart test/session_bridge_test.dart",
+      "result": "inconclusive",
+      "outputExcerpt": "/Users/agusmade/development/flutter/bin/cache/engine.stamp: Operation not permitted",
+      "scope": "Codex App Server managed sandbox Flutter/Dart SDK cache boundary",
+      "covers": ["CONTRACT-01"]
+    }
+  ],
+  "claimLimits": [
+    "The current Flutter source and local conformance tests prove the bounded editor diagnostic mapping, active contract revision, promoted fixture boundary, and semantic scene/SVG projection.",
+    "TypeScript renderer replay is not claimed because the managed workspace lacks the @relgeo/geometry dependency link; this is an environment boundary, not a target source failure.",
+    "MCP Dart package tests are not claimed because the managed Flutter SDK cannot update engine.stamp; this is a Codex App Server managed sandbox boundary.",
+    "Full DSL vocabulary parity, fixture 24 Flutter promotion, raw SVG presentation equality, native UI/runtime, and clean-checkout cross-consumer parity remain unclaimed."
+  ]
+}

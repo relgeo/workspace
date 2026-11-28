@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "flutter-canvas-command-accessibility-window-closure/v1",
+  "capturedAt": "2026-11-28",
+  "task": "complete-flutter-canvas-command-accessibility-and-window-lifecycle-implementation--9582319760",
+  "revisionTuple": {
+    "root": "9d68569aabd1dfde17134d6df145333c5d93611f",
+    "flutterRootGitlink": "52e5bd2385b019cc3b29e453b6e85ef697bdd62d",
+    "flutterChildCheckout": "6397c66aa931dc767e0ae505cd89a40cca433564",
+    "mcp": "ad3079bb9658ea44f58ae0a6872a042473e95626",
+    "core": "cf2404a8fafdb0d664fdd7dc672926b5207184ab",
+    "geometry": "91c644379759d61184f64c8250e7ff7ef0b745f3",
+    "rendererSvg": "8be3e30a2bbc2cdcd2fb8f828c2efd7144b90d1b",
+    "spec": "26ff53278d77d916b0e0e6c26ca9ab496232fbc0",
+    "flutterWorktreeState": "dirty: platform-aware command shortcut implementation and regression test are uncommitted in the child checkout"
+  },
+  "implementedCapabilities": {
+    "CANVAS-03": {
+      "source": [
+        "flutter/lib/src/ui/inspector_panel.dart",
+        "flutter/lib/src/ui/workbench_scene_graph_panel.dart",
+        "flutter/test/inspector_panel_test.dart",
+        "flutter/test/workbench_scene_graph_panel_test.dart"
+      ],
+      "behavior": [
+        "inspector Objects/Values/Errors/BOM surfaces expose bounded geometry and selection details",
+        "scene graph nodes expose selection semantics and keyboard activation",
+        "canvas and inspector surfaces retain shared bounded selection semantics"
+      ]
+    },
+    "CANVAS-04": {
+      "source": [
+        "flutter/lib/src/ui/parameters_panel.dart",
+        "flutter/lib/src/ui/workbench_feature_surface.dart",
+        "flutter/test/workbench_feature_surface_test.dart",
+        "flutter/test/workbench_composition_shell_test.dart"
+      ],
+      "behavior": [
+        "parameter surface is conditional and independently renderable",
+        "reset and slider controls expose semantic labels, values, hints, and actions",
+        "parameter surface participates in docked and standalone responsive layouts"
+      ]
+    },
+    "CMD-03": {
+      "source": [
+        "flutter/lib/src/ui/workbench_commands.dart",
+        "flutter/lib/src/ui/cad_workbench.dart",
+        "flutter/lib/src/ui/workbench_platform_menu_bar.dart",
+        "flutter/test/workbench_platform_menu_bar_test.dart",
+        "flutter/test/workbench_context_menu_test.dart"
+      ],
+      "behavior": [
+        "global command registry dispatches enabled shortcuts and keeps disabled commands inert",
+        "shortcut conflicts, menu labels, context-menu parity, and macOS native menu ordering are covered",
+        "primary shortcuts use Command on macOS and Control on Windows/Linux through one shared helper"
+      ]
+    },
+    "A11Y-01": {
+      "source": [
+        "flutter/lib/src/ui/keyboard_activatable.dart",
+        "flutter/lib/src/ui/workbench_composition_shell.dart",
+        "flutter/test/keyboard_activatable_test.dart",
+        "flutter/test/workbench_composition_shell_test.dart",
+        "flutter/test/dock_layout_renderer_test.dart"
+      ],
+      "behavior": [
+        "focusable controls activate with Enter/Space and expose visible focus feedback",
+        "docked panels participate in traversal and splitters respond to keyboard arrows",
+        "splitters expose operable semantic slider behavior"
+      ]
+    },
+    "A11Y-02": {
+      "source": [
+        "flutter/lib/src/ui/workbench_viewport_feature.dart",
+        "flutter/lib/src/ui/inspector_panel.dart",
+        "flutter/lib/src/ui/workbench_scene_graph_panel.dart",
+        "flutter/test/workbench_viewport_feature_test.dart",
+        "flutter/test/workbench_feature_surface_test.dart"
+      ],
+      "behavior": [
+        "canvas preview, inspector, graph, parameter, and panel controls expose bounded labels, values, and states",
+        "selected-object and graph-node semantics are covered together with keyboard activation"
+      ]
+    },
+    "WINDOW-01": {
+      "source": [
+        "flutter/lib/src/ui/workbench_window_host.dart",
+        "flutter/lib/src/ui/workbench_method_channel_window_host.dart",
+        "flutter/lib/src/ui/workbench_window_policy.dart",
+        "flutter/test/workbench_window_host_test.dart",
+        "flutter/test/workbench_method_channel_window_host_test.dart",
+        "flutter/test/workbench_window_policy_test.dart"
+      ],
+      "behavior": [
+        "default and minimum window policy dimensions are stable",
+        "application quit delegates to the lifecycle host and method-channel close is sent",
+        "clean/dirty lifecycle guard remains owned by the workbench command path"
+      ]
+    }
+  },
+  "verification": [
+    {
+      "command": "flutter test --no-pub --reporter compact test/inspector_panel_test.dart test/workbench_feature_surface_test.dart test/workbench_viewport_feature_test.dart test/workbench_scene_graph_panel_test.dart test/workbench_context_menu_test.dart test/workbench_platform_menu_bar_test.dart test/keyboard_activatable_test.dart test/workbench_composition_shell_test.dart test/workbench_window_host_test.dart test/workbench_method_channel_window_host_test.dart test/workbench_window_policy_test.dart test/dock_layout_renderer_test.dart",
+      "result": "passed",
+      "outputExcerpt": "00:12 +54: All tests passed!",
+      "scope": "Codex App Server managed sandbox local Flutter test runner",
+      "covers": ["CANVAS-03", "CANVAS-04", "CMD-03", "A11Y-01", "A11Y-02", "WINDOW-01"]
+    },
+    {
+      "command": "flutter analyze --no-pub",
+      "result": "passed",
+      "outputExcerpt": "No issues found! (ran in 4.5s)",
+      "scope": "Codex App Server managed sandbox Flutter analyzer",
+      "covers": ["CANVAS-03", "CANVAS-04", "CMD-03", "A11Y-01", "A11Y-02", "WINDOW-01"]
+    },
+    {
+      "command": "dart format flutter/lib/src/ui/workbench_commands.dart flutter/lib/src/ui/cad_workbench.dart flutter/test/workbench_platform_menu_bar_test.dart",
+      "result": "inconclusive",
+      "outputExcerpt": "/Users/agusmade/development/flutter/bin/cache/engine.stamp: Operation not permitted",
+      "scope": "Codex App Server managed sandbox Flutter/Dart SDK cache boundary",
+      "covers": ["CMD-03"]
+    }
+  ],
+  "claimLimits": [
+    "The managed Flutter suite proves the bounded source behavior and regression contracts for all six capability IDs; the analyzer found no issues.",
+    "CMD-03 now has explicit source-level macOS Command versus Windows/Linux Control mapping, but native OS shortcut delivery and host menu rendering remain unverified.",
+    "A11Y-01 and A11Y-02 prove Flutter focus/semantics behavior only; VoiceOver, NVDA, AT-SPI/UIA, and native accessibility-tree announcements are not claimed.",
+    "WINDOW-01 proves the Flutter adapter, method-channel close, policy dimensions, and lifecycle callback boundary only; native window-manager close/quit, packaged relaunch, and clean-exit transcripts remain unverified.",
+    "The root gitlink remains at 52e5bd2 because the managed sandbox cannot create the root Git index lock; child checkout 6397c66 is recorded as current source evidence and is not promoted as the root baseline."
+  ]
+}
